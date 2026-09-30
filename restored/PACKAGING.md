@@ -39,6 +39,25 @@
 
 ## 二、装配步骤
 
+> **2026-09-30 已实际打通**：`restored/shell/` 是可编译的精简壳（axum HTTP 网关 + wry WebView2
+> + core stdio 中继 + SSE），`GameCowork.exe` 已构建并实测运行成功——窗口标题 GameCowork、
+> 前端完整加载、`unity/getHubProjectsAndEditors` 返回真机双引擎数据（tuanjie 2 编辑器 +
+> unity 10 编辑器 14 项目）。协议关键发现（写壳必读）：
+> - core 的 **stdin 帧尾必须是 `\r\n`**（纯 `\n` 会被认为消息未结束，永无回执）；
+> - core 的 **stdout 帧尾是 `\r`**（带尾随空格），不能用按 `\n` 分行的读取器；
+> - 消息形状 `{messageType, data, messageId, workspaceId}`，回执按 messageId 关联，
+>   流式为 `{done:false,content}→{done:true}`；启动握手 `getWorkspaceDirs` 必须应答；
+> - core 必须以 `cwd=<core 目录>` 启动（原生 bindings 按相对路径查找）；
+> - `gamecowork-runtime.exe` = node.exe 改名即可跑还原源码（无需 pkg 重打），
+>   需把 `node_sqlite3.node` 放到 `core/build/Release/`。
+
+### 本轮实测遗留
+
+- **CLI 边车（bun 重编）会导致 core 卡死**：`GAMECOWORK_CLI_PATH` 指向 bun 编译产物时
+  core 启动后挂起（carve 出的主 bundle 缺模块图其余部分，无法独立运行）——
+  当前装配已将其移除（`app/cli/gamecowork.exe.bak`），**agent 会话/聊天功能暂不可用**；
+  修复方向：用 `bun build` 从完整工程源码编译，或还原 pkg VFS 其余 222 段模块。
+
 ```bash
 # 0) 前置: Node 22+, pnpm, Rust(tauri 2), Bun, Maven/JDK(如需), @yao-pkg/pkg
 npm i -g @yao-pkg/pkg bun
