@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/play_button.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codely Walkthrough</title>
+    <style id="codely-theme-bootstrap">
+      html {
+        background-color: #222222;
+        color-scheme: dark;
+      }
+      html[data-theme="light"] {
+        background-color: #eeeeee;
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        background-color: inherit;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var stored = JSON.parse(localStorage.getItem("codely-theme") || "null");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.setAttribute("data-theme", stored);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/indexWalkthrough-C1eDPcA7.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/registry-BL-NPVNy.js" />
+    <link rel="modulepreload" crossorigin href="/assets/VscTheme-BExNMG_K.js" />
+    <link rel="stylesheet" crossorigin href="/assets/registry-D9yfq9uG.css" />
+    <link rel="stylesheet" crossorigin href="/assets/VscTheme-SKSXuIBI.css" />
+    <link rel="stylesheet" crossorigin href="/assets/indexWalkthrough-CoZgQvzT.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

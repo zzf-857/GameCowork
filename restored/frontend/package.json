@@ -1,0 +1,49 @@
+{
+  "//": "逆向重建的依赖清单 —— 依据: dist 产物中的库签名、worker 文件名、CSS/字体资产。版本号为保守估计,以 package-lock 为准不可得",
+  "name": "codely-cowork-desktop",
+  "private": true,
+  "version": "2.1.3-canary.2",
+  "type": "module",
+  "product": "Tuanjie Cowork",
+  "vendor": "codelycowork (Unity 中国 / Tuanjie 团结引擎)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19",
+    "redux": "*",
+    "monaco-editor": "*",
+    "xterm": "*",
+    "marked": "*",
+    "remark": "*",
+    "katex": "*",
+    "mermaid": "*",
+    "cytoscape": "*",
+    "dagre": "*",
+    "three": "*",
+    "d3": "*",
+    "i18next": "*",
+    "cmdk": "*",
+    "@sentry/browser": "*",
+    "posthog-js": "*",
+    "vscode-languageserver-protocol": "*",
+    "openai": "*"
+  },
+  "devDependencies": {
+    "vite": "*",
+    "typescript": "*"
+  },
+  "//entrypoints": {
+    "index.html": "Codely Desktop 主界面 (React, #root)",
+    "gui.html": "编辑器内 GUI (modulepreload: registry / VscTheme / unityInsightIndex / store / projectMenuFlows)",
+    "pet.html": "桌宠窗口",
+    "windowBridge.html": "Unity SceneView 串流桥(WebRTC/视频流 + 指针转发)",
+    "indexWalkthrough.html": "引导流程",
+    "jetbrains_index.html / jetbrains_editorInset_index.html": "JetBrains 宿主入口"
+  },
+  "//assets": "fonts=KaTeX 全套; icons=自绘 SVG/PNG; logos/branding=产品标识; ts.worker=Monaco TypeScript worker(双版本并存=两次构建)"
+}

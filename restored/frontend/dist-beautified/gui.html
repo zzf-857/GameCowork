@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/play_button.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codely</title>
+    <style id="codely-theme-bootstrap">
+      html {
+        background-color: #222222;
+        color-scheme: dark;
+      }
+      html[data-theme="light"] {
+        background-color: #eeeeee;
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        background-color: inherit;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var stored = JSON.parse(localStorage.getItem("codely-theme") || "null");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.setAttribute("data-theme", stored);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BRxZ4eG7.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/registry-BL-NPVNy.js" />
+    <link rel="modulepreload" crossorigin href="/assets/VscTheme-BExNMG_K.js" />
+    <link rel="modulepreload" crossorigin href="/assets/MoveUpRightIcon-FDLB66AF.js" />
+    <link rel="modulepreload" crossorigin href="/assets/unityInsightIndex-BuKbJPJQ.js" />
+    <link rel="modulepreload" crossorigin href="/assets/store-c6kNGz30.js" />
+    <link rel="modulepreload" crossorigin href="/assets/projectMenuFlows-B5bpQmCU.js" />
+    <link rel="modulepreload" crossorigin href="/assets/openTjhubTab-qOsuwIY5.js" />
+    <link rel="modulepreload" crossorigin href="/assets/shallowEqual-C2yO7zFp.js" />
+    <link rel="modulepreload" crossorigin href="/assets/core-BtpCLyE5.js" />
+    <link rel="stylesheet" crossorigin href="/assets/registry-D9yfq9uG.css" />
+    <link rel="stylesheet" crossorigin href="/assets/VscTheme-SKSXuIBI.css" />
+    <link rel="stylesheet" crossorigin href="/assets/index-ALCObGGK.css" />
+    <link rel="stylesheet" crossorigin href="/assets/theme-v2-C2li2Ih-.css" />
+  </head>
+  <body>
+    <script>
+      // Disable context menu (right-click)
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
+    </script>
+    <div id="root"></div>
+  </body>
+</html>

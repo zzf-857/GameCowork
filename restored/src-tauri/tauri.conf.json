@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "//": "从 cowork.exe (v2.1.3-canary.2) 二进制字符串逆向重建，非官方原始文件；数值型窗口配置未能从编译后二进制恢复，标 TODO",
+  "productName": "Tuanjie Cowork",
+  "version": "2.1.3-canary.2",
+  "identifier": "dev.codelycowork.desktop",
+  "build": {
+    "frontendDist": "../app/resource/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Tuanjie Cowork",
+        "url": "index.html",
+        "TODO": "width/height/minWidth/minHeight 等数值配置无法从二进制可靠恢复"
+      },
+      {
+        "TODO": "运行期还会创建 gui.html(编辑器内 GUI)、pet.html(宠物)、windowBridge.html(Unity 窗口桥/串流)、indexWalkthrough.html、jetbrains_index.html 等窗口，从 Rust 侧代码创建"
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "resources": ["app/resource/*"],
+    "externalBin": ["process_killer"],
+    "windows": {
+      "nsis": {
+        "TODO": "uninstall.exe 为 NSIS 打包；正式安装器配置待还原"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://codely.tuanjie.cn/plugins/cowork/latest",
+        "https://codely-stg.tuanjie.cn/plugins/cowork/latest"
+      ],
+      "//": "minisign 公钥: 二进制内含 base64 'Trusted comment: minisign pu(blic key)'，完整公钥需进一步提取"
+    }
+  }
+}

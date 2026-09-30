@@ -1,0 +1,244 @@
+import { p as B } from "./chunk-ANTBXLJU-CTfKZ_Qj.js";
+import {
+  _ as u,
+  a7 as w,
+  ab as C,
+  D,
+  B as y,
+  x as S,
+  w as T,
+  V as E,
+  W as P,
+  v as _,
+  t as z,
+  a8 as A,
+  a9 as F,
+  a0 as W,
+} from "./VscTheme-B-CSeuv5.js";
+import { p as I } from "./treemap-75Q7IDZK-B-05wwdi.js";
+import "./registry-CHHSpXp3.js";
+import "./_baseUniq-B4kfiVVD.js";
+import "./_basePickBy-BL7sFKyx.js";
+import "./clone-CIq-NCRc.js";
+(function () {
+  var e =
+    typeof window < "u"
+      ? window
+      : typeof global < "u"
+        ? global
+        : typeof globalThis < "u"
+          ? globalThis
+          : typeof self < "u"
+            ? self
+            : {};
+  e.SENTRY_RELEASE = { id: "a9a604ff7ed4f880dc7535e2471d79d2388dc4a0" };
+})();
+try {
+  (function () {
+    var e =
+        typeof window < "u"
+          ? window
+          : typeof global < "u"
+            ? global
+            : typeof globalThis < "u"
+              ? globalThis
+              : typeof self < "u"
+                ? self
+                : {},
+      t = new e.Error().stack;
+    t &&
+      ((e._sentryDebugIds = e._sentryDebugIds || {}),
+      (e._sentryDebugIds[t] = "cf34bd46-955f-474d-a432-210de76fd3c9"),
+      (e._sentryDebugIdIdentifier = "sentry-dbid-cf34bd46-955f-474d-a432-210de76fd3c9"));
+  })();
+} catch {}
+var N = F.packet,
+  k,
+  m =
+    ((k = class {
+      constructor() {
+        ((this.packet = []),
+          (this.setAccTitle = S),
+          (this.getAccTitle = T),
+          (this.setDiagramTitle = E),
+          (this.getDiagramTitle = P),
+          (this.getAccDescription = _),
+          (this.setAccDescription = z));
+      }
+      getConfig() {
+        const t = w({ ...N, ...A().packet });
+        return (t.showBits && (t.paddingY += 10), t);
+      }
+      getPacket() {
+        return this.packet;
+      }
+      pushWord(t) {
+        t.length > 0 && this.packet.push(t);
+      }
+      clear() {
+        (W(), (this.packet = []));
+      }
+    }),
+    u(k, "PacketDB"),
+    k),
+  L = 1e4,
+  Y = u((e, t) => {
+    B(e, t);
+    let i = -1,
+      r = [],
+      l = 1;
+    const { bitsPerRow: c } = t.getConfig();
+    for (let { start: a, end: o, bits: n, label: d } of e.blocks) {
+      if (a !== void 0 && o !== void 0 && o < a)
+        throw new Error(`Packet block ${a} - ${o} is invalid. End must be greater than start.`);
+      if ((a != null || (a = i + 1), a !== i + 1))
+        throw new Error(`Packet block ${a} - ${o != null ? o : a} is not contiguous. It should start from ${i + 1}.`);
+      if (n === 0) throw new Error(`Packet block ${a} is invalid. Cannot have a zero bit field.`);
+      for (
+        o != null || (o = a + (n != null ? n : 1) - 1),
+          n != null || (n = o - a + 1),
+          i = o,
+          y.debug(`Packet block ${a} - ${i} with label ${d}`);
+        r.length <= c + 1 && t.getPacket().length < L;
+      ) {
+        const [p, s] = M({ start: a, end: o, bits: n, label: d }, l, c);
+        if ((r.push(p), p.end + 1 === l * c && (t.pushWord(r), (r = []), l++), !s)) break;
+        ({ start: a, end: o, bits: n, label: d } = s);
+      }
+    }
+    t.pushWord(r);
+  }, "populate"),
+  M = u((e, t, i) => {
+    if (e.start === void 0) throw new Error("start should have been set during first phase");
+    if (e.end === void 0) throw new Error("end should have been set during first phase");
+    if (e.start > e.end) throw new Error(`Block start ${e.start} is greater than block end ${e.end}.`);
+    if (e.end + 1 <= t * i) return [e, void 0];
+    const r = t * i - 1,
+      l = t * i;
+    return [
+      { start: e.start, end: r, label: e.label, bits: r - e.start },
+      { start: l, end: e.end, label: e.label, bits: e.end - l },
+    ];
+  }, "getNextFittingBlock"),
+  v = {
+    parser: { yy: void 0 },
+    parse: u(async (e) => {
+      var r;
+      const t = await I("packet", e),
+        i = (r = v.parser) == null ? void 0 : r.yy;
+      if (!(i instanceof m))
+        throw new Error(
+          "parser.parser?.yy was not a PacketDB. This is due to a bug within Mermaid, please report this issue at https://github.com/mermaid-js/mermaid/issues.",
+        );
+      (y.debug(t), Y(t, i));
+    }, "parse"),
+  },
+  R = u((e, t, i, r) => {
+    const l = r.db,
+      c = l.getConfig(),
+      { rowHeight: a, paddingY: o, bitWidth: n, bitsPerRow: d } = c,
+      p = l.getPacket(),
+      s = l.getDiagramTitle(),
+      g = a + o,
+      f = g * (p.length + 1) - (s ? 0 : a),
+      h = n * d + 2,
+      b = C(t);
+    (b.attr("viewbox", `0 0 ${h} ${f}`), D(b, f, h, c.useMaxWidth));
+    for (const [x, $] of p.entries()) O(b, $, x, c);
+    b.append("text")
+      .text(s)
+      .attr("x", h / 2)
+      .attr("y", f - g / 2)
+      .attr("dominant-baseline", "middle")
+      .attr("text-anchor", "middle")
+      .attr("class", "packetTitle");
+  }, "draw"),
+  O = u((e, t, i, { rowHeight: r, paddingX: l, paddingY: c, bitWidth: a, bitsPerRow: o, showBits: n }) => {
+    const d = e.append("g"),
+      p = i * (r + c) + c;
+    for (const s of t) {
+      const g = (s.start % o) * a + 1,
+        f = (s.end - s.start + 1) * a - l;
+      if (
+        (d.append("rect").attr("x", g).attr("y", p).attr("width", f).attr("height", r).attr("class", "packetBlock"),
+        d
+          .append("text")
+          .attr("x", g + f / 2)
+          .attr("y", p + r / 2)
+          .attr("class", "packetLabel")
+          .attr("dominant-baseline", "middle")
+          .attr("text-anchor", "middle")
+          .text(s.label),
+        !n)
+      )
+        continue;
+      const h = s.end === s.start,
+        b = p - 2;
+      (d
+        .append("text")
+        .attr("x", g + (h ? f / 2 : 0))
+        .attr("y", b)
+        .attr("class", "packetByte start")
+        .attr("dominant-baseline", "auto")
+        .attr("text-anchor", h ? "middle" : "start")
+        .text(s.start),
+        h ||
+          d
+            .append("text")
+            .attr("x", g + f)
+            .attr("y", b)
+            .attr("class", "packetByte end")
+            .attr("dominant-baseline", "auto")
+            .attr("text-anchor", "end")
+            .text(s.end));
+    }
+  }, "drawWord"),
+  j = { draw: R },
+  G = {
+    byteFontSize: "10px",
+    startByteColor: "black",
+    endByteColor: "black",
+    labelColor: "black",
+    labelFontSize: "12px",
+    titleColor: "black",
+    titleFontSize: "14px",
+    blockStrokeColor: "black",
+    blockStrokeWidth: "1",
+    blockFillColor: "#efefef",
+  },
+  H = u(({ packet: e } = {}) => {
+    const t = w(G, e);
+    return `
+	.packetByte {
+		font-size: ${t.byteFontSize};
+	}
+	.packetByte.start {
+		fill: ${t.startByteColor};
+	}
+	.packetByte.end {
+		fill: ${t.endByteColor};
+	}
+	.packetLabel {
+		fill: ${t.labelColor};
+		font-size: ${t.labelFontSize};
+	}
+	.packetTitle {
+		fill: ${t.titleColor};
+		font-size: ${t.titleFontSize};
+	}
+	.packetBlock {
+		stroke: ${t.blockStrokeColor};
+		stroke-width: ${t.blockStrokeWidth};
+		fill: ${t.blockFillColor};
+	}
+	`;
+  }, "styles"),
+  Z = {
+    parser: v,
+    get db() {
+      return new m();
+    },
+    renderer: j,
+    styles: H,
+  };
+export { Z as diagram };

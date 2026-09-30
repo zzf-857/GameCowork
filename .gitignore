@@ -1,0 +1,10 @@
+# 原件镜像（873MB，可由 E:\TuanjieCodely\EXE\Tuanjie Cowork 用 robocopy /E 重新生成，不入库）
+original/
+
+# 依赖与构建产物
+tools/node_modules/
+*.log
+
+# 系统杂项
+.DS_Store
+Thumbs.db

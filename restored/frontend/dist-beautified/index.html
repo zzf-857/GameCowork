@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/branding/logo_dark.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codely Desktop</title>
+    <style id="codely-theme-bootstrap">
+      html {
+        background-color: #222222;
+        color-scheme: dark;
+      }
+      html[data-theme="light"] {
+        background-color: #eeeeee;
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        background-color: inherit;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var theme = JSON.parse(localStorage.getItem("codely-theme") || "null");
+          if (theme === "light" || theme === "dark") {
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/index-DG7m4Xaq.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DRnMDoPo.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

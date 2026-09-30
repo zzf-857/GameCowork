@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codely Pet</title>
+    <style id="codely-pet-bootstrap">
+      /* color-scheme makes the browser's default foreground light in dark
+         mode — icons using fill="currentColor" without an explicit text
+         color class inherit it. */
+      html {
+        color-scheme: dark;
+      }
+      html[data-theme="light"] {
+        color-scheme: light;
+      }
+      html,
+      body {
+        margin: 0;
+        background-color: transparent;
+      }
+    </style>
+    <script>
+      // Pet windows must be transparent from the very first paint (inline
+      // style beats any stylesheet rule), and their theme arrives via the
+      // ?theme= query param set by the Rust shell when creating the window.
+      document.documentElement.style.backgroundColor = "transparent";
+      (function () {
+        try {
+          var theme = new URLSearchParams(window.location.search).get("theme");
+          if (theme === "light" || theme === "dark") {
+            document.documentElement.setAttribute("data-theme", theme);
+            localStorage.setItem("codely-theme", JSON.stringify(theme));
+          }
+        } catch (e) {}
+      })();
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+      });
+    </script>
+    <script type="module" crossorigin src="/assets/pet-CZjlzXYQ.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/registry-BL-NPVNy.js" />
+    <link rel="stylesheet" crossorigin href="/assets/registry-D9yfq9uG.css" />
+    <link rel="stylesheet" crossorigin href="/assets/pet-CLVbAL2A.css" />
+    <link rel="stylesheet" crossorigin href="/assets/theme-v2-C2li2Ih-.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

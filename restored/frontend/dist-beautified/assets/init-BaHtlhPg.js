@@ -1,0 +1,46 @@
+(function () {
+  var e =
+    typeof window < "u"
+      ? window
+      : typeof global < "u"
+        ? global
+        : typeof globalThis < "u"
+          ? globalThis
+          : typeof self < "u"
+            ? self
+            : {};
+  e.SENTRY_RELEASE = { id: "2f1423c32bade03815c417fcfe4cfeec506373e0" };
+})();
+try {
+  (function () {
+    var e =
+        typeof window < "u"
+          ? window
+          : typeof global < "u"
+            ? global
+            : typeof globalThis < "u"
+              ? globalThis
+              : typeof self < "u"
+                ? self
+                : {},
+      n = new e.Error().stack;
+    n &&
+      ((e._sentryDebugIds = e._sentryDebugIds || {}),
+      (e._sentryDebugIds[n] = "9b901efe-858f-4692-ab19-32faca48422c"),
+      (e._sentryDebugIdIdentifier = "sentry-dbid-9b901efe-858f-4692-ab19-32faca48422c"));
+  })();
+} catch {}
+function f(e, n) {
+  switch (arguments.length) {
+    case 0:
+      break;
+    case 1:
+      this.range(e);
+      break;
+    default:
+      this.range(n).domain(e);
+      break;
+  }
+  return this;
+}
+export { f as i };

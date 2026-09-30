@@ -1,0 +1,9 @@
+共 7 个唯一 invoke 目标
+
+get_cowork_access_token  ←  index-BRxZ4eG7.jsx1 index-DvRYaIVa.jsx1 RightSideBarPanel-B2OWNNNX.jsx1 RightSideBarPanel-JSPvAs5c.jsx1
+plugin:event|emit  ←  event-DDA_aGYT.jsx1
+plugin:event|emit_to  ←  event-DDA_aGYT.jsx1
+plugin:event|listen  ←  event-DDA_aGYT.jsx1
+plugin:event|unlisten  ←  event-DDA_aGYT.jsx1
+read_unity_streaming_layout  ←  RightSideBarPanel-B2OWNNNX.jsx1 RightSideBarPanel-JSPvAs5c.jsx1
+save_unity_streaming_layout  ←  RightSideBarPanel-B2OWNNNX.jsx1 RightSideBarPanel-JSPvAs5c.jsx1

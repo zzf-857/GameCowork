@@ -1,0 +1,4877 @@
+[
+ {
+  "1": {
+   "off": 0,
+   "size": 5226279,
+   "decompressed": 14346800,
+   "compressed": 5226279
+  },
+  "3": {
+   "off": 5226279,
+   "size": 108,
+   "decompressed": 124,
+   "compressed": 108
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/index.js"
+ },
+ {
+  "1": {
+   "off": 5226387,
+   "size": 353,
+   "decompressed": 861,
+   "compressed": 353
+  },
+  "3": {
+   "off": 5226740,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/pkgJson/win32-x64/package.json"
+ },
+ {
+  "1": {
+   "off": 5226843,
+   "size": 679,
+   "decompressed": 1725,
+   "compressed": 679
+  },
+  "3": {
+   "off": 5227522,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/binding.gyp"
+ },
+ {
+  "1": {
+   "off": 5227626,
+   "size": 783,
+   "decompressed": 1460,
+   "compressed": 783
+  },
+  "3": {
+   "off": 5228409,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/LICENSE"
+ },
+ {
+  "1": {
+   "off": 5228513,
+   "size": 957,
+   "decompressed": 2189,
+   "compressed": 957
+  },
+  "3": {
+   "off": 5229470,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/package.json"
+ },
+ {
+  "1": {
+   "off": 5229574,
+   "size": 4155,
+   "decompressed": 10918,
+   "compressed": 4155
+  },
+  "3": {
+   "off": 5233729,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/README.md"
+ },
+ {
+  "1": {
+   "off": 5233834,
+   "size": 800,
+   "decompressed": 3534,
+   "compressed": 800
+  },
+  "3": {
+   "off": 5234634,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/binding.sln"
+ },
+ {
+  "1": {
+   "off": 5234736,
+   "size": 3550,
+   "decompressed": 16732,
+   "compressed": 3550
+  },
+  "3": {
+   "off": 5238286,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/config.gypi"
+ },
+ {
+  "1": {
+   "off": 5238391,
+   "size": 2567,
+   "decompressed": 14032,
+   "compressed": 2567
+  },
+  "3": {
+   "off": 5240958,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj"
+ },
+ {
+  "1": {
+   "off": 5241063,
+   "size": 678,
+   "decompressed": 3324,
+   "compressed": 678
+  },
+  "3": {
+   "off": 5241741,
+   "size": 100,
+   "decompressed": 120,
+   "compressed": 100
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj.filters"
+ },
+ {
+  "1": {
+   "off": 5241841,
+   "size": 465,
+   "decompressed": 1322,
+   "compressed": 465
+  },
+  "3": {
+   "off": 5242306,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/common-sqlite.gypi"
+ },
+ {
+  "1": {
+   "off": 5242410,
+   "size": 154,
+   "decompressed": 224,
+   "compressed": 154
+  },
+  "3": {
+   "off": 5242564,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/extract.js"
+ },
+ {
+  "1": {
+   "off": 5242667,
+   "size": 3205382,
+   "decompressed": 3204841,
+   "compressed": 3205382
+  },
+  "3": {
+   "off": 8448049,
+   "size": 105,
+   "decompressed": 123,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/sqlite-autoconf-3440200.tar.gz"
+ },
+ {
+  "1": {
+   "off": 8448154,
+   "size": 837,
+   "decompressed": 3021,
+   "compressed": 837
+  },
+  "3": {
+   "off": 8448991,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/sqlite3.gyp"
+ },
+ {
+  "1": {
+   "off": 8449093,
+   "size": 76,
+   "decompressed": 59,
+   "compressed": 76
+  },
+  "3": {
+   "off": 8449169,
+   "size": 102,
+   "decompressed": 118,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3-binding.js"
+ },
+ {
+  "1": {
+   "off": 8449271,
+   "size": 1475,
+   "decompressed": 7163,
+   "compressed": 1475
+  },
+  "3": {
+   "off": 8450746,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3.d.ts"
+ },
+ {
+  "1": {
+   "off": 8450850,
+   "size": 1706,
+   "decompressed": 6365,
+   "compressed": 1706
+  },
+  "3": {
+   "off": 8452556,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3.js"
+ },
+ {
+  "1": {
+   "off": 8452660,
+   "size": 562,
+   "decompressed": 1357,
+   "compressed": 562
+  },
+  "3": {
+   "off": 8453222,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/trace.js"
+ },
+ {
+  "1": {
+   "off": 8453326,
+   "size": 738,
+   "decompressed": 1898,
+   "compressed": 738
+  },
+  "3": {
+   "off": 8454064,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/async.h"
+ },
+ {
+  "1": {
+   "off": 8454168,
+   "size": 3251,
+   "decompressed": 13555,
+   "compressed": 3251
+  },
+  "3": {
+   "off": 8457419,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/backup.cc"
+ },
+ {
+  "1": {
+   "off": 8457524,
+   "size": 2317,
+   "decompressed": 6882,
+   "compressed": 2317
+  },
+  "3": {
+   "off": 8459841,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/backup.h"
+ },
+ {
+  "1": {
+   "off": 8459945,
+   "size": 4040,
+   "decompressed": 22230,
+   "compressed": 4040
+  },
+  "3": {
+   "off": 8463985,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/database.cc"
+ },
+ {
+  "1": {
+   "off": 8464090,
+   "size": 1480,
+   "decompressed": 5152,
+   "compressed": 1480
+  },
+  "3": {
+   "off": 8465570,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/database.h"
+ },
+ {
+  "1": {
+   "off": 8465674,
+   "size": 354,
+   "decompressed": 861,
+   "compressed": 354
+  },
+  "3": {
+   "off": 8466028,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/gcc-preinclude.h"
+ },
+ {
+  "1": {
+   "off": 8466131,
+   "size": 2158,
+   "decompressed": 11168,
+   "compressed": 2158
+  },
+  "3": {
+   "off": 8468289,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/macros.h"
+ },
+ {
+  "1": {
+   "off": 8468394,
+   "size": 1236,
+   "decompressed": 6119,
+   "compressed": 1236
+  },
+  "3": {
+   "off": 8469630,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/node_sqlite3.cc"
+ },
+ {
+  "1": {
+   "off": 8469734,
+   "size": 5578,
+   "decompressed": 29401,
+   "compressed": 5578
+  },
+  "3": {
+   "off": 8475312,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/statement.cc"
+ },
+ {
+  "1": {
+   "off": 8475417,
+   "size": 1915,
+   "decompressed": 6781,
+   "compressed": 1915
+  },
+  "3": {
+   "off": 8477332,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/statement.h"
+ },
+ {
+  "1": {
+   "off": 8477436,
+   "size": 166,
+   "decompressed": 388,
+   "compressed": 166
+  },
+  "3": {
+   "off": 8477602,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/threading.h"
+ },
+ {
+  "1": {
+   "off": 8477703,
+   "size": 2270,
+   "decompressed": 11217,
+   "compressed": 2270
+  },
+  "3": {
+   "off": 8479973,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj"
+ },
+ {
+  "1": {
+   "off": 8480078,
+   "size": 732,
+   "decompressed": 2880,
+   "compressed": 732
+  },
+  "3": {
+   "off": 8480810,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj.filters"
+ },
+ {
+  "1": {
+   "off": 8480914,
+   "size": 462,
+   "decompressed": 1466,
+   "compressed": 462
+  },
+  "3": {
+   "off": 8481376,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.sln"
+ },
+ {
+  "1": {
+   "off": 8481480,
+   "size": 2355,
+   "decompressed": 12261,
+   "compressed": 2355
+  },
+  "3": {
+   "off": 8483835,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj"
+ },
+ {
+  "1": {
+   "off": 8483940,
+   "size": 827,
+   "decompressed": 3016,
+   "compressed": 827
+  },
+  "3": {
+   "off": 8484767,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj.filters"
+ },
+ {
+  "1": {
+   "off": 8484869,
+   "size": 524,
+   "decompressed": 1019,
+   "compressed": 524
+  },
+  "3": {
+   "off": 8485393,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.exp"
+ },
+ {
+  "1": {
+   "off": 8485497,
+   "size": 4251470,
+   "decompressed": 14466917,
+   "compressed": 4251470
+  },
+  "3": {
+   "off": 12736967,
+   "size": 108,
+   "decompressed": 124,
+   "compressed": 108
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.iobj"
+ },
+ {
+  "1": {
+   "off": 12737075,
+   "size": 764188,
+   "decompressed": 5290240,
+   "compressed": 764188
+  },
+  "3": {
+   "off": 13501263,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.ipdb"
+ },
+ {
+  "1": {
+   "off": 13501370,
+   "size": 607,
+   "decompressed": 2222,
+   "compressed": 607
+  },
+  "3": {
+   "off": 13501977,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.lib"
+ },
+ {
+  "1": {
+   "off": 13502081,
+   "size": 918543,
+   "decompressed": 1721856,
+   "compressed": 918543
+  },
+  "3": {
+   "off": 14420624,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node"
+ },
+ {
+  "1": {
+   "off": 14420731,
+   "size": 918543,
+   "decompressed": 1721856,
+   "compressed": 918543
+  },
+  "3": {
+   "off": 15339274,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node.bak"
+ },
+ {
+  "1": {
+   "off": 15339381,
+   "size": 2800699,
+   "decompressed": 9785344,
+   "compressed": 2800699
+  },
+  "3": {
+   "off": 18140080,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.pdb"
+ },
+ {
+  "1": {
+   "off": 18140187,
+   "size": 27457,
+   "decompressed": 88818,
+   "compressed": 27457
+  },
+  "3": {
+   "off": 18167644,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/nothing.lib"
+ },
+ {
+  "1": {
+   "off": 18167749,
+   "size": 1802625,
+   "decompressed": 6296238,
+   "compressed": 1802625
+  },
+  "3": {
+   "off": 19970374,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/sqlite3.lib"
+ },
+ {
+  "1": {
+   "off": 19970481,
+   "size": 1494,
+   "decompressed": 4326,
+   "compressed": 1494
+  },
+  "3": {
+   "off": 19971975,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.d.ts"
+ },
+ {
+  "1": {
+   "off": 19972079,
+   "size": 4921,
+   "decompressed": 18551,
+   "compressed": 4921
+  },
+  "3": {
+   "off": 19977000,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.js"
+ },
+ {
+  "1": {
+   "off": 19977105,
+   "size": 4915,
+   "decompressed": 18516,
+   "compressed": 4915
+  },
+  "3": {
+   "off": 19982020,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.mjs"
+ },
+ {
+  "1": {
+   "off": 19982125,
+   "size": 516,
+   "decompressed": 787,
+   "compressed": 516
+  },
+  "3": {
+   "off": 19982641,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/LICENSE"
+ },
+ {
+  "1": {
+   "off": 19982744,
+   "size": 740,
+   "decompressed": 1745,
+   "compressed": 740
+  },
+  "3": {
+   "off": 19983484,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/package.json"
+ },
+ {
+  "1": {
+   "off": 19983588,
+   "size": 8800,
+   "decompressed": 25550,
+   "compressed": 8800
+  },
+  "3": {
+   "off": 19992388,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/README.md"
+ },
+ {
+  "1": {
+   "off": 19992493,
+   "size": 367,
+   "decompressed": 724,
+   "compressed": 367
+  },
+  "3": {
+   "off": 19992860,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/common.gypi"
+ },
+ {
+  "1": {
+   "off": 19992963,
+   "size": 315,
+   "decompressed": 560,
+   "compressed": 315
+  },
+  "3": {
+   "off": 19993278,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/except.gypi"
+ },
+ {
+  "1": {
+   "off": 19993381,
+   "size": 247,
+   "decompressed": 377,
+   "compressed": 247
+  },
+  "3": {
+   "off": 19993628,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/index.js"
+ },
+ {
+  "1": {
+   "off": 19993729,
+   "size": 703,
+   "decompressed": 1150,
+   "compressed": 703
+  },
+  "3": {
+   "off": 19994432,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/LICENSE.md"
+ },
+ {
+  "1": {
+   "off": 19994536,
+   "size": 674,
+   "decompressed": 6323,
+   "compressed": 674
+  },
+  "3": {
+   "off": 19995210,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.deprecated.h"
+ },
+ {
+  "1": {
+   "off": 19995314,
+   "size": 26297,
+   "decompressed": 219411,
+   "compressed": 26297
+  },
+  "3": {
+   "off": 20021611,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.h"
+ },
+ {
+  "1": {
+   "off": 20021717,
+   "size": 17678,
+   "decompressed": 115423,
+   "compressed": 17678
+  },
+  "3": {
+   "off": 20039395,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi.h"
+ },
+ {
+  "1": {
+   "off": 20039501,
+   "size": 234,
+   "decompressed": 793,
+   "compressed": 234
+  },
+  "3": {
+   "off": 20039735,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_addon_api.gyp"
+ },
+ {
+  "1": {
+   "off": 20039838,
+   "size": 109,
+   "decompressed": 132,
+   "compressed": 109
+  },
+  "3": {
+   "off": 20039947,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_api.gyp"
+ },
+ {
+  "1": {
+   "off": 20040050,
+   "size": 355,
+   "decompressed": 639,
+   "compressed": 355
+  },
+  "3": {
+   "off": 20040405,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/noexcept.gypi"
+ },
+ {
+  "1": {
+   "off": 20040508,
+   "size": 20,
+   "decompressed": 0,
+   "compressed": 20
+  },
+  "3": {
+   "off": 20040528,
+   "size": 101,
+   "decompressed": 117,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/nothing.c"
+ },
+ {
+  "1": {
+   "off": 20040629,
+   "size": 239,
+   "decompressed": 467,
+   "compressed": 239
+  },
+  "3": {
+   "off": 20040868,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/package-support.json"
+ },
+ {
+  "1": {
+   "off": 20040971,
+   "size": 2392,
+   "decompressed": 10784,
+   "compressed": 2392
+  },
+  "3": {
+   "off": 20043363,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/package.json"
+ },
+ {
+  "1": {
+   "off": 20043468,
+   "size": 4563,
+   "decompressed": 14050,
+   "compressed": 4563
+  },
+  "3": {
+   "off": 20048031,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/README.md"
+ },
+ {
+  "1": {
+   "off": 20048136,
+   "size": 236,
+   "decompressed": 683,
+   "compressed": 236
+  },
+  "3": {
+   "off": 20048372,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/index.js"
+ },
+ {
+  "1": {
+   "off": 20048475,
+   "size": 494,
+   "decompressed": 765,
+   "compressed": 494
+  },
+  "3": {
+   "off": 20048969,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/LICENSE"
+ },
+ {
+  "1": {
+   "off": 20049072,
+   "size": 635,
+   "decompressed": 1434,
+   "compressed": 635
+  },
+  "3": {
+   "off": 20049707,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/package.json"
+ },
+ {
+  "1": {
+   "off": 20049811,
+   "size": 10335,
+   "decompressed": 46062,
+   "compressed": 10335
+  },
+  "3": {
+   "off": 20060146,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/README.md"
+ },
+ {
+  "1": {
+   "off": 20060251,
+   "size": 354,
+   "decompressed": 851,
+   "compressed": 354
+  },
+  "3": {
+   "off": 20060605,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/node_api.sln"
+ },
+ {
+  "1": {
+   "off": 20060708,
+   "size": 2139,
+   "decompressed": 11094,
+   "compressed": 2139
+  },
+  "3": {
+   "off": 20062847,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj"
+ },
+ {
+  "1": {
+   "off": 20062952,
+   "size": 692,
+   "decompressed": 3402,
+   "compressed": 692
+  },
+  "3": {
+   "off": 20063644,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj.filters"
+ },
+ {
+  "1": {
+   "off": 20063746,
+   "size": 1274,
+   "decompressed": 3176,
+   "compressed": 1274
+  },
+  "3": {
+   "off": 20065020,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/check-napi.js"
+ },
+ {
+  "1": {
+   "off": 20065122,
+   "size": 913,
+   "decompressed": 2002,
+   "compressed": 913
+  },
+  "3": {
+   "off": 20066035,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/clang-format.js"
+ },
+ {
+  "1": {
+   "off": 20066139,
+   "size": 4124,
+   "decompressed": 15013,
+   "compressed": 4124
+  },
+  "3": {
+   "off": 20070263,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/conversion.js"
+ },
+ {
+  "1": {
+   "off": 20070368,
+   "size": 922,
+   "decompressed": 2071,
+   "compressed": 922
+  },
+  "3": {
+   "off": 20071290,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/eslint-format.js"
+ },
+ {
+  "1": {
+   "off": 20071394,
+   "size": 1369,
+   "decompressed": 3217,
+   "compressed": 1369
+  },
+  "3": {
+   "off": 20072763,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/README.md"
+ },
+ {
+  "1": {
+   "off": 20072865,
+   "size": 767,
+   "decompressed": 2395,
+   "compressed": 767
+  },
+  "3": {
+   "off": 20073632,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/create.js"
+ },
+ {
+  "1": {
+   "off": 20073736,
+   "size": 1006,
+   "decompressed": 2852,
+   "compressed": 1006
+  },
+  "3": {
+   "off": 20074742,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/extract.js"
+ },
+ {
+  "1": {
+   "off": 20074846,
+   "size": 552,
+   "decompressed": 921,
+   "compressed": 552
+  },
+  "3": {
+   "off": 20075398,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/get-write-flag.js"
+ },
+ {
+  "1": {
+   "off": 20075501,
+   "size": 2758,
+   "decompressed": 9154,
+   "compressed": 2758
+  },
+  "3": {
+   "off": 20078259,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/header.js"
+ },
+ {
+  "1": {
+   "off": 20078363,
+   "size": 376,
+   "decompressed": 760,
+   "compressed": 376
+  },
+  "3": {
+   "off": 20078739,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/high-level-opt.js"
+ },
+ {
+  "1": {
+   "off": 20078842,
+   "size": 718,
+   "decompressed": 2229,
+   "compressed": 718
+  },
+  "3": {
+   "off": 20079560,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/large-numbers.js"
+ },
+ {
+  "1": {
+   "off": 20079664,
+   "size": 1211,
+   "decompressed": 3224,
+   "compressed": 1211
+  },
+  "3": {
+   "off": 20080875,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/list.js"
+ },
+ {
+  "1": {
+   "off": 20080977,
+   "size": 1497,
+   "decompressed": 5485,
+   "compressed": 1497
+  },
+  "3": {
+   "off": 20082474,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/mkdir.js"
+ },
+ {
+  "1": {
+   "off": 20082578,
+   "size": 342,
+   "decompressed": 649,
+   "compressed": 342
+  },
+  "3": {
+   "off": 20082920,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/mode-fix.js"
+ },
+ {
+  "1": {
+   "off": 20083023,
+   "size": 273,
+   "decompressed": 412,
+   "compressed": 273
+  },
+  "3": {
+   "off": 20083296,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-unicode.js"
+ },
+ {
+  "1": {
+   "off": 20083399,
+   "size": 276,
+   "decompressed": 410,
+   "compressed": 276
+  },
+  "3": {
+   "off": 20083675,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-windows-path.js"
+ },
+ {
+  "1": {
+   "off": 20083778,
+   "size": 2826,
+   "decompressed": 10021,
+   "compressed": 2826
+  },
+  "3": {
+   "off": 20086604,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/pack.js"
+ },
+ {
+  "1": {
+   "off": 20086709,
+   "size": 4764,
+   "decompressed": 16322,
+   "compressed": 4764
+  },
+  "3": {
+   "off": 20091473,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/parse.js"
+ },
+ {
+  "1": {
+   "off": 20091578,
+   "size": 1648,
+   "decompressed": 4410,
+   "compressed": 1648
+  },
+  "3": {
+   "off": 20093226,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/path-reservations.js"
+ },
+ {
+  "1": {
+   "off": 20093330,
+   "size": 1534,
+   "decompressed": 4068,
+   "compressed": 1534
+  },
+  "3": {
+   "off": 20094864,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/pax.js"
+ },
+ {
+  "1": {
+   "off": 20094968,
+   "size": 1077,
+   "decompressed": 2842,
+   "compressed": 1077
+  },
+  "3": {
+   "off": 20096045,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/read-entry.js"
+ },
+ {
+  "1": {
+   "off": 20096149,
+   "size": 1713,
+   "decompressed": 5776,
+   "compressed": 1713
+  },
+  "3": {
+   "off": 20097862,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/replace.js"
+ },
+ {
+  "1": {
+   "off": 20097966,
+   "size": 493,
+   "decompressed": 917,
+   "compressed": 493
+  },
+  "3": {
+   "off": 20098459,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-absolute-path.js"
+ },
+ {
+  "1": {
+   "off": 20098562,
+   "size": 265,
+   "decompressed": 394,
+   "compressed": 265
+  },
+  "3": {
+   "off": 20098827,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-trailing-slashes.js"
+ },
+ {
+  "1": {
+   "off": 20098928,
+   "size": 550,
+   "decompressed": 1096,
+   "compressed": 550
+  },
+  "3": {
+   "off": 20099478,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/types.js"
+ },
+ {
+  "1": {
+   "off": 20099582,
+   "size": 7395,
+   "decompressed": 25835,
+   "compressed": 7395
+  },
+  "3": {
+   "off": 20106977,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/unpack.js"
+ },
+ {
+  "1": {
+   "off": 20107082,
+   "size": 436,
+   "decompressed": 937,
+   "compressed": 436
+  },
+  "3": {
+   "off": 20107518,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/update.js"
+ },
+ {
+  "1": {
+   "off": 20107621,
+   "size": 303,
+   "decompressed": 725,
+   "compressed": 303
+  },
+  "3": {
+   "off": 20107924,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/warn-mixin.js"
+ },
+ {
+  "1": {
+   "off": 20108027,
+   "size": 312,
+   "decompressed": 535,
+   "compressed": 312
+  },
+  "3": {
+   "off": 20108339,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/winchars.js"
+ },
+ {
+  "1": {
+   "off": 20108442,
+   "size": 3763,
+   "decompressed": 15300,
+   "compressed": 3763
+  },
+  "3": {
+   "off": 20112205,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/write-entry.js"
+ },
+ {
+  "1": {
+   "off": 20112310,
+   "size": 246,
+   "decompressed": 497,
+   "compressed": 246
+  },
+  "3": {
+   "off": 20112556,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.node.recipe"
+ },
+ {
+  "1": {
+   "off": 20112659,
+   "size": 26614,
+   "decompressed": 85546,
+   "compressed": 26614
+  },
+  "3": {
+   "off": 20139273,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/win_delay_load_hook.obj"
+ },
+ {
+  "1": {
+   "off": 20139378,
+   "size": 230,
+   "decompressed": 335,
+   "compressed": 230
+  },
+  "3": {
+   "off": 20139608,
+   "size": 100,
+   "decompressed": 119,
+   "compressed": 100
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_before_build.recipe"
+ },
+ {
+  "1": {
+   "off": 20139708,
+   "size": 230,
+   "decompressed": 335,
+   "compressed": 230
+  },
+  "3": {
+   "off": 20139938,
+   "size": 100,
+   "decompressed": 119,
+   "compressed": 100
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.lib.recipe"
+ },
+ {
+  "1": {
+   "off": 20140038,
+   "size": 26556,
+   "decompressed": 85406,
+   "compressed": 26556
+  },
+  "3": {
+   "off": 20166594,
+   "size": 103,
+   "decompressed": 121,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/win_delay_load_hook.obj"
+ },
+ {
+  "1": {
+   "off": 20166697,
+   "size": 89887,
+   "decompressed": 373506,
+   "compressed": 89887
+  },
+  "3": {
+   "off": 20256584,
+   "size": 102,
+   "decompressed": 122,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/aclocal.m4"
+ },
+ {
+  "1": {
+   "off": 20256686,
+   "size": 3091,
+   "decompressed": 7400,
+   "compressed": 3091
+  },
+  "3": {
+   "off": 20259777,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/compile"
+ },
+ {
+  "1": {
+   "off": 20259881,
+   "size": 14805,
+   "decompressed": 49482,
+   "compressed": 14805
+  },
+  "3": {
+   "off": 20274686,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.guess"
+ },
+ {
+  "1": {
+   "off": 20274791,
+   "size": 10991,
+   "decompressed": 35406,
+   "compressed": 10991
+  },
+  "3": {
+   "off": 20285782,
+   "size": 101,
+   "decompressed": 121,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.sub"
+ },
+ {
+  "1": {
+   "off": 20285883,
+   "size": 105061,
+   "decompressed": 497049,
+   "compressed": 105061
+  },
+  "3": {
+   "off": 20390944,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure"
+ },
+ {
+  "1": {
+   "off": 20391050,
+   "size": 2198,
+   "decompressed": 8742,
+   "compressed": 2198
+  },
+  "3": {
+   "off": 20393248,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure.ac"
+ },
+ {
+  "1": {
+   "off": 20393352,
+   "size": 7746,
+   "decompressed": 23568,
+   "compressed": 7746
+  },
+  "3": {
+   "off": 20401098,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/depcomp"
+ },
+ {
+  "1": {
+   "off": 20401203,
+   "size": 5881,
+   "decompressed": 15744,
+   "compressed": 5881
+  },
+  "3": {
+   "off": 20407084,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/INSTALL"
+ },
+ {
+  "1": {
+   "off": 20407189,
+   "size": 5793,
+   "decompressed": 15358,
+   "compressed": 5793
+  },
+  "3": {
+   "off": 20412982,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/install-sh"
+ },
+ {
+  "1": {
+   "off": 20413087,
+   "size": 84208,
+   "decompressed": 327299,
+   "compressed": 84208
+  },
+  "3": {
+   "off": 20497295,
+   "size": 104,
+   "decompressed": 122,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/ltmain.sh"
+ },
+ {
+  "1": {
+   "off": 20497399,
+   "size": 395,
+   "decompressed": 744,
+   "compressed": 395
+  },
+  "3": {
+   "off": 20497794,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.am"
+ },
+ {
+  "1": {
+   "off": 20497897,
+   "size": 363,
+   "decompressed": 547,
+   "compressed": 363
+  },
+  "3": {
+   "off": 20498260,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.fallback"
+ },
+ {
+  "1": {
+   "off": 20498363,
+   "size": 9862,
+   "decompressed": 38369,
+   "compressed": 9862
+  },
+  "3": {
+   "off": 20508225,
+   "size": 103,
+   "decompressed": 121,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.in"
+ },
+ {
+  "1": {
+   "off": 20508328,
+   "size": 8041,
+   "decompressed": 29672,
+   "compressed": 8041
+  },
+  "3": {
+   "off": 20516369,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.msc"
+ },
+ {
+  "1": {
+   "off": 20516474,
+   "size": 2633,
+   "decompressed": 6878,
+   "compressed": 2633
+  },
+  "3": {
+   "off": 20519107,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/missing"
+ },
+ {
+  "1": {
+   "off": 20519211,
+   "size": 1352,
+   "decompressed": 3555,
+   "compressed": 1352
+  },
+  "3": {
+   "off": 20520563,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/README.txt"
+ },
+ {
+  "1": {
+   "off": 20520665,
+   "size": 2100,
+   "decompressed": 7272,
+   "compressed": 2100
+  },
+  "3": {
+   "off": 20522765,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Replace.cs"
+ },
+ {
+  "1": {
+   "off": 20522869,
+   "size": 234888,
+   "decompressed": 907053,
+   "compressed": 234888
+  },
+  "3": {
+   "off": 20757757,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/shell.c"
+ },
+ {
+  "1": {
+   "off": 20757863,
+   "size": 2051,
+   "decompressed": 4340,
+   "compressed": 2051
+  },
+  "3": {
+   "off": 20759914,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.1"
+ },
+ {
+  "1": {
+   "off": 20760018,
+   "size": 2294239,
+   "decompressed": 8916712,
+   "compressed": 2294239
+  },
+  "3": {
+   "off": 23054257,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.c"
+ },
+ {
+  "1": {
+   "off": 23054364,
+   "size": 165133,
+   "decompressed": 637671,
+   "compressed": 165133
+  },
+  "3": {
+   "off": 23219497,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.h"
+ },
+ {
+  "1": {
+   "off": 23219603,
+   "size": 209,
+   "decompressed": 267,
+   "compressed": 209
+  },
+  "3": {
+   "off": 23219812,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.pc.in"
+ },
+ {
+  "1": {
+   "off": 23219915,
+   "size": 906,
+   "decompressed": 1992,
+   "compressed": 906
+  },
+  "3": {
+   "off": 23220821,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.rc"
+ },
+ {
+  "1": {
+   "off": 23220925,
+   "size": 6628,
+   "decompressed": 38149,
+   "compressed": 6628
+  },
+  "3": {
+   "off": 23227553,
+   "size": 103,
+   "decompressed": 121,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3ext.h"
+ },
+ {
+  "1": {
+   "off": 23227656,
+   "size": 76,
+   "decompressed": 78,
+   "compressed": 76
+  },
+  "3": {
+   "off": 23227732,
+   "size": 102,
+   "decompressed": 118,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3rc.h"
+ },
+ {
+  "1": {
+   "off": 23227834,
+   "size": 1110,
+   "decompressed": 18126,
+   "compressed": 1110
+  },
+  "3": {
+   "off": 23228944,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23229049,
+   "size": 9286,
+   "decompressed": 206532,
+   "compressed": 9286
+  },
+  "3": {
+   "off": 23238335,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23238441,
+   "size": 225,
+   "decompressed": 1902,
+   "compressed": 225
+  },
+  "3": {
+   "off": 23238666,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23238770,
+   "size": 625,
+   "decompressed": 3550,
+   "compressed": 625
+  },
+  "3": {
+   "off": 23239395,
+   "size": 102,
+   "decompressed": 120,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23239497,
+   "size": 637,
+   "decompressed": 7360,
+   "compressed": 637
+  },
+  "3": {
+   "off": 23240134,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23240238,
+   "size": 220,
+   "decompressed": 1802,
+   "compressed": 220
+  },
+  "3": {
+   "off": 23240458,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 23240562,
+   "size": 176,
+   "decompressed": 196,
+   "compressed": 176
+  },
+  "3": {
+   "off": 23240738,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.lastbuildstate"
+ },
+ {
+  "1": {
+   "off": 23240841,
+   "size": 159,
+   "decompressed": 910,
+   "compressed": 159
+  },
+  "3": {
+   "off": 23241000,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.write.1u.tlog"
+ },
+ {
+  "1": {
+   "off": 23241103,
+   "size": 532023,
+   "decompressed": 2091251,
+   "compressed": 532023
+  },
+  "3": {
+   "off": 23773126,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/backup.obj"
+ },
+ {
+  "1": {
+   "off": 23773233,
+   "size": 578698,
+   "decompressed": 2354682,
+   "compressed": 578698
+  },
+  "3": {
+   "off": 24351931,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/database.obj"
+ },
+ {
+  "1": {
+   "off": 24352038,
+   "size": 549931,
+   "decompressed": 2200746,
+   "compressed": 549931
+  },
+  "3": {
+   "off": 24901969,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/node_sqlite3.obj"
+ },
+ {
+  "1": {
+   "off": 24902076,
+   "size": 597734,
+   "decompressed": 2485395,
+   "compressed": 597734
+  },
+  "3": {
+   "off": 25499810,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/statement.obj"
+ },
+ {
+  "1": {
+   "off": 25499917,
+   "size": 176,
+   "decompressed": 196,
+   "compressed": 176
+  },
+  "3": {
+   "off": 25500093,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/action_before_build.lastbuildstate"
+ },
+ {
+  "1": {
+   "off": 25500196,
+   "size": 264,
+   "decompressed": 324,
+   "compressed": 264
+  },
+  "3": {
+   "off": 25500460,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25500561,
+   "size": 104,
+   "decompressed": 97,
+   "compressed": 104
+  },
+  "3": {
+   "off": 25500665,
+   "size": 102,
+   "decompressed": 118,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25500767,
+   "size": 141,
+   "decompressed": 229,
+   "compressed": 141
+  },
+  "3": {
+   "off": 25500908,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25501011,
+   "size": 896,
+   "decompressed": 7068,
+   "compressed": 896
+  },
+  "3": {
+   "off": 25501907,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25502011,
+   "size": 2072,
+   "decompressed": 46896,
+   "compressed": 2072
+  },
+  "3": {
+   "off": 25504083,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25504188,
+   "size": 227,
+   "decompressed": 978,
+   "compressed": 227
+  },
+  "3": {
+   "off": 25504415,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25504518,
+   "size": 260,
+   "decompressed": 1228,
+   "compressed": 260
+  },
+  "3": {
+   "off": 25504778,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25504882,
+   "size": 207,
+   "decompressed": 706,
+   "compressed": 207
+  },
+  "3": {
+   "off": 25505089,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25505190,
+   "size": 266,
+   "decompressed": 1054,
+   "compressed": 266
+  },
+  "3": {
+   "off": 25505456,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25505560,
+   "size": 176,
+   "decompressed": 196,
+   "compressed": 176
+  },
+  "3": {
+   "off": 25505736,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/sqlite3.lastbuildstate"
+ },
+ {
+  "1": {
+   "off": 25505839,
+   "size": 135,
+   "decompressed": 152,
+   "compressed": 135
+  },
+  "3": {
+   "off": 25505974,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.lib.recipe"
+ },
+ {
+  "1": {
+   "off": 25506077,
+   "size": 26334,
+   "decompressed": 83451,
+   "compressed": 26334
+  },
+  "3": {
+   "off": 25532411,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/win_delay_load_hook.obj"
+ },
+ {
+  "1": {
+   "off": 25532516,
+   "size": 140,
+   "decompressed": 147,
+   "compressed": 140
+  },
+  "3": {
+   "off": 25532656,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/aclocal.m4"
+ },
+ {
+  "1": {
+   "off": 25532759,
+   "size": 59804,
+   "decompressed": 281929,
+   "compressed": 59804
+  },
+  "3": {
+   "off": 25592563,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure"
+ },
+ {
+  "1": {
+   "off": 25592669,
+   "size": 2827,
+   "decompressed": 9128,
+   "compressed": 2827
+  },
+  "3": {
+   "off": 25595496,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure.ac"
+ },
+ {
+  "1": {
+   "off": 25595600,
+   "size": 180,
+   "decompressed": 257,
+   "compressed": 180
+  },
+  "3": {
+   "off": 25595780,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/license.terms"
+ },
+ {
+  "1": {
+   "off": 25595883,
+   "size": 5133,
+   "decompressed": 17319,
+   "compressed": 5133
+  },
+  "3": {
+   "off": 25601016,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/Makefile.in"
+ },
+ {
+  "1": {
+   "off": 25601121,
+   "size": 199,
+   "decompressed": 334,
+   "compressed": 199
+  },
+  "3": {
+   "off": 25601320,
+   "size": 100,
+   "decompressed": 119,
+   "compressed": 100
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/pkgIndex.tcl.in"
+ },
+ {
+  "1": {
+   "off": 25601420,
+   "size": 697,
+   "decompressed": 1338,
+   "compressed": 697
+  },
+  "3": {
+   "off": 25602117,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/README"
+ },
+ {
+  "1": {
+   "off": 25602221,
+   "size": 761,
+   "decompressed": 5496,
+   "compressed": 761
+  },
+  "3": {
+   "off": 25602982,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25603086,
+   "size": 1177,
+   "decompressed": 16678,
+   "compressed": 1177
+  },
+  "3": {
+   "off": 25604263,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25604368,
+   "size": 199,
+   "decompressed": 962,
+   "compressed": 199
+  },
+  "3": {
+   "off": 25604567,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25604670,
+   "size": 242,
+   "decompressed": 1332,
+   "compressed": 242
+  },
+  "3": {
+   "off": 25604912,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.read.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25605016,
+   "size": 185,
+   "decompressed": 758,
+   "compressed": 185
+  },
+  "3": {
+   "off": 25605201,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.write.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25605304,
+   "size": 246,
+   "decompressed": 1066,
+   "compressed": 246
+  },
+  "3": {
+   "off": 25605550,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib.command.1.tlog"
+ },
+ {
+  "1": {
+   "off": 25605654,
+   "size": 176,
+   "decompressed": 196,
+   "compressed": 176
+  },
+  "3": {
+   "off": 25605830,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/nothing.lastbuildstate"
+ },
+ {
+  "1": {
+   "off": 25605933,
+   "size": 326,
+   "decompressed": 494,
+   "compressed": 326
+  },
+  "3": {
+   "off": 25606259,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc/sqlite3.n"
+ },
+ {
+  "1": {
+   "off": 25606362,
+   "size": 32083,
+   "decompressed": 128228,
+   "compressed": 32083
+  },
+  "3": {
+   "off": 25638445,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic/tclsqlite3.c"
+ },
+ {
+  "1": {
+   "off": 25638551,
+   "size": 5441,
+   "decompressed": 13868,
+   "compressed": 5441
+  },
+  "3": {
+   "off": 25643992,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/install-sh"
+ },
+ {
+  "1": {
+   "off": 25644097,
+   "size": 30046,
+   "decompressed": 132584,
+   "compressed": 30046
+  },
+  "3": {
+   "off": 25674143,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/tcl.m4"
+ },
+ {
+  "1": {
+   "off": 25674249,
+   "size": 5128,
+   "decompressed": 14816,
+   "compressed": 5128
+  },
+  "3": {
+   "off": 25679377,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/makefile.vc"
+ },
+ {
+  "1": {
+   "off": 25679482,
+   "size": 6321,
+   "decompressed": 21125,
+   "compressed": 6321
+  },
+  "3": {
+   "off": 25685803,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/nmakehlp.c"
+ },
+ {
+  "1": {
+   "off": 25685908,
+   "size": 4700,
+   "decompressed": 18743,
+   "compressed": 4700
+  },
+  "3": {
+   "off": 25690608,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/rules.vc"
+ },
+ {
+  "1": {
+   "off": 25690713,
+   "size": 1720304,
+   "decompressed": 6040887,
+   "compressed": 1720304
+  },
+  "3": {
+   "off": 27411017,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.obj"
+ },
+ {
+  "1": {
+   "off": 27411124,
+   "size": 1480,
+   "decompressed": 4823,
+   "compressed": 1480
+  },
+  "3": {
+   "off": 27412604,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api/nothing.obj"
+ },
+ {
+  "1": {
+   "off": 27412708,
+   "size": 74590,
+   "decompressed": 185642,
+   "compressed": 74590
+  },
+  "3": {
+   "off": 27487298,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter.wasm"
+ },
+ {
+  "1": {
+   "off": 27487404,
+   "size": 195960,
+   "decompressed": 1400214,
+   "compressed": 195960
+  },
+  "3": {
+   "off": 27683364,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-bash.wasm"
+ },
+ {
+  "1": {
+   "off": 27683471,
+   "size": 96124,
+   "decompressed": 792959,
+   "compressed": 96124
+  },
+  "3": {
+   "off": 27779595,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-c.wasm"
+ },
+ {
+  "1": {
+   "off": 27779701,
+   "size": 387845,
+   "decompressed": 4662978,
+   "compressed": 387845
+  },
+  "3": {
+   "off": 28167546,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-cpp.wasm"
+ },
+ {
+  "1": {
+   "off": 28167653,
+   "size": 17550,
+   "decompressed": 98133,
+   "compressed": 17550
+  },
+  "3": {
+   "off": 28185203,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-css.wasm"
+ },
+ {
+  "1": {
+   "off": 28185308,
+   "size": 269254,
+   "decompressed": 3978594,
+   "compressed": 269254
+  },
+  "3": {
+   "off": 28454562,
+   "size": 105,
+   "decompressed": 123,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-c_sharp.wasm"
+ },
+ {
+  "1": {
+   "off": 28454667,
+   "size": 8850,
+   "decompressed": 53740,
+   "compressed": 8850
+  },
+  "3": {
+   "off": 28463517,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elisp.wasm"
+ },
+ {
+  "1": {
+   "off": 28463622,
+   "size": 196468,
+   "decompressed": 1617756,
+   "compressed": 196468
+  },
+  "3": {
+   "off": 28660090,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elixir.wasm"
+ },
+ {
+  "1": {
+   "off": 28660197,
+   "size": 35314,
+   "decompressed": 148886,
+   "compressed": 35314
+  },
+  "3": {
+   "off": 28695511,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elm.wasm"
+ },
+ {
+  "1": {
+   "off": 28695617,
+   "size": 1955,
+   "decompressed": 5124,
+   "compressed": 1955
+  },
+  "3": {
+   "off": 28697572,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-embedded_template.wasm"
+ },
+ {
+  "1": {
+   "off": 28697676,
+   "size": 51997,
+   "decompressed": 235957,
+   "compressed": 51997
+  },
+  "3": {
+   "off": 28749673,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-go.wasm"
+ },
+ {
+  "1": {
+   "off": 28749779,
+   "size": 6673,
+   "decompressed": 18468,
+   "compressed": 6673
+  },
+  "3": {
+   "off": 28756452,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-html.wasm"
+ },
+ {
+  "1": {
+   "off": 28756557,
+   "size": 57141,
+   "decompressed": 430239,
+   "compressed": 57141
+  },
+  "3": {
+   "off": 28813698,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-java.wasm"
+ },
+ {
+  "1": {
+   "off": 28813804,
+   "size": 81145,
+   "decompressed": 647334,
+   "compressed": 81145
+  },
+  "3": {
+   "off": 28894949,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-javascript.wasm"
+ },
+ {
+  "1": {
+   "off": 28895055,
+   "size": 2372,
+   "decompressed": 5961,
+   "compressed": 2372
+  },
+  "3": {
+   "off": 28897427,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-json.wasm"
+ },
+ {
+  "1": {
+   "off": 28897531,
+   "size": 334385,
+   "decompressed": 4052705,
+   "compressed": 334385
+  },
+  "3": {
+   "off": 29231916,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-kotlin.wasm"
+ },
+ {
+  "1": {
+   "off": 29232023,
+   "size": 11096,
+   "decompressed": 43539,
+   "compressed": 11096
+  },
+  "3": {
+   "off": 29243119,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-lua.wasm"
+ },
+ {
+  "1": {
+   "off": 29243224,
+   "size": 434097,
+   "decompressed": 7708264,
+   "compressed": 434097
+  },
+  "3": {
+   "off": 29677321,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-objc.wasm"
+ },
+ {
+  "1": {
+   "off": 29677428,
+   "size": 537735,
+   "decompressed": 5018068,
+   "compressed": 537735
+  },
+  "3": {
+   "off": 30215163,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ocaml.wasm"
+ },
+ {
+  "1": {
+   "off": 30215270,
+   "size": 89990,
+   "decompressed": 812594,
+   "compressed": 89990
+  },
+  "3": {
+   "off": 30305260,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-php.wasm"
+ },
+ {
+  "1": {
+   "off": 30305366,
+   "size": 73443,
+   "decompressed": 476105,
+   "compressed": 73443
+  },
+  "3": {
+   "off": 30378809,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-python.wasm"
+ },
+ {
+  "1": {
+   "off": 30378915,
+   "size": 40432,
+   "decompressed": 544940,
+   "compressed": 40432
+  },
+  "3": {
+   "off": 30419347,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ql.wasm"
+ },
+ {
+  "1": {
+   "off": 30419453,
+   "size": 83070,
+   "decompressed": 677948,
+   "compressed": 83070
+  },
+  "3": {
+   "off": 30502523,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-rescript.wasm"
+ },
+ {
+  "1": {
+   "off": 30502629,
+   "size": 174151,
+   "decompressed": 2106447,
+   "compressed": 174151
+  },
+  "3": {
+   "off": 30676780,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ruby.wasm"
+ },
+ {
+  "1": {
+   "off": 30676887,
+   "size": 102641,
+   "decompressed": 818756,
+   "compressed": 102641
+  },
+  "3": {
+   "off": 30779528,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-rust.wasm"
+ },
+ {
+  "1": {
+   "off": 30779634,
+   "size": 45179,
+   "decompressed": 215264,
+   "compressed": 45179
+  },
+  "3": {
+   "off": 30824813,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-scala.wasm"
+ },
+ {
+  "1": {
+   "off": 30824919,
+   "size": 44690,
+   "decompressed": 423940,
+   "compressed": 44690
+  },
+  "3": {
+   "off": 30869609,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-solidity.wasm"
+ },
+ {
+  "1": {
+   "off": 30869715,
+   "size": 314120,
+   "decompressed": 3147876,
+   "compressed": 314120
+  },
+  "3": {
+   "off": 31183835,
+   "size": 105,
+   "decompressed": 123,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-swift.wasm"
+ },
+ {
+  "1": {
+   "off": 31183940,
+   "size": 16817,
+   "decompressed": 82495,
+   "compressed": 16817
+  },
+  "3": {
+   "off": 31200757,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-systemrdl.wasm"
+ },
+ {
+  "1": {
+   "off": 31200862,
+   "size": 264699,
+   "decompressed": 4976910,
+   "compressed": 264699
+  },
+  "3": {
+   "off": 31465561,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-tlaplus.wasm"
+ },
+ {
+  "1": {
+   "off": 31465668,
+   "size": 7869,
+   "decompressed": 25436,
+   "compressed": 7869
+  },
+  "3": {
+   "off": 31473537,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-toml.wasm"
+ },
+ {
+  "1": {
+   "off": 31473642,
+   "size": 226590,
+   "decompressed": 2411272,
+   "compressed": 226590
+  },
+  "3": {
+   "off": 31700232,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-tsx.wasm"
+ },
+ {
+  "1": {
+   "off": 31700339,
+   "size": 219609,
+   "decompressed": 2342690,
+   "compressed": 219609
+  },
+  "3": {
+   "off": 31919948,
+   "size": 107,
+   "decompressed": 123,
+   "compressed": 107
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-typescript.wasm"
+ },
+ {
+  "1": {
+   "off": 31920055,
+   "size": 8705,
+   "decompressed": 23895,
+   "compressed": 8705
+  },
+  "3": {
+   "off": 31928760,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-vue.wasm"
+ },
+ {
+  "1": {
+   "off": 31928865,
+   "size": 35485,
+   "decompressed": 182936,
+   "compressed": 35485
+  },
+  "3": {
+   "off": 31964350,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-yaml.wasm"
+ },
+ {
+  "1": {
+   "off": 31964456,
+   "size": 54348,
+   "decompressed": 699634,
+   "compressed": 54348
+  },
+  "3": {
+   "off": 32018804,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-zig.wasm"
+ },
+ {
+  "1": {
+   "off": 32018910,
+   "size": 171,
+   "decompressed": 452,
+   "compressed": 171
+  },
+  "3": {
+   "off": 32019081,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/c.scm"
+ },
+ {
+  "1": {
+   "off": 32019184,
+   "size": 136,
+   "decompressed": 363,
+   "compressed": 136
+  },
+  "3": {
+   "off": 32019320,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/cpp.scm"
+ },
+ {
+  "1": {
+   "off": 32019421,
+   "size": 178,
+   "decompressed": 564,
+   "compressed": 178
+  },
+  "3": {
+   "off": 32019599,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/c_sharp.scm"
+ },
+ {
+  "1": {
+   "off": 32019702,
+   "size": 140,
+   "decompressed": 253,
+   "compressed": 140
+  },
+  "3": {
+   "off": 32019842,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/elisp.scm"
+ },
+ {
+  "1": {
+   "off": 32019945,
+   "size": 327,
+   "decompressed": 830,
+   "compressed": 327
+  },
+  "3": {
+   "off": 32020272,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/elixir.scm"
+ },
+ {
+  "1": {
+   "off": 32020375,
+   "size": 241,
+   "decompressed": 670,
+   "compressed": 241
+  },
+  "3": {
+   "off": 32020616,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/go.scm"
+ },
+ {
+  "1": {
+   "off": 32020719,
+   "size": 151,
+   "decompressed": 341,
+   "compressed": 151
+  },
+  "3": {
+   "off": 32020870,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/java.scm"
+ },
+ {
+  "1": {
+   "off": 32020971,
+   "size": 128,
+   "decompressed": 340,
+   "compressed": 128
+  },
+  "3": {
+   "off": 32021099,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/javascript.scm"
+ },
+ {
+  "1": {
+   "off": 32021200,
+   "size": 118,
+   "decompressed": 211,
+   "compressed": 118
+  },
+  "3": {
+   "off": 32021318,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ocaml.scm"
+ },
+ {
+  "1": {
+   "off": 32021421,
+   "size": 86,
+   "decompressed": 172,
+   "compressed": 86
+  },
+  "3": {
+   "off": 32021507,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/php.scm"
+ },
+ {
+  "1": {
+   "off": 32021610,
+   "size": 89,
+   "decompressed": 140,
+   "compressed": 89
+  },
+  "3": {
+   "off": 32021699,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/python.scm"
+ },
+ {
+  "1": {
+   "off": 32021802,
+   "size": 225,
+   "decompressed": 733,
+   "compressed": 225
+  },
+  "3": {
+   "off": 32022027,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ql.scm"
+ },
+ {
+  "1": {
+   "off": 32022130,
+   "size": 20,
+   "decompressed": 0,
+   "compressed": 20
+  },
+  "3": {
+   "off": 32022150,
+   "size": 101,
+   "decompressed": 117,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ruby.scm"
+ },
+ {
+  "1": {
+   "off": 32022251,
+   "size": 123,
+   "decompressed": 221,
+   "compressed": 123
+  },
+  "3": {
+   "off": 32022374,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/rust.scm"
+ },
+ {
+  "1": {
+   "off": 32022477,
+   "size": 142,
+   "decompressed": 432,
+   "compressed": 142
+  },
+  "3": {
+   "off": 32022619,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/typescript.scm"
+ },
+ {
+  "1": {
+   "off": 32022722,
+   "size": 138,
+   "decompressed": 180,
+   "compressed": 138
+  },
+  "3": {
+   "off": 32022860,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/cpp.scm"
+ },
+ {
+  "1": {
+   "off": 32022963,
+   "size": 74,
+   "decompressed": 69,
+   "compressed": 74
+  },
+  "3": {
+   "off": 32023037,
+   "size": 102,
+   "decompressed": 118,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/java.scm"
+ },
+ {
+  "1": {
+   "off": 32023139,
+   "size": 125,
+   "decompressed": 195,
+   "compressed": 125
+  },
+  "3": {
+   "off": 32023264,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/python.scm"
+ },
+ {
+  "1": {
+   "off": 32023367,
+   "size": 108,
+   "decompressed": 194,
+   "compressed": 108
+  },
+  "3": {
+   "off": 32023475,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/typescript.scm"
+ },
+ {
+  "1": {
+   "off": 32023578,
+   "size": 126,
+   "decompressed": 219,
+   "compressed": 126
+  },
+  "3": {
+   "off": 32023704,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/cpp/function_definition.scm"
+ },
+ {
+  "1": {
+   "off": 32023807,
+   "size": 149,
+   "decompressed": 221,
+   "compressed": 149
+  },
+  "3": {
+   "off": 32023956,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/go/function_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32024059,
+   "size": 128,
+   "decompressed": 192,
+   "compressed": 128
+  },
+  "3": {
+   "off": 32024187,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/java/method_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32024290,
+   "size": 103,
+   "decompressed": 166,
+   "compressed": 103
+  },
+  "3": {
+   "off": 32024393,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/class_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32024496,
+   "size": 125,
+   "decompressed": 196,
+   "compressed": 125
+  },
+  "3": {
+   "off": 32024621,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/function_definition.scm"
+ },
+ {
+  "1": {
+   "off": 32024724,
+   "size": 125,
+   "decompressed": 183,
+   "compressed": 125
+  },
+  "3": {
+   "off": 32024849,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/method_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32024952,
+   "size": 551,
+   "decompressed": 2409,
+   "compressed": 551
+  },
+  "3": {
+   "off": 32025503,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python/class_definition.scm"
+ },
+ {
+  "1": {
+   "off": 32025607,
+   "size": 617,
+   "decompressed": 5193,
+   "compressed": 617
+  },
+  "3": {
+   "off": 32026224,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python/function_definition.scm"
+ },
+ {
+  "1": {
+   "off": 32026328,
+   "size": 230,
+   "decompressed": 1251,
+   "compressed": 230
+  },
+  "3": {
+   "off": 32026558,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/arrow_function.scm"
+ },
+ {
+  "1": {
+   "off": 32026662,
+   "size": 317,
+   "decompressed": 1204,
+   "compressed": 317
+  },
+  "3": {
+   "off": 32026979,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/class_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32027083,
+   "size": 233,
+   "decompressed": 1287,
+   "compressed": 233
+  },
+  "3": {
+   "off": 32027316,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/function_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32027420,
+   "size": 237,
+   "decompressed": 1348,
+   "compressed": 237
+  },
+  "3": {
+   "off": 32027657,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/generator_function_declaration.scm"
+ },
+ {
+  "1": {
+   "off": 32027761,
+   "size": 231,
+   "decompressed": 1268,
+   "compressed": 231
+  },
+  "3": {
+   "off": 32027992,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/method_definition.scm"
+ },
+ {
+  "1": {
+   "off": 32028096,
+   "size": 542,
+   "decompressed": 1840,
+   "compressed": 542
+  },
+  "3": {
+   "off": 32028638,
+   "size": 104,
+   "decompressed": 120,
+   "compressed": 104
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/hole-queries/typescript.scm"
+ },
+ {
+  "1": {
+   "off": 32028742,
+   "size": 250,
+   "decompressed": 705,
+   "compressed": 250
+  },
+  "3": {
+   "off": 32028992,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-headers-queries/typescript-get-toplevel-headers.scm"
+ },
+ {
+  "1": {
+   "off": 32029095,
+   "size": 199,
+   "decompressed": 351,
+   "compressed": 199
+  },
+  "3": {
+   "off": 32029294,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-extract-identifiers.scm"
+ },
+ {
+  "1": {
+   "off": 32029395,
+   "size": 117,
+   "decompressed": 283,
+   "compressed": 117
+  },
+  "3": {
+   "off": 32029512,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-find-typedecl-given-typeidentifier.scm"
+ },
+ {
+  "1": {
+   "off": 32029615,
+   "size": 51485,
+   "decompressed": 92672,
+   "compressed": 51485
+  },
+  "3": {
+   "off": 32081100,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/crypt32-ia32.node"
+ },
+ {
+  "1": {
+   "off": 32081205,
+   "size": 60143,
+   "decompressed": 117760,
+   "compressed": 60143
+  },
+  "3": {
+   "off": 32141348,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/crypt32-x64.node"
+ },
+ {
+  "1": {
+   "off": 32141454,
+   "size": 46664,
+   "decompressed": 82944,
+   "compressed": 46664
+  },
+  "3": {
+   "off": 32188118,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/roots.exe"
+ },
+ {
+  "1": {
+   "off": 32188223,
+   "size": 380102,
+   "decompressed": 672772,
+   "compressed": 380102
+  },
+  "3": {
+   "off": 32568325,
+   "size": 106,
+   "decompressed": 122,
+   "compressed": 106
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/llamaTokenizer.mjs"
+ },
+ {
+  "1": {
+   "off": 32568431,
+   "size": 158,
+   "decompressed": 288,
+   "compressed": 158
+  },
+  "3": {
+   "off": 32568589,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/llamaTokenizerWorkerPool.mjs"
+ },
+ {
+  "1": {
+   "off": 32568692,
+   "size": 5238,
+   "decompressed": 15404,
+   "compressed": 5238
+  },
+  "3": {
+   "off": 32573930,
+   "size": 105,
+   "decompressed": 121,
+   "compressed": 105
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/projectZipWorker.mjs"
+ },
+ {
+  "1": {
+   "off": 32574035,
+   "size": 195,
+   "decompressed": 371,
+   "compressed": 195
+  },
+  "3": {
+   "off": 32574230,
+   "size": 101,
+   "decompressed": 119,
+   "compressed": 101
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tiktokenWorkerPool.mjs"
+ },
+ {
+  "1": {
+   "off": 32574331,
+   "size": 106,
+   "decompressed": 104,
+   "compressed": 106
+  },
+  "3": {
+   "off": 32574437,
+   "size": 103,
+   "decompressed": 119,
+   "compressed": 103
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/package.json"
+ },
+ {
+  "2": {
+   "off": 32574540,
+   "size": 120,
+   "decompressed": 166,
+   "compressed": 120
+  },
+  "3": {
+   "off": 32574660,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out"
+ },
+ {
+  "2": {
+   "off": 32574762,
+   "size": 36,
+   "decompressed": 16,
+   "compressed": 36
+  },
+  "3": {
+   "off": 32574798,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/pkgJson/win32-x64"
+ },
+ {
+  "2": {
+   "off": 32574900,
+   "size": 105,
+   "decompressed": 94,
+   "compressed": 105
+  },
+  "3": {
+   "off": 32575005,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3"
+ },
+ {
+  "2": {
+   "off": 32575107,
+   "size": 103,
+   "decompressed": 115,
+   "compressed": 103
+  },
+  "3": {
+   "off": 32575210,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build"
+ },
+ {
+  "2": {
+   "off": 32575312,
+   "size": 89,
+   "decompressed": 82,
+   "compressed": 89
+  },
+  "3": {
+   "off": 32575401,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps"
+ },
+ {
+  "2": {
+   "off": 32575503,
+   "size": 59,
+   "decompressed": 61,
+   "compressed": 59
+  },
+  "3": {
+   "off": 32575562,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib"
+ },
+ {
+  "2": {
+   "off": 32575664,
+   "size": 113,
+   "decompressed": 152,
+   "compressed": 113
+  },
+  "3": {
+   "off": 32575777,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src"
+ },
+ {
+  "2": {
+   "off": 32575879,
+   "size": 92,
+   "decompressed": 137,
+   "compressed": 92
+  },
+  "3": {
+   "off": 32575971,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps"
+ },
+ {
+  "2": {
+   "off": 32576073,
+   "size": 81,
+   "decompressed": 176,
+   "compressed": 81
+  },
+  "3": {
+   "off": 32576154,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release"
+ },
+ {
+  "2": {
+   "off": 32576256,
+   "size": 77,
+   "decompressed": 74,
+   "compressed": 77
+  },
+  "3": {
+   "off": 32576333,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass"
+ },
+ {
+  "2": {
+   "off": 32576435,
+   "size": 152,
+   "decompressed": 221,
+   "compressed": 152
+  },
+  "3": {
+   "off": 32576587,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api"
+ },
+ {
+  "2": {
+   "off": 32576689,
+   "size": 75,
+   "decompressed": 55,
+   "compressed": 75
+  },
+  "3": {
+   "off": 32576764,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar"
+ },
+ {
+  "2": {
+   "off": 32576866,
+   "size": 74,
+   "decompressed": 70,
+   "compressed": 74
+  },
+  "3": {
+   "off": 32576940,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api"
+ },
+ {
+  "2": {
+   "off": 32577042,
+   "size": 81,
+   "decompressed": 82,
+   "compressed": 81
+  },
+  "3": {
+   "off": 32577123,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools"
+ },
+ {
+  "2": {
+   "off": 32577225,
+   "size": 210,
+   "decompressed": 400,
+   "compressed": 210
+  },
+  "3": {
+   "off": 32577435,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib"
+ },
+ {
+  "2": {
+   "off": 32577537,
+   "size": 86,
+   "decompressed": 80,
+   "compressed": 86
+  },
+  "3": {
+   "off": 32577623,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3"
+ },
+ {
+  "2": {
+   "off": 32577725,
+   "size": 68,
+   "decompressed": 55,
+   "compressed": 68
+  },
+  "3": {
+   "off": 32577793,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build"
+ },
+ {
+  "2": {
+   "off": 32577895,
+   "size": 80,
+   "decompressed": 69,
+   "compressed": 80
+  },
+  "3": {
+   "off": 32577975,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3"
+ },
+ {
+  "2": {
+   "off": 32578077,
+   "size": 192,
+   "decompressed": 333,
+   "compressed": 192
+  },
+  "3": {
+   "off": 32578269,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200"
+ },
+ {
+  "2": {
+   "off": 32578371,
+   "size": 104,
+   "decompressed": 176,
+   "compressed": 104
+  },
+  "3": {
+   "off": 32578475,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog"
+ },
+ {
+  "2": {
+   "off": 32578577,
+   "size": 70,
+   "decompressed": 64,
+   "compressed": 70
+  },
+  "3": {
+   "off": 32578647,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src"
+ },
+ {
+  "2": {
+   "off": 32578749,
+   "size": 93,
+   "decompressed": 120,
+   "compressed": 93
+  },
+  "3": {
+   "off": 32578842,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog"
+ },
+ {
+  "2": {
+   "off": 32578944,
+   "size": 95,
+   "decompressed": 149,
+   "compressed": 95
+  },
+  "3": {
+   "off": 32579039,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog"
+ },
+ {
+  "2": {
+   "off": 32579141,
+   "size": 87,
+   "decompressed": 78,
+   "compressed": 87
+  },
+  "3": {
+   "off": 32579228,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing"
+ },
+ {
+  "2": {
+   "off": 32579330,
+   "size": 122,
+   "decompressed": 132,
+   "compressed": 122
+  },
+  "3": {
+   "off": 32579452,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea"
+ },
+ {
+  "2": {
+   "off": 32579554,
+   "size": 95,
+   "decompressed": 149,
+   "compressed": 95
+  },
+  "3": {
+   "off": 32579649,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog"
+ },
+ {
+  "2": {
+   "off": 32579751,
+   "size": 33,
+   "decompressed": 13,
+   "compressed": 33
+  },
+  "3": {
+   "off": 32579784,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc"
+ },
+ {
+  "2": {
+   "off": 32579886,
+   "size": 36,
+   "decompressed": 16,
+   "compressed": 36
+  },
+  "3": {
+   "off": 32579922,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic"
+ },
+ {
+  "2": {
+   "off": 32580024,
+   "size": 43,
+   "decompressed": 23,
+   "compressed": 43
+  },
+  "3": {
+   "off": 32580067,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig"
+ },
+ {
+  "2": {
+   "off": 32580169,
+   "size": 52,
+   "decompressed": 39,
+   "compressed": 52
+  },
+  "3": {
+   "off": 32580221,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win"
+ },
+ {
+  "2": {
+   "off": 32580323,
+   "size": 35,
+   "decompressed": 15,
+   "compressed": 35
+  },
+  "3": {
+   "off": 32580358,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200"
+ },
+ {
+  "2": {
+   "off": 32580460,
+   "size": 35,
+   "decompressed": 15,
+   "compressed": 35
+  },
+  "3": {
+   "off": 32580495,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api"
+ },
+ {
+  "2": {
+   "off": 32580597,
+   "size": 202,
+   "decompressed": 880,
+   "compressed": 202
+  },
+  "3": {
+   "off": 32580799,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms"
+ },
+ {
+  "2": {
+   "off": 32580901,
+   "size": 103,
+   "decompressed": 178,
+   "compressed": 103
+  },
+  "3": {
+   "off": 32581004,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries"
+ },
+ {
+  "2": {
+   "off": 32581106,
+   "size": 58,
+   "decompressed": 52,
+   "compressed": 58
+  },
+  "3": {
+   "off": 32581164,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries"
+ },
+ {
+  "2": {
+   "off": 32581266,
+   "size": 44,
+   "decompressed": 27,
+   "compressed": 44
+  },
+  "3": {
+   "off": 32581310,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/cpp"
+ },
+ {
+  "2": {
+   "off": 32581412,
+   "size": 45,
+   "decompressed": 28,
+   "compressed": 45
+  },
+  "3": {
+   "off": 32581457,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/go"
+ },
+ {
+  "2": {
+   "off": 32581559,
+   "size": 46,
+   "decompressed": 26,
+   "compressed": 46
+  },
+  "3": {
+   "off": 32581605,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/java"
+ },
+ {
+  "2": {
+   "off": 32581707,
+   "size": 70,
+   "decompressed": 76,
+   "compressed": 70
+  },
+  "3": {
+   "off": 32581777,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php"
+ },
+ {
+  "2": {
+   "off": 32581879,
+   "size": 53,
+   "decompressed": 50,
+   "compressed": 53
+  },
+  "3": {
+   "off": 32581932,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python"
+ },
+ {
+  "2": {
+   "off": 32582034,
+   "size": 90,
+   "decompressed": 134,
+   "compressed": 90
+  },
+  "3": {
+   "off": 32582124,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript"
+ },
+ {
+  "2": {
+   "off": 32582226,
+   "size": 38,
+   "decompressed": 18,
+   "compressed": 38
+  },
+  "3": {
+   "off": 32582264,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/hole-queries"
+ },
+ {
+  "2": {
+   "off": 32582366,
+   "size": 59,
+   "decompressed": 39,
+   "compressed": 59
+  },
+  "3": {
+   "off": 32582425,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-headers-queries"
+ },
+ {
+  "2": {
+   "off": 32582527,
+   "size": 83,
+   "decompressed": 90,
+   "compressed": 83
+  },
+  "3": {
+   "off": 32582610,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries"
+ },
+ {
+  "2": {
+   "off": 32582712,
+   "size": 58,
+   "decompressed": 52,
+   "compressed": 58
+  },
+  "3": {
+   "off": 32582770,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib"
+ },
+ {
+  "2": {
+   "off": 32582872,
+   "size": 66,
+   "decompressed": 46,
+   "compressed": 66
+  },
+  "3": {
+   "off": 32582938,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary"
+ },
+ {
+  "2": {
+   "off": 32583040,
+   "size": 33,
+   "decompressed": 13,
+   "compressed": 33
+  },
+  "3": {
+   "off": 32583073,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/pkgJson"
+ },
+ {
+  "2": {
+   "off": 32583175,
+   "size": 31,
+   "decompressed": 11,
+   "compressed": 31
+  },
+  "3": {
+   "off": 32583206,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules"
+ },
+ {
+  "2": {
+   "off": 32583308,
+   "size": 55,
+   "decompressed": 35,
+   "compressed": 55
+  },
+  "3": {
+   "off": 32583363,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules"
+ },
+ {
+  "2": {
+   "off": 32583465,
+   "size": 38,
+   "decompressed": 18,
+   "compressed": 38
+  },
+  "3": {
+   "off": 32583503,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules"
+ },
+ {
+  "2": {
+   "off": 32583605,
+   "size": 58,
+   "decompressed": 38,
+   "compressed": 58
+  },
+  "3": {
+   "off": 32583663,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj"
+ },
+ {
+  "2": {
+   "off": 32583765,
+   "size": 53,
+   "decompressed": 33,
+   "compressed": 53
+  },
+  "3": {
+   "off": 32583818,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj"
+ },
+ {
+  "2": {
+   "off": 32583920,
+   "size": 47,
+   "decompressed": 27,
+   "compressed": 47
+  },
+  "3": {
+   "off": 32583967,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate"
+ },
+ {
+  "2": {
+   "off": 32584069,
+   "size": 31,
+   "decompressed": 11,
+   "compressed": 31
+  },
+  "3": {
+   "off": 32584100,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj"
+ },
+ {
+  "2": {
+   "off": 32584202,
+   "size": 47,
+   "decompressed": 27,
+   "compressed": 47
+  },
+  "3": {
+   "off": 32584249,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate"
+ },
+ {
+  "2": {
+   "off": 32584351,
+   "size": 38,
+   "decompressed": 18,
+   "compressed": 38
+  },
+  "3": {
+   "off": 32584389,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules"
+ },
+ {
+  "2": {
+   "off": 32584491,
+   "size": 79,
+   "decompressed": 94,
+   "compressed": 79
+  },
+  "3": {
+   "off": 32584570,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter"
+ },
+ {
+  "2": {
+   "off": 32584672,
+   "size": 65,
+   "decompressed": 47,
+   "compressed": 65
+  },
+  "3": {
+   "off": 32584737,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries"
+ },
+ {
+  "2": {
+   "off": 32584839,
+   "size": 62,
+   "decompressed": 68,
+   "compressed": 62
+  },
+  "3": {
+   "off": 32584901,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries"
+ },
+ {
+  "2": {
+   "off": 32585003,
+   "size": 27,
+   "decompressed": 7,
+   "compressed": 27
+  },
+  "3": {
+   "off": 32585030,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca"
+ },
+ {
+  "2": {
+   "off": 32585132,
+   "size": 37,
+   "decompressed": 17,
+   "compressed": 37
+  },
+  "3": {
+   "off": 32585169,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork"
+ },
+ {
+  "2": {
+   "off": 32585271,
+   "size": 36,
+   "decompressed": 16,
+   "compressed": 36
+  },
+  "3": {
+   "off": 32585307,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core"
+ },
+ {
+  "2": {
+   "off": 32585409,
+   "size": 27,
+   "decompressed": 7,
+   "compressed": 27
+  },
+  "3": {
+   "off": 32585436,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release"
+ },
+ {
+  "2": {
+   "off": 32585538,
+   "size": 27,
+   "decompressed": 7,
+   "compressed": 27
+  },
+  "3": {
+   "off": 32585565,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release"
+ },
+ {
+  "2": {
+   "off": 32585667,
+   "size": 43,
+   "decompressed": 23,
+   "compressed": 43
+  },
+  "3": {
+   "off": 32585710,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj"
+ },
+ {
+  "2": {
+   "off": 32585812,
+   "size": 30,
+   "decompressed": 10,
+   "compressed": 30
+  },
+  "3": {
+   "off": 32585842,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot/codely-cowork/binary/node_modules"
+ },
+ {
+  "2": {
+   "off": 32585944,
+   "size": 37,
+   "decompressed": 17,
+   "compressed": 37
+  },
+  "3": {
+   "off": 32585981,
+   "size": 102,
+   "decompressed": 117,
+   "compressed": 102
+  },
+  "path": "C:/snapshot"
+ }
+]
