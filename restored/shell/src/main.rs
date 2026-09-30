@@ -184,13 +184,44 @@ fn build_router(core: CoreHandle, dist_dir: PathBuf) -> Router {
             if mtype.is_empty() {
                 return (StatusCode::BAD_REQUEST, Json(json!({"error": "messageType required"}))).into_response();
             }
-            // 壳本地处理的演示消息: 登录态令牌(不转发 core)
-            if mtype == "get_cowork_access_token" {
-                return Json(json!({
+            // 壳本地处理的演示消息(原版由 Rust 壳持有, core 无 handler):
+            // 登录态/IDE 信息/TJHub 状态 —— 不转发 core, 直接合成成功应答
+            let mid_v = body.get("messageId").cloned().unwrap_or(json!(null));
+            let shell_reply = |content: Value| {
+                Json(json!({
                     "messageType": mtype,
-                    "data": {"done": true, "status": "success", "content": "gamecowork-demo-access-token"},
-                    "messageId": body.get("messageId").cloned().unwrap_or(json!(null))
-                })).into_response();
+                    "data": {"done": true, "status": "success", "content": content},
+                    "messageId": mid_v
+                })).into_response()
+            };
+            match mtype.as_str() {
+                "get_cowork_access_token" => {
+                    return shell_reply(json!("gamecowork-demo-access-token"));
+                }
+                "getControlPlaneSessionInfo" => {
+                    return shell_reply(json!({
+                        "accessToken": "gamecowork-demo-access-token",
+                        "account": {"id": "gamecowork-demo", "label": "GameCowork Demo User"},
+                        "organizations": [],
+                        "selectedOrganizationId": "personal"
+                    }));
+                }
+                "getIdeInfo" => {
+                    return shell_reply(json!({
+                        "extensionVersion": "2.1.3-canary.2",
+                        "ideType": "gamecowork-desktop",
+                        "name": "GameCowork"
+                    }));
+                }
+                "editor/getEmbedMode" => return shell_reply(json!({"embed_mode": false})),
+                "editor/getSidechat" => return shell_reply(json!({"sidechat": false})),
+                "tjhub/getStatus" => return shell_reply(json!({"state": "active"})),
+                "tjhub/getPendingDeepLink" => return shell_reply(json!(null)),
+                "tjhub/getPendingIpcPassthrough" => return shell_reply(json!(null)),
+                "tauri/listRemoteWorkspaces" => return shell_reply(json!([])),
+                "controlPlane/getActivityNotifications" => return shell_reply(json!([])),
+                "versionUpdate/getSeenFeatures" => return shell_reply(json!([])),
+                _ => {}
             }
             let mut msg = body.clone();
             let id = now_id();
