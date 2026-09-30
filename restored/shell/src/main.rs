@@ -174,9 +174,23 @@ fn build_router(core: CoreHandle, dist_dir: PathBuf) -> Router {
     let invoke = post(move |Json(body): Json<Value>| {
         let core = c1.clone();
         async move {
+            // pet.html 等窗口的消息嵌在 {message:{...}} 里
+            let body = if body.get("messageType").is_none() {
+                body.get("message").cloned().unwrap_or(body)
+            } else {
+                body
+            };
             let mtype = body.get("messageType").and_then(|x| x.as_str()).unwrap_or("").to_string();
             if mtype.is_empty() {
                 return (StatusCode::BAD_REQUEST, Json(json!({"error": "messageType required"}))).into_response();
+            }
+            // 壳本地处理的演示消息: 登录态令牌(不转发 core)
+            if mtype == "get_cowork_access_token" {
+                return Json(json!({
+                    "messageType": mtype,
+                    "data": {"done": true, "status": "success", "content": "gamecowork-demo-access-token"},
+                    "messageId": body.get("messageId").cloned().unwrap_or(json!(null))
+                })).into_response();
             }
             let mut msg = body.clone();
             let id = now_id();
@@ -251,7 +265,11 @@ fn build_router(core: CoreHandle, dist_dir: PathBuf) -> Router {
             async move {
                 let p = body.get("path").and_then(|x| x.as_str()).unwrap_or("").to_string();
                 if !p.is_empty() {
-                    *core.workspace.write().await = Some(p);
+                    *core.workspace.write().await = Some(p.clone());
+                    // 持久化, 下次启动经 window.workspacePaths 注入
+                    if let Ok(exe_dir) = std::env::current_exe() {
+                        let _ = std::fs::write(exe_dir.parent().unwrap().join("workspace.txt"), &p);
+                    }
                 }
                 Json(json!({"ok": true})).into_response()
             }
@@ -345,6 +363,21 @@ fn main() {
     };
     println!("[shell] WebView → {}", url);
 
+    // 原版壳机制: 初始化脚本注入工作区与媒体路径(没有 workspacePaths 前端停在欢迎页)
+    let ws_file = _root.join("workspace.txt");
+    let ws_path = std::fs::read_to_string(&ws_file).unwrap_or_default();
+    let ws_path = ws_path.trim().to_string();
+    let ws_json = if ws_path.is_empty() {
+        "[]".to_string()
+    } else {
+        serde_json::to_string(&vec![ws_path]).unwrap()
+    };
+    println!("[shell] workspacePaths = {}", ws_json);
+    let init_js = format!(
+        "window.vscMediaUrl = ''; window.workspacePaths = {}; window.GAMECOWORK_SHELL = true;",
+        ws_json
+    );
+
     let window = tao::window::WindowBuilder::new()
         .with_title("GameCowork")
         .with_inner_size(LogicalSize::new(1440.0, 900.0))
@@ -353,6 +386,7 @@ fn main() {
 
     let webview = wry::WebViewBuilder::new(&window)
         .with_url(&url)
+        .with_initialization_script(&init_js)
         .build()
         .expect("webview");
     let _ = &webview;

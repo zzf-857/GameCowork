@@ -256922,7 +256922,7 @@ const abi = ({ show: n }) =>
                     fill: "currentColor",
                   }),
                 }),
-                "Open Tuanjie Cowork",
+                "Open GameCowork",
               ],
             }),
           ],

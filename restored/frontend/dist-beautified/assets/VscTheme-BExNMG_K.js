@@ -163964,7 +163964,7 @@ function lcn({ className: e, size: t = "md", hideText: n = !1 }) {
           className: nt("text-base font-semibold text-gamecowork-color-text-primary", {
             "text-xl font-medium": t === "lg",
           }),
-          children: "Tuanjie Cowork",
+          children: "GameCowork",
         }),
     ],
   });
