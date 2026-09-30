@@ -34,19 +34,19 @@ try {
 function a({ onCancel: e, onManageLicenses: o }) {
   const { t: d } = t();
   return s.jsxs("div", {
-    className: n("bg-codely-color-surface-card flex flex-col"),
+    className: n("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       s.jsx("div", {
         className: n("px-5 pt-4 pb-2"),
         children: s.jsx("div", {
-          className: n("text-base font-medium text-codely-color-text-primary"),
+          className: n("text-base font-medium text-gamecowork-color-text-primary"),
           children: d("tjhub.noLicense.title"),
         }),
       }),
       s.jsx("div", {
         className: n("px-5 pb-2"),
         children: s.jsx("p", {
-          className: n("m-0 text-sm leading-5 text-codely-color-text-primary"),
+          className: n("m-0 text-sm leading-5 text-gamecowork-color-text-primary"),
           children: d("tjhub.noLicense.body"),
         }),
       }),
@@ -57,7 +57,7 @@ function a({ onCancel: e, onManageLicenses: o }) {
             variant: "ghost",
             size: "sm",
             onClick: e,
-            className: n("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: n("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: d("tjhub.common.cancel"),
           }),
           s.jsx(l, {

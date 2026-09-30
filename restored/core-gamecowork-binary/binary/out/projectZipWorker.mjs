@@ -43,7 +43,7 @@ const MAX_ZIP_ENTRIES = 0xffff;
  * what its stat size promised) — the entry is rolled back out and the
  * archive is marked truncated.
  */
-const CAP_EXCEEDED = "codely-cap-exceeded";
+const CAP_EXCEEDED = "gamecowork-cap-exceeded";
 
 const METHOD_DEFLATE = 8;
 const VERSION = 20; // 2.0 — deflate needs nothing newer; archive is < 4 GiB

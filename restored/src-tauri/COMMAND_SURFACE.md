@@ -7,14 +7,14 @@ cowork.exe 是**薄壳**：`generate_handler!` 未注册任何自定义命令（
 
 ```
 ┌─ Web 前端 (app/resource/dist, React + Monaco) ─────────────────────────┐
-│  index.html   → Codely Desktop 主界面 (index-DG7m4Xaq.js)              │
-│  gui.html     → Codely 编辑器内 GUI (assets/index-BRxZ4eG7.js)          │
+│  index.html   → GameCowork Desktop 主界面 (index-DG7m4Xaq.js)              │
+│  gui.html     → GameCowork 编辑器内 GUI (assets/index-BRxZ4eG7.js)          │
 │  pet.html / windowBridge.html / indexWalkthrough.html / jetbrains_*.html│
 └──────────┬──────────────────────────────────────────────────────────────┘
            │ HTTP/WebSocket (Continue.dev 架构)
 ┌──────────▼──────────────────────────────────────────────────────────────┐
-│  core 边车: codely-binary.exe (vercel/pkg 打包 Node, 入口 out/index.js)  │
-│  CLI 边车:  cli/bin/win32-x64/codely.exe (Bun v1 编译, 主 bundle 12MB)   │
+│  core 边车: gamecowork-binary.exe (vercel/pkg 打包 Node, 入口 out/index.js)  │
+│  CLI 边车:  cli/bin/win32-x64/gamecowork.exe (Bun v1 编译, 主 bundle 12MB)   │
 │  cli/lib:   unity-insight (esbuild bundle + tree-sitter wasms)          │
 └──────────┬──────────────────────────────────────────────────────────────┘
            │ 授权
@@ -70,10 +70,10 @@ allow-register-listener allow-remove-listener allow-default-window-icon
 
 ## 二进制内的 LSP/工具引用
 
-basedpyright、vtsls、`codely-unity-lsp-server`（自研 Unity LSP）。
+basedpyright、vtsls、`gamecowork-unity-lsp-server`（自研 Unity LSP）。
 
 ## 版本标记
 
-- 产品: Tuanjie Cowork 2.1.3-canary.2（Company: codelycowork）
-- 伴随文件: `cowork-old-*.exe`、`codely-binary-old-*.exe`（升级残留的旧版本）
-- 安装标记: `.tuanjie-cowork-install` 内容为 `dev.codelycowork.desktop`
+- 产品: Tuanjie Cowork 2.1.3-canary.2（Company: gamecowork）
+- 伴随文件: `cowork-old-*.exe`、`gamecowork-binary-old-*.exe`（升级残留的旧版本）
+- 安装标记: `.tuanjie-cowork-install` 内容为 `dev.gamecowork.desktop`

@@ -1,7 +1,7 @@
 # Tuanjie/Unity 编辑器关联 + 多视图串流 — 源码级结论（2026-09-29 深挖）
 
 > 结论先行：**两者都存在**，且为完整实现。证据全部来自还原源码
-> （`core-codely-binary/binary/out/index.beautified.js`、`frontend/dist-beautified`）。
+> （`core-gamecowork-binary/binary/out/index.beautified.js`、`frontend/dist-beautified`）。
 
 ## 一、Tuanjie / Unity 编辑器关联打开方式 ✅ 存在（双引擎全支持）
 

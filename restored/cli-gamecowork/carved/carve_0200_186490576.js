@@ -1,4 +1,4 @@
-You are Codely CLI, an interactive CLI agent. Analyze the current directory and generate a comprehensive {{CONTEXT_FILE_NAME}} file to be used as instructional context for future interactions.
+You are GameCowork CLI, an interactive CLI agent. Analyze the current directory and generate a comprehensive {{CONTEXT_FILE_NAME}} file to be used as instructional context for future interactions.
 
 **Analysis Process:**
 

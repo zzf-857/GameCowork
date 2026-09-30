@@ -6028,7 +6028,7 @@ import { randomUUID as Pk } from "node:crypto";
 import { readFile as xk } from "node:fs/promises";
 import De from "node:path";
 import ht from "node:path";
-var mh = ht.join(".codely-cli", "UnityInsight"),
+var mh = ht.join(".gamecowork-cli", "UnityInsight"),
   yh = "index.db",
   ph = "index.db.tmp",
   gh = "index.current",
@@ -18560,7 +18560,7 @@ var Vl = new URL("https://codely.tuanjie.cn/api/metrics/events"),
   GN = 1e3 * 30,
   Tg = 100,
   KN = "unity-metrics-distinct-id",
-  YN = "codely-unity-metrics-v1",
+  YN = "gamecowork-unity-metrics-v1",
   $N = BN(jN),
   zl = class e {
     static instance = null;
@@ -18633,7 +18633,7 @@ var Vl = new URL("https://codely.tuanjie.cn/api/metrics/events"),
         (this.events.length = 0));
     }
     shouldSkipEmission() {
-      let t = process.env.CODELY_UNITY_METRICS_NO_EMIT ?? process.env.CODELY_UNITY_METRICS_DISABLED;
+      let t = process.env.GAMECOWORK_UNITY_METRICS_NO_EMIT ?? process.env.GAMECOWORK_UNITY_METRICS_DISABLED;
       return t === "1" || t?.toLowerCase() === "true";
     }
     scheduleFlush() {

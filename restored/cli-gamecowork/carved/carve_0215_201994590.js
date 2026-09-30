@@ -24,12 +24,12 @@ Please follow these steps:
      ```
      feat: enhance compress command and update system prompt
 
-     This commit improves the compress command functionality to provide better user experience and feedback. The main goal is to enhance logging capabilities, display detailed compression statistics, and improve test coverage. Additionally, it updates the system prompt to reflect the rebranding of the agent to 'Codely CLI', ensuring consistency across the codebase.
+     This commit improves the compress command functionality to provide better user experience and feedback. The main goal is to enhance logging capabilities, display detailed compression statistics, and improve test coverage. Additionally, it updates the system prompt to reflect the rebranding of the agent to 'GameCowork CLI', ensuring consistency across the codebase.
 
      - Improve compress command with better logging and user feedback
      - Add detailed compression ratio information and summary display
      - Enhance test coverage with console spies and assertions
-     - Update system prompt to rename agent to 'Codely CLI'
+     - Update system prompt to rename agent to 'GameCowork CLI'
      ```
 4. Show the generated commit message to the user
 5. IMPORTANT: Execute the commit using `git commit -m "commit_message"` command

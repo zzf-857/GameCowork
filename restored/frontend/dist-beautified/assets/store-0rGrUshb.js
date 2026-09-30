@@ -4514,21 +4514,21 @@ function Td() {
 }
 const Od = { content: "", isLoaded: !1 },
   ku = da({
-    name: "codely",
+    name: "gamecowork",
     initialState: Od,
     reducers: {
-      setCodelyContent: (e, r) => {
+      setGameCoworkContent: (e, r) => {
         ((e.content = r.payload), (e.isLoaded = !0));
       },
-      setCodelyError: (e, r) => {
+      setGameCoworkError: (e, r) => {
         ((e.error = r.payload), (e.isLoaded = !0));
       },
-      clearCodely: (e) => {
+      clearGameCowork: (e) => {
         e.isLoaded = !1;
       },
     },
   }),
-  { setCodelyContent: Nd, setCodelyError: Ud, clearCodely: Hd } = ku.actions,
+  { setGameCoworkContent: Nd, setGameCoworkError: Ud, clearGameCowork: Hd } = ku.actions,
   wd = ku.reducer,
   Rd = { upload: null },
   Ku = da({
@@ -4570,7 +4570,7 @@ const Od = { content: "", isLoaded: !1 },
     profiles: gc,
     unity: hc,
     unityInsightIndex: jc,
-    codely: wd,
+    gamecowork: wd,
     account: vc,
     activity: pc,
     acp: dc,
@@ -4635,7 +4635,7 @@ const Od = { content: "", isLoaded: !1 },
   },
   Dd = {
     version: 3,
-    key: "codely",
+    key: "gamecowork",
     storage: ud,
     transforms: [...xd],
     stateReconciler: nd,

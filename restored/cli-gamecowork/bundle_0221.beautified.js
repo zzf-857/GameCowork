@@ -10553,13 +10553,13 @@ var Dx = G(le(), 1),
   _x = G($v(), 1);
 var Mt = G(le(), 1);
 function Wv() {
-  return window.__CODELY__ ?? {};
+  return window.__GAMECOWORK__ ?? {};
 }
 function Rd(t) {
   return t.mode ?? "chat";
 }
 function tu(t) {
-  return t.controlPlaneApiBase ?? "/__codely__/control-plane";
+  return t.controlPlaneApiBase ?? "/__gamecowork__/control-plane";
 }
 function Mw(t) {
   return t.resumeSessionId ? t.resumeSessionId : window.location.pathname.match(/^\/resume-session\/([^/]+)$/)?.[1];
@@ -19019,7 +19019,7 @@ function Z1({ req: t, onSelect: e }) {
       return null;
     }),
     [i, r] = (0, To.useState)(!1),
-    a = (0, To.useMemo)(() => (n ? { codely: { toolConfirmationPayload: { newContent: n.newText } } } : null), [n]);
+    a = (0, To.useMemo)(() => (n ? { gamecowork: { toolConfirmationPayload: { newContent: n.newText } } } : null), [n]);
   return (0, At.jsxs)(At.Fragment, {
     children: [
       (0, At.jsx)(Ee, {
@@ -19174,7 +19174,7 @@ function W1(t) {
     : { autoContinueAtMs: n, autoContinueMessage: l };
 }
 function tx(t) {
-  return { codely: { toolConfirmationPayload: { answers: { ...t } } } };
+  return { gamecowork: { toolConfirmationPayload: { answers: { ...t } } } };
 }
 var ft = G(it(), 1);
 var kN = [{ label: "Yes" }, { label: "No" }];
@@ -19638,7 +19638,7 @@ function MN(t) {
     return e;
   let n = t?._meta;
   if (!Ii(n)) return null;
-  let l = n.codely;
+  let l = n.gamecowork;
   if (!Ii(l)) return null;
   let i = l.ui;
   if (!Ii(i) || i.action !== "replace_history") return null;
@@ -19874,7 +19874,7 @@ function cx(t) {
             let ot = et;
             return (ot && ot.update && _t(ot.update), null);
           }),
-          K.on("codely/external_load_diagnostics", (et) => (T(Fu(et)), null)),
+          K.on("gamecowork/external_load_diagnostics", (et) => (T(Fu(et)), null)),
           K.on("session/request_permission", (et) => {
             let ot = et;
             return t.yolo && !NN(ot)
@@ -19900,7 +19900,7 @@ function cx(t) {
           let et = await K.request("initialize", {
             protocolVersion: 1,
             clientCapabilities: { fs: { readTextFile: !1, writeTextFile: !1 }, terminal: !1 },
-            clientInfo: { name: "codely-web-ui", version: "0.0.0", title: "Codely Web UI" },
+            clientInfo: { name: "gamecowork-web-ui", version: "0.0.0", title: "GameCowork Web UI" },
           });
           if (!Y()) return;
           let ot = et?.authMethods ?? [];
@@ -19909,7 +19909,7 @@ function cx(t) {
             let Et = await K.request("session/new", {
               cwd: t.cwd || "",
               mcpServers: [],
-              ...(t.resumeSessionId ? { _meta: { codely: { resumeSessionId: t.resumeSessionId } } } : {}),
+              ...(t.resumeSessionId ? { _meta: { gamecowork: { resumeSessionId: t.resumeSessionId } } } : {}),
             });
             if (!Y()) return;
             (i(Et.sessionId), a("ready"), p(null), T(null));
@@ -20069,7 +20069,7 @@ function cx(t) {
 }
 var dt = G(le(), 1);
 function DN(t) {
-  return t ? (t.endsWith("/") ? t.slice(0, -1) : t) : "/__codely__/control-plane";
+  return t ? (t.endsWith("/") ? t.slice(0, -1) : t) : "/__gamecowork__/control-plane";
 }
 async function ii(t, e) {
   let n = await fetch(t, { ...e, headers: { "content-type": "application/json", ...(e?.headers ?? {}) } }),
@@ -20722,7 +20722,7 @@ function zN(t) {
     return e;
   let n = t?._meta;
   if (!$r(n)) return null;
-  let l = n.codely;
+  let l = n.gamecowork;
   if (!$r(l)) return null;
   let i = l.ui;
   if (!$r(i) || i.action !== "replace_history") return null;
@@ -20788,7 +20788,7 @@ var Vu = class {
             let i = l;
             return (i?.update && this.onSessionUpdate(i.update), null);
           }),
-          n.on("codely/external_load_diagnostics", (l) => (this.setExternalStatusText(Fu(l)), null)),
+          n.on("gamecowork/external_load_diagnostics", (l) => (this.setExternalStatusText(Fu(l)), null)),
           n.on("session/request_permission", (l) => UN(l)),
           n.on("_session/request_input", () => ({ outcome: "cancelled" })),
           e.addEventListener("message", (l) => {
@@ -20905,7 +20905,7 @@ var Vu = class {
           await e.request("initialize", {
             protocolVersion: 1,
             clientCapabilities: { fs: { readTextFile: !1, writeTextFile: !1 }, terminal: !1 },
-            clientInfo: { name: "codely-control-plane", version: "0.0.0", title: "Codely Control Plane" },
+            clientInfo: { name: "gamecowork-control-plane", version: "0.0.0", title: "GameCowork Control Plane" },
           })
         )?.authMethods ?? []
       ).length > 0 && this.updateState({ statusText: "Authentication required (unsupported)." });
@@ -22672,7 +22672,7 @@ var VN = ({ open: t, mode: e, config: n, onClose: l, onSubmit: i }) => {
                                         }),
                                         "Override command (replaces default",
                                         " ",
-                                        (0, b.jsx)("code", { children: "codely -m ... -y -p ..." }),
+                                        (0, b.jsx)("code", { children: "gamecowork -m ... -y -p ..." }),
                                         ")",
                                       ],
                                     }),
@@ -22693,7 +22693,7 @@ var VN = ({ open: t, mode: e, config: n, onClose: l, onSubmit: i }) => {
                                           " ",
                                           (0, b.jsxs)("code", {
                                             style: { fontSize: 11 },
-                                            children: ["codely -m ", u, " -y -p '...'"],
+                                            children: ["gamecowork -m ", u, " -y -p '...'"],
                                           }),
                                         ],
                                       }),
@@ -22771,7 +22771,7 @@ ANOTHER_KEY=value`,
                                 "Request JSON",
                                 (0, b.jsx)("span", {
                                   style: { color: "var(--muted)", fontWeight: 400, marginLeft: 8 },
-                                  children: "POST /__codely__/control-plane/rollout/tasks",
+                                  children: "POST /__gamecowork__/control-plane/rollout/tasks",
                                 }),
                               ],
                             }),
@@ -23688,7 +23688,7 @@ ANOTHER_KEY=value`,
                       (0, b.jsx)("button", {
                         className: `rollout-detail-tab ${Rt === "container" ? "active" : ""}`,
                         onClick: () => rt("container"),
-                        children: U.status === "running" ? "\u25CF Codely Log" : "Codely Log",
+                        children: U.status === "running" ? "\u25CF GameCowork Log" : "GameCowork Log",
                       }),
                       (0, b.jsx)("button", {
                         className: `rollout-detail-tab ${Rt === "unity" ? "active" : ""}`,
@@ -24274,12 +24274,12 @@ if (!Ox) throw new Error("Missing #app container");
 (0, _x.createRoot)(Ox).render((0, gp.jsx)(Dx.default.StrictMode, { children: (0, gp.jsx)(Mx, {}) }));
 /**
  * @license
- * Copyright 2025 Codely
+ * Copyright 2025 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
  * @license
- * Copyright 2026 Codely
+ * Copyright 2026 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  */
 /*! Bundled license information:

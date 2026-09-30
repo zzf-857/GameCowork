@@ -72737,7 +72737,7 @@ var Wfe,
         externalScriptEditorName: sa.enum(["vscode", "visualstudio", "jetbrains", "custom"]),
         yoloUserRequestTimeout: sa.number(),
         defaultMemoryRWMode: sa.enum(["R", "RW"]),
-        codelyHome: sa.string(),
+        gamecoworkHome: sa.string(),
         defaultChatModelTitle: sa.string().nullable(),
         modelReasoningEfforts: sa.record(sa.string(), sa.string()),
       })
@@ -86593,15 +86593,15 @@ function Lne(t) {
   return e ? (t === "~" ? e : t.startsWith("~/") || t.startsWith("~\\") ? er.join(e, t.slice(2)) : t) : t;
 }
 function jIt() {
-  let t = process.env.CODELY_CLI_HOME?.trim();
-  return t ? er.resolve(Lne(t)) : er.join(Xne.homedir(), ".codely-cli");
+  let t = process.env.GAMECOWORK_CLI_HOME?.trim();
+  return t ? er.resolve(Lne(t)) : er.join(Xne.homedir(), ".gamecowork-cli");
 }
 function SSs() {
   let t = er.join(Si(), ".utils");
   return (ln.existsSync(t) || ln.mkdirSync(t), t);
 }
 function jjn() {
-  let t = er.join(Si(), ".codelyignore");
+  let t = er.join(Si(), ".gamecoworkignore");
   return (ln.existsSync(t) || ln.writeFileSync(t, ""), t);
 }
 function Si() {
@@ -86877,7 +86877,7 @@ var ln,
     zjn = new Mjn.AsyncLocalStorage();
     ((JSs = (() => {
       let t = process.env.CONTINUE_GLOBAL_DIR;
-      return t ? (er.isAbsolute(t) ? t : er.resolve(process.cwd(), t)) : er.join(Xne.homedir(), ".codely");
+      return t ? (er.isAbsolute(t) ? t : er.resolve(process.cwd(), t)) : er.join(Xne.homedir(), ".gamecowork");
     })()),
       (mc = () => jIt()));
     PIt = `export function modifyConfig(config: Config): Config {
@@ -93857,7 +93857,7 @@ var AZ,
       "notifications",
       "yoloUserRequestTimeout",
       "defaultMemoryRWMode",
-      "codelyHome",
+      "gamecoworkHome",
       "defaultChatModelTitle",
       "modelReasoningEfforts",
     ]),
@@ -100715,7 +100715,7 @@ var WJ,
         "go.sum",
         "*.gitignore",
         "*.gitkeep",
-        "*.codelyignore",
+        "*.gamecoworkignore",
         "*.csv",
         "*.uasset",
         "*.pdb",
@@ -100723,7 +100723,7 @@ var WJ,
         "*.pag",
         "*.swp",
         "*.jsonl",
-        ".codely/",
+        ".gamecowork/",
         "*.meta",
         "*.scene",
         "*.asset",
@@ -100876,7 +100876,7 @@ async function X2e(t, e, n) {
 async function Sut(t, e, n, r) {
   let a = e.filter(([d, p]) => p === 1).map(([d, p]) => d),
     s = a.find((d) => d === ".gitignore"),
-    l = a.find((d) => d === ".codelyignore"),
+    l = a.find((d) => d === ".gamecoworkignore"),
     o = async () => {
       if (s) {
         let d = await n.readFile(`${t}/.gitignore`);
@@ -100886,7 +100886,7 @@ async function Sut(t, e, n, r) {
     },
     c = async () => {
       if (l) {
-        let d = await n.readFile(`${t}/.codelyignore`);
+        let d = await n.readFile(`${t}/.gamecoworkignore`);
         return NJ(d);
       }
       return [];
@@ -100951,7 +100951,7 @@ var Jut,
             if (
               b &&
               b.time > Date.now() - RBs &&
-              !p.walkableEntry.relativeUriPath.includes(".codely") &&
+              !p.walkableEntry.relativeUriPath.includes(".gamecowork") &&
               !this.options.disableCache
             )
               ((G = await b.entries), l++);
@@ -100965,7 +100965,7 @@ var Jut,
             if (
               Z &&
               Z.time > Date.now() - fBs &&
-              !p.walkableEntry.relativeUriPath.includes(".codely") &&
+              !p.walkableEntry.relativeUriPath.includes(".gamecowork") &&
               !this.options.disableCache
             )
               ((h = await Z.ignore), o++);
@@ -125863,7 +125863,7 @@ var vh,
       setConnections(e, n, r) {
         let a = !1;
         (Array.from(this.connections.entries()).forEach(([s, l]) => {
-          if (s.startsWith("CodelyCtx:endpoint:")) {
+          if (s.startsWith("GameCoworkCtx:endpoint:")) {
             ((a = !0), l.abortController.abort(), l.client.close(), this.connections.delete(s));
             return;
           }
@@ -125921,7 +125921,7 @@ var vh,
       }
       getStatuses() {
         return Array.from(this.connections.entries())
-          .filter(([e]) => !e.startsWith("CodelyCtx:endpoint:"))
+          .filter(([e]) => !e.startsWith("GameCoworkCtx:endpoint:"))
           .map(([, e]) => ({ ...e.getStatus(), client: e.client }));
       }
       setStatus(e, n) {
@@ -125937,7 +125937,7 @@ var vh,
         return e.trim().replace(/\/+$/, "");
       }
       getEndpointConnectionId(e) {
-        return `CodelyCtx:endpoint:${this.normalizeEndpoint(e)
+        return `GameCoworkCtx:endpoint:${this.normalizeEndpoint(e)
           .replace(/[^a-zA-Z0-9]/g, "_")
           .replace(/_+/g, "_")
           .substring(0, 100)}`;
@@ -125971,7 +125971,7 @@ var vh,
       async getConnectionWithOverrideEndpoint(e, n, r) {
         let a = this.getConnection(e);
         if (!a) return;
-        if (e !== "CodelyCtx") return a;
+        if (e !== "GameCoworkCtx") return a;
         let s = n && ["read-repo-file", "get-repo-docs"].includes(n) && r && r.repo_name,
           l = !n && r && r.repo_name;
         return s || l ? await this.getOrCreateRepoConnection(r.repo_name, a) : a;
@@ -256730,7 +256730,7 @@ var u9e,
     ya();
     _0();
     Fs();
-    MHi = "CODELY.md";
+    MHi = "GAMECOWORK.md";
   });
 var Kpa = E((lZI, zpa) => {
   m();
@@ -285429,56 +285429,56 @@ var Ur = {
     session_prompt: "session/prompt",
     session_compress: "_session/compress",
     workspace_suggest_paths: "_workspace/suggest_paths",
-    codely_unity_install_bridge: "_codely/unity/install_bridge",
-    codely_unity_refresh: "_codely/unity/refresh",
-    codely_unity_status: "_codely/unity/status",
-    codely_unity_connect: "_codely/unity/connect",
-    codely_unity_disconnect: "_codely/unity/disconnect",
-    codely_unity_get_project_status: "_codely/unity/get_project_status",
-    codely_unity_ensure_codely_ignore: "_codely/unity/ensure_codely_ignore",
-    codely_unity_set_platform_type: "_codely/unity/set_platform_type",
-    codely_unity_check_package_compatibility: "_codely/unity/check_package_compatibility",
-    codely_unity_update_package_version: "_codely/unity/update_package_version",
-    codely_unity_window_bridge_list_windows: "_codely/unity/window_bridge/list_windows",
-    codely_unity_window_bridge_start_stream_server: "_codely/unity/window_bridge/start_stream_server",
-    codely_unity_window_bridge_stop_stream_server: "_codely/unity/window_bridge/stop_stream_server",
-    codely_unity_window_bridge_get_stream_server_status: "_codely/unity/window_bridge/get_stream_server_status",
-    codely_unity_context_gameobject_names: "_codely/unity/context/gameobject_names",
-    codely_unity_context_console: "_codely/unity/context/console",
-    codely_unity_context_gameobject: "_codely/unity/context/gameobject",
-    codely_unity_tool_invoke: "_codely/unity/tool/invoke",
-    codely_unity_insight_status: "_codely/unity_insight/status",
-    codely_unity_insight_ensure: "_codely/unity_insight/ensure",
-    session_set_mode: "_codely/session/set_mode",
-    session_enqueue: "_codely/session/enqueue",
-    permission_cancel_auto_continue: "_codely/permission/cancel_auto_continue",
-    session_mcp: "_codely/mcp",
-    codely_lsp_go_to_definition: "_codely/lsp/goToDefinition",
-    codely_lsp_find_references: "_codely/lsp/findReferences",
-    codely_lsp_hover: "_codely/lsp/hover",
-    codely_lsp_document_symbol: "_codely/lsp/documentSymbol",
-    codely_lsp_workspace_symbol: "_codely/lsp/workspaceSymbol",
-    codely_lsp_go_to_implementation: "_codely/lsp/goToImplementation",
-    codely_lsp_prepare_call_hierarchy: "_codely/lsp/prepareCallHierarchy",
-    codely_lsp_incoming_calls: "_codely/lsp/incomingCalls",
-    codely_lsp_outgoing_calls: "_codely/lsp/outgoingCalls",
-    codely_org_list: "_codely/org/list",
-    codely_org_switch: "_codely/org/switch",
-    codely_rewind_file_diff: "_codely/rewind/file_diff",
-    codely_subagent_activity_load: "_codely/subagent_activity/load",
+    gamecowork_unity_install_bridge: "_gamecowork/unity/install_bridge",
+    gamecowork_unity_refresh: "_gamecowork/unity/refresh",
+    gamecowork_unity_status: "_gamecowork/unity/status",
+    gamecowork_unity_connect: "_gamecowork/unity/connect",
+    gamecowork_unity_disconnect: "_gamecowork/unity/disconnect",
+    gamecowork_unity_get_project_status: "_gamecowork/unity/get_project_status",
+    gamecowork_unity_ensure_gamecowork_ignore: "_gamecowork/unity/ensure_gamecowork_ignore",
+    gamecowork_unity_set_platform_type: "_gamecowork/unity/set_platform_type",
+    gamecowork_unity_check_package_compatibility: "_gamecowork/unity/check_package_compatibility",
+    gamecowork_unity_update_package_version: "_gamecowork/unity/update_package_version",
+    gamecowork_unity_window_bridge_list_windows: "_gamecowork/unity/window_bridge/list_windows",
+    gamecowork_unity_window_bridge_start_stream_server: "_gamecowork/unity/window_bridge/start_stream_server",
+    gamecowork_unity_window_bridge_stop_stream_server: "_gamecowork/unity/window_bridge/stop_stream_server",
+    gamecowork_unity_window_bridge_get_stream_server_status: "_gamecowork/unity/window_bridge/get_stream_server_status",
+    gamecowork_unity_context_gameobject_names: "_gamecowork/unity/context/gameobject_names",
+    gamecowork_unity_context_console: "_gamecowork/unity/context/console",
+    gamecowork_unity_context_gameobject: "_gamecowork/unity/context/gameobject",
+    gamecowork_unity_tool_invoke: "_gamecowork/unity/tool/invoke",
+    gamecowork_unity_insight_status: "_gamecowork/unity_insight/status",
+    gamecowork_unity_insight_ensure: "_gamecowork/unity_insight/ensure",
+    session_set_mode: "_gamecowork/session/set_mode",
+    session_enqueue: "_gamecowork/session/enqueue",
+    permission_cancel_auto_continue: "_gamecowork/permission/cancel_auto_continue",
+    session_mcp: "_gamecowork/mcp",
+    gamecowork_lsp_go_to_definition: "_gamecowork/lsp/goToDefinition",
+    gamecowork_lsp_find_references: "_gamecowork/lsp/findReferences",
+    gamecowork_lsp_hover: "_gamecowork/lsp/hover",
+    gamecowork_lsp_document_symbol: "_gamecowork/lsp/documentSymbol",
+    gamecowork_lsp_workspace_symbol: "_gamecowork/lsp/workspaceSymbol",
+    gamecowork_lsp_go_to_implementation: "_gamecowork/lsp/goToImplementation",
+    gamecowork_lsp_prepare_call_hierarchy: "_gamecowork/lsp/prepareCallHierarchy",
+    gamecowork_lsp_incoming_calls: "_gamecowork/lsp/incomingCalls",
+    gamecowork_lsp_outgoing_calls: "_gamecowork/lsp/outgoingCalls",
+    gamecowork_org_list: "_gamecowork/org/list",
+    gamecowork_org_switch: "_gamecowork/org/switch",
+    gamecowork_rewind_file_diff: "_gamecowork/rewind/file_diff",
+    gamecowork_subagent_activity_load: "_gamecowork/subagent_activity/load",
   },
   xb = {
-    unity_status_update: "_codely/unity/status_update",
-    unity_package_update: "_codely/unity/package_update",
-    unity_notification: "_codely/unity/notification",
-    mode_update: "_codely/mode_update",
-    background_subagents_update: "_codely/background_subagents_update",
-    bg_task_continuation_start: "_codely/bg_task_continuation_start",
-    bg_task_continuation_end: "_codely/bg_task_continuation_end",
-    job_update: "_codely/job/update",
-    current_session_plan_files_update: "_codely/current_session_plan_files_update",
-    current_session_changed_files_update: "_codely/current_session_changed_files_update",
-    injected_user: "_codely/session/injected_user",
+    unity_status_update: "_gamecowork/unity/status_update",
+    unity_package_update: "_gamecowork/unity/package_update",
+    unity_notification: "_gamecowork/unity/notification",
+    mode_update: "_gamecowork/mode_update",
+    background_subagents_update: "_gamecowork/background_subagents_update",
+    bg_task_continuation_start: "_gamecowork/bg_task_continuation_start",
+    bg_task_continuation_end: "_gamecowork/bg_task_continuation_end",
+    job_update: "_gamecowork/job/update",
+    current_session_plan_files_update: "_gamecowork/current_session_plan_files_update",
+    current_session_changed_files_update: "_gamecowork/current_session_changed_files_update",
+    injected_user: "_gamecowork/session/injected_user",
   },
   t4 = {
     fs_read_text_file: "fs/read_text_file",
@@ -285486,7 +285486,7 @@ var Ur = {
     session_request_permission: "session/request_permission",
     session_update: "session/update",
   };
-var B$t = "_codely/request_file_permission";
+var B$t = "_gamecowork/request_file_permission";
 var _q = class {
   ide;
   onSessionUpdate;
@@ -286999,7 +286999,7 @@ var Cl = class {
     if (!e || typeof e != "object") return;
     let n = e._meta;
     if (!n || typeof n != "object") return;
-    let r = n.codely;
+    let r = n.gamecowork;
     if (!r || typeof r != "object") return;
     let a = r.subagentActivity;
     if (!Array.isArray(a)) return;
@@ -287176,7 +287176,7 @@ var b6e = class t extends Error {
   code;
   constructor(e, n, r) {
     (super(`[CODE:${n}] ${e}`),
-      (this.name = "CodelyError"),
+      (this.name = "GameCoworkError"),
       (this.code = n),
       Error.captureStackTrace && Error.captureStackTrace(this, t),
       r && (this.cause = r));
@@ -287189,9 +287189,9 @@ var b6e = class t extends Error {
   }
 };
 function h6e(t) {
-  return new b6e(t || "Codely CLI not found. Please install the desktop client.", "CLI_NOT_FOUND");
+  return new b6e(t || "GameCowork CLI not found. Please install the desktop client.", "CLI_NOT_FOUND");
 }
-var gbe = ["CODELY_CLI_PATH", "CODELY_CLI_BASE_DIR", "CODELY_HOME", "CODELY_APP_HOME"];
+var gbe = ["GAMECOWORK_CLI_PATH", "GAMECOWORK_CLI_BASE_DIR", "GAMECOWORK_HOME", "GAMECOWORK_APP_HOME"];
 function Hbe(t = 1e4) {
   try {
     let e = null;
@@ -287238,20 +287238,20 @@ function Hbe(t = 1e4) {
           gbe.includes(a) && s && (process.env[a] = s);
         }
       }
-      console.debug("[refreshCodelyEnvironment] stdout:", e);
+      console.debug("[refreshGameCoworkEnvironment] stdout:", e);
     }
   } catch (e) {
-    console.warn("[refreshCodelyEnvironment] Failed to refresh environment:", e);
+    console.warn("[refreshGameCoworkEnvironment] Failed to refresh environment:", e);
   }
 }
 function Fwa(t, e, n = console, r = Z6e) {
   let a = process.platform,
     s = process.arch,
-    l = a === "win32" ? "codely.exe" : "codely",
+    l = a === "win32" ? "gamecowork.exe" : "gamecowork",
     o = rc.join(t, "bin", `${a}-${s}`, l);
-  if (r.existsSync(o)) return (n.log(`[resolveCodelyCliPath] Using native executable (${e}): ${o}`), o);
+  if (r.existsSync(o)) return (n.log(`[resolveGameCoworkCliPath] Using native executable (${e}): ${o}`), o);
   let c = Rbe(o, l, n, r);
-  return c ? (n.log(`[resolveCodelyCliPath] Recovered native executable (${e}): ${c}`), c) : null;
+  return c ? (n.log(`[resolveGameCoworkCliPath] Recovered native executable (${e}): ${c}`), c) : null;
 }
 function Rbe(t, e = rc.basename(t), n = console, r = Z6e) {
   if (r.existsSync(t)) return t;
@@ -287266,7 +287266,7 @@ function Rbe(t, e = rc.basename(t), n = console, r = Z6e) {
   }
   if (!Array.isArray(l)) return null;
   let o = l
-    .filter((c) => c.startsWith("codely-old-"))
+    .filter((c) => c.startsWith("gamecowork-old-"))
     .filter((c) => (s ? c.endsWith(s) : rc.extname(c) === ""))
     .sort()
     .reverse();
@@ -287274,11 +287274,11 @@ function Rbe(t, e = rc.basename(t), n = console, r = Z6e) {
     let I = rc.join(a, c);
     try {
       if (r.statSync(I).isDirectory()) continue;
-      return (r.renameSync(I, t), n.warn(`[resolveCodelyCliPath] Recovered interrupted CLI update: ${I} -> ${t}`), t);
+      return (r.renameSync(I, t), n.warn(`[resolveGameCoworkCliPath] Recovered interrupted CLI update: ${I} -> ${t}`), t);
     } catch (u) {
       if (r.existsSync(t)) return t;
       n.warn(
-        `[resolveCodelyCliPath] Failed to recover interrupted CLI update from ${I}: ${u instanceof Error ? u.message : String(u)}`,
+        `[resolveGameCoworkCliPath] Failed to recover interrupted CLI update from ${I}: ${u instanceof Error ? u.message : String(u)}`,
       );
     }
   }
@@ -287311,11 +287311,11 @@ function Awa() {
   let e = [];
   if (process.platform === "win32") {
     let n = process.env.LOCALAPPDATA || rc.join(t, "AppData", "Local");
-    (e.push(rc.join(n, "Programs", "Tuanjie Cowork")), e.push(rc.join(n, "Programs", "Codely Cowork")));
+    (e.push(rc.join(n, "Programs", "Tuanjie Cowork")), e.push(rc.join(n, "Programs", "GameCowork")));
   } else
     process.platform === "darwin"
       ? (e.push("/Applications/Tuanjie Cowork.app/Contents/MacOS"),
-        e.push("/Applications/Codely Cowork.app/Contents/MacOS"))
+        e.push("/Applications/GameCowork.app/Contents/MacOS"))
       : process.platform === "linux" && e.push("/usr/lib/Tuanjie Cowork");
   return e;
 }
@@ -287326,69 +287326,69 @@ function Cwa() {
   if (process.platform === "win32") {
     let n = process.env.LOCALAPPDATA || rc.join(t, "AppData", "Local");
     (e.push(rc.join(n, "Programs", "Tuanjie Cowork", "cli", "bin", "win32-x64")),
-      e.push(rc.join(n, "Programs", "Codely Cowork", "cli", "bin", "win32-x64")));
+      e.push(rc.join(n, "Programs", "GameCowork", "cli", "bin", "win32-x64")));
   } else if (process.platform === "darwin") {
     let n = rc.join(t, "Library", "Application Support");
-    (e.push(rc.join(n, "Tuanjie Cowork", "bin")), e.push(rc.join(n, "Codely Cowork", "bin")));
+    (e.push(rc.join(n, "Tuanjie Cowork", "bin")), e.push(rc.join(n, "GameCowork", "bin")));
   } else process.platform === "linux" && e.push(rc.join("/usr/lib/Tuanjie Cowork", "cli", "bin", "linux-x64"));
   return e;
 }
 function fbe(t = {}) {
-  let { codelyCliBaseDir: e, logger: n = console, fs: r = Z6e } = t,
-    a = process.env.CODELY_CLI_PATH;
-  if (a && r.existsSync(a)) return (n.log(`[resolveCodelyCliPath] Using CODELY_CLI_PATH env: ${a}`), a);
+  let { gamecoworkCliBaseDir: e, logger: n = console, fs: r = Z6e } = t,
+    a = process.env.GAMECOWORK_CLI_PATH;
+  if (a && r.existsSync(a)) return (n.log(`[resolveGameCoworkCliPath] Using GAMECOWORK_CLI_PATH env: ${a}`), a);
   if (e) {
     let p = Fwa(e, "production", n, r);
     if (p) return p;
-    n.warn("[resolveCodelyCliPath] No executable found in production base dir");
+    n.warn("[resolveGameCoworkCliPath] No executable found in production base dir");
   }
-  let s = process.platform === "win32" ? "codely.exe" : "codely",
-    l = process.env.CODELY_APP_HOME,
+  let s = process.platform === "win32" ? "gamecowork.exe" : "gamecowork",
+    l = process.env.GAMECOWORK_APP_HOME,
     o = Awa(),
     c = !1;
   if (
     (l &&
       (r.existsSync(l)
-        ? ((c = !0), n.log(`[resolveCodelyCliPath] CODELY_APP_HOME exists: ${l}`))
-        : n.warn(`[resolveCodelyCliPath] CODELY_APP_HOME is set to '${l}' but the path does not exist`)),
+        ? ((c = !0), n.log(`[resolveGameCoworkCliPath] GAMECOWORK_APP_HOME exists: ${l}`))
+        : n.warn(`[resolveGameCoworkCliPath] GAMECOWORK_APP_HOME is set to '${l}' but the path does not exist`)),
     !c)
   ) {
     for (let p of o)
       if (r.existsSync(p)) {
-        ((c = !0), n.log(`[resolveCodelyCliPath] Found app at default path: ${p}`));
+        ((c = !0), n.log(`[resolveGameCoworkCliPath] Found app at default path: ${p}`));
         break;
       }
   }
   if (!c)
     throw h6e(
-      `[resolveCodelyCliPath] Codely app is not installed. CODELY_APP_HOME: ${l ?? "undefined"}, Checked default app paths: ${o.join(", ") || "none"}`,
+      `[resolveGameCoworkCliPath] GameCowork app is not installed. GAMECOWORK_APP_HOME: ${l ?? "undefined"}, Checked default app paths: ${o.join(", ") || "none"}`,
     );
-  let I = process.env.CODELY_HOME,
+  let I = process.env.GAMECOWORK_HOME,
     u = Cwa(),
     d = [];
   (I &&
     (r.existsSync(I)
       ? d.push(I)
-      : n.warn(`[resolveCodelyCliPath] CODELY_HOME is set to '${I}' but the path does not exist`)),
+      : n.warn(`[resolveGameCoworkCliPath] GAMECOWORK_HOME is set to '${I}' but the path does not exist`)),
     d.push(...u));
   for (let p of d) {
     let G = rc.join(p, s);
-    if (r.existsSync(G)) return (n.log(`[resolveCodelyCliPath] Using CLI path: ${G}`), G);
+    if (r.existsSync(G)) return (n.log(`[resolveGameCoworkCliPath] Using CLI path: ${G}`), G);
     let b = Rbe(G, s, n, r);
-    if (b) return (n.log(`[resolveCodelyCliPath] Using recovered CLI path: ${b}`), b);
+    if (b) return (n.log(`[resolveGameCoworkCliPath] Using recovered CLI path: ${b}`), b);
     let h = aen(p, [s], r);
-    if (h) return (n.log(`[resolveCodelyCliPath] Using CLI path (recursive): ${h}`), h);
+    if (h) return (n.log(`[resolveGameCoworkCliPath] Using CLI path (recursive): ${h}`), h);
   }
   throw h6e(
-    `[resolveCodelyCliPath] codely-cli not found. CODELY_CLI_PATH: ${a ?? "undefined"}, Base dir: ${e ?? "undefined"}, CODELY_HOME: ${I ?? "undefined"}, Checked default CLI paths: ${u.join(", ") || "none"}`,
+    `[resolveGameCoworkCliPath] gamecowork-cli not found. GAMECOWORK_CLI_PATH: ${a ?? "undefined"}, Base dir: ${e ?? "undefined"}, GAMECOWORK_HOME: ${I ?? "undefined"}, Checked default CLI paths: ${u.join(", ") || "none"}`,
   );
 }
 var Xwa = [
   "GEMINI_API_KEY",
   "OPENAI_API_KEY",
   "ANTHROPIC_API_KEY",
-  "CODELY_API_SERVER_ENV",
-  "CODELY_POSTHOG_URL_ENV",
+  "GAMECOWORK_API_SERVER_ENV",
+  "GAMECOWORK_POSTHOG_URL_ENV",
   "GOOGLE_APPLICATION_CREDENTIALS",
   "HOME",
   "PATH",
@@ -287401,9 +287401,9 @@ function Lwa(t, e) {
 var Uq = class {
   ide;
   configHandler;
-  codelyCliPath;
-  codelyCliBaseDir;
-  codelyCliArgs;
+  gamecoworkCliPath;
+  gamecoworkCliBaseDir;
+  gamecoworkCliArgs;
   env;
   processCwd;
   requestTimeoutMs;
@@ -287443,9 +287443,9 @@ var Uq = class {
   constructor(e) {
     ((this.ide = e.ide),
       (this.configHandler = e.configHandler),
-      (this.codelyCliBaseDir = e.codelyCliBaseDir),
-      (this.codelyCliPath = e.codelyCliPath ?? fbe({ codelyCliBaseDir: e.codelyCliBaseDir })),
-      (this.codelyCliArgs = [
+      (this.gamecoworkCliBaseDir = e.gamecoworkCliBaseDir),
+      (this.gamecoworkCliPath = e.gamecoworkCliPath ?? fbe({ gamecoworkCliBaseDir: e.gamecoworkCliBaseDir })),
+      (this.gamecoworkCliArgs = [
         "--experimental-acp",
         "--experimental-skills",
         "--path-policy",
@@ -287454,7 +287454,7 @@ var Uq = class {
         "merge",
         "--respect-gitignore",
         "true",
-        ...(e.codelyCliArgs ?? []),
+        ...(e.gamecoworkCliArgs ?? []),
       ]),
       (this.env = e.env ?? {}),
       (this.processCwd = kE(e.cwd ?? process.cwd())),
@@ -287486,18 +287486,18 @@ var Uq = class {
         r = n.match(/v?(\d+)\./);
       if (!r)
         throw new _E(
-          "Unable to determine Node.js version. codely-cli requires Node.js 20 or higher. Please ensure Node.js is installed and available on PATH.",
+          "Unable to determine Node.js version. gamecowork-cli requires Node.js 20 or higher. Please ensure Node.js is installed and available on PATH.",
         );
       if (parseInt(r[1], 10) < 20)
         throw new _E(
-          `Node.js version ${n} is not supported. codely-cli requires Node.js 20 or higher. Please upgrade Node.js or use a native codely-cli binary via CODELY_CLI_PATH.`,
+          `Node.js version ${n} is not supported. gamecowork-cli requires Node.js 20 or higher. Please upgrade Node.js or use a native gamecowork-cli binary via GAMECOWORK_CLI_PATH.`,
         );
       console.debug(`[ACPAgentManager] Using system Node.js ${n}`);
     } catch (e) {
       throw e instanceof _E
         ? e
         : new _E(
-            "Node.js is not available on PATH. codely-cli requires Node.js 20 or higher to be installed. Please install Node.js or use a native codely-cli binary via CODELY_CLI_PATH.",
+            "Node.js is not available on PATH. gamecowork-cli requires Node.js 20 or higher to be installed. Please install Node.js or use a native gamecowork-cli binary via GAMECOWORK_CLI_PATH.",
           );
     }
   }
@@ -287507,7 +287507,7 @@ var Uq = class {
       return;
     }
     ((this.shutdownRequested = !1),
-      (this.process = this.spawnCodelyProcess()),
+      (this.process = this.spawnGameCoworkProcess()),
       (this.clientHandler = new _q({
         ide: this.ide,
         autoApprovePermissions: this.autoApprovePermissions,
@@ -287531,23 +287531,23 @@ var Uq = class {
       console.debug("[ACPAgentManager] Initialized successfully"),
       this.getCaptureMediaUploadEnabled());
   }
-  spawnCodelyProcess() {
+  spawnGameCoworkProcess() {
     let e = Lwa(process.env, this.env);
     if (process.platform !== "win32") {
       let o = ["LANG", "LC_ALL", "LC_CTYPE"];
       for (let c of o) (!e[c] || e[c] === "") && (e[c] = "C.UTF-8");
     }
-    let n = this.codelyCliPath.endsWith(".js"),
+    let n = this.gamecoworkCliPath.endsWith(".js"),
       r,
       a;
     n
-      ? ((r = "node"), (a = [this.codelyCliPath, ...this.codelyCliArgs]), this.validateNodeVersion())
-      : ((this.codelyCliPath =
-          Rbe(this.codelyCliPath, len.basename(this.codelyCliPath), console, Qwa) ?? this.codelyCliPath),
-        (r = this.codelyCliPath),
-        (a = [...this.codelyCliArgs]));
+      ? ((r = "node"), (a = [this.gamecoworkCliPath, ...this.gamecoworkCliArgs]), this.validateNodeVersion())
+      : ((this.gamecoworkCliPath =
+          Rbe(this.gamecoworkCliPath, len.basename(this.gamecoworkCliPath), console, Qwa) ?? this.gamecoworkCliPath),
+        (r = this.gamecoworkCliPath),
+        (a = [...this.gamecoworkCliArgs]));
     let s = r.includes(" ") ? `"${r}"` : r;
-    console.debug(`[ACPAgentManager] Spawning codely-cli: ${s} ${a.join(" ")}`);
+    console.debug(`[ACPAgentManager] Spawning gamecowork-cli: ${s} ${a.join(" ")}`);
     let l = (0, sen.spawn)(r, a, { env: e, stdio: ["pipe", "pipe", "pipe"], cwd: this.processCwd });
     return (
       l.on("exit", (o, c) => {
@@ -287557,7 +287557,7 @@ var Uq = class {
       l.on("error", (o) => {
         throw (
           console.error("[ACPAgentManager] Process error:", o),
-          new _E(`Failed to spawn codely-cli: ${o.message}`, null, null, o.message)
+          new _E(`Failed to spawn gamecowork-cli: ${o.message}`, null, null, o.message)
         );
       }),
       l
@@ -287622,12 +287622,12 @@ var Uq = class {
   async getRewindFileDiff(e, n, r, a) {
     if (!this.connection) throw new ds("Not initialized");
     let s = { sessionId: e, relativePath: n, scope: r, ...(a !== void 0 ? { pointIndex: a } : {}) };
-    return await this.connection.sendRequest(Ur.codely_rewind_file_diff, s);
+    return await this.connection.sendRequest(Ur.gamecowork_rewind_file_diff, s);
   }
   async loadSubagentActivity(e, n) {
     if (!this.connection) throw new ds("Not initialized");
     let r = { sessionId: e, ref: n };
-    return await this.connection.sendRequest(Ur.codely_subagent_activity_load, r);
+    return await this.connection.sendRequest(Ur.gamecowork_subagent_activity_load, r);
   }
   async createSession(e, n) {
     if (!this.connection) throw new ds("Not initialized");
@@ -287637,7 +287637,7 @@ var Uq = class {
         cwd: r,
         mcpServers: a,
         _meta: {
-          codely: {
+          gamecowork: {
             overwriteConfirmed: !0,
             capabilities: { lazySubagentActivity: !0 },
             ...(n?.resumeSessionId ? { resumeSessionId: n.resumeSessionId } : {}),
@@ -287935,7 +287935,7 @@ var Uq = class {
     }
   }
   isVlmConsumptionEnabled() {
-    let e = this.env?.CODELY_ENABLE_VLM;
+    let e = this.env?.GAMECOWORK_ENABLE_VLM;
     return e === "1" || e === "true";
   }
   async getMcpServers() {
@@ -287988,7 +287988,7 @@ var Uq = class {
   getAvailableCommands() {
     return this.availableCommands;
   }
-  getCodelyCliVersion() {
+  getGameCoworkCliVersion() {
     return this.state.agentInfo?.version ?? null;
   }
   setAvailableCommandsCallback(e) {
@@ -288017,7 +288017,7 @@ var Uq = class {
   async listOrgs() {
     if (!this.connection) throw new ds("Not initialized");
     try {
-      return await this.callExtensionMethod(Ur.codely_org_list, {});
+      return await this.callExtensionMethod(Ur.gamecowork_org_list, {});
     } catch (e) {
       if (e instanceof Od && e.code === e4.METHOD_NOT_FOUND) throw e;
       return {
@@ -288032,7 +288032,7 @@ var Uq = class {
   async switchOrg(e) {
     if (!this.connection) throw new ds("Not initialized");
     try {
-      return await this.callExtensionMethod(Ur.codely_org_switch, { orgId: e });
+      return await this.callExtensionMethod(Ur.gamecowork_org_switch, { orgId: e });
     } catch (n) {
       if (n instanceof Od && n.code === e4.METHOD_NOT_FOUND) throw n;
       return { success: !1, currentOrgId: null, orgName: null, error: n instanceof Error ? n.message : String(n) };
@@ -288040,7 +288040,7 @@ var Uq = class {
   }
   async callExtensionMethod(e, n) {
     if (!this.connection) throw new ds("Not initialized");
-    let r = e === Ur.codely_lsp_hover;
+    let r = e === Ur.gamecowork_lsp_hover;
     if (r) {
       let s = n;
       console.log(
@@ -288059,9 +288059,9 @@ var Uq = class {
     if (!this.sessions.get(e)) throw new sd("Session not found", e);
     try {
       (console.log(`[ACPAgentManager] Refreshing available commands for session: ${e}`),
-        await this.connection.sendRequest("_codely/commands/refresh", { sessionId: e }));
+        await this.connection.sendRequest("_gamecowork/commands/refresh", { sessionId: e }));
     } catch (r) {
-      console.warn(`[ACPAgentManager] _codely/commands/refresh failed: ${r instanceof Error ? r.message : String(r)}`);
+      console.warn(`[ACPAgentManager] _gamecowork/commands/refresh failed: ${r instanceof Error ? r.message : String(r)}`);
     }
   }
   async refreshSkills(e, n) {
@@ -288069,9 +288069,9 @@ var Uq = class {
     if (!this.sessions.get(e)) throw new sd("Session not found", e);
     try {
       (console.log(`[ACPAgentManager] Refreshing skills for session: ${e}`),
-        await this.connection.sendRequest("_codely/skills/refresh", { sessionId: e, skillMetadata: n }));
+        await this.connection.sendRequest("_gamecowork/skills/refresh", { sessionId: e, skillMetadata: n }));
     } catch (a) {
-      console.warn(`[ACPAgentManager] _codely/skills/refresh failed: ${a instanceof Error ? a.message : String(a)}`);
+      console.warn(`[ACPAgentManager] _gamecowork/skills/refresh failed: ${a instanceof Error ? a.message : String(a)}`);
     }
   }
   async refreshAgents(e) {
@@ -288079,29 +288079,29 @@ var Uq = class {
     if (!this.sessions.get(e)) throw new sd("Session not found", e);
     try {
       (console.log(`[ACPAgentManager] Refreshing agents for session: ${e}`),
-        await this.connection.sendRequest("_codely/agents/refresh", { sessionId: e }));
+        await this.connection.sendRequest("_gamecowork/agents/refresh", { sessionId: e }));
     } catch (r) {
-      console.warn(`[ACPAgentManager] _codely/agents/refresh failed: ${r instanceof Error ? r.message : String(r)}`);
+      console.warn(`[ACPAgentManager] _gamecowork/agents/refresh failed: ${r instanceof Error ? r.message : String(r)}`);
     }
   }
   async refreshPolicies(e) {
     if (!this.connection) throw new ds("Not initialized");
     if (!this.sessions.get(e)) throw new sd("Session not found", e);
     console.log(`[ACPAgentManager] Refreshing policies for session: ${e}`);
-    let r = await this.connection.sendRequest("_codely/policies/refresh", { sessionId: e }, { timeoutMs: 8e3 });
+    let r = await this.connection.sendRequest("_gamecowork/policies/refresh", { sessionId: e }, { timeoutMs: 8e3 });
     if (!r?.success)
-      throw new Error(`[ACPAgentManager] _codely/policies/refresh returned success:false for session ${e}`);
+      throw new Error(`[ACPAgentManager] _gamecowork/policies/refresh returned success:false for session ${e}`);
     return r;
   }
   async generateTitle(e, n, r) {
     if (!this.connection) throw new ds("Not initialized");
     try {
       return (
-        (await this.connection.sendRequest("_codely/generateTitle", { sessionId: e, text: n, language: r })).title ??
+        (await this.connection.sendRequest("_gamecowork/generateTitle", { sessionId: e, text: n, language: r })).title ??
         void 0
       );
     } catch (a) {
-      console.warn(`[ACPAgentManager] _codely/generateTitle failed: ${a instanceof Error ? a.message : String(a)}`);
+      console.warn(`[ACPAgentManager] _gamecowork/generateTitle failed: ${a instanceof Error ? a.message : String(a)}`);
       return;
     }
   }
@@ -288110,7 +288110,7 @@ var Uq = class {
     try {
       return (
         (
-          await this.connection.sendRequest("_codely/generateSubagentPersona", {
+          await this.connection.sendRequest("_gamecowork/generateSubagentPersona", {
             sessionId: e,
             subagentName: n,
             taskDescription: r,
@@ -288121,7 +288121,7 @@ var Uq = class {
       );
     } catch (l) {
       console.warn(
-        `[ACPAgentManager] _codely/generateSubagentPersona failed: ${l instanceof Error ? l.message : String(l)}`,
+        `[ACPAgentManager] _gamecowork/generateSubagentPersona failed: ${l instanceof Error ? l.message : String(l)}`,
       );
       return;
     }
@@ -288314,7 +288314,7 @@ async function BE(t) {
         if ((s.push(I), I.sessionUpdate === "replace_history")) {
           (Array.isArray(I.feed) || Array.isArray(I.tools) || Array.isArray(I.messages) || Array.isArray(I.tasks)) &&
             (l = {
-              codely: {
+              gamecowork: {
                 ui: { action: "replace_history", feed: I.feed, tools: I.tools, messages: I.messages, tasks: I.tasks },
               },
             });
@@ -288322,7 +288322,7 @@ async function BE(t) {
         }
         if (I.sessionUpdate === "agent_message_chunk") {
           let u = I;
-          u._meta?.codely?.ui?.action === "replace_history" && (l = u._meta);
+          u._meta?.gamecowork?.ui?.action === "replace_history" && (l = u._meta);
         }
       }),
       c = new Promise((I, u) => {
@@ -288594,7 +288594,7 @@ async function* H6e(t, e) {
                 .filter((ge) => ge.type === "text")
                 .map((ge) => ge.text)
                 .join("")),
-      { modelTitle: Z || "codely-cli", modelProvider: "acp", completion: B, prompt: JSON.stringify(Y) }
+      { modelTitle: Z || "gamecowork-cli", modelProvider: "acp", completion: B, prompt: JSON.stringify(Y) }
     );
   } catch (Ce) {
     throw (
@@ -291366,7 +291366,7 @@ function mAa(t, e) {
 function GAa(t, e) {
   if (e.uriType !== "file") return t;
   let n = hrn.default.dirname(e.fileUri);
-  if (n.includes(".codely")) return t;
+  if (n.includes(".gamecowork")) return t;
   n.endsWith("/") || (n = n.concat("/"));
   let r = (a) => (a.startsWith("**") ? n.concat(a) : n.concat("**/", a));
   return t ? (Array.isArray(t) ? t.map(r) : r(t)) : n.concat("**/*");
@@ -296333,11 +296333,11 @@ var Ife = class t {
 m();
 m();
 var Bf = "New Session";
-var S5 = typeof process < "u" ? process.env.CODELY_API_SERVER_ENV : void 0,
-  nQo = typeof process < "u" ? process.env.CODELY_POSTHOG_URL_ENV : void 0,
+var S5 = typeof process < "u" ? process.env.GAMECOWORK_API_SERVER_ENV : void 0,
+  nQo = typeof process < "u" ? process.env.GAMECOWORK_POSTHOG_URL_ENV : void 0,
   T9 = "{{{<startContext>",
   iA = "<endContext>}}}",
-  O9 = "codely-flash";
+  O9 = "gamecowork-flash";
 m();
 var vot = (wMn(), Ee(EMn)),
   vMn = vot.processEnv,
@@ -296513,7 +296513,7 @@ var HI = class t {
   onUnauthorized;
   onUserAgentUnavailable;
   version = "";
-  ideType = "codely-vscode";
+  ideType = "gamecowork-vscode";
   repoName;
   constructor(e) {
     e && this.initialize(e);
@@ -296538,7 +296538,7 @@ var HI = class t {
     this.teamId = e;
   }
   setIdeType(e) {
-    e.startsWith("codely") ? (this.ideType = e) : (this.ideType = `codely-${e}`);
+    e.startsWith("gamecowork") ? (this.ideType = e) : (this.ideType = `gamecowork-${e}`);
   }
   setAccessToken(e) {
     (Ife.getInstance().setCredentials({ Authorization: `Bearer ${e}` }), (this.accessToken = e));
@@ -296917,7 +296917,7 @@ var HI = class t {
     return (
       await this.httpClient.post(
         "/api/plugin/upgrade",
-        { plugin_name: "codely-vscode", version: this.version, platform: e, architecture: n },
+        { plugin_name: "gamecowork-vscode", version: this.version, platform: e, architecture: n },
         { headers: this.getDefaultHeaders() },
       )
     ).data;
@@ -297125,7 +297125,7 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
   T3s = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.continue.dev/",
     CONTROL_PLANE_URL: "https://api.continue.dev/",
-    AUTH_TYPE: "codely",
+    AUTH_TYPE: "gamecowork",
     WORKOS_CLIENT_ID: Qdt,
     APP_URL: "https://hub.continue.dev/",
     API_URL: "https://codely.tuanjie.cn/",
@@ -297134,7 +297134,7 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
   S8n = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.continue-stage.tools/",
     CONTROL_PLANE_URL: "https://api.continue-stage.tools/",
-    AUTH_TYPE: "codely-staging",
+    AUTH_TYPE: "gamecowork-staging",
     WORKOS_CLIENT_ID: Xdt,
     APP_URL: "https://hub.continue-stage.tools/",
     API_URL: "https://codely-stg.tuanjie.cn/",
@@ -297143,7 +297143,7 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
   O3s = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api-test.continue.dev/",
     CONTROL_PLANE_URL: "https://api-test.continue.dev/",
-    AUTH_TYPE: "codely-staging",
+    AUTH_TYPE: "gamecowork-staging",
     WORKOS_CLIENT_ID: Xdt,
     APP_URL: "https://app-test.continue.dev/",
     API_URL: "http://localhost:8000/",
@@ -297152,14 +297152,14 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
   _8n = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "http://localhost:3001/",
     CONTROL_PLANE_URL: "http://localhost:3001/",
-    AUTH_TYPE: "codely-staging",
+    AUTH_TYPE: "gamecowork-staging",
     WORKOS_CLIENT_ID: Xdt,
     APP_URL: "http://localhost:3000/",
     API_URL: "http://localhost:8000/",
     CONFIG_URL: "http://localhost:8000/dashboard/config",
   },
   XJo = {
-    AUTH_TYPE: "codely-cloud",
+    AUTH_TYPE: "gamecowork-cloud",
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.continue.dev/",
     CONTROL_PLANE_URL: "https://api.continue.dev/",
     WORKOS_CLIENT_ID: Qdt,
@@ -297167,8 +297167,8 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
     API_URL: "https://codely.tuanjie.cn/",
     GRPC_URL: "codely.tuanjie.cn/",
     CONFIG_URL: "https://codely.tuanjie.cn/dashboard/config",
-    PROJECT_NAME: "codely",
-    REPO_NAME: "codely",
+    PROJECT_NAME: "gamecowork",
+    REPO_NAME: "gamecowork",
   };
 async function ip(t) {
   let e = await t;
@@ -297196,7 +297196,7 @@ function i2e(t) {
     return {
       DEFAULT_CONTROL_PLANE_PROXY_URL: "",
       CONTROL_PLANE_URL: "",
-      AUTH_TYPE: "codely",
+      AUTH_TYPE: "gamecowork",
       WORKOS_CLIENT_ID: Qdt,
       APP_URL: n,
       API_URL: n,
@@ -297255,7 +297255,7 @@ var are = class {
       },
     });
   }
-  async requestToCodelyApi(e, n) {
+  async requestToGameCoworkApi(e, n) {
     let r = await this.sessionInfoPromise,
       a = r && au(r),
       s = await this.getAccessToken();
@@ -297278,7 +297278,7 @@ var are = class {
       a = r && au(r),
       s = await this.getAccessToken();
     if (!s && !a) throw new Error("No access token");
-    let l = process.env.CODELY_MEDIA_CAPTURE_URL ?? "https://codely.tuanjie.cn/v2/api/",
+    let l = process.env.GAMECOWORK_MEDIA_CAPTURE_URL ?? "https://codely.tuanjie.cn/v2/api/",
       o = l.endsWith("/") ? l : `${l}/`,
       c = new URL(e, o).toString(),
       I = await this.ideInfoPromise;
@@ -297297,8 +297297,8 @@ var are = class {
     if (!r.ok) throw new Error(`Control plane request failed: ${r.status} ${await r.text()}`);
     return r;
   }
-  async requestToCodelyApiAndHandleError(e, n) {
-    let r = await this.requestToCodelyApi(e, n);
+  async requestToGameCoworkApiAndHandleError(e, n) {
+    let r = await this.requestToGameCoworkApi(e, n);
     if (!r.ok) {
       let a = await r.text(),
         s = a;
@@ -297379,18 +297379,18 @@ var are = class {
   }
   async listTeams() {
     return (await this.isSignedIn())
-      ? await (await this.requestToCodelyApiAndHandleError("api/teams", { method: "GET" })).json()
+      ? await (await this.requestToGameCoworkApiAndHandleError("api/teams", { method: "GET" })).json()
       : null;
   }
   async listOrgs() {
     return (await this.isSignedIn())
-      ? await (await this.requestToCodelyApiAndHandleError("api/orgs", { method: "GET" })).json()
+      ? await (await this.requestToGameCoworkApiAndHandleError("api/orgs", { method: "GET" })).json()
       : null;
   }
   async getCurrentUserId() {
     if (!(await this.isSignedIn())) return null;
     try {
-      let n = await (await this.requestToCodelyApiAndHandleError("auth/external/me", { method: "GET" })).json();
+      let n = await (await this.requestToGameCoworkApiAndHandleError("auth/external/me", { method: "GET" })).json();
       return n.id === void 0 || n.id === null ? null : String(n.id);
     } catch {
       return null;
@@ -297400,7 +297400,7 @@ var are = class {
     if (!(await this.isSignedIn())) return null;
     let n = { team_id: e };
     return await (
-      await this.requestToCodelyApiAndHandleError("api/teams/switch", {
+      await this.requestToGameCoworkApiAndHandleError("api/teams/switch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(n),
@@ -297411,7 +297411,7 @@ var are = class {
     if (!(await this.isSignedIn())) return null;
     try {
       let n = e ? `?orgId=${encodeURIComponent(e)}` : "";
-      return await (await this.requestToCodelyApiAndHandleError(`api/user/plan${n}`, { method: "GET" })).json();
+      return await (await this.requestToGameCoworkApiAndHandleError(`api/user/plan${n}`, { method: "GET" })).json();
     } catch (n) {
       return (En.error(n, { context: "control_plane_user_plan" }), null);
     }
@@ -297421,7 +297421,7 @@ var are = class {
     try {
       let n = e ? `?orgId=${encodeURIComponent(e)}` : "";
       return await (
-        await this.requestToCodelyApiAndHandleError(`api/user/usage/summary${n}`, { method: "GET" })
+        await this.requestToGameCoworkApiAndHandleError(`api/user/usage/summary${n}`, { method: "GET" })
       ).json();
     } catch (n) {
       return (En.error(n, { context: "control_plane_user_usage" }), null);
@@ -297431,7 +297431,7 @@ var are = class {
     if (!(await this.isSignedIn())) return null;
     try {
       let n = e ? `?orgId=${encodeURIComponent(e)}` : "",
-        r = await this.requestToCodelyApi(`api/user/usage/exhaustion${n}`, { method: "GET" });
+        r = await this.requestToGameCoworkApi(`api/user/usage/exhaustion${n}`, { method: "GET" });
       if (!r.ok) throw new Error(`exhaustion API failed (${r.status})`);
       return await r.json();
     } catch (n) {
@@ -297441,7 +297441,7 @@ var are = class {
   async getActivityNotifications(e) {
     if (!(await this.isSignedIn())) return null;
     try {
-      let n = await this.requestToCodelyApiAndHandleError(`api/activity-notifications?release_channel=${e}`, {
+      let n = await this.requestToGameCoworkApiAndHandleError(`api/activity-notifications?release_channel=${e}`, {
         method: "GET",
       });
       if (!n.ok) throw new Error(`Activity notifications API failed (${n.status})`);
@@ -297453,7 +297453,7 @@ var are = class {
   async submitLogReport(e) {
     if (!(await this.isSignedIn())) return { status: "error", error: "Not authenticated" };
     try {
-      let n = await this.requestToCodelyApi("api/log-reports/", {
+      let n = await this.requestToGameCoworkApi("api/log-reports/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -297486,7 +297486,7 @@ var are = class {
         );
       let o = l.map((u) => ({ key: u.object_key, status: u.uploaded ? "uploaded" : "upload_failed" })),
         c = JSON.stringify({ files: o }),
-        I = await this.requestToCodelyApi(`api/log-reports/${a}/files`, {
+        I = await this.requestToGameCoworkApi(`api/log-reports/${a}/files`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: c,
@@ -297525,7 +297525,7 @@ var are = class {
           u.uploaded && s.push({ key: u.object_key, status: "uploaded" }));
       }
       if (s.length > 0) {
-        let o = await this.requestToCodelyApi(`api/log-reports/${e}/files`, {
+        let o = await this.requestToGameCoworkApi(`api/log-reports/${e}/files`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ files: s }),
@@ -297580,7 +297580,7 @@ var are = class {
             expires_in: Math.max(0, Math.ceil((a.expiresAt - Date.now()) / 1e3)),
           }));
       else {
-        let u = await this.requestToCodelyApi(`api/log-reports/${e}/presigned-url`, {
+        let u = await this.requestToGameCoworkApi(`api/log-reports/${e}/presigned-url`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ filename: n.name, size: c, type: "application/octet-stream" }),
@@ -297773,7 +297773,7 @@ var are = class {
   async fetchSamplePrompts(e) {
     if (!(await this.isSignedIn())) return null;
     try {
-      let n = await this.requestToCodelyApi("api/sample-prompts/prompts", {
+      let n = await this.requestToGameCoworkApi("api/sample-prompts/prompts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(e),
@@ -297790,7 +297790,7 @@ var are = class {
   async reportSamplePromptClicks(e) {
     if (await this.isSignedIn())
       try {
-        let n = await this.requestToCodelyApi("api/sample-prompts/click", {
+        let n = await this.requestToGameCoworkApi("api/sample-prompts/click", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(e),
@@ -298148,7 +298148,7 @@ Fs();
 function x7n(t) {
   if (!t.endsWith(".yaml") && !t.endsWith(".yml") && !t.endsWith(".md")) return !1;
   let e = _7n.normalize(t);
-  return e.includes("/.codely/agents/") || e.includes("/.codely/assistants/");
+  return e.includes("/.gamecowork/agents/") || e.includes("/.gamecowork/assistants/");
 }
 async function EBs(t, e, n) {
   try {
@@ -298174,7 +298174,7 @@ async function EBs(t, e, n) {
 }
 function wBs(t, e, n, r) {
   let a = [];
-  return (e.includeWorkspace && (a = n.map((s) => Ja(s, ".codely", r))), e.includeGlobal && a.push(Mw(Bne(r))), a);
+  return (e.includeWorkspace && (a = n.map((s) => Ja(s, ".gamecowork", r))), e.includeGlobal && a.push(Mw(Bne(r))), a);
 }
 async function HJ(t, e, n) {
   let r = await t.getWorkspaceDirs(),
@@ -298525,7 +298525,7 @@ Rule Types:
     defaultToolPolicy: "allowedWithPermission",
     systemMessageDescription: {
       prefix: `Sometimes the user will provide feedback or guidance on your output. If you were not aware of these "rules", consider using the create_rule_block tool to persist the rule for future interactions.
-This tool cannot be used to edit existing rules, but you can search in the ".codely/rules" folder and use the edit tool to manage rules.
+This tool cannot be used to edit existing rules, but you can search in the ".gamecowork/rules" folder and use the edit tool to manage rules.
 To create a rule, respond with a create_rule_block tool call and the following arguments:
 - name: ${k7n}
 - rule: ${B7n}
@@ -298926,7 +298926,7 @@ var Dut = {
         },
         include_hidden: {
           description:
-            "Optional: Whether to descend into dot-prefixed directories (e.g. '.git/', '.codely-cli/') and match dot-prefixed files. Defaults to false to mirror search content tools. Set to true to scan hidden paths explicitly.",
+            "Optional: Whether to descend into dot-prefixed directories (e.g. '.git/', '.gamecowork-cli/') and match dot-prefixed files. Defaults to false to mirror search content tools. Set to true to scan hidden paths explicitly.",
           type: "boolean",
         },
         maxResults: {
@@ -299007,8 +299007,8 @@ Do NOT use this tool:
 
 - \`fact\` (string, required): The specific fact or piece of information to remember. This should be a clear, self-contained statement. For example, if the user says "My favorite color is blue", the fact would be "My favorite color is blue".
 - \`scope\` (string, optional): Where to save the memory:
-  - "global": Saves to user-level ~/.continue/CODELY.md (shared across all projects)
-  - "project": Saves to current project's CODELY.md (project-specific)
+  - "global": Saves to user-level ~/.continue/GAMECOWORK.md (shared across all projects)
+  - "project": Saves to current project's GAMECOWORK.md (project-specific)
   - If not specified, the tool will ask the user where they want to save the memory.
 `,
     parameters: {
@@ -299022,7 +299022,7 @@ Do NOT use this tool:
         },
         scope: {
           type: "string",
-          description: `Where to save the memory: "global" saves to user-level ~/.continue/CODELY.md (shared across all projects), "project" saves to current project's CODELY.md (project-specific). If not specified, will prompt user to choose.`,
+          description: `Where to save the memory: "global" saves to user-level ~/.continue/GAMECOWORK.md (shared across all projects), "project" saves to current project's GAMECOWORK.md (project-specific). If not specified, will prompt user to choose.`,
           enum: ["global", "project"],
         },
       },
@@ -300281,7 +300281,7 @@ var upt = {
   function: {
     name: "execute_custom_tool",
     description:
-      "Executes a custom Unity tool by name. Custom tools are registered in Unity Editor via C# attributes or tool providers. Use this for user-defined or plugin-provided tools not covered by built-in Unity tools. Custom tools can be registered via [CodelyCLITool] attribute on static methods, custom tool providers implementing ICodelyCLIToolProvider, or third-party Unity packages.",
+      "Executes a custom Unity tool by name. Custom tools are registered in Unity Editor via C# attributes or tool providers. Use this for user-defined or plugin-provided tools not covered by built-in Unity tools. Custom tools can be registered via [GameCoworkCLITool] attribute on static methods, custom tool providers implementing IGameCoworkCLIToolProvider, or third-party Unity packages.",
     parameters: {
       type: "object",
       required: ["tool_name"],
@@ -301048,7 +301048,7 @@ var fJ = class t {
 };
 m();
 Fs();
-var gpt = ".codelyrules";
+var gpt = ".gamecoworkrules";
 async function G$n(t) {
   let e = await t.getWorkspaceDirs(),
     n = [],
@@ -301058,7 +301058,7 @@ async function G$n(t) {
       let s = Ja(a, gpt);
       if (await t.fileExists(s)) {
         let o = await t.readFile(s);
-        r.push({ rule: o, ruleFile: s, source: ".codelyrules" });
+        r.push({ rule: o, ruleFile: s, source: ".gamecoworkrules" });
       }
     } catch (s) {
       n.push({
@@ -306407,7 +306407,7 @@ function QUs(t) {
     t)
   ) {
     let r = hd(t);
-    (e.push({ baseDir: U0.join(r, ".codely-cli", "commands"), extensionName: void 0 }),
+    (e.push({ baseDir: U0.join(r, ".gamecowork-cli", "commands"), extensionName: void 0 }),
       e.push({ baseDir: U0.join(r, ".gemini", "commands"), extensionName: "gemini" }));
   }
   return e;
@@ -314256,7 +314256,7 @@ var Qr = class {
           (a?.maxCompletionTokens ? Math.min(a.maxCompletionTokens, this.contextLength / 4) : 4096),
       }),
       (this.requestOptions = n.requestOptions));
-    let l = `codely-cli/${I4e} (${process.platform}; ${process.arch})`;
+    let l = `gamecowork-cli/${I4e} (${process.platform}; ${process.arch})`;
     ((this.requestOptions = { ...this.requestOptions, headers: { "User-Agent": l, ...this.requestOptions?.headers } }),
       (this.promptTemplates = { ...nJr(n.model, s), ...n.promptTemplates }),
       (this.templateMessages = n.templateMessages ?? XFt(n.model, this.providerName, n.template) ?? void 0),
@@ -321049,7 +321049,7 @@ var TIa = ".prompts";
 XA();
 ya();
 Fs();
-var HNi = ".codely/prompts";
+var HNi = ".gamecowork/prompts";
 async function RNi(t, e) {
   try {
     if (!(await t.fileExists(e))) return [];
@@ -321129,7 +321129,7 @@ async function MIa(t) {
       await Promise.all(
         e.map(async (r) => {
           let s = (await t.listDir(r))
-            .filter((l) => (l[1] === 1 || l[1] === 64) && l[0].endsWith(".codelyrc.json"))
+            .filter((l) => (l[1] === 1 || l[1] === 64) && l[0].endsWith(".gamecoworkrc.json"))
             .map((l) => Ja(r, l[0]));
           return await Promise.all(s.map((l) => t.readFile(l)));
         }),
@@ -322605,8 +322605,8 @@ var s9e = class t {
       let n = iV.default.join(this.absoluteDir, ".gitignore");
       Dh.default.existsSync(n) && this.ignore.add(Dh.default.readFileSync(n, "utf8"));
     }
-    if (this.options.useCodelyignore) {
-      let n = iV.default.join(this.absoluteDir, ".codelyignore");
+    if (this.options.useGameCoworkignore) {
+      let n = iV.default.join(this.absoluteDir, ".gamecoworkignore");
       Dh.default.existsSync(n) && this.ignore.add(Dh.default.readFileSync(n, "utf8"));
     }
     if (this.options.useGeminiignore) {
@@ -322637,8 +322637,8 @@ var s9e = class t {
       let r = iV.default.join(this.absoluteDir, ".gitignore");
       Dh.default.existsSync(r) && e.add(Dh.default.readFileSync(r, "utf8"));
     }
-    if (this.options.useCodelyignore) {
-      let r = iV.default.join(this.absoluteDir, ".codelyignore");
+    if (this.options.useGameCoworkignore) {
+      let r = iV.default.join(this.absoluteDir, ".gamecoworkignore");
       Dh.default.existsSync(r) && e.add(Dh.default.readFileSync(r, "utf8"));
     }
     if (this.options.useGeminiignore) {
@@ -322698,7 +322698,7 @@ Fs();
 var Dda = 100,
   jda = 1500,
   VHi = 1e6,
-  qda = [".codely-cli/auto-saves", "tool-outputs/shell", ".codely/.clipboard"];
+  qda = [".gamecowork-cli/auto-saves", "tool-outputs/shell", ".gamecowork/.clipboard"];
 function Pda(t) {
   let e = t.replace(/\\/g, "/");
   return qda.some((n) => {
@@ -322777,7 +322777,7 @@ ${I}</file_content>>
                 ignoreDirs: [...qda],
                 useGitignore: !0,
                 useGeminiignore: !0,
-                useCodelyignore: !0,
+                useGameCoworkignore: !0,
                 cache: !0,
                 cacheTtl: 60,
               })),
@@ -323416,7 +323416,7 @@ async function kHi() {
   try {
     process.env.IS_BINARY === "true" ? await BHi() : await THi();
   } catch (t) {
-    console.log(`Build error. Please check your ~/.codely/config.ts file: ${t}`);
+    console.log(`Build error. Please check your ~/.gamecowork/config.ts file: ${t}`);
   }
 }
 async function BHi() {
@@ -323758,16 +323758,16 @@ function qHi(t) {
   return n === "" ? void 0 : n;
 }
 async function Nua(t) {
-  let e = t.codelyModelProfilesList;
+  let e = t.gamecoworkModelProfilesList;
   if (!e) {
-    let l = t.getCodelyModelProfilesList;
+    let l = t.getGameCoworkModelProfilesList;
     if (!l) return;
     try {
       e = await l();
     } catch (o) {
       t.errors.push({
         fatal: !1,
-        message: `Codely model profiles (ACP list): ${o instanceof Error ? o.message : String(o)}`,
+        message: `GameCowork model profiles (ACP list): ${o instanceof Error ? o.message : String(o)}`,
       });
       return;
     }
@@ -323840,7 +323840,7 @@ async function Nua(t) {
     } catch (g) {
       t.errors.push({
         fatal: !1,
-        message: `Codely model profile "${c}" (from ACP list): ${g instanceof Error ? g.message : String(g)}`,
+        message: `GameCowork model profile "${c}" (from ACP list): ${g instanceof Error ? g.message : String(g)}`,
       });
     }
   }
@@ -323877,7 +323877,7 @@ var Qx = class {
     try {
       let r = await this.ide.getWorkspaceDirs();
       for (let a of r) {
-        let s = Ja(a, n ? ".codely" : "", ".env");
+        let s = Ja(a, n ? ".gamecowork" : "", ".env");
         try {
           if (await this.ide.fileExists(s)) {
             let o = await this.ide.readFile(s),
@@ -324075,7 +324075,7 @@ async function eRi(t) {
     G;
   if (o) {
     let b = "";
-    if (process.env.CODELY_CONFIG_PATH) b = Cua.readFileSync(process.env.CODELY_CONFIG_PATH, "utf-8");
+    if (process.env.GAMECOWORK_CONFIG_PATH) b = Cua.readFileSync(process.env.GAMECOWORK_CONFIG_PATH, "utf-8");
     else {
       let Z = await n.sessionInfoPromise,
         N = m9e(Z),
@@ -324297,7 +324297,7 @@ async function Lua(t) {
       controlPlaneClient: c,
       orgScopeId: I,
       packageIdentifier: u,
-      getCodelyModelProfilesList: d,
+      getGameCoworkModelProfilesList: d,
       remoteConfig: p,
     } = t,
     G = await eRi({
@@ -324328,9 +324328,9 @@ async function Lua(t) {
     try {
       f = await h;
     } catch (y) {
-      N.push({ fatal: !1, message: `Codely model profiles (ACP list): ${y instanceof Error ? y.message : String(y)}` });
+      N.push({ fatal: !1, message: `GameCowork model profiles (ACP list): ${y instanceof Error ? y.message : String(y)}` });
     }
-    await Nua({ config: Z, ide: e, ideSettings: n, llmLogger: s, errors: N, codelyModelProfilesList: f, uniqueId: a });
+    await Nua({ config: Z, ide: e, ideSettings: n, llmLogger: s, errors: N, gamecoworkModelProfilesList: f, uniqueId: a });
   }
   let g = $l.getInstance().getSharedConfig(),
     R = gfe(Z, g);
@@ -324359,7 +324359,7 @@ async function Xx(t) {
       overrideConfigYamlByPath: c,
       orgScopeId: I,
       packageIdentifier: u,
-      getCodelyModelProfilesList: d,
+      getGameCoworkModelProfilesList: d,
       remoteConfig: p,
     } = t,
     G = await e.getIdeInfo(),
@@ -324385,7 +324385,7 @@ async function Xx(t) {
       orgScopeId: I,
       packageIdentifier: u,
       workOsAccessToken: Z,
-      getCodelyModelProfilesList: d,
+      getGameCoworkModelProfilesList: d,
       remoteConfig: p,
     });
     ((f = j.config), (y = j.errors), (w = j.configLoadInterrupted));
@@ -324514,7 +324514,7 @@ var Lx = class t {
       overrideConfigYamlByPath: this.overrideAssistantFile?.path,
       orgScopeId: null,
       packageIdentifier: { uriType: "file", fileUri: this.overrideAssistantFile?.path ?? edt() },
-      getCodelyModelProfilesList: e?.getCodelyModelProfilesList,
+      getGameCoworkModelProfilesList: e?.getGameCoworkModelProfilesList,
     });
     return ((this.description.errors = n.errors), n);
   }
@@ -324612,7 +324612,7 @@ var rpe = class t {
         uriType: "slug",
         fullSlug: { ownerSlug: this.ownerSlug, packageSlug: this.packageSlug, versionSlug: this.versionSlug },
       },
-      getCodelyModelProfilesList: e?.getCodelyModelProfilesList,
+      getGameCoworkModelProfilesList: e?.getGameCoworkModelProfilesList,
     });
     return {
       config: n.config,
@@ -324633,7 +324633,7 @@ var RP = class t {
       id: t.ID,
       profileType: "local",
       fullSlug: { ownerSlug: "", packageSlug: "", versionSlug: "" },
-      title: "Codely Assistant",
+      title: "GameCowork Assistant",
       iconUrl: "",
       errors: void 0,
       uri: "",
@@ -324652,7 +324652,7 @@ var RP = class t {
       orgScopeId: null,
       packageIdentifier: { uriType: "file", fileUri: "" },
       remoteConfig: !0,
-      getCodelyModelProfilesList: e?.getCodelyModelProfilesList,
+      getGameCoworkModelProfilesList: e?.getGameCoworkModelProfilesList,
     });
     return ((this.description.errors = n.errors), n);
   }
@@ -324668,14 +324668,14 @@ var b9e = class {
   savedConfigResult;
   savedBrowserConfigResult;
   pendingConfigPromise;
-  getCodelyModelProfilesList;
+  getGameCoworkModelProfilesList;
   configGeneration = 0;
   pendingConfigGeneration = -1;
   get profileDescription() {
     return this.profileLoader.description;
   }
-  setCodelyModelProfilesListGetter(e) {
-    ((this.getCodelyModelProfilesList = e),
+  setGameCoworkModelProfilesListGetter(e) {
+    ((this.getGameCoworkModelProfilesList = e),
       (this.savedConfigResult = void 0),
       (this.savedBrowserConfigResult = void 0),
       (this.configGeneration += 1));
@@ -324709,7 +324709,7 @@ var b9e = class {
         (async () => {
           let o;
           try {
-            o = await this.profileLoader.doLoadConfig({ getCodelyModelProfilesList: this.getCodelyModelProfilesList });
+            o = await this.profileLoader.doLoadConfig({ getGameCoworkModelProfilesList: this.getGameCoworkModelProfilesList });
           } catch (c) {
             (En.error(c, { context: "profile_config_loading" }),
               (o = {
@@ -324796,7 +324796,7 @@ var h9e = class {
   globalContext = $l.getInstance();
   globalLocalProfileManager;
   globalRemoteProfileManager;
-  codelyModelProfilesListGetter;
+  gamecoworkModelProfilesListGetter;
   organizations = [];
   currentProfile;
   currentOrg;
@@ -324821,13 +324821,13 @@ var h9e = class {
   }
   createProfileManager(e) {
     let n = new b9e(e, this.ide);
-    return (n.setCodelyModelProfilesListGetter(this.codelyModelProfilesListGetter), n);
+    return (n.setGameCoworkModelProfilesListGetter(this.gamecoworkModelProfilesListGetter), n);
   }
-  setCodelyModelProfilesListGetter(e) {
-    ((this.codelyModelProfilesListGetter = e),
-      this.globalLocalProfileManager.setCodelyModelProfilesListGetter(e),
-      this.globalRemoteProfileManager.setCodelyModelProfilesListGetter(e));
-    for (let n of this.organizations) for (let r of n.profiles) r.setCodelyModelProfilesListGetter(e);
+  setGameCoworkModelProfilesListGetter(e) {
+    ((this.gamecoworkModelProfilesListGetter = e),
+      this.globalLocalProfileManager.setGameCoworkModelProfilesListGetter(e),
+      this.globalRemoteProfileManager.setGameCoworkModelProfilesListGetter(e));
+    for (let n of this.organizations) for (let r of n.profiles) r.setGameCoworkModelProfilesListGetter(e);
   }
   workspaceDirs = null;
   async getWorkspaceId() {
@@ -325128,15 +325128,15 @@ var FR = T(require("node:fs"), 1),
   ape = T(require("node:path"), 1),
   LOt = T(uO(), 1);
 ya();
-var aRi = ".codely",
+var aRi = ".gamecowork",
   XOt = "settings.json";
 function spe(t) {
   return t === "messages" ? "anthropic" : "openai";
 }
 var JOt = ["flashModel", "multimodalModel"];
 function _ua() {
-  if (process.env.CODELY_E2E === "1") {
-    let t = process.env.CODELY_E2E_USER_DATA_DIR?.trim();
+  if (process.env.GAMECOWORK_E2E === "1") {
+    let t = process.env.GAMECOWORK_E2E_USER_DATA_DIR?.trim();
     if (t) return t;
   }
   return ape.join(Sua.homedir(), aRi);
@@ -325349,7 +325349,7 @@ function zua(t) {
     (a.flashModelId === t && delete a.flashModelId, a.multimodalModelId === t && delete a.multimodalModelId);
   return (P2(e), { removed: !0 });
 }
-var oRi = ".codely-cli";
+var oRi = ".gamecowork-cli";
 function cRi(t, e) {
   let n = t ? (Array.isArray(t) ? [...t] : [t]) : [];
   e && n.push(e);
@@ -325483,10 +325483,10 @@ m();
 var cV = T(require("node:fs"), 1),
   Z9e = T(require("node:path"), 1),
   epa = T(uO(), 1);
-var dRi = ".codely-cli",
-  cpe = "codely-oauth",
-  uRi = "codely-flash",
-  pRi = "codely-vl";
+var dRi = ".gamecowork-cli",
+  cpe = "gamecowork-oauth",
+  uRi = "gamecowork-flash",
+  pRi = "gamecowork-vl";
 function qua(t) {
   return {
     ...t,
@@ -325630,61 +325630,61 @@ function TOt(t) {
   return t.startsWith("file://") ? (0, ipa.fileURLToPath)(t) : t;
 }
 function ab(t) {
-  return { _meta: { codely: { projectRoot: t && TOt(t) } } };
+  return { _meta: { gamecowork: { projectRoot: t && TOt(t) } } };
 }
 async function Ipe(t, e) {
-  return await t.callExtensionMethod(Ur.codely_unity_get_project_status, ab(e));
+  return await t.callExtensionMethod(Ur.gamecowork_unity_get_project_status, ab(e));
 }
 async function cpa(t, e) {
-  let n = await t.callExtensionMethod(Ur.codely_unity_ensure_codely_ignore, ab(e));
-  if (!n.success) throw new Error(n.error ?? "ensure Unity .codelyignore failed");
+  let n = await t.callExtensionMethod(Ur.gamecowork_unity_ensure_gamecowork_ignore, ab(e));
+  if (!n.success) throw new Error(n.error ?? "ensure Unity .gamecoworkignore failed");
 }
 async function Ipa(t, e) {
-  let n = await t.callExtensionMethod(Ur.codely_unity_status, ab(e)),
+  let n = await t.callExtensionMethod(Ur.gamecowork_unity_status, ab(e)),
     r = BOt(n.status);
   return { status: r.status, userStatus: r.userStatus, error: n.error || "" };
 }
 async function dpa(t, e) {
-  let n = await t.callExtensionMethod(Ur.codely_unity_refresh, ab(e));
+  let n = await t.callExtensionMethod(Ur.gamecowork_unity_refresh, ab(e));
   if (!n.success)
     return { status: "error", userStatus: "should-not-reconnected", error: n.error || "Unity refresh failed" };
   let r = BOt(n.status);
   return { status: r.status, userStatus: r.userStatus, error: "" };
 }
 async function N9e(t, e) {
-  let n = await t.callExtensionMethod(Ur.codely_unity_install_bridge, ab(e));
+  let n = await t.callExtensionMethod(Ur.gamecowork_unity_install_bridge, ab(e));
   if (!n.success) throw new Error(n.error || "Unity bridge install failed");
   return n;
 }
 async function upa(t, e, n) {
-  await t.callExtensionMethod(Ur.codely_unity_set_platform_type, { ...ab(n), platformType: e });
+  await t.callExtensionMethod(Ur.gamecowork_unity_set_platform_type, { ...ab(n), platformType: e });
 }
 async function g9e(t, e) {
-  return t.callExtensionMethod(Ur.codely_unity_check_package_compatibility, { ...ab(e) });
+  return t.callExtensionMethod(Ur.gamecowork_unity_check_package_compatibility, { ...ab(e) });
 }
 async function H9e(t, e, n) {
-  return t.callExtensionMethod(Ur.codely_unity_update_package_version, { ...ab(e), version: n });
+  return t.callExtensionMethod(Ur.gamecowork_unity_update_package_version, { ...ab(e), version: n });
 }
 async function ppa(t, e) {
-  return t.callExtensionMethod(Ur.codely_unity_window_bridge_list_windows, ab(e));
+  return t.callExtensionMethod(Ur.gamecowork_unity_window_bridge_list_windows, ab(e));
 }
 async function OOt(t, e = {}, n) {
-  return t.callExtensionMethod(Ur.codely_unity_window_bridge_start_stream_server, { ...ab(n), ...e });
+  return t.callExtensionMethod(Ur.gamecowork_unity_window_bridge_start_stream_server, { ...ab(n), ...e });
 }
 async function mpa(t, e) {
-  return t.callExtensionMethod(Ur.codely_unity_window_bridge_stop_stream_server, { ...ab(e) });
+  return t.callExtensionMethod(Ur.gamecowork_unity_window_bridge_stop_stream_server, { ...ab(e) });
 }
 async function Gpa(t, e) {
-  return t.callExtensionMethod(Ur.codely_unity_window_bridge_get_stream_server_status, { ...ab(e) });
+  return t.callExtensionMethod(Ur.gamecowork_unity_window_bridge_get_stream_server_status, { ...ab(e) });
 }
 async function UOt(t, e, n) {
-  return t.callExtensionMethod(Ur.codely_unity_tool_invoke, { ...ab(n), ...e });
+  return t.callExtensionMethod(Ur.gamecowork_unity_tool_invoke, { ...ab(n), ...e });
 }
 async function bpa(t, e) {
-  return await t.callExtensionMethod(Ur.codely_unity_insight_status, ab(e));
+  return await t.callExtensionMethod(Ur.gamecowork_unity_insight_status, ab(e));
 }
 async function hpa(t, e) {
-  return await t.callExtensionMethod(Ur.codely_unity_insight_ensure, ab(e));
+  return await t.callExtensionMethod(Ur.gamecowork_unity_insight_ensure, ab(e));
 }
 var R9e = "cn.tuanjie.codely.bridge",
   GRi = eL.join("ProjectSettings", "ProjectVersion.txt"),
@@ -325760,7 +325760,7 @@ function DOt() {
   return mpe.join(mc(), "settings.json");
 }
 function jOt(t) {
-  return mpe.join(t, ".codely-cli", "settings.json");
+  return mpe.join(t, ".gamecowork-cli", "settings.json");
 }
 function fP(t) {
   if (!IV.existsSync(t)) return {};
@@ -326195,7 +326195,7 @@ function ARi(t) {
 }
 function CRi(t) {
   let e = uV.convertToolStatus(t.toolStatus),
-    r = (t.parsedArgs && typeof t.parsedArgs == "object" ? t.parsedArgs._meta : void 0)?.codely?.subagentActivity;
+    r = (t.parsedArgs && typeof t.parsedArgs == "object" ? t.parsedArgs._meta : void 0)?.gamecowork?.subagentActivity;
   if (!Array.isArray(r) || r.length === 0) return e;
   let a = r
     .filter((s) => s?.toolName?.toLowerCase() !== "complete_task" || !!s.toolCallId)
@@ -326273,8 +326273,8 @@ var uV = class {
     return e;
   }
   static convertToSessionHistory(e) {
-    if (!e?.codely?.ui) return (console.warn("[ACPSessionConverter] No UI meta found, returning empty history"), []);
-    let n = e.codely.ui,
+    if (!e?.gamecowork?.ui) return (console.warn("[ACPSessionConverter] No UI meta found, returning empty history"), []);
+    let n = e.gamecowork.ui,
       r,
       a = !1;
     if (n.feed && n.tools)
@@ -326329,7 +326329,7 @@ var uV = class {
     }
   }
   static extractTasks(e) {
-    return e?.codely?.ui?.tasks ? e.codely.ui.tasks : [];
+    return e?.gamecowork?.ui?.tasks ? e.gamecowork.ui.tasks : [];
   }
   static convertFromFeedFormat(e, n, r) {
     let a = [],
@@ -326373,12 +326373,12 @@ var uV = class {
           };
           (a.push(f), (I = null), (u = void 0));
         } else if (b === "assistant") {
-          if (R?.codely?.kind === "compression_summary") {
+          if (R?.gamecowork?.kind === "compression_summary") {
             (eUt(a, h), (I = null), (u = void 0));
             continue;
           }
-          if (R?.codely?.kind === "thinking_summary") {
-            (p(), (d = { id: Z, text: h, durationMs: R?.codely?.durationMs, timestamp: N }), (I = null), (u = void 0));
+          if (R?.gamecowork?.kind === "thinking_summary") {
+            (p(), (d = { id: Z, text: h, durationMs: R?.gamecowork?.durationMs, timestamp: N }), (I = null), (u = void 0));
             continue;
           }
           let w = h.match(/<think>([\s\S]*?)<\/think>/),
@@ -326392,7 +326392,7 @@ var uV = class {
                     thinkingText: Y,
                     summaryText: d?.text,
                     summaryId: d?.id,
-                    durationMs: d?.durationMs ?? R?.codely?.durationMs,
+                    durationMs: d?.durationMs ?? R?.gamecowork?.durationMs,
                     timestamp: d?.timestamp ?? N,
                     model: g,
                   }),
@@ -326402,7 +326402,7 @@ var uV = class {
             F)
           ) {
             let v = { id: `${Z}`, role: "assistant", content: F, toolCalls: [], ...(g ? { model: g } : {}) },
-              A = dV({ timestamp: N, durationMs: R?.codely?.durationMs });
+              A = dV({ timestamp: N, durationMs: R?.gamecowork?.durationMs });
             ((I = {
               message: this.ensureMessageId(v),
               contextItems: [],
@@ -326411,7 +326411,7 @@ var uV = class {
             }),
               (u = void 0),
               a.push(I));
-          } else ((u = dV({ timestamp: N, durationMs: R?.codely?.durationMs })), (I = null));
+          } else ((u = dV({ timestamp: N, durationMs: R?.gamecowork?.durationMs })), (I = null));
         }
       } else if (G.kind === "tool") {
         p();
@@ -326563,12 +326563,12 @@ var uV = class {
         };
         n.push(l);
       } else if (s.role === "assistant") {
-        if (s._meta?.codely?.kind === "compression_summary") {
+        if (s._meta?.gamecowork?.kind === "compression_summary") {
           eUt(n, s.text);
           continue;
         }
-        if (s._meta?.codely?.kind === "thinking_summary") {
-          (a(), (r = { id: s.id, text: s.text, durationMs: s._meta?.codely?.durationMs, timestamp: s.timestamp }));
+        if (s._meta?.gamecowork?.kind === "thinking_summary") {
+          (a(), (r = { id: s.id, text: s.text, durationMs: s._meta?.gamecowork?.durationMs, timestamp: s.timestamp }));
           continue;
         }
         let c = s.text.match(/<think>([\s\S]*?)<\/think>/),
@@ -326581,7 +326581,7 @@ var uV = class {
                 thinkingText: I,
                 summaryText: r?.text,
                 summaryId: r?.id,
-                durationMs: r?.durationMs ?? s._meta?.codely?.durationMs,
+                durationMs: r?.durationMs ?? s._meta?.gamecowork?.durationMs,
                 timestamp: r?.timestamp ?? s.timestamp,
                 model: s.model,
               }),
@@ -326592,8 +326592,8 @@ var uV = class {
         n.push({
           message: this.ensureMessageId(d),
           contextItems: [],
-          ...(dV({ timestamp: s.timestamp, durationMs: s._meta?.codely?.durationMs })
-            ? { reasoning: dV({ timestamp: s.timestamp, durationMs: s._meta?.codely?.durationMs }) }
+          ...(dV({ timestamp: s.timestamp, durationMs: s._meta?.gamecowork?.durationMs })
+            ? { reasoning: dV({ timestamp: s.timestamp, durationMs: s._meta?.gamecowork?.durationMs }) }
             : {}),
         });
       }
@@ -327170,7 +327170,7 @@ function Mpa(t) {
   let e = new Set(),
     n = [];
   for (let r of t) {
-    if (r._meta?.codely?.kind === "built-in") {
+    if (r._meta?.gamecowork?.kind === "built-in") {
       e.add(r.name);
       continue;
     }
@@ -327195,7 +327195,7 @@ function HUt(t) {
 }
 function yma(t, e) {
   let n = gUt.createHash("sha256").update(t).digest("hex");
-  return Tx.join(e, `.codely-conversation-${n}.owner`);
+  return Tx.join(e, `.gamecowork-conversation-${n}.owner`);
 }
 async function B9e(t, e, n = {}) {
   if (!$2.existsSync(e)) return;
@@ -327262,7 +327262,7 @@ function wma(t, e = Nfi) {
   });
 }
 m();
-var gfi = ".codely-cli",
+var gfi = ".gamecowork-cli",
   Hfi = "settings.json";
 function vma(t) {
   return `${t.replace(/[\\/]+$/, "")}/${gfi}/${Hfi}`;
@@ -327401,7 +327401,7 @@ function wUt(t, e) {
     : {};
   return (
     (t.activeCustomModel?.supportsMultimodal || (!t.activeCustomModel && e?.capabilities?.uploadImage === !0)) &&
-      (n.CODELY_ENABLE_VLM = "1"),
+      (n.GAMECOWORK_ENABLE_VLM = "1"),
     n
   );
 }
@@ -327429,7 +327429,7 @@ function Xma(t, e) {
       }
     if (!s) return null;
     try {
-      let l = { ...r, _meta: { codely: a !== void 0 ? { projectRoot: a } : {} } };
+      let l = { ...r, _meta: { gamecowork: a !== void 0 ? { projectRoot: a } : {} } };
       return await t.withPinnedAcpEntry(s, (o) => o.manager.callExtensionMethod(n, l));
     } catch {
       return null;
@@ -327508,11 +327508,11 @@ async function Bma(t, e) {
     a = r.yoloUserRequestTimeout !== void 0 ? String(r.yoloUserRequestTimeout) : "30";
   return {
     env: {
-      CODELY_TOKEN: e.serverAccessToken,
-      CODELY_CLIENT_TYPE: af(n.ideType) ?? n.ideType ?? "unknown",
-      ...(JF(n.ideType) ? { CODELY_UNITY_METRICS_NO_EMIT: "1" } : {}),
-      CODELY_EXTENSION_VERSION: n.extensionVersion ?? "",
-      CODELY_YOLO_TIMEOUT: a,
+      GAMECOWORK_TOKEN: e.serverAccessToken,
+      GAMECOWORK_CLIENT_TYPE: af(n.ideType) ?? n.ideType ?? "unknown",
+      ...(JF(n.ideType) ? { GAMECOWORK_UNITY_METRICS_NO_EMIT: "1" } : {}),
+      GAMECOWORK_EXTENSION_VERSION: n.extensionVersion ?? "",
+      GAMECOWORK_YOLO_TIMEOUT: a,
     },
     args: [],
     currentSelectModel: "",
@@ -327547,14 +327547,14 @@ async function Tma(t, e, n) {
   }
   let c = (async () => {
     (await t.sessionLifecycle.evictLruIfNeeded(), t.sessionLifecycle.startIdleReaper());
-    let I = process.env.CODELY_CLI_PATH || void 0,
-      u = process.env.CODELY_CLI_BASE_DIR || void 0,
+    let I = process.env.GAMECOWORK_CLI_PATH || void 0,
+      u = process.env.GAMECOWORK_CLI_BASE_DIR || void 0,
       {
         env: d,
         args: p,
         currentSelectModel: G,
       } = await t.buildAcpStartupOptions({ ide: t.ide, serverAccessToken: HI.getInstance().getAccessToken() ?? "" });
-    process.env.CODELY_SIDECHAT === "true" &&
+    process.env.GAMECOWORK_SIDECHAT === "true" &&
       p.push("--exclude-tools", "enter_plan_mode", "--exclude-tools", "exit_plan_mode");
     let b = !!t.activeCustomModel;
     if ((a && p.push("--reasoningEffort", a), p.push("--approval-mode", "auto_edit"), b)) {
@@ -327587,13 +327587,13 @@ async function Tma(t, e, n) {
       y = new Uq({
         ide: t.ide,
         configHandler: t.configHandler,
-        codelyCliPath: I,
-        codelyCliBaseDir: u,
-        codelyCliArgs: p ? [...p, ...R, ...f, "--wire_api", r] : [...R, ...f],
+        gamecoworkCliPath: I,
+        gamecoworkCliBaseDir: u,
+        gamecoworkCliArgs: p ? [...p, ...R, ...f, "--wire_api", r] : [...R, ...f],
         cwd: Z,
         env: d,
         onProcessExit: (A, Q) => {
-          (console.warn(`[Core] codely-cli process exited: code=${A}, signal=${Q}`),
+          (console.warn(`[Core] gamecowork-cli process exited: code=${A}, signal=${Q}`),
             nI(t, e, y) && t.acpSessionRegistry.delete(e),
             t.acpInitializing.get(e) === c && t.acpInitializing.delete(e));
         },
@@ -327804,7 +327804,7 @@ async function Tma(t, e, n) {
           if (x.lastCommandSignature === S) return;
           ((x.lastCommandSignature = S), (x.filteredCommands = Q.length));
           let M = Q.map((B) => {
-            let U = B._meta?.codely?.kind?.toLowerCase(),
+            let U = B._meta?.gamecowork?.kind?.toLowerCase(),
               re;
             return (
               U === "file" ? (re = "commands") : U === "mcp-prompt" ? (re = "MCP") : U === "skill" && (re = "Skills"),
@@ -327823,7 +327823,7 @@ async function Tma(t, e, n) {
         onCustomRequest: async (A, Q) => {
           if (!nI(t, e, y)) return null;
           switch (A) {
-            case "_codely/request_shell_confirmation": {
+            case "_gamecowork/request_shell_confirmation": {
               let X = Q;
               if (!X || typeof X.requestId != "string" || !Array.isArray(X.commands))
                 return (console.warn("[Core] Invalid shell confirmation request payload:", Q), { outcome: "reject" });
@@ -328790,7 +328790,7 @@ ${r.content.text}
 m();
 Fs();
 var kfi = `# This is an example assistant configuration file
-# It is used to define custom AI assistants within Codely
+# It is used to define custom AI assistants within GameCowork
 # Each assistant file can be accessed by selecting it from the assistant dropdown
 
 # To learn more, see the full assistant reference: https://docs.continue.dev/reference
@@ -328819,7 +328819,7 @@ context:
 async function QGa(t, e) {
   let n = await t.getWorkspaceDirs();
   if (n.length === 0) throw new Error("No workspace directories found. Make sure you've opened a folder in your IDE.");
-  let r = Ja(n[0], e ?? ".codely/assistants"),
+  let r = Ja(n[0], e ?? ".gamecowork/assistants"),
     a = 0,
     s;
   do {
@@ -329158,7 +329158,7 @@ function SGa(
 m();
 var U9e = T(require("node:fs"), 1),
   YUt = T(require("node:path"), 1);
-var _Ga = ".codely",
+var _Ga = ".gamecowork",
   jfi = "state.json";
 function xGa(t) {
   return YUt.join(t, _Ga, jfi);
@@ -329208,8 +329208,8 @@ var fpe = T(require("node:fs"), 1),
   M9e = T(require("node:os"), 1),
   eE = T(require("node:path"), 1),
   z9e = T(swe(), 1);
-var VUt = ".codely-cli",
-  qfi = "CODELY_CLI_HOME",
+var VUt = ".gamecowork-cli",
+  qfi = "GAMECOWORK_CLI_HOME",
   $fi = "policies",
   eyi = "auto-saved.toml",
   UGa = "run_shell_command",
@@ -329448,7 +329448,7 @@ var QP = "unity-insight.toml",
   gyi = 1,
   Hyi = 60,
   wpe = 15,
-  Ryi = "# Managed by Codely Cowork (unityInsight.maxTurns).",
+  Ryi = "# Managed by GameCowork (unityInsight.maxTurns).",
   fyi = /^\s*max_turns\s*=\s*(-?\d+)\s*$/m,
   yyi = /^(\s*max_turns\s*=\s*)-?\d+(\s*)$/m;
 function XUt(t) {
@@ -329458,7 +329458,7 @@ function lba() {
   return aL.join(mc(), "agents", QP);
 }
 function iba(t) {
-  return aL.join(t, ".codely-cli", "agents", QP);
+  return aL.join(t, ".gamecowork-cli", "agents", QP);
 }
 function Eyi(t, e) {
   if (t === "user") return lba();
@@ -329515,7 +329515,7 @@ function Yyi() {
   return typeof __dirname < "u" ? __dirname : process.cwd();
 }
 function Vyi(t) {
-  return t.includes("Managed by Codely Cowork (unityInsight.maxTurns)");
+  return t.includes("Managed by GameCowork (unityInsight.maxTurns)");
 }
 function Fyi(t) {
   return Vyi(t)
@@ -329527,8 +329527,8 @@ function Fyi(t) {
 function Ayi() {
   let t = Yyi(),
     e = [
-      aL.join(t, "..", "..", "codely-cli", "builtin-agents", QP),
-      aL.join(t, "..", "..", "codely-cli", "bundle", "builtin-agents", QP),
+      aL.join(t, "..", "..", "gamecowork-cli", "builtin-agents", QP),
+      aL.join(t, "..", "..", "gamecowork-cli", "bundle", "builtin-agents", QP),
       aL.join(t, "templates", QP),
     ];
   for (let n of e) {
@@ -329601,7 +329601,7 @@ function Qyi(t) {
       e.rules = ["Always give concise responses"];
       break;
     case "docs":
-      e.docs = [{ name: "New docs", startUrl: "https://codely-docs.tuanjie.cn" }];
+      e.docs = [{ name: "New docs", startUrl: "https://gamecowork-docs.tuanjie.cn" }];
       break;
     case "prompts":
       e.prompts = [
@@ -329641,14 +329641,14 @@ async function Jyi(t, e, n, r) {
   return o;
 }
 function Syi() {
-  let t = process.env.CODELY_CLI_SYSTEM_SETTINGS_PATH;
+  let t = process.env.GAMECOWORK_CLI_SYSTEM_SETTINGS_PATH;
   return (
     t ||
     ((0, JUt.platform)() === "darwin"
-      ? "/Library/Application Support/CodelyCLI/settings.json"
+      ? "/Library/Application Support/GameCoworkCLI/settings.json"
       : (0, JUt.platform)() === "win32"
-        ? "C:\\ProgramData\\codely-cli\\settings.json"
-        : "/etc/codely-cli/settings.json")
+        ? "C:\\ProgramData\\gamecowork-cli\\settings.json"
+        : "/etc/gamecowork-cli/settings.json")
   );
 }
 async function uba(t, e, n) {
@@ -329660,7 +329660,7 @@ async function uba(t, e, n) {
       ? (a = Ja(mc(), "settings.json"))
       : n === "System"
         ? (a = Syi())
-        : (a = Ja(r[0], ".codely-cli/settings.json")),
+        : (a = Ja(r[0], ".gamecowork-cli/settings.json")),
     e === "mcpServers")
   ) {
     (await t.fileExists(a))
@@ -329673,7 +329673,7 @@ async function uba(t, e, n) {
         ),
         await t.openFile(a));
     return;
-  } else a = Ja(r[0], `.codely/${e}`);
+  } else a = Ja(r[0], `.gamecowork/${e}`);
   let s = await Jyi(a, e, t.fileExists.bind(t)),
     l = Lyi(e);
   (await t.writeFile(s, l), await t.openFile(s));
@@ -330450,7 +330450,7 @@ async function kP(t) {
 }
 function Y2i(t) {
   let e = Ca.resolve(t),
-    r = `$root = '${((s) => s.replace(/'/g, "''"))(e)}'; $rootNorm = $root -replace '\\\\','/'; $p = Get-CimInstance Win32_Process -Filter "Name='Unity.exe' OR Name='Tuanjie.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -and ($_.CommandLine -replace '\\\\','/').IndexOf($rootNorm, [StringComparison]::OrdinalIgnoreCase) -ge 0 } | Select-Object -First 1; if ($p) { $native = Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);' -Name Window -Namespace Codely -PassThru; $process = Get-Process -Id $p.ProcessId -ErrorAction SilentlyContinue; if ($process -and $process.MainWindowHandle -ne [IntPtr]::Zero) { $restored = $native::ShowWindowAsync($process.MainWindowHandle, 9); Start-Sleep -Milliseconds 50; $activated = (New-Object -ComObject WScript.Shell).AppActivate([int]$p.ProcessId); if ($restored -or $activated) { [Console]::Out.Write('1') } } }`,
+    r = `$root = '${((s) => s.replace(/'/g, "''"))(e)}'; $rootNorm = $root -replace '\\\\','/'; $p = Get-CimInstance Win32_Process -Filter "Name='Unity.exe' OR Name='Tuanjie.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -and ($_.CommandLine -replace '\\\\','/').IndexOf($rootNorm, [StringComparison]::OrdinalIgnoreCase) -ge 0 } | Select-Object -First 1; if ($p) { $native = Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);' -Name Window -Namespace GameCowork -PassThru; $process = Get-Process -Id $p.ProcessId -ErrorAction SilentlyContinue; if ($process -and $process.MainWindowHandle -ne [IntPtr]::Zero) { $restored = $native::ShowWindowAsync($process.MainWindowHandle, 9); Start-Sleep -Milliseconds 50; $activated = (New-Object -ComObject WScript.Shell).AppActivate([int]$p.ProcessId); if ($restored -or $activated) { [Console]::Out.Write('1') } } }`,
     a = Buffer.from(r, "utf16le").toString("base64");
   try {
     return (
@@ -330610,7 +330610,7 @@ async function tha(t, e) {
   let n = await ip(t);
   if (!CMn(n)) throw new Error("Sign in disabled");
   let r = new URL(n.API_URL + "login"),
-    a = { stateId: Al(), authFrom: "jetbrains-codely", scheme: "" },
+    a = { stateId: Al(), authFrom: "jetbrains-gamecowork", scheme: "" },
     s = Buffer.from(JSON.stringify(a)).toString("base64"),
     l = { response_type: "code", client_id: n.WORKOS_CLIENT_ID, state: s, provider: "authkit" };
   return (Object.keys(l).forEach((o) => r.searchParams.append(o, l[o])), r.toString());
@@ -331374,7 +331374,7 @@ Here is information about the current repo:
 async function Iha(t, e) {
   let n = await t.getWorkspaceDirs();
   if (n.length === 0) throw new Error("No workspace directories found. Make sure you've opened a folder in your IDE.");
-  let r = Ja(n[0], e ?? ".codely/prompts"),
+  let r = Ja(n[0], e ?? ".gamecowork/prompts"),
     a = 0,
     s;
   do {
@@ -331389,7 +331389,7 @@ m();
 var dha = T(require("node:crypto"), 1),
   TP = T(require("node:fs"), 1),
   uha = T(require("node:path"), 1);
-var GEi = "CODELY.md";
+var GEi = "GAMECOWORK.md";
 async function pha(t) {
   let e = uha.join(t, GEi);
   try {
@@ -331402,7 +331402,7 @@ async function pha(t) {
       r = await TP.promises.stat(e);
     return { hash: dha.createHash("sha256").update(n).digest("hex"), updatedAt: r.mtime.toISOString() };
   } catch (n) {
-    return (En.error(n, { context: "codely_md_meta_read" }), null);
+    return (En.error(n, { context: "gamecowork_md_meta_read" }), null);
   }
 }
 m();
@@ -331869,7 +331869,7 @@ async function gha(t, e) {
     } catch {
       r = iMt.default.tmpdir();
     }
-  let a = Dx.join(r, ".codely", "clipboard"),
+  let a = Dx.join(r, ".gamecowork", "clipboard"),
     s = await RZe(a, t);
   if (!s) return null;
   let l = await yZe(s, t);
@@ -331936,7 +331936,7 @@ async function Hha(t) {
       } catch {
         n = iMt.default.tmpdir();
       }
-    let r = Dx.join(n, ".codely", "clipboard"),
+    let r = Dx.join(n, ".gamecowork", "clipboard"),
       a = await RZe(r, t);
     if (!a) return;
     let s = await yZe(a, t);
@@ -331995,11 +331995,11 @@ var wha = T(require("node:child_process"), 1),
   vha = T(require("node:os"), 1),
   Xu = T(require("node:path"), 1);
 ya();
-var jx = "CODELY_CLI_HOME";
+var jx = "GAMECOWORK_CLI_HOME";
 function IMt() {
   try {
     let t = jm.readFileSync(Jne(), "utf8"),
-      n = JSON.parse(t)?.codelyHome;
+      n = JSON.parse(t)?.gamecoworkHome;
     return typeof n == "string" && n.trim() ? n.trim() : void 0;
   } catch {
     return;
@@ -332049,7 +332049,7 @@ async function Aha(t, e) {
   (jm.existsSync(n) || (await jm.promises.mkdir(n, { recursive: !0 })),
     await jm.promises.cp(t, e, { recursive: !0, force: !0, errorOnExist: !1 }));
 }
-var yha = "# Codely CLI home (managed by Codely App)";
+var yha = "# GameCowork CLI home (managed by GameCowork App)";
 async function Cha(t) {
   try {
     if (process.platform === "win32") await EEi(t);
@@ -332061,7 +332061,7 @@ async function Cha(t) {
     return { ok: !0 };
   } catch (e) {
     return (
-      console.debug("[codelyHome] setSystemCodelyHomeEnvVar failed:", e),
+      console.debug("[gamecoworkHome] setSystemGameCoworkHomeEnvVar failed:", e),
       { ok: !1, warningCode: "envVarWriteFailed" }
     );
   }
@@ -332093,7 +332093,7 @@ async function EEi(t) {
       await Eha("setx.exe", [jx, t], "setx", fEi);
       return;
     } catch (r) {
-      console.debug("[codelyHome] setx failed, falling back to powershell:", r);
+      console.debug("[gamecoworkHome] setx failed, falling back to powershell:", r);
     }
   let n = `[Environment]::SetEnvironmentVariable('${jx}','${t.replace(/'/g, "''")}','User')`;
   await Eha("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", n], "powershell", yEi);
@@ -332139,7 +332139,7 @@ async function VEi(t, e) {
   try {
     r = (await jm.promises.stat(n)).mode & 511;
   } catch {}
-  let a = `${n}.codely-tmp`;
+  let a = `${n}.gamecowork-tmp`;
   try {
     (await jm.promises.writeFile(a, e, "utf8"),
       r !== void 0 && (await jm.promises.chmod(a, r)),
@@ -332157,7 +332157,7 @@ var Qha = require("node:child_process"),
   Xha = require("node:util"),
   Lha = (0, Xha.promisify)(Qha.execFile),
   FEi = "unity-metrics-distinct-id",
-  AEi = "codely-unity-metrics-v1";
+  AEi = "gamecowork-unity-metrics-v1";
 async function uMt() {
   let t = await QEi();
   if (t) return SEi(t);
@@ -332238,7 +332238,7 @@ function Cpe(t) {
   return e;
 }
 m();
-var kEi = ".codely/CODELY_SUMMARY.md";
+var kEi = ".gamecowork/GAMECOWORK_SUMMARY.md";
 async function _ha(t) {
   let e = await fZe(kEi, t);
   return e ? await t.readFile(e) : "";
@@ -333355,15 +333355,15 @@ InitTestScene*.unity*
 .svn/
 .hg/
 .DS_Store
-.codely/
+.gamecowork/
 `,
   sZa = ".meta",
-  IZa = "codely-project-zip-info.json",
+  IZa = "gamecowork-project-zip-info.json",
   $Ei = [
     "project .gitignore (root)",
     "official Unity .gitignore (github/gitignore)",
-    "codely floor: VCS metadata + OS junk + .codely data",
-    "codely security ignores (core/indexing/ignore.ts)",
+    "gamecowork floor: VCS metadata + OS junk + .gamecowork data",
+    "gamecowork security ignores (core/indexing/ignore.ts)",
   ],
   ewi = 1024 * 1024 * 1024,
   twi = 65535;
@@ -333411,7 +333411,7 @@ async function dZa(t, e = {}) {
       return h;
     },
     I = await c(t, ""),
-    u = iL.join(iZa.tmpdir(), `codely-project-${process.pid}-${(0, lZa.randomUUID)()}.zip`),
+    u = iL.join(iZa.tmpdir(), `gamecowork-project-${process.pid}-${(0, lZa.randomUUID)()}.zip`),
     d = await rwi(t, I, {
       maxTotalBytes: n,
       maxEntries: r,
@@ -333648,7 +333648,7 @@ function pwi(t) {
   for (let n of t) {
     if (!n || typeof n != "object") continue;
     let r = n.toolCallId,
-      a = n.args?._meta?.codely?.subagentActivityRef;
+      a = n.args?._meta?.gamecowork?.subagentActivityRef;
     typeof r == "string" && typeof a == "string" && a && e.set(r, a);
   }
   return e;
@@ -333883,7 +333883,7 @@ function RZa(t, e) {
           let ye = await Promise.race([re, Ze]);
           (ye.feed.length || ye.tools.length || ye.messages.length || ye.tasks?.length) &&
             (w = {
-              codely: {
+              gamecowork: {
                 ui: {
                   action: "replace_history",
                   feed: ye.feed,
@@ -333984,7 +333984,7 @@ function RZa(t, e) {
             acpSessionId: R.acpSessionId,
             type: Z,
             callback: (f) => {
-              let y = f?._meta?.codely?.rewindPreview;
+              let y = f?._meta?.gamecowork?.rewindPreview;
               y && (N = y);
             },
           });
@@ -334161,7 +334161,7 @@ function RZa(t, e) {
           Z = await t.getWorkspaceCwd(),
           N = ["mcp", "remove", b];
         (G.data.configLevel === "User" && N.push("--scope", "user"),
-          await t.runCodelyCliCommand(h, N, Z),
+          await t.runGameCoworkCliCommand(h, N, Z),
           await t.refreshMcpAcpSession());
         let g = await t.getOrCreateAcpEntry(og, { forceRestart: !0 });
         return (await t.reloadAcpMcpConfig(g, !1, og), await t.restartAllAcpSessions(), { status: "success" });
@@ -334190,7 +334190,7 @@ function RZa(t, e) {
         );
         return;
       }
-      let h = Ja(b[0], `.codely/${G.data.blockType}`);
+      let h = Ja(b[0], `.gamecowork/${G.data.blockType}`);
       await uba(t.ide, G.data.blockType, G.data.configLevel);
     }),
     n("config/addMcpServer", async (G) => {
@@ -334211,7 +334211,7 @@ function RZa(t, e) {
           v = await t.getWorkspaceCwd();
         if (w && Y) {
           let X = ["mcp", "remove", Y];
-          (f === "global" && X.push("--scope", "user"), await t.runCodelyCliCommand(F, X, v));
+          (f === "global" && X.push("--scope", "user"), await t.runGameCoworkCliCommand(F, X, v));
         }
         let A = ["mcp", "add", b];
         if (h === "stdio") {
@@ -334241,7 +334241,7 @@ function RZa(t, e) {
               }));
         }
         (f === "global" ? A.push("--scope", "user") : A.push("--scope", "project"),
-          await t.runCodelyCliCommand(F, A, v),
+          await t.runGameCoworkCliCommand(F, A, v),
           await t.refreshMcpAcpSession());
         let Q = await t.getOrCreateAcpEntry(og, { forceRestart: !0 });
         return (await t.reloadAcpMcpConfig(Q, !1, og), await t.restartAllAcpSessions(), { status: "success" });
@@ -334326,8 +334326,8 @@ function RZa(t, e) {
     n("config/updateSharedConfig", async (G) => t.applySharedConfigUpdate(G.data, !0)),
     n("config/syncSharedConfig", async (G) => t.applySharedConfigUpdate(G.data, !1)),
     n("config/getSharedConfig", async () => yP.getInstance().loadSharedConfig()),
-    n("settings/getCodelyHome", async () => ({ path: IOe(), isConfigured: Yha() })),
-    n("settings/prepareCodelyHomeChange", async (G) => {
+    n("settings/getGameCoworkHome", async () => ({ path: IOe(), isConfigured: Yha() })),
+    n("settings/prepareGameCoworkHomeChange", async (G) => {
       let b = IOe(),
         h = dMt(G.data.newPath, b);
       if (h.error || !h.path) return { error: h.error ?? "invalid" };
@@ -334341,25 +334341,25 @@ function RZa(t, e) {
       try {
         R = dOe(b);
       } catch (f) {
-        return (console.error("[codelyHome] cannot read source home:", f), { error: "sourceUnreadable" });
+        return (console.error("[gamecoworkHome] cannot read source home:", f), { error: "sourceUnreadable" });
       }
       return { sourcePath: b, targetPath: Z, sourceHasData: R, targetExists: N, targetNonEmpty: g };
     }),
-    n("settings/applyCodelyHomeChange", async (G) => {
+    n("settings/applyGameCoworkHomeChange", async (G) => {
       let b = IOe(),
         h = dMt(G.data.newPath, b);
       if (h.error || !h.path) return { error: h.error ?? "invalid" };
       let Z = h.path;
       try {
         let N = G.data.migrate && dOe(b);
-        (await t.clearAcpSessionsForAuthChange("codely home change"),
+        (await t.clearAcpSessionsForAuthChange("gamecowork home change"),
           N && (await Aha(b, Z)),
-          t.globalContext.updateSharedConfig({ codelyHome: Z }),
+          t.globalContext.updateSharedConfig({ gamecoworkHome: Z }),
           Fha(Z));
         let g = await Cha(Z);
         return { path: Z, envVarWarning: g.ok ? void 0 : g.warningCode };
       } catch (N) {
-        return (console.error("[codelyHome] apply failed:", N), { error: "applyFailed" });
+        return (console.error("[gamecoworkHome] apply failed:", N), { error: "applyFailed" });
       }
     }),
     n("config/updateSelectMode", async (G) => {
@@ -334455,15 +334455,15 @@ function RZa(t, e) {
     }),
     n("controlPlane/openTerminal", async (G) => {
       (Hbe(),
-        console.log("[openTerminal] after refreshCodelyEnvironment:", {
-          CODELY_HOME: process.env.CODELY_HOME ?? "(not set)",
-          CODELY_APP_HOME: process.env.CODELY_APP_HOME ?? "(not set)",
+        console.log("[openTerminal] after refreshGameCoworkEnvironment:", {
+          GAMECOWORK_HOME: process.env.GAMECOWORK_HOME ?? "(not set)",
+          GAMECOWORK_APP_HOME: process.env.GAMECOWORK_APP_HOME ?? "(not set)",
         }));
-      let b = [process.env.CODELY_HOME, process.env.CODELY_APP_HOME].filter((h) => !!h);
+      let b = [process.env.GAMECOWORK_HOME, process.env.GAMECOWORK_APP_HOME].filter((h) => !!h);
       (console.log("[openTerminal] extraPathEntries to inject:", b),
         await t.messenger.request("runCommand", {
           command: G.data.command,
-          options: { reuseTerminal: !1, terminalName: "codely", icon: "codely", extraPathEntries: b },
+          options: { reuseTerminal: !1, terminalName: "gamecowork", icon: "gamecowork", extraPathEntries: b },
         }));
     }),
     n("controlPlane/getFreeTrialStatus", async (G) => t.configHandler.controlPlaneClient.getFreeTrialStatus()),
@@ -334536,9 +334536,9 @@ function RZa(t, e) {
       let h = await t.ide.getWorkspaceDirs(),
         Z = h.length > 0 ? hd(h[0]) : void 0;
       if (Z) {
-        if (((b.workspace = Z), !b.codelyMdHash)) {
+        if (((b.workspace = Z), !b.gamecoworkMdHash)) {
           let g = await pha(Z);
-          g && ((b.codelyMdHash = g.hash), (b.codelyMdUpdatedAt = g.updatedAt));
+          g && ((b.gamecoworkMdHash = g.hash), (b.gamecoworkMdUpdatedAt = g.updatedAt));
         }
         let N = await BGa(Z);
         N.length && (b.skippedPromptIds = N);
@@ -334575,7 +334575,7 @@ function RZa(t, e) {
       let h = t.configHandler.mcpServerStatus ?? [];
       if (h.some((Z) => !Z.configLevel))
         try {
-          let Z = bMt(mc(), await t.getWorkspaceCwd(), ".codely-cli");
+          let Z = bMt(mc(), await t.getWorkspaceCwd(), ".gamecowork-cli");
           for (let N of h) N.configLevel ??= Mha(N.name, Z);
         } catch (Z) {
           console.warn("[Core] mcp/list config-level fallback failed; returning ACP statuses:", Z);
@@ -334587,7 +334587,7 @@ function RZa(t, e) {
         let G = await t.getWorkspaceCwd(),
           b = UP.default.homedir(),
           h = mc(),
-          Z = ".codely-cli",
+          Z = ".gamecowork-cli",
           N = ".agents",
           g = bMt(h, G, Z),
           R = await zha(b, h, G, Z, N, g.disabledSkills),
@@ -334605,14 +334605,14 @@ function RZa(t, e) {
     }),
     Lur(async (G) => {
       let b = t.mcpAuthSessionByServer.get(G.name);
-      await t.syncOAuthTokenToCodelyCliAndReconnect(G, b);
+      await t.syncOAuthTokenToGameCoworkCliAndReconnect(G, b);
     }),
     n("mcp/startAuthentication", async (G) => {
       (vh.getInstance().setStatus(G.data.server, "authenticating"),
         t.mcpAuthSessionByServer.set(G.data.server.name, G.data.sessionId));
       try {
         (await xur(G.data.server, t.ide, !0)) === "AUTHORIZED" &&
-          (await t.syncOAuthTokenToCodelyCliAndReconnect(G.data.server, G.data.sessionId));
+          (await t.syncOAuthTokenToGameCoworkCliAndReconnect(G.data.server, G.data.sessionId));
       } catch (b) {
         (console.error("[Core] mcp/startAuthentication failed:", b),
           t.messenger.send("mcp/statusUpdate", { servers: t.configHandler.mcpServerStatus ?? [] }));
@@ -334629,7 +334629,7 @@ function RZa(t, e) {
           R = t.resolveCliPath(),
           f = await t.getWorkspaceCwd(),
           y = Z ? ["mcp", "enable", h, "--scope", g] : ["mcp", "disable", h, "--scope", g];
-        if ((await t.runCodelyCliCommand(R, y, f), await t.refreshMcpAcpSession(), Z)) {
+        if ((await t.runGameCoworkCliCommand(R, y, f), await t.refreshMcpAcpSession(), Z)) {
           let w = await t.getOrCreateAcpEntry(b, { forceRestart: !0 });
           await t.reloadAcpMcpConfig(w, !1, og);
         }
@@ -334660,7 +334660,7 @@ function RZa(t, e) {
           try {
             let Y = t.resolveCliPath();
             (En.info("Configuring TJGenerators MCP server", { cwd: w }),
-              await aba(w, (A, Q) => t.runCodelyCliCommand(Y, A, Q)));
+              await aba(w, (A, Q) => t.runGameCoworkCliCommand(Y, A, Q)));
             let v = (
               await Promise.allSettled(
                 [...t.acpSessionRegistry.values()].map((A) =>
@@ -334686,7 +334686,7 @@ function RZa(t, e) {
                 X = t.resolveCliPath(),
                 x = await t.getWorkspaceCwd();
               (En.info("Installing TJGenerators extension", { cwd: x }),
-                await t.runCodelyCliCommand(
+                await t.runGameCoworkCliCommand(
                   X,
                   ["extensions", "install", Q, "--consent", "--scope", "workspace"],
                   x,
@@ -334734,7 +334734,7 @@ function RZa(t, e) {
           let X = t.resolveCliPath(),
             x = await t.getWorkspaceCwd();
           return (
-            await t.runCodelyCliCommand(
+            await t.runGameCoworkCliCommand(
               X,
               ["extensions", "install", Q.download_url, "--consent", "--scope", "workspace"],
               x,
@@ -335661,7 +335661,7 @@ function RZa(t, e) {
       lu.capture(G.data.event, G.data.data);
     }));
   let s = async (G, b, h) => {
-    let Z = G === Ur.codely_lsp_hover;
+    let Z = G === Ur.gamecowork_lsp_hover;
     if (Z) {
       let g = b;
       console.debug(
@@ -335691,11 +335691,11 @@ function RZa(t, e) {
   };
   (n("lsp/goToDefinition", async (G) => {
     let { filePath: b, line: h, character: Z } = G.data;
-    return s(Ur.codely_lsp_go_to_definition, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+    return s(Ur.gamecowork_lsp_go_to_definition, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
   }),
     n("lsp/findReferences", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
-      return s(Ur.codely_lsp_find_references, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_find_references, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
     }),
     n("lsp/hover", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
@@ -335703,32 +335703,32 @@ function RZa(t, e) {
         console.debug(
           `[LSP_HOVER] Core handler entry: filePath=${b} line=${h} char=${Z} session=${G.data.continueSessionId ?? "none"}`,
         ),
-        s(Ur.codely_lsp_hover, { filePath: b, line: h, character: Z }, G.data.continueSessionId)
+        s(Ur.gamecowork_lsp_hover, { filePath: b, line: h, character: Z }, G.data.continueSessionId)
       );
     }),
     n("lsp/documentSymbol", async (G) => {
       let { filePath: b } = G.data;
-      return s(Ur.codely_lsp_document_symbol, { filePath: b }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_document_symbol, { filePath: b }, G.data.continueSessionId);
     }),
     n("lsp/workspaceSymbol", async (G) => {
       let { query: b } = G.data;
-      return s(Ur.codely_lsp_workspace_symbol, { query: b }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_workspace_symbol, { query: b }, G.data.continueSessionId);
     }),
     n("lsp/goToImplementation", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
-      return s(Ur.codely_lsp_go_to_implementation, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_go_to_implementation, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
     }),
     n("lsp/prepareCallHierarchy", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
-      return s(Ur.codely_lsp_prepare_call_hierarchy, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_prepare_call_hierarchy, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
     }),
     n("lsp/incomingCalls", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
-      return s(Ur.codely_lsp_incoming_calls, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_incoming_calls, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
     }),
     n("lsp/outgoingCalls", async (G) => {
       let { filePath: b, line: h, character: Z } = G.data;
-      return s(Ur.codely_lsp_outgoing_calls, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
+      return s(Ur.gamecowork_lsp_outgoing_calls, { filePath: b, line: h, character: Z }, G.data.continueSessionId);
     }),
     n("acp/initSession", async (G) => {
       let { continueSessionId: b } = G.data;
@@ -335768,9 +335768,9 @@ function RZa(t, e) {
       let { sessionId: b } = G.data,
         h = await RMt(t, b, async (Z) => {
           try {
-            return { version: Z.manager.getCodelyCliVersion() };
+            return { version: Z.manager.getGameCoworkCliVersion() };
           } catch (N) {
-            return (console.warn("[Core] Failed to get Codely CLI version:", N), { version: null });
+            return (console.warn("[Core] Failed to get GameCowork CLI version:", N), { version: null });
           }
         });
       return h || (console.warn(`[Core] No ACP session found for sessionId: ${b}`), { version: null });
@@ -335855,7 +335855,7 @@ function RZa(t, e) {
         let h = t.resolveCliPath(),
           Z = await t.getWorkspaceCwd(),
           N = ["skills", "install", G, "--consent", "--scope", b],
-          g = await t.runCodelyCliCommand(h, N, Z, 6e5, 3e5),
+          g = await t.runGameCoworkCliCommand(h, N, Z, 6e5, 3e5),
           R = l(g);
         return (
           t.refreshSkillsForAllSessions({
@@ -335886,7 +335886,7 @@ function RZa(t, e) {
         N = null;
       try {
         let g = UP.default.tmpdir();
-        N = ZV.join(g, `codely-skill-upload-${Date.now()}-${h}`);
+        N = ZV.join(g, `gamecowork-skill-upload-${Date.now()}-${h}`);
         let R = Buffer.from(b, "base64");
         return (await kp.promises.writeFile(N, new Uint8Array(R)), await c(N, Z));
       } catch (g) {
@@ -335905,7 +335905,7 @@ function RZa(t, e) {
       try {
         let G = t.resolveCliPath(),
           b = await t.getWorkspaceCwd(),
-          h = await t.runCodelyCliCommand(G, ["skills", "list", "--in-skills-dir"], b),
+          h = await t.runGameCoworkCliCommand(G, ["skills", "list", "--in-skills-dir"], b),
           Z = [],
           N = h.split(`
 `);
@@ -335941,7 +335941,7 @@ function RZa(t, e) {
         let Z = t.resolveCliPath(),
           N = await t.getWorkspaceCwd();
         return (
-          await t.runCodelyCliCommand(Z, ["skills", "enable", b, "--scope", h], N),
+          await t.runGameCoworkCliCommand(Z, ["skills", "enable", b, "--scope", h], N),
           t.refreshSkillsForAllSessions({
             action: "enable",
             skillName: b,
@@ -335963,7 +335963,7 @@ function RZa(t, e) {
           N = await t.getWorkspaceCwd(),
           g = ["skills", "disable", b, "--scope", h];
         return (
-          await t.runCodelyCliCommand(Z, g, N),
+          await t.runGameCoworkCliCommand(Z, g, N),
           t.refreshSkillsForAllSessions({
             action: "disable",
             skillName: b,
@@ -335985,7 +335985,7 @@ function RZa(t, e) {
           N = await t.getWorkspaceCwd(),
           g = ["skills", "uninstall", b, "--scope", h];
         return (
-          await t.runCodelyCliCommand(Z, g, N),
+          await t.runGameCoworkCliCommand(Z, g, N),
           t.refreshSkillsForAllSessions({
             action: "uninstall",
             skillName: b,
@@ -336078,7 +336078,7 @@ function RZa(t, e) {
         let Z = t.resolveCliPath(),
           N = await t.getWorkspaceCwd(),
           g = ["extensions", "install", b, "--consent", "--scope", h],
-          f = (await t.runCodelyCliCommand(Z, g, N, 6e5, 3e5)).match(/Extension "([^"]+)" installed successfully/);
+          f = (await t.runGameCoworkCliCommand(Z, g, N, 6e5, 3e5)).match(/Extension "([^"]+)" installed successfully/);
         return (t.refreshSkillsForAllSessions(), { status: "success", name: f?.[1] });
       } catch (Z) {
         return (console.error(`[Core] Extension install failed: ${Z.message}`), { status: "error", error: Z.message });
@@ -336089,9 +336089,9 @@ function RZa(t, e) {
       try {
         let N = t.resolveCliPath(),
           g = await t.getWorkspaceCwd();
-        await t.runCodelyCliCommand(N, ["extensions", "uninstall", b, "--scope", Z], g);
+        await t.runGameCoworkCliCommand(N, ["extensions", "uninstall", b, "--scope", Z], g);
         let f = (
-          await t.runCodelyCliCommand(N, ["extensions", "install", h, "--consent", "--scope", Z], g, 6e5, 3e5)
+          await t.runGameCoworkCliCommand(N, ["extensions", "install", h, "--consent", "--scope", Z], g, 6e5, 3e5)
         ).match(/Extension "([^"]+)" installed successfully/);
         return (t.refreshSkillsForAllSessions(), { status: "success", name: f?.[1] ?? b });
       } catch (N) {
@@ -336112,7 +336112,7 @@ function RZa(t, e) {
         let Z = t.resolveCliPath(),
           N = await t.getWorkspaceCwd(),
           g = ["extensions", "enable", b, "--scope", h];
-        return (await t.runCodelyCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
+        return (await t.runGameCoworkCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
       } catch (Z) {
         return (console.error(`[Core] Extension enable failed: ${Z.message}`), { status: "error", error: Z.message });
       }
@@ -336124,7 +336124,7 @@ function RZa(t, e) {
         let Z = t.resolveCliPath(),
           N = await t.getWorkspaceCwd(),
           g = ["extensions", "disable", b, "--scope", h];
-        return (await t.runCodelyCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
+        return (await t.runGameCoworkCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
       } catch (Z) {
         return (console.error(`[Core] Extension disable failed: ${Z.message}`), { status: "error", error: Z.message });
       }
@@ -336136,7 +336136,7 @@ function RZa(t, e) {
         let Z = t.resolveCliPath(),
           N = await t.getWorkspaceCwd(),
           g = ["extensions", "uninstall", b, "--scope", h];
-        return (await t.runCodelyCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
+        return (await t.runGameCoworkCliCommand(Z, g, N), t.refreshSkillsForAllSessions(), { status: "success" });
       } catch (Z) {
         return (
           console.error(`[Core] Extension uninstall failed: ${Z.message}`),
@@ -336271,7 +336271,7 @@ function RZa(t, e) {
       try {
         let G = t.resolveCliPath(),
           b = await t.getWorkspaceCwd(),
-          h = await t.runCodelyCliCommand(G, ["commands", "list"], b);
+          h = await t.runGameCoworkCliCommand(G, ["commands", "list"], b);
         return { commands: t.parseCliListOutput(h) };
       } catch (G) {
         return (console.error(`[Core] Commands list failed: ${G.message}`), { commands: [] });
@@ -336295,8 +336295,8 @@ function RZa(t, e) {
         let G = t.resolveCliPath(),
           b = await t.getWorkspaceCwd(),
           [h, Z] = await Promise.all([
-            t.runCodelyCliCommand(G, ["agents", "list"], b),
-            t.runCodelyCliCommand(G, ["agents", "list", "--in-agents-dir"], b),
+            t.runGameCoworkCliCommand(G, ["agents", "list"], b),
+            t.runGameCoworkCliCommand(G, ["agents", "list", "--in-agents-dir"], b),
           ]),
           N = t.parseCliListOutput(Z),
           g = t.parseCliListOutput(h).filter((f) => f.source === "builtin" || f.source === "extension");
@@ -339119,7 +339119,7 @@ var Cje = class {
             try {
               let u = await this.getWorkspaceCwd(),
                 d = Kua(u);
-              (d > 0 && console.debug(`[Core] Migrated ${d} custom model(s) to ~/.codely/settings.json`), Dua(), Pua());
+              (d > 0 && console.debug(`[Core] Migrated ${d} custom model(s) to ~/.gamecowork/settings.json`), Dua(), Pua());
             } catch (u) {
               console.error("[Core] Custom model migration failed:", u);
             }
@@ -339132,7 +339132,7 @@ var Cje = class {
               console.error("[Core] Failed to enable unityInsight in user settings:", u);
             }
           })(),
-          this.configHandler.setCodelyModelProfilesListGetter(() => fpa(this.ide)),
+          this.configHandler.setGameCoworkModelProfilesListGetter(() => fpa(this.ide)),
           this.configHandler.onConfigUpdate((u, d) => {
             if ((this.updateIdeNotificationsEnabledFromConfig(u.config), u.config?.selectedModelByRole?.chat)) {
               let p = u.config.selectedModelByRole.chat,
@@ -339771,7 +339771,7 @@ var Cje = class {
       }
       return n;
     }
-    async syncOAuthTokenToCodelyCliAndReconnect(e, n) {
+    async syncOAuthTokenToGameCoworkCliAndReconnect(e, n) {
       try {
         let r = e.transport.type === "sse" || e.transport.type === "streamable-http" ? e.transport.url : void 0;
         if (!r) return;
@@ -339813,7 +339813,7 @@ var Cje = class {
             this.messenger.send("mcp/statusUpdate", { servers: this.configHandler.mcpServerStatus ?? [] }));
         }
       } catch (r) {
-        (console.error("[Core] syncOAuthTokenToCodelyCliAndReconnect error:", r),
+        (console.error("[Core] syncOAuthTokenToGameCoworkCliAndReconnect error:", r),
           this.messenger.send("mcp/statusUpdate", { servers: this.configHandler.mcpServerStatus ?? [] }));
       }
     }
@@ -339884,7 +339884,7 @@ var Cje = class {
       try {
         let r = this.resolveCliPath(),
           a = await this.getWorkspaceCwd(),
-          s = await this.runCodelyCliCommand(r, ["agents", "list", "--in-agents-dir"], a),
+          s = await this.runGameCoworkCliCommand(r, ["agents", "list", "--in-agents-dir"], a),
           l = this.parseCliListOutput(s).find((o) => o.name === e && (!n || o.path === n));
         return l
           ? l.source !== "user" && l.source !== "project"
@@ -339906,7 +339906,7 @@ var Cje = class {
         return (
           a && c.push("--path", a),
           s && c.push("--scope", s),
-          await this.runCodelyCliCommand(l, c, o),
+          await this.runGameCoworkCliCommand(l, c, o),
           { status: "success" }
         );
       } catch (l) {
@@ -340053,13 +340053,13 @@ var Cje = class {
       }
     }
     resolveCliPath() {
-      let e = process.env.CODELY_CLI_BASE_DIR || void 0;
-      return fbe({ codelyCliBaseDir: e });
+      let e = process.env.GAMECOWORK_CLI_BASE_DIR || void 0;
+      return fbe({ gamecoworkCliBaseDir: e });
     }
     async getExtensionList() {
       let e = this.resolveCliPath(),
         n = await this.getWorkspaceCwd(),
-        r = await this.runCodelyCliCommand(e, ["extensions", "list"], n),
+        r = await this.runGameCoworkCliCommand(e, ["extensions", "list"], n),
         a = [],
         s = r.split(`
 `);
@@ -340103,9 +340103,9 @@ var Cje = class {
         this.activeMultimodalCustomModel && W9e(e, this.activeMultimodalCustomModel, { slotOnly: !0 }),
         this.activeFlashCustomModel && W9e(e, this.activeFlashCustomModel, { slotOnly: !0 }));
     }
-    runCodelyCliCommand(e, n, r, a = 3e4, s = 1e3, l) {
+    runGameCoworkCliCommand(e, n, r, a = 3e4, s = 1e3, l) {
       return new Promise((o, c) => {
-        console.debug(`[Core] Running codely-cli: ${e} ${n.join(" ")} (cwd: ${r || "inherited"})`);
+        console.debug(`[Core] Running gamecowork-cli: ${e} ${n.join(" ")} (cwd: ${r || "inherited"})`);
         let I = (0, dya.spawn)(e, n, {
             stdio: ["ignore", "pipe", "pipe"],
             env: { ...process.env, ...l },
@@ -340125,9 +340125,9 @@ var Cje = class {
               }, s)));
           },
           Z = setTimeout(() => {
-            (console.error(`[Core] codely-cli TIMEOUT after ${a}ms: ${e} ${n.join(" ")}`),
+            (console.error(`[Core] gamecowork-cli TIMEOUT after ${a}ms: ${e} ${n.join(" ")}`),
               I.kill(),
-              u.trim() ? b(() => o(u)) : b(() => c(new Error(d || `codely-cli timed out after ${a}ms`))));
+              u.trim() ? b(() => o(u)) : b(() => c(new Error(d || `gamecowork-cli timed out after ${a}ms`))));
           }, a),
           N = new Gqt.StringDecoder("utf8"),
           g = new Gqt.StringDecoder("utf8");
@@ -340167,16 +340167,16 @@ var Cje = class {
             continue;
           }
           if (
-            n.endsWith(".codelyrc.json") ||
+            n.endsWith(".gamecoworkrc.json") ||
             n.endsWith(".prompt") ||
             n.endsWith(gpt) ||
-            (n.includes(".codely") && (n.endsWith(".yaml") || n.endsWith("yml"))) ||
-            w4.some((a) => n.includes(`.codely/${a}`))
+            (n.includes(".gamecowork") && (n.endsWith(".yaml") || n.endsWith("yml"))) ||
+            w4.some((a) => n.includes(`.gamecowork/${a}`))
           )
-            await this.configHandler.reloadConfig("Config-related file updated: codelyrc, prompt, local block, etc");
+            await this.configHandler.reloadConfig("Config-related file updated: gamecoworkrc, prompt, local block, etc");
           else if (!n.endsWith(aUt)) {
-            if (!(n.endsWith(".codelyignore") || n.endsWith(".gitignore")))
-              if (n.includes("codely-cli/settings.json")) {
+            if (!(n.endsWith(".gamecoworkignore") || n.endsWith(".gitignore")))
+              if (n.includes("gamecowork-cli/settings.json")) {
                 let a = n;
                 a.startsWith("file://") && (a = a.replace("file://", ""));
                 let s = "",
@@ -340273,7 +340273,7 @@ var Cje = class {
       }
     };
   },
-  AGe = "Return to Codely to proceed.";
+  AGe = "Return to GameCowork to proceed.";
 function CGe(t, e) {
   return t.length > e ? `${t.slice(0, e)}...` : t;
 }
@@ -340331,9 +340331,9 @@ function yki(t, e, n) {
       return r ? CGe(r, 60) : AGe;
     }
     case "enter_plan_mode":
-      return "Codely wants to switch into Plan Mode and initialize the active plan file.";
+      return "GameCowork wants to switch into Plan Mode and initialize the active plan file.";
     case "exit_plan_mode":
-      return "Codely is ready to exit Plan Mode. Review the plan and choose how to proceed.";
+      return "GameCowork is ready to exit Plan Mode. Review the plan and choose how to proceed.";
     case "save_memory": {
       let r = QGe(n, "fact");
       return r ? CGe(r, 80) : AGe;
@@ -340622,9 +340622,9 @@ function vki(t) {
   let e = { ...process.env };
   for (let [n, r] of Object.entries(t)) {
     if (typeof r != "string" || n === "PATH") continue;
-    (e[n] !== void 0 && (n.startsWith("CODELY_") || Eki.has(n))) || (process.env[n] = r);
+    (e[n] !== void 0 && (n.startsWith("GAMECOWORK_") || Eki.has(n))) || (process.env[n] = r);
   }
-  (typeof t.PATH == "string" && t.PATH && (process.env.PATH = wki(e.CODELY_BUNDLED_PATH_PREFIX, t.PATH)),
+  (typeof t.PATH == "string" && t.PATH && (process.env.PATH = wki(e.GAMECOWORK_BUNDLED_PATH_PREFIX, t.PATH)),
     delete process.env.PKG_EXECPATH);
 }
 var Jje = class {
@@ -340959,7 +340959,7 @@ async function gqt(t, e, n) {
   return r ? [r] : await t.getWorkspaceDirs();
 }
 function Zya(t) {
-  let e = t.CODELY_PREWARM;
+  let e = t.GAMECOWORK_PREWARM;
   return e === "true" || e === "1";
 }
 m();
@@ -341119,7 +341119,7 @@ m();
 ya();
 var Nya = T(require("node:fs"));
 function gya() {
-  let t = process.env.CODELY_DEBUG === "1" || process.env.CODELY_DEBUG === "true",
+  let t = process.env.GAMECOWORK_DEBUG === "1" || process.env.GAMECOWORK_DEBUG === "true",
     e = (n, ...r) => {
       let a = Df(),
         l = `[${new Date().toISOString().split(".")[0]}] ${n} ${r.join(" ")}
@@ -341170,7 +341170,7 @@ Tje.action(async () => {
         }));
       return;
     }
-    let r = await gqt(e, process.env.CODELY_WORKSPACE, n.workspace);
+    let r = await gqt(e, process.env.GAMECOWORK_WORKSPACE, n.workspace);
     (XGe.initWorkspace("default", r[0], {}), console.log("[binary] Core started"));
   } catch (t) {
     (Hqt.default.writeFileSync(
@@ -341185,7 +341185,7 @@ Tje.action(async () => {
 Tje.parse(process.argv);
 /**
  * @license
- * Copyright 2026 Codely
+ * Copyright 2026 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
@@ -341195,16 +341195,16 @@ Tje.parse(process.argv);
  */
 /**
  * @license
- * Copyright 2025 Codely
+ * Copyright 2025 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
  * @license
- * Copyright 2025 Codely
+ * Copyright 2025 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  *
  * Persist unity-insight `[run].max_turns` by editing agent toml files
- * (global `~/.codely-cli/agents/` or project `<workspace>/.codely-cli/agents/`).
+ * (global `~/.gamecowork-cli/agents/` or project `<workspace>/.gamecowork-cli/agents/`).
  *
  * Agent loader order is builtin → user → project with same-name full replace
  * (no field merge). Therefore Settings must not leave a stale full seed on disk:

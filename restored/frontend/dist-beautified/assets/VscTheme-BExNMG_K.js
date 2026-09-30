@@ -6417,183 +6417,183 @@ const am = {
   "list-hover": { vars: ["--vscode-list-hoverBackground"], default: "#383838" },
   "list-active": { vars: ["--vscode-list-activeSelectionBackground"], default: "#35C9A91A" },
   "list-active-foreground": { vars: ["--vscode-list-activeSelectionForeground"], default: "#35C9A9" },
-  "codely-text-base": { vars: ["--codely-text-base"], default: "13px" },
-  "codely-text-sm": { vars: ["--codely-text-sm"], default: "12px" },
-  "codely-color-text-default": { vars: ["--codely-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
-  "codely-color-text-inverted": { vars: ["--semantic-color-text-inverse"], default: "rgba(17, 17, 17, 1)" },
-  "codely-color-text-inverted-hover": { vars: ["--codely-color-text-inverted-hover"], default: "rgba(0, 0, 0, 0.93)" },
-  "codely-color-text-primary": { vars: ["--semantic-color-text-primary"], default: "rgba(238, 238, 238, 1)" },
-  "codely-color-text-secondary": { vars: ["--semantic-color-text-secondary"], default: "rgba(180, 180, 180, 1)" },
-  "codely-color-text-tertiary": { vars: ["--semantic-color-text-tertiary"], default: "rgba(123, 123, 123, 1)" },
-  "codely-color-icon-tertiary": { vars: ["--semantic-color-icon-tertiary"], default: "rgba(123, 123, 123, 1)" },
-  "codely-color-text-disabled": { vars: ["--semantic-color-text-disabled"], default: "rgba(96, 96, 96, 1)" },
-  "codely-color-text-link": { vars: ["--semantic-color-text-link"], default: "rgba(31, 216, 164, 1)" },
-  "codely-color-surface-code-block-bg": { vars: ["--semantic-color-code-bg"], default: "rgba(17, 17, 17, 1)" },
-  "codely-color-surface-base": { vars: ["--semantic-color-surface-base"], default: "rgba(17, 17, 17, 1)" },
-  "codely-color-surface-primary": { vars: ["--semantic-color-surface-base"], default: "rgba(17, 17, 17, 1)" },
-  "codely-color-surface-sidebar": { vars: ["--semantic-color-surface-sidebar"], default: "rgba(25, 25, 25, 1)" },
-  "codely-color-surface-elevated": { vars: ["--semantic-color-surface-elevated"], default: "rgba(42, 42, 42, 1)" },
-  "codely-color-surface-card": { vars: ["--semantic-color-surface-card"], default: "rgba(34, 34, 34, 1)" },
-  "codely-color-surface-layout": { vars: ["--codely-color-surface-layout"], default: "rgba(248, 248, 248, 1)" },
-  "codely-color-surface-newcard": { vars: ["--codely-color-surface-newcard"], default: "rgba(248, 248, 248, 1)" },
-  "codely-color-surface-input": { vars: ["--semantic-color-surface-input"], default: "rgba(25, 25, 25, 1)" },
-  "codely-color-surface-disabled": { vars: ["--semantic-color-surface-disabled"], default: "rgba(34, 34, 34, 1)" },
-  "codely-color-interactive-hover": {
+  "gamecowork-text-base": { vars: ["--gamecowork-text-base"], default: "13px" },
+  "gamecowork-text-sm": { vars: ["--gamecowork-text-sm"], default: "12px" },
+  "gamecowork-color-text-default": { vars: ["--gamecowork-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
+  "gamecowork-color-text-inverted": { vars: ["--semantic-color-text-inverse"], default: "rgba(17, 17, 17, 1)" },
+  "gamecowork-color-text-inverted-hover": { vars: ["--gamecowork-color-text-inverted-hover"], default: "rgba(0, 0, 0, 0.93)" },
+  "gamecowork-color-text-primary": { vars: ["--semantic-color-text-primary"], default: "rgba(238, 238, 238, 1)" },
+  "gamecowork-color-text-secondary": { vars: ["--semantic-color-text-secondary"], default: "rgba(180, 180, 180, 1)" },
+  "gamecowork-color-text-tertiary": { vars: ["--semantic-color-text-tertiary"], default: "rgba(123, 123, 123, 1)" },
+  "gamecowork-color-icon-tertiary": { vars: ["--semantic-color-icon-tertiary"], default: "rgba(123, 123, 123, 1)" },
+  "gamecowork-color-text-disabled": { vars: ["--semantic-color-text-disabled"], default: "rgba(96, 96, 96, 1)" },
+  "gamecowork-color-text-link": { vars: ["--semantic-color-text-link"], default: "rgba(31, 216, 164, 1)" },
+  "gamecowork-color-surface-code-block-bg": { vars: ["--semantic-color-code-bg"], default: "rgba(17, 17, 17, 1)" },
+  "gamecowork-color-surface-base": { vars: ["--semantic-color-surface-base"], default: "rgba(17, 17, 17, 1)" },
+  "gamecowork-color-surface-primary": { vars: ["--semantic-color-surface-base"], default: "rgba(17, 17, 17, 1)" },
+  "gamecowork-color-surface-sidebar": { vars: ["--semantic-color-surface-sidebar"], default: "rgba(25, 25, 25, 1)" },
+  "gamecowork-color-surface-elevated": { vars: ["--semantic-color-surface-elevated"], default: "rgba(42, 42, 42, 1)" },
+  "gamecowork-color-surface-card": { vars: ["--semantic-color-surface-card"], default: "rgba(34, 34, 34, 1)" },
+  "gamecowork-color-surface-layout": { vars: ["--gamecowork-color-surface-layout"], default: "rgba(248, 248, 248, 1)" },
+  "gamecowork-color-surface-newcard": { vars: ["--gamecowork-color-surface-newcard"], default: "rgba(248, 248, 248, 1)" },
+  "gamecowork-color-surface-input": { vars: ["--semantic-color-surface-input"], default: "rgba(25, 25, 25, 1)" },
+  "gamecowork-color-surface-disabled": { vars: ["--semantic-color-surface-disabled"], default: "rgba(34, 34, 34, 1)" },
+  "gamecowork-color-interactive-hover": {
     vars: ["--semantic-color-interactive-hover"],
     default: "rgba(255, 255, 255, 0.08)",
   },
-  "codely-color-interactive-pressed": {
+  "gamecowork-color-interactive-pressed": {
     vars: ["--semantic-color-interactive-pressed"],
     default: "rgba(255, 255, 255, 0.12)",
   },
-  "codely-color-interactive-selected": {
+  "gamecowork-color-interactive-selected": {
     vars: ["--semantic-color-interactive-selected"],
     default: "rgba(255, 255, 255, 0.1)",
   },
-  "codely-color-interactive-selected-hover": {
-    vars: ["--codely-color-interactive-selected-hover"],
+  "gamecowork-color-interactive-selected-hover": {
+    vars: ["--gamecowork-color-interactive-selected-hover"],
     default: "rgba(44, 65, 57, 1)",
   },
-  "codely-color-interactive-selected-strong": {
+  "gamecowork-color-interactive-selected-strong": {
     vars: ["--semantic-color-interactive-selected-strong"],
     default: "rgba(255, 255, 255, 0.16)",
   },
-  "codely-color-interactive-focus-ring": {
+  "gamecowork-color-interactive-focus-ring": {
     vars: ["--semantic-color-interactive-focus-ring"],
     default: "rgba(41, 163, 131, 1)",
   },
-  "codely-color-interactive-focus-danger": {
-    vars: ["--codely-color-interactive-focus-danger"],
+  "gamecowork-color-interactive-focus-danger": {
+    vars: ["--gamecowork-color-interactive-focus-danger"],
     default: "rgba(255, 69, 58, 0.22)",
   },
-  "codely-color-border-subtle": { vars: ["--semantic-color-border-subtle"], default: "rgba(58, 58, 58, 1)" },
-  "codely-color-border-bold": { vars: ["--codely-color-border-bold"], default: "rgba(255, 255, 255, 0.3)" },
-  "codely-color-border-error": { vars: ["--codely-color-border-error"], default: "rgba(255, 69, 58, 1)" },
-  "codely-color-border-warning": { vars: ["--codely-color-border-warning"], default: "rgba(255, 214, 10, 1)" },
-  "codely-color-border-success": { vars: ["--codely-color-border-success"], default: "rgba(52, 199, 89, 1)" },
-  "codely-color-status-info-default": {
+  "gamecowork-color-border-subtle": { vars: ["--semantic-color-border-subtle"], default: "rgba(58, 58, 58, 1)" },
+  "gamecowork-color-border-bold": { vars: ["--gamecowork-color-border-bold"], default: "rgba(255, 255, 255, 0.3)" },
+  "gamecowork-color-border-error": { vars: ["--gamecowork-color-border-error"], default: "rgba(255, 69, 58, 1)" },
+  "gamecowork-color-border-warning": { vars: ["--gamecowork-color-border-warning"], default: "rgba(255, 214, 10, 1)" },
+  "gamecowork-color-border-success": { vars: ["--gamecowork-color-border-success"], default: "rgba(52, 199, 89, 1)" },
+  "gamecowork-color-status-info-default": {
     vars: ["--semantic-color-status-info-default"],
     default: "rgba(0, 144, 255, 1)",
   },
-  "codely-color-status-info-text": { vars: ["--semantic-color-status-info-text"], default: "rgba(112, 184, 255, 1)" },
-  "codely-color-status-info-muted": { vars: ["--semantic-color-status-info-muted"], default: "rgba(13, 40, 71, 1)" },
-  "codely-color-status-danger-text": {
+  "gamecowork-color-status-info-text": { vars: ["--semantic-color-status-info-text"], default: "rgba(112, 184, 255, 1)" },
+  "gamecowork-color-status-info-muted": { vars: ["--semantic-color-status-info-muted"], default: "rgba(13, 40, 71, 1)" },
+  "gamecowork-color-status-danger-text": {
     vars: ["--semantic-color-status-danger-text"],
     default: "rgba(255, 149, 146, 1)",
   },
-  "codely-color-status-danger-border": {
+  "gamecowork-color-status-danger-border": {
     vars: ["--semantic-color-status-danger-border"],
     default: "rgba(140, 51, 58, 1)",
   },
-  "codely-color-status-danger-muted": {
+  "gamecowork-color-status-danger-muted": {
     vars: ["--semantic-color-status-danger-muted"],
     default: "rgba(59, 18, 25, 1)",
   },
-  "codely-color-status-danger-default": {
+  "gamecowork-color-status-danger-default": {
     vars: ["--semantic-color-status-danger-text"],
     default: "rgba(255, 149, 146, 1)",
   },
-  "codely-color-status-danger-hover": {
+  "gamecowork-color-status-danger-hover": {
     vars: ["--semantic-color-status-danger-hover"],
     default: "rgba(236, 93, 94, 1)",
   },
-  "codely-color-status-danger-press": {
+  "gamecowork-color-status-danger-press": {
     vars: ["--semantic-color-status-danger-pressed"],
     default: "rgba(181, 69, 72, 1)",
   },
-  "codely-color-status-success-text": {
+  "gamecowork-color-status-success-text": {
     vars: ["--semantic-color-status-success-text"],
     default: "rgba(61, 214, 140, 1)",
   },
-  "codely-color-status-success-muted": {
+  "gamecowork-color-status-success-muted": {
     vars: ["--semantic-color-status-success-muted"],
     default: "rgba(19, 45, 33, 1)",
   },
-  "codely-color-status-success-border": {
+  "gamecowork-color-status-success-border": {
     vars: ["--semantic-color-status-success-border"],
     default: "rgba(40, 104, 74, 1)",
   },
-  "codely-color-status-success-default": {
+  "gamecowork-color-status-success-default": {
     vars: ["--semantic-color-status-success-default"],
     default: "rgba(48, 164, 108, 1)",
   },
-  "codely-color-status-warning-default": {
+  "gamecowork-color-status-warning-default": {
     vars: ["--semantic-color-status-warning-default"],
     default: "rgba(255, 197, 61, 1)",
   },
-  "codely-color-status-warning-text": {
+  "gamecowork-color-status-warning-text": {
     vars: ["--semantic-color-status-warning-text"],
     default: "rgba(255, 202, 22, 1)",
   },
-  "codely-color-status-warning-muted": {
+  "gamecowork-color-status-warning-muted": {
     vars: ["--semantic-color-status-warning-muted"],
     default: "rgba(48, 32, 8, 1)",
   },
-  "codely-color-status-warning-border": {
+  "gamecowork-color-status-warning-border": {
     vars: ["--semantic-color-status-warning-border"],
     default: "rgba(113, 79, 25, 1)",
   },
-  "codely-color-accent-default": { vars: ["--semantic-color-accent-default"], default: "rgba(41, 163, 131, 1)" },
-  "codely-color-accent-hover": { vars: ["--semantic-color-accent-hover"], default: "rgba(39, 176, 139, 1)" },
-  "codely-color-accent-active": { vars: ["--semantic-color-accent-pressed"], default: "rgba(42, 126, 104, 1)" },
-  "codely-color-accent-muted": { vars: ["--semantic-color-accent-muted"], default: "rgba(15, 46, 34, 1)" },
-  "codely-color-accent-subtle": { vars: ["--semantic-color-accent-subtle"], default: "rgba(11, 59, 44, 1)" },
-  "codely-color-text-accent": { vars: ["--codely-color-text-accent"], default: "rgba(255, 255, 255, 1)" },
-  "codely-color-surface-sunken": { vars: ["--codely-color-surface-sunken"], default: "rgba(22, 22, 22, 1)" },
-  "codely-color-status-info-border": { vars: ["--semantic-color-status-info-border"], default: "rgba(32, 93, 158, 1)" },
-  "codely-color-border-default": { vars: ["--semantic-color-border-default"], default: "rgba(72, 72, 72, 1)" },
-  "codely-color-border-strong": { vars: ["--semantic-color-border-strong"], default: "rgba(96, 96, 96, 1)" },
-  "codely-color-accent-border": { vars: ["--semantic-color-accent-border"], default: "rgba(36, 104, 84, 1)" },
-  "codely-color-surface-overlay": { vars: ["--semantic-color-surface-overlay"], default: "rgba(0, 0, 0, 0.6)" },
-  "codely-color-surface-label": { vars: ["--codely-color-surface-label"], default: "rgba(66, 66, 66, 1)" },
-  "codely-color-surface-muted": { vars: ["--codely-color-surface-muted"], default: "rgba(196, 196, 196, 1)" },
-  "codely-color-surface-capability-default": {
-    vars: ["--codely-color-surface-capability-default"],
+  "gamecowork-color-accent-default": { vars: ["--semantic-color-accent-default"], default: "rgba(41, 163, 131, 1)" },
+  "gamecowork-color-accent-hover": { vars: ["--semantic-color-accent-hover"], default: "rgba(39, 176, 139, 1)" },
+  "gamecowork-color-accent-active": { vars: ["--semantic-color-accent-pressed"], default: "rgba(42, 126, 104, 1)" },
+  "gamecowork-color-accent-muted": { vars: ["--semantic-color-accent-muted"], default: "rgba(15, 46, 34, 1)" },
+  "gamecowork-color-accent-subtle": { vars: ["--semantic-color-accent-subtle"], default: "rgba(11, 59, 44, 1)" },
+  "gamecowork-color-text-accent": { vars: ["--gamecowork-color-text-accent"], default: "rgba(255, 255, 255, 1)" },
+  "gamecowork-color-surface-sunken": { vars: ["--gamecowork-color-surface-sunken"], default: "rgba(22, 22, 22, 1)" },
+  "gamecowork-color-status-info-border": { vars: ["--semantic-color-status-info-border"], default: "rgba(32, 93, 158, 1)" },
+  "gamecowork-color-border-default": { vars: ["--semantic-color-border-default"], default: "rgba(72, 72, 72, 1)" },
+  "gamecowork-color-border-strong": { vars: ["--semantic-color-border-strong"], default: "rgba(96, 96, 96, 1)" },
+  "gamecowork-color-accent-border": { vars: ["--semantic-color-accent-border"], default: "rgba(36, 104, 84, 1)" },
+  "gamecowork-color-surface-overlay": { vars: ["--semantic-color-surface-overlay"], default: "rgba(0, 0, 0, 0.6)" },
+  "gamecowork-color-surface-label": { vars: ["--gamecowork-color-surface-label"], default: "rgba(66, 66, 66, 1)" },
+  "gamecowork-color-surface-muted": { vars: ["--gamecowork-color-surface-muted"], default: "rgba(196, 196, 196, 1)" },
+  "gamecowork-color-surface-capability-default": {
+    vars: ["--gamecowork-color-surface-capability-default"],
     default: "rgba(228, 228, 228, 1)",
   },
-  "codely-color-text-capability-default": {
-    vars: ["--codely-color-text-capability-default"],
+  "gamecowork-color-text-capability-default": {
+    vars: ["--gamecowork-color-text-capability-default"],
     default: "rgba(62, 62, 62, 1)",
   },
-  "codely-color-surface-inverted": { vars: ["--codely-color-surface-inverted"], default: "rgba(245, 245, 245, 1)" },
-  "codely-color-surface-inverted-hover": {
-    vars: ["--codely-color-surface-inverted-hover"],
+  "gamecowork-color-surface-inverted": { vars: ["--gamecowork-color-surface-inverted"], default: "rgba(245, 245, 245, 1)" },
+  "gamecowork-color-surface-inverted-hover": {
+    vars: ["--gamecowork-color-surface-inverted-hover"],
     default: "rgba(238, 238, 238, 1)",
   },
-  "codely-color-item-surface": { vars: ["--codely-color-item-surface"], default: "rgba(255, 255, 255, 0)" },
-  "codely-color-item-surface-hover": {
-    vars: ["--codely-color-item-surface-hover"],
+  "gamecowork-color-item-surface": { vars: ["--gamecowork-color-item-surface"], default: "rgba(255, 255, 255, 0)" },
+  "gamecowork-color-item-surface-hover": {
+    vars: ["--gamecowork-color-item-surface-hover"],
     default: "rgba(255, 255, 255, 0.08)",
   },
-  "codely-color-shadow-glow-accent": {
+  "gamecowork-color-shadow-glow-accent": {
     vars: ["--semantic-color-shadow-glow-accent"],
     default: "rgba(1, 167, 127, 0.2)",
   },
-  "codely-color-shadow-glow-info": { vars: ["--semantic-color-shadow-glow-info"], default: "rgba(10, 153, 214, 0.22)" },
-  "codely-color-shadow-glow-danger": {
+  "gamecowork-color-shadow-glow-info": { vars: ["--semantic-color-shadow-glow-info"], default: "rgba(10, 153, 214, 0.22)" },
+  "gamecowork-color-shadow-glow-danger": {
     vars: ["--semantic-color-shadow-glow-danger"],
     default: "rgba(255, 69, 58, 0.2)",
   },
-  "codely-color-accent-text": { vars: ["--semantic-color-accent-text"], default: "rgba(31, 216, 164, 1)" },
-  "codely-color-accent-gradient": {
-    vars: ["--codely-color-accent-gradient"],
+  "gamecowork-color-accent-text": { vars: ["--semantic-color-accent-text"], default: "rgba(31, 216, 164, 1)" },
+  "gamecowork-color-accent-gradient": {
+    vars: ["--gamecowork-color-accent-gradient"],
     default: "linear-gradient(270deg, #B0E8D7 1.33%, #6AD3B4 52.97%, #23BD90 100%)",
   },
-  "codely-color-shadow-default": { vars: ["--codely-color-shadow-default"], default: "rgba(255, 255, 255, 0.1)" },
-  "codely-color-main-input-shadow": {
-    vars: ["--codely-color-main-input-shadow"],
+  "gamecowork-color-shadow-default": { vars: ["--gamecowork-color-shadow-default"], default: "rgba(255, 255, 255, 0.1)" },
+  "gamecowork-color-main-input-shadow": {
+    vars: ["--gamecowork-color-main-input-shadow"],
     default:
       "0px 0px 1px 0px rgba(0, 0, 0, 0.8), 0px 4px 12px 0px rgba(0, 0, 0, 0.16), 0px 1px 4px 0px rgba(0, 0, 0, 0.05)",
   },
-  "codely-color-mixture-surface-card-interactive-hover": {
-    vars: ["--codely-color-mixture-surface-card-interactive-hover"],
+  "gamecowork-color-mixture-surface-card-interactive-hover": {
+    vars: ["--gamecowork-color-mixture-surface-card-interactive-hover"],
     default: "color-mix(in srgb, var(--semantic-color-surface-card), var(--semantic-color-interactive-hover))",
   },
-  "codely-color-mixture-surface-card-interactive-pressed": {
-    vars: ["--codely-color-mixture-surface-card-interactive-pressed"],
+  "gamecowork-color-mixture-surface-card-interactive-pressed": {
+    vars: ["--gamecowork-color-mixture-surface-card-interactive-pressed"],
     default: "color-mix(in srgb, var(--semantic-color-surface-card), var(--semantic-color-interactive-pressed))",
   },
-  "codely-color-logo": { vars: ["--codely-color-logo"], default: "rgba(255, 255, 255, 1)" },
+  "gamecowork-color-logo": { vars: ["--gamecowork-color-logo"], default: "rgba(255, 255, 255, 1)" },
 };
 Object.values(am)
   .map((e) => e.vars)
@@ -6635,7 +6635,7 @@ const WHe = (e, t) => [...e].reverse().reduce((n, r) => `var(${r}, ${n})`, t),
   },
   E2n = (e, t) => {
     for (const [n, r] of Object.entries(am))
-      if (!(t != null && t.skipCodelyVars && n.startsWith("codely-"))) {
+      if (!(t != null && t.skipGameCoworkVars && n.startsWith("gamecowork-"))) {
         for (const a of r.vars)
           if (e) {
             const i = localStorage.getItem(n);
@@ -6645,23 +6645,23 @@ const WHe = (e, t) => [...e].reverse().reduce((n, r) => `var(${r}, ${n})`, t),
   },
   Io = "8px",
   as = "#999998",
-  Aoe = aa("codely-color-surface-input");
-aa("codely-color-surface-input");
-const og = aa("codely-color-surface-primary"),
-  Co = aa("codely-color-text-primary"),
-  YHe = aa("codely-color-accent-default");
-aa("codely-color-text-accent");
-const Yy = aa("codely-color-surface-primary");
-aa("codely-color-surface-sunken");
-aa("codely-color-interactive-selected");
-aa("codely-color-interactive-focus-ring");
-aa("codely-color-text-primary");
-aa("codely-color-border-default");
-aa("codely-color-interactive-focus-ring");
-const Roe = aa("codely-color-surface-elevated");
-aa("codely-color-text-primary");
-aa("codely-color-interactive-focus-ring");
-const o5e = aa("codely-color-border-default"),
+  Aoe = aa("gamecowork-color-surface-input");
+aa("gamecowork-color-surface-input");
+const og = aa("gamecowork-color-surface-primary"),
+  Co = aa("gamecowork-color-text-primary"),
+  YHe = aa("gamecowork-color-accent-default");
+aa("gamecowork-color-text-accent");
+const Yy = aa("gamecowork-color-surface-primary");
+aa("gamecowork-color-surface-sunken");
+aa("gamecowork-color-interactive-selected");
+aa("gamecowork-color-interactive-focus-ring");
+aa("gamecowork-color-text-primary");
+aa("gamecowork-color-border-default");
+aa("gamecowork-color-interactive-focus-ring");
+const Roe = aa("gamecowork-color-surface-elevated");
+aa("gamecowork-color-text-primary");
+aa("gamecowork-color-interactive-focus-ring");
+const o5e = aa("gamecowork-color-border-default"),
   w2n = $t.button`
   padding: 6px 12px;
   margin: 8px 0;
@@ -14611,7 +14611,7 @@ function Ec({ size: e = "sm", className: t, label: n = "Loading", ...r }) {
   return p.jsx(Sje, {
     role: "status",
     "aria-label": n,
-    className: xr("animate-spin leading-none text-codely-color-text-tertiary", zVe[e], t),
+    className: xr("animate-spin leading-none text-gamecowork-color-text-tertiary", zVe[e], t),
     ...r,
   });
 }
@@ -14627,8 +14627,8 @@ function R5e(e) {
 function $Ve({ title: e, icon: t, showClose: n = !1, onClose: r, closeLabel: a = "Close", noBoundary: i = !1 }) {
   return p.jsxs("div", {
     className: xr(
-      "flex items-center justify-between gap-3 border-0 bg-codely-color-surface-primary py-[14px] pl-6 pr-3",
-      !i && "border-b border-solid border-codely-color-border-subtle",
+      "flex items-center justify-between gap-3 border-0 bg-gamecowork-color-surface-primary py-[14px] pl-6 pr-3",
+      !i && "border-b border-solid border-gamecowork-color-border-subtle",
     ),
     children: [
       p.jsxs("div", {
@@ -14636,12 +14636,12 @@ function $Ve({ title: e, icon: t, showClose: n = !1, onClose: r, closeLabel: a =
         children: [
           t
             ? p.jsx("span", {
-                className: "flex h-5 w-5 items-center justify-center text-codely-color-accent-default",
+                className: "flex h-5 w-5 items-center justify-center text-gamecowork-color-accent-default",
                 children: t,
               })
             : null,
           p.jsx("h2", {
-            className: "m-0 text-base font-semibold leading-5 text-codely-color-text-default",
+            className: "m-0 text-base font-semibold leading-5 text-gamecowork-color-text-default",
             children: e,
           }),
         ],
@@ -14650,7 +14650,7 @@ function $Ve({ title: e, icon: t, showClose: n = !1, onClose: r, closeLabel: a =
         ? p.jsx(gr, {
             size: "sm",
             onClick: r,
-            className: "shrink-0 text-codely-color-text-tertiary hover:text-codely-color-text-default",
+            className: "shrink-0 text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-default",
             "aria-label": a,
             children: p.jsx(R5e, { className: "!text-xl" }),
           })
@@ -14677,7 +14677,7 @@ function HVe({
   return p.jsxs("div", {
     className: xr(
       "flex flex-wrap items-center justify-between gap-4 border-0 px-6 py-4",
-      !m && "border-t border-solid border-codely-color-border-subtle",
+      !m && "border-t border-solid border-gamecowork-color-border-subtle",
     ),
     children: [
       p.jsx("div", { className: "flex items-center gap-4", children: u }),
@@ -14693,7 +14693,7 @@ function HVe({
             disabled: n || r,
             onClick: () => void t(),
             "data-focusable": "true",
-            children: [r && p.jsx(Ec, { size: "sm", className: "mr-1.5 text-codely-color-text-accent" }), a],
+            children: [r && p.jsx(Ec, { size: "sm", className: "mr-1.5 text-gamecowork-color-text-accent" }), a],
           }),
         ],
       }),
@@ -14810,12 +14810,12 @@ function KVe({ badge: e }) {
   return e.variant === "required"
     ? p.jsx("span", {
         className:
-          "rounded border border-solid border-codely-color-accent-default px-1 py-0 text-xs text-codely-color-accent-default bg-codely-color-accent-subtle",
+          "rounded border border-solid border-gamecowork-color-accent-default px-1 py-0 text-xs text-gamecowork-color-accent-default bg-gamecowork-color-accent-subtle",
         children: e.label,
       })
     : p.jsx("span", {
         className:
-          "rounded border border-solid border-codely-color-border-subtle px-1 py-0 text-xs text-codely-color-text-secondary bg-codely-color-surface-card",
+          "rounded border border-solid border-gamecowork-color-border-subtle px-1 py-0 text-xs text-gamecowork-color-text-secondary bg-gamecowork-color-surface-card",
         children: e.label,
       });
 }
@@ -14824,7 +14824,7 @@ function QVe({ item: e, labels: t, onInstall: n }) {
   const r = (o = e.required) != null ? o : (i = e.badges) == null ? void 0 : i.some((l) => l.variant === "required"),
     a = e.installed ? t.installed : e.installing ? t.installing : t.install;
   return p.jsxs("div", {
-    className: xr("relative overflow-hidden border-0 rounded-lg bg-codely-color-surface-sidebar"),
+    className: xr("relative overflow-hidden border-0 rounded-lg bg-gamecowork-color-surface-sidebar"),
     children: [
       r
         ? p.jsxs("div", {
@@ -14844,7 +14844,7 @@ function QVe({ item: e, labels: t, onInstall: n }) {
         children: [
           p.jsxs("div", {
             className:
-              "flex items-center justify-between gap-4 border-0 border-b border-solid border-codely-color-border-subtle p-4",
+              "flex items-center justify-between gap-4 border-0 border-b border-solid border-gamecowork-color-border-subtle p-4",
             children: [
               p.jsxs("div", {
                 className: "flex min-w-0 flex-col gap-1",
@@ -14853,19 +14853,19 @@ function QVe({ item: e, labels: t, onInstall: n }) {
                     className: "flex min-w-0 flex-wrap items-center gap-2",
                     children: [
                       p.jsx("span", {
-                        className: "text-base font-semibold text-codely-color-text-primary",
+                        className: "text-base font-semibold text-gamecowork-color-text-primary",
                         children: e.title,
                       }),
                       (s = e.badges) == null ? void 0 : s.map((l) => p.jsx(KVe, { badge: l }, l.label)),
                     ],
                   }),
                   p.jsx("p", {
-                    className: "truncate text-sm text-codely-color-text-secondary m-0",
+                    className: "truncate text-sm text-gamecowork-color-text-secondary m-0",
                     children: e.description,
                   }),
                   e.required &&
                     p.jsxs("div", {
-                      className: "flex items-center gap-3 text-xs text-codely-color-text-tertiary mt-1",
+                      className: "flex items-center gap-3 text-xs text-gamecowork-color-text-tertiary mt-1",
                       children: [
                         p.jsxs("div", {
                           className: "flex flex-wrap items-center gap-3",
@@ -14894,8 +14894,8 @@ function QVe({ item: e, labels: t, onInstall: n }) {
                   className: xr(
                     "shrink-0 border border-solid bg-transparent h-7",
                     r
-                      ? "border-codely-color-accent-default text-codely-color-accent-default hover:bg-codely-color-accent-muted active:bg-codely-color-accent-muted"
-                      : "border-codely-color-border-subtle text-codely-color-text-default",
+                      ? "border-gamecowork-color-accent-default text-gamecowork-color-accent-default hover:bg-gamecowork-color-accent-muted active:bg-gamecowork-color-accent-muted"
+                      : "border-gamecowork-color-border-subtle text-gamecowork-color-text-default",
                   ),
                   disabled: e.installing || e.installed,
                   onClick: () => (n == null ? void 0 : n(e.id)),
@@ -14909,7 +14909,7 @@ function QVe({ item: e, labels: t, onInstall: n }) {
                 className: "flex items-center justify-between gap-3 px-4 py-2",
                 children: [
                   p.jsx("p", {
-                    className: "text-sm text-codely-color-accent-default m-0",
+                    className: "text-sm text-gamecowork-color-accent-default m-0",
                     children: e.requiredMessage,
                   }),
                   p.jsx(Nr, {
@@ -14918,8 +14918,8 @@ function QVe({ item: e, labels: t, onInstall: n }) {
                     className: xr(
                       "shrink-0 border border-solid bg-transparent px-5 h-8",
                       r
-                        ? "border-codely-color-accent-default text-codely-color-accent-default hover:bg-codely-color-accent-muted active:bg-codely-color-accent-muted"
-                        : "border-codely-color-border-subtle text-codely-color-text-default",
+                        ? "border-gamecowork-color-accent-default text-gamecowork-color-accent-default hover:bg-gamecowork-color-accent-muted active:bg-gamecowork-color-accent-muted"
+                        : "border-gamecowork-color-border-subtle text-gamecowork-color-text-default",
                     ),
                     disabled: e.installing || e.installed,
                     onClick: () => (n == null ? void 0 : n(e.id)),
@@ -14929,7 +14929,7 @@ function QVe({ item: e, labels: t, onInstall: n }) {
                 ],
               })
             : p.jsxs("div", {
-                className: "flex items-center justify-between gap-3 text-xs text-codely-color-text-tertiary px-4 py-2",
+                className: "flex items-center justify-between gap-3 text-xs text-gamecowork-color-text-tertiary px-4 py-2",
                 children: [
                   p.jsxs("div", {
                     className: "flex flex-wrap items-center gap-3",
@@ -14956,7 +14956,7 @@ function QVe({ item: e, labels: t, onInstall: n }) {
 }
 function ZVe({ title: e, projectTypeLabel: t, introTitle: n, closeLabel: r, onClose: a }) {
   return p.jsxs("div", {
-    className: "bg-codely-color-surface-primary px-6 pb-3 pt-5",
+    className: "bg-gamecowork-color-surface-primary px-6 pb-3 pt-5",
     children: [
       p.jsxs("div", {
         className: "flex items-start justify-between gap-4",
@@ -14965,15 +14965,15 @@ function ZVe({ title: e, projectTypeLabel: t, introTitle: n, closeLabel: r, onCl
             className: "min-w-0",
             children: [
               p.jsx("h2", {
-                className: "m-0 text-xl font-semibold leading-7 text-codely-color-text-default whitespace-pre-line",
+                className: "m-0 text-xl font-semibold leading-7 text-gamecowork-color-text-default whitespace-pre-line",
                 children: e,
               }),
               t
                 ? p.jsx("div", {
                     className: "flex flex-wrap items-center gap-2 text-sm",
                     children: p.jsxs("span", {
-                      className: "inline-flex items-center gap-1.5 text-codely-color-accent-default",
-                      children: [p.jsx("span", { className: "size-2 rounded-full bg-codely-color-accent-default" }), t],
+                      className: "inline-flex items-center gap-1.5 text-gamecowork-color-accent-default",
+                      children: [p.jsx("span", { className: "size-2 rounded-full bg-gamecowork-color-accent-default" }), t],
                     }),
                   })
                 : null,
@@ -14983,7 +14983,7 @@ function ZVe({ title: e, projectTypeLabel: t, introTitle: n, closeLabel: r, onCl
             ? p.jsx(gr, {
                 size: "sm",
                 onClick: a,
-                className: "shrink-0 text-codely-color-text-tertiary hover:text-codely-color-text-default",
+                className: "shrink-0 text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-default",
                 "aria-label": r,
                 children: p.jsx(YVe, {}),
               })
@@ -14993,7 +14993,7 @@ function ZVe({ title: e, projectTypeLabel: t, introTitle: n, closeLabel: r, onCl
       p.jsx("div", {
         className: "mt-4",
         children: p.jsx("h3", {
-          className: "text-sm font-normal text-codely-color-text-secondary m-0 whitespace-pre-line leading-[1.25rem]",
+          className: "text-sm font-normal text-gamecowork-color-text-secondary m-0 whitespace-pre-line leading-[1.25rem]",
           children: n,
         }),
       }),
@@ -15023,7 +15023,7 @@ function XVe({
     showClose: !0,
     closeLabel: g.close,
     onClose: l,
-    className: xr("w-full min-h-0 flex-1 bg-codely-color-surface-primary", f),
+    className: xr("w-full min-h-0 flex-1 bg-gamecowork-color-surface-primary", f),
     headerContent: p.jsx(ZVe, { title: y, projectTypeLabel: n, introTitle: r, closeLabel: g.close, onClose: l }),
     noBoundary: !0,
     hideCancelButton: !0,
@@ -15033,7 +15033,7 @@ function XVe({
     leftContent: s
       ? p.jsx(kje, {
           label: g.dontShowAgain,
-          labelClassName: "text-codely-color-text-tertiary",
+          labelClassName: "text-gamecowork-color-text-tertiary",
           checked: i,
           onChange: (x) => (o == null ? void 0 : o(x.target.checked)),
         })
@@ -16267,7 +16267,7 @@ function KWe({
   let T = 0;
   return p.jsxs("div", {
     className: xr(
-      "box-border flex w-full flex-col overflow-hidden rounded-xl border border-solid border-codely-color-border-default bg-codely-color-surface-primary text-sm",
+      "box-border flex w-full flex-col overflow-hidden rounded-xl border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary text-sm",
       t ? "shadow-none" : "shadow-lg",
       d,
     ),
@@ -16278,7 +16278,7 @@ function KWe({
             children: p.jsx("input", {
               type: "text",
               className:
-                "h-8 w-full appearance-none rounded border-none bg-codely-color-surface-input px-2 text-sm text-codely-color-text-default outline-none placeholder:text-codely-color-text-disabled",
+                "h-8 w-full appearance-none rounded border-none bg-gamecowork-color-surface-input px-2 text-sm text-gamecowork-color-text-default outline-none placeholder:text-gamecowork-color-text-disabled",
               placeholder: l,
               value: o,
               onChange: (w) => (s == null ? void 0 : s(w.target.value)),
@@ -16290,7 +16290,7 @@ function KWe({
         ref: y,
         blockOverscroll: !0,
         className: xr("custom-scroller-popup min-h-0 min-w-0 flex-none p-1"),
-        style: { maxHeight: i ? "calc(20.625rem - var(--codely-app-header-height, 0px) - 0.4rem)" : c },
+        style: { maxHeight: i ? "calc(20.625rem - var(--gamecowork-app-header-height, 0px) - 0.4rem)" : c },
         recalculateDeps: [e, o],
         children: g
           ? p.jsxs(p.Fragment, {
@@ -16304,7 +16304,7 @@ function KWe({
                       children: [
                         w.title
                           ? p.jsx("div", {
-                              className: "px-2 text-xs font-normal uppercase text-codely-color-text-tertiary my-1",
+                              className: "px-2 text-xs font-normal uppercase text-gamecowork-color-text-tertiary my-1",
                               children: w.title,
                             })
                           : null,
@@ -16321,9 +16321,9 @@ function KWe({
                               disabled: A.disabled,
                               "data-testid": "slash-popup-item",
                               className: xr(
-                                "h-7 block w-full cursor-pointer rounded-md border border-transparent bg-transparent p-0 text-left text-codely-color-text-default outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-60",
-                                I && "bg-codely-color-interactive-pressed",
-                                !I && "hover:bg-codely-color-interactive-hover",
+                                "h-7 block w-full cursor-pointer rounded-md border border-transparent bg-transparent p-0 text-left text-gamecowork-color-text-default outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+                                I && "bg-gamecowork-color-interactive-pressed",
+                                !I && "hover:bg-gamecowork-color-interactive-hover",
                               ),
                               onMouseDown: (F) => F.preventDefault(),
                               onMouseEnter: () => (a == null ? void 0 : a(L)),
@@ -16346,7 +16346,7 @@ function KWe({
                                             ? p.jsx(tr, {
                                                 text: A.title,
                                                 children: p.jsx("span", {
-                                                  className: "truncate text-codely-color-text-default",
+                                                  className: "truncate text-gamecowork-color-text-default",
                                                   children: A.title,
                                                 }),
                                               })
@@ -16357,7 +16357,7 @@ function KWe({
                                                 scrollable: !0,
                                                 style: { maxWidth: "20rem" },
                                                 children: p.jsx("span", {
-                                                  className: "truncate text-codely-color-text-tertiary",
+                                                  className: "truncate text-gamecowork-color-text-tertiary",
                                                   children: A.description,
                                                 }),
                                               })
@@ -16374,7 +16374,7 @@ function KWe({
                         N
                           ? null
                           : p.jsx("div", {
-                              className: "my-1 h-px bg-codely-color-border-subtle w-[calc(100%+0.5rem)] -ml-1",
+                              className: "my-1 h-px bg-gamecowork-color-border-subtle w-[calc(100%+0.5rem)] -ml-1",
                             }),
                       ],
                     },
@@ -16386,7 +16386,7 @@ function KWe({
             })
           : p.jsx("div", {
               className: "flex h-[3.0625rem] w-full items-center justify-center whitespace-nowrap",
-              children: p.jsx("span", { className: "text-sm font-normal text-codely-color-text-default", children: u }),
+              children: p.jsx("span", { className: "text-sm font-normal text-gamecowork-color-text-default", children: u }),
             }),
       }),
     ],
@@ -16504,7 +16504,7 @@ function $s({ isActive: e, icon: t, label: n, title: r, onClick: a, className: i
   return p.jsxs("button", {
     type: "button",
     className: xr(
-      "group h-[1.75rem] rounded-md hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center gap-2 truncate border-0 bg-transparent p-1 text-sm text-[0.8125rem]",
+      "group h-[1.75rem] rounded-md hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center gap-2 truncate border-0 bg-transparent p-1 text-sm text-[0.8125rem]",
       i,
     ),
     onClick: a,
@@ -16512,11 +16512,11 @@ function $s({ isActive: e, icon: t, label: n, title: r, onClick: a, className: i
     children: [
       p.jsx("span", {
         className:
-          "text-codely-color-text-secondary group-hover:text-codely-color-text-default flex !text-base flex-shrink-0 items-center justify-center",
+          "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default flex !text-base flex-shrink-0 items-center justify-center",
         children: t,
       }),
-      p.jsx("span", { className: "text-codely-color-text-default min-w-0 flex-1 truncate text-left", children: n }),
-      e && p.jsx(i3e, { className: "text-codely-color-text-default !text-base flex-shrink-0" }),
+      p.jsx("span", { className: "text-gamecowork-color-text-default min-w-0 flex-1 truncate text-left", children: n }),
+      e && p.jsx(i3e, { className: "text-gamecowork-color-text-default !text-base flex-shrink-0" }),
     ],
   });
 }
@@ -16534,24 +16534,24 @@ function mY({ title: e, icon: t, workspaceCount: n, isExpanded: r, onToggle: a, 
       p.jsxs("button", {
         type: "button",
         className:
-          "group h-[1.75rem] rounded-md hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm text-[0.8125rem]",
+          "group h-[1.75rem] rounded-md hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent p-1 text-sm text-[0.8125rem]",
         onClick: a,
         children: [
           p.jsx("span", {
             className: "inline-flex size-4 flex-shrink-0 items-center justify-center",
             children: p.jsx(Rre, {
               className: xr(
-                "text-codely-color-text-secondary group-hover:text-codely-color-text-default !text-sm",
+                "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default !text-sm",
                 r ? "-rotate-90" : "rotate-180",
               ),
             }),
           }),
           p.jsx("span", {
             className:
-              "text-codely-color-text-secondary group-hover:text-codely-color-text-default flex !text-base flex-shrink-0 items-center justify-center",
+              "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default flex !text-base flex-shrink-0 items-center justify-center",
             children: t,
           }),
-          p.jsx("span", { className: "text-codely-color-text-default min-w-0 flex-1 truncate text-left", children: e }),
+          p.jsx("span", { className: "text-gamecowork-color-text-default min-w-0 flex-1 truncate text-left", children: e }),
         ],
       }),
       r && p.jsx("div", { className: "pb-1 flex flex-col gap-1", children: i }),
@@ -16563,7 +16563,7 @@ function oYe({ placeholder: e, value: t, onChange: n, inputRef: r }) {
     ref: r,
     type: "text",
     className:
-      "mb-1 h-[1.375rem] mx-1 w-full appearance-none rounded border-none bg-transparent px-2 text-sm text-[0.8125rem] text-codely-color-text-default outline-none placeholder:text-codely-color-text-disabled",
+      "mb-1 h-[1.375rem] mx-1 w-full appearance-none rounded border-none bg-transparent px-2 text-sm text-[0.8125rem] text-gamecowork-color-text-default outline-none placeholder:text-gamecowork-color-text-disabled",
     placeholder: e,
     value: t,
     onChange: (a) => n(a.target.value),
@@ -16743,7 +16743,7 @@ function sYe({
       ref: P,
       type: "button",
       className: xr(
-        "h-[1.875rem] border-none text-codely-color-text-secondary hover:bg-codely-color-interactive-hover flex cursor-pointer items-center gap-2 rounded-md bg-transparent border-0",
+        "h-[1.875rem] border-none text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover flex cursor-pointer items-center gap-2 rounded-md bg-transparent border-0",
         t != null ? t : "w-full px-2 py-1.5 text-sm",
       ),
       onClick: se,
@@ -16763,7 +16763,7 @@ function sYe({
                 ref: O,
                 role: "menu",
                 className: xr(
-                  "border border-solid border-codely-color-border-default bg-codely-color-surface-card fixed z-[1001] box-border flex min-h-0 flex-col overflow-hidden rounded-xl py-2 shadow-md",
+                  "border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-card fixed z-[1001] box-border flex min-h-0 flex-col overflow-hidden rounded-xl py-2 shadow-md",
                   r,
                 ),
                 style: {
@@ -16778,7 +16778,7 @@ function sYe({
                   header: p.jsx(oYe, { placeholder: a.searchPlaceholder, value: A, onChange: L, inputRef: B }),
                   footer: p.jsxs("div", {
                     className:
-                      "border-codely-color-border-subtle border-solid mt-1 flex flex-col border-0 border-t pt-1 mx-2",
+                      "border-gamecowork-color-border-subtle border-solid mt-1 flex flex-col border-0 border-t pt-1 mx-2",
                     children: [
                       !i &&
                         p.jsx($s, {
@@ -16803,7 +16803,7 @@ function sYe({
                           children:
                             U.length === 0
                               ? p.jsx("div", {
-                                  className: "text-codely-color-text-tertiary px-2 py-1.5 text-xs",
+                                  className: "text-gamecowork-color-text-tertiary px-2 py-1.5 text-xs",
                                   children: a.noMatchingWorkspaces,
                                 })
                               : U.map((fe) => {
@@ -16857,13 +16857,13 @@ function sYe({
                               p.jsxs(p.Fragment, {
                                 children: [
                                   p.jsx("div", {
-                                    className: "text-codely-color-text-secondary px-1 py-1 text-xs",
+                                    className: "text-gamecowork-color-text-secondary px-1 py-1 text-xs",
                                     children: a.recents,
                                   }),
                                   s &&
                                     p.jsx("div", {
                                       className:
-                                        "text-codely-color-text-tertiary animate-pulse px-3 py-2 text-xs hidden",
+                                        "text-gamecowork-color-text-tertiary animate-pulse px-3 py-2 text-xs hidden",
                                       children: a.loading,
                                     }),
                                   p.jsxs("div", {
@@ -16899,9 +16899,9 @@ function sYe({
                                   }),
                                 ],
                               }),
-                            p.jsx("div", { className: "border-codely-color-border-subtle my-1 border-t" }),
+                            p.jsx("div", { className: "border-gamecowork-color-border-subtle my-1 border-t" }),
                             p.jsx("div", {
-                              className: "text-codely-color-text-secondary px-1 py-1 text-xs",
+                              className: "text-gamecowork-color-text-secondary px-1 py-1 text-xs",
                               children: a.runOn,
                             }),
                             !i &&
@@ -16914,7 +16914,7 @@ function sYe({
                                 children:
                                   d.length === 0
                                     ? p.jsx("div", {
-                                        className: "text-codely-color-text-tertiary px-2 py-1.5 text-xs",
+                                        className: "text-gamecowork-color-text-tertiary px-2 py-1.5 text-xs",
                                         children: a.noAvailableWorkspaces,
                                       })
                                     : d.map((fe) =>
@@ -16934,20 +16934,20 @@ function sYe({
                               }),
                             m &&
                               p.jsx("div", {
-                                className: "text-codely-color-text-tertiary animate-pulse px-3 py-2 text-xs hidden",
+                                className: "text-gamecowork-color-text-tertiary animate-pulse px-3 py-2 text-xs hidden",
                                 children: a.discoveringRemoteMachines,
                               }),
                             !m &&
                               f &&
                               p.jsx("div", {
-                                className: "text-codely-color-text-tertiary px-3 py-2 text-xs break-all",
+                                className: "text-gamecowork-color-text-tertiary px-3 py-2 text-xs break-all",
                                 children: f,
                               }),
                             !m &&
                               !f &&
                               h.length === 0 &&
                               p.jsx("div", {
-                                className: "text-codely-color-text-tertiary px-3 py-2 text-xs hidden",
+                                className: "text-gamecowork-color-text-tertiary px-3 py-2 text-xs hidden",
                                 children: a.noRemoteMachines,
                               }),
                             u.length > 0 &&
@@ -17106,14 +17106,14 @@ function Mm({
     anchor: "bottom start",
     minWidth: "13.75rem",
     className:
-      "z-[1100] max-w-[20rem] border border-solid border-codely-color-border-default rounded-lg [&_button]:text-sm [&_button]:h-8 [&_button]:px-2 [&_button]:py-1 [&_button]:font-normal",
+      "z-[1100] max-w-[20rem] border border-solid border-gamecowork-color-border-default rounded-lg [&_button]:text-sm [&_button]:h-8 [&_button]:px-2 [&_button]:py-1 [&_button]:font-normal",
     onOpenChange: (S) => {
       (u(S), l == null || l(S));
     },
     trigger: p.jsxs(WH, {
       type: "button",
       className: xr(
-        "inline-flex max-w-[13.75rem] items-center gap-1.5 text-codely-color-text-default p-1 pl-2 h-7 rounded-md border border-solid border-codely-color-border-subtle outline-offset-2 hover:bg-codely-color-interactive-hover cursor-pointer bg-transparent",
+        "inline-flex max-w-[13.75rem] items-center gap-1.5 text-gamecowork-color-text-default p-1 pl-2 h-7 rounded-md border border-solid border-gamecowork-color-border-subtle outline-offset-2 hover:bg-gamecowork-color-interactive-hover cursor-pointer bg-transparent",
         i,
       ),
       "data-focusable": "true",
@@ -17124,10 +17124,10 @@ function Mm({
         (g == null ? void 0 : g.icon) &&
           p.jsx("span", { className: "flex shrink-0 items-center [&_svg]:!text-base", children: g.icon }),
         p.jsx("span", {
-          className: "max-w-[8rem] truncate text-sm text-codely-color-text-default",
+          className: "max-w-[8rem] truncate text-sm text-gamecowork-color-text-default",
           children: g == null ? void 0 : g.label,
         }),
-        p.jsx(o3e, { className: "!text-base shrink-0 text-codely-color-text-tertiary" }),
+        p.jsx(o3e, { className: "!text-base shrink-0 text-gamecowork-color-text-tertiary" }),
       ],
     }),
     children: [
@@ -17162,7 +17162,7 @@ function Mm({
         }),
       (b = r == null ? void 0 : r.workspaces) == null || b
         ? p.jsx("div", {
-            className: "px-2 py-1 text-xs text-codely-color-text-disabled normal-case",
+            className: "px-2 py-1 text-xs text-gamecowork-color-text-disabled normal-case",
             children: (C = r == null ? void 0 : r.workspaces) != null ? C : "Workspaces",
           })
         : null,
@@ -17192,7 +17192,7 @@ function Mm({
                       placement: "top",
                       style: { zIndex: 1200 },
                       children: p.jsx("span", {
-                        className: "text-xs text-codely-color-text-tertiary shrink-0 max-w-[5rem] truncate",
+                        className: "text-xs text-gamecowork-color-text-tertiary shrink-0 max-w-[5rem] truncate",
                         children: S.remote,
                       }),
                     }),
@@ -17232,7 +17232,7 @@ function Id(e) {
       "relative inline-flex flex-shrink-0 p-0 rounded-full border border-solid transition-colors duration-300 ease-in-out",
       i.track,
       r ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-      t ? "border-transparent bg-codely-color-accent-default" : "border-transparent bg-codely-color-text-disabled",
+      t ? "border-transparent bg-gamecowork-color-accent-default" : "border-transparent bg-gamecowork-color-text-disabled",
     ),
     children: p.jsx("span", {
       className: xr(
@@ -17427,14 +17427,14 @@ const bYe =
     "data:image/png;base64,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6uvJtKxS086j3wHlUcpI4SkBJh7uII2W7XqB+qNZMCOHriVepA7Klbdhb1u7f00njpetDuIYmacdfSPv1Y58aghAdmxy0TNFeiZl60HCOoCUPholUr7gcmDLtdqmbB4QTDHZypmh1j43nZjuWduwj6etDuI42q//9HefqPY9fUFfi0qDn+XFIJzY9YvShGjWCgchcRh2d7I9Y1wnIZ1fHWewtsq9HXNbHcRxtZ52dCzipim165eKU958gbJn/6UeKmMmlitnGUmN+FtI2eFvL060hw7M7lvp0cffVgdxzM35E0+k9rLuEL4VNySkDq0DlxR1CcWoBfUJw3d0S8zJYHXEPtN/XduwLyFbHcSlYl4WNbu5RwbXVpUbMF3LAoNQaROtW0GxShoK3M6mnO7Z/tA7HrTVLilbHcQlZtOHfuLmHhK8sEcJJ1HJEDZRRZwKoVvI2hXHGcrHy5mrVpzhErXVQVyK5vhEa95W/leHIsxoIhfzOqWHa85rG/YlbquDuJTNHcW2vBW0baUYHZp4xHL+tRVnWM1tdRCrmX3wDdfnVr8n5fZg+dH3fNxWW2211VZbbbXVVltttdVWW2211VZbbbXVVltttdVWW2211VZbbbXVVltttdVWW2211VZbbbXVVltttdVWW2211VZbbbXVVltttdVWW2211VZbbbXVVltttaNl/xfjHzPKNs9gsAAAAABJRU5ErkJggg==",
   $he = 20,
   fY = 0.085;
-function vYe({ className: e, style: t, ariaLabel: n = "Codely" }) {
+function vYe({ className: e, style: t, ariaLabel: n = "GameCowork" }) {
   const r = E.useRef(null),
     a = E.useRef(null),
     i = E.useRef(null),
     o = E.useId().replace(/:/g, ""),
-    s = `codely-logo-source-${o}`,
-    l = `codely-logo-mask-${o}`,
-    c = `codely-logo-glow-${o}`,
+    s = `gamecowork-logo-source-${o}`,
+    l = `gamecowork-logo-mask-${o}`,
+    c = `gamecowork-logo-glow-${o}`,
     d = E.useRef({ x: 0, y: 0, scale: 1 }),
     u = E.useRef({ x: 0, y: 0, scale: 1 }),
     h = (f, g) => {
@@ -17455,9 +17455,9 @@ function vYe({ className: e, style: t, ariaLabel: n = "Codely" }) {
           ((S.x += (C.x - S.x) * fY),
             (S.y += (C.y - S.y) * fY),
             (S.scale += (C.scale - S.scale) * fY),
-            f.style.setProperty("--codely-logo-rx", `${(-S.y * $he).toFixed(3)}deg`),
-            f.style.setProperty("--codely-logo-ry", `${(S.x * $he).toFixed(3)}deg`),
-            f.style.setProperty("--codely-logo-scale", S.scale.toFixed(4)));
+            f.style.setProperty("--gamecowork-logo-rx", `${(-S.y * $he).toFixed(3)}deg`),
+            f.style.setProperty("--gamecowork-logo-ry", `${(S.x * $he).toFixed(3)}deg`),
+            f.style.setProperty("--gamecowork-logo-scale", S.scale.toFixed(4)));
           const T = a.current,
             w = i.current;
           (T &&
@@ -17488,14 +17488,14 @@ function vYe({ className: e, style: t, ariaLabel: n = "Codely" }) {
     }, []),
     p.jsx("div", {
       ref: r,
-      className: xr("codely-dynamic-logo [perspective:1100px]", e),
-      style: { "--codely-logo-rx": "0deg", "--codely-logo-ry": "0deg", "--codely-logo-scale": "1", ...t },
+      className: xr("gamecowork-dynamic-logo [perspective:1100px]", e),
+      style: { "--gamecowork-logo-rx": "0deg", "--gamecowork-logo-ry": "0deg", "--gamecowork-logo-scale": "1", ...t },
       children: p.jsxs("svg", {
         viewBox: "0 0 264 264",
         role: "img",
         "aria-label": n,
         className:
-          "block h-auto w-full overflow-visible [transform-style:preserve-3d] will-change-transform motion-reduce:transform-none [transform:rotateX(var(--codely-logo-rx))_rotateY(var(--codely-logo-ry))_scale(var(--codely-logo-scale))]",
+          "block h-auto w-full overflow-visible [transform-style:preserve-3d] will-change-transform motion-reduce:transform-none [transform:rotateX(var(--gamecowork-logo-rx))_rotateY(var(--gamecowork-logo-ry))_scale(var(--gamecowork-logo-scale))]",
         children: [
           p.jsxs("defs", {
             children: [
@@ -17590,7 +17590,7 @@ function Q5e({
 }) {
   return p.jsxs("div", {
     className: xr(
-      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-codely-color-item-surface hover:bg-codely-color-item-surface-hover",
+      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover",
       l,
     ),
     "data-focus-item": "true",
@@ -17608,7 +17608,7 @@ function Q5e({
                 className: "flex items-center gap-2",
                 children: [
                   p.jsx("span", {
-                    className: "truncate text-base font-medium text-codely-color-text-primary",
+                    className: "truncate text-base font-medium text-gamecowork-color-text-primary",
                     children: t,
                   }),
                   r == null
@@ -17618,7 +17618,7 @@ function Q5e({
                           "div",
                           {
                             className:
-                              "flex-shrink-0 rounded border border-solid border-codely-color-border-subtle bg-transparent px-1.5 py-0.5 text-xs text-codely-color-text-secondary",
+                              "flex-shrink-0 rounded border border-solid border-gamecowork-color-border-subtle bg-transparent px-1.5 py-0.5 text-xs text-gamecowork-color-text-secondary",
                             children: c.label,
                           },
                           d,
@@ -17626,7 +17626,7 @@ function Q5e({
                       ),
                 ],
               }),
-              p.jsx("span", { className: "truncate text-xs text-codely-color-text-tertiary", children: n }),
+              p.jsx("span", { className: "truncate text-xs text-gamecowork-color-text-tertiary", children: n }),
             ],
           }),
         ],
@@ -17644,7 +17644,7 @@ function Q5e({
 function qoe({ children: e, className: t }) {
   return p.jsx("div", {
     className: xr(
-      "flex size-10 shrink-0 items-center justify-center rounded-lg bg-codely-color-surface-capability-default",
+      "flex size-10 shrink-0 items-center justify-center rounded-lg bg-gamecowork-color-surface-capability-default",
       t,
     ),
     children: e,
@@ -17717,7 +17717,7 @@ function kYe({ title: e, items: t, itemWidth: n = 16, className: r }) {
   return p.jsxs("div", {
     className: xr("flex flex-col", r),
     children: [
-      e ? p.jsx("div", { className: "mb-3 text-sm text-codely-color-text-secondary", children: e }) : null,
+      e ? p.jsx("div", { className: "mb-3 text-sm text-gamecowork-color-text-secondary", children: e }) : null,
       p.jsxs("div", {
         className: "relative",
         children: [
@@ -17728,15 +17728,15 @@ function kYe({ title: e, items: t, itemWidth: n = 16, className: r }) {
                 children: [
                   p.jsx("div", {
                     className:
-                      "absolute inset-0 bg-gradient-to-r from-codely-color-surface-primary via-codely-color-surface-primary/80 to-transparent",
+                      "absolute inset-0 bg-gradient-to-r from-gamecowork-color-surface-primary via-gamecowork-color-surface-primary/80 to-transparent",
                   }),
                   p.jsx("button", {
                     type: "button",
                     onClick: () => u(-1),
                     className:
-                      "pointer-events-auto relative ml-1 flex items-center justify-center rounded-full border border-codely-color-border-subtle bg-codely-color-surface-primary p-1.5 backdrop-blur-sm transition-colors hover:bg-codely-color-surface-elevated cursor-pointer",
+                      "pointer-events-auto relative ml-1 flex items-center justify-center rounded-full border border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary p-1.5 backdrop-blur-sm transition-colors hover:bg-gamecowork-color-surface-elevated cursor-pointer",
                     "aria-label": "Scroll left",
-                    children: p.jsx(Rre, { className: "!text-base text-codely-color-text-secondary" }),
+                    children: p.jsx(Rre, { className: "!text-base text-gamecowork-color-text-secondary" }),
                   }),
                 ],
               })
@@ -17768,15 +17768,15 @@ function kYe({ title: e, items: t, itemWidth: n = 16, className: r }) {
                 children: [
                   p.jsx("div", {
                     className:
-                      "absolute inset-0 bg-gradient-to-l from-codely-color-surface-primary via-codely-color-surface-primary/80 to-transparent",
+                      "absolute inset-0 bg-gradient-to-l from-gamecowork-color-surface-primary via-gamecowork-color-surface-primary/80 to-transparent",
                   }),
                   p.jsx("button", {
                     type: "button",
                     onClick: () => u(1),
                     className:
-                      "pointer-events-auto relative mr-1 flex items-center justify-center rounded-full border border-codely-color-border-subtle bg-codely-color-surface-primary p-1.5 backdrop-blur-sm transition-colors hover:bg-codely-color-surface-elevated cursor-pointer",
+                      "pointer-events-auto relative mr-1 flex items-center justify-center rounded-full border border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary p-1.5 backdrop-blur-sm transition-colors hover:bg-gamecowork-color-surface-elevated cursor-pointer",
                     "aria-label": "Scroll right",
-                    children: p.jsx(Rre, { className: "!text-base rotate-180 text-codely-color-text-secondary" }),
+                    children: p.jsx(Rre, { className: "!text-base rotate-180 text-gamecowork-color-text-secondary" }),
                   }),
                 ],
               })
@@ -17805,8 +17805,8 @@ function EYe({ item: e, active: t, variant: n, onSelect: r }) {
             className: xr(
               ((l = e.icon.props.className) == null
                 ? void 0
-                : l.replace("text-codely-color-text-tertiary", "text-codely-color-text-disabled")) ||
-                "text-codely-color-text-disabled",
+                : l.replace("text-gamecowork-color-text-tertiary", "text-gamecowork-color-text-disabled")) ||
+                "text-gamecowork-color-text-disabled",
               "!text-sm leading-none",
             ),
           })
@@ -17827,8 +17827,8 @@ function EYe({ item: e, active: t, variant: n, onSelect: r }) {
       className: xr(
         "flex rounded-md transition-colors",
         a ? "size-[2.25rem] flex-col items-center justify-center" : "mx-2 flex-row items-center gap-2 px-2 py-2",
-        i ? "cursor-not-allowed text-codely-color-text-disabled" : "cursor-pointer text-codely-color-text-default",
-        !i && (t ? "bg-codely-color-interactive-selected" : "hover:bg-codely-color-interactive-selected"),
+        i ? "cursor-not-allowed text-gamecowork-color-text-disabled" : "cursor-pointer text-gamecowork-color-text-default",
+        !i && (t ? "bg-gamecowork-color-interactive-selected" : "hover:bg-gamecowork-color-interactive-selected"),
       ),
       children: [
         p.jsxs("div", {
@@ -17849,12 +17849,12 @@ function EYe({ item: e, active: t, variant: n, onSelect: r }) {
               p.jsx("span", {
                 className: xr(
                   "truncate text-sm font-medium",
-                  i ? "text-codely-color-text-disabled" : "text-codely-color-text-default",
+                  i ? "text-gamecowork-color-text-disabled" : "text-gamecowork-color-text-default",
                 ),
                 children: e.label,
               }),
               e.hasUpdate && p.jsx("div", { className: "size-2 shrink-0 rounded-full bg-[rgb(255,197,64)]" }),
-              e.external && p.jsx(Dre, { className: "!text-sm leading-none text-codely-color-text-tertiary" }),
+              e.external && p.jsx(Dre, { className: "!text-sm leading-none text-gamecowork-color-text-tertiary" }),
             ],
           }),
       ],
@@ -17863,7 +17863,7 @@ function EYe({ item: e, active: t, variant: n, onSelect: r }) {
     ? p.jsx(tr, {
         text: e.label,
         placement: "right",
-        style: { color: "var(--codely-color-text-default)" },
+        style: { color: "var(--gamecowork-color-text-default)" },
         children: s,
       })
     : s;
@@ -17891,7 +17891,7 @@ function wYe({
     };
   return p.jsxs("div", {
     className: xr(
-      "flex shrink-0 flex-col overflow-hidden bg-codely-color-surface-sidebar",
+      "flex shrink-0 flex-col overflow-hidden bg-gamecowork-color-surface-sidebar",
       c ? "w-[3.375rem]" : "w-[16.75rem]",
       l,
     ),
@@ -17902,7 +17902,7 @@ function wYe({
         onClick: a,
         "data-telemetry-id": "settings_back",
         className: xr(
-          "flex cursor-pointer items-center border-none bg-transparent py-6 text-codely-color-text-secondary",
+          "flex cursor-pointer items-center border-none bg-transparent py-6 text-gamecowork-color-text-secondary",
           c ? "justify-center" : "gap-2 px-4",
         ),
         children: [
@@ -17911,7 +17911,7 @@ function wYe({
             placement: "right",
             children: p.jsx(qVe, { className: "!text-sm leading-none rotate-180" }),
           }),
-          !c && i && p.jsx("span", { className: "text-sm font-medium text-codely-color-text-default", children: i }),
+          !c && i && p.jsx("span", { className: "text-sm font-medium text-gamecowork-color-text-default", children: i }),
         ],
       }),
       p.jsx(In, {
@@ -17929,7 +17929,7 @@ function wYe({
                       u.title &&
                       p.jsx("div", {
                         className:
-                          "px-4 pt-2 text-xs font-medium uppercase tracking-wider text-codely-color-text-disabled",
+                          "px-4 pt-2 text-xs font-medium uppercase tracking-wider text-gamecowork-color-text-disabled",
                         children: u.title,
                       }),
                     p.jsx("div", {
@@ -17946,7 +17946,7 @@ function wYe({
             !c &&
               s &&
               p.jsx("div", {
-                className: "flex shrink-0 justify-center py-2 text-xs text-codely-color-text-secondary",
+                className: "flex shrink-0 justify-center py-2 text-xs text-gamecowork-color-text-secondary",
                 children: s,
               }),
           ],
@@ -17977,7 +17977,7 @@ const Pre = 268,
 function Hhe({ contentRef: e, header: t, contentClassName: n, children: r, loading: a = !1, loadingFallback: i }) {
   return p.jsxs("div", {
     ref: e,
-    className: "flex h-full min-w-0 flex-col overflow-hidden bg-codely-color-surface-primary",
+    className: "flex h-full min-w-0 flex-col overflow-hidden bg-gamecowork-color-surface-primary",
     children: [
       t,
       p.jsx(In, {
@@ -18064,7 +18064,7 @@ function RYe({
         className: "h-full w-full",
         children: p.jsxs(Jje, {
           orientation: "horizontal",
-          className: xr("h-full w-full bg-codely-background", n),
+          className: xr("h-full w-full bg-gamecowork-background", n),
           children: [
             p.jsx(ppe, {
               panelRef: b,
@@ -18075,8 +18075,8 @@ function RYe({
               children: B,
             }),
             A
-              ? p.jsx(eqe, { className: "bg-codely-color-border-subtle", withHandle: !0 })
-              : p.jsx("div", { "aria-hidden": !0, className: "w-px shrink-0 bg-codely-color-border-subtle" }),
+              ? p.jsx(eqe, { className: "bg-gamecowork-color-border-subtle", withHandle: !0 })
+              : p.jsx("div", { "aria-hidden": !0, className: "w-px shrink-0 bg-gamecowork-color-border-subtle" }),
             p.jsx(ppe, {
               minSize: 240,
               children: p.jsx(Hhe, {
@@ -18092,7 +18092,7 @@ function RYe({
         }),
       })
     : p.jsxs("div", {
-        className: xr("flex h-full w-full overflow-hidden bg-codely-background", n),
+        className: xr("flex h-full w-full overflow-hidden bg-gamecowork-background", n),
         children: [
           B,
           p.jsx(Hhe, { contentRef: x, header: I, contentClassName: a, loading: i, loadingFallback: o, children: e }),
@@ -18305,7 +18305,7 @@ const R2n = (e, t, n, r, a, i, o) => {
     const s = $oe(e),
       l = n.length > 120 ? `${n.slice(0, 120)}…` : n,
       c = hi((d = o == null ? void 0 : o.title) != null ? d : `${t} LSP 启动失败`, {
-        classNames: { toast: "codely-upgrade-toast" },
+        classNames: { toast: "gamecowork-upgrade-toast" },
         description: (u = o == null ? void 0 : o.description) != null ? u : `${s} LSP 服务启动出错：${l}`,
         duration: 1 / 0,
         closeButton: !1,
@@ -18339,7 +18339,7 @@ const R2n = (e, t, n, r, a, i, o) => {
     var l, c, d, u;
     const o = $oe(e),
       s = hi((l = i == null ? void 0 : i.title) != null ? l : `安装 ${t} language server`, {
-        classNames: { toast: "codely-upgrade-toast" },
+        classNames: { toast: "gamecowork-upgrade-toast" },
         description: (c = i == null ? void 0 : i.description) != null ? c : `${o} LSP 服务未安装，点击让 AI 帮你安装`,
         duration: 1 / 0,
         closeButton: !1,
@@ -18377,7 +18377,7 @@ const R2n = (e, t, n, r, a, i, o) => {
     var o, s, l, c;
     const a = $oe(e),
       i = hi((o = r == null ? void 0 : r.title) != null ? o : `安装 ${t} 集成扩展`, {
-        classNames: { toast: "codely-upgrade-toast" },
+        classNames: { toast: "gamecowork-upgrade-toast" },
         description: (s = r == null ? void 0 : r.description) != null ? s : `${a} LSP 集成扩展未安装，点击自动安装`,
         duration: 1 / 0,
         closeButton: !1,
@@ -18423,7 +18423,7 @@ const R2n = (e, t, n, r, a, i, o) => {
     const r = hi.warning(
       (a = n == null ? void 0 : n.title) != null ? a : "Upload failed, encountered an unknown issue",
       {
-        classNames: { toast: "codely-project-upload-failed" },
+        classNames: { toast: "gamecowork-project-upload-failed" },
         duration: 1 / 0,
         closeButton: !0,
         description: p.jsxs("div", {
@@ -44339,39 +44339,39 @@ const Goe = {
   ...ny,
   hljs: {
     ...ny.hljs,
-    background: "var(--codely-color-surface-primary)",
-    color: "var(--codely-syntax-hljs-fg)",
+    background: "var(--gamecowork-color-surface-primary)",
+    color: "var(--gamecowork-syntax-hljs-fg)",
     fontFamily: WJe,
   },
-  "hljs-comment": Vr("hljs-comment", "var(--codely-syntax-hljs-comment)"),
-  "hljs-quote": Vr("hljs-quote", "var(--codely-syntax-hljs-comment)"),
-  "hljs-keyword": Vr("hljs-keyword", "var(--codely-syntax-hljs-keyword)"),
-  "hljs-selector-tag": Vr("hljs-selector-tag", "var(--codely-syntax-hljs-keyword)"),
-  "hljs-subst": Vr("hljs-subst", "var(--codely-syntax-hljs-subst)"),
-  "hljs-number": Vr("hljs-number", "var(--codely-syntax-hljs-numeric)"),
-  "hljs-literal": Vr("hljs-literal", "var(--codely-syntax-hljs-numeric)"),
-  "hljs-variable": Vr("hljs-variable", "var(--codely-syntax-hljs-numeric)"),
-  "hljs-template-variable": Vr("hljs-template-variable", "var(--codely-syntax-hljs-numeric)"),
-  "hljs-tag .hljs-attr": Vr("hljs-tag .hljs-attr", "var(--codely-syntax-hljs-numeric)"),
-  "hljs-string": Vr("hljs-string", "var(--codely-syntax-hljs-string)"),
-  "hljs-doctag": Vr("hljs-doctag", "var(--codely-syntax-hljs-string)"),
-  "hljs-title": Vr("hljs-title", "var(--codely-syntax-hljs-title)"),
-  "hljs-section": Vr("hljs-section", "var(--codely-syntax-hljs-title)"),
-  "hljs-selector-id": Vr("hljs-selector-id", "var(--codely-syntax-hljs-title)"),
-  "hljs-type": Vr("hljs-type", "var(--codely-syntax-hljs-type)"),
-  "hljs-class .hljs-title": Vr("hljs-class .hljs-title", "var(--codely-syntax-hljs-type)"),
-  "hljs-tag": Vr("hljs-tag", "var(--codely-syntax-hljs-tag)"),
-  "hljs-name": Vr("hljs-name", "var(--codely-syntax-hljs-tag)"),
-  "hljs-attribute": Vr("hljs-attribute", "var(--codely-syntax-hljs-tag)"),
-  "hljs-regexp": Vr("hljs-regexp", "var(--codely-syntax-hljs-regexp)"),
-  "hljs-link": Vr("hljs-link", "var(--codely-syntax-hljs-regexp)"),
-  "hljs-symbol": Vr("hljs-symbol", "var(--codely-syntax-hljs-symbol)"),
-  "hljs-bullet": Vr("hljs-bullet", "var(--codely-syntax-hljs-symbol)"),
-  "hljs-built_in": Vr("hljs-built_in", "var(--codely-syntax-hljs-built-in)"),
-  "hljs-builtin-name": Vr("hljs-builtin-name", "var(--codely-syntax-hljs-built-in)"),
-  "hljs-meta": Vr("hljs-meta", "var(--codely-syntax-hljs-meta)"),
-  "hljs-deletion": { ...ny["hljs-deletion"], background: "var(--codely-syntax-hljs-deletion-bg)" },
-  "hljs-addition": { ...ny["hljs-addition"], background: "var(--codely-syntax-hljs-addition-bg)" },
+  "hljs-comment": Vr("hljs-comment", "var(--gamecowork-syntax-hljs-comment)"),
+  "hljs-quote": Vr("hljs-quote", "var(--gamecowork-syntax-hljs-comment)"),
+  "hljs-keyword": Vr("hljs-keyword", "var(--gamecowork-syntax-hljs-keyword)"),
+  "hljs-selector-tag": Vr("hljs-selector-tag", "var(--gamecowork-syntax-hljs-keyword)"),
+  "hljs-subst": Vr("hljs-subst", "var(--gamecowork-syntax-hljs-subst)"),
+  "hljs-number": Vr("hljs-number", "var(--gamecowork-syntax-hljs-numeric)"),
+  "hljs-literal": Vr("hljs-literal", "var(--gamecowork-syntax-hljs-numeric)"),
+  "hljs-variable": Vr("hljs-variable", "var(--gamecowork-syntax-hljs-numeric)"),
+  "hljs-template-variable": Vr("hljs-template-variable", "var(--gamecowork-syntax-hljs-numeric)"),
+  "hljs-tag .hljs-attr": Vr("hljs-tag .hljs-attr", "var(--gamecowork-syntax-hljs-numeric)"),
+  "hljs-string": Vr("hljs-string", "var(--gamecowork-syntax-hljs-string)"),
+  "hljs-doctag": Vr("hljs-doctag", "var(--gamecowork-syntax-hljs-string)"),
+  "hljs-title": Vr("hljs-title", "var(--gamecowork-syntax-hljs-title)"),
+  "hljs-section": Vr("hljs-section", "var(--gamecowork-syntax-hljs-title)"),
+  "hljs-selector-id": Vr("hljs-selector-id", "var(--gamecowork-syntax-hljs-title)"),
+  "hljs-type": Vr("hljs-type", "var(--gamecowork-syntax-hljs-type)"),
+  "hljs-class .hljs-title": Vr("hljs-class .hljs-title", "var(--gamecowork-syntax-hljs-type)"),
+  "hljs-tag": Vr("hljs-tag", "var(--gamecowork-syntax-hljs-tag)"),
+  "hljs-name": Vr("hljs-name", "var(--gamecowork-syntax-hljs-tag)"),
+  "hljs-attribute": Vr("hljs-attribute", "var(--gamecowork-syntax-hljs-tag)"),
+  "hljs-regexp": Vr("hljs-regexp", "var(--gamecowork-syntax-hljs-regexp)"),
+  "hljs-link": Vr("hljs-link", "var(--gamecowork-syntax-hljs-regexp)"),
+  "hljs-symbol": Vr("hljs-symbol", "var(--gamecowork-syntax-hljs-symbol)"),
+  "hljs-bullet": Vr("hljs-bullet", "var(--gamecowork-syntax-hljs-symbol)"),
+  "hljs-built_in": Vr("hljs-built_in", "var(--gamecowork-syntax-hljs-built-in)"),
+  "hljs-builtin-name": Vr("hljs-builtin-name", "var(--gamecowork-syntax-hljs-built-in)"),
+  "hljs-meta": Vr("hljs-meta", "var(--gamecowork-syntax-hljs-meta)"),
+  "hljs-deletion": { ...ny["hljs-deletion"], background: "var(--gamecowork-syntax-hljs-deletion-bg)" },
+  "hljs-addition": { ...ny["hljs-addition"], background: "var(--gamecowork-syntax-hljs-addition-bg)" },
 };
 var ou = {},
   eX = {},
@@ -44781,13 +44781,13 @@ function xke(e, t) {
       return p.jsx(Fre, { className: "h-3.5 w-3.5", color: YHe });
     case "canceled":
       return t
-        ? p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--codely-color-status-warning-default)" } })
-        : p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--codely-color-status-danger-default)" } });
+        ? p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--gamecowork-color-status-warning-default)" } })
+        : p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--gamecowork-color-status-danger-default)" } });
     case "errored":
-      return p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--codely-color-status-danger-default)" } });
+      return p.jsx($a, { className: "h-3.5 w-3.5", style: { color: "var(--gamecowork-color-status-danger-default)" } });
     case "done":
     default:
-      return p.jsx(lm, { className: "h-3.5 w-3.5", style: { color: "var(--codely-color-status-success-default)" } });
+      return p.jsx(lm, { className: "h-3.5 w-3.5", style: { color: "var(--gamecowork-color-status-success-default)" } });
   }
 }
 function Voe(e) {
@@ -44864,7 +44864,7 @@ function jre(e) {
     return !1;
   }
 }
-const qre = "codely:projectDraftByWorkspace";
+const qre = "gamecowork:projectDraftByWorkspace";
 function cet(e) {
   try {
     const t = JSON.parse(e);
@@ -45022,7 +45022,7 @@ function _et(e, t) {
   return !e && !t;
 }
 const U2n = _et,
-  Tke = "codely:lastOpenedSession";
+  Tke = "gamecowork:lastOpenedSession";
 function bet() {
   var e, t;
   return typeof window > "u"
@@ -45030,7 +45030,7 @@ function bet() {
     : ((t = (e = window.workspacePaths) == null ? void 0 : e[0]) == null ? void 0 : t.trim()) || "default";
 }
 function j2n(e) {
-  return ya(`codely:modelConfig_${bet()}_${e}`);
+  return ya(`gamecowork:modelConfig_${bet()}_${e}`);
 }
 function vet(e) {
   return (
@@ -45087,26 +45087,26 @@ function z2n(e) {
   }
 }
 function $2n() {
-  return ya("codely:search_sessions_history");
+  return ya("gamecowork:search_sessions_history");
 }
 function xet() {
   var e;
-  return (e = ya("codely:seenActivityNotificationIds")) != null ? e : [];
+  return (e = ya("gamecowork:seenActivityNotificationIds")) != null ? e : [];
 }
 function H2n(e) {
   if (typeof localStorage > "u" || e.length === 0) return;
   const t = xet(),
     r = [...new Set([...t, ...e])].slice(-500);
-  Nm("codely:seenActivityNotificationIds", r);
+  Nm("gamecowork:seenActivityNotificationIds", r);
 }
 function G2n(e) {
-  Nm("codely:search_sessions_history", e);
+  Nm("gamecowork:search_sessions_history", e);
 }
 function V2n(e) {
-  return ya(`codely:search_${e}_files`);
+  return ya(`gamecowork:search_${e}_files`);
 }
 function W2n(e, t) {
-  Nm(`codely:search_${e}_files`, t);
+  Nm(`gamecowork:search_${e}_files`, t);
 }
 function ket() {
   var t, n;
@@ -45126,7 +45126,7 @@ function wa() {
   try {
     return window.parent === window
       ? !1
-      : window.sessionStorage.getItem("codely-tauri-shell") === "1"
+      : window.sessionStorage.getItem("gamecowork-tauri-shell") === "1"
         ? !0
         : new URLSearchParams(window.location.search).has("tauriShell");
   } catch {
@@ -45150,7 +45150,7 @@ function Met() {
 function Net() {
   return typeof window > "u" || new URLSearchParams(window.location.search).get("flexibleLayout") !== "1" ? !1 : Qoe();
 }
-const Iet = "codely-theme",
+const Iet = "gamecowork-theme",
   Aet = { dark: "#2c2c2c", light: "#fafafa" };
 function Zoe() {
   var e, t;
@@ -45326,7 +45326,7 @@ const Mke = Ui({
       setToolPolicy: (e, t) => {
         const { toolName: n, policy: r, collaborationMode: a = "default" } = t.payload;
         if (Vre(n, a) && r === "disabled") {
-          (console.warn(`[Codely] Cannot disable required tool in ${a} mode: ${n}`),
+          (console.warn(`[GameCowork] Cannot disable required tool in ${a} mode: ${n}`),
             (e.toolSettings[n] = "allowedWithPermission"));
           return;
         }
@@ -48112,12 +48112,12 @@ function Tc({ filename: e, height: t, width: n }) {
       pink: "#d33682",
       purple: "#6c71c4",
       red: "#dc322f",
-      white: "var(--codely-color-text-default)",
+      white: "var(--gamecowork-color-text-default)",
       yellow: "#b58900",
       ignore: "#586e75",
     }),
     { svg: i, color: o } = a(r),
-    s = r.toLowerCase().endsWith(".txt") ? "var(--codely-color-text-default)" : o,
+    s = r.toLowerCase().endsWith(".txt") ? "var(--gamecowork-color-text-default)" : o,
     l = cm.sanitize(i);
   return p.jsx("span", {
     dangerouslySetInnerHTML: { __html: l },
@@ -66829,13 +66829,13 @@ const Dst = sr("symbols/updateFromContextItems", async (e, { dispatch: t, extra:
   }),
   Pst = {
     fontSize: "0.75rem",
-    backgroundColor: aa("codely-color-surface-primary"),
-    color: aa("codely-color-text-tertiary"),
+    backgroundColor: aa("gamecowork-color-surface-primary"),
+    color: aa("gamecowork-color-text-tertiary"),
     padding: "2px 4px",
     zIndex: 1e3,
     maxWidth: "80vw",
     textAlign: "center",
-    boxShadow: `0 0 10px 0 ${aa("codely-color-shadow-default")}`,
+    boxShadow: `0 0 10px 0 ${aa("gamecowork-color-shadow-default")}`,
   };
 function jf(e) {
   const t = { ...Pst, ...e.style },
@@ -67006,10 +67006,10 @@ function Zst(e) {
 }
 const Vwe = E.createContext(null),
   Xst =
-    "fixed z-[2000] box-border flex w-[11.4375rem] flex-col rounded-xl border border-solid border-codely-color-border-subtle bg-codely-color-surface-primary py-1 shadow-md",
+    "fixed z-[2000] box-border flex w-[11.4375rem] flex-col rounded-xl border border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary py-1 shadow-md",
   Jst =
-    "mx-1 flex min-h-7 w-[calc(100%-0.5rem)] cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-2 py-0 text-left text-[13px] leading-[1.5384615385] text-codely-color-text-secondary transition-colors hover:bg-codely-color-interactive-hover",
-  elt = "my-1 h-px bg-codely-color-border-subtle";
+    "mx-1 flex min-h-7 w-[calc(100%-0.5rem)] cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-2 py-0 text-left text-[13px] leading-[1.5384615385] text-gamecowork-color-text-secondary transition-colors hover:bg-gamecowork-color-interactive-hover",
+  elt = "my-1 h-px bg-gamecowork-color-border-subtle";
 function tlt(e, t, n = 183, r = 220) {
   const i = Math.max(8, window.innerWidth - n - 8),
     o = Math.max(8, window.innerHeight - r - 8);
@@ -99144,7 +99144,7 @@ function Pm({ text: e }) {
       className: "!p-0",
       children: p.jsx("div", {
         className:
-          "text-codely-color-text-secondary flex cursor-pointer items-center border-none bg-transparent text-xs outline-none",
+          "text-gamecowork-color-text-secondary flex cursor-pointer items-center border-none bg-transparent text-xs outline-none",
         onClick: t,
         children: p.jsx("div", {
           className: "flex items-center gap-1 transition-colors duration-200 hover:brightness-125",
@@ -99193,7 +99193,7 @@ function Vxt({ codeBlockContent: e, relativeFilepath: t, codeBlockIndex: n, code
     ? a
     : p.jsxs("div", {
         className:
-          "code-block-text group relative min-w-0 overflow-hidden rounded-[0.2rem] bg-codely-color-surface-codeBlockBg",
+          "code-block-text group relative min-w-0 overflow-hidden rounded-[0.2rem] bg-gamecowork-color-surface-codeBlockBg",
         children: [
           e
             ? p.jsx("div", {
@@ -103628,7 +103628,7 @@ const i5t = {
   o5t = $t.div`
   display: flow-root;
   font-size: 0.875rem;
-  color: var(--codely-color-text-default);
+  color: var(--gamecowork-color-text-default);
 
   
 
@@ -103733,7 +103733,7 @@ const i5t = {
     word-wrap: break-word;
     border-radius: 0.3125rem;
     font-size: 0.75rem;
-    color: var(--codely-color-text-default);
+    color: var(--gamecowork-color-text-default);
   }
 
   p,
@@ -106610,13 +106610,13 @@ async function Fm(e) {
     const r = await e.request("getIdeInfo", void 0);
     if (r.status !== "success" || akt((t = r.content) == null ? void 0 : t.remoteName)) return;
     try {
-      const i = await e.request("settings/getCodelyHome", void 0);
+      const i = await e.request("settings/getGameCoworkHome", void 0);
       if ((i == null ? void 0 : i.status) === "success" && (n = i.content) != null && n.path) return i.content.path;
     } catch {}
     const a = await e.request("getHomedir", void 0);
-    return a.status === "success" && a.content ? `${a.content}/.codely-cli` : void 0;
+    return a.status === "success" && a.content ? `${a.content}/.gamecowork-cli` : void 0;
   } catch (r) {
-    console.error("Failed to get global codely-cli directory", r);
+    console.error("Failed to get global gamecowork-cli directory", r);
     return;
   }
 }
@@ -107816,7 +107816,7 @@ function $d(e) {
   const t = e.replace(/\\/g, "/").split("/").filter(Boolean),
     n = (a = t[t.length - 1]) == null ? void 0 : a.toLowerCase(),
     r = (i = t[t.length - 2]) == null ? void 0 : i.toLowerCase();
-  return n === "default" && r === ".codely";
+  return n === "default" && r === ".gamecowork";
 }
 function vd({ workspaceDir: e, isRemote: t, machineName: n, showPath: r }) {
   const a = t ? bg(e) : $d(e) ? "Default" : r ? e : bg(e),
@@ -108391,7 +108391,7 @@ function tce(e) {
   });
 }
 const oEt = $t.div`
-  background: var(--codely-color-surface-primary);
+  background: var(--gamecowork-color-surface-primary);
   display: flex;
   padding: 24px;
   flex-direction: column;
@@ -108403,8 +108403,8 @@ const oEt = $t.div`
   }
 `,
   sEt = $t.div`
-  border-top: 1px solid var(--codely-color-border-subtle);
-  background: var(--codely-color-surface-primary);
+  border-top: 1px solid var(--gamecowork-color-border-subtle);
+  background: var(--gamecowork-color-surface-primary);
   display: flex;
   padding: 16px 24px;
   justify-content: flex-end;
@@ -108423,7 +108423,7 @@ const oEt = $t.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   text-align: center;
   font-family: var(--semantic-font-sans);
   font-size: 0.875rem;
@@ -108433,12 +108433,12 @@ const oEt = $t.div`
 
   &:hover {
     border-radius: 4px;
-    background: var(--codely-color-interactive-hover);
+    background: var(--gamecowork-color-interactive-hover);
   }
 
   &:active {
     border-radius: 4px;
-    background: var(--codely-color-interactive-pressed);
+    background: var(--gamecowork-color-interactive-pressed);
   }
 
   @media (max-width: 400px) {
@@ -108450,13 +108450,13 @@ const oEt = $t.div`
   cEt = $t.div`
   cursor: pointer;
   border-radius: 6px;
-  background: var(--codely-color-accent-default);
+  background: var(--gamecowork-color-accent-default);
   display: flex;
   padding: 8px 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--codely-color-text-accent);
+  color: var(--gamecowork-color-text-accent);
   text-align: center;
   font-family: var(--semantic-font-sans);
   font-style: normal;
@@ -108466,12 +108466,12 @@ const oEt = $t.div`
 
   &:hover {
     border-radius: 4px;
-    background: var(--codely-color-accent-hover);
+    background: var(--gamecowork-color-accent-hover);
   }
 
   &:active {
     border-radius: 4px;
-    background: var(--codely-color-accent-pressed);
+    background: var(--gamecowork-color-accent-pressed);
   }
 
   @media (max-width: 400px) {
@@ -108483,7 +108483,7 @@ const oEt = $t.div`
 `,
   dEt = $t.div`
   margin: 0 0 8px 0;
-  color: var(--codely-color-text-primary);
+  color: var(--gamecowork-color-text-primary);
   font-family: var(--semantic-font-sans);
   font-size: 1rem;
   font-style: normal;
@@ -108492,7 +108492,7 @@ const oEt = $t.div`
   letter-spacing: 0.32px;
 `,
   uEt = $t.div`
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   font-family: var(--semantic-font-sans);
   font-size: 0.875rem;
   font-style: normal;
@@ -108508,7 +108508,7 @@ const oEt = $t.div`
   align-items: flex-start;
   align-self: stretch;
   border-radius: 8px;
-  background: var(--codely-color-surface-sidebar);
+  background: var(--gamecowork-color-surface-sidebar);
   flex-wrap: wrap;
   gap: 16px;
 
@@ -108536,7 +108536,7 @@ const oEt = $t.div`
   }
 `,
   fne = $t.div`
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   font-family: var(--semantic-font-sans);
   font-size: 0.625rem;
   font-style: normal;
@@ -108557,7 +108557,7 @@ const oEt = $t.div`
   }
 `,
   yne = $t.div`
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   font-family: var(--semantic-font-sans);
   font-size: 0.75rem;
   font-style: normal;
@@ -108846,10 +108846,10 @@ const _Et = ({ imageUrl: e, onClose: t }) => {
                   className: `transition-opacity duration-150 focus-visible:opacity-100 group-hover:opacity-100 ${r || i || s ? "opacity-100" : "opacity-0"}`,
                   "data-telemetry-id": "copy_image_preview",
                   children: p.jsx("span", {
-                    className: `size-8 shrink-0 flex items-center justify-center rounded-full ${i ? "bg-codely-color-status-danger-default" : "bg-codely-color-text-secondary"}`,
+                    className: `size-8 shrink-0 flex items-center justify-center rounded-full ${i ? "bg-gamecowork-color-status-danger-default" : "bg-gamecowork-color-text-secondary"}`,
                     children: r
-                      ? p.jsx(lm, { className: "size-4 text-codely-color-surface-elevated" })
-                      : p.jsx(jle, { className: "size-4 text-codely-color-surface-elevated" }),
+                      ? p.jsx(lm, { className: "size-4 text-gamecowork-color-surface-elevated" })
+                      : p.jsx(jle, { className: "size-4 text-gamecowork-color-surface-elevated" }),
                   }),
                 }),
                 p.jsx(gr, {
@@ -108859,8 +108859,8 @@ const _Et = ({ imageUrl: e, onClose: t }) => {
                   "data-telemetry-id": "close_image_preview",
                   children: p.jsx("span", {
                     className:
-                      "size-8 shrink-0 flex items-center justify-center bg-codely-color-text-secondary rounded-full",
-                    children: p.jsx(q9e, { className: "size-4 text-codely-color-surface-elevated" }),
+                      "size-8 shrink-0 flex items-center justify-center bg-gamecowork-color-text-secondary rounded-full",
+                    children: p.jsx(q9e, { className: "size-4 text-gamecowork-color-surface-elevated" }),
                   }),
                 }),
               ],
@@ -109578,7 +109578,7 @@ const awt = E.forwardRef((e, t) => {
                 ? n("currentContext.showingFile", { file: i, lineRangeSuffix: w })
                 : n("currentContext.notShowingFile", { file: i, lineRangeSuffix: w }),
             ),
-            className: `w-fit justify-start gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.enabled ? "text-codely-color-text-secondary" : "text-codely-color-text-disabled"}`,
+            className: `w-fit justify-start gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.enabled ? "text-gamecowork-color-text-secondary" : "text-gamecowork-color-text-disabled"}`,
             onClick: x,
             "data-focusable": "true",
             "data-focus-enter-action": "click",
@@ -109606,7 +109606,7 @@ const awt = E.forwardRef((e, t) => {
                 ? n("currentContext.sharingGameObject", { path: I })
                 : n("currentContext.notSharingGameObject", { path: I }),
             ),
-            className: `w-fit gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.unityGameObjectEnabled ? "text-codely-color-text-secondary" : "text-codely-color-text-disabled"}`,
+            className: `w-fit gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.unityGameObjectEnabled ? "text-gamecowork-color-text-secondary" : "text-gamecowork-color-text-disabled"}`,
             onClick: b,
             "data-focusable": "true",
             "data-focus-enter-action": "click",
@@ -109634,7 +109634,7 @@ const awt = E.forwardRef((e, t) => {
                 ? n("currentContext.sharingAsset", { path: $ })
                 : n("currentContext.notSharingAsset", { path: $ }),
             ),
-            className: `w-fit gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.unityAssetEnabled ? "text-codely-color-text-secondary" : "text-codely-color-text-disabled"}`,
+            className: `w-fit gap-1 px-2 py-1.5 h-7 rounded-full text-[0.8125rem] leading-4 outline-offset-2 truncate ${s.unityAssetEnabled ? "text-gamecowork-color-text-secondary" : "text-gamecowork-color-text-disabled"}`,
             onClick: C,
             "data-telemetry-id": "toggle_unity_asset_context",
             "data-focusable": "true",
@@ -109689,7 +109689,7 @@ function iwt({ attachment: e, ideMessenger: t, onPreviewImage: n }) {
           placement: "top-start",
           children: p.jsx("div", {
             className:
-              "flex items-center gap-1 max-w-[min(100%,220px)] min-w-0 shrink rounded-default bg-codely-color-surface-sidebar p-1 cursor-pointer",
+              "flex items-center gap-1 max-w-[min(100%,220px)] min-w-0 shrink rounded-default bg-gamecowork-color-surface-sidebar p-1 cursor-pointer",
             onClick: () => n(e.dataUrl || null),
             children: p.jsxs("div", {
               className: "flex items-center gap-1",
@@ -109701,10 +109701,10 @@ function iwt({ attachment: e, ideMessenger: t, onPreviewImage: n }) {
                   "aria-label": i,
                 }),
                 p.jsx("span", {
-                  className: "text-xs text-codely-color-text-secondary max-w-[6.25rem] truncate",
+                  className: "text-xs text-gamecowork-color-text-secondary max-w-[6.25rem] truncate",
                   children: i,
                 }),
-                r ? p.jsx("span", { className: "text-xss text-codely-color-text-tertiary", children: r }) : null,
+                r ? p.jsx("span", { className: "text-xss text-gamecowork-color-text-tertiary", children: r }) : null,
               ],
             }),
           }),
@@ -109713,7 +109713,7 @@ function iwt({ attachment: e, ideMessenger: t, onPreviewImage: n }) {
           text: `Open ${i}`,
           placement: "top-start",
           children: p.jsx("div", {
-            className: "relative min-w-0 shrink cursor-pointer rounded-default bg-codely-color-surface-sidebar p-1",
+            className: "relative min-w-0 shrink cursor-pointer rounded-default bg-gamecowork-color-surface-sidebar p-1",
             onClick: () => {
               const l = e.filePath || e.fileName;
               l && t.ide.openFile(l);
@@ -109722,19 +109722,19 @@ function iwt({ attachment: e, ideMessenger: t, onPreviewImage: n }) {
               className: "flex items-center gap-1",
               children: [
                 p.jsx("img", {
-                  className: "shrink-0 size-3.5 text-codely-color-text-tertiary",
+                  className: "shrink-0 size-3.5 text-gamecowork-color-text-tertiary",
                   src: `${window.vscMediaUrl}/icons/file.png`,
                 }),
                 p.jsxs("div", {
                   className: "flex min-w-0 flex-col gap-0.5",
                   children: [
                     p.jsx("span", {
-                      className: "text-xs text-codely-color-text-secondary max-w-[7.5rem] truncate",
+                      className: "text-xs text-gamecowork-color-text-secondary max-w-[7.5rem] truncate",
                       children: i,
                     }),
                     e.file &&
                       p.jsx("span", {
-                        className: "text-xss text-codely-color-text-tertiary",
+                        className: "text-xss text-gamecowork-color-text-tertiary",
                         children: z9e(e.file.size),
                       }),
                   ],
@@ -109793,14 +109793,14 @@ function swt({ peekContexts: e, displayAttachments: t, ideMessenger: n, onPrevie
                 type: "button",
                 tooltip: d,
                 disabled: c === "unityGameObject",
-                className: `size-auto !h-auto !w-auto min-h-0 gap-1 !rounded-default p-1 text-codely-color-text-secondary !bg-codely-color-surface-sidebar ${c === "unityGameObject" ? "cursor-default" : ""}`,
+                className: `size-auto !h-auto !w-auto min-h-0 gap-1 !rounded-default p-1 text-gamecowork-color-text-secondary !bg-gamecowork-color-surface-sidebar ${c === "unityGameObject" ? "cursor-default" : ""}`,
                 onClick: () => o(s, c),
                 "data-telemetry-id": "peek_context_item",
                 children: [
                   u,
                   p.jsx("span", {
                     className:
-                      "text-codely-color-text-secondary hidden max-w-[7.5rem] truncate text-xs sm:inline-block",
+                      "text-gamecowork-color-text-secondary hidden max-w-[7.5rem] truncate text-xs sm:inline-block",
                     children: s.displayText,
                   }),
                 ],
@@ -109815,10 +109815,10 @@ function swt({ peekContexts: e, displayAttachments: t, ideMessenger: n, onPrevie
 }
 const lwt = "flex w-full min-w-0 max-w-full box-border flex-col gap-2 bg-transparent";
 function cwt(e, t) {
-  return `group relative flex w-full min-w-0 max-w-full box-border flex-col gap-2 rounded-xl bg-codely-color-surface-input border border-solid border-codely-color-border-subtle ${e ? "" : "simple-input-collapsed"} ${t && !e ? "simple-input-mask" : ""}`;
+  return `group relative flex w-full min-w-0 max-w-full box-border flex-col gap-2 rounded-xl bg-gamecowork-color-surface-input border border-solid border-gamecowork-color-border-subtle ${e ? "" : "simple-input-collapsed"} ${t && !e ? "simple-input-mask" : ""}`;
 }
 const dwt =
-    "pointer-events-none absolute inset-0 z-[11] rounded-[inherit] border border-solid border-codely-color-border-subtle",
+    "pointer-events-none absolute inset-0 z-[11] rounded-[inherit] border border-solid border-gamecowork-color-border-subtle",
   uwt = "absolute right-px z-10 flex items-center gap-1";
 function pwt(e) {
   return e ? "top-1/2 -translate-y-1/2" : "bottom-px";
@@ -110523,7 +110523,7 @@ function kwt(e) {
                 p.jsx(swt, { peekContexts: h, displayAttachments: M, ideMessenger: m, onPreviewImage: F }),
                 p.jsx("span", {
                   ref: j,
-                  className: "simple-input-content text-codely-color-text-primary text-sm",
+                  className: "simple-input-content text-gamecowork-color-text-primary text-sm",
                   children: u,
                 }),
               ],
@@ -116463,13 +116463,13 @@ const _Tt = $t.div`
   font-size: 1rem;
   font-weight: 500;
   line-height: 2rem;
-  color: var(--codely-color-text-primary);
+  color: var(--gamecowork-color-text-primary);
 `,
   vTt = $t.p`
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.5rem;
-  color: var(--codely-color-text-secondary);
+  color: var(--gamecowork-color-text-secondary);
 `,
   xTt = $t.div`
   display: flex;
@@ -116584,7 +116584,7 @@ function AIe({
   onCancel: h,
 }) {
   return p.jsx("div", {
-    className: "bg-codely-color-surface-card rounded-[1rem]",
+    className: "bg-gamecowork-color-surface-card rounded-[1rem]",
     children: p.jsx(IIe, {
       title: e,
       mainText: t,
@@ -116919,7 +116919,7 @@ function DTt({
           try {
             const $ = (await f.ide.getWorkspaceDirs())[0];
             if (!$) return { fileName: O || `unity-view-${Date.now()}.jpg` };
-            const j = `${N($)}/.codely-cli/tmp/unity-captures`;
+            const j = `${N($)}/.gamecowork-cli/tmp/unity-captures`;
             await f.ide.mkdir(j);
             const H = A(P),
               D = O || `unity-view-${Date.now()}.${H}`,
@@ -118164,7 +118164,7 @@ const Avn = sr("ui/openFilePicker", async (e, { dispatch: t, extra: n }) => {
     "notifications",
     "yoloUserRequestTimeout",
     "defaultMemoryRWMode",
-    "codelyHome",
+    "gamecoworkHome",
     "defaultChatModelTitle",
     "modelReasoningEfforts",
   ];
@@ -118228,7 +118228,7 @@ function MV(e) {
   return Math.min(KTt, Math.max(YTt, e));
 }
 const BIe = E.createContext({ fontSize: bce, setValues: () => {} }),
-  Fie = "codely:fontSizeChanged";
+  Fie = "gamecowork:fontSizeChanged";
 function UIe(e) {
   if (wa())
     try {
@@ -118346,8 +118346,8 @@ function e8t(e) {
   const { percent: t, className: n, activeFill: r, inactiveFill: a } = e,
     i = Math.max(0, Math.min(100, t)),
     o = Lxe * (1 - i / 100),
-    s = r != null ? r : aa("codely-color-icon-tertiary"),
-    l = a != null ? a : aa("codely-color-interactive-hover");
+    s = r != null ? r : aa("gamecowork-color-icon-tertiary"),
+    l = a != null ? a : aa("gamecowork-color-interactive-hover");
   return p.jsxs("svg", {
     className: n != null ? n : "size-3",
     viewBox: `0 0 ${Rxe} ${Rxe}`,
@@ -118431,7 +118431,7 @@ function s8t(e) {
     className: "flex w-full flex-col pt-2.5 pb-2.5",
     children: [
       p.jsx("div", {
-        className: "px-3 pb-1 text-xs text-codely-color-text-tertiary",
+        className: "px-3 pb-1 text-xs text-gamecowork-color-text-tertiary",
         children: o("contextWindow.title", "Context window"),
       }),
       p.jsxs("div", {
@@ -118444,13 +118444,13 @@ function s8t(e) {
                 className: "flex items-center justify-between gap-2",
                 children: [
                   p.jsx("span", {
-                    className: "text-base font-medium text-codely-color-text-primary",
+                    className: "text-base font-medium text-gamecowork-color-text-primary",
                     children: o("contextWindow.usedPercent", { percent: l, defaultValue: "{{percent}}% used" }),
                   }),
                   p.jsx("button", {
                     type: "button",
                     className:
-                      "inline-flex h-6 shrink-0 cursor-pointer items-center rounded-lg border border-solid border-codely-color-border-default bg-transparent px-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
+                      "inline-flex h-6 shrink-0 cursor-pointer items-center rounded-lg border border-solid border-gamecowork-color-border-default bg-transparent px-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
                     "data-focus-item": "true",
                     "data-focus-enter-action": "click",
                     "data-telemetry-id": "compact_conversation",
@@ -118461,7 +118461,7 @@ function s8t(e) {
                 ],
               }),
               p.jsx("div", {
-                className: "h-1.5 w-full overflow-hidden rounded-full bg-codely-color-border-subtle",
+                className: "h-1.5 w-full overflow-hidden rounded-full bg-gamecowork-color-border-subtle",
                 children: p.jsx("div", {
                   className: "flex h-full gap-px",
                   style: { width: `${Math.max(0, Math.min(100, l))}%` },
@@ -118478,7 +118478,7 @@ function s8t(e) {
                 }),
               }),
               p.jsxs("div", {
-                className: "flex items-center justify-between text-xs text-codely-color-text-tertiary",
+                className: "flex items-center justify-between text-xs text-gamecowork-color-text-tertiary",
                 children: [
                   p.jsxs("span", { children: [c, " / ", d] }),
                   p.jsx("span", {
@@ -118497,7 +118497,7 @@ function s8t(e) {
                   className: "flex items-center justify-between text-xs",
                   children: [
                     p.jsxs("span", {
-                      className: "flex min-w-0 items-center gap-1.5 text-codely-color-text-primary",
+                      className: "flex min-w-0 items-center gap-1.5 text-gamecowork-color-text-primary",
                       children: [
                         p.jsx("span", {
                           className: "size-1.5 shrink-0 rounded-[1px]",
@@ -118509,9 +118509,9 @@ function s8t(e) {
                     p.jsxs("span", {
                       className: "flex shrink-0 items-center gap-7",
                       children: [
-                        p.jsx("span", { className: "text-codely-color-text-tertiary", children: g.tokensLabel }),
+                        p.jsx("span", { className: "text-gamecowork-color-text-tertiary", children: g.tokensLabel }),
                         p.jsx("span", {
-                          className: "min-w-8 text-right text-codely-color-text-primary",
+                          className: "min-w-8 text-right text-gamecowork-color-text-primary",
                           children: g.percentLabel,
                         }),
                       ],
@@ -118539,7 +118539,7 @@ const l8t = E.forwardRef((e, t) => {
     c = p.jsxs(p.Fragment, { children: [Of(r), " / ", Of(a), " tokens (", l, "%)"] });
   return p.jsx(fqe, {
     anchor: "top end",
-    panelClassName: "w-[332px] !p-0 border border-solid border-codely-color-border-default",
+    panelClassName: "w-[332px] !p-0 border border-solid border-gamecowork-color-border-default",
     renderPanel: ({ close: h }) =>
       p.jsx(s8t, {
         usedTokens: r,
@@ -118552,15 +118552,15 @@ const l8t = E.forwardRef((e, t) => {
       }),
     trigger: p.jsx(gr, {
       className:
-        "hidden shrink-0 sm:inline-flex size-7 items-center justify-center gap-1 whitespace-nowrap rounded-full border-none bg-transparent p-1 outline-offset-2 hover:bg-codely-color-interactive-pressed active:bg-codely-color-interactive-pressed focus-visible:bg-codely-color-interactive-pressed [[data-open]_&]:bg-codely-color-interactive-pressed [[data-headlessui-state~=open]_&]:bg-codely-color-interactive-pressed",
+        "hidden shrink-0 sm:inline-flex size-7 items-center justify-center gap-1 whitespace-nowrap rounded-full border-none bg-transparent p-1 outline-offset-2 hover:bg-gamecowork-color-interactive-pressed active:bg-gamecowork-color-interactive-pressed focus-visible:bg-gamecowork-color-interactive-pressed [[data-open]_&]:bg-gamecowork-color-interactive-pressed [[data-headlessui-state~=open]_&]:bg-gamecowork-color-interactive-pressed",
       tooltip: c,
       "data-focusable": "true",
       "data-focus-enter-action": "click",
       "data-telemetry-id": "context_window_menu",
       tabIndex: 0,
       children: p.jsx(e8t, {
-        activeFill: aa("codely-color-icon-tertiary"),
-        inactiveFill: aa("codely-color-interactive-hover"),
+        activeFill: aa("gamecowork-color-icon-tertiary"),
+        inactiveFill: aa("gamecowork-color-interactive-hover"),
         percent: l,
         className: "size-4",
       }),
@@ -118713,13 +118713,13 @@ function h8t({ paused: e, disabled: t, onToggle: n }) {
     "data-telemetry-id": "asset_listening_toggle",
     children: [
       p.jsxs("span", {
-        className: "flex items-center gap-1.5 text-[13px] leading-5 text-codely-color-text-secondary",
+        className: "flex items-center gap-1.5 text-[13px] leading-5 text-gamecowork-color-text-secondary",
         children: [
           r("inputToolbar.assetListeningToggle.label"),
           p.jsx(tr, {
             text: r("inputToolbar.assetListeningToggle.helpTooltip"),
             placement: "top",
-            children: p.jsx(qKe, { className: "text-codely-color-text-secondary size-3.5 shrink-0 cursor-help" }),
+            children: p.jsx(qKe, { className: "text-gamecowork-color-text-secondary size-3.5 shrink-0 cursor-help" }),
           }),
         ],
       }),
@@ -118898,7 +118898,7 @@ function _8t({ engineType: e, assetListening: t }) {
       p.jsx(xce, {
         "aria-hidden": "true",
         className:
-          "text-codely-color-text-primary pointer-events-none absolute left-0 top-0 size-9 opacity-10 [mask-image:linear-gradient(to_bottom,black_75%,transparent)]",
+          "text-gamecowork-color-text-primary pointer-events-none absolute left-0 top-0 size-9 opacity-10 [mask-image:linear-gradient(to_bottom,black_75%,transparent)]",
       }),
       p.jsxs("div", {
         className: "relative flex flex-col gap-0.5 pl-3.5 pr-3",
@@ -118907,7 +118907,7 @@ function _8t({ engineType: e, assetListening: t }) {
             className: "flex items-center gap-1.5",
             children: [
               p.jsx("span", {
-                className: "truncate text-[13px] font-medium leading-5 text-codely-color-text-primary",
+                className: "truncate text-[13px] font-medium leading-5 text-gamecowork-color-text-primary",
                 children: g,
               }),
               p.jsx("button", {
@@ -118915,14 +118915,14 @@ function _8t({ engineType: e, assetListening: t }) {
                 "data-telemetry-id": c ? "unity_section_open_editor" : "unity_section_connect_editor",
                 disabled: d,
                 className:
-                  "border-codely-color-border-default bg-transparent text-codely-color-text-primary hover:bg-codely-color-interactive-hover ml-auto inline-flex h-6 shrink-0 cursor-pointer items-center rounded-lg border border-solid px-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+                  "border-gamecowork-color-border-default bg-transparent text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover ml-auto inline-flex h-6 shrink-0 cursor-pointer items-center rounded-lg border border-solid px-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60",
                 onClick: () => void (c ? m() : f()),
                 children: n(c ? "inputToolbar.unitySection.open" : "inputToolbar.unitySection.connect"),
               }),
             ],
           }),
           p.jsx("span", {
-            className: `text-xs leading-4 ${c ? "text-codely-color-status-success-text" : "text-codely-color-text-tertiary"}`,
+            className: `text-xs leading-4 ${c ? "text-gamecowork-color-status-success-text" : "text-gamecowork-color-text-tertiary"}`,
             children: y,
           }),
         ],
@@ -118954,17 +118954,17 @@ const b8t = E.forwardRef((e, t) => {
             : "sidebar.editorStatusDisconnected",
       ),
     d = r === "connected",
-    u = d && !a ? "border-codely-color-accent-default" : "border-codely-color-border-subtle",
-    h = d && !a ? "bg-codely-color-accent-muted" : "bg-transparent",
+    u = d && !a ? "border-gamecowork-color-accent-default" : "border-gamecowork-color-border-subtle",
+    h = d && !a ? "bg-gamecowork-color-accent-muted" : "bg-transparent",
     m =
       d && !a
         ? "hover:bg-[var(--semantic-color-interactive-text-selection)]"
-        : "hover:bg-codely-color-interactive-hover",
+        : "hover:bg-gamecowork-color-interactive-hover",
     f = d
-      ? "bg-codely-color-accent-default"
+      ? "bg-gamecowork-color-accent-default"
       : r === "launching"
-        ? "bg-codely-color-status-warning-default"
-        : "bg-codely-color-border-error";
+        ? "bg-gamecowork-color-status-warning-default"
+        : "bg-gamecowork-color-border-error";
   return p.jsx(VH, {
     anchor: "top start",
     minWidth: 213,
@@ -118973,12 +118973,12 @@ const b8t = E.forwardRef((e, t) => {
       text: c(),
       children: p.jsxs(WH, {
         ref: l,
-        className: `${u} ${h} ${m} border border-solid text-codely-color-text-tertiary relative inline-flex size-7 shrink-0 items-center justify-center rounded-full p-1 outline-offset-2`,
+        className: `${u} ${h} ${m} border border-solid text-gamecowork-color-text-tertiary relative inline-flex size-7 shrink-0 items-center justify-center rounded-full p-1 outline-offset-2`,
         "data-focusable": "true",
         "data-focus-enter-action": "click",
         "data-telemetry-id": "open_unity_editor",
         children: [
-          p.jsx(xce, { className: "text-codely-color-text-default size-3.5" }),
+          p.jsx(xce, { className: "text-gamecowork-color-text-default size-3.5" }),
           p.jsx("span", {
             "data-testid": "unity-connection-indicator",
             className: `absolute right-1 top-1 h-2 w-2 rounded-full ${f}`,
@@ -119000,7 +119000,7 @@ const Fvn = $t.div`
   height: auto;
   width: 100%;
   background-color: var(--semantic-color-surface-input);
-  color: var(--codely-color-text-primary);
+  color: var(--gamecowork-color-text-primary);
 
   font-size: 0.875rem;
 
@@ -121365,7 +121365,7 @@ function L8t({
 }) {
   return p.jsxs("div", {
     className:
-      "flex flex-wrap items-center justify-between gap-4 border-0 border-t border-solid border-codely-color-border-subtle px-6 py-4",
+      "flex flex-wrap items-center justify-between gap-4 border-0 border-t border-solid border-gamecowork-color-border-subtle px-6 py-4",
     children: [
       p.jsx("div", { className: "flex items-center gap-4", children: i }),
       p.jsxs("div", {
@@ -121373,7 +121373,7 @@ function L8t({
         children: [
           p.jsx("button", {
             className: nt(
-              "cursor-pointer rounded-md border-0 bg-codely-color-surface-elevated px-4 py-2 text-sm text-codely-color-text-default transition-colors hover:bg-codely-color-interactive-hover",
+              "cursor-pointer rounded-md border-0 bg-gamecowork-color-surface-elevated px-4 py-2 text-sm text-gamecowork-color-text-default transition-colors hover:bg-gamecowork-color-interactive-hover",
               a,
             ),
             onClick: e,
@@ -121382,7 +121382,7 @@ function L8t({
           }),
           p.jsx("button", {
             className:
-              "cursor-pointer rounded-md border-0 bg-codely-color-accent-default px-4 py-2 text-sm font-medium text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover active:bg-codely-color-accent-active disabled:cursor-not-allowed disabled:opacity-50",
+              "cursor-pointer rounded-md border-0 bg-gamecowork-color-accent-default px-4 py-2 text-sm font-medium text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover active:bg-gamecowork-color-accent-active disabled:cursor-not-allowed disabled:opacity-50",
             disabled: n,
             onClick: () => void t(),
             "data-focusable": "true",
@@ -121399,7 +121399,7 @@ const D8t = $t.div`
   gap: 11px;
   padding: 14px 0 14px 24px;
   background-color: var(--semantic-color-surface-base);
-  border-bottom: 1px solid var(--codely-color-border-subtle);
+  border-bottom: 1px solid var(--gamecowork-color-border-subtle);
 `,
   P8t = $t.span`
   width: 20px;
@@ -121407,14 +121407,14 @@ const D8t = $t.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--codely-color-accent-default);
+  color: var(--gamecowork-color-accent-default);
 `,
   F8t = $t.h2`
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.25rem;
-  color: var(--codely-color-text-default);
+  color: var(--gamecowork-color-text-default);
 `,
   B8t = ({ title: e, icon: t }) =>
     p.jsxs(D8t, { children: [t && p.jsx(P8t, { children: t }), p.jsx(F8t, { children: e })] });
@@ -121550,7 +121550,7 @@ function q8t({
     };
   l("streamError.resubmit");
   let M = p.jsxs("div", {
-    className: "text-codely-color-text-secondary",
+    className: "text-gamecowork-color-text-secondary",
     children: [
       p.jsx("p", {
         className: "m-0 text-sm leading-6",
@@ -121562,7 +121562,7 @@ function q8t({
   f &&
     (f.toLowerCase().includes("overloaded") || f.toLowerCase().includes("malformed json")) &&
     (M = p.jsxs("div", {
-      className: "flex flex-col gap-2 text-codely-color-text-secondary",
+      className: "flex flex-col gap-2 text-gamecowork-color-text-secondary",
       children: [
         p.jsx("span", { className: "text-sm leading-6", children: l("streamError.overloaded") }),
         c
@@ -121578,7 +121578,7 @@ function q8t({
         variant: "outline",
         size: "md",
         className: nt(
-          "text-codely-color-text-secondary hover:text-codely-color-text-primary h-8 min-w-[5.5rem] whitespace-nowrap rounded-lg border-codely-color-border-strong px-3 font-medium leading-6",
+          "text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary h-8 min-w-[5.5rem] whitespace-nowrap rounded-lg border-gamecowork-color-border-strong px-3 font-medium leading-6",
           u === "pending" && "animate-pulse",
         ),
         onClick: y,
@@ -121607,9 +121607,9 @@ function q8t({
             p.jsxs("div", {
               className: "flex min-w-0 items-center gap-2",
               children: [
-                p.jsx(U8t, { className: "text-codely-color-status-danger-default h-5 w-5 shrink-0" }),
+                p.jsx(U8t, { className: "text-gamecowork-color-status-danger-default h-5 w-5 shrink-0" }),
                 p.jsx("h2", {
-                  className: "m-0 text-base font-medium leading-8 text-codely-color-text-default",
+                  className: "m-0 text-base font-medium leading-8 text-gamecowork-color-text-default",
                   children: l("streamError.title"),
                 }),
               ],
@@ -121632,14 +121632,14 @@ function q8t({
                 className: "flex flex-col",
                 children: [
                   p.jsx("div", {
-                    className: "text-sm leading-6 text-codely-color-text-secondary",
+                    className: "text-sm leading-6 text-gamecowork-color-text-secondary",
                     children: l("streamError.errorDetails"),
                   }),
                   p.jsx(In, {
                     className: "max-h-48 min-h-0 min-w-0",
                     children: p.jsx("code", {
                       className:
-                        "text-codely-color-status-danger-default bg-codely-color-surface-sunken block rounded-lg px-2 py-1 text-sm leading-6",
+                        "text-gamecowork-color-status-danger-default bg-gamecowork-color-surface-sunken block rounded-lg px-2 py-1 text-sm leading-6",
                       children: m,
                     }),
                   }),
@@ -121655,11 +121655,11 @@ function q8t({
                       className: "flex items-center gap-1",
                       children: [
                         p.jsx("span", {
-                          className: "text-xs leading-6 text-codely-color-text-tertiary",
+                          className: "text-xs leading-6 text-gamecowork-color-text-tertiary",
                           children: l("streamError.sessionId"),
                         }),
                         p.jsx("code", {
-                          className: "select-all text-xs leading-6 text-codely-color-text-tertiary",
+                          className: "select-all text-xs leading-6 text-gamecowork-color-text-tertiary",
                           children: n,
                         }),
                       ],
@@ -121669,11 +121669,11 @@ function q8t({
                       className: "flex items-center gap-1",
                       children: [
                         p.jsx("span", {
-                          className: "text-xs leading-6 text-codely-color-text-tertiary",
+                          className: "text-xs leading-6 text-gamecowork-color-text-tertiary",
                           children: l("streamError.conversationId"),
                         }),
                         p.jsx("code", {
-                          className: "select-all text-xs leading-6 text-codely-color-text-tertiary",
+                          className: "select-all text-xs leading-6 text-gamecowork-color-text-tertiary",
                           children: r,
                         }),
                       ],
@@ -122005,27 +122005,27 @@ function l7t({ onCancel: e, exhaustedSource: t = "", nextAvailableAt: n }) {
     hideFooter: !0,
     onCancel: e,
     children: p.jsxs("div", {
-      className: "flex min-h-0 min-w-0 flex-col items-center gap-5 py-4 px-6 pt-10 bg-codely-color-surface-primary",
+      className: "flex min-h-0 min-w-0 flex-col items-center gap-5 py-4 px-6 pt-10 bg-gamecowork-color-surface-primary",
       children: [
         p.jsx("div", {
-          className: "flex justify-center items-center h-14 w-14 rounded-full bg-codely-color-surface-elevated",
-          children: p.jsx(z8t, { className: "h-8 w-8 text-codely-color-accent-default" }),
+          className: "flex justify-center items-center h-14 w-14 rounded-full bg-gamecowork-color-surface-elevated",
+          children: p.jsx(z8t, { className: "h-8 w-8 text-gamecowork-color-accent-default" }),
         }),
         p.jsxs("div", {
           className: "flex w-full flex-col px-4 gap-1",
           children: [
             p.jsx("p", {
-              className: "m-0 text-base font-medium leading-8 text-center text-codely-color-text-default",
+              className: "m-0 text-base font-medium leading-8 text-center text-gamecowork-color-text-default",
               children: b,
             }),
             p.jsx("p", {
-              className: "m-0 text-sm text-center leading-6 text-codely-color-text-secondary",
+              className: "m-0 text-sm text-center leading-6 text-gamecowork-color-text-secondary",
               children: x
                 ? p.jsx(j3e, {
                     i18nKey: `budgetExceeded.quotaDescriptionWithReset.${t}`,
                     values: { resetTime: y },
                     components: {
-                      resetTime: p.jsx("span", { className: "font-semibold text-codely-color-text-default" }),
+                      resetTime: p.jsx("span", { className: "font-semibold text-gamecowork-color-text-default" }),
                     },
                   })
                 : C,
@@ -122054,7 +122054,7 @@ function l7t({ onCancel: e, exhaustedSource: t = "", nextAvailableAt: n }) {
               }),
             p.jsx(Nr, {
               variant: "ghost",
-              className: "text-codely-color-text-tertiary hover:bg-transparent",
+              className: "text-gamecowork-color-text-tertiary hover:bg-transparent",
               onClick: e,
               children: r("budgetExceeded.notNow"),
             }),
@@ -122813,7 +122813,7 @@ const nxn = sr("session/consumeSubmittedDrafts", ({ sessionId: e }, { dispatch: 
 function tAe(e) {
   var n, r, a;
   const t =
-    (a = (r = (n = e.parsedArgs) == null ? void 0 : n._meta) == null ? void 0 : r.codely) == null
+    (a = (r = (n = e.parsedArgs) == null ? void 0 : n._meta) == null ? void 0 : r.gamecowork) == null
       ? void 0
       : a.subagentActivityRef;
   return typeof t == "string" && t.trim().length > 0 ? t.trim() : void 0;
@@ -122822,7 +122822,7 @@ function nAe(e) {
   var n, r, a;
   if (Array.isArray(e.subagentActivity)) return !0;
   const t =
-    (a = (r = (n = e.parsedArgs) == null ? void 0 : n._meta) == null ? void 0 : r.codely) == null
+    (a = (r = (n = e.parsedArgs) == null ? void 0 : n._meta) == null ? void 0 : r.gamecowork) == null
       ? void 0
       : a.subagentActivity;
   return Array.isArray(t) && t.length > 0;
@@ -123060,7 +123060,7 @@ function R7t(e) {
   const t = e.subagentActivity;
   if (Array.isArray(t)) return t.filter(Qxe);
   const n =
-    (i = (a = (r = e.parsedArgs) == null ? void 0 : r._meta) == null ? void 0 : a.codely) == null
+    (i = (a = (r = e.parsedArgs) == null ? void 0 : r._meta) == null ? void 0 : a.gamecowork) == null
       ? void 0
       : i.subagentActivity;
   return Array.isArray(n) ? n.filter(Qxe) : [];
@@ -123454,7 +123454,7 @@ function q7t(e) {
   const t = e == null ? void 0 : e.trim();
   return t ? t.replace(/\.jsonl$/i, ".output") : null;
 }
-function z7t({ opacity: e, fill: t = "var(--codely-color-logo)", ...n }) {
+function z7t({ opacity: e, fill: t = "var(--gamecowork-color-logo)", ...n }) {
   return p.jsx("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "16",
@@ -123565,7 +123565,7 @@ function uxn() {
                             p.jsx($7t, {
                               children: p.jsx(Ec, {
                                 size: "sm",
-                                className: "text-[var(--codely-color-text-tertiary)]",
+                                className: "text-[var(--gamecowork-color-text-tertiary)]",
                               }),
                             }),
                             p.jsxs("div", {
@@ -123595,8 +123595,8 @@ function uxn() {
               className: "flex items-center gap-2",
               children: p.jsxs("div", {
                 className:
-                  "inline-flex items-center bg-[var(--codely-color-surface-card)] px-3 py-1.5 text-sm text-[var(--codely-color-text-secondary)] shadow-sm hover:bg-[var(--codely-color-interactive-hover)] active:bg-[var(--codely-color-interactive-pressed)] cursor-pointer",
-                style: { border: "1px solid var(--codely-color-border-strong)", borderRadius: "100px" },
+                  "inline-flex items-center bg-[var(--gamecowork-color-surface-card)] px-3 py-1.5 text-sm text-[var(--gamecowork-color-text-secondary)] shadow-sm hover:bg-[var(--gamecowork-color-interactive-hover)] active:bg-[var(--gamecowork-color-interactive-pressed)] cursor-pointer",
+                style: { border: "1px solid var(--gamecowork-color-border-strong)", borderRadius: "100px" },
                 onClick: () => c((f) => !f),
                 children: [u, " Working"],
               }),
@@ -123610,13 +123610,13 @@ function Y7t() {
 }
 /**
  * @license
- * Copyright 2025 Codely
+ * Copyright 2025 GameCowork
  * SPDX-License-Identifier: Apache-2.0
  */ const K7t = "ZjAzZThiNmItOTBmNy00OTI4LTkyMDEtM2JjMzMwNGYwODA2OmNiMTI3NTcyZTRiYTQwYTZiNWE4YzcwZTFlNDgxYTMy",
   Q7t = "MmJlNmMxMGM5ODIyNDBjZDg1NTNjNDhkNTQ1OTAyY2Q=",
   Z7t = "https://metrics.unity.cn",
-  X7t = "codely_uos_metrics_endpoint",
-  J7t = "codely_uos_metrics_no_emit",
+  X7t = "gamecowork_uos_metrics_endpoint",
+  J7t = "gamecowork_uos_metrics_no_emit",
   eMt = 128,
   tMt = 5e3,
   Zxe = { resourceInstallUninstall: "resource_install_uninstall", resourceEnableDisable: "resource_enable_disable" };
@@ -123680,10 +123680,10 @@ function oMt(e, t, n) {
   const r = t == null ? void 0 : t.trim();
   if (!r) return;
   const a = e == null ? void 0 : e.trim();
-  return a ? `Codely-${a}-${r}-${n}` : r;
+  return a ? `GameCowork-${a}-${r}-${n}` : r;
 }
 function sMt(e) {
-  return (e == null ? void 0 : e.AUTH_TYPE) === "codely-staging" ? "staging" : "prod";
+  return (e == null ? void 0 : e.AUTH_TYPE) === "gamecowork-staging" ? "staging" : "prod";
 }
 let q2;
 function lMt() {
@@ -124141,14 +124141,14 @@ const MMt = sr("recommend/installCapability", async (e, { dispatch: t, extra: n 
     let c = "";
     if (i === "user") {
       const d = await Fm(n.ideMessenger);
-      c = d ? `${d}/${l}/` : `~/.codely-cli/${l}/`;
+      c = d ? `${d}/${l}/` : `~/.gamecowork-cli/${l}/`;
     } else {
       let d = s;
       if (!d && o) {
         const h = Tl(r()).find((m) => m.workspaceKey === o);
         d = h == null ? void 0 : h.workspaceDir;
       }
-      c = d ? `${d}/.codely-cli/${l}/` : "";
+      c = d ? `${d}/.gamecowork-cli/${l}/` : "";
     }
     t(TMt(c));
   }),
@@ -124172,9 +124172,9 @@ const MMt = sr("recommend/installCapability", async (e, { dispatch: t, extra: n 
     primary: "border-none text-primary-foreground bg-primary hover:enabled:brightness-125",
     secondary: "border-none text-foreground bg-border hover:enabled:brightness-125",
     outline:
-      "border border-solid border-badge border-codely-color-border-subtle text-foreground bg-transparent hover:enabled:bg-codely-color-surface-input",
+      "border border-solid border-badge border-gamecowork-color-border-subtle text-foreground bg-transparent hover:enabled:bg-gamecowork-color-surface-input",
     ghost:
-      "border-none text-foreground bg-inherit hover:enabled:brightness-125 hover:enabled:bg-codely-color-surface-input",
+      "border-none text-foreground bg-inherit hover:enabled:brightness-125 hover:enabled:bg-gamecowork-color-surface-input",
   },
   OMt = { sm: "px-1.5 py-0.5 text-2xs", lg: "px-2 py-1 text-sm" },
   Py = E.forwardRef(({ variant: e = "primary", size: t = "lg", className: n, ...r }, a) =>
@@ -124183,7 +124183,7 @@ const MMt = sr("recommend/installCapability", async (e, { dispatch: t, extra: n 
       className: nt(
         "my-1.5 cursor-pointer rounded transition-all duration-200",
         "hover:enabled:cursor-pointer",
-        "disabled:text-codely-color-text-disabled disabled:pointer-events-none disabled:opacity-50",
+        "disabled:text-gamecowork-color-text-disabled disabled:pointer-events-none disabled:opacity-50",
         RMt[e],
         OMt[t],
         n,
@@ -124199,7 +124199,7 @@ E.forwardRef(({ fontSizeModifier: e = -3, ...t }, n) => {
     ref: n,
     ...t,
     className: nt(
-      "bg-vsc-input-background text-vsc-foreground border-codely-color-border-subtle m-0 flex flex-1 cursor-pointer flex-row items-center gap-1 border border-solid px-1 py-0.5 text-left transition-colors duration-200",
+      "bg-vsc-input-background text-vsc-foreground border-gamecowork-color-border-subtle m-0 flex flex-1 cursor-pointer flex-row items-center gap-1 border border-solid px-1 py-0.5 text-left transition-colors duration-200",
       t.className,
     ),
     style: { fontSize: r, borderRadius: Io, ...t.style },
@@ -124575,7 +124575,7 @@ const gxn = E.forwardRef(function (
               onChange: (l) => t(l.target.value),
               placeholder: n,
               className:
-                "px-3 py-2 other_option_input border-codely-color-border-subtle text-codely-color-text-default placeholder:text-codely-color-text-tertiary outline-none appearance-none bg-transparent",
+                "px-3 py-2 other_option_input border-gamecowork-color-border-subtle text-gamecowork-color-text-default placeholder:text-gamecowork-color-text-tertiary outline-none appearance-none bg-transparent",
               rows: 3,
               onPointerDown: o,
               onClick: (l) => l.stopPropagation(),
@@ -124790,7 +124790,7 @@ function eSe(e) {
 }
 const $Mt = $t.div`
   border-radius: 12px;
-  border: 1px solid var(--codely-color-border-subtle);
+  border: 1px solid var(--gamecowork-color-border-subtle);
   box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
   font-size: ${qxt(-2)};
   position: absolute;
@@ -124800,11 +124800,11 @@ const $Mt = $t.div`
   z-index: 100;
   width: 100%;
   padding: 8px 0 4px;
-  background-color: var(--codely-color-surface-card);
+  background-color: var(--gamecowork-color-surface-card);
 `,
   HMt = $t.div`
   padding: 0 12px 4px;
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.2;
@@ -124812,7 +124812,7 @@ const $Mt = $t.div`
   GMt = $t.div`
   height: 1px;
   margin: 8px 0;
-  background-color: var(--codely-color-border-subtle);
+  background-color: var(--gamecowork-color-border-subtle);
 `,
   tSe = $t.div`
   padding: 0 4px;
@@ -124828,7 +124828,7 @@ const $Mt = $t.div`
   min-height: 28px;
   text-align: left;
   width: 100%;
-  color: var(--codely-color-text-default);
+  color: var(--gamecowork-color-text-default);
   font-size: 13px;
   line-height: 20px;
 
@@ -124849,7 +124849,7 @@ const $Mt = $t.div`
   width: 100%;
   text-align: left;
   cursor: pointer;
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   font-size: 13px;
   font-weight: 400;
   line-height: 20px;
@@ -125226,7 +125226,7 @@ const $Mt = $t.div`
                               className: "flex items-center justify-center gap-[0.375rem]",
                               children: [
                                 p.jsx(eSe, { item: h, className: "mr-2", selected: !1, mediaBaseUrl: n }),
-                                p.jsx("span", { className: "text-codely-color-text-default", children: h.title }),
+                                p.jsx("span", { className: "text-gamecowork-color-text-default", children: h.title }),
                                 "  ",
                               ],
                             }),
@@ -125282,7 +125282,7 @@ const $Mt = $t.div`
                                                           "flex h-4 w-4 flex-shrink-0 items-center justify-center",
                                                         children: p.jsx(xy, {
                                                           className:
-                                                            "h-4 w-4 text-[var(--codely-color-text-secondary)]",
+                                                            "h-4 w-4 text-[var(--gamecowork-color-text-secondary)]",
                                                         }),
                                                       })
                                                     : p.jsx(Tc, {
@@ -125295,14 +125295,14 @@ const $Mt = $t.div`
                                                   text: se.id,
                                                   placement: "top",
                                                   children: p.jsx("span", {
-                                                    className: `inline-block overflow-hidden overflow-ellipsis whitespace-nowrap font-normal text-[13px] leading-5 ${Le ? "text-[#35C9A9]" : "text-[var(--codely-color-text-default)]"}`,
+                                                    className: `inline-block overflow-hidden overflow-ellipsis whitespace-nowrap font-normal text-[13px] leading-5 ${Le ? "text-[#35C9A9]" : "text-[var(--gamecowork-color-text-default)]"}`,
                                                     children: se.title,
                                                   }),
                                                 }),
                                                 se.tag &&
                                                   p.jsx("span", {
                                                     className:
-                                                      "flex-shrink-0 text-xs font-normal leading-5 text-[var(--codely-color-text-tertiary)]",
+                                                      "flex-shrink-0 text-xs font-normal leading-5 text-[var(--gamecowork-color-text-tertiary)]",
                                                     children: se.tag,
                                                   }),
                                               ],
@@ -125330,7 +125330,7 @@ const $Mt = $t.div`
                                                       },
                                                       children: p.jsx("span", {
                                                         className:
-                                                          "truncate text-[13px] font-normal leading-5 text-[var(--codely-color-text-tertiary)]",
+                                                          "truncate text-[13px] font-normal leading-5 text-[var(--gamecowork-color-text-tertiary)]",
                                                         children: se.description,
                                                       }),
                                                     }),
@@ -125392,7 +125392,7 @@ const $Mt = $t.div`
                       : p.jsx("div", {
                           className: "item whitespace-nowrap flex justify-center items-center w-full h-[3.0625rem]",
                           children: p.jsx("span", {
-                            className: "text-codely-color-text-default font-normal text-sm",
+                            className: "text-gamecowork-color-text-default font-normal text-sm",
                             children: "No match results",
                           }),
                         }),
@@ -125587,13 +125587,13 @@ const YMt = $t.div`
           children: [
             p.jsx("div", {
               className:
-                "cursor-pointer underline text-codely-color-text-secondary hover:text-codely-color-text-primary active:text-codely-color-text-tertiary",
+                "cursor-pointer underline text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary active:text-gamecowork-color-text-tertiary",
               onClick: () => {
                 d.post("openUrl", KMt);
               },
               children: n("slashCommands.reportProblem"),
             }),
-            p.jsx("span", { className: "text-codely-color-text-tertiary", children: c ? `v${c}` : "" }),
+            p.jsx("span", { className: "text-gamecowork-color-text-tertiary", children: c ? `v${c}` : "" }),
           ],
         }),
       [c, d, n],
@@ -125641,11 +125641,11 @@ function Do({ title: e, className: t = "", buttons: n, extra: r }) {
           onClick: o.onClick,
           "data-telemetry-id": (l = o.telemetryId) != null ? l : "settings_header_action",
           className: nt(
-            "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary",
+            "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary",
             o.className,
           ),
           children: [
-            o.showIcon && (o.icon || p.jsx(vc, { className: "size-4 text-codely-color-text-secondary" })),
+            o.showIcon && (o.icon || p.jsx(vc, { className: "size-4 text-gamecowork-color-text-secondary" })),
             o.buttonText || a("common.new"),
           ],
         },
@@ -125657,7 +125657,7 @@ function Do({ title: e, className: t = "", buttons: n, extra: r }) {
     children: [
       p.jsxs("div", {
         className: "flex flex-1 items-center gap-3",
-        children: [p.jsx("span", { className: "text-codely-color-text-primary text-xl font-medium", children: e }), r],
+        children: [p.jsx("span", { className: "text-gamecowork-color-text-primary text-xl font-medium", children: e }), r],
       }),
       n != null && n.length
         ? p.jsx("div", {
@@ -125953,12 +125953,12 @@ function kb({
       className: "flex flex-col gap-2 pt-2",
       children: [
         p.jsxs("div", {
-          className: "flex items-center justify-between px-2 text-sm text-codely-color-text-default",
+          className: "flex items-center justify-between px-2 text-sm text-gamecowork-color-text-default",
           children: [
             p.jsxs("span", {
               className: "flex items-center gap-1.5",
               children: [
-                n && p.jsx("span", { className: "flex items-center text-codely-color-text-tertiary", children: n }),
+                n && p.jsx("span", { className: "flex items-center text-gamecowork-color-text-tertiary", children: n }),
                 `${t} (${m.length})`,
               ],
             }),
@@ -125970,9 +125970,9 @@ function kb({
                     onClick: () => d(e),
                     "data-telemetry-id": "capability_upload",
                     className:
-                      "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                      "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                     children: [
-                      p.jsx(XMt, { className: "size-4 text-codely-color-text-secondary" }),
+                      p.jsx(XMt, { className: "size-4 text-gamecowork-color-text-secondary" }),
                       p.jsx("span", { className: "btn-text-compact", children: h("skills.uploadZip") }),
                     ],
                   }),
@@ -125983,9 +125983,9 @@ function kb({
                       trigger: p.jsxs(WH, {
                         "data-telemetry-id": "capability_new",
                         className:
-                          "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                          "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                         children: [
-                          p.jsx(vc, { className: "size-4 text-codely-color-text-secondary" }),
+                          p.jsx(vc, { className: "size-4 text-gamecowork-color-text-secondary" }),
                           p.jsx("span", { className: "btn-text-compact", children: h("common.new") }),
                         ],
                       }),
@@ -126006,9 +126006,9 @@ function kb({
                       onClick: s,
                       "data-telemetry-id": "capability_new",
                       className:
-                        "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                        "flex cursor-pointer items-center h-[1.75rem] justify-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                       children: [
-                        p.jsx(vc, { className: "size-4 text-codely-color-text-secondary" }),
+                        p.jsx(vc, { className: "size-4 text-gamecowork-color-text-secondary" }),
                         p.jsx("span", { className: "btn-text-compact", children: h("common.new") }),
                       ],
                     }),
@@ -126109,7 +126109,7 @@ function ra(e) {
       inputRef: d,
       ...u
     } = e,
-    h = t && zt.cloneElement(t, { className: "size-3.5 text-codely-color-text-disabled" }),
+    h = t && zt.cloneElement(t, { className: "size-3.5 text-gamecowork-color-text-disabled" }),
     m = E.useMemo(() => ({ xs: "h-7 px-2", sm: "h-9 px-2", md: "h-10 px-3", lg: "h-11 px-3" })[r], [r]);
   return p.jsxs("div", {
     className: "flex relative w-full box-border",
@@ -126118,7 +126118,7 @@ function ra(e) {
       p.jsx("input", {
         ...u,
         className: nt(
-          "m-0 flex-1 w-full appearance-none rounded border border-solid border-codely-color-border-subtle h-9 box-border p-0 px-3 font-inherit text-sm text-codely-color-text-default shadow-none outline-none focus:border-codely-color-accent-default bg-codely-color-surface-input placeholder:text-codely-color-text-disabled",
+          "m-0 flex-1 w-full appearance-none rounded border border-solid border-gamecowork-color-border-subtle h-9 box-border p-0 px-3 font-inherit text-sm text-gamecowork-color-text-default shadow-none outline-none focus:border-gamecowork-color-accent-default bg-gamecowork-color-surface-input placeholder:text-gamecowork-color-text-disabled",
           m,
           { "pl-7": t },
           n,
@@ -126142,7 +126142,7 @@ const tNt = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -126151,7 +126151,7 @@ const tNt = `
   }
 
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
 
   .mcp-radio:checked::after {
@@ -126162,16 +126162,16 @@ const tNt = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
 
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
 
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `,
   nNt = `# =============================================================================
@@ -126181,8 +126181,8 @@ const tNt = `
 # The prompt will be sent to the AI when you type /{{NAME}} in the chat.
 #
 # File locations:
-#   - Project-level: .codely-cli/commands/<name>.toml (shared with team)
-#   - Global:        ~/.codely-cli/commands/<name>.toml (personal use)
+#   - Project-level: .gamecowork-cli/commands/<name>.toml (shared with team)
+#   - Global:        ~/.gamecowork-cli/commands/<name>.toml (personal use)
 #
 # IMPORTANT: After creating or modifying this file, run /commands reload
 # or start a new chat session for changes to take effect.
@@ -126231,7 +126231,7 @@ function rNt({
     })();
   }, [l, t, e]);
   const w = () =>
-      h === "project" && b ? `${b}/.codely-cli/commands/` : S ? `${S}/commands/` : "~/.codely-cli/commands/",
+      h === "project" && b ? `${b}/.gamecowork-cli/commands/` : S ? `${S}/commands/` : "~/.gamecowork-cli/commands/",
     M = () => {
       const I = `${d.trim().toLowerCase().replace(/\s+/g, "-")}.toml`;
       return `${w()}${I}`;
@@ -126284,7 +126284,7 @@ function rNt({
             className: "flex flex-col",
             children: [
               p.jsxs("label", {
-                className: "mb-2 block text-sm font-normal text-codely-color-text-primary",
+                className: "mb-2 block text-sm font-normal text-gamecowork-color-text-primary",
                 children: [s("manageForm.name"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsx(ra, {
@@ -126298,10 +126298,10 @@ function rNt({
                 placeholder: "eg: code-review",
                 autoFocus: !0,
                 className:
-                  "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                  "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
               }),
               p.jsxs("div", {
-                className: "text-right mt-1 text-xs text-codely-color-text-tertiary",
+                className: "text-right mt-1 text-xs text-gamecowork-color-text-tertiary",
                 children: [d.length, " / 100"],
               }),
             ],
@@ -126310,7 +126310,7 @@ function rNt({
             className: "flex flex-col gap-2 min-w-0",
             children: [
               p.jsxs("label", {
-                className: "block text-sm text-codely-color-text-primary",
+                className: "block text-sm text-gamecowork-color-text-primary",
                 children: [s("manageForm.storage"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsxs("div", {
@@ -126318,7 +126318,7 @@ function rNt({
                 children: [
                   !i &&
                     p.jsxs("label", {
-                      className: `flex items-center gap-2 text-sm transition-colors text-codely-color-text-primary ${b ? "cursor-pointer" : "cursor-not-allowed opacity-40"} min-w-0`,
+                      className: `flex items-center gap-2 text-sm transition-colors text-gamecowork-color-text-primary ${b ? "cursor-pointer" : "cursor-not-allowed opacity-40"} min-w-0`,
                       children: [
                         p.jsx("input", {
                           type: "radio",
@@ -126334,7 +126334,7 @@ function rNt({
                     }),
                   p.jsxs("label", {
                     className:
-                      "flex items-center gap-2 cursor-pointer text-sm transition-colors text-codely-color-text-primary",
+                      "flex items-center gap-2 cursor-pointer text-sm transition-colors text-gamecowork-color-text-primary",
                     children: [
                       p.jsx("input", {
                         type: "radio",
@@ -126350,7 +126350,7 @@ function rNt({
                           s("manageForm.global"),
                           p.jsx("span", {
                             className:
-                              "rounded border border-solid border-codely-color-border-subtle bg-transparent px-1.5 py-0.5 text-xs leading-none text-codely-color-text-tertiary",
+                              "rounded border border-solid border-gamecowork-color-border-subtle bg-transparent px-1.5 py-0.5 text-xs leading-none text-gamecowork-color-text-tertiary",
                             children: s("manageForm.globalLabel"),
                           }),
                         ],
@@ -126365,7 +126365,7 @@ function rNt({
             className: "flex flex-col gap-2 mt-4",
             children: [
               p.jsx("label", {
-                className: "block text-sm font-normal text-codely-color-text-primary",
+                className: "block text-sm font-normal text-gamecowork-color-text-primary",
                 children: s("manageForm.path"),
               }),
               p.jsx(ra, {
@@ -126373,11 +126373,11 @@ function rNt({
                 value: d.trim() ? M() : w(),
                 readOnly: !0,
                 className:
-                  "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-disabled text-sm rounded-md cursor-default",
+                  "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-disabled text-sm rounded-md cursor-default",
               }),
             ],
           }),
-          y && p.jsx("div", { className: "text-xs text-[var(--codely-color-border-error)] mt-2", children: y }),
+          y && p.jsx("div", { className: "text-xs text-[var(--gamecowork-color-border-error)] mt-2", children: y }),
         ],
       }),
       p.jsxs("div", {
@@ -126388,14 +126388,14 @@ function rNt({
             onClick: a,
             disabled: f,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 text-sm font-normal text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 text-sm font-normal text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
             children: s("common.cancel"),
           }),
           p.jsx(Nr, {
             onClick: () => void A(),
             disabled: !d.trim() || f,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 text-sm font-normal text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-tertiary",
+              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
             children: s(f ? "manageForm.adding" : "manageForm.addNow"),
           }),
         ],
@@ -126422,20 +126422,20 @@ function aNt({
       (i && i(), l(on(!1)), l(Jn(void 0)));
     };
   return p.jsxs("div", {
-    className: "flex flex-col p-6 gap-4 rounded-lg bg-codely-color-surface-primary",
+    className: "flex flex-col p-6 gap-4 rounded-lg bg-gamecowork-color-surface-primary",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base text-codely-color-text-primary font-semibold",
+            className: "text-base text-gamecowork-color-text-primary font-semibold",
             children: c("commands.createNew"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: u,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -126464,17 +126464,17 @@ function xm({
   isMCPEmpty: o = !1,
 }) {
   return p.jsx("div", {
-    className: `flex flex-1 min-h-0 min-w-0 w-full flex-col overflow-y-auto rounded-xl bg-codely-color-surface-card px-4 box-border ${i}`,
+    className: `flex flex-1 min-h-0 min-w-0 w-full flex-col overflow-y-auto rounded-xl bg-gamecowork-color-surface-card px-4 box-border ${i}`,
     children: p.jsxs("div", {
       className: "m-auto flex flex-col items-center justify-center py-8 w-full min-w-0",
       children: [
         p.jsx("div", {
-          className: "mb-3 text-base font-medium text-codely-color-text-primary text-center break-words w-full",
+          className: "mb-3 text-base font-medium text-gamecowork-color-text-primary text-center break-words w-full",
           children: e,
         }),
         t &&
           p.jsx("div", {
-            className: "mb-8 text-center text-xs text-codely-color-text-tertiary break-words w-full whitespace-normal",
+            className: "mb-8 text-center text-xs text-gamecowork-color-text-tertiary break-words w-full whitespace-normal",
             children: o
               ? p.jsx("p", {
                   className: "mb-2",
@@ -126483,7 +126483,7 @@ function xm({
                     components: {
                       code: p.jsx("code", {
                         className:
-                          "border-codely-color-border-subtle text-codely-color-accent-default border border-solid bg-[var(--codely-color-surface-elevated)] px-[6px] py-[1px] whitespace-normal break-words",
+                          "border-gamecowork-color-border-subtle text-gamecowork-color-accent-default border border-solid bg-[var(--gamecowork-color-surface-elevated)] px-[6px] py-[1px] whitespace-normal break-words",
                       }),
                     },
                   }),
@@ -126497,9 +126497,9 @@ function xm({
             onClick: r,
             "data-telemetry-id": a,
             className:
-              "flex cursor-pointer items-center justify-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 py-1 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary max-w-full",
+              "flex cursor-pointer items-center justify-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 py-1 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary max-w-full",
             children: [
-              p.jsx(vc, { className: "size-6 text-codely-color-text-secondary shrink-0" }),
+              p.jsx(vc, { className: "size-6 text-gamecowork-color-text-secondary shrink-0" }),
               p.jsx("span", { className: "truncate", children: n }),
             ],
           }),
@@ -126526,7 +126526,7 @@ function Sm({
   return (
     Cs("Escape", () => (s(), !0), { priority: So.DIALOG, description: "Close delete confirm dialog" }),
     p.jsx("div", {
-      className: "bg-codely-color-surface-card rounded-[1rem]",
+      className: "bg-gamecowork-color-surface-card rounded-[1rem]",
       children: p.jsx(IIe, {
         title: c,
         mainText: d,
@@ -126561,7 +126561,7 @@ function oNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
   const { t: o } = Rt();
   return p.jsxs("div", {
     className:
-      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-codely-color-item-surface hover:bg-codely-color-item-surface-hover",
+      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover",
     "data-focus-item": "true",
     "data-focus-group": "rows",
     onClick: a ? void 0 : t,
@@ -126569,12 +126569,12 @@ function oNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
       p.jsxs("div", {
         className: "flex min-w-0 flex-1 items-center gap-3",
         children: [
-          p.jsx("span", { className: "text-codely-color-text-primary text-sm font-medium truncate", children: e.name }),
+          p.jsx("span", { className: "text-gamecowork-color-text-primary text-sm font-medium truncate", children: e.name }),
           !i &&
             e.source === "global" &&
             p.jsx("div", {
               className:
-                "flex-shrink-0 rounded bg-transparent px-1.5 py-0.5 text-xs text-codely-color-text-secondary border border-solid border-codely-color-border-subtle",
+                "flex-shrink-0 rounded bg-transparent px-1.5 py-0.5 text-xs text-gamecowork-color-text-secondary border border-solid border-gamecowork-color-border-subtle",
               children: o("manageForm.globalLabel"),
             }),
         ],
@@ -126595,7 +126595,7 @@ function oNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
                 "data-focus-group": "actions",
                 "data-telemetry-id": "edit_command",
                 children: p.jsx(Bm, {
-                  className: "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                  className: "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                 }),
               }),
               p.jsx(gr, {
@@ -126606,7 +126606,7 @@ function oNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
                 "data-focus-group": "actions",
                 "data-telemetry-id": "delete_command",
                 children: p.jsx(Um, {
-                  className: "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                  className: "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                 }),
               }),
             ],
@@ -126729,7 +126729,7 @@ function sNt({
                 className: "min-h-0 flex-1 min-w-0",
                 scrollableNodeProps: { "data-focusable": !0, "data-focus-direction": "vertical" },
                 children: p.jsxs("div", {
-                  className: "flex flex-col min-h-0 rounded-[0.75rem] overflow-hidden bg-codely-color-item-surface",
+                  className: "flex flex-col min-h-0 rounded-[0.75rem] overflow-hidden bg-gamecowork-color-item-surface",
                   children: [
                     e
                       .slice(0, g)
@@ -126739,7 +126739,7 @@ function sNt({
                           {
                             className: "flex flex-col",
                             children: [
-                              N > 0 && p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                              N > 0 && p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                               p.jsx(
                                 oNt,
                                 {
@@ -126761,15 +126761,15 @@ function sNt({
                       p.jsxs("div", {
                         className: "flex flex-col",
                         children: [
-                          p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                          p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                           p.jsx("div", {
                             className:
-                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-codely-color-item-surface-hover",
+                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-gamecowork-color-item-surface-hover",
                             onClick: () => {
                               g < e.length ? y((M) => M + f) : y(f);
                             },
                             children: p.jsx("span", {
-                              className: "text-codely-color-text-tertiary text-sm",
+                              className: "text-gamecowork-color-text-tertiary text-sm",
                               children: g < e.length ? u("common.showMore") : u("common.showLess"),
                             }),
                           }),
@@ -127204,12 +127204,12 @@ function O_({ setting: e, isCompactGroup: t, className: n, buttonClassName: r })
             children: [
               e.title &&
                 p.jsx("div", {
-                  className: "text-sm font-medium leading-[1.5rem] text-codely-color-text-primary",
+                  className: "text-sm font-medium leading-[1.5rem] text-gamecowork-color-text-primary",
                   children: e.title,
                 }),
               e.description &&
                 p.jsx("div", {
-                  className: "text-xs leading-[1.25rem] text-codely-color-text-tertiary",
+                  className: "text-xs leading-[1.25rem] text-gamecowork-color-text-tertiary",
                   children: e.description,
                 }),
             ],
@@ -127222,18 +127222,18 @@ function O_({ setting: e, isCompactGroup: t, className: n, buttonClassName: r })
             className: "z-[1100] !max-w-[20rem]",
             trigger: p.jsxs(WH, {
               "data-telemetry-id": "settings_select",
-              className: `flex min-w-[5.75rem] min-h-[1.75rem] cursor-pointer items-center justify-between gap-3 rounded-lg border border-solid border-codely-color-border-default bg-transparent px-3 text-sm text-codely-color-text-primary outline-none hover:bg-codely-color-interactive-hover ${!t && (e.title || e.description) ? "max-w-[200px]" : ""} ${r || ""}`,
+              className: `flex min-w-[5.75rem] min-h-[1.75rem] cursor-pointer items-center justify-between gap-3 rounded-lg border border-solid border-gamecowork-color-border-default bg-transparent px-3 text-sm text-gamecowork-color-text-primary outline-none hover:bg-gamecowork-color-interactive-hover ${!t && (e.title || e.description) ? "max-w-[200px]" : ""} ${r || ""}`,
               children: [
                 p.jsx(tr, {
                   text: i ? s : void 0,
                   placement: "top",
                   children: p.jsx("span", {
                     ref: a,
-                    className: "min-w-0 flex-1 truncate text-sm text-codely-color-text-primary",
+                    className: "min-w-0 flex-1 truncate text-sm text-gamecowork-color-text-primary",
                     children: s,
                   }),
                 }),
-                p.jsx(o3e, { className: "!text-sm text-codely-color-text-secondary" }),
+                p.jsx(o3e, { className: "!text-sm text-gamecowork-color-text-secondary" }),
               ],
             }),
             children: e.options.map((d) =>
@@ -159968,7 +159968,7 @@ function Fon({ selectedCategory: e, onSelectCategory: t }) {
           type: "button",
           onClick: () => t(r),
           "data-telemetry-id": "marketplace_category",
-          className: `px-3 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors whitespace-nowrap text-codely-color-text-primary ${a ? "bg-codely-color-interactive-hover" : "bg-transparent text-codely-color-text-secondary hover:bg-codely-color-interactive-pressed"}`,
+          className: `px-3 py-1 rounded-lg text-sm cursor-pointer border-none transition-colors whitespace-nowrap text-gamecowork-color-text-primary ${a ? "bg-gamecowork-color-interactive-hover" : "bg-transparent text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-pressed"}`,
           children: n(`marketplace.categories.${r}`),
         },
         r,
@@ -160186,7 +160186,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
     },
     re = s ? OV : LV;
   return p.jsxs("div", {
-    className: "flex flex-col p-4 gap-4 rounded-lg bg-codely-color-surface-card relative",
+    className: "flex flex-col p-4 gap-4 rounded-lg bg-gamecowork-color-surface-card relative",
     "data-telemetry-id": "marketplace_detail",
     "data-e2e-id": "marketplace_detail",
     "data-marketplace-name": (G = e.slug) != null ? G : e.title,
@@ -160207,23 +160207,23 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
                 className: "flex flex-col",
                 children: [
                   p.jsx("div", {
-                    className: "text-base font-medium text-codely-color-text-default",
+                    className: "text-base font-medium text-gamecowork-color-text-default",
                     children: e.title,
                   }),
                   p.jsxs("div", {
-                    className: "flex items-center gap-4 mt-2 text-xs text-codely-color-text-tertiary",
+                    className: "flex items-center gap-4 mt-2 text-xs text-gamecowork-color-text-tertiary",
                     children: [
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(Z5e, { className: "!size-3.5 text-codely-color-text-tertiary" }),
-                          p.jsx("span", { children: i("marketplace.cardLabel.source", "Codely") }),
+                          p.jsx(Z5e, { className: "!size-3.5 text-gamecowork-color-text-tertiary" }),
+                          p.jsx("span", { children: i("marketplace.cardLabel.source", "GameCowork") }),
                         ],
                       }),
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(re, { className: "h-3.5 w-3.5 text-codely-color-text-tertiary" }),
+                          p.jsx(re, { className: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary" }),
                           p.jsx("span", {
                             children: s
                               ? i("marketplace.cardLabel.extensions", "Extension")
@@ -160234,14 +160234,14 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(AAe, { className: "h-3.5 w-3.5 text-codely-color-text-tertiary" }),
+                          p.jsx(AAe, { className: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary" }),
                           p.jsxs("span", { children: [(e.download_count / 1e3).toFixed(1), "K"] }),
                         ],
                       }),
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(RAe, { className: "h-3.5 w-3.5 text-codely-color-text-tertiary" }),
+                          p.jsx(RAe, { className: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary" }),
                           p.jsx("span", { children: e.version }),
                         ],
                       }),
@@ -160257,7 +160257,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
             disabled: T,
             className: "shrink-0",
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -160265,9 +160265,9 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
         className: "min-h-0",
         children: p.jsx("div", {
           className:
-            "mt-4 rounded-lg border border-solid border-codely-color-border-default p-4 min-h-[150px] max-h-[300px] overflow-y-auto bg-codely-color-surface-disabled",
+            "mt-4 rounded-lg border border-solid border-gamecowork-color-border-default p-4 min-h-[150px] max-h-[300px] overflow-y-auto bg-gamecowork-color-surface-disabled",
           children: p.jsx("p", {
-            className: "m-0 p-0 text-sm text-codely-color-text-tertiary whitespace-pre-wrap",
+            className: "m-0 p-0 text-sm text-gamecowork-color-text-tertiary whitespace-pre-wrap",
             children: e.description,
           }),
         }),
@@ -160279,7 +160279,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
             className: "flex flex-col w-full",
             children: [
               p.jsx("label", {
-                className: "text-codely-color-text-primary block text-sm mb-1",
+                className: "text-gamecowork-color-text-primary block text-sm mb-1",
                 children: i("manageForm.path", "Path"),
               }),
               p.jsx("input", {
@@ -160287,7 +160287,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
                 value: C,
                 disabled: !0,
                 className:
-                  "h-[2rem] text-sm text-codely-color-text-tertiary bg-transparent border border-solid border-codely-color-border-default rounded-md cursor-not-allowed opacity-50 px-2",
+                  "h-[2rem] text-sm text-gamecowork-color-text-tertiary bg-transparent border border-solid border-gamecowork-color-border-default rounded-md cursor-not-allowed opacity-50 px-2",
               }),
             ],
           }),
@@ -160295,7 +160295,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
             className: "w-fit",
             children: [
               p.jsxs("label", {
-                className: "text-codely-color-text-primary block text-sm mb-1",
+                className: "text-gamecowork-color-text-primary block text-sm mb-1",
                 children: [
                   i("manageForm.storage", "Storage"),
                   p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" }),
@@ -160325,7 +160325,7 @@ function Uon({ item: e, onDone: t, type: n = "skills", isPlugin: r, initialWorks
             onClick: (T ? M === "uninstall" : W) ? U : K,
             disabled: T || A || (!W && j),
             className: (T ? M === "uninstall" : W)
-              ? "text-codely-color-status-danger-default border-codely-color-status-danger-border hover:bg-codely-color-status-danger-muted px-4"
+              ? "text-gamecowork-color-status-danger-default border-gamecowork-color-status-danger-border hover:bg-gamecowork-color-status-danger-muted px-4"
               : "px-4",
             children: T
               ? p.jsxs("span", {
@@ -160403,7 +160403,7 @@ function BAe({ placeholder: e, searchQuery: t, setSearchQuery: n, className: r }
         size: "sm",
         className: nt(r, o && "pr-8"),
         icon: p.jsx(w$, {
-          className: "text-codely-color-text-tertiary absolute left-3 top-1/2 size-3.5 -translate-y-1/2",
+          className: "text-gamecowork-color-text-tertiary absolute left-3 top-1/2 size-3.5 -translate-y-1/2",
         }),
         placeholder: e,
         value: t,
@@ -160422,7 +160422,7 @@ function BAe({ placeholder: e, searchQuery: t, setSearchQuery: n, className: r }
             (n(""), (s = i.current) == null || s.focus());
           },
           className:
-            "text-codely-color-text-secondary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary absolute right-2 top-1/2 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent p-0 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+            "text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary absolute right-2 top-1/2 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent p-0 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
           children: p.jsx($a, { className: "size-4" }),
         }),
     ],
@@ -160443,23 +160443,23 @@ function qon({ item: e, transportLabel: t, onClose: n, isBusy: r }) {
                 className: "flex flex-col",
                 children: [
                   p.jsx("div", {
-                    className: "text-codely-color-text-default text-base font-medium",
+                    className: "text-gamecowork-color-text-default text-base font-medium",
                     children: e.title,
                   }),
                   p.jsxs("div", {
-                    className: "text-codely-color-text-tertiary mt-2 flex items-center gap-4 text-xs",
+                    className: "text-gamecowork-color-text-tertiary mt-2 flex items-center gap-4 text-xs",
                     children: [
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(Z5e, { className: "text-codely-color-text-tertiary !size-3.5" }),
-                          p.jsx("span", { children: a("marketplace.cardLabel.source", "Codely") }),
+                          p.jsx(Z5e, { className: "text-gamecowork-color-text-tertiary !size-3.5" }),
+                          p.jsx("span", { children: a("marketplace.cardLabel.source", "GameCowork") }),
                         ],
                       }),
                       p.jsxs("div", {
                         className: "flex items-center gap-1",
                         children: [
-                          p.jsx(DV, { className: "text-codely-color-text-tertiary h-3.5 w-3.5" }),
+                          p.jsx(DV, { className: "text-gamecowork-color-text-tertiary h-3.5 w-3.5" }),
                           p.jsxs("span", { children: [a("marketplace.cardLabel.mcp", "MCP"), " · ", t] }),
                         ],
                       }),
@@ -160475,7 +160475,7 @@ function qon({ item: e, transportLabel: t, onClose: n, isBusy: r }) {
             disabled: r,
             "data-telemetry-id": "dialog_close",
             className: "shrink-0",
-            children: p.jsx($a, { className: "text-codely-color-text-tertiary size-4" }),
+            children: p.jsx($a, { className: "text-gamecowork-color-text-tertiary size-4" }),
           }),
         ],
       }),
@@ -160483,9 +160483,9 @@ function qon({ item: e, transportLabel: t, onClose: n, isBusy: r }) {
         className: "min-h-0",
         children: p.jsx("div", {
           className:
-            "border-codely-color-border-default bg-codely-color-surface-disabled mt-4 max-h-[200px] min-h-[80px] overflow-y-auto rounded-lg border border-solid p-4",
+            "border-gamecowork-color-border-default bg-gamecowork-color-surface-disabled mt-4 max-h-[200px] min-h-[80px] overflow-y-auto rounded-lg border border-solid p-4",
           children: p.jsx("p", {
-            className: "text-codely-color-text-tertiary m-0 whitespace-pre-wrap p-0 text-sm",
+            className: "text-gamecowork-color-text-tertiary m-0 whitespace-pre-wrap p-0 text-sm",
             children: e.description,
           }),
         }),
@@ -161738,7 +161738,7 @@ function fln({
           onClick: (y) => {
             (y.preventDefault(), t.guide_url && h.post("openUrl", t.guide_url));
           },
-          className: "text-codely-color-accent-default cursor-pointer text-sm underline",
+          className: "text-gamecowork-color-accent-default cursor-pointer text-sm underline",
           children: d("marketplace.mcp.getGuide", "Get configuration guide"),
         }),
       m.map((y) => {
@@ -161752,13 +161752,13 @@ function fln({
             className: "flex flex-col",
             children: [
               p.jsxs("label", {
-                className: "text-codely-color-text-primary text-sm",
+                className: "text-gamecowork-color-text-primary text-sm",
                 children: [b, p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               C &&
                 p.jsx("div", {
                   className:
-                    "flex mcp-markdown-description text-codely-color-text-tertiary mt-2 text-xs leading-relaxed",
+                    "flex mcp-markdown-description text-gamecowork-color-text-tertiary mt-2 text-xs leading-relaxed",
                   children: p.jsx(mln, { text: C, ideMessenger: h }),
                 }),
               p.jsx(Sqe, {
@@ -161799,7 +161799,7 @@ function gln({
         className: "w-fit",
         children: [
           p.jsxs("label", {
-            className: "text-codely-color-text-primary mb-1 block text-sm",
+            className: "text-gamecowork-color-text-primary mb-1 block text-sm",
             children: [
               m("manageForm.storage", "Storage"),
               p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" }),
@@ -161828,7 +161828,7 @@ function gln({
             disabled: t || r || (!e && !a) || (!e && !!h),
             "data-telemetry-id": "marketplace_install",
             className: (t ? n === "uninstall" : e)
-              ? "text-codely-color-status-danger-default border-codely-color-status-danger-border hover:bg-codely-color-status-danger-muted px-4"
+              ? "text-gamecowork-color-status-danger-default border-gamecowork-color-status-danger-border hover:bg-gamecowork-color-status-danger-muted px-4"
               : "px-4",
             children: t
               ? p.jsxs("span", {
@@ -162095,7 +162095,7 @@ function GAe({
     };
   return p.jsxs("div", {
     "data-e2e-id": "marketplace_detail",
-    className: "bg-codely-color-surface-card relative flex flex-col gap-4 rounded-lg p-4",
+    className: "bg-gamecowork-color-surface-card relative flex flex-col gap-4 rounded-lg p-4",
     children: [
       p.jsx(qon, { item: e, transportLabel: ee, onClose: se, isBusy: T }),
       p.jsx(fln, {
@@ -162266,7 +162266,7 @@ function Dce({
           "data-marketplace-name": (G = D.slug) != null ? G : D.title,
           "data-marketplace-type": (de = D.itemType) != null ? de : "skill",
           className: nt(
-            "flex flex-col bg-codely-color-item-surface rounded-lg cursor-pointer hover:bg-codely-color-item-surface-hover transition-colors relative border-[1px] border-solid border-codely-color-border-subtle",
+            "flex flex-col bg-gamecowork-color-item-surface rounded-lg cursor-pointer hover:bg-gamecowork-color-item-surface-hover transition-colors relative border-[1px] border-solid border-gamecowork-color-border-subtle",
             W ? "pt-6 pb-2" : "pt-4 pb-2",
           ),
           onClick: () => {
@@ -162279,8 +162279,8 @@ function Dce({
             W &&
               p.jsx("div", {
                 className:
-                  "absolute top-[-1px] right-[-1px] flex items-center justify-center rounded-tr-lg rounded-bl-lg rounded-tl-none rounded-br-none bg-codely-color-shadow-glow-accent h-6 w-8",
-                children: p.jsx(FYe, { className: "!size-4 text-codely-color-accent-default" }),
+                  "absolute top-[-1px] right-[-1px] flex items-center justify-center rounded-tr-lg rounded-bl-lg rounded-tl-none rounded-br-none bg-gamecowork-color-shadow-glow-accent h-6 w-8",
+                children: p.jsx(FYe, { className: "!size-4 text-gamecowork-color-accent-default" }),
               }),
             p.jsx("div", {
               className: "flex justify-between items-center px-4",
@@ -162299,12 +162299,12 @@ function Dce({
                       p.jsx("div", {
                         className: "flex items-center gap-2",
                         children: p.jsx("span", {
-                          className: "text-base font-semibold text-codely-color-text-primary truncate",
+                          className: "text-base font-semibold text-gamecowork-color-text-primary truncate",
                           children: D.title,
                         }),
                       }),
                       p.jsx("span", {
-                        className: "text-sm text-codely-color-text-secondary mt-1 truncate",
+                        className: "text-sm text-gamecowork-color-text-secondary mt-1 truncate",
                         children: D.description,
                       }),
                     ],
@@ -162314,7 +162314,7 @@ function Dce({
             }),
             p.jsxs("div", {
               className: nt(
-                "flex items-center gap-4 text-xs text-codely-color-text-tertiary border-t-[1px] border-solid border-x-0 border-b-0 border-codely-color-border-subtle pt-2 px-4",
+                "flex items-center gap-4 text-xs text-gamecowork-color-text-tertiary border-t-[1px] border-solid border-x-0 border-b-0 border-gamecowork-color-border-subtle pt-2 px-4",
                 W ? "mt-6" : "mt-4",
               ),
               children: [
@@ -162324,11 +162324,11 @@ function Dce({
                     (() => {
                       switch (D.itemType) {
                         case "mcp":
-                          return p.jsx(DV, { className: "h-3 w-3 text-codely-color-text-tertiary" });
+                          return p.jsx(DV, { className: "h-3 w-3 text-gamecowork-color-text-tertiary" });
                         case "extension":
-                          return p.jsx(OV, { className: "h-3 w-3 text-codely-color-text-tertiary" });
+                          return p.jsx(OV, { className: "h-3 w-3 text-gamecowork-color-text-tertiary" });
                         default:
-                          return p.jsx(LV, { className: "h-3 w-3 text-codely-color-text-tertiary" });
+                          return p.jsx(LV, { className: "h-3 w-3 text-gamecowork-color-text-tertiary" });
                       }
                     })(),
                     p.jsx("span", {
@@ -162343,7 +162343,7 @@ function Dce({
                   p.jsxs("div", {
                     className: "flex items-center gap-1",
                     children: [
-                      p.jsx(AAe, { className: "h-3.5 w-3.5 text-codely-color-text-tertiary" }),
+                      p.jsx(AAe, { className: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary" }),
                       p.jsxs("span", { children: [(D.download_count / 1e3).toFixed(1), "K"] }),
                     ],
                   }),
@@ -162351,7 +162351,7 @@ function Dce({
                   p.jsxs("div", {
                     className: "flex items-center gap-1",
                     children: [
-                      p.jsx(RAe, { className: "h-3.5 w-3.5 text-codely-color-text-tertiary" }),
+                      p.jsx(RAe, { className: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary" }),
                       p.jsx("span", { children: D.version }),
                     ],
                   }),
@@ -162378,7 +162378,7 @@ function Dce({
     children: [
       !s &&
         p.jsx("div", {
-          className: "sticky top-0 z-10 bg-codely-color-surface-primary pb-2 pt-1 -mt-1",
+          className: "sticky top-0 z-10 bg-gamecowork-color-surface-primary pb-2 pt-1 -mt-1",
           children: p.jsxs("div", {
             className: nt("w-full", r && "market-place-content"),
             children: [
@@ -162393,8 +162393,8 @@ function Dce({
                     },
                     className: "flex items-center justify-center bg-transparent border-none cursor-pointer m-0 p-0",
                     children: [
-                      p.jsx(jon, { className: "size-5 rotate-90 text-codely-color-text-tertiary mr-2" }),
-                      p.jsx("span", { className: "text-base font-medium text-codely-color-text-primary", children: f }),
+                      p.jsx(jon, { className: "size-5 rotate-90 text-gamecowork-color-text-tertiary mr-2" }),
+                      p.jsx("span", { className: "text-base font-medium text-gamecowork-color-text-primary", children: f }),
                     ],
                   }),
                 }),
@@ -162410,7 +162410,7 @@ function Dce({
                         searchQuery: y || "",
                         setSearchQuery: q,
                         className:
-                          "border-codely-color-border-default rounded-full bg-codely-color-surface-sidebar text-sm !h-[2rem]",
+                          "border-gamecowork-color-border-default rounded-full bg-gamecowork-color-surface-sidebar text-sm !h-[2rem]",
                       }),
                     }),
                   }),
@@ -162436,7 +162436,7 @@ function Dce({
                               "data-telemetry-id": "marketplace_manage",
                               onClick: a,
                               className:
-                                "flex items-center px-3 py-2 rounded-full bg-transparent border border-solid border-codely-color-border-default text-xs text-codely-color-text-default hover:bg-codely-color-interactive-hover transition-colors cursor-pointer whitespace-nowrap",
+                                "flex items-center px-3 py-2 rounded-full bg-transparent border border-solid border-gamecowork-color-border-default text-xs text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover transition-colors cursor-pointer whitespace-nowrap",
                               children: l("marketplace.manage", "Manage"),
                             })
                           : p.jsx("button", {
@@ -162446,7 +162446,7 @@ function Dce({
                                 (c(ni(!0)), c(Wre(d === "all" ? "skills" : d)));
                               },
                               className:
-                                "flex items-center px-3 py-2 rounded-full bg-transparent border border-solid border-codely-color-border-default text-xs text-codely-color-text-default hover:bg-codely-color-interactive-hover transition-colors cursor-pointer whitespace-nowrap",
+                                "flex items-center px-3 py-2 rounded-full bg-transparent border border-solid border-gamecowork-color-border-default text-xs text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover transition-colors cursor-pointer whitespace-nowrap",
                               children: l("marketplace.added", "Added"),
                             })),
                     ],
@@ -162477,12 +162477,12 @@ function Dce({
             (!M && S === void 0) || A
               ? p.jsx("div", {
                   className: "flex h-full w-full items-center justify-center",
-                  children: p.jsx(ai, { className: "h-8 w-8 animate-spin text-codely-color-accent-default" }),
+                  children: p.jsx(ai, { className: "h-8 w-8 animate-spin text-gamecowork-color-accent-default" }),
                 })
               : M
                 ? p.jsxs("div", {
                     className:
-                      "flex w-full items-center justify-center flex-col gap-2 text-codely-color-border-error text-sm mt-8",
+                      "flex w-full items-center justify-center flex-col gap-2 text-gamecowork-color-border-error text-sm mt-8",
                     children: [
                       p.jsx("span", { children: M }),
                       p.jsx("button", {
@@ -162492,7 +162492,7 @@ function Dce({
                           (c(mNt()), c(Td()), c(sSe()));
                         },
                         className:
-                          "text-codely-color-accent-default cursor-pointer bg-transparent border-none underline",
+                          "text-gamecowork-color-accent-default cursor-pointer bg-transparent border-none underline",
                         children: l("marketplace.retry", "Retry"),
                       }),
                     ],
@@ -162500,7 +162500,7 @@ function Dce({
                 : O.length === 0
                   ? p.jsx("div", {
                       className:
-                        "flex w-full items-center justify-center text-codely-color-text-secondary text-sm mt-8",
+                        "flex w-full items-center justify-center text-gamecowork-color-text-secondary text-sm mt-8",
                       children: L
                         ? l("marketplace.noMatching", "No items matching [{{query}}] were found.", { query: L })
                         : l("marketplace.notFound", "No items found."),
@@ -162519,7 +162519,7 @@ function Dce({
                                     className: "flex flex-col gap-3 mt-2",
                                     children: [
                                       p.jsx("div", {
-                                        className: "text-sm text-codely-color-text-secondary",
+                                        className: "text-sm text-gamecowork-color-text-secondary",
                                         children: l(`marketplace.categories.${D}`),
                                       }),
                                       p.jsx("div", {
@@ -162542,7 +162542,7 @@ function Dce({
                                     className: "flex flex-col gap-3",
                                     children: [
                                       p.jsx("div", {
-                                        className: "text-sm font-medium text-codely-color-text-secondary px-1",
+                                        className: "text-sm font-medium text-gamecowork-color-text-secondary px-1",
                                         children: l("marketplace.categories.other", "Other"),
                                       }),
                                       p.jsx("div", {
@@ -162626,7 +162626,7 @@ function YAe({ badgeKey: e, items: t, children: n }) {
       l &&
         p.jsx("div", {
           className:
-            "absolute top-0 right-0 z-10 size-2 rounded-full bg-[rgb(255,197,64)] border border-codely-color-surface-primary pointer-events-none",
+            "absolute top-0 right-0 z-10 size-2 rounded-full bg-[rgb(255,197,64)] border border-gamecowork-color-surface-primary pointer-events-none",
           "aria-label": "Update available",
         }),
     ],
@@ -162696,11 +162696,11 @@ async function Sln(e) {
       f = {};
     if (e && typeof window < "u") {
       try {
-        const y = window.localStorage.getItem("codely:skills-per-workspace-update");
+        const y = window.localStorage.getItem("gamecowork:skills-per-workspace-update");
         y && Object.assign(m, JSON.parse(y));
       } catch {}
       try {
-        const y = window.localStorage.getItem("codely:extensions-per-workspace-update");
+        const y = window.localStorage.getItem("gamecowork:extensions-per-workspace-update");
         y && Object.assign(f, JSON.parse(y));
       } catch {}
       (delete m[e], delete m[Ms], delete f[e], delete f[Ms]);
@@ -162739,12 +162739,12 @@ async function Sln(e) {
     for (const y of a) await g(y);
     (e && ((u = Object.values(m).some(Boolean)), (h = Object.values(f).some(Boolean))),
       typeof window < "u" &&
-        (window.localStorage.setItem("codely:skills-per-workspace-update", JSON.stringify(m)),
-        window.localStorage.setItem("codely:extensions-per-workspace-update", JSON.stringify(f)),
-        window.localStorage.setItem("codely:skills-has-update", String(u)),
-        window.localStorage.setItem("codely:extensions-has-update", String(h)),
-        !u && !h && window.localStorage.removeItem("codely:hide-update-dot"),
-        window.dispatchEvent(new CustomEvent("codely:update-state-changed"))));
+        (window.localStorage.setItem("gamecowork:skills-per-workspace-update", JSON.stringify(m)),
+        window.localStorage.setItem("gamecowork:extensions-per-workspace-update", JSON.stringify(f)),
+        window.localStorage.setItem("gamecowork:skills-has-update", String(u)),
+        window.localStorage.setItem("gamecowork:extensions-has-update", String(h)),
+        !u && !h && window.localStorage.removeItem("gamecowork:hide-update-dot"),
+        window.dispatchEvent(new CustomEvent("gamecowork:update-state-changed"))));
   } catch (i) {
     return (console.error("Failed to check updates", i), !1);
   }
@@ -162771,15 +162771,15 @@ function MSe() {
   let e = {},
     t = {};
   try {
-    const a = window.localStorage.getItem("codely:skills-per-workspace-update");
+    const a = window.localStorage.getItem("gamecowork:skills-per-workspace-update");
     a && (e = JSON.parse(a));
   } catch {}
   try {
-    const a = window.localStorage.getItem("codely:extensions-per-workspace-update");
+    const a = window.localStorage.getItem("gamecowork:extensions-per-workspace-update");
     a && (t = JSON.parse(a));
   } catch {}
-  const n = window.localStorage.getItem("codely:skills-has-update") === "true",
-    r = window.localStorage.getItem("codely:extensions-has-update") === "true";
+  const n = window.localStorage.getItem("gamecowork:skills-has-update") === "true",
+    r = window.localStorage.getItem("gamecowork:extensions-has-update") === "true";
   return { skillsHasUpdate: n, extensionsHasUpdate: r, perWorkspaceSkillsUpdate: e, perWorkspaceExtensionsUpdate: t };
 }
 function Fce() {
@@ -162788,9 +162788,9 @@ function Fce() {
     E.useEffect(() => {
       const n = () => t(MSe());
       return (
-        window.addEventListener("codely:update-state-changed", n),
+        window.addEventListener("gamecowork:update-state-changed", n),
         () => {
-          window.removeEventListener("codely:update-state-changed", n);
+          window.removeEventListener("gamecowork:update-state-changed", n);
         }
       );
     }, []),
@@ -162806,7 +162806,7 @@ const Eln = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -162815,7 +162815,7 @@ const Eln = `
   }
 
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
 
   .mcp-radio:checked::after {
@@ -162826,16 +162826,16 @@ const Eln = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
 
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
 
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `,
   wln = `{
@@ -162874,7 +162874,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
     })();
   }, [l, n]);
   const T = () =>
-      u === "project" && x ? `${x}/.codely-cli/extensions/` : C ? `${C}/extensions/` : "~/.codely-cli/extensions/",
+      u === "project" && x ? `${x}/.gamecowork-cli/extensions/` : C ? `${C}/extensions/` : "~/.gamecowork-cli/extensions/",
     w = () => {
       const L = `${c.trim().toLowerCase().replace(/\s+/g, "-")}/gemini-extension.json`;
       return `${T()}${L}`;
@@ -162924,7 +162924,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           p.jsxs("div", {
             children: [
               p.jsxs("label", {
-                className: "mb-2 block text-sm font-medium text-codely-color-text-primary",
+                className: "mb-2 block text-sm font-medium text-gamecowork-color-text-primary",
                 children: [s("manageForm.name"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsx(ra, {
@@ -162939,10 +162939,10 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 maxLength: 100,
                 autoFocus: !0,
                 className:
-                  "w-full h-[2rem] text-sm text-codely-color-text-default bg-transparent border-codely-color-border-default rounded-md",
+                  "w-full h-[2rem] text-sm text-gamecowork-color-text-default bg-transparent border-gamecowork-color-border-default rounded-md",
               }),
               p.jsxs("div", {
-                className: "text-xs text-codely-color-text-tertiary text-right mt-1",
+                className: "text-xs text-gamecowork-color-text-tertiary text-right mt-1",
                 children: [c.length, " / 100"],
               }),
             ],
@@ -162950,7 +162950,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           p.jsxs("div", {
             children: [
               p.jsxs("label", {
-                className: "mb-2 block text-sm font-medium text-codely-color-text-primary",
+                className: "mb-2 block text-sm font-medium text-gamecowork-color-text-primary",
                 children: [s("manageForm.storage"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsxs("div", {
@@ -162958,7 +162958,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 children: [
                   !a &&
                     p.jsxs("label", {
-                      className: `flex items-center gap-2 text-sm transition-colors text-codely-color-text-primary ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
+                      className: `flex items-center gap-2 text-sm transition-colors text-gamecowork-color-text-primary ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
                       children: [
                         p.jsx("input", {
                           type: "radio",
@@ -162975,7 +162975,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                     }),
                   p.jsxs("label", {
                     className:
-                      "flex items-center gap-2 cursor-pointer text-sm transition-colors text-codely-color-text-primary",
+                      "flex items-center gap-2 cursor-pointer text-sm transition-colors text-gamecowork-color-text-primary",
                     children: [
                       p.jsx("input", {
                         type: "radio",
@@ -162992,7 +162992,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                           p.jsx("span", { children: s("manageForm.global") }),
                           p.jsx("span", {
                             className:
-                              "px-1.5 py-0.5 rounded-[0.25rem] bg-codely-color-surface-elevated text-xs text-codely-color-text-tertiary border border-solid border-codely-color-border-subtle leading-none",
+                              "px-1.5 py-0.5 rounded-[0.25rem] bg-gamecowork-color-surface-elevated text-xs text-gamecowork-color-text-tertiary border border-solid border-gamecowork-color-border-subtle leading-none",
                             children: s("manageForm.globalLabel"),
                           }),
                         ],
@@ -163006,7 +163006,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           p.jsxs("div", {
             children: [
               p.jsx("label", {
-                className: "mb-2 block text-sm font-medium text-codely-color-text-primary",
+                className: "mb-2 block text-sm font-medium text-gamecowork-color-text-primary",
                 children: s("manageForm.path"),
               }),
               p.jsx(ra, {
@@ -163014,11 +163014,11 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 value: c.trim() ? w() : T(),
                 disabled: !0,
                 className:
-                  "w-full h-[2rem] text-sm text-codely-color-text-tertiary bg-transparent border-codely-color-border-default rounded-md cursor-not-allowed opacity-50",
+                  "w-full h-[2rem] text-sm text-gamecowork-color-text-tertiary bg-transparent border-gamecowork-color-border-default rounded-md cursor-not-allowed opacity-50",
               }),
             ],
           }),
-          g && p.jsx("div", { className: "text-xs text-[var(--codely-color-border-error)]", children: g }),
+          g && p.jsx("div", { className: "text-xs text-[var(--gamecowork-color-border-error)]", children: g }),
           p.jsxs("div", {
             className: "flex justify-end items-center gap-4 pt-4",
             children: [
@@ -163027,7 +163027,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 "data-telemetry-id": "extension_cancel",
                 disabled: m,
                 className:
-                  "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 py-1 text-sm font-normal text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+                  "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 py-1 text-sm font-normal text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
                 children: s("common.cancel"),
               }),
               p.jsx("button", {
@@ -163035,7 +163035,7 @@ function Cln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 "data-telemetry-id": "extension_submit",
                 disabled: !c.trim() || m,
                 className:
-                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 py-1 text-sm font-normal text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-tertiary",
+                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 py-1 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
                 children: s(m ? "manageForm.adding" : "manageForm.addNow"),
               }),
             ],
@@ -163055,20 +163055,20 @@ function Tln({ selectedWorkspaceKey: e, onDone: t, onCancel: n, isPlugin: r, for
       (n && n(), o(on(!1)), o(Jn(void 0)));
     };
   return p.jsxs("div", {
-    className: "flex flex-col p-6 gap-4 rounded-lg bg-codely-color-surface-primary",
+    className: "flex flex-col p-6 gap-4 rounded-lg bg-gamecowork-color-surface-primary",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base text-codely-color-text-primary font-semibold",
+            className: "text-base text-gamecowork-color-text-primary font-semibold",
             children: s("extensions.createNew"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: c,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -163242,7 +163242,7 @@ function Iln({
                 : p.jsx("div", {
                     className: "flex flex-col",
                     children: p.jsxs("div", {
-                      className: "flex flex-col bg-codely-color-item-surface rounded-[0.75rem] overflow-hidden",
+                      className: "flex flex-col bg-gamecowork-color-item-surface rounded-[0.75rem] overflow-hidden",
                       children: [
                         e.slice(0, y).map((I, F) => {
                           const P = A(I),
@@ -163260,12 +163260,12 @@ function Iln({
                                 "data-capability-name": I.name,
                                 "data-capability-scope": I.source,
                                 children: [
-                                  F > 0 && p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                                  F > 0 && p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                                   p.jsx(Q5e, {
                                     icon: $
                                       ? p.jsx(qoe, {
                                           children: p.jsx(OV, {
-                                            className: "size-5 text-codely-color-text-capability-default",
+                                            className: "size-5 text-gamecowork-color-text-capability-default",
                                           }),
                                         })
                                       : p.jsx(Xg, {
@@ -163290,7 +163290,7 @@ function Iln({
                                           p.jsx("button", {
                                             "data-telemetry-id": "update_extension",
                                             className:
-                                              "flex h-7 cursor-pointer items-center justify-center rounded-lg border border-solid border-codely-color-interactive-selected bg-transparent px-3 text-xs text-codely-color-text-default transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                                              "flex h-7 cursor-pointer items-center justify-center rounded-lg border border-solid border-gamecowork-color-interactive-selected bg-transparent px-3 text-xs text-gamecowork-color-text-default transition-colors disabled:cursor-not-allowed disabled:opacity-50",
                                             onClick: () => void L(I, P),
                                             disabled: m.has(O),
                                             children: m.has(O)
@@ -163309,7 +163309,7 @@ function Iln({
                                                 "data-telemetry-id": "edit_extension",
                                                 children: p.jsx(Bm, {
                                                   className:
-                                                    "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                                                    "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                                                 }),
                                               }),
                                               p.jsx(gr, {
@@ -163320,7 +163320,7 @@ function Iln({
                                                 "data-telemetry-id": "delete_extension",
                                                 children: p.jsx(Um, {
                                                   className:
-                                                    "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                                                    "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                                                 }),
                                               }),
                                             ],
@@ -163345,16 +163345,16 @@ function Iln({
                           p.jsxs("div", {
                             className: "flex flex-col",
                             children: [
-                              p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                              p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                               p.jsx("div", {
                                 "data-telemetry-id": "show_more_extensions",
                                 className:
-                                  "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-codely-color-item-surface-hover",
+                                  "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-gamecowork-color-item-surface-hover",
                                 onClick: () => {
                                   y < e.length ? x((I) => I + g) : x(g);
                                 },
                                 children: p.jsx("span", {
-                                  className: "text-codely-color-text-tertiary text-sm",
+                                  className: "text-gamecowork-color-text-tertiary text-sm",
                                   children: y < e.length ? h("common.showMore") : h("common.showLess"),
                                 }),
                               }),
@@ -163566,7 +163566,7 @@ function Rln({ isPlugin: e, onLoadingChange: t }) {
 }
 function Oln({ title: e, className: t }) {
   return p.jsx("h3", {
-    className: nt("mb-3 mt-0 text-sm font-medium uppercase", "text-codely-color-text-tertiary", t),
+    className: nt("mb-3 mt-0 text-sm font-medium uppercase", "text-gamecowork-color-text-tertiary", t),
     children: e,
   });
 }
@@ -163958,10 +163958,10 @@ function lcn({ className: e, size: t = "md", hideText: n = !1 }) {
   return p.jsxs("div", {
     className: nt("inline-flex items-center gap-2", { "gap-2": t === "lg" }, e),
     children: [
-      p.jsx($ln, { className: nt("codely-logo size-5", { "size-6": t === "lg" }) }),
+      p.jsx($ln, { className: nt("gamecowork-logo size-5", { "size-6": t === "lg" }) }),
       !n &&
         p.jsx("span", {
-          className: nt("text-base font-semibold text-codely-color-text-primary", {
+          className: nt("text-base font-semibold text-gamecowork-color-text-primary", {
             "text-xl font-medium": t === "lg",
           }),
           children: "Tuanjie Cowork",
@@ -164037,7 +164037,7 @@ function ccn({
   return y && !x
     ? null
     : p.jsxs("div", {
-        className: `bg-[var(--semantic-color-surface-base)] relative flex h-[var(--codely-app-header-height)] flex-shrink-0 select-none items-center justify-between ${F ? "border-0 border-b border-solid border-codely-color-border-subtle" : ""} ${t != null ? t : ""}`,
+        className: `bg-[var(--semantic-color-surface-base)] relative flex h-[var(--gamecowork-app-header-height)] flex-shrink-0 select-none items-center justify-between ${F ? "border-0 border-b border-solid border-gamecowork-color-border-subtle" : ""} ${t != null ? t : ""}`,
         style: { paddingLeft: L, paddingRight: I, ...r },
         onMouseDown: w,
         onMouseMove: M,
@@ -164060,11 +164060,11 @@ function dcn({ onLoggedOut: e }) {
     className: "p-6",
     children: [
       p.jsx("h2", {
-        className: "m-0 mb-2 text-base font-medium text-codely-color-text-default leading-8",
+        className: "m-0 mb-2 text-base font-medium text-gamecowork-color-text-default leading-8",
         children: t("switchAccountDialog.title"),
       }),
       p.jsx("p", {
-        className: "m-0 mb-3 text-sm text-codely-color-text-secondary leading-6",
+        className: "m-0 mb-3 text-sm text-gamecowork-color-text-secondary leading-6",
         children: t("switchAccountDialog.description"),
       }),
       p.jsxs("div", {
@@ -164134,7 +164134,7 @@ const pcn = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -164143,7 +164143,7 @@ const pcn = `
   }
 
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
 
   .mcp-radio:checked::after {
@@ -164154,16 +164154,16 @@ const pcn = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
 
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
 
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `;
 function hcn({ config: e, onChange: t }) {
@@ -164209,12 +164209,12 @@ function hcn({ config: e, onChange: t }) {
   return p.jsxs(p.Fragment, {
     children: [
       p.jsxs("div", {
-        className: "bg-codely-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col flex-shrink-0",
+        className: "bg-gamecowork-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col flex-shrink-0",
         children: [
           p.jsxs("div", {
             children: [
               p.jsxs("label", {
-                className: "mb-2 block text-sm text-codely-color-text-primary",
+                className: "mb-2 block text-sm text-gamecowork-color-text-primary",
                 children: [n("mcp.command"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsxs("div", {
@@ -164228,10 +164228,10 @@ function hcn({ config: e, onChange: t }) {
                     "data-telemetry-id": "mcp_command",
                     "data-focusable": "true",
                     className:
-                      "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                      "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                   }),
                   p.jsxs("div", {
-                    className: "text-xs text-codely-color-text-tertiary mt-1 text-right",
+                    className: "text-xs text-gamecowork-color-text-tertiary mt-1 text-right",
                     children: [e.command.length, " / 100"],
                   }),
                 ],
@@ -164242,7 +164242,7 @@ function hcn({ config: e, onChange: t }) {
             className: "flex flex-col gap-2",
             children: [
               p.jsx("label", {
-                className: "block text-sm text-codely-color-text-primary",
+                className: "block text-sm text-gamecowork-color-text-primary",
                 children: n("mcp.arguments"),
               }),
               p.jsxs("div", {
@@ -164256,17 +164256,17 @@ function hcn({ config: e, onChange: t }) {
                     "data-telemetry-id": "mcp_arguments",
                     "data-focusable": "true",
                     className:
-                      "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                      "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                   }),
                   p.jsxs("div", {
                     className: "flex justify-between mt-1",
                     children: [
                       p.jsx("div", {
-                        className: "text-xs text-codely-color-text-tertiary",
+                        className: "text-xs text-gamecowork-color-text-tertiary",
                         children: n("mcp.argumentsHelper"),
                       }),
                       p.jsxs("div", {
-                        className: "text-xs text-codely-color-text-tertiary text-right ml-auto",
+                        className: "text-xs text-gamecowork-color-text-tertiary text-right ml-auto",
                         children: [e.argsString.length, " / 100"],
                       }),
                     ],
@@ -164281,17 +164281,17 @@ function hcn({ config: e, onChange: t }) {
         className: "mt-8 flex flex-col gap-2 flex-shrink-0",
         children: [
           p.jsx("label", {
-            className: "block text-sm text-codely-color-text-primary",
+            className: "block text-sm text-gamecowork-color-text-primary",
             children: n("mcp.environmentVariables"),
           }),
           p.jsxs("div", {
             ref: r,
-            className: `flex flex-col gap-2 ${e.env.length >= 1 ? "bg-codely-color-surface-elevated rounded-[0.75rem] p-4" : ""}`,
+            className: `flex flex-col gap-2 ${e.env.length >= 1 ? "bg-gamecowork-color-surface-elevated rounded-[0.75rem] p-4" : ""}`,
             children: [
               e.env.length >= 1 &&
                 p.jsxs("div", {
                   className:
-                    "flex gap-2 items-center text-sm text-codely-color-text-secondary border-0 border-b border-solid border-codely-color-border-subtle py-1",
+                    "flex gap-2 items-center text-sm text-gamecowork-color-text-secondary border-0 border-b border-solid border-gamecowork-color-border-subtle py-1",
                   children: [
                     p.jsx("div", { className: "flex-1", children: n("mcp.key") }),
                     p.jsx("div", { className: "flex-1", children: n("mcp.value") }),
@@ -164311,7 +164311,7 @@ function hcn({ config: e, onChange: t }) {
                         "data-focusable": "true",
                         placeholder: n("mcp.keyPlaceholder"),
                         className:
-                          "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                          "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                       }),
                       p.jsx(ra, {
                         type: "text",
@@ -164320,14 +164320,14 @@ function hcn({ config: e, onChange: t }) {
                         "data-focusable": "true",
                         placeholder: n("mcp.valuePlaceholder"),
                         className:
-                          "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                          "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                       }),
                       p.jsx("div", {
                         "data-focusable": "true",
                         "data-focus-enter-action": "click",
                         onClick: () => s(d),
                         className:
-                          "flex items-center justify-center rounded-md w-6 h-6 flex-shrink-0 text-codely-color-text-tertiary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary active:bg-codely-color-interactive-selected active:text-codely-color-text-tertiary",
+                          "flex items-center justify-center rounded-md w-6 h-6 flex-shrink-0 text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary active:bg-gamecowork-color-interactive-selected active:text-gamecowork-color-text-tertiary",
                         children: p.jsx(C$, { className: "h-4 w-4" }),
                       }),
                     ],
@@ -164341,7 +164341,7 @@ function hcn({ config: e, onChange: t }) {
                 "data-focus-enter-action": "click",
                 "data-focus-keep": "false",
                 className:
-                  "flex items-center gap-1 text-sm tracking-[0rem] text-codely-color-accent-text hover:text-codely-color-accent-hover cursor-pointer w-fit",
+                  "flex items-center gap-1 text-sm tracking-[0rem] text-gamecowork-color-accent-text hover:text-gamecowork-color-accent-hover cursor-pointer w-fit",
                 children: [p.jsx(X_, { className: "h-4 w-4" }), p.jsx("span", { children: n("mcp.addVariable") })],
               }),
             ],
@@ -164386,13 +164386,13 @@ function mcn({ config: e, onChange: t }) {
       ((d[s] = { ...d[s], [l]: c }), t({ ...e, headers: d }));
     };
   return p.jsxs("div", {
-    className: "bg-codely-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col gap-4",
+    className: "bg-gamecowork-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col gap-4",
     children: [
       p.jsxs("div", {
         className: "flex flex-col gap-2",
         children: [
           p.jsxs("label", {
-            className: "block text-sm text-codely-color-text-primary",
+            className: "block text-sm text-gamecowork-color-text-primary",
             children: [n("mcp.url"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
           }),
           p.jsxs("div", {
@@ -164406,10 +164406,10 @@ function mcn({ config: e, onChange: t }) {
                 "data-telemetry-id": "mcp_url",
                 "data-focusable": "true",
                 className:
-                  "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                  "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
               }),
               p.jsxs("div", {
-                className: "text-xs text-codely-color-text-tertiary text-right",
+                className: "text-xs text-gamecowork-color-text-tertiary text-right",
                 children: [e.url.length, " / 100"],
               }),
             ],
@@ -164419,15 +164419,15 @@ function mcn({ config: e, onChange: t }) {
       p.jsxs("div", {
         className: "flex flex-col gap-2",
         children: [
-          p.jsx("label", { className: "block text-sm text-codely-color-text-primary", children: n("mcp.headers") }),
+          p.jsx("label", { className: "block text-sm text-gamecowork-color-text-primary", children: n("mcp.headers") }),
           p.jsxs("div", {
             ref: r,
-            className: `flex flex-col gap-2 ${e.headers.length >= 1 ? "bg-codely-color-surface-primary rounded-[0.5rem] p-3" : ""}`,
+            className: `flex flex-col gap-2 ${e.headers.length >= 1 ? "bg-gamecowork-color-surface-primary rounded-[0.5rem] p-3" : ""}`,
             children: [
               e.headers.length >= 1 &&
                 p.jsxs("div", {
                   className:
-                    "flex gap-2 items-center text-sm text-codely-color-text-secondary border-0 border-b border-solid border-codely-color-border-subtle py-1",
+                    "flex gap-2 items-center text-sm text-gamecowork-color-text-secondary border-0 border-b border-solid border-gamecowork-color-border-subtle py-1",
                   children: [
                     p.jsx("div", { className: "flex-1", children: n("mcp.key") }),
                     p.jsx("div", { className: "flex-1", children: n("mcp.value") }),
@@ -164447,7 +164447,7 @@ function mcn({ config: e, onChange: t }) {
                         "data-focusable": "true",
                         placeholder: n("mcp.headerKeyPlaceholder"),
                         className:
-                          "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                          "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                       }),
                       p.jsx(ra, {
                         type: "text",
@@ -164456,14 +164456,14 @@ function mcn({ config: e, onChange: t }) {
                         "data-focusable": "true",
                         placeholder: n("mcp.headerValuePlaceholder"),
                         className:
-                          "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                          "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                       }),
                       p.jsx("div", {
                         "data-focusable": "true",
                         "data-focus-enter-action": "click",
                         onClick: () => i(l),
                         className:
-                          "flex items-center justify-center rounded-md w-6 h-6 flex-shrink-0 text-codely-color-text-tertiary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary active:bg-codely-color-interactive-selected active:text-codely-color-text-tertiary",
+                          "flex items-center justify-center rounded-md w-6 h-6 flex-shrink-0 text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary active:bg-gamecowork-color-interactive-selected active:text-gamecowork-color-text-tertiary",
                         children: p.jsx(C$, { className: "h-4 w-4" }),
                       }),
                     ],
@@ -164477,7 +164477,7 @@ function mcn({ config: e, onChange: t }) {
                 "data-focus-enter-action": "click",
                 "data-focus-keep": "false",
                 className:
-                  "flex items-center gap-1 text-sm tracking-[0rem] text-codely-color-accent-text hover:text-codely-color-accent-hover cursor-pointer w-fit",
+                  "flex items-center gap-1 text-sm tracking-[0rem] text-gamecowork-color-accent-text hover:text-gamecowork-color-accent-hover cursor-pointer w-fit",
                 children: [p.jsx(X_, { className: "h-4 w-4" }), p.jsx("span", { children: n("mcp.addHeader") })],
               }),
             ],
@@ -164577,16 +164577,16 @@ const fcn = E.forwardRef(function (
         p.jsx("style", { children: pcn }),
         p.jsx("div", {
           "data-e2e-id": "mcp_form",
-          className: "mb-4 text-sm text-codely-color-text-secondary",
+          className: "mb-4 text-sm text-gamecowork-color-text-secondary",
           children: u("mcp.chat"),
         }),
         p.jsxs("div", {
-          className: "bg-codely-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col",
+          className: "bg-gamecowork-color-surface-elevated rounded-[0.75rem] p-4 flex flex-col",
           children: [
             p.jsxs("div", {
               children: [
                 p.jsxs("label", {
-                  className: "mb-2 block text-sm text-codely-color-text-primary",
+                  className: "mb-2 block text-sm text-gamecowork-color-text-primary",
                   children: [u("mcp.name"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
                 }),
                 p.jsxs("div", {
@@ -164601,10 +164601,10 @@ const fcn = E.forwardRef(function (
                       autoFocus: !0,
                       "data-focusable": "true",
                       className:
-                        "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+                        "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
                     }),
                     p.jsxs("div", {
-                      className: "text-xs text-codely-color-text-tertiary mt-1 text-right",
+                      className: "text-xs text-gamecowork-color-text-tertiary mt-1 text-right",
                       children: [m.length, " / 100"],
                     }),
                   ],
@@ -164614,7 +164614,7 @@ const fcn = E.forwardRef(function (
             p.jsxs("div", {
               children: [
                 p.jsxs("label", {
-                  className: "mb-2 block text-sm text-codely-color-text-primary",
+                  className: "mb-2 block text-sm text-gamecowork-color-text-primary",
                   children: [
                     u("manageForm.storage"),
                     p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" }),
@@ -164626,7 +164626,7 @@ const fcn = E.forwardRef(function (
                     !c &&
                       p.jsxs("label", {
                         className:
-                          "flex items-center gap-2 text-sm transition-colors text-codely-color-text-primary cursor-pointer}",
+                          "flex items-center gap-2 text-sm transition-colors text-gamecowork-color-text-primary cursor-pointer}",
                         children: [
                           p.jsx("input", {
                             type: "radio",
@@ -164644,7 +164644,7 @@ const fcn = E.forwardRef(function (
                       }),
                     p.jsxs("label", {
                       className:
-                        "flex items-center gap-2 cursor-pointer text-sm transition-colors text-codely-color-text-primary",
+                        "flex items-center gap-2 cursor-pointer text-sm transition-colors text-gamecowork-color-text-primary",
                       children: [
                         p.jsx("input", {
                           type: "radio",
@@ -164660,7 +164660,7 @@ const fcn = E.forwardRef(function (
                         p.jsx("span", { children: u("manageForm.global") }),
                         p.jsx("span", {
                           className:
-                            "text-xs bg-codely-color-surface-card text-codely-color-text-secondary px-1.5 py-0.5 rounded border border-solid border-codely-color-border-subtle ml-1",
+                            "text-xs bg-gamecowork-color-surface-card text-gamecowork-color-text-secondary px-1.5 py-0.5 rounded border border-solid border-gamecowork-color-border-subtle ml-1",
                           children: u("manageForm.globalLabel"),
                         }),
                       ],
@@ -164673,7 +164673,7 @@ const fcn = E.forwardRef(function (
               className: "flex flex-col mt-4 gap-2",
               children: [
                 p.jsxs("label", {
-                  className: "block text-sm text-codely-color-text-primary",
+                  className: "block text-sm text-gamecowork-color-text-primary",
                   children: [u("mcp.type"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
                 }),
                 p.jsx("div", {
@@ -164695,7 +164695,7 @@ const fcn = E.forwardRef(function (
                             onChange: (L) => y(L.target.value),
                             className: "mcp-radio",
                           }),
-                          p.jsx("span", { className: "text-codely-color-text-primary text-sm", children: A.label }),
+                          p.jsx("span", { className: "text-gamecowork-color-text-primary text-sm", children: A.label }),
                         ],
                       },
                       A.value,
@@ -164710,7 +164710,7 @@ const fcn = E.forwardRef(function (
           className: "mt-8",
           children: [
             p.jsx("div", {
-              className: "mb-4 text-sm text-codely-color-text-secondary",
+              className: "mb-4 text-sm text-gamecowork-color-text-secondary",
               children: u("mcp.configuration"),
             }),
             g === "stdio"
@@ -164861,15 +164861,15 @@ function bcn(e, t) {
 function vcn(e) {
   switch (e) {
     case "error":
-      return "bg-codely-color-status-danger-muted border-codely-color-status-danger-border text-codely-color-status-danger-default px-1.5 py-0.5 text-xs";
+      return "bg-gamecowork-color-status-danger-muted border-gamecowork-color-status-danger-border text-gamecowork-color-status-danger-default px-1.5 py-0.5 text-xs";
     case "warning":
-      return "bg-codely-color-status-warning-muted border-codely-color-status-warning-border text-codely-color-status-warning-default px-1.5 py-0.5 text-xs";
+      return "bg-gamecowork-color-status-warning-muted border-gamecowork-color-status-warning-border text-gamecowork-color-status-warning-default px-1.5 py-0.5 text-xs";
     case "connected":
-      return "bg-codely-color-accent-subtle border-codely-color-accent-border text-codely-color-accent-text-default px-1.5 py-0.5 text-xs";
+      return "bg-gamecowork-color-accent-subtle border-gamecowork-color-accent-border text-gamecowork-color-accent-text-default px-1.5 py-0.5 text-xs";
     case "stopped":
-      return "bg-codely-color-status-danger-muted border-codely-color-status-danger-border text-codely-color-status-danger-text px-1.5 py-0.5 text-xs";
+      return "bg-gamecowork-color-status-danger-muted border-gamecowork-color-status-danger-border text-gamecowork-color-status-danger-text px-1.5 py-0.5 text-xs";
     default:
-      return "text-codely-color-text-secondary border-codely-color-border-subtle flex-shrink-0 rounded border border-solid bg-transparent px-1.5 py-0.5 text-xs";
+      return "text-gamecowork-color-text-secondary border-gamecowork-color-border-subtle flex-shrink-0 rounded border border-solid bg-transparent px-1.5 py-0.5 text-xs";
   }
 }
 function xcn(e, t, n) {
@@ -164919,7 +164919,7 @@ function Scn({
     M =
       !!i || !!o
         ? p.jsx(Xg, { iconName: i, category: o, type: "mcp", className: "pm-rec-icon-svg" })
-        : p.jsx(qoe, { children: p.jsx(DV, { className: "size-5 text-codely-color-text-capability-default" }) });
+        : p.jsx(qoe, { children: p.jsx(DV, { className: "size-5 text-gamecowork-color-text-capability-default" }) });
   return p.jsxs("div", {
     "data-focus-item": "true",
     "data-focus-group": "rows",
@@ -164927,7 +164927,7 @@ function Scn({
     "data-capability-name": e.name,
     "data-capability-scope": (A = e.configLevel) != null ? A : "Workspace",
     className:
-      "bg-codely-color-item-surface hover:bg-codely-color-item-surface-hover group flex cursor-pointer items-center justify-between gap-3 px-4 py-3 transition-colors",
+      "bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover group flex cursor-pointer items-center justify-between gap-3 px-4 py-3 transition-colors",
     onClick: () => (l == null ? void 0 : l(e)),
     children: [
       p.jsxs("div", {
@@ -164941,7 +164941,7 @@ function Scn({
                 className: "flex items-center gap-2",
                 children: [
                   p.jsx("span", {
-                    className: "text-codely-color-text-primary truncate text-sm font-medium",
+                    className: "text-gamecowork-color-text-primary truncate text-sm font-medium",
                     children: r || e.name,
                   }),
                   p.jsx("span", {
@@ -164952,14 +164952,14 @@ function Scn({
                     (e.configLevel === "User" || e.configLevel === "global") &&
                     p.jsx("div", {
                       className:
-                        "text-codely-color-text-secondary border-codely-color-border-subtle flex-shrink-0 rounded border border-solid bg-transparent px-1.5 py-0.5 text-xs",
+                        "text-gamecowork-color-text-secondary border-gamecowork-color-border-subtle flex-shrink-0 rounded border border-solid bg-transparent px-1.5 py-0.5 text-xs",
                       children: m("manageForm.globalLabel"),
                     }),
                 ],
               }),
               a
-                ? p.jsx("span", { className: "text-codely-color-text-secondary mt-0.5 truncate text-xs", children: a })
-                : p.jsx("span", { className: "text-codely-color-text-secondary mt-0.5 truncate text-xs", children: C }),
+                ? p.jsx("span", { className: "text-gamecowork-color-text-secondary mt-0.5 truncate text-xs", children: a })
+                : p.jsx("span", { className: "text-gamecowork-color-text-secondary mt-0.5 truncate text-xs", children: C }),
             ],
           }),
         ],
@@ -164980,7 +164980,7 @@ function Scn({
                   tooltip: m("common.refresh"),
                   "data-telemetry-id": "refresh_mcp",
                   children: p.jsx(IV, {
-                    className: "text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
+                    className: "text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
                   }),
                 }),
               p.jsx(gr, {
@@ -164990,7 +164990,7 @@ function Scn({
                 tooltip: m("common.edit"),
                 "data-telemetry-id": "edit_mcp",
                 children: p.jsx(Bm, {
-                  className: "text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
+                  className: "text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
                 }),
               }),
               p.jsx(gr, {
@@ -165000,7 +165000,7 @@ function Scn({
                 tooltip: m("common.delete"),
                 "data-telemetry-id": "delete_mcp",
                 children: p.jsx(Um, {
-                  className: "text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
+                  className: "text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1)) size-4",
                 }),
               }),
             ],
@@ -165012,7 +165012,7 @@ function Scn({
               "data-focus-enter-action": "click",
               onClick: () => (d == null ? void 0 : d(e)),
               className:
-                "bg-codely-color-accent-default text-codely-color-text-primary hover:bg-codely-color-interactive-hover flex h-[2.125rem] cursor-pointer items-center gap-2 rounded-md border-none px-4 text-sm font-medium transition-colors",
+                "bg-gamecowork-color-accent-default text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover flex h-[2.125rem] cursor-pointer items-center gap-2 rounded-md border-none px-4 text-sm font-medium transition-colors",
               title: e.status === "authenticating" ? m("mcp.authenticatingAction") : m("mcp.connectToAuthenticate"),
               children: e.status === "authenticating" ? m("mcp.authenticatingAction") : m("mcp.connect"),
             }),
@@ -165148,7 +165148,7 @@ function kcn({
                 children: p.jsxs("div", {
                   "data-focusable": "true",
                   "data-focus-direction": "vertical",
-                  className: "flex flex-col bg-codely-color-item-surface rounded-[0.75rem] overflow-hidden",
+                  className: "flex flex-col bg-gamecowork-color-item-surface rounded-[0.75rem] overflow-hidden",
                   children: [
                     n.slice(0, x).map(({ block: I, blockFromYaml: F }, P) => {
                       const O =
@@ -165163,7 +165163,7 @@ function kcn({
                         {
                           className: "flex flex-col",
                           children: [
-                            P > 0 && p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                            P > 0 && p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                             p.jsx(
                               Scn,
                               {
@@ -165192,15 +165192,15 @@ function kcn({
                       p.jsxs("div", {
                         className: "flex flex-col",
                         children: [
-                          p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                          p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                           p.jsx("div", {
                             className:
-                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-codely-color-item-surface-hover",
+                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-gamecowork-color-item-surface-hover",
                             onClick: () => {
                               x < n.length ? b((I) => I + y) : b(y);
                             },
                             children: p.jsx("span", {
-                              className: "text-codely-color-text-tertiary text-sm",
+                              className: "text-gamecowork-color-text-tertiary text-sm",
                               children: x < n.length ? h("common.showMore") : h("common.showLess"),
                             }),
                           }),
@@ -165472,7 +165472,7 @@ const Ccn = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -165481,7 +165481,7 @@ const Ccn = `
   }
 
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
 
   .mcp-radio:checked::after {
@@ -165492,16 +165492,16 @@ const Ccn = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
 
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
 
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `,
   Tcn = `---
@@ -165555,7 +165555,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
       } catch {}
     })();
   }, [o, n]);
-  const T = () => (u === "project" && x ? `${x}/.codely-cli/skills/` : C ? `${C}/skills/` : "~/.codely-cli/skills/"),
+  const T = () => (u === "project" && x ? `${x}/.gamecowork-cli/skills/` : C ? `${C}/skills/` : "~/.gamecowork-cli/skills/"),
     w = () => {
       const L = `${c.trim().toLowerCase().replace(/\s+/g, "-")}/SKILL.md`;
       return `${T()}${L}`;
@@ -165604,7 +165604,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
         className: "flex flex-col",
         children: [
           p.jsxs("label", {
-            className: "text-codely-color-text-primary block text-sm mb-2",
+            className: "text-gamecowork-color-text-primary block text-sm mb-2",
             children: [s("manageForm.name"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
           }),
           p.jsx(ra, {
@@ -165619,10 +165619,10 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
             placeholder: s("skills.namePlaceholder"),
             autoFocus: !0,
             "data-focusable": "true",
-            className: "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default rounded-md text-sm",
+            className: "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default rounded-md text-sm",
           }),
           p.jsxs("div", {
-            className: "text-codely-color-text-tertiary text-right text-xs mt-1",
+            className: "text-gamecowork-color-text-tertiary text-right text-xs mt-1",
             children: [c.length, " / 100"],
           }),
         ],
@@ -165631,7 +165631,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
         className: "flex flex-col gap-2",
         children: [
           p.jsxs("label", {
-            className: "text-codely-color-text-primary block text-sm",
+            className: "text-gamecowork-color-text-primary block text-sm",
             children: [s("manageForm.storage"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
           }),
           p.jsxs("div", {
@@ -165639,7 +165639,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
             children: [
               !a &&
                 p.jsxs("label", {
-                  className: `text-codely-color-text-primary flex items-center gap-2 text-sm transition-colors ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
+                  className: `text-gamecowork-color-text-primary flex items-center gap-2 text-sm transition-colors ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
                   children: [
                     p.jsx("input", {
                       type: "radio",
@@ -165656,7 +165656,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
                 }),
               p.jsxs("label", {
                 className:
-                  "text-codely-color-text-primary flex cursor-pointer items-center gap-2 text-sm transition-colors",
+                  "text-gamecowork-color-text-primary flex cursor-pointer items-center gap-2 text-sm transition-colors",
                 children: [
                   p.jsx("input", {
                     type: "radio",
@@ -165670,7 +165670,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
                   p.jsx("span", { children: s("manageForm.global") }),
                   p.jsx("span", {
                     className:
-                      "text-codely-color-text-secondary border-codely-color-border-subtle rounded border border-solid px-1.5 py-0.5 text-xs leading-none",
+                      "text-gamecowork-color-text-secondary border-gamecowork-color-border-subtle rounded border border-solid px-1.5 py-0.5 text-xs leading-none",
                     children: s("manageForm.globalLabel"),
                   }),
                 ],
@@ -165682,18 +165682,18 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
       p.jsxs("div", {
         className: "flex flex-col gap-2 mt-4",
         children: [
-          p.jsx("label", { className: "text-codely-color-text-primary block text-sm", children: s("manageForm.path") }),
+          p.jsx("label", { className: "text-gamecowork-color-text-primary block text-sm", children: s("manageForm.path") }),
           p.jsx("div", {
             className:
-              "h-[2rem] border-codely-color-border-default rounded-md border border-solid px-3 opacity-50 flex items-center justify-between",
+              "h-[2rem] border-gamecowork-color-border-default rounded-md border border-solid px-3 opacity-50 flex items-center justify-between",
             children: p.jsx("code", {
-              className: "text-codely-color-text-disabled break-all text-sm",
+              className: "text-gamecowork-color-text-disabled break-all text-sm",
               children: c.trim() ? w() : T(),
             }),
           }),
         ],
       }),
-      g && p.jsx("div", { className: "text-xs text-[var(--codely-color-border-error)] mt-2", children: g }),
+      g && p.jsx("div", { className: "text-xs text-[var(--gamecowork-color-border-error)] mt-2", children: g }),
       p.jsxs("div", {
         className: "flex items-center justify-end gap-4 text-sm mt-4",
         children: [
@@ -165704,7 +165704,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
             "data-focus-enter-action": "click",
             disabled: m,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 text-sm font-normal text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 text-sm font-normal text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
             children: s("common.cancel"),
           }),
           p.jsx("button", {
@@ -165714,7 +165714,7 @@ function Mcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
             "data-focus-enter-action": "click",
             disabled: !c.trim() || m,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 text-sm font-normal text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-tertiary",
+              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
             children: s(m ? "manageForm.adding" : "manageForm.addNow"),
           }),
         ],
@@ -165732,20 +165732,20 @@ function Ncn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r, 
       (n && n(), i(on(!1)), i(Jn(void 0)));
     };
   return p.jsxs("div", {
-    className: "flex flex-col p-6 gap-4 rounded-lg bg-codely-color-surface-primary",
+    className: "flex flex-col p-6 gap-4 rounded-lg bg-gamecowork-color-surface-primary",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base text-codely-color-text-primary font-semibold",
+            className: "text-base text-gamecowork-color-text-primary font-semibold",
             children: o("skills.createNew"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: l,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -165911,7 +165911,7 @@ function Rcn({
                 : p.jsx("div", {
                     className: "flex flex-col",
                     children: p.jsxs("div", {
-                      className: "flex flex-col bg-codely-color-item-surface rounded-[0.75rem] overflow-hidden",
+                      className: "flex flex-col bg-gamecowork-color-item-surface rounded-[0.75rem] overflow-hidden",
                       children: [
                         e.slice(0, y).map((I, F) => {
                           const P = A(I),
@@ -165929,12 +165929,12 @@ function Rcn({
                                 "data-capability-name": I.name,
                                 "data-capability-scope": I.source,
                                 children: [
-                                  F > 0 && p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                                  F > 0 && p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                                   p.jsx(Q5e, {
                                     icon: $
                                       ? p.jsx(qoe, {
                                           children: p.jsx(LV, {
-                                            className: "size-5 text-codely-color-text-capability-default",
+                                            className: "size-5 text-gamecowork-color-text-capability-default",
                                           }),
                                         })
                                       : p.jsx(Xg, {
@@ -165959,7 +165959,7 @@ function Rcn({
                                           p.jsx("button", {
                                             "data-telemetry-id": "update_skill",
                                             className:
-                                              "flex h-7 cursor-pointer items-center justify-center rounded-lg border border-solid border-codely-color-interactive-selected bg-transparent px-3 text-xs text-codely-color-text-default transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                                              "flex h-7 cursor-pointer items-center justify-center rounded-lg border border-solid border-gamecowork-color-interactive-selected bg-transparent px-3 text-xs text-gamecowork-color-text-default transition-colors disabled:cursor-not-allowed disabled:opacity-50",
                                             onClick: () => void L(I, P),
                                             disabled: m.has(O),
                                             children: m.has(O)
@@ -165978,7 +165978,7 @@ function Rcn({
                                                 "data-telemetry-id": "edit_skill",
                                                 children: p.jsx(Bm, {
                                                   className:
-                                                    "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                                                    "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                                                 }),
                                               }),
                                               p.jsx(gr, {
@@ -165989,7 +165989,7 @@ function Rcn({
                                                 "data-telemetry-id": "delete_skill",
                                                 children: p.jsx(Um, {
                                                   className:
-                                                    "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                                                    "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                                                 }),
                                               }),
                                             ],
@@ -166014,16 +166014,16 @@ function Rcn({
                           p.jsxs("div", {
                             className: "flex flex-col",
                             children: [
-                              p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                              p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                               p.jsx("div", {
                                 "data-telemetry-id": "show_more_skills",
                                 className:
-                                  "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-codely-color-item-surface-hover",
+                                  "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-gamecowork-color-item-surface-hover",
                                 onClick: () => {
                                   y < e.length ? x((I) => I + g) : x(g);
                                 },
                                 children: p.jsx("span", {
-                                  className: "text-codely-color-text-tertiary text-sm",
+                                  className: "text-gamecowork-color-text-tertiary text-sm",
                                   children: y < e.length ? h("common.showMore") : h("common.showLess"),
                                 }),
                               }),
@@ -166042,7 +166042,7 @@ const Ocn = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -166050,7 +166050,7 @@ const Ocn = `
     margin: 0;
   }
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
   .mcp-radio:checked::after {
     content: "";
@@ -166060,14 +166060,14 @@ const Ocn = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `;
 function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }) {
@@ -166096,7 +166096,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
       } catch {}
     })();
   }, [a, e]);
-  const C = () => (c === "project" && g ? `${g}/.codely-cli/skills/` : x ? `${x}/skills/` : "~/.codely-cli/skills/"),
+  const C = () => (c === "project" && g ? `${g}/.gamecowork-cli/skills/` : x ? `${x}/skills/` : "~/.gamecowork-cli/skills/"),
     S = () => {
       var M;
       (M = o.current) == null || M.click();
@@ -166165,14 +166165,14 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
       }
     };
   return p.jsxs("div", {
-    className: "flex flex-col p-6 gap-4 rounded-lg bg-codely-color-surface-primary",
+    className: "flex flex-col p-6 gap-4 rounded-lg bg-gamecowork-color-surface-primary",
     children: [
       p.jsx("style", { children: Ocn }),
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base text-codely-color-text-primary font-semibold",
+            className: "text-base text-gamecowork-color-text-primary font-semibold",
             children: i("skills.uploadDialog.title"),
           }),
           p.jsx(gr, {
@@ -166180,7 +166180,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
             onClick: () => {
               n && n();
             },
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -166191,7 +166191,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
             className: "flex flex-col gap-2",
             children: [
               p.jsxs("label", {
-                className: "text-codely-color-text-primary block text-sm",
+                className: "text-gamecowork-color-text-primary block text-sm",
                 children: [
                   i("skills.uploadDialog.file"),
                   p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" }),
@@ -166209,7 +166209,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                 onClick: S,
                 "data-focusable": "true",
                 className:
-                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-codely-color-border-default bg-transparent px-4 text-sm text-codely-color-text-secondary transition-colors hover:bg-codely-color-interactive-hover",
+                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-gamecowork-color-border-default bg-transparent px-4 text-sm text-gamecowork-color-text-secondary transition-colors hover:bg-gamecowork-color-interactive-hover",
                 children: s ? s.name : i("skills.uploadDialog.selectFile"),
               }),
             ],
@@ -166218,7 +166218,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
             className: "flex flex-col gap-2",
             children: [
               p.jsxs("label", {
-                className: "text-codely-color-text-primary block text-sm",
+                className: "text-gamecowork-color-text-primary block text-sm",
                 children: [i("manageForm.storage"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
               }),
               p.jsxs("div", {
@@ -166226,7 +166226,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                 children: [
                   !r &&
                     p.jsxs("label", {
-                      className: `text-codely-color-text-primary flex items-center gap-2 text-sm transition-colors ${g ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
+                      className: `text-gamecowork-color-text-primary flex items-center gap-2 text-sm transition-colors ${g ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
                       children: [
                         p.jsx("input", {
                           type: "radio",
@@ -166243,7 +166243,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                     }),
                   p.jsxs("label", {
                     className:
-                      "text-codely-color-text-primary flex cursor-pointer items-center gap-2 text-sm transition-colors",
+                      "text-gamecowork-color-text-primary flex cursor-pointer items-center gap-2 text-sm transition-colors",
                     children: [
                       p.jsx("input", {
                         type: "radio",
@@ -166257,7 +166257,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                       p.jsx("span", { children: i("manageForm.global") }),
                       p.jsx("span", {
                         className:
-                          "text-codely-color-text-secondary border-codely-color-border-subtle rounded border border-solid px-1.5 py-0.5 text-xs leading-none",
+                          "text-gamecowork-color-text-secondary border-gamecowork-color-border-subtle rounded border border-solid px-1.5 py-0.5 text-xs leading-none",
                         children: i("manageForm.globalLabel"),
                       }),
                     ],
@@ -166270,14 +166270,14 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
             className: "flex flex-col gap-2",
             children: [
               p.jsx("label", {
-                className: "text-codely-color-text-primary block text-sm",
+                className: "text-gamecowork-color-text-primary block text-sm",
                 children: i("manageForm.path"),
               }),
               p.jsx("div", {
                 className:
-                  "h-[2rem] border-codely-color-border-default rounded-md border border-solid px-3 opacity-50 flex items-center justify-between",
+                  "h-[2rem] border-gamecowork-color-border-default rounded-md border border-solid px-3 opacity-50 flex items-center justify-between",
                 children: p.jsx("code", {
-                  className: "text-codely-color-text-disabled break-all text-sm",
+                  className: "text-gamecowork-color-text-disabled break-all text-sm",
                   children: C(),
                 }),
               }),
@@ -166285,7 +166285,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
           }),
           m &&
             p.jsx("div", {
-              className: "text-xs text-[var(--codely-color-border-error)]",
+              className: "text-xs text-[var(--gamecowork-color-border-error)]",
               "data-telemetry-id": "skill_upload_error",
               children: m,
             }),
@@ -166301,7 +166301,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                 "data-focus-enter-action": "click",
                 disabled: u,
                 className:
-                  "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 text-sm font-normal text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+                  "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 text-sm font-normal text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
                 children: i("common.cancel"),
               }),
               p.jsx("button", {
@@ -166311,7 +166311,7 @@ function Lcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
                 "data-focus-enter-action": "click",
                 disabled: !s || u,
                 className:
-                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 text-sm font-normal text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-tertiary",
+                  "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
                 children: i(u ? "skills.uploadDialog.installing" : "skills.uploadDialog.install"),
               }),
             ],
@@ -166544,7 +166544,7 @@ const Fcn = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid var(--codely-color-text-disabled);
+    border: 1px solid var(--gamecowork-color-text-disabled);
     background-color: transparent;
     cursor: pointer;
     position: relative;
@@ -166553,7 +166553,7 @@ const Fcn = `
   }
 
   .mcp-radio:checked {
-    border: 2px solid var(--codely-color-accent-default);
+    border: 2px solid var(--gamecowork-color-accent-default);
   }
 
   .mcp-radio:checked::after {
@@ -166564,16 +166564,16 @@ const Fcn = `
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background-color: var(--codely-color-accent-default);
+    background-color: var(--gamecowork-color-accent-default);
     border-radius: 50%;
   }
 
   .mcp-radio:hover {
-    border-color: var(--codely-color-text-disabled);
+    border-color: var(--gamecowork-color-text-disabled);
   }
 
   .mcp-radio:checked:hover {
-    border-color: var(--codely-color-accent-default);
+    border-color: var(--gamecowork-color-accent-default);
   }
 `,
   Bcn = `# Subagent configuration
@@ -166613,7 +166613,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
       } catch {}
     })();
   }, [l, n]);
-  const T = () => (u === "project" && x ? `${x}/.codely-cli/agents/` : C ? `${C}/agents/` : "~/.codely-cli/agents/"),
+  const T = () => (u === "project" && x ? `${x}/.gamecowork-cli/agents/` : C ? `${C}/agents/` : "~/.gamecowork-cli/agents/"),
     w = () => {
       const L = `${c.trim().toLowerCase().replace(/\s+/g, "-")}.toml`;
       return `${T()}${L}`;
@@ -166661,7 +166661,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
         className: "flex flex-col",
         children: [
           p.jsxs("label", {
-            className: "mb-2 block text-sm text-codely-color-text-primary",
+            className: "mb-2 block text-sm text-gamecowork-color-text-primary",
             children: [o("manageForm.name"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
           }),
           p.jsx(ra, {
@@ -166676,10 +166676,10 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
             placeholder: "eg: code-review",
             autoFocus: !0,
             className:
-              "h-[2rem] bg-codely-color-surface-primary border-codely-color-border-default text-codely-color-text-primary text-sm rounded-md",
+              "h-[2rem] bg-gamecowork-color-surface-primary border-gamecowork-color-border-default text-gamecowork-color-text-primary text-sm rounded-md",
           }),
           p.jsxs("div", {
-            className: "mt-1 flex justify-end text-xs text-codely-color-text-tertiary",
+            className: "mt-1 flex justify-end text-xs text-gamecowork-color-text-tertiary",
             children: [c.length, " / 100"],
           }),
         ],
@@ -166688,7 +166688,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
         className: "flex flex-col",
         children: [
           p.jsxs("label", {
-            className: "mb-2 block text-sm text-codely-color-text-primary",
+            className: "mb-2 block text-sm text-gamecowork-color-text-primary",
             children: [o("manageForm.storage"), p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" })],
           }),
           p.jsxs("div", {
@@ -166696,7 +166696,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
             children: [
               !a &&
                 p.jsxs("label", {
-                  className: `flex items-center gap-2 text-sm transition-colors text-codely-color-text-primary ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
+                  className: `flex items-center gap-2 text-sm transition-colors text-gamecowork-color-text-primary ${x ? "cursor-pointer" : "cursor-not-allowed opacity-40"}`,
                   children: [
                     p.jsx("input", {
                       type: "radio",
@@ -166712,7 +166712,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                 }),
               p.jsxs("label", {
                 className:
-                  "flex items-center gap-2 cursor-pointer text-sm transition-colors text-codely-color-text-primary",
+                  "flex items-center gap-2 cursor-pointer text-sm transition-colors text-gamecowork-color-text-primary",
                 children: [
                   p.jsx("input", {
                     type: "radio",
@@ -166728,7 +166728,7 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                       p.jsx("span", { children: o("manageForm.global") }),
                       p.jsx("span", {
                         className:
-                          "rounded border border-solid border-codely-color-border-subtle px-1.5 py-0.5 text-xs leading-none text-codely-color-text-secondary",
+                          "rounded border border-solid border-gamecowork-color-border-subtle px-1.5 py-0.5 text-xs leading-none text-gamecowork-color-text-secondary",
                         children: o("manageForm.globalLabel"),
                       }),
                     ],
@@ -166743,20 +166743,20 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
         className: "flex flex-col mt-4",
         children: [
           p.jsx("label", {
-            className: "mb-2 block text-sm text-codely-color-text-primary",
+            className: "mb-2 block text-sm text-gamecowork-color-text-primary",
             children: o("manageForm.path"),
           }),
           p.jsx("div", {
             className:
-              "flex items-center h-[2rem] rounded-md border border-solid border-codely-color-border-default bg-codely-color-surface-primary px-3",
+              "flex items-center h-[2rem] rounded-md border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary px-3",
             children: p.jsx("span", {
-              className: "text-sm text-codely-color-text-disabled break-all",
+              className: "text-sm text-gamecowork-color-text-disabled break-all",
               children: c.trim() ? w() : T(),
             }),
           }),
         ],
       }),
-      g && p.jsx("div", { className: "text-xs text-[var(--codely-color-border-error)] mt-2", children: g }),
+      g && p.jsx("div", { className: "text-xs text-[var(--gamecowork-color-border-error)] mt-2", children: g }),
       p.jsxs("div", {
         className: "flex flex-row items-center justify-end gap-4 mt-4",
         children: [
@@ -166764,14 +166764,14 @@ function Ucn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
             onClick: t,
             disabled: m,
             className:
-              "flex cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 py-1 text-sm font-normal text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+              "flex cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 py-1 text-sm font-normal text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
             children: o("common.cancel"),
           }),
           p.jsx("button", {
             onClick: () => void N(),
             disabled: !c.trim() || m,
             className:
-              "flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 py-1 text-sm font-normal text-codely-color-text-accent transition-colors hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-tertiary",
+              "flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 py-1 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
             children: o(m ? "manageForm.adding" : "manageForm.addNow"),
           }),
         ],
@@ -166789,20 +166789,20 @@ function jcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, isPlugin: r, for
       (n && n(), o(on(!1)), o(Jn(void 0)));
     };
   return p.jsxs("div", {
-    className: "flex flex-col p-6 gap-4 rounded-lg bg-codely-color-surface-primary",
+    className: "flex flex-col p-6 gap-4 rounded-lg bg-gamecowork-color-surface-primary",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base text-codely-color-text-primary font-semibold",
+            className: "text-base text-gamecowork-color-text-primary font-semibold",
             children: s("subagents.createNew"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: c,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -166838,7 +166838,7 @@ function zcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
     c = e.source === "user" ? o("manageForm.globalLabel") : e.source;
   return p.jsxs("div", {
     className:
-      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-codely-color-item-surface hover:bg-codely-color-item-surface-hover",
+      "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover",
     "data-focus-item": "true",
     "data-focus-group": "rows",
     onClick: a || !s ? void 0 : t,
@@ -166846,11 +166846,11 @@ function zcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
       p.jsxs("div", {
         className: "flex min-w-0 flex-1 items-center gap-3",
         children: [
-          p.jsx("span", { className: "text-codely-color-text-primary text-sm font-medium truncate", children: e.name }),
+          p.jsx("span", { className: "text-gamecowork-color-text-primary text-sm font-medium truncate", children: e.name }),
           l &&
             p.jsx("div", {
               className:
-                "flex-shrink-0 rounded bg-transparent px-1.5 py-0.5 text-xs text-codely-color-text-secondary border border-solid border-codely-color-border-subtle",
+                "flex-shrink-0 rounded bg-transparent px-1.5 py-0.5 text-xs text-gamecowork-color-text-secondary border border-solid border-gamecowork-color-border-subtle",
               children: c,
             }),
         ],
@@ -166872,7 +166872,7 @@ function zcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
                   "data-focus-group": "actions",
                   "data-telemetry-id": "edit_subagent",
                   children: p.jsx(Bm, {
-                    className: "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                    className: "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                   }),
                 }),
                 p.jsx(gr, {
@@ -166883,7 +166883,7 @@ function zcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
                   "data-focus-group": "actions",
                   "data-telemetry-id": "delete_subagent",
                   children: p.jsx(Um, {
-                    className: "size-4 text-codely-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
+                    className: "size-4 text-gamecowork-color-text-tertiary hover:text-var(rgba(133, 133, 133, 1))",
                   }),
                 }),
               ],
@@ -167011,7 +167011,7 @@ function $cn({
               children: p.jsx(In, {
                 className: "min-h-0 flex-1",
                 children: p.jsxs("div", {
-                  className: "flex flex-col bg-codely-color-item-surface rounded-[0.75rem] overflow-hidden",
+                  className: "flex flex-col bg-gamecowork-color-item-surface rounded-[0.75rem] overflow-hidden",
                   "data-focusable": "true",
                   "data-focus-direction": "vertical",
                   children: [
@@ -167023,7 +167023,7 @@ function $cn({
                           {
                             className: "flex flex-col",
                             children: [
-                              N > 0 && p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                              N > 0 && p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                               p.jsx(
                                 zcn,
                                 {
@@ -167045,15 +167045,15 @@ function $cn({
                       p.jsxs("div", {
                         className: "flex flex-col",
                         children: [
-                          p.jsx("div", { className: "h-px shrink-0 bg-codely-color-border-subtle" }),
+                          p.jsx("div", { className: "h-px shrink-0 bg-gamecowork-color-border-subtle" }),
                           p.jsx("div", {
                             className:
-                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-codely-color-item-surface-hover",
+                              "flex items-center px-4 py-3 cursor-pointer transition-colors hover:bg-gamecowork-color-item-surface-hover",
                             onClick: () => {
                               g < e.length ? y((M) => M + f) : y(f);
                             },
                             children: p.jsx("span", {
-                              className: "text-codely-color-text-tertiary text-sm",
+                              className: "text-gamecowork-color-text-tertiary text-sm",
                               children: g < e.length ? u("common.showMore") : u("common.showLess"),
                             }),
                           }),
@@ -167082,7 +167082,7 @@ async function Hcn(e, t, n) {
   if (r.length > 0) return r;
   const a = (d = t.find((u) => u.workspaceKey === n)) == null ? void 0 : d.workspaceDir,
     i = [];
-  a && i.push({ path: `${a}/.codely-cli/agents`, source: "project" });
+  a && i.push({ path: `${a}/.gamecowork-cli/agents`, source: "project" });
   try {
     const u = await Fm(e);
     u && i.push({ path: `${u}/agents`, source: "user" });
@@ -167336,7 +167336,7 @@ function Xcn(e) {
 function Jcn({ label: e }) {
   return p.jsx("span", {
     className:
-      "inline-flex items-center justify-center rounded-md border border-solid border-codely-color-border-subtle px-1.5 text-[0.8125rem] text-codely-color-text-secondary",
+      "inline-flex items-center justify-center rounded-md border border-solid border-gamecowork-color-border-subtle px-1.5 text-[0.8125rem] text-gamecowork-color-text-secondary",
     children: e,
   });
 }
@@ -167346,7 +167346,7 @@ function edn({ shortcut: e }) {
     children: [
       p.jsx("div", {
         className: "flex min-w-0 flex-1 flex-col gap-1",
-        children: p.jsx("div", { className: "text-sm font-medium text-codely-color-text-default", children: e.title }),
+        children: p.jsx("div", { className: "text-sm font-medium text-gamecowork-color-text-default", children: e.title }),
       }),
       p.jsx("div", {
         className: "flex flex-shrink-0 items-center gap-1.5",
@@ -167375,7 +167375,7 @@ function ISe({ shortcuts: e, from: t = 0, to: n = e.length }) {
   return r <= 0
     ? null
     : p.jsx("div", {
-        className: "flex flex-col rounded-lg bg-codely-color-surface-card",
+        className: "flex flex-col rounded-lg bg-gamecowork-color-surface-card",
         children: Array.from({ length: r }, (a, i) => {
           const o = e[t + i];
           return p.jsx(
@@ -167383,7 +167383,7 @@ function ISe({ shortcuts: e, from: t = 0, to: n = e.length }) {
             {
               className: nt(
                 "px-4 py-3",
-                i < r - 1 && "border-0 border-b border-solid border-codely-color-border-subtle",
+                i < r - 1 && "border-0 border-b border-solid border-gamecowork-color-border-subtle",
               ),
               children: p.jsx(edn, { shortcut: o }),
             },
@@ -167585,7 +167585,7 @@ function idn({ isPlugin: e = !1 }) {
           placeholder: t("shortcuts.searchPlaceholder"),
           searchQuery: n,
           setSearchQuery: r,
-          className: "rounded-lg border-codely-color-border-default bg-transparent",
+          className: "rounded-lg border-gamecowork-color-border-default bg-transparent",
         }),
       }),
       p.jsx("div", {
@@ -167595,7 +167595,7 @@ function idn({ isPlugin: e = !1 }) {
     ],
   });
 }
-const odn = ".codely-cli",
+const odn = ".gamecowork-cli",
   sdn = "settings.json";
 function ASe(e) {
   return `${e}/${odn}/${sdn}`;
@@ -167705,7 +167705,7 @@ function bdn({ newVersion: e, onCancel: t }) {
     children: p.jsx("div", {
       className: "px-6 py-4",
       children: p.jsx("span", {
-        className: "text-sm font-medium text-codely-color-accent-default",
+        className: "text-sm font-medium text-gamecowork-color-accent-default",
         children: n("settings.about.latestVersion", { version: e }),
       }),
     }),
@@ -167824,7 +167824,7 @@ function Sdn({
     N = i || isNaN(w) || w >= a;
   return p.jsxs("div", {
     className: nt(
-      "flex h-8 items-center rounded-lg border border-solid border-codely-color-border-default bg-transparent",
+      "flex h-8 items-center rounded-lg border border-solid border-gamecowork-color-border-default bg-transparent",
       i && "opacity-50",
     ),
     children: [
@@ -167834,7 +167834,7 @@ function Sdn({
         onClick: S,
         disabled: M,
         className:
-          "flex h-full w-5.5 cursor-pointer items-center justify-center border-0 border-r border-solid border-codely-color-border-default bg-transparent text-codely-color-text-tertiary hover:text-codely-color-accent-active disabled:cursor-not-allowed disabled:opacity-40",
+          "flex h-full w-5.5 cursor-pointer items-center justify-center border-0 border-r border-solid border-gamecowork-color-border-default bg-transparent text-gamecowork-color-text-tertiary hover:text-gamecowork-color-accent-active disabled:cursor-not-allowed disabled:opacity-40",
         children: p.jsx(OKe, { className: "size-3.5" }),
       }),
       p.jsx("input", {
@@ -167845,7 +167845,7 @@ function Sdn({
         onBlur: C,
         disabled: i,
         className:
-          "w-10 border-none bg-transparent p-0 text-center text-sm text-codely-color-text-primary outline-none disabled:cursor-not-allowed",
+          "w-10 border-none bg-transparent p-0 text-center text-sm text-gamecowork-color-text-primary outline-none disabled:cursor-not-allowed",
       }),
       p.jsx("button", {
         type: "button",
@@ -167853,7 +167853,7 @@ function Sdn({
         onClick: T,
         disabled: N,
         className:
-          "flex h-full w-5.5 cursor-pointer items-center justify-center border-0 border-l border-solid border-codely-color-border-default bg-transparent text-codely-color-text-tertiary hover:text-codely-color-accent-active disabled:cursor-not-allowed disabled:opacity-40",
+          "flex h-full w-5.5 cursor-pointer items-center justify-center border-0 border-l border-solid border-gamecowork-color-border-default bg-transparent text-gamecowork-color-text-tertiary hover:text-gamecowork-color-accent-active disabled:cursor-not-allowed disabled:opacity-40",
         children: p.jsx(X_, { className: "size-3.5" }),
       }),
     ],
@@ -167879,12 +167879,12 @@ function kdn({ setting: e }) {
         className: "flex min-w-0 flex-1 flex-col",
         children: [
           p.jsx("div", {
-            className: "text-sm text-codely-color-text-primary font-medium leading-[1.5rem]",
+            className: "text-sm text-gamecowork-color-text-primary font-medium leading-[1.5rem]",
             children: e.title,
           }),
           e.description &&
             p.jsx("div", {
-              className: "text-xs text-codely-color-text-tertiary leading-[1.25rem]",
+              className: "text-xs text-gamecowork-color-text-tertiary leading-[1.25rem]",
               children: e.description,
             }),
         ],
@@ -167902,7 +167902,7 @@ function kdn({ setting: e }) {
                 "aria-hidden": !r,
                 "aria-label": t("common.reset", { defaultValue: "Reset" }),
                 className: nt(
-                  "flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center border-none bg-transparent text-codely-color-text-tertiary hover:text-codely-color-text-primary outline-none",
+                  "flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center border-none bg-transparent text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-primary outline-none",
                   !r && "invisible pointer-events-none",
                 ),
                 children: p.jsx("svg", {
@@ -167938,11 +167938,11 @@ function Edn({ setting: e }) {
   return p.jsxs("div", {
     className: "flex flex-col gap-2 p-3",
     children: [
-      p.jsx("div", { className: "text-sm text-codely-color-text-tertiary", children: e.title }),
+      p.jsx("div", { className: "text-sm text-gamecowork-color-text-tertiary", children: e.title }),
       p.jsx(ra, { type: "password", value: e.value, placeholder: e.placeholder, onChange: e.onChange }),
       e.description &&
         p.jsx("div", {
-          className: "text-codely-color-text-tertiary text-xs leading-[1.25rem]",
+          className: "text-gamecowork-color-text-tertiary text-xs leading-[1.25rem]",
           children: e.description,
         }),
     ],
@@ -167988,9 +167988,9 @@ function wdn({ setting: e }) {
       p.jsxs("div", {
         className: "flex flex-1 flex-col gap-1",
         children: [
-          p.jsx("div", { className: "text-sm font-medium text-codely-color-text-primary", children: e.title }),
+          p.jsx("div", { className: "text-sm font-medium text-gamecowork-color-text-primary", children: e.title }),
           p.jsx("div", {
-            className: "text-xs leading-[1.25rem] text-codely-color-text-tertiary",
+            className: "text-xs leading-[1.25rem] text-gamecowork-color-text-tertiary",
             children: e.description,
           }),
         ],
@@ -168005,7 +168005,7 @@ function wdn({ setting: e }) {
           p.jsx("div", {
             className: nt(
               "truncate text-sm",
-              e.value ? "text-codely-color-text-primary" : "text-codely-color-text-tertiary",
+              e.value ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-tertiary",
             ),
             children: e.loading ? t("common.loading") : e.value || t("common.browse"),
           }),
@@ -168015,7 +168015,7 @@ function wdn({ setting: e }) {
       e.error &&
         p.jsx("div", {
           role: "alert",
-          className: "text-xs leading-[1.25rem] text-codely-color-status-danger-default",
+          className: "text-xs leading-[1.25rem] text-gamecowork-color-status-danger-default",
           children: e.error,
         }),
     ],
@@ -168025,11 +168025,11 @@ function Cdn({ setting: e }) {
   return p.jsxs("div", {
     className: "flex flex-col gap-2 p-3",
     children: [
-      p.jsx("div", { className: "text-sm text-codely-color-text-tertiary", children: e.title }),
+      p.jsx("div", { className: "text-sm text-gamecowork-color-text-tertiary", children: e.title }),
       p.jsx(ra, { type: "text", value: e.value, placeholder: e.placeholder, onChange: e.onChange }),
       e.description &&
         p.jsx("div", {
-          className: "text-codely-color-text-tertiary text-xs leading-[1.25rem]",
+          className: "text-gamecowork-color-text-tertiary text-xs leading-[1.25rem]",
           children: e.description,
         }),
     ],
@@ -168045,9 +168045,9 @@ function Tdn({ setting: e }) {
           p.jsxs("div", {
             className: "flex flex-1 flex-col gap-1",
             children: [
-              p.jsx("div", { className: "text-sm text-codely-color-text-primary font-medium", children: e.title }),
+              p.jsx("div", { className: "text-sm text-gamecowork-color-text-primary font-medium", children: e.title }),
               p.jsx("div", {
-                className: "text-codely-color-text-tertiary text-xs leading-[1.25rem]",
+                className: "text-gamecowork-color-text-tertiary text-xs leading-[1.25rem]",
                 children: e.description,
               }),
             ],
@@ -168067,16 +168067,16 @@ function Yf({ group: e, isFirst: t }) {
   return p.jsxs("div", {
     className: nt(e.title ? "mt-8" : "mt-4", t && "mt-0"),
     children: [
-      e.title && p.jsx(Oln, { title: e.title, className: "mb-4 text-sm text-codely-color-text-tertiary capitalize" }),
+      e.title && p.jsx(Oln, { title: e.title, className: "mb-4 text-sm text-gamecowork-color-text-tertiary capitalize" }),
       p.jsx("div", {
-        className: nt("flex flex-col rounded-[0.75rem] border bg-codely-color-surface-card", n ? "" : "gap-2"),
+        className: nt("flex flex-col rounded-[0.75rem] border bg-gamecowork-color-surface-card", n ? "" : "gap-2"),
         children: e.settings.map((r, a) =>
           p.jsxs(
             "div",
             {
               className: nt(
                 n ? "" : "px-1",
-                !n && a < e.settings.length - 1 && "border-0 border-solid border-b border-codely-color-border-subtle",
+                !n && a < e.settings.length - 1 && "border-0 border-solid border-b border-gamecowork-color-border-subtle",
               ),
               children: [
                 r.type === "toggle" && p.jsx(Tdn, { setting: r }),
@@ -168092,12 +168092,12 @@ function Yf({ group: e, isFirst: t }) {
                         className: "flex flex-1 flex-col",
                         children: [
                           p.jsx("div", {
-                            className: "text-sm font-medium leading-[1.5rem] text-codely-color-text-primary",
+                            className: "text-sm font-medium leading-[1.5rem] text-gamecowork-color-text-primary",
                             children: r.title,
                           }),
                           r.description &&
                             p.jsx("div", {
-                              className: "text-xs leading-[1.25rem] text-codely-color-text-tertiary",
+                              className: "text-xs leading-[1.25rem] text-gamecowork-color-text-tertiary",
                               children: r.description,
                             }),
                         ],
@@ -168115,7 +168115,7 @@ function Yf({ group: e, isFirst: t }) {
     ],
   });
 }
-const Mdn = "https://codely-docs.tuanjie.cn/getting-started/overview/";
+const Mdn = "https://gamecowork-docs.tuanjie.cn/getting-started/overview/";
 function Ndn() {
   const { t: e } = Rt(),
     t = Vn(),
@@ -168209,9 +168209,9 @@ function Ndn() {
               ? p.jsxs("div", {
                   className: "flex items-center gap-2",
                   children: [
-                    p.jsx(ai, { className: "h-4 w-4 animate-spin text-codely-color-text-tertiary" }),
+                    p.jsx(ai, { className: "h-4 w-4 animate-spin text-gamecowork-color-text-tertiary" }),
                     p.jsx("span", {
-                      className: "text-xs text-codely-color-text-tertiary",
+                      className: "text-xs text-gamecowork-color-text-tertiary",
                       children: e("settings.about.checking"),
                     }),
                   ],
@@ -168221,7 +168221,7 @@ function Ndn() {
                   "data-telemetry-id": "check_for_update",
                   onClick: u,
                   className:
-                    "flex cursor-pointer items-center rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                    "flex cursor-pointer items-center rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                   children: e("settings.about.checkForUpdate"),
                 })
             : void 0,
@@ -168259,7 +168259,7 @@ function Ndn() {
             "data-telemetry-id": "open_docs",
             onClick: () => n.post("openUrl", Mdn),
             className:
-              "flex cursor-pointer items-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+              "flex cursor-pointer items-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
             children: [e("settings.about.viewDocs"), p.jsx(Dre, { className: "!text-sm" })],
           }),
         },
@@ -168272,7 +168272,7 @@ function Ndn() {
             "data-telemetry-id": "open_release_notes",
             onClick: () => n.post("controlPlane/openUrl", { path: "release-notes" }),
             className:
-              "flex cursor-pointer items-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+              "flex cursor-pointer items-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-1 min-h-[1.75rem] text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
             children: [e("settings.about.viewDocs"), p.jsx(Dre, { className: "!text-sm" })],
           }),
         },
@@ -168358,20 +168358,20 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
       onChange: (x) => f("wireApi", x),
     };
   return p.jsxs("div", {
-    className: "flex flex-col gap-4 rounded-lg bg-codely-color-surface-primary p-6",
+    className: "flex flex-col gap-4 rounded-lg bg-gamecowork-color-surface-primary p-6",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base font-semibold text-codely-color-text-primary",
+            className: "text-base font-semibold text-gamecowork-color-text-primary",
             children: a(d ? "customModels.addModel" : "customModels.editModel"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: r,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -168379,7 +168379,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
         className: "mt-4 flex flex-col",
         children: [
           p.jsxs("label", {
-            className: "flex flex-col text-sm text-codely-color-text-primary",
+            className: "flex flex-col text-sm text-gamecowork-color-text-primary",
             children: [
               p.jsxs("span", {
                 className: "mb-2",
@@ -168401,12 +168401,12 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
                 children: [
                   h
                     ? p.jsx("span", {
-                        className: "text-xs text-[var(--codely-color-border-error)]",
+                        className: "text-xs text-[var(--gamecowork-color-border-error)]",
                         children: a("customModels.modelNameDuplicate"),
                       })
                     : p.jsx("span", {}),
                   p.jsxs("span", {
-                    className: "text-xs text-codely-color-text-tertiary",
+                    className: "text-xs text-gamecowork-color-text-tertiary",
                     children: [i.modelName.length, " / 100"],
                   }),
                 ],
@@ -168414,7 +168414,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
             ],
           }),
           p.jsxs("label", {
-            className: "mt-4 flex flex-col text-sm text-codely-color-text-primary",
+            className: "mt-4 flex flex-col text-sm text-gamecowork-color-text-primary",
             children: [
               p.jsx("span", { className: "mb-2", children: a("customModels.displayName") }),
               p.jsx(ra, {
@@ -168427,7 +168427,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
               p.jsx("div", {
                 className: "flex justify-end",
                 children: p.jsxs("span", {
-                  className: "text-xs text-codely-color-text-tertiary",
+                  className: "text-xs text-gamecowork-color-text-tertiary",
                   children: [i.displayName.length, " / 100"],
                 }),
               }),
@@ -168437,7 +168437,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
             setting: y,
             className: "mt-4 !p-0",
             buttonClassName:
-              "h-10 w-72 max-w-none rounded border-codely-color-border-subtle bg-codely-color-surface-input",
+              "h-10 w-72 max-w-none rounded border-gamecowork-color-border-subtle bg-gamecowork-color-surface-input",
           }),
           p.jsxs("div", {
             className: "mt-4 flex items-center justify-between gap-5",
@@ -168446,11 +168446,11 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
                 className: "flex flex-1 flex-col gap-1",
                 children: [
                   p.jsx("span", {
-                    className: "text-sm font-medium text-codely-color-text-primary",
+                    className: "text-sm font-medium text-gamecowork-color-text-primary",
                     children: a("customModels.supportsMultimodal"),
                   }),
                   p.jsx("span", {
-                    className: "text-xs leading-[1.25rem] text-codely-color-text-tertiary",
+                    className: "text-xs leading-[1.25rem] text-gamecowork-color-text-tertiary",
                     children: a("customModels.supportsMultimodalDescription"),
                   }),
                 ],
@@ -168462,7 +168462,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
             ],
           }),
           p.jsxs("label", {
-            className: "mt-4 flex flex-col text-sm text-codely-color-text-primary",
+            className: "mt-4 flex flex-col text-sm text-gamecowork-color-text-primary",
             children: [
               p.jsx("span", { className: "mb-2", children: a("customModels.extraBody") }),
               p.jsx("textarea", {
@@ -168472,10 +168472,10 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
                 "aria-label": a("customModels.extraBody"),
                 rows: 4,
                 className:
-                  "resize-y rounded-md border border-solid border-codely-color-border-default bg-codely-color-surface-primary p-2 font-mono text-sm text-codely-color-text-primary",
+                  "resize-y rounded-md border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary p-2 font-mono text-sm text-gamecowork-color-text-primary",
               }),
               p.jsx("span", {
-                className: "mt-1 text-xs text-codely-color-text-tertiary",
+                className: "mt-1 text-xs text-gamecowork-color-text-tertiary",
                 children: a("customModels.extraBodyDescription"),
               }),
             ],
@@ -168491,7 +168491,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
             onClick: r,
             disabled: s,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 text-codely-color-text-primary hover:bg-codely-color-interactive-hover",
+              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover",
             children: a("common.cancel"),
           }),
           p.jsxs("button", {
@@ -168500,7 +168500,7 @@ function Adn({ initial: e, profiles: t, onSave: n, onCancel: r }) {
             onClick: () => void g(),
             disabled: !m || s,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 text-codely-color-text-accent hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50",
             children: [
               s ? p.jsx(ai, { className: "h-4 w-4 animate-spin" }) : null,
               a(
@@ -168585,25 +168585,25 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
       }
     };
   return p.jsxs("div", {
-    className: "flex flex-col gap-4 rounded-lg bg-codely-color-surface-primary p-6",
+    className: "flex flex-col gap-4 rounded-lg bg-gamecowork-color-surface-primary p-6",
     children: [
       p.jsxs("div", {
         className: "flex items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-base font-semibold text-codely-color-text-primary",
+            className: "text-base font-semibold text-gamecowork-color-text-primary",
             children: i(e === "add" ? "customModels.addProvider" : "customModels.editProvider"),
           }),
           p.jsx(gr, {
             size: "sm",
             onClick: a,
             "data-telemetry-id": "dialog_close",
-            children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
       p.jsxs("label", {
-        className: "flex flex-col text-sm text-codely-color-text-primary",
+        className: "flex flex-col text-sm text-gamecowork-color-text-primary",
         children: [
           p.jsxs("span", {
             className: "mb-2",
@@ -168622,14 +168622,14 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
           }),
           g
             ? p.jsx("span", {
-                className: "mt-1 text-xs text-[var(--codely-color-border-error)]",
+                className: "mt-1 text-xs text-[var(--gamecowork-color-border-error)]",
                 children: i("customModels.providerNameDuplicate"),
               })
             : null,
         ],
       }),
       p.jsxs("label", {
-        className: "flex flex-col text-sm text-codely-color-text-primary",
+        className: "flex flex-col text-sm text-gamecowork-color-text-primary",
         children: [
           p.jsxs("span", {
             className: "mb-2",
@@ -168647,7 +168647,7 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
         ],
       }),
       p.jsxs("label", {
-        className: "flex flex-col text-sm text-codely-color-text-primary",
+        className: "flex flex-col text-sm text-gamecowork-color-text-primary",
         children: [
           p.jsxs("span", {
             className: "mb-2",
@@ -168656,7 +168656,7 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
               p.jsx("span", { className: "ml-1 text-[#f5222d]", children: "*" }),
               e === "edit" && t != null && t.apiKeyMasked
                 ? p.jsx("span", {
-                    className: "ml-1 text-codely-color-text-tertiary",
+                    className: "ml-1 text-gamecowork-color-text-tertiary",
                     children: i("customModels.apiKeyLeaveBlank"),
                   })
                 : null,
@@ -168682,7 +168682,7 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
             onClick: a,
             disabled: h,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-codely-color-border-default bg-transparent px-4 text-codely-color-text-primary hover:bg-codely-color-interactive-hover",
+              "flex h-[2rem] cursor-pointer items-center justify-center rounded-md border border-solid border-gamecowork-color-border-default bg-transparent px-4 text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover",
             children: i("common.cancel"),
           }),
           p.jsxs("button", {
@@ -168691,7 +168691,7 @@ function Ddn({ mode: e, initial: t, providers: n, onSave: r, onCancel: a }) {
             onClick: () => void x(),
             disabled: !y || h,
             className:
-              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-codely-color-accent-default px-4 text-codely-color-text-accent hover:bg-codely-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50",
             children: [
               h ? p.jsx(ai, { className: "h-4 w-4 animate-spin" }) : null,
               i(e === "add" ? "customModels.add" : "customModels.update"),
@@ -168730,10 +168730,10 @@ function Pdn({ provider: e, profiles: t, onSelect: n }) {
       },
     ];
   return p.jsxs("div", {
-    className: "mb-4 flex w-full min-w-0 flex-col overflow-hidden rounded-[0.75rem] bg-codely-color-item-surface",
+    className: "mb-4 flex w-full min-w-0 flex-col overflow-hidden rounded-[0.75rem] bg-gamecowork-color-item-surface",
     children: [
       p.jsx(O_, { setting: i[0] }),
-      p.jsx("div", { className: "border-0 border-b border-solid border-codely-color-border-subtle" }),
+      p.jsx("div", { className: "border-0 border-b border-solid border-gamecowork-color-border-subtle" }),
       p.jsx(O_, { setting: i[1] }),
     ],
   });
@@ -168741,10 +168741,10 @@ function Pdn({ provider: e, profiles: t, onSelect: n }) {
 function Fdn({ providers: e, selectedProviderId: t, onSelect: n, onAdd: r, onEdit: a, onDelete: i }) {
   const { t: o } = Rt();
   return p.jsxs("aside", {
-    className: "flex w-[13rem] shrink-0 flex-col border-0 border-r border-solid border-codely-color-border-subtle pr-3",
+    className: "flex w-[13rem] shrink-0 flex-col border-0 border-r border-solid border-gamecowork-color-border-subtle pr-3",
     children: [
       p.jsx("div", {
-        className: "mb-2 px-2 text-xs font-medium uppercase tracking-wide text-codely-color-text-tertiary",
+        className: "mb-2 px-2 text-xs font-medium uppercase tracking-wide text-gamecowork-color-text-tertiary",
         children: o("customModels.providers"),
       }),
       p.jsx("div", {
@@ -168761,7 +168761,7 @@ function Fdn({ providers: e, selectedProviderId: t, onSelect: n, onAdd: r, onEdi
               onKeyDown: (c) => {
                 (c.key === "Enter" || c.key === " ") && n(s.id);
               },
-              className: `group flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 text-sm transition-colors ${l ? "bg-codely-color-interactive-hover text-codely-color-text-primary" : "text-codely-color-text-secondary hover:bg-codely-color-item-surface-hover"}`,
+              className: `group flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 text-sm transition-colors ${l ? "bg-gamecowork-color-interactive-hover text-gamecowork-color-text-primary" : "text-gamecowork-color-text-secondary hover:bg-gamecowork-color-item-surface-hover"}`,
               children: [
                 p.jsx("span", { className: "min-w-0 flex-1 truncate", children: s.name }),
                 p.jsxs("div", {
@@ -168774,7 +168774,7 @@ function Fdn({ providers: e, selectedProviderId: t, onSelect: n, onAdd: r, onEdi
                       onClick: (c) => {
                         (c.stopPropagation(), a(s));
                       },
-                      children: p.jsx(Bm, { className: "size-3.5 text-codely-color-text-tertiary" }),
+                      children: p.jsx(Bm, { className: "size-3.5 text-gamecowork-color-text-tertiary" }),
                     }),
                     p.jsx(gr, {
                       size: "sm",
@@ -168783,7 +168783,7 @@ function Fdn({ providers: e, selectedProviderId: t, onSelect: n, onAdd: r, onEdi
                       onClick: (c) => {
                         (c.stopPropagation(), i(s));
                       },
-                      children: p.jsx(Um, { className: "size-3.5 text-codely-color-text-tertiary" }),
+                      children: p.jsx(Um, { className: "size-3.5 text-gamecowork-color-text-tertiary" }),
                     }),
                   ],
                 }),
@@ -168798,7 +168798,7 @@ function Fdn({ providers: e, selectedProviderId: t, onSelect: n, onAdd: r, onEdi
         "data-telemetry-id": "add_model_provider",
         onClick: r,
         className:
-          "mt-2 flex cursor-pointer items-center gap-1 rounded-lg border-none bg-transparent px-2 py-2 text-sm text-codely-color-text-secondary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary",
+          "mt-2 flex cursor-pointer items-center gap-1 rounded-lg border-none bg-transparent px-2 py-2 text-sm text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary",
         children: [p.jsx(vc, { className: "size-4" }), o("customModels.addProvider")],
       }),
     ],
@@ -168813,7 +168813,7 @@ function Bdn({ provider: e, profiles: t, onAdd: n, onEdit: r, onDelete: a }) {
         className: "mb-3 flex min-h-[1.75rem] items-center justify-between",
         children: [
           p.jsx("span", {
-            className: "text-sm font-medium text-codely-color-text-primary",
+            className: "text-sm font-medium text-gamecowork-color-text-primary",
             children: i("customModels.modelsCount", { count: t.length }),
           }),
           e
@@ -168822,8 +168822,8 @@ function Bdn({ provider: e, profiles: t, onAdd: n, onEdit: r, onDelete: a }) {
                 "data-telemetry-id": "add_model_profile",
                 onClick: n,
                 className:
-                  "flex h-[1.75rem] cursor-pointer items-center gap-1 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-2 text-sm text-codely-color-text-primary hover:bg-codely-color-interactive-hover",
-                children: [p.jsx(vc, { className: "size-4 text-codely-color-text-secondary" }), i("common.new")],
+                  "flex h-[1.75rem] cursor-pointer items-center gap-1 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-2 text-sm text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover",
+                children: [p.jsx(vc, { className: "size-4 text-gamecowork-color-text-secondary" }), i("common.new")],
               })
             : null,
         ],
@@ -168838,12 +168838,12 @@ function Bdn({ provider: e, profiles: t, onAdd: n, onEdit: r, onDelete: a }) {
               onButtonClick: n,
             })
           : p.jsx("div", {
-              className: "flex flex-col overflow-hidden rounded-[0.75rem] bg-codely-color-item-surface",
+              className: "flex flex-col overflow-hidden rounded-[0.75rem] bg-gamecowork-color-item-surface",
               children: t.map((o, s) =>
                 p.jsxs(
                   "div",
                   {
-                    className: `group flex items-center justify-between px-4 py-3 transition-colors hover:bg-codely-color-item-surface-hover ${s < t.length - 1 ? "border-0 border-b border-solid border-codely-color-border-subtle" : ""}`,
+                    className: `group flex items-center justify-between px-4 py-3 transition-colors hover:bg-gamecowork-color-item-surface-hover ${s < t.length - 1 ? "border-0 border-b border-solid border-gamecowork-color-border-subtle" : ""}`,
                     children: [
                       p.jsxs("button", {
                         type: "button",
@@ -168852,12 +168852,12 @@ function Bdn({ provider: e, profiles: t, onAdd: n, onEdit: r, onDelete: a }) {
                           "flex min-w-0 flex-1 cursor-pointer flex-col items-start gap-1 border-none bg-transparent p-0 text-left",
                         children: [
                           p.jsx("span", {
-                            className: "truncate text-sm font-medium text-codely-color-text-primary",
+                            className: "truncate text-sm font-medium text-gamecowork-color-text-primary",
                             children: o.displayName || o.modelName,
                           }),
                           o.displayName
                             ? p.jsx("span", {
-                                className: "truncate text-xs text-codely-color-text-tertiary",
+                                className: "truncate text-xs text-gamecowork-color-text-tertiary",
                                 children: o.modelName,
                               })
                             : null,
@@ -168870,13 +168870,13 @@ function Bdn({ provider: e, profiles: t, onAdd: n, onEdit: r, onDelete: a }) {
                             onClick: () => r(o),
                             tooltip: i("common.edit"),
                             "data-telemetry-id": "edit_model_profile",
-                            children: p.jsx(Bm, { className: "size-4 text-codely-color-text-tertiary" }),
+                            children: p.jsx(Bm, { className: "size-4 text-gamecowork-color-text-tertiary" }),
                           }),
                           p.jsx(gr, {
                             onClick: () => a(o),
                             tooltip: i("common.delete"),
                             "data-telemetry-id": "delete_model_profile",
-                            children: p.jsx(Um, { className: "size-4 text-codely-color-text-tertiary" }),
+                            children: p.jsx(Um, { className: "size-4 text-gamecowork-color-text-tertiary" }),
                           }),
                         ],
                       }),
@@ -169148,7 +169148,7 @@ function Udn({ onLoadingChange: e, isPlugin: t }) {
         ? p.jsx("div", {
             className: "flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto pb-4",
             children: p.jsxs("div", {
-              className: "flex min-h-[18rem] min-w-0 flex-1 rounded-[0.75rem] bg-codely-color-surface-card p-3",
+              className: "flex min-h-[18rem] min-w-0 flex-1 rounded-[0.75rem] bg-gamecowork-color-surface-card p-3",
               children: [
                 p.jsx(Fdn, {
                   providers: l,
@@ -169187,9 +169187,9 @@ function zdn({ layout: e = "popover" }) {
     r = e === "inline";
   return p.jsxs("div", {
     className: nt(
-      "text-codely-color-text-primary",
+      "text-gamecowork-color-text-primary",
       r
-        ? "flex flex-wrap items-center gap-3 rounded-xl border border-solid border-codely-color-border-default p-3"
+        ? "flex flex-wrap items-center gap-3 rounded-xl border border-solid border-gamecowork-color-border-default p-3"
         : "box-border flex h-full flex-col gap-[15px] p-[23px]",
     ),
     children: [
@@ -169209,7 +169209,7 @@ function zdn({ layout: e = "popover" }) {
           r && p.jsx("div", { className: "text-sm font-medium leading-6", children: t("mobileApp.title") }),
           p.jsx("div", {
             className: nt(
-              "text-xs text-codely-color-text-tertiary",
+              "text-xs text-gamecowork-color-text-tertiary",
               r ? "leading-5" : "capitalize leading-[130%] tracking-normal",
             ),
             children: t("mobileApp.description"),
@@ -169224,8 +169224,8 @@ function zdn({ layout: e = "popover" }) {
         className: nt(
           "flex items-center justify-between gap-1 text-sm no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
           r
-            ? "shrink-0 rounded-lg border border-solid border-codely-color-border-default px-2 py-1 text-codely-color-text-primary hover:bg-codely-color-interactive-hover"
-            : "mt-auto shrink-0 border-0 border-t border-solid border-codely-color-border-default pt-4 text-[14px] font-medium capitalize leading-[130%] tracking-normal text-codely-color-accent-hover",
+            ? "shrink-0 rounded-lg border border-solid border-gamecowork-color-border-default px-2 py-1 text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover"
+            : "mt-auto shrink-0 border-0 border-t border-solid border-gamecowork-color-border-default pt-4 text-[14px] font-medium capitalize leading-[130%] tracking-normal text-gamecowork-color-accent-hover",
         ),
         children: [t("mobileApp.learnMore"), p.jsx(qdn, { className: "!text-sm" })],
       }),
@@ -169239,16 +169239,16 @@ function $dn({ autoEnabledKeepAwake: e, tunnelEnabled: t }) {
     children: [
       p.jsx("div", {
         className:
-          "text-xs text-codely-color-text-tertiary border-t border-codely-color-border-default border-solid border-0 leading-[1.25rem] pt-4",
+          "text-xs text-gamecowork-color-text-tertiary border-t border-gamecowork-color-border-default border-solid border-0 leading-[1.25rem] pt-4",
         children: n("settings.devices.sleepWarning"),
       }),
       e &&
         t &&
         p.jsxs("div", {
           className:
-            "flex items-center gap-2 rounded-lg border border-solid border-codely-color-accent-border bg-codely-color-accent-muted p-3 text-xs text-codely-color-text-secondary",
+            "flex items-center gap-2 rounded-lg border border-solid border-gamecowork-color-accent-border bg-gamecowork-color-accent-muted p-3 text-xs text-gamecowork-color-text-secondary",
           children: [
-            p.jsx(tce, { className: "h-4 w-4 shrink-0 text-codely-color-accent-hover" }),
+            p.jsx(tce, { className: "h-4 w-4 shrink-0 text-gamecowork-color-accent-hover" }),
             n("settings.devices.keepAwakeAutoEnabledTip"),
           ],
         }),
@@ -169260,7 +169260,7 @@ function Hdn({ tunnelEnabled: e, setTunnelEnabled: t, tunnelPreferenceTouchedRef
     o = E.useContext(Ft),
     [s, l] = E.useState(!1);
   return p.jsxs("div", {
-    className: "flex h-full flex-col bg-codely-color-surface-primary",
+    className: "flex h-full flex-col bg-gamecowork-color-surface-primary",
     children: [
       p.jsx(Do, { title: i("settings.tabs.devices") }),
       p.jsx(In, {
@@ -169409,14 +169409,14 @@ function DSe({
 }) {
   return p.jsxs("div", {
     className:
-      "border-codely-color-border-subtle bg-codely-color-surface-input flex min-h-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-solid p-2",
+      "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-input flex min-h-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-solid p-2",
     children: [
       e.map((c) =>
         p.jsxs(
           "span",
           {
             className:
-              "border-codely-color-border-subtle bg-codely-color-surface-card text-codely-color-text-primary flex items-center gap-1.5 rounded-md border border-solid px-2 py-1 text-xs",
+              "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-card text-gamecowork-color-text-primary flex items-center gap-1.5 rounded-md border border-solid px-2 py-1 text-xs",
             children: [
               p.jsx("span", { className: "break-all", children: c }),
               p.jsx("button", {
@@ -169425,7 +169425,7 @@ function DSe({
                 disabled: t,
                 onClick: () => i(c),
                 className:
-                  "text-codely-color-text-tertiary hover:text-codely-color-text-primary flex cursor-pointer items-center border-none bg-transparent p-0 text-xs leading-none transition-colors disabled:cursor-default",
+                  "text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-primary flex cursor-pointer items-center border-none bg-transparent p-0 text-xs leading-none transition-colors disabled:cursor-default",
                 children: "×",
               }),
             ],
@@ -169442,7 +169442,7 @@ function DSe({
         placeholder: o,
         spellCheck: !1,
         className:
-          "text-codely-color-text-primary placeholder:text-codely-color-text-disabled border-transparent focus:border-codely-color-border-subtle focus:bg-codely-color-surface-card h-7 min-w-[8rem] flex-1 rounded-md border border-solid bg-transparent px-1 text-sm outline-none",
+          "text-gamecowork-color-text-primary placeholder:text-gamecowork-color-text-disabled border-transparent focus:border-gamecowork-color-border-subtle focus:bg-gamecowork-color-surface-card h-7 min-w-[8rem] flex-1 rounded-md border border-solid bg-transparent px-1 text-sm outline-none",
       }),
     ],
   });
@@ -169572,34 +169572,34 @@ function Wdn() {
   return p.jsx(In, {
     className: "min-h-0 flex-1",
     children: p.jsxs("div", {
-      className: "bg-codely-color-surface-primary flex flex-col pb-8",
+      className: "bg-gamecowork-color-surface-primary flex flex-col pb-8",
       children: [
         p.jsxs("div", {
           className: "flex min-h-0 w-full flex-col gap-1 py-6",
           children: [
             p.jsx("span", {
-              className: "text-codely-color-text-primary text-xl font-medium",
+              className: "text-gamecowork-color-text-primary text-xl font-medium",
               children: e("settings.tabs.permission"),
             }),
             p.jsx("span", {
-              className: "text-codely-color-text-tertiary text-sm",
+              className: "text-gamecowork-color-text-tertiary text-sm",
               children: e("settings.permission.subtitle"),
             }),
           ],
         }),
         p.jsxs("div", {
           className:
-            "border-codely-color-border-subtle bg-codely-color-surface-card flex flex-col gap-4 rounded-[0.75rem] border border-solid p-4",
+            "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-card flex flex-col gap-4 rounded-[0.75rem] border border-solid p-4",
           children: [
             p.jsxs("div", {
               className: "flex flex-col gap-1",
               children: [
                 p.jsx("span", {
-                  className: "text-codely-color-text-primary text-sm font-medium",
+                  className: "text-gamecowork-color-text-primary text-sm font-medium",
                   children: e("settings.permission.commandAllowlist.title"),
                 }),
                 p.jsx("span", {
-                  className: "text-codely-color-text-tertiary text-sm",
+                  className: "text-gamecowork-color-text-tertiary text-sm",
                   children: e("settings.permission.commandAllowlist.description"),
                 }),
               ],
@@ -169607,14 +169607,14 @@ function Wdn() {
             y &&
               p.jsxs("div", {
                 className:
-                  "border-codely-color-border-error bg-codely-color-status-danger-muted text-codely-color-text-primary flex items-center justify-between gap-2 rounded-lg border border-solid px-3 py-2 text-xs",
+                  "border-gamecowork-color-border-error bg-gamecowork-color-status-danger-muted text-gamecowork-color-text-primary flex items-center justify-between gap-2 rounded-lg border border-solid px-3 py-2 text-xs",
                 children: [
                   p.jsx("span", { className: "break-all", children: y }),
                   p.jsx("button", {
                     type: "button",
                     onClick: () => void w(),
                     className:
-                      "text-codely-color-text-link shrink-0 cursor-pointer bg-transparent font-medium hover:underline",
+                      "text-gamecowork-color-text-link shrink-0 cursor-pointer bg-transparent font-medium hover:underline",
                     children: e("settings.permission.commandAllowlist.retry"),
                   }),
                 ],
@@ -169622,8 +169622,8 @@ function Wdn() {
             f
               ? p.jsx("div", {
                   className:
-                    "border-codely-color-border-subtle bg-codely-color-surface-input flex h-20 items-center justify-center rounded-lg border border-solid",
-                  children: p.jsx(ai, { className: "text-codely-color-text-tertiary h-4 w-4 animate-spin" }),
+                    "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-input flex h-20 items-center justify-center rounded-lg border border-solid",
+                  children: p.jsx(ai, { className: "text-gamecowork-color-text-tertiary h-4 w-4 animate-spin" }),
                 })
               : p.jsx(DSe, {
                   entries: n,
@@ -169636,7 +169636,7 @@ function Wdn() {
                   removeLabel: (j) => e("settings.permission.commandAllowlist.remove", { command: j }),
                   inputInvalid: l !== null,
                 }),
-            l && p.jsx("span", { className: "text-codely-color-status-danger-text text-xs", children: l }),
+            l && p.jsx("span", { className: "text-gamecowork-color-status-danger-text text-xs", children: l }),
             $.length > 0 &&
               p.jsx("div", {
                 className: "flex flex-wrap gap-2",
@@ -169648,7 +169648,7 @@ function Wdn() {
                       disabled: S || f,
                       onClick: () => L(j),
                       className:
-                        "text-codely-color-text-secondary hover:border-codely-color-border-strong hover:text-codely-color-text-primary border-codely-color-border-subtle flex cursor-pointer items-center gap-1 rounded-full border border-solid bg-transparent px-2.5 py-1 text-xs transition-colors disabled:cursor-default",
+                        "text-gamecowork-color-text-secondary hover:border-gamecowork-color-border-strong hover:text-gamecowork-color-text-primary border-gamecowork-color-border-subtle flex cursor-pointer items-center gap-1 rounded-full border border-solid bg-transparent px-2.5 py-1 text-xs transition-colors disabled:cursor-default",
                       children: [p.jsx(vc, { className: "h-3 w-3" }), j],
                     },
                     j,
@@ -169660,19 +169660,19 @@ function Wdn() {
               onClick: q,
               disabled: S || f || $.length === 0,
               className:
-                "text-codely-color-status-success-text hover:bg-codely-color-interactive-hover hover:text-codely-color-status-success-default w-fit cursor-pointer rounded-lg border-none bg-transparent px-2 py-1.5 text-sm font-medium transition-colors disabled:cursor-default",
+                "text-gamecowork-color-status-success-text hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-status-success-default w-fit cursor-pointer rounded-lg border-none bg-transparent px-2 py-1.5 text-sm font-medium transition-colors disabled:cursor-default",
               children: e("settings.permission.commandAllowlist.addSuggestions"),
             }),
-            p.jsx("div", { className: "border-0 border-solid border-b border-codely-color-border-subtle" }),
+            p.jsx("div", { className: "border-0 border-solid border-b border-gamecowork-color-border-subtle" }),
             p.jsxs("div", {
               className: "flex flex-col gap-1",
               children: [
                 p.jsx("span", {
-                  className: "text-codely-color-text-primary text-sm font-medium",
+                  className: "text-gamecowork-color-text-primary text-sm font-medium",
                   children: e("settings.permission.mcpAllowlist.title"),
                 }),
                 p.jsx("span", {
-                  className: "text-codely-color-text-tertiary text-sm",
+                  className: "text-gamecowork-color-text-tertiary text-sm",
                   children: e("settings.permission.mcpAllowlist.description"),
                 }),
               ],
@@ -169680,14 +169680,14 @@ function Wdn() {
             b &&
               p.jsxs("div", {
                 className:
-                  "border-codely-color-border-error bg-codely-color-status-danger-muted text-codely-color-text-primary flex items-center justify-between gap-2 rounded-lg border border-solid px-3 py-2 text-xs",
+                  "border-gamecowork-color-border-error bg-gamecowork-color-status-danger-muted text-gamecowork-color-text-primary flex items-center justify-between gap-2 rounded-lg border border-solid px-3 py-2 text-xs",
                 children: [
                   p.jsx("span", { className: "break-all", children: b }),
                   p.jsx("button", {
                     type: "button",
                     onClick: () => void w(),
                     className:
-                      "text-codely-color-text-link shrink-0 cursor-pointer bg-transparent font-medium hover:underline",
+                      "text-gamecowork-color-text-link shrink-0 cursor-pointer bg-transparent font-medium hover:underline",
                     children: e("settings.permission.mcpAllowlist.retry"),
                   }),
                 ],
@@ -169695,8 +169695,8 @@ function Wdn() {
             f
               ? p.jsx("div", {
                   className:
-                    "border-codely-color-border-subtle bg-codely-color-surface-input flex h-20 items-center justify-center rounded-lg border border-solid",
-                  children: p.jsx(ai, { className: "text-codely-color-text-tertiary h-4 w-4 animate-spin" }),
+                    "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-input flex h-20 items-center justify-center rounded-lg border border-solid",
+                  children: p.jsx(ai, { className: "text-gamecowork-color-text-tertiary h-4 w-4 animate-spin" }),
                 })
               : p.jsxs(p.Fragment, {
                   children: [
@@ -169711,7 +169711,7 @@ function Wdn() {
                       removeLabel: (j) => e("settings.permission.mcpAllowlist.remove", { tool: j }),
                       inputInvalid: h !== null,
                     }),
-                    h && p.jsx("span", { className: "text-codely-color-status-danger-text text-xs", children: h }),
+                    h && p.jsx("span", { className: "text-gamecowork-color-status-danger-text text-xs", children: h }),
                   ],
                 }),
           ],
@@ -169921,7 +169921,7 @@ function tun() {
     de = () => N(!1);
   return p.jsxs("div", {
     className: nt(
-      "bg-codely-color-surface-primary flex min-h-[calc(100dvh-var(--codely-app-header-height)-2rem)] flex-col",
+      "bg-gamecowork-color-surface-primary flex min-h-[calc(100dvh-var(--gamecowork-app-header-height)-2rem)] flex-col",
     ),
     children: [
       p.jsxs("div", {
@@ -169931,12 +169931,12 @@ function tun() {
           p.jsx(Nr, {
             className: nt(
               "h-8 whitespace-nowrap rounded-full",
-              "bg-codely-color-surface-inverted hover:bg-codely-color-surface-inverted-hover",
-              "active:bg-codely-color-surface-inverted-hover",
-              "text-codely-color-text-inverted",
-              "border border-solid border-codely-color-surface-inverted hover:border-codely-color-surface-inverted-hover",
-              "disabled:bg-codely-color-surface-inverted disabled:hover:bg-codely-color-surface-inverted",
-              "disabled:border-codely-color-surface-inverted disabled:hover:border-codely-color-surface-inverted",
+              "bg-gamecowork-color-surface-inverted hover:bg-gamecowork-color-surface-inverted-hover",
+              "active:bg-gamecowork-color-surface-inverted-hover",
+              "text-gamecowork-color-text-inverted",
+              "border border-solid border-gamecowork-color-surface-inverted hover:border-gamecowork-color-surface-inverted-hover",
+              "disabled:bg-gamecowork-color-surface-inverted disabled:hover:bg-gamecowork-color-surface-inverted",
+              "disabled:border-gamecowork-color-surface-inverted disabled:hover:border-gamecowork-color-surface-inverted",
             ),
             disabled: i !== null,
             onClick: $,
@@ -169952,7 +169952,7 @@ function tun() {
         ],
       }),
       p.jsx("div", {
-        className: nt("text-codely-color-text-tertiary text-sm"),
+        className: nt("text-gamecowork-color-text-tertiary text-sm"),
         children: e("settings.pets.choosePet"),
       }),
       p.jsxs("div", {
@@ -170066,7 +170066,7 @@ function tun() {
               }),
               p.jsx("div", {
                 className: nt(
-                  "p-3 text-sm text-codely-color-text-default leading-[130%]",
+                  "p-3 text-sm text-gamecowork-color-text-default leading-[130%]",
                   O ? "bg-[#f8f8f8]" : "bg-[#363636]",
                 ),
                 children: e(`settings.pets.greeting.${s}`, { defaultValue: e("settings.pets.greeting.fallback") }),
@@ -170084,8 +170084,8 @@ function tun() {
             {
               className: nt(
                 "relative size-[90px] overflow-hidden rounded-lg",
-                "text-codely-color-text-primary box-border cursor-pointer",
-                "border border-solid border-codely-color-border-default",
+                "text-gamecowork-color-text-primary box-border cursor-pointer",
+                "border border-solid border-gamecowork-color-border-default",
                 s === X.id && (O ? "border-[#2e2e2e]" : "bg-[#ffffff]"),
               ),
               onClick: () => q(X.id),
@@ -170094,7 +170094,7 @@ function tun() {
                   src: X.profileUrl,
                   alt: "",
                   draggable: !1,
-                  className: "absolute inset-0 size-full object-cover bg-codely-color-surface-disabled",
+                  className: "absolute inset-0 size-full object-cover bg-gamecowork-color-surface-disabled",
                 }),
                 p.jsx("div", {
                   className: nt(
@@ -170117,24 +170117,24 @@ function tun() {
       }),
       p.jsx("div", { className: nt("h-6") }),
       p.jsx("div", {
-        className: nt("text-codely-color-text-tertiary text-sm"),
+        className: nt("text-gamecowork-color-text-tertiary text-sm"),
         children: e("settings.pets.appearance"),
       }),
       p.jsx("div", { className: nt("h-2") }),
       p.jsxs("div", {
         className: nt(
-          "bg-codely-color-surface-card box-border flex h-[68px] flex-row items-center justify-between rounded-xl p-3",
+          "bg-gamecowork-color-surface-card box-border flex h-[68px] flex-row items-center justify-between rounded-xl p-3",
         ),
         children: [
           p.jsxs("div", {
             className: nt("flex flex-col"),
             children: [
               p.jsx("div", {
-                className: nt("text-semibold text-codely-color-text-primary leading-[24px]"),
+                className: nt("text-semibold text-gamecowork-color-text-primary leading-[24px]"),
                 children: e("settings.pets.petSize"),
               }),
               p.jsx("div", {
-                className: nt("text-codely-color-text-tertiary text-sm leading-[20px]"),
+                className: nt("text-gamecowork-color-text-tertiary text-sm leading-[20px]"),
                 children: e("settings.pets.petSizeDesc"),
               }),
             ],
@@ -170155,25 +170155,25 @@ function tun() {
       }),
       p.jsx("div", { className: nt("h-6") }),
       p.jsx("div", {
-        className: nt("text-codely-color-text-tertiary text-sm"),
+        className: nt("text-gamecowork-color-text-tertiary text-sm"),
         children: e("settings.pets.quickGuides"),
       }),
       p.jsx("div", { className: nt("h-2") }),
       p.jsxs("div", {
-        className: nt("rounded-xl bg-codely-color-surface-card"),
+        className: nt("rounded-xl bg-gamecowork-color-surface-card"),
         children: [
           u &&
             p.jsxs("div", {
               className: nt(
-                "p-3 flex flex-row items-center justify-between border-0 border-solid border-b border-b-codely-color-border-subtle",
+                "p-3 flex flex-row items-center justify-between border-0 border-solid border-b border-b-gamecowork-color-border-subtle",
               ),
               children: [
                 p.jsx("div", {
-                  className: nt("leading-5 text-sm text-codely-color-text-tertiary"),
+                  className: nt("leading-5 text-sm text-gamecowork-color-text-tertiary"),
                   children: e("settings.pets.guidesLoadFailed"),
                 }),
                 p.jsx("div", {
-                  className: nt("leading-5 text-sm text-codely-color-text-primary cursor-pointer"),
+                  className: nt("leading-5 text-sm text-gamecowork-color-text-primary cursor-pointer"),
                   onClick: () => void h(),
                   children: e("settings.pets.guidesRetry"),
                 }),
@@ -170185,7 +170185,7 @@ function tun() {
               {
                 className: nt(
                   "p-3 flex flex-row items-center border-0 border-solid",
-                  (Z < c.length - 1 || c.length < vx) && "border-b border-b-codely-color-border-subtle",
+                  (Z < c.length - 1 || c.length < vx) && "border-b border-b-gamecowork-color-border-subtle",
                 ),
                 children: [
                   p.jsx("div", {
@@ -170213,7 +170213,7 @@ function tun() {
                               }),
                               p.jsxs("div", {
                                 className: nt(
-                                  "leading-5 text-xs text-codely-color-text-tertiary ml-2 whitespace-nowrap",
+                                  "leading-5 text-xs text-gamecowork-color-text-tertiary ml-2 whitespace-nowrap",
                                 ),
                                 children: [g.length, "/3"],
                               }),
@@ -170223,12 +170223,12 @@ function tun() {
                             className: nt("group flex flex-row items-center"),
                             children: [
                               p.jsx("div", {
-                                className: nt("leading-6 text-codely-color-text-primary"),
+                                className: nt("leading-6 text-gamecowork-color-text-primary"),
                                 children: X.text,
                               }),
                               p.jsx(cYe, {
                                 className: nt(
-                                  "size-3 ml-2 text-codely-color-text-tertiary cursor-pointer hidden group-hover:block",
+                                  "size-3 ml-2 text-gamecowork-color-text-tertiary cursor-pointer hidden group-hover:block",
                                 ),
                                 onClick: () => W(X.id),
                               }),
@@ -170237,7 +170237,7 @@ function tun() {
                   }),
                   !eun(X) &&
                     p.jsx("div", {
-                      className: nt("leading-5 text-sm text-codely-color-text-primary cursor-pointer"),
+                      className: nt("leading-5 text-sm text-gamecowork-color-text-primary cursor-pointer"),
                       onClick: () => re(X.id),
                       children: e("common.delete"),
                     }),
@@ -170279,14 +170279,14 @@ function tun() {
                             className: nt(
                               "leading-5 text-sm",
                               A.trim()
-                                ? "text-codely-color-text-primary cursor-pointer"
-                                : "text-codely-color-text-disabled cursor-default",
+                                ? "text-gamecowork-color-text-primary cursor-pointer"
+                                : "text-gamecowork-color-text-disabled cursor-default",
                             ),
                             onClick: G,
                             children: e("settings.pets.confirm"),
                           }),
                           p.jsx("div", {
-                            className: nt("leading-5 text-sm text-codely-color-text-primary cursor-pointer"),
+                            className: nt("leading-5 text-sm text-gamecowork-color-text-primary cursor-pointer"),
                             onClick: de,
                             children: e("common.cancel"),
                           }),
@@ -170295,7 +170295,7 @@ function tun() {
                     ],
                   })
                 : p.jsxs("div", {
-                    className: nt("flex items-center gap-3 leading-6 text-codely-color-text-default cursor-pointer"),
+                    className: nt("flex items-center gap-3 leading-6 text-gamecowork-color-text-default cursor-pointer"),
                     onClick: ee,
                     children: [p.jsx(vc, { className: "size-4" }), e("settings.pets.addGuide")],
                   }),
@@ -170304,13 +170304,13 @@ function tun() {
             p.jsxs("div", {
               ref: S,
               className: nt(
-                "fixed -translate-x-1/2 -translate-y-full py-3 px-4 bg-codely-color-surface-sidebar flex flex-row gap-3 rounded-xl",
+                "fixed -translate-x-1/2 -translate-y-full py-3 px-4 bg-gamecowork-color-surface-sidebar flex flex-row gap-3 rounded-xl",
               ),
               style: { left: T.left, top: T.top - 6 },
               children: [
                 p.jsx("div", {
                   className: nt(
-                    "absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 rounded-sm bg-codely-color-surface-sidebar",
+                    "absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 rounded-sm bg-gamecowork-color-surface-sidebar",
                   ),
                 }),
                 Lf.map((X) =>
@@ -170382,26 +170382,26 @@ function aun() {
   return p.jsx(In, {
     className: "flex-1 min-h-0",
     children: p.jsxs("div", {
-      className: "flex flex-col pb-8 bg-codely-color-surface-primary",
+      className: "flex flex-col pb-8 bg-gamecowork-color-surface-primary",
       children: [
         p.jsx(Do, { title: e("settings.tabs.planUsage") }),
         p.jsx("div", {
           className: "mt-0",
           children: p.jsxs("div", {
-            className: "flex flex-col items-start rounded-[0.75rem] border bg-codely-color-surface-card p-4 gap-2",
+            className: "flex flex-col items-start rounded-[0.75rem] border bg-gamecowork-color-surface-card p-4 gap-2",
             children: [
               p.jsx("span", {
-                className: "text-xs text-codely-color-text-tertiary",
+                className: "text-xs text-gamecowork-color-text-tertiary",
                 children: e("settings.planUsage.currentPlan"),
               }),
               p.jsx("span", {
-                className: "text-xl font-medium text-codely-color-text-primary",
+                className: "text-xl font-medium text-gamecowork-color-text-primary",
                 children: h ? "-" : nun(a, e),
               }),
               m &&
                 !h &&
                 p.jsxs("span", {
-                  className: "text-xs text-codely-color-text-tertiary",
+                  className: "text-xs text-gamecowork-color-text-tertiary",
                   children: [e("settings.planUsage.expiresOn", { date: m.date }), " (", f, ")"],
                 }),
               p.jsxs("div", {
@@ -170413,7 +170413,7 @@ function aun() {
                       "data-telemetry-id": "upgrade",
                       onClick: g,
                       className:
-                        "mt-2 flex cursor-pointer items-center justify-center rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-1.5 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                        "mt-2 flex cursor-pointer items-center justify-center rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-1.5 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                       children: e("userProfile.upgrade"),
                     }),
                   s &&
@@ -170422,7 +170422,7 @@ function aun() {
                       "data-telemetry-id": "buy_addon",
                       onClick: y,
                       className:
-                        "mt-2 flex cursor-pointer items-center justify-center rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-1.5 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                        "mt-2 flex cursor-pointer items-center justify-center rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-1.5 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                       children: e("userProfile.buyAddOn"),
                     }),
                 ],
@@ -170434,11 +170434,11 @@ function aun() {
           className: "mt-8",
           children: [
             p.jsx("div", {
-              className: "mb-2 text-sm text-codely-color-text-tertiary",
+              className: "mb-2 text-sm text-gamecowork-color-text-tertiary",
               children: e("settings.planUsage.usage"),
             }),
             p.jsx("div", {
-              className: "flex flex-col rounded-[0.75rem] border bg-codely-color-surface-card",
+              className: "flex flex-col rounded-[0.75rem] border bg-gamecowork-color-surface-card",
               children: p.jsxs("div", {
                 className: "flex h-[4.25rem] items-center justify-between gap-4 px-4",
                 children: [
@@ -170446,11 +170446,11 @@ function aun() {
                     className: "flex flex-1 flex-col",
                     children: [
                       p.jsx("span", {
-                        className: "text-sm font-medium text-codely-color-text-primary",
+                        className: "text-sm font-medium text-gamecowork-color-text-primary",
                         children: e("settings.planUsage.usageStats"),
                       }),
                       p.jsx("span", {
-                        className: "text-xs text-codely-color-text-tertiary leading-[1.25rem]",
+                        className: "text-xs text-gamecowork-color-text-tertiary leading-[1.25rem]",
                         children: e("settings.planUsage.viewUsageStats"),
                       }),
                     ],
@@ -170461,13 +170461,13 @@ function aun() {
                     onClick: x,
                     className: nt(
                       "flex cursor-pointer items-center gap-1 justify-center",
-                      "rounded-lg border border-solid border-codely-color-border-subtle bg-transparent",
-                      "px-3 py-1.5 text-sm text-codely-color-text-primary",
-                      "transition-colors hover:bg-codely-color-interactive-hover",
+                      "rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent",
+                      "px-3 py-1.5 text-sm text-gamecowork-color-text-primary",
+                      "transition-colors hover:bg-gamecowork-color-interactive-hover",
                     ),
                     children: [
                       e("settings.planUsage.check"),
-                      p.jsx(Bln, { className: "size-3.5 text-codely-color-text-tertiary" }),
+                      p.jsx(Bln, { className: "size-3.5 text-gamecowork-color-text-tertiary" }),
                     ],
                   }),
                 ],
@@ -170489,11 +170489,11 @@ const Zie = "tjhub-startup-sweep-text",
 .${Zie} {
   background: linear-gradient(
     90deg,
-    var(--codely-color-text-tertiary) 0%,
-    var(--codely-color-text-tertiary) 35%,
-    var(--codely-color-text-primary) 50%,
-    var(--codely-color-text-tertiary) 65%,
-    var(--codely-color-text-tertiary) 100%
+    var(--gamecowork-color-text-tertiary) 0%,
+    var(--gamecowork-color-text-tertiary) 35%,
+    var(--gamecowork-color-text-primary) 50%,
+    var(--gamecowork-color-text-tertiary) 65%,
+    var(--gamecowork-color-text-tertiary) 100%
   );
   background-size: 200% 100%;
   -webkit-background-clip: text;
@@ -170516,7 +170516,7 @@ function oun() {
     className: nt("flex flex-col items-center justify-center flex-1 gap-2 px-6 py-8"),
     children: [
       p.jsx("style", { children: iun }),
-      p.jsx(Qln, { className: nt("!h-[66px] !w-[66px] text-codely-color-text-tertiary") }),
+      p.jsx(Qln, { className: nt("!h-[66px] !w-[66px] text-gamecowork-color-text-tertiary") }),
       p.jsx("div", { className: nt("text-sm leading-[20px]", Zie), children: e("tjhub.startup.preparing") }),
     ],
   });
@@ -170604,7 +170604,7 @@ function lun() {
     };
   return p.jsxs("div", {
     className: nt(
-      "flex min-h-[calc(100dvh-var(--codely-app-header-height)-2rem)] flex-col bg-codely-color-surface-primary",
+      "flex min-h-[calc(100dvh-var(--gamecowork-app-header-height)-2rem)] flex-col bg-gamecowork-color-surface-primary",
     ),
     children: [
       p.jsx(Do, { title: e("tjhub.settings.tjhub") }),
@@ -170612,12 +170612,12 @@ function lun() {
         ? p.jsx("div", { className: nt("flex flex-1 items-center justify-center"), children: p.jsx(oun, {}) })
         : n.state === "failed"
           ? p.jsx("div", {
-              className: nt("flex flex-1 items-center justify-center text-sm text-codely-color-status-error-text"),
+              className: nt("flex flex-1 items-center justify-center text-sm text-gamecowork-color-status-error-text"),
               children: n.error,
             })
           : n.state === "expired"
             ? p.jsx("div", {
-                className: nt("flex flex-1 items-center justify-center text-sm text-codely-color-text-tertiary"),
+                className: nt("flex flex-1 items-center justify-center text-sm text-gamecowork-color-text-tertiary"),
                 children: e("tjhub.expired.message"),
               })
             : p.jsx(In, {
@@ -170629,24 +170629,24 @@ function lun() {
                       className: nt(""),
                       children: [
                         p.jsx("div", {
-                          className: nt("text-sm text-codely-color-text-tertiary"),
+                          className: nt("text-sm text-gamecowork-color-text-tertiary"),
                           children: e("tjhub.settings.project"),
                         }),
                         p.jsxs("div", {
-                          className: nt("p-3 bg-codely-color-surface-card mt-3 rounded-xl"),
+                          className: nt("p-3 bg-gamecowork-color-surface-card mt-3 rounded-xl"),
                           children: [
                             p.jsx("div", {
-                              className: nt("text-sm text-codely-color-text-primary leading-[24px]"),
+                              className: nt("text-sm text-gamecowork-color-text-primary leading-[24px]"),
                               children: e("tjhub.settings.projectLocation"),
                             }),
                             p.jsx("div", {
-                              className: nt("text-xs text-codely-color-text-tertiary leading-[20px]"),
+                              className: nt("text-xs text-gamecowork-color-text-tertiary leading-[20px]"),
                               children: e("tjhub.settings.projectLocationDesc"),
                             }),
                             p.jsxs(Py, {
                               variant: "ghost",
                               className: nt(
-                                "flex flex-row justify-between items-center h-8 mt-3 bg-codely-color-surface-base border border-solid border-codely-color-border-default rounded-lg px-3 w-full",
+                                "flex flex-row justify-between items-center h-8 mt-3 bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-default rounded-lg px-3 w-full",
                               ),
                               disabled: i,
                               onClick: () =>
@@ -170655,7 +170655,7 @@ function lun() {
                                 p.jsx("div", {
                                   className: nt(
                                     "text-sm truncate",
-                                    r ? "text-codely-color-text-primary" : "text-codely-color-text-tertiary",
+                                    r ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-tertiary",
                                   ),
                                   children: i
                                     ? e("tjhub.common.loading")
@@ -170663,7 +170663,7 @@ function lun() {
                                       ? r
                                       : e("tjhub.common.selectFolder"),
                                 }),
-                                p.jsx(l$, { className: nt("w-4 h-4 text-codely-color-text-secondary flex-shrink-0") }),
+                                p.jsx(l$, { className: nt("w-4 h-4 text-gamecowork-color-text-secondary flex-shrink-0") }),
                               ],
                             }),
                           ],
@@ -170674,24 +170674,24 @@ function lun() {
                       className: nt("mt-6"),
                       children: [
                         p.jsx("div", {
-                          className: nt("text-sm text-codely-color-text-tertiary"),
+                          className: nt("text-sm text-gamecowork-color-text-tertiary"),
                           children: e("tjhub.settings.install"),
                         }),
                         p.jsxs("div", {
-                          className: nt("p-3 bg-codely-color-surface-card mt-3 rounded-xl"),
+                          className: nt("p-3 bg-gamecowork-color-surface-card mt-3 rounded-xl"),
                           children: [
                             p.jsx("div", {
-                              className: nt("text-sm text-codely-color-text-primary leading-[24px]"),
+                              className: nt("text-sm text-gamecowork-color-text-primary leading-[24px]"),
                               children: e("tjhub.settings.installLocation"),
                             }),
                             p.jsx("div", {
-                              className: nt("text-xs text-codely-color-text-tertiary leading-[20px]"),
+                              className: nt("text-xs text-gamecowork-color-text-tertiary leading-[20px]"),
                               children: e("tjhub.settings.installLocationDesc"),
                             }),
                             p.jsxs(Py, {
                               variant: "ghost",
                               className: nt(
-                                "flex flex-row justify-between items-center h-8 mt-3 bg-codely-color-surface-base border border-solid border-codely-color-border-default rounded-lg px-3 w-full",
+                                "flex flex-row justify-between items-center h-8 mt-3 bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-default rounded-lg px-3 w-full",
                               ),
                               disabled: c,
                               onClick: () =>
@@ -170700,7 +170700,7 @@ function lun() {
                                 p.jsx("div", {
                                   className: nt(
                                     "text-sm truncate",
-                                    s ? "text-codely-color-text-primary" : "text-codely-color-text-tertiary",
+                                    s ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-tertiary",
                                   ),
                                   children: c
                                     ? e("tjhub.common.loading")
@@ -170708,24 +170708,24 @@ function lun() {
                                       ? s
                                       : e("tjhub.common.selectFolder"),
                                 }),
-                                p.jsx(l$, { className: nt("w-4 h-4 text-codely-color-text-secondary flex-shrink-0") }),
+                                p.jsx(l$, { className: nt("w-4 h-4 text-gamecowork-color-text-secondary flex-shrink-0") }),
                               ],
                             }),
                             p.jsx("div", {
-                              className: nt("h-px bg-codely-color-border-default -ml-3 -mr-3 mb-3 mt-3"),
+                              className: nt("h-px bg-gamecowork-color-border-default -ml-3 -mr-3 mb-3 mt-3"),
                             }),
                             p.jsx("div", {
-                              className: nt("text-sm text-codely-color-text-primary leading-[24px]"),
+                              className: nt("text-sm text-gamecowork-color-text-primary leading-[24px]"),
                               children: e("tjhub.settings.downloadLocation"),
                             }),
                             p.jsx("div", {
-                              className: nt("text-xs text-codely-color-text-tertiary leading-[20px]"),
+                              className: nt("text-xs text-gamecowork-color-text-tertiary leading-[20px]"),
                               children: e("tjhub.settings.downloadLocationDesc"),
                             }),
                             p.jsxs(Py, {
                               variant: "ghost",
                               className: nt(
-                                "flex flex-row justify-between items-center h-8 mt-3 bg-codely-color-surface-base border border-solid border-codely-color-border-default rounded-lg px-3 w-full",
+                                "flex flex-row justify-between items-center h-8 mt-3 bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-default rounded-lg px-3 w-full",
                               ),
                               disabled: m,
                               onClick: () =>
@@ -170734,7 +170734,7 @@ function lun() {
                                 p.jsx("div", {
                                   className: nt(
                                     "text-sm truncate",
-                                    u ? "text-codely-color-text-primary" : "text-codely-color-text-tertiary",
+                                    u ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-tertiary",
                                   ),
                                   children: m
                                     ? e("tjhub.common.loading")
@@ -170742,7 +170742,7 @@ function lun() {
                                       ? u
                                       : e("tjhub.common.selectFolder"),
                                 }),
-                                p.jsx(l$, { className: nt("w-4 h-4 text-codely-color-text-secondary flex-shrink-0") }),
+                                p.jsx(l$, { className: nt("w-4 h-4 text-gamecowork-color-text-secondary flex-shrink-0") }),
                               ],
                             }),
                           ],
@@ -170784,20 +170784,20 @@ function cun({ sourcePath: e, targetPath: t, targetNonEmpty: n, onApply: r }) {
               p.jsx(tce, { className: "h-4 w-4 shrink-0 text-semantic-color-status-warning-text" }),
               p.jsx("div", {
                 className: "text-base text-semantic-color-text-primary font-medium",
-                children: a("settings.codelyHome.migrationDialog.title"),
+                children: a("settings.gamecoworkHome.migrationDialog.title"),
               }),
             ],
           }),
           p.jsxs("span", {
             className: "text-sm leading-[1.5rem] text-semantic-color-text-tertiary",
             children: [
-              a("settings.codelyHome.migrationDialog.description"),
-              n && p.jsxs(p.Fragment, { children: [" ", a("settings.codelyHome.migrationDialog.targetNonEmpty")] }),
+              a("settings.gamecoworkHome.migrationDialog.description"),
+              n && p.jsxs(p.Fragment, { children: [" ", a("settings.gamecoworkHome.migrationDialog.targetNonEmpty")] }),
             ],
           }),
           p.jsx("span", {
             className: "mb-3 text-sm leading-[1.5rem] text-semantic-color-text-primary",
-            children: a("settings.codelyHome.migrationDialog.restartOtherHosts"),
+            children: a("settings.gamecoworkHome.migrationDialog.restartOtherHosts"),
           }),
           p.jsxs("div", {
             className: "flex flex-col gap-3 text-xs",
@@ -170807,7 +170807,7 @@ function cun({ sourcePath: e, targetPath: t, targetNonEmpty: n, onApply: r }) {
                 children: [
                   p.jsx("div", {
                     className: "text-semantic-color-text-tertiary text-sm",
-                    children: a("settings.codelyHome.migrationDialog.sourceLabel"),
+                    children: a("settings.gamecoworkHome.migrationDialog.sourceLabel"),
                   }),
                   p.jsx("div", { className: "break-all text-semantic-color-text-primary text-sm", children: e }),
                 ],
@@ -170817,7 +170817,7 @@ function cun({ sourcePath: e, targetPath: t, targetNonEmpty: n, onApply: r }) {
                 children: [
                   p.jsx("div", {
                     className: "text-semantic-color-text-tertiary text-sm",
-                    children: a("settings.codelyHome.migrationDialog.targetLabel"),
+                    children: a("settings.gamecoworkHome.migrationDialog.targetLabel"),
                   }),
                   p.jsx("div", { className: "break-all text-semantic-color-text-primary text-sm", children: t }),
                 ],
@@ -170835,7 +170835,7 @@ function cun({ sourcePath: e, targetPath: t, targetNonEmpty: n, onApply: r }) {
             onClick: l,
             className:
               "text-sm font-medium text-semantic-color-text-secondary border border-semantic-color-border-subtle border rounded-[0.5rem]",
-            children: a("settings.codelyHome.migrationDialog.cancel"),
+            children: a("settings.gamecoworkHome.migrationDialog.cancel"),
           }),
           p.jsxs(Nr, {
             variant: "primary",
@@ -170845,7 +170845,7 @@ function cun({ sourcePath: e, targetPath: t, targetNonEmpty: n, onApply: r }) {
             onClick: () => void c(),
             children: [
               o && p.jsx(ai, { className: "h-4 w-4 animate-spin" }),
-              a(o ? "settings.codelyHome.migrationDialog.migrating" : "settings.codelyHome.migrationDialog.migrate"),
+              a(o ? "settings.gamecoworkHome.migrationDialog.migrating" : "settings.gamecoworkHome.migrationDialog.migrate"),
             ],
           }),
         ],
@@ -170871,13 +170871,13 @@ function uun() {
       (async () => {
         var y;
         try {
-          const x = await r.request("settings/getCodelyHome", void 0);
+          const x = await r.request("settings/getGameCoworkHome", void 0);
           if (g) return;
           (x == null ? void 0 : x.status) === "success" && x.content
             ? i(x.content.path)
-            : console.warn("[CodelyHome] get failed:", (y = x == null ? void 0 : x.error) != null ? y : "unknown");
+            : console.warn("[GameCoworkHome] get failed:", (y = x == null ? void 0 : x.error) != null ? y : "unknown");
         } catch (x) {
-          console.warn("[CodelyHome] get request failed:", x);
+          console.warn("[GameCoworkHome] get request failed:", x);
         } finally {
           g || s(!1);
         }
@@ -170892,22 +170892,22 @@ function uun() {
         var x;
         c(!0);
         try {
-          const b = await r.request("settings/applyCodelyHomeChange", { newPath: g, migrate: y });
+          const b = await r.request("settings/applyGameCoworkHomeChange", { newPath: g, migrate: y });
           if ((b == null ? void 0 : b.status) === "success" && b.content) {
             const C = b.content;
             "error" in C
               ? FSe(C.error)
-                ? u(t(`settings.codelyHome.error.${C.error}`))
-                : r.ide.showToast("error", t("settings.codelyHome.toast.applyFailed"))
+                ? u(t(`settings.gamecoworkHome.error.${C.error}`))
+                : r.ide.showToast("error", t("settings.gamecoworkHome.toast.applyFailed"))
               : (i(C.path),
                 u(void 0),
-                r.ide.showToast("info", t("settings.codelyHome.toast.applied")),
-                C.envVarWarning && r.ide.showToast("warning", t("settings.codelyHome.toast.envVarWarning")));
+                r.ide.showToast("info", t("settings.gamecoworkHome.toast.applied")),
+                C.envVarWarning && r.ide.showToast("warning", t("settings.gamecoworkHome.toast.envVarWarning")));
           } else
-            (console.warn("[CodelyHome] apply failed:", (x = b == null ? void 0 : b.error) != null ? x : "unknown"),
-              r.ide.showToast("error", t("settings.codelyHome.toast.applyFailed")));
+            (console.warn("[GameCoworkHome] apply failed:", (x = b == null ? void 0 : b.error) != null ? x : "unknown"),
+              r.ide.showToast("error", t("settings.gamecoworkHome.toast.applyFailed")));
         } catch {
-          r.ide.showToast("error", t("settings.codelyHome.toast.applyFailed"));
+          r.ide.showToast("error", t("settings.gamecoworkHome.toast.applyFailed"));
         } finally {
           c(!1);
         }
@@ -170922,11 +170922,11 @@ function uun() {
             var y;
             (c(!0), u(void 0));
             try {
-              const x = await r.request("settings/prepareCodelyHomeChange", { newPath: g });
+              const x = await r.request("settings/prepareGameCoworkHomeChange", { newPath: g });
               if ((x == null ? void 0 : x.status) === "success" && x.content) {
                 const b = x.content;
                 "error" in b
-                  ? u(FSe(b.error) ? t(`settings.codelyHome.error.${b.error}`) : t("settings.codelyHome.error.invalid"))
+                  ? u(FSe(b.error) ? t(`settings.gamecoworkHome.error.${b.error}`) : t("settings.gamecoworkHome.error.invalid"))
                   : b.sourceHasData
                     ? (n(on(!0)),
                       n(
@@ -170944,13 +170944,13 @@ function uun() {
                     : await h(b.targetPath, !1);
               } else
                 (console.warn(
-                  "[CodelyHome] prepare failed:",
+                  "[GameCoworkHome] prepare failed:",
                   (y = x == null ? void 0 : x.error) != null ? y : "unknown",
                 ),
-                  r.ide.showToast("error", t("settings.codelyHome.toast.applyFailed")));
+                  r.ide.showToast("error", t("settings.gamecoworkHome.toast.applyFailed")));
             } catch (x) {
-              (console.warn("[CodelyHome] prepare request failed:", x),
-                r.ide.showToast("error", t("settings.codelyHome.toast.applyFailed")));
+              (console.warn("[GameCoworkHome] prepare request failed:", x),
+                r.ide.showToast("error", t("settings.gamecoworkHome.toast.applyFailed")));
             } finally {
               c(!1);
             }
@@ -170961,9 +170961,9 @@ function uun() {
   return E.useMemo(
     () => ({
       type: "path",
-      key: "codelyHome",
-      title: t("settings.codelyHome.title"),
-      description: t("settings.codelyHome.description"),
+      key: "gamecoworkHome",
+      title: t("settings.gamecoworkHome.title"),
+      description: t("settings.gamecoworkHome.description"),
       value: a,
       loading: o,
       busy: l,
@@ -170978,11 +170978,11 @@ const pun = E.lazy(() => Sr(() => import("./InsightIndexPage-B7corD1V.js"), __vi
   Une = new Set(["skills", "commands", "extensions", "mcp", "subagents", "models"]);
 function mun() {
   if (typeof window > "u") return !1;
-  const e = window.__CODELY_INITIAL_TUNNEL_ENABLED__;
+  const e = window.__GAMECOWORK_INITIAL_TUNNEL_ENABLED__;
   return typeof e == "boolean" ? e : !1;
 }
 function c$(e) {
-  typeof window < "u" && (window.__CODELY_INITIAL_TUNNEL_ENABLED__ = e);
+  typeof window < "u" && (window.__GAMECOWORK_INITIAL_TUNNEL_ENABLED__ = e);
 }
 function Pxn() {
   var J, ae, he, ge, Ze, it, It, lt, Lt, mt, Ye;
@@ -171519,33 +171519,33 @@ function Pxn() {
             oe("general", {
               id: "general",
               label: e("settings.tabs.general"),
-              icon: p.jsx(Kcn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Kcn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             ...(me
               ? [
                   oe("device", {
                     id: "device",
                     label: e("settings.tabs.devices"),
-                    icon: p.jsx(Wcn, { className: "text-codely-color-text-tertiary" }),
+                    icon: p.jsx(Wcn, { className: "text-gamecowork-color-text-tertiary" }),
                   }),
                 ]
               : []),
             oe("shortcuts", {
               id: "shortcuts",
               label: e("settings.tabs.shortcuts"),
-              icon: p.jsx(ocn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(ocn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             ...(wa()
               ? [
                   oe("tjhub", {
                     id: "tjhub",
                     label: e("settings.tabs.tjhub"),
-                    icon: p.jsx(scn, { className: "text-codely-color-text-tertiary" }),
+                    icon: p.jsx(scn, { className: "text-gamecowork-color-text-tertiary" }),
                   }),
                   oe("pets", {
                     id: "pets",
                     label: e("settings.tabs.pets"),
-                    icon: p.jsx(lYe, { className: "w-[14px] h-[14px] text-codely-color-text-tertiary" }),
+                    icon: p.jsx(lYe, { className: "w-[14px] h-[14px] text-gamecowork-color-text-tertiary" }),
                   }),
                 ]
               : []),
@@ -171557,7 +171557,7 @@ function Pxn() {
             {
               id: "account",
               label: e("settings.tabs.planUsage"),
-              icon: p.jsx(Zcn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Zcn, { className: "text-gamecowork-color-text-tertiary" }),
             },
           ],
         },
@@ -171567,44 +171567,44 @@ function Pxn() {
             {
               id: "permission",
               label: e("settings.tabs.permission"),
-              icon: p.jsx(Ycn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Ycn, { className: "text-gamecowork-color-text-tertiary" }),
             },
             oe("models", {
               id: "models",
               label: e("settings.sidebar.customModels"),
-              icon: p.jsx(Qcn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Qcn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             oe("skills", {
               id: "skills",
               label: e("settings.tabs.skills"),
-              icon: p.jsx(LV, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(LV, { className: "text-gamecowork-color-text-tertiary" }),
               hasUpdate: tn,
             }),
             oe("subagents", {
               id: "subagents",
               label: e("settings.tabs.subagents"),
-              icon: p.jsx(Xcn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Xcn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             oe("commands", {
               id: "commands",
               label: e("settings.tabs.commands"),
-              icon: p.jsx(Vcn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(Vcn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             oe("extensions", {
               id: "extensions",
               label: e("settings.tabs.extensions"),
-              icon: p.jsx(OV, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(OV, { className: "text-gamecowork-color-text-tertiary" }),
               hasUpdate: Ie,
             }),
             oe("mcp", {
               id: "mcp",
               label: e("settings.tabs.mcpServers"),
-              icon: p.jsx(DV, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(DV, { className: "text-gamecowork-color-text-tertiary" }),
             }),
             oe("insightIndex", {
               id: "insightIndex",
               label: e("settings.tabs.insightIndex"),
-              icon: p.jsx(ecn, { className: "text-codely-color-text-tertiary" }),
+              icon: p.jsx(ecn, { className: "text-gamecowork-color-text-tertiary" }),
             }),
           ],
         },
@@ -171614,7 +171614,7 @@ function Pxn() {
             {
               id: "about",
               label: e("settings.tabs.about"),
-              icon: p.jsx(Fln, { className: "!text-base text-codely-color-text-tertiary" }),
+              icon: p.jsx(Fln, { className: "!text-base text-gamecowork-color-text-tertiary" }),
             },
           ],
         },
@@ -171633,7 +171633,7 @@ function Pxn() {
           return p.jsx(In, {
             className: "flex-1 min-h-0",
             children: p.jsxs("div", {
-              className: "flex flex-col pb-8 bg-codely-color-surface-primary",
+              className: "flex flex-col pb-8 bg-gamecowork-color-surface-primary",
               children: [
                 p.jsx(Do, { title: e("settings.tabs.general") }),
                 ht.map((oe, Te) => p.jsx(Yf, { group: oe, isFirst: Te === 0 }, oe.id)),
@@ -171643,7 +171643,7 @@ function Pxn() {
                       "data-telemetry-id": "settings_logout",
                       onClick: C,
                       className:
-                        "mt-8 flex w-fit shrink-0 cursor-pointer items-center justify-center rounded-lg border border-solid border-codely-color-border-subtle bg-transparent px-3 py-2 text-sm text-codely-color-text-primary transition-colors hover:bg-codely-color-interactive-hover",
+                        "mt-8 flex w-fit shrink-0 cursor-pointer items-center justify-center rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent px-3 py-2 text-sm text-gamecowork-color-text-primary transition-colors hover:bg-gamecowork-color-interactive-hover",
                       children: e("settings.logout"),
                     })
                   : null,
@@ -171677,7 +171677,7 @@ function Pxn() {
         case "insightIndex":
           return p.jsx(E.Suspense, {
             fallback: p.jsxs("div", {
-              className: "text-codely-color-text-tertiary flex items-center gap-2 px-3 py-4 text-sm",
+              className: "text-gamecowork-color-text-tertiary flex items-center gap-2 px-3 py-4 text-sm",
               children: [
                 p.jsx(ai, { className: "h-4 w-4 shrink-0 animate-spin" }),
                 p.jsx("span", { children: e("common.loading") }),
@@ -171941,7 +171941,7 @@ const Tun = $t.div`
   margin: 0.5rem 0 0 0;
 
   .reasoning-content p {
-    color: var(--codely-color-text-tertiary) !important;
+    color: var(--gamecowork-color-text-tertiary) !important;
   }
 `,
   Nun = 5;
@@ -172011,12 +172011,12 @@ function Iun({
   const P = M && !a,
     O = t
       ? p.jsx("div", {
-          className: "text-codely-color-text-tertiary pl-4 text-xs",
+          className: "text-gamecowork-color-text-tertiary pl-4 text-xs",
           children: "Thinking content redacted due to safety reasons.",
         })
       : p.jsx(yc, {
           className:
-            "assistant-text reasoning-content !px-0 mt-0 mr-2 border-0 border-solid !text-codely-color-text-tertiary",
+            "assistant-text reasoning-content !px-0 mt-0 mr-2 border-0 border-solid !text-gamecowork-color-text-tertiary",
           isRenderingInStepContainer: !0,
           source: e,
           itemIndex: n,
@@ -172037,7 +172037,7 @@ function Iun({
             children: [
               p.jsx("span", {
                 className: "min-w-0 truncate",
-                style: { color: "var(--codely-color-text-tertiary)" },
+                style: { color: "var(--gamecowork-color-text-tertiary)" },
                 children: F(),
               }),
               i != null &&
@@ -172121,7 +172121,7 @@ function nRe({ showTitle: e = !1, showExpandButton: t = !1, toolName: n, subTitl
     children: [
       (e || t) &&
         p.jsx("div", {
-          className: "flex h-8 min-w-0 items-center text-xs font-medium text-codely-color-text-secondary",
+          className: "flex h-8 min-w-0 items-center text-xs font-medium text-gamecowork-color-text-secondary",
           children: p.jsxs("div", {
             className: "flex min-w-0 flex-1 items-center",
             children: [
@@ -172131,7 +172131,7 @@ function nRe({ showTitle: e = !1, showExpandButton: t = !1, toolName: n, subTitl
                   title: s,
                   className: nt("assistant-muted-text ml-1 min-w-0 truncate", a ? "link" : ""),
                   onClick: a,
-                  style: { color: "var(--codely-color-text-tertiary)" },
+                  style: { color: "var(--gamecowork-color-text-tertiary)" },
                   children: s,
                 }),
               t &&
@@ -172140,8 +172140,8 @@ function nRe({ showTitle: e = !1, showExpandButton: t = !1, toolName: n, subTitl
                     "ml-1 flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center hover:brightness-125",
                   onClick: () => c(!l),
                   children: l
-                    ? p.jsx(Ao, { className: "h-3 w-3 text-codely-color-text-tertiary" })
-                    : p.jsx(wc, { className: "h-3 w-3 text-codely-color-text-tertiary" }),
+                    ? p.jsx(Ao, { className: "h-3 w-3 text-gamecowork-color-text-tertiary" })
+                    : p.jsx(wc, { className: "h-3 w-3 text-gamecowork-color-text-tertiary" }),
                 }),
             ],
           }),
@@ -172265,7 +172265,7 @@ function Bun(e) {
                 p.jsx("span", {
                   className: "inline-flex gap-2 items-center",
                   children: p.jsx("span", {
-                    style: { color: "var(--codely-color-text-tertiary)" },
+                    style: { color: "var(--gamecowork-color-text-tertiary)" },
                     children: "Thinking",
                   }),
                 }),
@@ -172281,7 +172281,7 @@ function Bun(e) {
                   children: p.jsx(Pun, {
                     children: p.jsx(yc, {
                       className:
-                        "assistant-text reasoning-content !px-0 mt-0 mr-2 border-0 border-solid !text-codely-color-text-tertiary",
+                        "assistant-text reasoning-content !px-0 mt-0 mr-2 border-0 border-solid !text-gamecowork-color-text-tertiary",
                       isRenderingInStepContainer: !0,
                       source: lg(e.item.reasoning.text),
                       itemIndex: e.index,
@@ -172387,7 +172387,7 @@ function qun(e) {
 function zun({ children: e }) {
   return p.jsx("label", {
     className:
-      "bg-codely-color-surface-card text-codely-color-text-secondary rounded p-1 text-xs transition-colors hover:bg-codely-color-mixture-surfaceCardInteractiveHover",
+      "bg-gamecowork-color-surface-card text-gamecowork-color-text-secondary rounded p-1 text-xs transition-colors hover:bg-gamecowork-color-mixture-surfaceCardInteractiveHover",
     children: e,
   });
 }
@@ -172437,7 +172437,7 @@ function $un({ toolCallState: e, historyIndex: t }) {
           p.jsx(zun, { children: i }),
           c &&
             p.jsx("span", {
-              className: "text-codely-color-text-disabled inline-flex",
+              className: "text-gamecowork-color-text-disabled inline-flex",
               children: n ? p.jsx(cV, { className: "h-3 w-3" }) : p.jsx(dV, { className: "h-3 w-3" }),
             }),
         ],
@@ -172445,7 +172445,7 @@ function $un({ toolCallState: e, historyIndex: t }) {
       n &&
         c &&
         p.jsx("div", {
-          className: "border-codely-color-border-subtle ml-6 rounded border",
+          className: "border-gamecowork-color-border-subtle ml-6 rounded border",
           children: o.map((d, u) =>
             p.jsxs(
               "div",
@@ -172453,7 +172453,7 @@ function $un({ toolCallState: e, historyIndex: t }) {
                 className: "text-xs",
                 children: [
                   d.name &&
-                    p.jsx("div", { className: "text-codely-color-text-tertiary mb-1 font-medium", children: d.name }),
+                    p.jsx("div", { className: "text-gamecowork-color-text-tertiary mb-1 font-medium", children: d.name }),
                   p.jsx(In, {
                     disableNativeAutoRecalculate: !0,
                     className: "max-h-40 flex-none min-h-0 min-w-0",
@@ -172643,10 +172643,10 @@ function Yun(e) {
   return p.jsxs("div", {
     "data-testid": "write-file-card",
     className:
-      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
     children: [
       p.jsxs("div", {
-        className: "flex items-center justify-between gap-2 px-3 py-2 bg-codely-color-surface-card",
+        className: "flex items-center justify-between gap-2 px-3 py-2 bg-gamecowork-color-surface-card",
         children: [
           p.jsxs("div", {
             className: "flex min-w-0 flex-1 cursor-pointer items-center gap-1",
@@ -172657,7 +172657,7 @@ function Yun(e) {
             children: [
               p.jsx(Tc, { width: "14px", height: "14px", filename: r || "file" }),
               p.jsx("span", {
-                className: "text-xs font-medium leading-4 text-codely-color-text-default truncate",
+                className: "text-xs font-medium leading-4 text-gamecowork-color-text-default truncate",
                 title: r || M,
                 children: r ? o : M,
               }),
@@ -172667,7 +172667,7 @@ function Yun(e) {
         ],
       }),
       p.jsxs("div", {
-        className: "relative min-h-12 bg-codely-color-surface-primary",
+        className: "relative min-h-12 bg-gamecowork-color-surface-primary",
         children: [
           N &&
             p.jsx("div", {
@@ -172675,9 +172675,9 @@ function Yun(e) {
               children: p.jsxs("div", {
                 className: "flex flex-col gap-2 animate-pulse",
                 children: [
-                  p.jsx("div", { className: "h-3 w-40 rounded bg-codely-color-border-subtle" }),
-                  p.jsx("div", { className: "h-3 w-56 rounded bg-codely-color-border-subtle" }),
-                  p.jsx("div", { className: "h-3 w-32 rounded bg-codely-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-40 rounded bg-gamecowork-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-56 rounded bg-gamecowork-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-32 rounded bg-gamecowork-color-border-subtle" }),
                 ],
               }),
             }),
@@ -172690,10 +172690,10 @@ function Yun(e) {
                 className: "p-2",
                 children: u
                   ? p.jsx("div", {
-                      className: "text-xs leading-5 text-codely-color-text-default break-all whitespace-pre-wrap",
+                      className: "text-xs leading-5 text-gamecowork-color-text-default break-all whitespace-pre-wrap",
                       children: u,
                     })
-                  : p.jsx("div", { className: "text-xs text-codely-color-text-tertiary", children: "Write failed." }),
+                  : p.jsx("div", { className: "text-xs text-gamecowork-color-text-tertiary", children: "Write failed." }),
               }),
             }),
           !d &&
@@ -172707,12 +172707,12 @@ function Yun(e) {
               children: m
                 ? s
                   ? p.jsx("pre", {
-                      className: `m-0 px-4 py-3 text-xs text-codely-color-text-default ${S ? "whitespace-pre-wrap break-all" : "whitespace-pre"}`,
+                      className: `m-0 px-4 py-3 text-xs text-gamecowork-color-text-default ${S ? "whitespace-pre-wrap break-all" : "whitespace-pre"}`,
                       children: a,
                     })
                   : p.jsx(Ske, { code: a, lang: C, codeWrap: S, maxWidth: T })
                 : p.jsx("pre", {
-                    className: "m-0 whitespace-pre-wrap break-all px-4 py-3 text-xs text-codely-color-text-default",
+                    className: "m-0 whitespace-pre-wrap break-all px-4 py-3 text-xs text-gamecowork-color-text-default",
                     children: h,
                   }),
             }),
@@ -172720,7 +172720,7 @@ function Yun(e) {
             !g &&
             l &&
             p.jsx("div", {
-              className: "px-4 py-3 text-xs text-codely-color-text-tertiary",
+              className: "px-4 py-3 text-xs text-gamecowork-color-text-tertiary",
               children: "Writing file...",
             }),
         ],
@@ -172791,7 +172791,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
     };
   return p.jsxs("div", {
     className:
-      "border-codely-color-border-subtle bg-codely-color-surface-card flex items-center justify-between gap-3 rounded border border-solid px-3 py-2",
+      "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-card flex items-center justify-between gap-3 rounded border border-solid px-3 py-2",
     children: [
       p.jsxs("div", {
         className: "flex min-w-0 flex-col gap-1",
@@ -172804,7 +172804,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
               o &&
                 p.jsx("span", {
                   className:
-                    "ml-2 inline-flex items-center px-1.5 py-px border border-solid rounded bg-codely-color-surface-elevated border-codely-color-border-subtle text-codely-color-text-secondary text-[0.625rem] font-medium capitalize leading-[0.875rem]",
+                    "ml-2 inline-flex items-center px-1.5 py-px border border-solid rounded bg-gamecowork-color-surface-elevated border-gamecowork-color-border-subtle text-gamecowork-color-text-secondary text-[0.625rem] font-medium capitalize leading-[0.875rem]",
                   children: "background",
                 }),
             ],
@@ -172817,7 +172817,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
                 placement: "top",
                 style: { maxWidth: "20rem" },
                 children: p.jsx("span", {
-                  className: "text-xs !text-codely-color-text-tertiary line-clamp-3 break-words min-w-0",
+                  className: "text-xs !text-gamecowork-color-text-tertiary line-clamp-3 break-words min-w-0",
                   children: c,
                 }),
               }),
@@ -172832,7 +172832,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
                 type: "button",
                 onClick: g,
                 className:
-                  "text-codely-color-text-default text-sm cursor-pointer bg-codely-color-surface-sidebar hover:bg-codely-color-interactive-hover border-none px-2 py-1 rounded-[0.25rem]",
+                  "text-gamecowork-color-text-default text-sm cursor-pointer bg-gamecowork-color-surface-sidebar hover:bg-gamecowork-color-interactive-hover border-none px-2 py-1 rounded-[0.25rem]",
                 title: "Stop",
                 "data-telemetry-id": "stop_subagent",
                 children: "Stop",
@@ -172843,7 +172843,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
               type: "button",
               onClick: y,
               className:
-                "text-codely-color-text-default text-sm cursor-pointer bg-codely-color-surface-sidebar hover:bg-codely-color-interactive-hover border-none px-2 py-1 rounded-[0.25rem]",
+                "text-gamecowork-color-text-default text-sm cursor-pointer bg-gamecowork-color-surface-sidebar hover:bg-gamecowork-color-interactive-hover border-none px-2 py-1 rounded-[0.25rem]",
               title: "Open",
               "data-telemetry-id": "open_subagent",
               children: "Open",
@@ -172856,7 +172856,7 @@ function Qun({ toolCallState: e, historyIndex: t }) {
 const Zun = $t.div`
   border-radius: 0.2rem;
   overflow: hidden;
-  outline: 1px solid var(--codely-color-border-subtle);
+  outline: 1px solid var(--gamecowork-color-border-subtle);
   outline-offset: -0.5px;
   display: flex;
   flex-direction: column;
@@ -172903,7 +172903,7 @@ function Xun(e) {
                 text: l,
                 tooltipPlacement: "top",
                 clipboardIconClassName:
-                  "h-3.5 w-3.5 !text-codely-color-text-tertiary hover:!text-codely-color-text-accent",
+                  "h-3.5 w-3.5 !text-gamecowork-color-text-tertiary hover:!text-gamecowork-color-text-accent",
                 checkIconClassName: "h-3.5 w-3.5 text-green-500",
               }),
             }),
@@ -173392,10 +173392,10 @@ function spn(e) {
     ? p.jsxs("div", {
         "data-testid": "edit-tool-card",
         className:
-          "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+          "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
         children: [
           p.jsxs("div", {
-            className: "flex items-center justify-between gap-2 px-3 py-2 bg-codely-color-surface-card",
+            className: "flex items-center justify-between gap-2 px-3 py-2 bg-gamecowork-color-surface-card",
             children: [
               p.jsxs("div", {
                 className: "flex min-w-0 flex-1 cursor-pointer items-center gap-1",
@@ -173410,7 +173410,7 @@ function spn(e) {
                     children: [
                       p.jsx("span", {
                         className:
-                          "min-w-0 flex-1 truncate text-xs font-medium leading-4 text-codely-color-text-default",
+                          "min-w-0 flex-1 truncate text-xs font-medium leading-4 text-gamecowork-color-text-default",
                         title: e.filePath,
                         children: w,
                       }),
@@ -173420,12 +173420,12 @@ function spn(e) {
                           children: [
                             S.added > 0 &&
                               p.jsxs("span", {
-                                className: "text-[var(--codely-color-status-success-default)]",
+                                className: "text-[var(--gamecowork-color-status-success-default)]",
                                 children: ["+", S.added],
                               }),
                             S.removed > 0 &&
                               p.jsxs("span", {
-                                className: "text-[var(--codely-color-status-danger-default)]",
+                                className: "text-[var(--gamecowork-color-status-danger-default)]",
                                 children: ["-", S.removed],
                               }),
                           ],
@@ -173442,7 +173442,7 @@ function spn(e) {
             ],
           }),
           p.jsx("div", {
-            className: "relative min-h-12 bg-codely-color-surface-primary",
+            className: "relative min-h-12 bg-gamecowork-color-surface-primary",
             children:
               T === "generating" && !b
                 ? p.jsx("div", {
@@ -173450,9 +173450,9 @@ function spn(e) {
                     children: p.jsxs("div", {
                       className: "flex flex-col gap-2 animate-pulse",
                       children: [
-                        p.jsx("div", { className: "h-3 w-40 rounded bg-codely-color-border-subtle" }),
-                        p.jsx("div", { className: "h-3 w-56 rounded bg-codely-color-border-subtle" }),
-                        p.jsx("div", { className: "h-3 w-32 rounded bg-codely-color-border-subtle" }),
+                        p.jsx("div", { className: "h-3 w-40 rounded bg-gamecowork-color-border-subtle" }),
+                        p.jsx("div", { className: "h-3 w-56 rounded bg-gamecowork-color-border-subtle" }),
+                        p.jsx("div", { className: "h-3 w-32 rounded bg-gamecowork-color-border-subtle" }),
                       ],
                     }),
                   })
@@ -173467,10 +173467,10 @@ function spn(e) {
                       children: [
                         s &&
                           p.jsxs("div", {
-                            className: "mb-2 flex items-center gap-2 text-xs text-codely-color-text-tertiary",
+                            className: "mb-2 flex items-center gap-2 text-xs text-gamecowork-color-text-tertiary",
                             children: [
                               p.jsx("div", {
-                                className: "h-1.5 w-1.5 animate-pulse rounded-full bg-codely-color-text-tertiary",
+                                className: "h-1.5 w-1.5 animate-pulse rounded-full bg-gamecowork-color-text-tertiary",
                               }),
                               p.jsx("span", { children: "Streaming changes..." }),
                             ],
@@ -173478,13 +173478,13 @@ function spn(e) {
                         p.jsx("pre", {
                           className: `text-xs m-0 ${C ? "min-w-0 whitespace-pre-wrap" : "w-max min-w-full whitespace-pre"}`,
                           style: {
-                            color: "var(--codely-color-text-default)",
+                            color: "var(--gamecowork-color-text-default)",
                             ...(C ? { wordBreak: "break-word" } : {}),
                           },
                           children:
                             !b && !s && !c.isStreaming
                               ? p.jsx("div", {
-                                  className: "text-xs leading-4 text-codely-color-text-tertiary",
+                                  className: "text-xs leading-4 text-gamecowork-color-text-tertiary",
                                   children: "No changes to display",
                                 })
                               : y.map((I, F) => {
@@ -173498,20 +173498,20 @@ function spn(e) {
                                       ...(C ? {} : { flexWrap: "nowrap", width: "max-content", minWidth: "100%" }),
                                       ...(P.startsWith("-")
                                         ? {
-                                            color: "var(--codely-color-text-default)",
-                                            backgroundColor: "var(--codely-color-status-danger-border)",
+                                            color: "var(--gamecowork-color-text-default)",
+                                            backgroundColor: "var(--gamecowork-color-status-danger-border)",
                                           }
                                         : P.startsWith("+")
                                           ? {
-                                              color: "var(--codely-color-text-default)",
-                                              backgroundColor: "var(--codely-color-status-success-border)",
+                                              color: "var(--gamecowork-color-text-default)",
+                                              backgroundColor: "var(--gamecowork-color-status-success-border)",
                                             }
                                           : {}),
                                     },
                                     q = {
                                       width: x,
                                       textAlign: "right",
-                                      color: "var(--codely-color-text-tertiary)",
+                                      color: "var(--gamecowork-color-text-tertiary)",
                                       whiteSpace: "nowrap",
                                       paddingRight: "0.5rem",
                                       flexShrink: 0,
@@ -173615,10 +173615,10 @@ ${n}
   return p.jsxs("div", {
     "data-testid": "edit-file-tool-card",
     className:
-      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
     children: [
       p.jsxs("div", {
-        className: "flex items-center justify-between gap-2 px-3 py-2 bg-codely-color-surface-card",
+        className: "flex items-center justify-between gap-2 px-3 py-2 bg-gamecowork-color-surface-card",
         children: [
           p.jsxs("div", {
             className: "flex min-w-0 flex-1 cursor-pointer items-center gap-1",
@@ -173632,7 +173632,7 @@ ${n}
                 className: "flex min-w-0 flex-1 items-center gap-2",
                 children: [
                   p.jsx("span", {
-                    className: "min-w-0 flex-1 truncate text-xs font-medium leading-4 text-codely-color-text-default",
+                    className: "min-w-0 flex-1 truncate text-xs font-medium leading-4 text-gamecowork-color-text-default",
                     title: e.relativeFilePath,
                     children: s,
                   }),
@@ -173642,12 +173642,12 @@ ${n}
                       children: [
                         l.added > 0 &&
                           p.jsxs("span", {
-                            className: "text-[var(--codely-color-status-success-default)]",
+                            className: "text-[var(--gamecowork-color-status-success-default)]",
                             children: ["+", l.added],
                           }),
                         l.removed > 0 &&
                           p.jsxs("span", {
-                            className: "text-[var(--codely-color-status-danger-default)]",
+                            className: "text-[var(--gamecowork-color-status-danger-default)]",
                             children: ["-", l.removed],
                           }),
                       ],
@@ -173664,16 +173664,16 @@ ${n}
         ],
       }),
       p.jsx("div", {
-        className: "relative min-h-12 bg-codely-color-surface-primary",
+        className: "relative min-h-12 bg-gamecowork-color-surface-primary",
         children: f
           ? p.jsx("div", {
               className: "px-4 py-4",
               children: p.jsxs("div", {
                 className: "flex flex-col gap-2 animate-pulse",
                 children: [
-                  p.jsx("div", { className: "h-3 w-40 rounded bg-codely-color-border-subtle" }),
-                  p.jsx("div", { className: "h-3 w-56 rounded bg-codely-color-border-subtle" }),
-                  p.jsx("div", { className: "h-3 w-32 rounded bg-codely-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-40 rounded bg-gamecowork-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-56 rounded bg-gamecowork-color-border-subtle" }),
+                  p.jsx("div", { className: "h-3 w-32 rounded bg-gamecowork-color-border-subtle" }),
                 ],
               }),
             })
@@ -173685,7 +173685,7 @@ ${n}
                 className: "px-2 py-2",
                 children: o.isStreaming
                   ? p.jsx("pre", {
-                      className: "m-0 whitespace-pre-wrap break-all px-2 py-1 text-xs text-codely-color-text-default",
+                      className: "m-0 whitespace-pre-wrap break-all px-2 py-1 text-xs text-gamecowork-color-text-default",
                       children: n,
                     })
                   : p.jsx(yc, {
@@ -173774,13 +173774,13 @@ function hpn({ toolCallState: e }) {
         if (n[n.length - 1].content.startsWith("Plan approved"))
           return p.jsx("div", {
             className:
-              "p-2 flex flex-1 items-start self-stretch gap-1 bg-[var(--codely-color-surface-card)] border border-solid border-[var(--codely-color-border-subtle)] rounded-lg cursor-pointer",
+              "p-2 flex flex-1 items-start self-stretch gap-1 bg-[var(--gamecowork-color-surface-card)] border border-solid border-[var(--gamecowork-color-border-subtle)] rounded-lg cursor-pointer",
             onClick: s,
             children: p.jsxs("div", {
-              className: "flex items-start gap-1 flex-1 bg-[var(--codely-color-surface-card)]",
+              className: "flex items-start gap-1 flex-1 bg-[var(--gamecowork-color-surface-card)]",
               children: [
-                p.jsx(dpn, { className: "w-3.5 h-3.5 text-[var(--codely-color-text-default)]" }),
-                p.jsx("div", { className: "text-[var(--codely-color-text-default)]", children: o }),
+                p.jsx(dpn, { className: "w-3.5 h-3.5 text-[var(--gamecowork-color-text-default)]" }),
+                p.jsx("div", { className: "text-[var(--gamecowork-color-text-default)]", children: o }),
               ],
             }),
           });
@@ -173805,7 +173805,7 @@ function hpn({ toolCallState: e }) {
         tabIndex: 0,
         title: i,
         children: p.jsx("div", {
-          className: "exit-plan-mode-title-name !text-[var(--codely-color-text-tertiary)]",
+          className: "exit-plan-mode-title-name !text-[var(--gamecowork-color-text-tertiary)]",
           children: "Exit Plan mode",
         }),
       }),
@@ -173923,10 +173923,10 @@ function gpn(e) {
   return {
     color:
       e.status === "pending"
-        ? "var(--codely-color-text-secondary)"
+        ? "var(--gamecowork-color-text-secondary)"
         : e.status === "in_progress"
-          ? "var(--codely-color-accent-default)"
-          : "var(--codely-color-text-disabled)",
+          ? "var(--gamecowork-color-accent-default)"
+          : "var(--gamecowork-color-text-disabled)",
     textDecoration: e.status === "completed" || e.status === "deleted" ? "line-through" : "none",
   };
 }
@@ -173991,11 +173991,11 @@ function toe({ round: e }) {
   const i = `Job List - ${a} of ${e.jobs.length} done`;
   return p.jsxs("div", {
     className: "assistant-text overflow-hidden",
-    style: { borderRadius: "0.3rem", outline: "1px solid var(--codely-color-border-subtle)", outlineOffset: "-0.5px" },
+    style: { borderRadius: "0.3rem", outline: "1px solid var(--gamecowork-color-border-subtle)", outlineOffset: "-0.5px" },
     children: [
       p.jsxs("div", {
         className:
-          "flex cursor-pointer items-center gap-2 border-b-[0.0625rem] border-x-0 border-t-0 border-solid px-2 py-2 bg-codely-color-surface-card border-codely-color-border-subtle",
+          "flex cursor-pointer items-center gap-2 border-b-[0.0625rem] border-x-0 border-t-0 border-solid px-2 py-2 bg-gamecowork-color-surface-card border-gamecowork-color-border-subtle",
         style: { fontWeight: "normal" },
         onClick: () => {
           (r(), n(!t));
@@ -174003,10 +174003,10 @@ function toe({ round: e }) {
         children: [
           p.jsx("span", {
             className: "task-list-icon flex-shrink-0 inline-flex items-center",
-            children: p.jsx(tcn, { className: "h-3.5 w-3.5 text-codely-color-accent-default" }),
+            children: p.jsx(tcn, { className: "h-3.5 w-3.5 text-gamecowork-color-accent-default" }),
           }),
           p.jsx("span", {
-            className: "min-w-0 truncate !text-codely-color-text-default",
+            className: "min-w-0 truncate !text-gamecowork-color-text-default",
             style: { opacity: e.completed ? 0.8 : 1 },
             children: i,
           }),
@@ -174017,7 +174017,7 @@ function toe({ round: e }) {
         p.jsx(In, {
           disableNativeAutoRecalculate: !0,
           className: "max-h-36 flex-none min-h-0 min-w-0",
-          style: { backgroundColor: "var(--codely-color-surface-sidebar)" },
+          style: { backgroundColor: "var(--gamecowork-color-surface-sidebar)" },
           recalculateDeps: [e.jobs.length],
           children: p.jsx("div", {
             className: "flex flex-col gap-3 px-3 py-3",
@@ -174632,7 +174632,7 @@ const WSe = $t.span`
   }}
 `,
   Ipn = $t.a`
-  color: var(--codely-color-border-success);
+  color: var(--gamecowork-color-border-success);
   text-decoration: none;
   &:hover {
     text-decoration: underline;
@@ -174720,39 +174720,39 @@ ${t}`),
     f =
       u === "failed"
         ? p.jsx($a, {
-            className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--codely-color-status-danger-default)]",
+            className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--gamecowork-color-status-danger-default)]",
             "aria-hidden": !0,
           })
         : l
           ? p.jsx(Ec, {})
           : c
-            ? p.jsx(dKe, { className: "h-3.5 w-3.5 flex-shrink-0 text-codely-color-text-tertiary", "aria-hidden": !0 })
+            ? p.jsx(dKe, { className: "h-3.5 w-3.5 flex-shrink-0 text-gamecowork-color-text-tertiary", "aria-hidden": !0 })
             : u === "background"
               ? p.jsx(lm, {
-                  className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--codely-color-status-info-default)]",
+                  className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--gamecowork-color-status-info-default)]",
                   "aria-hidden": !0,
                 })
               : p.jsx(lm, {
-                  className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--codely-color-status-success-default)]",
+                  className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--gamecowork-color-status-success-default)]",
                   "aria-hidden": !0,
                 }),
     g = l && !d && !e;
   return p.jsx("div", {
     "data-testid": "terminal-container",
-    className: "min-w-0 text-xs leading-5 text-codely-color-text-tertiary",
+    className: "min-w-0 text-xs leading-5 text-gamecowork-color-text-tertiary",
     children: p.jsxs("div", {
       className:
-        "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+        "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
       children: [
         p.jsxs("div", {
-          className: "find-widget-skip flex items-center justify-between gap-2 px-3 py-2 bg-codely-color-surface-card",
+          className: "find-widget-skip flex items-center justify-between gap-2 px-3 py-2 bg-gamecowork-color-surface-card",
           children: [
             p.jsxs("div", {
               className: "flex min-w-0 flex-1 items-center gap-1",
               children: [
                 f,
                 p.jsx("span", {
-                  className: "text-xs font-medium leading-4 text-codely-color-text-default truncate",
+                  className: "text-xs font-medium leading-4 text-gamecowork-color-text-default truncate",
                   children: h,
                 }),
               ],
@@ -174764,16 +174764,16 @@ ${t}`),
           ],
         }),
         p.jsx("div", {
-          className: "relative min-h-12 w-full bg-codely-color-surface-primary",
+          className: "relative min-h-12 w-full bg-gamecowork-color-surface-primary",
           children: g
             ? p.jsx("div", {
                 className: "px-4 py-4",
                 children: p.jsxs("div", {
                   className: "flex flex-col gap-2 animate-pulse",
                   children: [
-                    p.jsx("div", { className: "h-3 w-40 rounded bg-codely-color-border-subtle" }),
-                    p.jsx("div", { className: "h-3 w-56 rounded bg-codely-color-border-subtle" }),
-                    p.jsx("div", { className: "h-3 w-32 rounded bg-codely-color-border-subtle" }),
+                    p.jsx("div", { className: "h-3 w-40 rounded bg-gamecowork-color-border-subtle" }),
+                    p.jsx("div", { className: "h-3 w-56 rounded bg-gamecowork-color-border-subtle" }),
+                    p.jsx("div", { className: "h-3 w-32 rounded bg-gamecowork-color-border-subtle" }),
                   ],
                 }),
               })
@@ -174785,12 +174785,12 @@ ${t}`),
                 children: p.jsxs("pre", {
                   "data-terminal-output": !0,
                   className: nt(
-                    "m-0 cursor-text select-text p-2 font-mono text-xs text-codely-color-text-tertiary",
+                    "m-0 cursor-text select-text p-2 font-mono text-xs text-gamecowork-color-text-tertiary",
                     s ? "min-w-0 whitespace-pre-wrap break-words" : "w-max min-w-full whitespace-pre",
                   ),
                   children: [
                     p.jsx("span", {
-                      className: "block pb-2 text-[var(--codely-color-status-success-default)]",
+                      className: "block pb-2 text-[var(--gamecowork-color-status-success-default)]",
                       children: `$ ${e}`,
                     }),
                     d && p.jsx("span", { className: "mt-1 block", children: p.jsx(Lpn, { linkify: !0, children: t }) }),
@@ -175295,7 +175295,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
                       children: p.jsxs("button", {
                         type: "button",
                         className:
-                          "flex py-1 w-full rounded-sm min-w-0 max-w-full items-center border-none gap-1 text-left hover:bg-codely-color-interactive-hover cursor-pointer bg-transparent",
+                          "flex py-1 w-full rounded-sm min-w-0 max-w-full items-center border-none gap-1 text-left hover:bg-gamecowork-color-interactive-hover cursor-pointer bg-transparent",
                         onClick: q,
                         onKeyDown: j,
                         children: [
@@ -175305,7 +175305,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
                             children: [
                               p.jsx("span", {
                                 className: nt(
-                                  "min-w-0 shrink truncate text-left text-xs text-codely-color-text-default",
+                                  "min-w-0 shrink truncate text-left text-xs text-gamecowork-color-text-default",
                                   B ? "max-w-[45%]" : "min-w-0 flex-1",
                                 ),
                                 children: P,
@@ -175313,7 +175313,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
                               B
                                 ? p.jsx("span", {
                                     className:
-                                      "ml-1 min-w-0 flex-1 truncate text-left text-xs text-codely-color-text-tertiary",
+                                      "ml-1 min-w-0 flex-1 truncate text-left text-xs text-gamecowork-color-text-tertiary",
                                     children: $,
                                   })
                                 : null,
@@ -175321,7 +175321,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
                           }),
                           typeof F == "number"
                             ? p.jsx("span", {
-                                className: "ml-2 shrink-0 text-right text-xs text-codely-color-text-tertiary",
+                                className: "ml-2 shrink-0 text-right text-xs text-gamecowork-color-text-tertiary",
                                 children: `${F} match`,
                               })
                             : null,
@@ -175347,7 +175347,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
       u,
       m &&
         p.jsx("span", {
-          className: "assistant-text flex-shrink-0 !text-codely-color-text-tertiary font-bold",
+          className: "assistant-text flex-shrink-0 !text-gamecowork-color-text-tertiary font-bold",
           children: m,
         }),
       f &&
@@ -175362,7 +175362,7 @@ function jce({ tool: e, toolCallState: t, onClick: n, listTooltipContent: r, cla
             ),
             onClick: T ? (N) => N.stopPropagation() : n,
             onMouseDown: T ? (N) => N.stopPropagation() : void 0,
-            style: { color: "var(--codely-color-tertiary)" },
+            style: { color: "var(--gamecowork-color-tertiary)" },
             children: f,
           }),
         }),
@@ -175392,37 +175392,37 @@ function thn({ fact: e, scope: t, tool: n, toolCallState: r }) {
         children: [
           p.jsx(jce, { className: "cursor-pointer", tool: n, toolCallState: r }),
           a
-            ? p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" })
-            : p.jsx(wc, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" }),
+            ? p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" })
+            : p.jsx(wc, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" }),
         ],
       }),
       a &&
         p.jsxs("div", {
           className:
-            "flex flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle rounded overflow-hidden mt-1",
+            "flex flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle rounded overflow-hidden mt-1",
           children: [
             p.jsx("div", {
               className:
-                "border-t-[0.0625rem] border-x-0 border-b-0 border-codely-color-border-subtle border-solid bg-codely-color-surface-elevated p-2 text-codely-color-text-secondary text-xs",
+                "border-t-[0.0625rem] border-x-0 border-b-0 border-gamecowork-color-border-subtle border-solid bg-gamecowork-color-surface-elevated p-2 text-gamecowork-color-text-secondary text-xs",
               children: e,
             }),
             p.jsx("div", {
-              className: "bg-codely-color-surface-card p-2",
+              className: "bg-gamecowork-color-surface-card p-2",
               children: p.jsxs("div", {
                 className:
-                  "flex w-fit items-center gap-2 px-1 bg-codely-color-surface-disabled rounded-xs overflow-hidden",
+                  "flex w-fit items-center gap-2 px-1 bg-gamecowork-color-surface-disabled rounded-xs overflow-hidden",
                 children: [
                   p.jsx("span", {
                     className:
-                      "shrink-0 whitespace-nowrap rounded py-0.5 font-semibold text-[0.625rem] text-codely-color-text-tertiary uppercase",
+                      "shrink-0 whitespace-nowrap rounded py-0.5 font-semibold text-[0.625rem] text-gamecowork-color-text-tertiary uppercase",
                     children: "SCOPE",
                   }),
-                  p.jsx(XAe, { className: "h-3 w-[0.125rem] shrink-0 text-codely-color-border-strong" }),
+                  p.jsx(XAe, { className: "h-3 w-[0.125rem] shrink-0 text-gamecowork-color-border-strong" }),
                   p.jsx(tr, {
                     text: l,
                     placement: "top",
                     children: p.jsx("span", {
-                      className: "min-w-0 truncate text-[0.625rem] text-codely-color-text-secondary",
+                      className: "min-w-0 truncate text-[0.625rem] text-gamecowork-color-text-secondary",
                       children: l,
                     }),
                   }),
@@ -175437,7 +175437,7 @@ function thn({ fact: e, scope: t, tool: n, toolCallState: r }) {
 const nhn = $t.div`
   border-radius: 0.2rem;
   overflow: hidden;
-  outline: 1px solid var(--codely-color-border-subtle);
+  outline: 1px solid var(--gamecowork-color-border-subtle);
   outline-offset: -0.5px;
   display: flex;
   flex-direction: column;
@@ -175451,21 +175451,21 @@ function rhn({ toolCallState: e }) {
     className: "assistant-text",
     children: [
       p.jsxs("div", {
-        className: `border-codely-color-border-subtle bg-codely-color-surface-card flex cursor-pointer items-center gap-2 border-b px-2 py-2 ${i ? "rounded-b-[0.2rem]" : ""}`,
+        className: `border-gamecowork-color-border-subtle bg-gamecowork-color-surface-card flex cursor-pointer items-center gap-2 border-b px-2 py-2 ${i ? "rounded-b-[0.2rem]" : ""}`,
         style: { fontWeight: "normal", fontSize: "0.75rem", lineHeight: "16px" },
         onClick: () => s && o((l) => !l),
         children: [
           p.jsx("span", {
             className: "seq-thinking-icon flex-shrink-0 inline-flex items-center",
-            children: p.jsx(icn, { className: "h-3.5 w-3.5 text-codely-color-accent-default" }),
+            children: p.jsx(icn, { className: "h-3.5 w-3.5 text-gamecowork-color-accent-default" }),
           }),
           p.jsxs("span", {
-            className: "min-w-0 truncate !text-codely-color-text-default",
+            className: "min-w-0 truncate !text-gamecowork-color-text-default",
             children: ["Sequence Thinking - Step ", a, " of ", r],
           }),
           s &&
             p.jsx(Ao, {
-              className: `text-lightgray h-3.5 w-3.5 flex-shrink-0 cursor-pointer !text-codely-color-text-tertiary hover:text-codely-color-text-accent ${i ? "-rotate-90" : "rotate-0"}`,
+              className: `text-lightgray h-3.5 w-3.5 flex-shrink-0 cursor-pointer !text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-accent ${i ? "-rotate-90" : "rotate-0"}`,
             }),
           s &&
             p.jsx("div", {
@@ -175475,7 +175475,7 @@ function rhn({ toolCallState: e }) {
                 text: n,
                 tooltipPlacement: "top",
                 clipboardIconClassName:
-                  "h-3.5 w-3.5 !text-codely-color-text-tertiary hover:!text-codely-color-text-accent",
+                  "h-3.5 w-3.5 !text-gamecowork-color-text-tertiary hover:!text-gamecowork-color-text-accent",
                 checkIconClassName: "h-3.5 w-3.5 text-green-500",
               }),
             }),
@@ -175487,7 +175487,7 @@ function rhn({ toolCallState: e }) {
           disableNativeAutoRecalculate: !0,
           className: "max-h-36 flex-none min-h-0 min-w-0",
           children: p.jsx("div", {
-            className: "assistant-text bg-codely-color-surface-input p-2",
+            className: "assistant-text bg-gamecowork-color-surface-input p-2",
             children: p.jsx(yc, { className: "assistant-text", source: n }),
           }),
         }),
@@ -175496,7 +175496,7 @@ function rhn({ toolCallState: e }) {
 }
 const xx = $t.div`
   border-radius: 0.3rem;
-  outline: 1px solid var(--codely-color-border-subtle);
+  outline: 1px solid var(--gamecowork-color-border-subtle);
   outline-offset: -0.5px;
   overflow: hidden;
 `;
@@ -175803,12 +175803,12 @@ function ohn({ toolCallStates: e, activeCalls: t, open: n, onToggle: r }) {
     onClick: r,
     children: [
       p.jsx("span", {
-        className: "flex-shrink-0 text-codely-color-text-secondary",
+        className: "flex-shrink-0 text-gamecowork-color-text-secondary",
         style: { fontWeight: "600", fontSize: "0.75rem", lineHeight: "150%" },
         children: eet(e),
       }),
       p.jsxs("span", {
-        className: "assistant-muted-text flex-shrink-0  text-codely-color-text-secondary",
+        className: "assistant-muted-text flex-shrink-0  text-gamecowork-color-text-secondary",
         style: { fontSize: "0.75rem", lineHeight: "150%" },
         children: [t.length, " ", t.length === 1 ? "action" : "actions"],
       }),
@@ -175865,7 +175865,7 @@ function shn({ contextItem: e }) {
         text: e.name,
         placement: "top-start",
         children: p.jsx("span", {
-          className: "line-clamp-1 truncate flex-1 flex-shrink-0 text-codely-color-text-secondary",
+          className: "line-clamp-1 truncate flex-1 flex-shrink-0 text-gamecowork-color-text-secondary",
           children: e.name,
         }),
       }),
@@ -175901,7 +175901,7 @@ function QSe({ icon: e, toolCallState: t, tool: n, historyIndex: r }) {
           className: "flex min-w-0 flex-row items-center justify-between gap-2",
           children: p.jsx("div", {
             className:
-              "text-codely-color-text-tertiary flex min-w-0 flex-row items-center justify-between gap-1.5 text-xs transition-colors duration-200 ease-in-out",
+              "text-gamecowork-color-text-tertiary flex min-w-0 flex-row items-center justify-between gap-1.5 text-xs transition-colors duration-200 ease-in-out",
             "data-testid": "context-items-peek",
             children: p.jsx(jce, { tool: n, toolCallState: t, onClick: u ? m : void 0, listTooltipContent: h }),
           }),
@@ -175917,7 +175917,7 @@ function QSe({ icon: e, toolCallState: t, tool: n, historyIndex: r }) {
               i.length > 0
                 ? i.map((f, g) => p.jsx(shn, { contextItem: f }, g))
                 : p.jsx("div", {
-                    className: "text-codely-color-text-tertiary pl-5 text-xs italic",
+                    className: "text-gamecowork-color-text-tertiary pl-5 text-xs italic",
                     children: "No tool call output",
                   }),
           }),
@@ -176024,7 +176024,7 @@ function phn(e) {
                 text: r.copyText,
                 tooltipPlacement: "top",
                 clipboardIconClassName:
-                  "h-3.5 w-3.5 !text-codely-color-text-tertiary hover:!text-codely-color-text-accent",
+                  "h-3.5 w-3.5 !text-gamecowork-color-text-tertiary hover:!text-gamecowork-color-text-accent",
                 checkIconClassName: "h-3.5 w-3.5 text-green-500",
               }),
             }),
@@ -176083,8 +176083,8 @@ function hhn({ tool: e, toolCallState: t, icon: n, historyIndex: r }) {
               className: "flex flex-row items-center gap-1.5 cursor-pointer",
               onClick: () => i(!a),
               children: a
-                ? p.jsx(Ao, { className: "h-3 w-3 text-codely-color-text-secondary" })
-                : p.jsx(wc, { className: "h-3 w-3 text-codely-color-text-secondary" }),
+                ? p.jsx(Ao, { className: "h-3 w-3 text-gamecowork-color-text-secondary" })
+                : p.jsx(wc, { className: "h-3 w-3 text-gamecowork-color-text-secondary" }),
             }),
           ],
         }),
@@ -176748,7 +176748,7 @@ function Dhn(e) {
   return URL.createObjectURL(new Blob([n], { type: "video/mp4" }));
 }
 function Phn({ line: e }) {
-  return p.jsx("div", { className: "text-xs leading-5 text-codely-color-text-default break-all", children: e });
+  return p.jsx("div", { className: "text-xs leading-5 text-gamecowork-color-text-default break-all", children: e });
 }
 function r4e({ active: e, onClick: t, label: n, Icon: r }) {
   return p.jsx(tr, {
@@ -176760,8 +176760,8 @@ function r4e({ active: e, onClick: t, label: n, Icon: r }) {
       "aria-pressed": e,
       "aria-label": n,
       className: nt(
-        "flex h-5 w-5 p-0 items-center justify-center rounded-sm border-none bg-transparent text-codely-color-text-secondary hover:bg-codely-color-surface-elevated cursor-pointer",
-        e && "bg-codely-color-surface-elevated",
+        "flex h-5 w-5 p-0 items-center justify-center rounded-sm border-none bg-transparent text-gamecowork-color-text-secondary hover:bg-gamecowork-color-surface-elevated cursor-pointer",
+        e && "bg-gamecowork-color-surface-elevated",
       ),
       children: p.jsx(r, { className: "size-3" }),
     }),
@@ -176927,22 +176927,22 @@ function Fhn({ toolCallState: e }) {
     return null;
   const O = b
     ? p.jsx($a, {
-        className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--codely-color-status-danger-default)]",
+        className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--gamecowork-color-status-danger-default)]",
         "aria-hidden": !0,
       })
     : x
       ? p.jsx(lm, {
-          className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--codely-color-status-success-default)]",
+          className: "h-3.5 w-3.5 flex-shrink-0 text-[var(--gamecowork-color-status-success-default)]",
           "aria-hidden": !0,
         })
       : p.jsx(Ec, {});
   return p.jsxs("div", {
     "data-testid": "execute-csharp-script-card",
     className:
-      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+      "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
     children: [
       p.jsxs("div", {
-        className: "flex items-center justify-between gap-2 px-3 py-1 bg-codely-color-surface-card",
+        className: "flex items-center justify-between gap-2 px-3 py-1 bg-gamecowork-color-surface-card",
         children: [
           p.jsxs("div", {
             className: "flex min-w-0 flex-col overflow-hidden gap-[2px]",
@@ -176952,20 +176952,20 @@ function Fhn({ toolCallState: e }) {
                 children: [
                   O,
                   p.jsx("span", {
-                    className: "text-xs font-medium leading-4 text-codely-color-text-default truncate",
+                    className: "text-xs font-medium leading-4 text-gamecowork-color-text-default truncate",
                     children: C,
                   }),
                   f &&
                     p.jsx("div", {
                       className:
-                        "border border-solid border-codely-color-border-subtle px-1 text-codely-color-text-secondary text-xs rounded-sm",
+                        "border border-solid border-gamecowork-color-border-subtle px-1 text-gamecowork-color-text-secondary text-xs rounded-sm",
                       children: f,
                     }),
                 ],
               }),
               g &&
                 p.jsx("div", {
-                  className: "text-nowrap text-codely-color-text-secondary text-xs truncate",
+                  className: "text-nowrap text-gamecowork-color-text-secondary text-xs truncate",
                   children: g,
                 }),
             ],
@@ -176975,7 +176975,7 @@ function Fhn({ toolCallState: e }) {
             children: [
               p.jsxs("div", {
                 className:
-                  "inline-flex items-center rounded bg-codely-color-surface-primary border border-codely-color-border-subtle p-0.5 gap-0.5",
+                  "inline-flex items-center rounded bg-gamecowork-color-surface-primary border border-gamecowork-color-border-subtle p-0.5 gap-0.5",
                 children: [
                   p.jsx(r4e, { active: n === "log", onClick: () => r("log"), label: "Log view", Icon: X5e }),
                   p.jsx(r4e, { active: n === "code", onClick: () => r("code"), label: "Code view", Icon: Xy }),
@@ -176987,12 +176987,12 @@ function Fhn({ toolCallState: e }) {
         ],
       }),
       p.jsxs("div", {
-        className: "relative min-h-12 bg-codely-color-surface-primary",
+        className: "relative min-h-12 bg-gamecowork-color-surface-primary",
         children: [
           A &&
             p.jsx("div", {
               className:
-                "border-0 border-b border-solid border-codely-color-border-subtle bg-codely-color-surface-sunken",
+                "border-0 border-b border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sunken",
               children: a
                 ? p.jsx("video", {
                     src: a,
@@ -177005,7 +177005,7 @@ function Fhn({ toolCallState: e }) {
                     },
                   })
                 : p.jsx("div", {
-                    className: "flex h-16 items-center justify-center px-3 text-xs text-codely-color-text-tertiary",
+                    className: "flex h-16 items-center justify-center px-3 text-xs text-gamecowork-color-text-tertiary",
                     children: o != null ? o : "Loading recorded Game View…",
                   }),
             }),
@@ -177023,27 +177023,27 @@ function Fhn({ toolCallState: e }) {
                       "data-testid": "execute-csharp-result",
                       className: "mb-1.5 text-xs",
                       children: [
-                        p.jsx("span", { className: "text-codely-color-text-tertiary", children: "Result: " }),
-                        p.jsx("span", { className: "font-semibold text-codely-color-text-primary", children: M }),
+                        p.jsx("span", { className: "text-gamecowork-color-text-tertiary", children: "Result: " }),
+                        p.jsx("span", { className: "font-semibold text-gamecowork-color-text-primary", children: M }),
                       ],
                     }),
                   N &&
                     S.length > 0 &&
                     p.jsx("div", {
                       "data-testid": "execute-csharp-status-message",
-                      className: "mb-1.5 text-xs text-codely-color-text-tertiary",
+                      className: "mb-1.5 text-xs text-gamecowork-color-text-tertiary",
                       children: N,
                     }),
                   I.map((K, U) => p.jsx(Phn, { line: K }, `${U}-${K.slice(0, 24)}`)),
                   w != null &&
                     x &&
                     p.jsxs("div", {
-                      className: "mt-2 text-[0.6875rem] text-codely-color-text-tertiary",
+                      className: "mt-2 text-[0.6875rem] text-gamecowork-color-text-tertiary",
                       children: ["Execution time: ", w, " ms"],
                     }),
                   !I.length &&
                     !y &&
-                    p.jsx("div", { className: "text-xs text-codely-color-text-tertiary", children: "No log output." }),
+                    p.jsx("div", { className: "text-xs text-gamecowork-color-text-tertiary", children: "No log output." }),
                 ],
               }),
             }),
@@ -179164,7 +179164,7 @@ function Gce({ src: e, alt: t = "", onClose: n }) {
             p.jsx("button", {
               onClick: n,
               className:
-                "absolute -right-4 -top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border-none cursor-pointer bg-codely-color-text-default text-codely-color-surface-elevated transition-colors hover:bg-codely-color-logo",
+                "absolute -right-4 -top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border-none cursor-pointer bg-gamecowork-color-text-default text-gamecowork-color-surface-elevated transition-colors hover:bg-gamecowork-color-logo",
               children: p.jsx(q9e, { className: "h-3.5 w-3.5" }),
             }),
             p.jsx("div", {
@@ -179204,13 +179204,13 @@ function h4e({ asset: e }) {
     children: [
       p.jsxs("div", {
         className:
-          "inline-flex flex-col overflow-hidden rounded-lg border-[0.0625rem] border-solid border-codely-color-border-subtle p-2 pb-0 bg-codely-color-surface-card w-36",
+          "inline-flex flex-col overflow-hidden rounded-lg border-[0.0625rem] border-solid border-gamecowork-color-border-subtle p-2 pb-0 bg-gamecowork-color-surface-card w-36",
         children: [
           p.jsx(tr, {
             text: e.description || void 0,
             style: { maxWidth: "16rem" },
             children: p.jsxs("div", {
-              className: `relative flex h-36 w-36 items-center justify-center bg-codely-color-surface-sunken p-0 rounded overflow-hidden${o && !r ? " cursor-pointer" : ""}`,
+              className: `relative flex h-36 w-36 items-center justify-center bg-gamecowork-color-surface-sunken p-0 rounded overflow-hidden${o && !r ? " cursor-pointer" : ""}`,
               onClick: () => o && !r && n(!0),
               children: [
                 o &&
@@ -179225,26 +179225,26 @@ function h4e({ asset: e }) {
                   !r &&
                   p.jsx("div", {
                     className: "flex h-36 w-full items-center justify-center",
-                    children: p.jsx(a4e, { className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                    children: p.jsx(a4e, { className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
                   }),
                 r &&
                   p.jsx("div", {
                     className: "flex h-36 w-full items-center justify-center",
-                    children: p.jsx(Bce, { className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                    children: p.jsx(Bce, { className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
                   }),
               ],
             }),
           }),
           p.jsx("div", {
-            className: "flex flex-col overflow-hidden bg-codely-color-surface-card",
+            className: "flex flex-col overflow-hidden bg-gamecowork-color-surface-card",
             children: p.jsxs("div", {
               className: "flex items-center gap-2 py-2",
               children: [
-                p.jsx(a4e, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" }),
+                p.jsx(a4e, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" }),
                 p.jsx(tr, {
                   text: e.name,
                   children: p.jsx("span", {
-                    className: "min-w-0 shrink truncate text-xs text-codely-color-text-default",
+                    className: "min-w-0 shrink truncate text-xs text-gamecowork-color-text-default",
                     children: e.name,
                   }),
                 }),
@@ -179283,7 +179283,7 @@ function r0n({ toolCallState: e }) {
   return null;
 }
 const a0n =
-    "border-b-[0.0625rem] border-x-0 border-t-0 border-solid border-codely-color-border-subtle bg-codely-color-surface-elevated",
+    "border-b-[0.0625rem] border-x-0 border-t-0 border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-elevated",
   i0n = { message: rKe, raw: X5e, data: Xy },
   o0n = { message: "Message view", raw: "Raw view", data: "Data view" };
 function s0n({ active: e, onClick: t, label: n, Icon: r }) {
@@ -179295,17 +179295,17 @@ function s0n({ active: e, onClick: t, label: n, Icon: r }) {
     "aria-pressed": e,
     "aria-label": n,
     className: nt(
-      "flex h-5 w-6 p-0 items-center justify-center rounded-sm border-none bg-codely-color-surface-primary text-codely-color-text-secondary hover:bg-codely-color-surface-elevated cursor-pointer",
-      e && "bg-codely-color-surface-elevated",
+      "flex h-5 w-6 p-0 items-center justify-center rounded-sm border-none bg-gamecowork-color-surface-primary text-gamecowork-color-text-secondary hover:bg-gamecowork-color-surface-elevated cursor-pointer",
+      e && "bg-gamecowork-color-surface-elevated",
     ),
     children: p.jsx(r, { className: "size-3" }),
   });
 }
 const l0n = {
-  default: "bg-codely-color-surface-elevated text-codely-color-text-secondary",
-  success: "bg-codely-color-status-success-default/15 text-codely-color-status-success-default",
-  warning: "bg-codely-color-status-warning-default/15 text-codely-color-status-warning-default",
-  error: "bg-codely-color-status-danger-default/15 text-codely-color-status-danger-default",
+  default: "bg-gamecowork-color-surface-elevated text-gamecowork-color-text-secondary",
+  success: "bg-gamecowork-color-status-success-default/15 text-gamecowork-color-status-success-default",
+  warning: "bg-gamecowork-color-status-warning-default/15 text-gamecowork-color-status-warning-default",
+  error: "bg-gamecowork-color-status-danger-default/15 text-gamecowork-color-status-danger-default",
 };
 function c0n({ badge: e }) {
   return p.jsx("span", {
@@ -179326,11 +179326,11 @@ function d0n(e) {
   }
 }
 const m4e = {
-  error: "text-codely-color-status-danger-default",
-  exception: "text-codely-color-status-danger-default",
-  warning: "text-codely-color-status-warning-default",
-  assert: "text-codely-color-status-warning-default",
-  log: "text-codely-color-text-tertiary",
+  error: "text-gamecowork-color-status-danger-default",
+  exception: "text-gamecowork-color-status-danger-default",
+  warning: "text-gamecowork-color-status-warning-default",
+  assert: "text-gamecowork-color-status-warning-default",
+  log: "text-gamecowork-color-text-tertiary",
 };
 function u0n({ entry: e }) {
   var c;
@@ -179353,13 +179353,13 @@ function u0n({ entry: e }) {
     children: [
       p.jsx(o, { className: `h-3.5 w-3.5 shrink-0 ${s}` }),
       p.jsxs("span", {
-        className: `min-w-0 flex-1 text-codely-color-text-secondary whitespace-pre-wrap break-words ${t ? "" : "max-h-[1rem] overflow-hidden"}`,
+        className: `min-w-0 flex-1 text-gamecowork-color-text-secondary whitespace-pre-wrap break-words ${t ? "" : "max-h-[1rem] overflow-hidden"}`,
         children: [
           e.message,
           t &&
             e.stackTrace &&
             p.jsxs("span", {
-              className: "text-codely-color-text-tertiary",
+              className: "text-gamecowork-color-text-tertiary",
               children: [
                 `
 `,
@@ -179370,7 +179370,7 @@ function u0n({ entry: e }) {
       }),
       l &&
         p.jsx("span", {
-          className: `shrink-0 text-codely-color-text-tertiary transition-opacity ${r ? "opacity-100" : "opacity-0"}`,
+          className: `shrink-0 text-gamecowork-color-text-tertiary transition-opacity ${r ? "opacity-100" : "opacity-0"}`,
           children: t ? p.jsx(Ao, { className: "h-3 w-3" }) : p.jsx(wc, { className: "h-3 w-3" }),
         }),
     ],
@@ -179389,7 +179389,7 @@ function p0n({ raw: e }) {
           e.truncated &&
             p.jsxs("div", {
               className:
-                "text-[0.625rem] text-codely-color-text-secondary border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-codely-color-border-subtle pt-1 mt-1",
+                "text-[0.625rem] text-gamecowork-color-text-secondary border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-gamecowork-color-border-subtle pt-1 mt-1",
               children: [
                 "Showing ",
                 e.truncated.showing,
@@ -179407,7 +179407,7 @@ function h0n({ item: e }) {
   return p.jsx("div", {
     className: "flex items-center gap-1.5 text-xs min-h-4",
     children: p.jsx("span", {
-      className: "min-w-0 flex-1 text-codely-color-text-secondary truncate",
+      className: "min-w-0 flex-1 text-gamecowork-color-text-secondary truncate",
       children: e.label,
     }),
   });
@@ -179426,9 +179426,9 @@ function m0n({ raw: e }) {
   });
 }
 const f0n = {
-  stopped: "text-codely-color-text-secondary",
-  playing: "text-codely-color-status-success-default",
-  paused: "text-codely-color-status-warning-default",
+  stopped: "text-gamecowork-color-text-secondary",
+  playing: "text-gamecowork-color-status-success-default",
+  paused: "text-gamecowork-color-status-warning-default",
 };
 function g0n({ raw: e }) {
   var t;
@@ -179440,7 +179440,7 @@ function g0n({ raw: e }) {
         p.jsxs("div", {
           className: "flex items-center gap-1.5",
           children: [
-            p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Play Mode" }),
+            p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Play Mode" }),
             p.jsx("span", {
               className: (t = f0n[e.playMode]) != null ? t : "",
               children: e.playMode.charAt(0).toUpperCase() + e.playMode.slice(1),
@@ -179452,12 +179452,12 @@ function g0n({ raw: e }) {
             className: "flex items-center gap-1.5",
             children: [
               p.jsxs("span", {
-                className: "text-codely-color-status-warning-default",
+                className: "text-gamecowork-color-status-warning-default",
                 children: [e.isCompiling ? "Compiling" : "Updating", "…"],
               }),
               e.compilationStatus &&
                 p.jsxs("span", {
-                  className: "text-codely-color-text-tertiary",
+                  className: "text-gamecowork-color-text-tertiary",
                   children: ["(", e.compilationStatus, ")"],
                 }),
             ],
@@ -179466,9 +179466,9 @@ function g0n({ raw: e }) {
           p.jsxs("div", {
             className: "flex items-center gap-1.5",
             children: [
-              p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Scene" }),
+              p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Scene" }),
               p.jsx("span", {
-                className: "text-codely-color-text-secondary truncate",
+                className: "text-gamecowork-color-text-secondary truncate",
                 children: e.scene.path || "(untitled)",
               }),
             ],
@@ -179477,22 +179477,22 @@ function g0n({ raw: e }) {
           p.jsxs("div", {
             className: "flex items-center gap-1.5",
             children: [
-              p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Selection" }),
-              p.jsx("span", { className: "text-codely-color-text-secondary truncate", children: e.selection }),
+              p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Selection" }),
+              p.jsx("span", { className: "text-gamecowork-color-text-secondary truncate", children: e.selection }),
             ],
           }),
         e.consoleErrors > 0 &&
           p.jsxs("div", {
             className: "flex items-center gap-1.5",
             children: [
-              p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Console" }),
+              p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Console" }),
               p.jsxs("span", {
-                className: "text-codely-color-status-danger-default",
+                className: "text-gamecowork-color-status-danger-default",
                 children: [e.consoleErrors, " error", e.consoleErrors > 1 ? "s" : ""],
               }),
               e.consoleUnread > e.consoleErrors &&
                 p.jsxs("span", {
-                  className: "text-codely-color-text-tertiary",
+                  className: "text-gamecowork-color-text-tertiary",
                   children: ["(", e.consoleUnread, " unread)"],
                 }),
             ],
@@ -179501,9 +179501,9 @@ function g0n({ raw: e }) {
           p.jsxs("div", {
             className: "flex items-center gap-1.5",
             children: [
-              p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Pending" }),
+              p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Pending" }),
               p.jsxs("span", {
-                className: "text-codely-color-status-warning-default",
+                className: "text-gamecowork-color-status-warning-default",
                 children: [e.pendingOperations, " operation", e.pendingOperations > 1 ? "s" : ""],
               }),
             ],
@@ -179512,8 +179512,8 @@ function g0n({ raw: e }) {
           p.jsxs("div", {
             className: "flex items-center gap-1.5",
             children: [
-              p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "SRP" }),
-              p.jsx("span", { className: "text-codely-color-text-secondary", children: e.projectSrp }),
+              p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "SRP" }),
+              p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: e.projectSrp }),
             ],
           }),
       ],
@@ -179529,18 +179529,18 @@ function y0n({ raw: e }) {
         p.jsxs("div", {
           className: "flex items-center gap-1.5",
           children: [
-            p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Tool" }),
-            p.jsx("span", { className: "text-codely-color-text-secondary", children: e.activeTool }),
+            p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Tool" }),
+            p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: e.activeTool }),
             e.isCustom && p.jsx(c0n, { badge: { text: "Custom", variant: "default" } }),
           ],
         }),
         p.jsxs("div", {
           className: "flex items-center gap-1.5",
           children: [
-            p.jsx("span", { className: "text-codely-color-text-tertiary shrink-0", children: "Pivot" }),
-            p.jsx("span", { className: "text-codely-color-text-secondary", children: e.pivotMode }),
-            p.jsx("span", { className: "text-codely-color-text-tertiary", children: "/" }),
-            p.jsx("span", { className: "text-codely-color-text-secondary", children: e.pivotRotation }),
+            p.jsx("span", { className: "text-gamecowork-color-text-tertiary shrink-0", children: "Pivot" }),
+            p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: e.pivotMode }),
+            p.jsx("span", { className: "text-gamecowork-color-text-tertiary", children: "/" }),
+            p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: e.pivotRotation }),
           ],
         }),
       ],
@@ -179554,16 +179554,16 @@ function _0n({ step: e }) {
     className: "flex items-start gap-0.5 text-xs",
     children: [
       e.success
-        ? p.jsx(i3e, { className: "!text-xs !h-4 text-codely-color-status-success-default" })
-        : p.jsx(R5e, { className: "!text-xs !h-4 text-codely-color-status-danger-default" }),
+        ? p.jsx(i3e, { className: "!text-xs !h-4 text-gamecowork-color-status-success-default" })
+        : p.jsx(R5e, { className: "!text-xs !h-4 text-gamecowork-color-status-danger-default" }),
       p.jsxs("span", {
         className: "flex min-w-0 flex-1 break-words",
         children: [
           p.jsxs("span", {
-            className: "flex text-codely-color-text-default",
+            className: "flex text-gamecowork-color-text-default",
             children: [t("unity.unityInput.stepPrefix", { step: e.step }), " "],
           }),
-          p.jsx("span", { className: "text-codely-color-text-secondary", children: n }),
+          p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: n }),
         ],
       }),
     ],
@@ -179627,7 +179627,7 @@ function x0n({ output: e }) {
           className: "absolute top-2 right-2 z-10 opacity-70 hover:opacity-100 transition-opacity",
           children: p.jsx("div", {
             className:
-              "inline-flex items-center rounded bg-codely-color-surface-primary border border-solid border-codely-color-border-subtle p-0.5 gap-1",
+              "inline-flex items-center rounded bg-gamecowork-color-surface-primary border border-solid border-gamecowork-color-border-subtle p-0.5 gap-1",
             children: o.map((g) =>
               p.jsx(s0n, { active: l === g, onClick: () => c(g), label: o0n[g], Icon: i0n[g] }, g),
             ),
@@ -179655,7 +179655,7 @@ function x0n({ output: e }) {
             })
           : p.jsx("div", {
               className:
-                "min-h-6 flex items-center overflow-hidden p-2 text-xs text-codely-color-text-secondary whitespace-pre-wrap break-words",
+                "min-h-6 flex items-center overflow-hidden p-2 text-xs text-gamecowork-color-text-secondary whitespace-pre-wrap break-words",
               children: e.message,
             }),
     ],
@@ -179667,7 +179667,7 @@ function hf({ prefix: e, json: t, toolName: n, action: r, parsedArgs: a }) {
     ? p.jsx(x0n, { output: i })
     : e
       ? p.jsx("div", {
-          className: "bg-codely-color-surface-elevated p-2 text-codely-color-text-secondary text-xs",
+          className: "bg-gamecowork-color-surface-elevated p-2 text-gamecowork-color-text-secondary text-xs",
           children: e,
         })
       : null;
@@ -179697,7 +179697,7 @@ function Ko({ label: e, value: t }) {
     children: [
       p.jsx("span", {
         className:
-          "shrink-0 whitespace-nowrap rounded bg-codely-color-surface-disabled px-1 py-0.5 text-[0.625rem] text-codely-color-text-tertiary",
+          "shrink-0 whitespace-nowrap rounded bg-gamecowork-color-surface-disabled px-1 py-0.5 text-[0.625rem] text-gamecowork-color-text-tertiary",
         children: e,
       }),
       p.jsx(tr, {
@@ -179705,7 +179705,7 @@ function Ko({ label: e, value: t }) {
         placement: "top",
         style: { maxWidth: "320px", textAlign: "left", overflowWrap: "break-word", whiteSpace: "pre-wrap" },
         children: p.jsx("span", {
-          className: "min-w-0 truncate text-[0.625rem] text-codely-color-text-secondary capitalize",
+          className: "min-w-0 truncate text-[0.625rem] text-gamecowork-color-text-secondary capitalize",
           children: t,
         }),
       }),
@@ -180134,14 +180134,14 @@ function L0n({ toolCallState: e }) {
     I = r && C ? `${i}rem` : `${jH}rem`;
   return p.jsxs("div", {
     className:
-      "inline-flex flex-col overflow-hidden rounded-lg  border-[0.0625rem] border-solid border-codely-color-border-subtle p-2 pb-0 bg-codely-color-surface-card",
+      "inline-flex flex-col overflow-hidden rounded-lg  border-[0.0625rem] border-solid border-gamecowork-color-border-subtle p-2 pb-0 bg-gamecowork-color-surface-card",
     style: { width: I },
     children: [
       p.jsx(tr, {
         text: f.prompt || void 0,
         style: { maxWidth: "16rem" },
         children: p.jsxs("div", {
-          className: `relative flex items-center justify-center bg-codely-color-surface-sunken p-0 rounded overflow-hidden ${r && C ? "cursor-pointer" : ""}`,
+          className: `relative flex items-center justify-center bg-gamecowork-color-surface-sunken p-0 rounded overflow-hidden ${r && C ? "cursor-pointer" : ""}`,
           onClick: () => r && C && d(!0),
           children: [
             f.iframeSrc &&
@@ -180155,7 +180155,7 @@ function L0n({ toolCallState: e }) {
               S &&
               p.jsx("div", {
                 className: "flex h-36 w-full items-center justify-center",
-                children: p.jsx(NSe, { shimmer: !0, className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                children: p.jsx(NSe, { shimmer: !0, className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
               }),
             !f.iframeSrc &&
               C &&
@@ -180184,19 +180184,19 @@ function L0n({ toolCallState: e }) {
                     style: { opacity: 0.5 },
                     children: p.jsx("path", {
                       d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-                      stroke: "var(--codely-color-status-success-default)",
+                      stroke: "var(--gamecowork-color-status-success-default)",
                       strokeWidth: "1.5",
                       strokeLinecap: "round",
                       strokeLinejoin: "round",
                     }),
                   }),
                   p.jsx("span", {
-                    className: "text-xs text-codely-color-accent-default",
+                    className: "text-xs text-gamecowork-color-accent-default",
                     children: "Generation completed",
                   }),
                   (f.assetPath || f.prefabPath) &&
                     p.jsx("span", {
-                      className: "max-w-full truncate px-4 text-[0.625rem] text-codely-color-text-secondary",
+                      className: "max-w-full truncate px-4 text-[0.625rem] text-gamecowork-color-text-secondary",
                       children: f.assetPath || f.prefabPath,
                     }),
                 ],
@@ -180205,7 +180205,7 @@ function L0n({ toolCallState: e }) {
               x &&
               p.jsx("div", {
                 className: "flex h-36 w-full items-center justify-center",
-                children: p.jsx(Bce, { className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                children: p.jsx(Bce, { className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
               }),
             !f.iframeSrc &&
               !S &&
@@ -180214,13 +180214,13 @@ function L0n({ toolCallState: e }) {
               !r &&
               p.jsx("div", {
                 className: "flex h-36 w-full items-center justify-center",
-                children: p.jsx(NSe, { shimmer: !0, className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                children: p.jsx(NSe, { shimmer: !0, className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
               }),
           ],
         }),
       }),
       p.jsxs("div", {
-        className: "flex flex-col overflow-hidden bg-codely-color-surface-card",
+        className: "flex flex-col overflow-hidden bg-gamecowork-color-surface-card",
         children: [
           p.jsxs("div", {
             className: `flex items-center gap-2 py-2 select-none ${A ? "cursor-pointer" : ""}`,
@@ -180228,32 +180228,32 @@ function L0n({ toolCallState: e }) {
               A && (n(), l(!s));
             },
             children: [
-              p.jsx(qln, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" }),
+              p.jsx(qln, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" }),
               p.jsx(tr, {
                 text: S ? "Processing..." : T,
                 children: p.jsx("span", {
-                  className: "min-w-0 shrink truncate text-xs text-codely-color-text-secondary",
+                  className: "min-w-0 shrink truncate text-xs text-gamecowork-color-text-secondary",
                   children: S ? "Processing..." : T,
                 }),
               }),
               A &&
                 (s
-                  ? p.jsx(Ao, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" })
-                  : p.jsx(wc, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" })),
+                  ? p.jsx(Ao, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" })
+                  : p.jsx(wc, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" })),
               x &&
                 p.jsx(tr, {
                   text: f.message || f.progressMessage || "Generation failed",
                   children: p.jsx("span", {
                     className:
-                      "ml-auto shrink-0 rounded-full bg-codely-color-status-danger-muted px-2 py-0.5 text-[0.625rem] text-codely-color-status-danger-default",
+                      "ml-auto shrink-0 rounded-full bg-gamecowork-color-status-danger-muted px-2 py-0.5 text-[0.625rem] text-gamecowork-color-status-danger-default",
                     children: "Error",
                   }),
                 }),
               S &&
                 p.jsx("span", {
                   className:
-                    "ml-auto flex shrink-0 items-center gap-1 text-[0.625rem] text-codely-color-text-secondary",
-                  children: p.jsx(ai, { className: "h-3.5 w-3.5 animate-spin text-codely-color-text-secondary" }),
+                    "ml-auto flex shrink-0 items-center gap-1 text-[0.625rem] text-gamecowork-color-text-secondary",
+                  children: p.jsx(ai, { className: "h-3.5 w-3.5 animate-spin text-gamecowork-color-text-secondary" }),
                 }),
               C &&
                 M &&
@@ -180262,13 +180262,13 @@ function L0n({ toolCallState: e }) {
                     (O.stopPropagation(), L());
                   },
                   className:
-                    "ml-auto flex shrink-0 cursor-pointer items-center gap-1 text-[0.625rem] font-medium text-codely-color-accent-default",
+                    "ml-auto flex shrink-0 cursor-pointer items-center gap-1 text-[0.625rem] font-medium text-gamecowork-color-accent-default",
                   children: [p.jsx(ncn, { className: "h-3.5 w-3.5" }), "Open"],
                 }),
             ],
           }),
           p.jsxs("div", {
-            className: `flex flex-col gap-2 py-2 border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-codely-color-border-subtle ${s && A ? "" : "hidden"}`,
+            className: `flex flex-col gap-2 py-2 border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-gamecowork-color-border-subtle ${s && A ? "" : "hidden"}`,
             children: [
               f.command && p.jsx(Ko, { label: "Command", value: Kne(f.command) || f.command }),
               f.modelId && p.jsx(Ko, { label: "Model ID", value: f.modelId }),
@@ -180282,11 +180282,11 @@ function L0n({ toolCallState: e }) {
                   children: [
                     p.jsx("span", {
                       className:
-                        "shrink-0 whitespace-nowrap rounded px-1 text-[0.625rem] !text-codely-color-status-danger-default",
+                        "shrink-0 whitespace-nowrap rounded px-1 text-[0.625rem] !text-gamecowork-color-status-danger-default",
                       children: "Error",
                     }),
                     p.jsx("span", {
-                      className: "min-w-0 break-words text-[0.625rem] text-codely-color-status-danger-default",
+                      className: "min-w-0 break-words text-[0.625rem] text-gamecowork-color-status-danger-default",
                       children: f.message || f.progressMessage,
                     }),
                   ],
@@ -180501,11 +180501,11 @@ function W0n({ toolCallState: e }) {
     ? null
     : p.jsxs("div", {
         className:
-          "inline-flex flex-col overflow-hidden rounded-lg border-[0.0625rem] border-solid border-codely-color-border-subtle p-2 pb-0 bg-codely-color-surface-card",
+          "inline-flex flex-col overflow-hidden rounded-lg border-[0.0625rem] border-solid border-gamecowork-color-border-subtle p-2 pb-0 bg-gamecowork-color-surface-card",
         style: { width: `${i}rem` },
         children: [
           p.jsxs("div", {
-            className: `relative flex items-center justify-center bg-codely-color-surface-sunken p-0 rounded overflow-hidden ${r && !w ? "cursor-pointer" : ""}`,
+            className: `relative flex items-center justify-center bg-gamecowork-color-surface-sunken p-0 rounded overflow-hidden ${r && !w ? "cursor-pointer" : ""}`,
             onClick: () => r && !w && h(!0),
             children: [
               r &&
@@ -180536,17 +180536,17 @@ function W0n({ toolCallState: e }) {
                 !y &&
                 p.jsx("div", {
                   className: "flex h-36 w-full items-center justify-center",
-                  children: p.jsx(Jln, { shimmer: !0, className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                  children: p.jsx(Jln, { shimmer: !0, className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
                 }),
               y &&
                 p.jsx("div", {
                   className: "flex h-36 w-full items-center justify-center",
-                  children: p.jsx(Bce, { className: "h-10 w-10 text-codely-color-surface-elevated" }),
+                  children: p.jsx(Bce, { className: "h-10 w-10 text-gamecowork-color-surface-elevated" }),
                 }),
             ],
           }),
           p.jsxs("div", {
-            className: "flex flex-col overflow-hidden bg-codely-color-surface-card",
+            className: "flex flex-col overflow-hidden bg-gamecowork-color-surface-card",
             children: [
               p.jsxs("div", {
                 className: `flex items-center gap-2 py-2 select-none ${O ? "cursor-pointer" : ""}`,
@@ -180554,31 +180554,31 @@ function W0n({ toolCallState: e }) {
                   O && (n(), d(!c));
                 },
                 children: [
-                  p.jsx(zln, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" }),
+                  p.jsx(zln, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" }),
                   p.jsx(tr, {
                     text: B,
                     children: p.jsx("span", {
-                      className: "min-w-0 shrink truncate text-xs text-codely-color-text-default",
+                      className: "min-w-0 shrink truncate text-xs text-gamecowork-color-text-default",
                       children: B,
                     }),
                   }),
                   O &&
                     (c
-                      ? p.jsx(Ao, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" })
-                      : p.jsx(wc, { className: "h-3.5 w-3.5 shrink-0 text-codely-color-text-secondary" })),
+                      ? p.jsx(Ao, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" })
+                      : p.jsx(wc, { className: "h-3.5 w-3.5 shrink-0 text-gamecowork-color-text-secondary" })),
                   y &&
                     p.jsx(tr, {
                       text: q != null ? q : "Screenshot failed",
                       children: p.jsx("span", {
                         className:
-                          "ml-auto shrink-0 rounded-full bg-codely-color-status-danger-muted px-2 py-0.5 text-[0.625rem] !text-codely-color-status-danger-default",
+                          "ml-auto shrink-0 rounded-full bg-gamecowork-color-status-danger-muted px-2 py-0.5 text-[0.625rem] !text-gamecowork-color-status-danger-default",
                         children: "Error",
                       }),
                     }),
                 ],
               }),
               p.jsxs("div", {
-                className: `flex flex-col gap-2 py-2 border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-codely-color-border-subtle ${c && O ? "" : "hidden"}`,
+                className: `flex flex-col gap-2 py-2 border-t-[0.0625rem] border-x-0 border-b-0 border-solid border-gamecowork-color-border-subtle ${c && O ? "" : "hidden"}`,
                 children: [
                   M && p.jsx(Ko, { label: "Path", value: M }),
                   N && p.jsx(Ko, { label: "Filename", value: N }),
@@ -180594,11 +180594,11 @@ function W0n({ toolCallState: e }) {
                       children: [
                         p.jsx("span", {
                           className:
-                            "shrink-0 whitespace-nowrap rounded px-1 text-[0.625rem] !text-codely-color-status-danger-default",
+                            "shrink-0 whitespace-nowrap rounded px-1 text-[0.625rem] !text-gamecowork-color-status-danger-default",
                           children: "Error",
                         }),
                         p.jsx("span", {
-                          className: "min-w-0 break-words text-[0.625rem] text-codely-color-status-danger-default",
+                          className: "min-w-0 break-words text-[0.625rem] text-gamecowork-color-status-danger-default",
                           children: q,
                         }),
                       ],
@@ -180771,19 +180771,19 @@ function Q0n({ tool: e, toolCallState: t, className: n }) {
       l,
       d &&
         p.jsx("span", {
-          className: "assistant-text flex-shrink-0 !text-codely-color-text-tertiary font-bold",
+          className: "assistant-text flex-shrink-0 !text-gamecowork-color-text-tertiary font-bold",
           children: d,
         }),
       C &&
         p.jsx("span", {
           className:
-            "flex shrink-0 items-center rounded-sm pl-1 py-0.5 text-xs text-codely-color-text-secondary gap-1 mx-0.5",
+            "flex shrink-0 items-center rounded-sm pl-1 py-0.5 text-xs text-gamecowork-color-text-secondary gap-1 mx-0.5",
           children: p.jsx(xce, { className: "h-2 w-2" }),
         }),
       C &&
         p.jsx("span", {
           className: "assistant-muted-text min-w-0 w-full max-w-full flex-1 truncate",
-          style: { color: "var(--codely-color-tertiary)" },
+          style: { color: "var(--gamecowork-color-tertiary)" },
           children: C,
         }),
     ],
@@ -180810,21 +180810,21 @@ function Z0n(e) {
 }
 function Qne({ label: e, value: t, maxWidth: n }) {
   return p.jsxs("div", {
-    className: "flex w-fit items-center gap-2 px-1 bg-codely-color-surface-disabled rounded overflow-hidden",
+    className: "flex w-fit items-center gap-2 px-1 bg-gamecowork-color-surface-disabled rounded overflow-hidden",
     style: n ? { maxWidth: n } : void 0,
     children: [
       p.jsx("span", {
         className:
-          "shrink-0 whitespace-nowrap rounded py-0.5 font-semibold text-[0.625rem] text-codely-color-text-tertiary uppercase",
+          "shrink-0 whitespace-nowrap rounded py-0.5 font-semibold text-[0.625rem] text-gamecowork-color-text-tertiary uppercase",
         children: e,
       }),
-      p.jsx(XAe, { className: "h-3 w-[0.125rem] shrink-0 text-codely-color-border-strong" }),
+      p.jsx(XAe, { className: "h-3 w-[0.125rem] shrink-0 text-gamecowork-color-border-strong" }),
       p.jsx(tr, {
         text: Z0n(t),
         placement: "top",
         style: { maxWidth: "320px", textAlign: "left", overflowWrap: "break-word", whiteSpace: "pre-wrap" },
         children: p.jsx("span", {
-          className: "min-w-0 truncate text-[0.625rem] text-codely-color-text-secondary",
+          className: "min-w-0 truncate text-[0.625rem] text-gamecowork-color-text-secondary",
           children: t,
         }),
       }),
@@ -180837,7 +180837,7 @@ function X0n({ prefix: e, json: t }) {
   return n
     ? p.jsx("div", {
         className:
-          "border-t-[0.0625rem] border-x-0 border-b-0 border-codely-color-border-subtle border-solid bg-codely-color-surface-elevated p-2 text-codely-color-text-secondary",
+          "border-t-[0.0625rem] border-x-0 border-b-0 border-gamecowork-color-border-subtle border-solid bg-gamecowork-color-surface-elevated p-2 text-gamecowork-color-text-secondary",
         children: n,
       })
     : null;
@@ -180850,8 +180850,8 @@ function J0n({ tool: e, toolCallState: t, hasDetails: n, expanded: r, onToggleEx
       p.jsx(Q0n, { className: "cursor-pointer", tool: e, toolCallState: t }),
       n &&
         (r
-          ? p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" })
-          : p.jsx(wc, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" })),
+          ? p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" })
+          : p.jsx(wc, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" })),
     ],
   });
 }
@@ -180867,12 +180867,12 @@ function emn({ toolCallState: e, outputComponent: t }) {
     u = s != null || l != null;
   return p.jsxs("div", {
     className:
-      "flex flex-col text-xs border-[0.0625rem] border-solid border-codely-color-border-subtle rounded overflow-hidden",
+      "flex flex-col text-xs border-[0.0625rem] border-solid border-gamecowork-color-border-subtle rounded overflow-hidden",
     children: [
       u && p.jsx(d, { prefix: s, json: l, toolName: o, action: c, parsedArgs: e.parsedArgs }),
       i.length > 0 &&
         p.jsx("div", {
-          className: nt("bg-codely-color-surface-card p-2 cursor-pointer select-none"),
+          className: nt("bg-gamecowork-color-surface-card p-2 cursor-pointer select-none"),
           onClick: () => {
             (a(), r(!n));
           },
@@ -180883,7 +180883,7 @@ function emn({ toolCallState: e, outputComponent: t }) {
                   p.jsxs("div", {
                     className: "flex flex-row items-center gap-1.5",
                     children: [
-                      p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" }),
+                      p.jsx(Ao, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" }),
                       p.jsx(Qne, { label: i[0][0], value: JSON.stringify(i[0][1]) }),
                     ],
                   }),
@@ -180897,7 +180897,7 @@ function emn({ toolCallState: e, outputComponent: t }) {
             : p.jsxs("div", {
                 className: "flex flex-row flex-wrap items-center gap-1.5",
                 children: [
-                  p.jsx(wc, { className: "h-3 w-3 shrink-0 text-codely-color-text-secondary" }),
+                  p.jsx(wc, { className: "h-3 w-3 shrink-0 text-gamecowork-color-text-secondary" }),
                   i.map(([g, y]) => p.jsx(Qne, { label: g, value: JSON.stringify(y), maxWidth: "12rem" }, g)),
                 ],
               }),
@@ -180985,17 +180985,17 @@ function nmn({ toolCallState: e, historyIndex: t }) {
             defaultExpanded: !0,
             children: p.jsxs("div", {
               className:
-                "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-codely-color-border-subtle",
+                "rounded-[0.2rem] overflow-hidden flex min-w-0 flex-col border-[0.0625rem] border-solid border-gamecowork-color-border-subtle",
               children: [
                 p.jsxs("div", {
-                  className: "flex items-center justify-between gap-2 px-3 py-2 bg-codely-color-surface-card",
+                  className: "flex items-center justify-between gap-2 px-3 py-2 bg-gamecowork-color-surface-card",
                   children: [
                     p.jsxs("div", {
                       className: "flex min-w-0 flex-1 items-center gap-1",
                       children: [
                         p.jsx(Tc, { width: "14px", height: "14px", filename: x || "script.cs" }),
                         p.jsx("span", {
-                          className: "text-xs font-medium leading-4 text-codely-color-text-default truncate",
+                          className: "text-xs font-medium leading-4 text-gamecowork-color-text-default truncate",
                           title: b,
                           children: x || (o ? "Creating script..." : "Script"),
                         }),
@@ -181005,7 +181005,7 @@ function nmn({ toolCallState: e, historyIndex: t }) {
                   ],
                 }),
                 p.jsx("div", {
-                  className: "relative min-h-12 bg-codely-color-surface-primary",
+                  className: "relative min-h-12 bg-gamecowork-color-surface-primary",
                   children: p.jsx(In, {
                     disableNativeAutoRecalculate: !0,
                     recalculateDeps: [r.contents],
@@ -181014,7 +181014,7 @@ function nmn({ toolCallState: e, historyIndex: t }) {
                     scrollableNodeProps: { ref: s, onScroll: l },
                     children: o
                       ? p.jsx("pre", {
-                          className: `m-0 px-4 py-3 text-xs text-codely-color-text-default ${i ? "whitespace-pre-wrap break-all" : "whitespace-pre"}`,
+                          className: `m-0 px-4 py-3 text-xs text-gamecowork-color-text-default ${i ? "whitespace-pre-wrap break-all" : "whitespace-pre"}`,
                           children: r.contents,
                         })
                       : p.jsx(Ske, { code: r.contents, lang: "csharp", codeWrap: i, maxWidth: f }),
@@ -181278,7 +181278,7 @@ function omn({ messageId: e }) {
         tabIndex: 0,
         "aria-expanded": n,
         className:
-          "flex h-[2rem] w-fit cursor-pointer items-center gap-1 text-xs text-codely-color-text-tertiary transition-colors transition-opacity hover:text-codely-color-text-tertiary-hover hover:opacity-100 focus-visible:text-codely-color-text-tertiary-hover focus-visible:outline-none",
+          "flex h-[2rem] w-fit cursor-pointer items-center gap-1 text-xs text-gamecowork-color-text-tertiary transition-colors transition-opacity hover:text-gamecowork-color-text-tertiary-hover hover:opacity-100 focus-visible:text-gamecowork-color-text-tertiary-hover focus-visible:outline-none",
         style: { opacity: 0.9 },
         onClick: a,
         onKeyDown: (i) => {
@@ -181287,7 +181287,7 @@ function omn({ messageId: e }) {
         children: [
           p.jsx("span", {
             "aria-hidden": !0,
-            className: "inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--codely-color-text-default,#fff)]",
+            className: "inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gamecowork-color-text-default,#fff)]",
           }),
           p.jsx("span", { children: t("chat.rolledBack") }),
           p.jsx("span", {
@@ -181298,7 +181298,7 @@ function omn({ messageId: e }) {
       }),
       n
         ? p.jsx("div", {
-            className: "pb-2 text-xs text-codely-color-text-tertiary",
+            className: "pb-2 text-xs text-gamecowork-color-text-tertiary",
             children: t("chat.rolledBackReason"),
           })
         : null,
@@ -181387,7 +181387,7 @@ function E4e(e) {
                 children: p.jsx(Vg, {
                   text: () => yl(m.message),
                   tooltipPlacement: "bottom",
-                  clipboardIconClassName: "h-3.5 w-3.5 text-codely-color-text-tertiary hover:brightness-125",
+                  clipboardIconClassName: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary hover:brightness-125",
                   checkIconClassName: "h-3.5 w-3.5 text-green-500",
                 }),
               }),
@@ -181408,7 +181408,7 @@ function lmn(e) {
       isCompacted: n,
       className: "flex justify-start thread-message",
       children: p.jsx("div", {
-        className: "flex items-center gap-2 text-codely-color-text-tertiary pt-2 pb-1.5 interrupted-message",
+        className: "flex items-center gap-2 text-gamecowork-color-text-tertiary pt-2 pb-1.5 interrupted-message",
         style: { fontSize: "0.75rem" },
         children: p.jsx("span", {
           children: typeof t.message.content == "string" && t.message.content ? t.message.content : "Interrupted",
@@ -181514,7 +181514,7 @@ function pmn(e) {
           children: p.jsx(Vg, {
             text: () => (d.redactedThinking ? "Thinking content redacted due to safety reasons." : y),
             tooltipPlacement: "bottom",
-            clipboardIconClassName: "h-3.5 w-3.5 text-codely-color-text-tertiary hover:brightness-125",
+            clipboardIconClassName: "h-3.5 w-3.5 text-gamecowork-color-text-tertiary hover:brightness-125",
             checkIconClassName: "h-3.5 w-3.5 text-green-500",
           }),
         }),
@@ -181708,7 +181708,7 @@ function Tmn(e, t) {
   if (e.required_reasons)
     return (r = (n = e.required_reasons[t]) != null ? n : e.required_reasons.en) != null ? r : void 0;
 }
-const zRe = "codely:dismissedProjectExtensions";
+const zRe = "gamecowork:dismissedProjectExtensions";
 function Mmn(e) {
   return e
     .replace(/\\/g, "/")
@@ -182016,7 +182016,7 @@ function Dmn({
       onClick: U,
       children: p.jsx("div", {
         className:
-          "relative flex h-[50rem] max-h-[80vh] w-full max-w-[42.5rem] flex-col overflow-hidden rounded-2xl border border-codely-color-surface-elevated bg-codely-color-surface-primary shadow-lg",
+          "relative flex h-[50rem] max-h-[80vh] w-full max-w-[42.5rem] flex-col overflow-hidden rounded-2xl border border-gamecowork-color-surface-elevated bg-gamecowork-color-surface-primary shadow-lg",
         onClick: (te) => te.stopPropagation(),
         children: p.jsx(XVe, {
           projectName: r,
@@ -182244,7 +182244,7 @@ function GRe() {
   const { t: e } = Rt();
   return p.jsxs("div", {
     className:
-      "flex w-full min-w-0 gap-3 p-3 mb-8 bg-codely-color-surface-newcard rounded-xl items-start justify-between box-border",
+      "flex w-full min-w-0 gap-3 p-3 mb-8 bg-gamecowork-color-surface-newcard rounded-xl items-start justify-between box-border",
     children: [
       p.jsxs("div", {
         className: "flex flex-1 min-w-0 flex-col items-center gap-2 text-center",
@@ -182258,7 +182258,7 @@ function GRe() {
             src: "https://codesearch-plugins.tos-cn-shanghai.volces.com/public/remote-workspace-guide/remote_step_one_light.png",
           }),
           p.jsx("span", {
-            className: "text-codely-color-text-tertiary text-sm break-words whitespace-normal",
+            className: "text-gamecowork-color-text-tertiary text-sm break-words whitespace-normal",
             children: e("remoteFolder.emptyGuide.step1"),
           }),
         ],
@@ -182275,7 +182275,7 @@ function GRe() {
             src: "https://codesearch-plugins.tos-cn-shanghai.volces.com/public/remote-workspace-guide/remote_step_two_light.png",
           }),
           p.jsx("span", {
-            className: "text-codely-color-text-tertiary text-sm break-words whitespace-normal",
+            className: "text-gamecowork-color-text-tertiary text-sm break-words whitespace-normal",
             children: e("remoteFolder.emptyGuide.step2"),
           }),
         ],
@@ -182292,7 +182292,7 @@ function GRe() {
             src: "https://codesearch-plugins.tos-cn-shanghai.volces.com/public/remote-workspace-guide/remote_step_three_light.png",
           }),
           p.jsx("span", {
-            className: "text-codely-color-text-tertiary text-sm break-words whitespace-normal",
+            className: "text-gamecowork-color-text-tertiary text-sm break-words whitespace-normal",
             children: e("remoteFolder.emptyGuide.step3"),
           }),
         ],
@@ -182312,17 +182312,17 @@ function qmn({ onRefresh: e }) {
           className: "flex flex-col items-center justify-center",
           children: [
             p.jsx("span", {
-              className: "text-codely-color-text-primary text-base font-medium leading-1.5 mb-2",
+              className: "text-gamecowork-color-text-primary text-base font-medium leading-1.5 mb-2",
               children: t("remoteFolder.emptyGuide.title"),
             }),
             p.jsx("span", {
-              className: "text-codely-color-text-tertiary text-sm leading-1.3",
+              className: "text-gamecowork-color-text-tertiary text-sm leading-1.3",
               children: t("remoteFolder.emptyGuide.subtitle"),
             }),
             p.jsxs("button", {
               onClick: e,
               className:
-                "flex justify-center items-center cursor-pointer gap-2 w-[6.6875rem] h-8 bg-codely-color-surface-card hover:bg-codely-color-interactive-hover text-codely-color-text-primary rounded-md border border-codely-color-interactive-selected transition-colors text-sm mt-8",
+                "flex justify-center items-center cursor-pointer gap-2 w-[6.6875rem] h-8 bg-gamecowork-color-surface-card hover:bg-gamecowork-color-interactive-hover text-gamecowork-color-text-primary rounded-md border border-gamecowork-color-interactive-selected transition-colors text-sm mt-8",
               children: [t("remoteFolder.emptyGuide.refresh"), p.jsx(IV, { className: "size-4" })],
             }),
           ],
@@ -182343,11 +182343,11 @@ function zmn() {
           className: "flex flex-col items-center justify-center",
           children: [
             p.jsx("span", {
-              className: "text-codely-color-text-primary text-base font-medium leading-1.5 mb-2",
+              className: "text-gamecowork-color-text-primary text-base font-medium leading-1.5 mb-2",
               children: e("remoteFolder.howToAddDeviceTitle"),
             }),
             p.jsx("span", {
-              className: "text-codely-color-text-tertiary text-sm leading-1.3",
+              className: "text-gamecowork-color-text-tertiary text-sm leading-1.3",
               children: e("remoteFolder.emptyGuide.subtitle"),
             }),
           ],
@@ -182528,20 +182528,20 @@ function Hmn({
         p.jsxs("div", {
           ref: x,
           className:
-            "border-codely-color-border-default flex min-h-[2.25rem] items-center gap-2 rounded-lg border border-solid px-2 text-sm overflow-hidden",
+            "border-gamecowork-color-border-default flex min-h-[2.25rem] items-center gap-2 rounded-lg border border-solid px-2 text-sm overflow-hidden",
           children: [
             a &&
               p.jsxs("div", {
                 className: "flex items-center gap-2 flex-shrink-0",
                 children: [
                   p.jsx("span", {
-                    className: `text-codely-color-text-primary ${g ? "" : "cursor-pointer hover:underline"}`,
+                    className: `text-gamecowork-color-text-primary ${g ? "" : "cursor-pointer hover:underline"}`,
                     onClick: () => {
                       g || (y(!0), c(""));
                     },
                     children: a.machineName,
                   }),
-                  p.jsx("span", { className: "text-codely-color-text-secondary", children: "/" }),
+                  p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: "/" }),
                 ],
               }),
             !g &&
@@ -182553,13 +182553,13 @@ function Hmn({
                       className: "flex items-center gap-2 flex-shrink-0",
                       children: [
                         p.jsx("span", {
-                          className: "text-codely-color-text-primary cursor-pointer hover:underline",
+                          className: "text-gamecowork-color-text-primary cursor-pointer hover:underline",
                           onClick: () => {
                             a && (c(""), y(!1), s(a, O.targetPath));
                           },
                           children: O.part,
                         }),
-                        p.jsx("span", { className: "text-codely-color-text-secondary", children: "/" }),
+                        p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: "/" }),
                       ],
                     },
                     O.index,
@@ -182580,11 +182580,11 @@ function Hmn({
                             text: F.map((O) => O.part).join("/"),
                             placement: "top",
                             children: p.jsx("span", {
-                              className: "text-codely-color-text-primary cursor-pointer hover:underline",
+                              className: "text-gamecowork-color-text-primary cursor-pointer hover:underline",
                               children: "...",
                             }),
                           }),
-                          p.jsx("span", { className: "text-codely-color-text-secondary", children: "/" }),
+                          p.jsx("span", { className: "text-gamecowork-color-text-secondary", children: "/" }),
                         ],
                       }),
                     P.map(N),
@@ -182596,7 +182596,7 @@ function Hmn({
               h &&
               p.jsx("input", {
                 className:
-                  "min-w-[100px] h-[1.75rem] flex-1 border-0 bg-transparent text-codely-color-text-default placeholder:text-codely-color-text-disabled text-sm focus:outline-none",
+                  "min-w-[100px] h-[1.75rem] flex-1 border-0 bg-transparent text-gamecowork-color-text-default placeholder:text-gamecowork-color-text-disabled text-sm focus:outline-none",
                 placeholder: f("remoteFolder.filterPlaceholder"),
                 value: l,
                 onChange: (N) => c(N.target.value),
@@ -182606,11 +182606,11 @@ function Hmn({
         }),
         p.jsxs("div", {
           className:
-            "border-codely-color-border-default flex min-h-0 flex-1 overflow-hidden rounded-lg border border-solid",
+            "border-gamecowork-color-border-default flex min-h-0 flex-1 overflow-hidden rounded-lg border border-solid",
           children: [
             p.jsx("div", {
               className:
-                "border-codely-color-border-default flex w-[17.5rem] flex-shrink-0 flex-col border-0 border-r border-solid",
+                "border-gamecowork-color-border-default flex w-[17.5rem] flex-shrink-0 flex-col border-0 border-r border-solid",
               children: p.jsx(In, {
                 className: "min-h-0 flex-1",
                 children: p.jsxs("div", {
@@ -182624,16 +182624,16 @@ function Hmn({
                         "button",
                         {
                           disabled: L,
-                          className: `flex w-full items-center gap-2 rounded-md border-0 px-3 py-2 text-left text-sm text-codely-color-text-default transition-colors ${L ? "cursor-not-allowed opacity-60" : "cursor-pointer"} ${A ? "bg-codely-color-interactive-selected" : "bg-transparent hover:bg-codely-color-interactive-hover"}`,
+                          className: `flex w-full items-center gap-2 rounded-md border-0 px-3 py-2 text-left text-sm text-gamecowork-color-text-default transition-colors ${L ? "cursor-not-allowed opacity-60" : "cursor-pointer"} ${A ? "bg-gamecowork-color-interactive-selected" : "bg-transparent hover:bg-gamecowork-color-interactive-hover"}`,
                           onClick: () => {
                             L || (g || (y(!0), c("")), i(N));
                           },
                           children: [
-                            p.jsx($mn, { className: "size-3.5 flex-shrink-0 text-codely-color-text-tertiary" }),
+                            p.jsx($mn, { className: "size-3.5 flex-shrink-0 text-gamecowork-color-text-tertiary" }),
                             p.jsx(Jne, { text: N.machineName, className: "min-w-0 flex-1" }),
                             L &&
                               p.jsx("span", {
-                                className: "text-codely-color-text-tertiary text-xs capitalize",
+                                className: "text-gamecowork-color-text-tertiary text-xs capitalize",
                                 children: N.status,
                               }),
                           ],
@@ -182666,7 +182666,7 @@ function Hmn({
                                   {
                                     "data-telemetry-id": "remote_root_folder",
                                     className:
-                                      "text-codely-color-text-default hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm",
+                                      "text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm",
                                     onClick: () => {
                                       (c(""), y(!1), s(a, N.path));
                                     },
@@ -182674,7 +182674,7 @@ function Hmn({
                                       className: "flex min-w-0 items-center gap-2",
                                       children: [
                                         p.jsx(C4e, {
-                                          className: "size-3.5 flex-shrink-0 text-codely-color-text-tertiary",
+                                          className: "size-3.5 flex-shrink-0 text-gamecowork-color-text-tertiary",
                                         }),
                                         p.jsx(Jne, { text: N.name }),
                                       ],
@@ -182696,7 +182696,7 @@ function Hmn({
                                   {
                                     "data-telemetry-id": "remote_directory",
                                     className:
-                                      "text-codely-color-text-default hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm",
+                                      "text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm",
                                     onClick: () => {
                                       (c(""), s(a, N.path));
                                     },
@@ -182704,7 +182704,7 @@ function Hmn({
                                       className: "flex min-w-0 items-center gap-2",
                                       children: [
                                         p.jsx(C4e, {
-                                          className: "size-4 flex-shrink-0 text-codely-color-text-tertiary",
+                                          className: "size-4 flex-shrink-0 text-gamecowork-color-text-tertiary",
                                         }),
                                         p.jsx(Jne, { text: N.name }),
                                       ],
@@ -182719,14 +182719,14 @@ function Hmn({
                 !a &&
                   p.jsx("div", {
                     className:
-                      "text-codely-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
+                      "text-gamecowork-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
                     children: f("remoteFolder.selectMachinePlaceholder"),
                   }),
                 a &&
                   u &&
                   p.jsx("div", {
                     className:
-                      "text-codely-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
+                      "text-gamecowork-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
                     children: f("remoteFolder.loadingFolders"),
                   }),
                 a &&
@@ -182737,7 +182737,7 @@ function Hmn({
                     : h.directories.filter((N) => N.name.toLowerCase().includes(l.toLowerCase())).length === 0) &&
                   p.jsx("div", {
                     className:
-                      "text-codely-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
+                      "text-gamecowork-color-text-tertiary pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-sm",
                     children: f(g ? "remoteFolder.noDrivesFound" : "remoteFolder.noSubfolders"),
                   }),
               ],
@@ -182749,13 +182749,13 @@ function Hmn({
           children: [
             p.jsx("button", {
               className:
-                "border-codely-color-border-default text-codely-color-text-secondary hover:text-codely-color-text-primary hover:bg-codely-color-interactive-hover cursor-pointer rounded-md border border-solid bg-transparent px-4 py-2 text-sm font-medium transition-colors",
+                "border-gamecowork-color-border-default text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover cursor-pointer rounded-md border border-solid bg-transparent px-4 py-2 text-sm font-medium transition-colors",
               onClick: e,
               children: f("remoteFolder.cancel"),
             }),
             p.jsx("button", {
               className:
-                "bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover active:bg-codely-color-accent-active cursor-pointer rounded-md border-0 px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:bg-codely-color-accent-muted disabled:text-codely-color-text-disabled",
+                "bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover active:bg-gamecowork-color-accent-active cursor-pointer rounded-md border-0 px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-disabled",
               disabled: !a || g || !o.trim() || u,
               onClick: () => void m(),
               children: f("remoteFolder.open"),
@@ -182769,8 +182769,8 @@ function Hmn({
 function Gmn() {
   return p.jsx("div", {
     className:
-      "flex h-full min-h-0 w-full flex-1 flex-col items-center justify-center bg-bg-codely-color-surface-primary",
-    children: p.jsx(Ec, { size: "lg", className: "!text-3xl text-codely-color-border-bold" }),
+      "flex h-full min-h-0 w-full flex-1 flex-col items-center justify-center bg-bg-gamecowork-color-surface-primary",
+    children: p.jsx(Ec, { size: "lg", className: "!text-3xl text-gamecowork-color-border-bold" }),
   });
 }
 function Vmn({ onRefresh: e }) {
@@ -182780,13 +182780,13 @@ function Vmn({ onRefresh: e }) {
     children: [
       p.jsx(acn, { className: "size-12 mb-6" }),
       p.jsx("span", {
-        className: "text-codely-color-text-primary text-base mb-4",
+        className: "text-gamecowork-color-text-primary text-base mb-4",
         children: t("remoteFolder.errorWifi"),
       }),
       p.jsxs("button", {
         onClick: e,
         className:
-          "flex justify-center items-center cursor-pointer gap-2 w-[6.6875rem] h-8 bg-codely-color-surface-card hover:bg-codely-color-interactive-hover text-codely-color-text-primary rounded-md border border-codely-color-interactive-selected transition-colors text-sm",
+          "flex justify-center items-center cursor-pointer gap-2 w-[6.6875rem] h-8 bg-gamecowork-color-surface-card hover:bg-gamecowork-color-interactive-hover text-gamecowork-color-text-primary rounded-md border border-gamecowork-color-interactive-selected transition-colors text-sm",
         children: [t("remoteFolder.emptyGuide.refresh"), p.jsx(IV, { className: "size-4" })],
       }),
     ],
@@ -182826,7 +182826,7 @@ function Wmn({
       },
       children: p.jsxs("div", {
         className:
-          "border-codely-color-border-subtle bg-codely-color-surface-primary flex h-[min(680px,82vh)] w-[min(750px,75vw)] min-w-0 flex-col overflow-hidden rounded-[1rem] border-[0.0625rem] border-solid shadow-2xl",
+          "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary flex h-[min(680px,82vh)] w-[min(750px,75vw)] min-w-0 flex-col overflow-hidden rounded-[1rem] border-[0.0625rem] border-solid shadow-2xl",
         role: "dialog",
         "aria-modal": "true",
         "aria-label": "Open Remote Folder",
@@ -182842,23 +182842,23 @@ function Wmn({
                       onClick: () => x(!1),
                       className: "mr-2 flex-shrink-0",
                       "data-telemetry-id": "remote_folder_back",
-                      children: p.jsx(zYe, { className: "size-4 text-codely-color-text-tertiary" }),
+                      children: p.jsx(zYe, { className: "size-4 text-gamecowork-color-text-tertiary" }),
                     }),
                   })
                 : p.jsxs("div", {
                     className: "min-w-0 flex flex-col flex-1 gap-2",
                     children: [
                       p.jsx("div", {
-                        className: "text-codely-color-text-primary truncate text-base font-medium tracking-[0.02em]",
+                        className: "text-gamecowork-color-text-primary truncate text-base font-medium tracking-[0.02em]",
                         children: g("remoteFolder.title"),
                       }),
                       p.jsxs("div", {
-                        className: "text-codely-color-text-tertiary truncate text-xs gap-1",
+                        className: "text-gamecowork-color-text-tertiary truncate text-xs gap-1",
                         children: [
                           p.jsx("span", { children: g("remoteFolder.subtitle") }),
                           r.length > 0 &&
                             p.jsx("span", {
-                              className: "text-codely-color-accent-text cursor-pointer ml-1",
+                              className: "text-gamecowork-color-accent-text cursor-pointer ml-1",
                               onClick: () => x(!0),
                               children: g("remoteFolder.howToAddDevice"),
                             }),
@@ -182871,7 +182871,7 @@ function Wmn({
                 onClick: e,
                 className: "ml-4 flex-shrink-0",
                 "data-telemetry-id": "remote_folder_close",
-                children: p.jsx($a, { className: "size-4 text-codely-color-text-tertiary" }),
+                children: p.jsx($a, { className: "size-4 text-gamecowork-color-text-tertiary" }),
               }),
             ],
           }),
@@ -183333,21 +183333,21 @@ function Xmn() {
     x = f
       ? p.jsx(xAe, {
           className:
-            "!text-base flex-shrink-0 text-codely-color-text-secondary group-hover:text-codely-color-text-default",
+            "!text-base flex-shrink-0 text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default",
         })
       : g && y === "Tuanjie"
         ? p.jsx(SAe, {
             className:
-              "!text-base flex-shrink-0 text-codely-color-text-secondary group-hover:text-codely-color-text-default",
+              "!text-base flex-shrink-0 text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default",
           })
         : g && y === "Unity"
           ? p.jsx(kAe, {
               className:
-                "!text-base flex-shrink-0 text-codely-color-text-secondary group-hover:text-codely-color-text-default",
+                "!text-base flex-shrink-0 text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default",
             })
           : p.jsx(vAe, {
               className:
-                "!text-base flex-shrink-0 text-codely-color-text-secondary group-hover:text-codely-color-text-default",
+                "!text-base flex-shrink-0 text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default",
             });
   return !m || !l
     ? null
@@ -183355,7 +183355,7 @@ function Xmn() {
         className: "flex items-center justify-center gap-2 text-sm mx-2",
         children: [
           p.jsx("span", {
-            className: "text-codely-color-text-tertiary whitespace-nowrap",
+            className: "text-gamecowork-color-text-tertiary whitespace-nowrap",
             children: e("emptyPanel.newSessionIn"),
           }),
           p.jsx(Qmn, {
@@ -183377,12 +183377,12 @@ function Xmn() {
               children: [
                 x,
                 p.jsx("span", {
-                  className: "text-codely-color-text-secondary group-hover:text-codely-color-text-default font-normal",
+                  className: "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default font-normal",
                   children: m,
                 }),
                 p.jsx(jTt, {
                   className:
-                    "text-codely-color-text-secondary group-hover:text-codely-color-text-default size-3.5 flex-shrink-0",
+                    "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-default size-3.5 flex-shrink-0",
                 }),
               ],
             }),
@@ -183510,7 +183510,7 @@ function Jmn({
               children: p.jsxs("span", {
                 onClick: F,
                 className:
-                  "flex items-center text-sm text-codely-color-text-secondary cursor-pointer rounded-md px-1 py-0.5 transition-colors hover:text-codely-color-text-default",
+                  "flex items-center text-sm text-gamecowork-color-text-secondary cursor-pointer rounded-md px-1 py-0.5 transition-colors hover:text-gamecowork-color-text-default",
                 children: [
                   l("emptyPanel.whatCanWeDo"),
                   p.jsx(DYe, { className: `!text-base ml-2 ${L > 0 ? "refresh-icon-spin" : ""}` }, L),
@@ -183632,9 +183632,9 @@ $t.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--codely-color-surface-card);
-  border: 1px solid var(--codely-color-border-subtle);
-  color: var(--codely-color-text-default);
+  background: var(--gamecowork-color-surface-card);
+  border: 1px solid var(--gamecowork-color-border-subtle);
+  color: var(--gamecowork-color-text-default);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -183651,11 +183651,11 @@ $t.button`
     right: -1px;
     bottom: -1px;
     border-radius: 50%;
-    background: conic-gradient(from 0deg at 50% 50%, var(--codely-color-interactive-hover) 0deg, #35C9A9 360deg);
+    background: conic-gradient(from 0deg at 50% 50%, var(--gamecowork-color-interactive-hover) 0deg, #35C9A9 360deg);
     padding: 1px;
     -webkit-mask:
-      linear-gradient(var(--codely-color-text-accent) 0 0) content-box,
-      linear-gradient(var(--codely-color-text-accent) 0 0);
+      linear-gradient(var(--gamecowork-color-text-accent) 0 0) content-box,
+      linear-gradient(var(--gamecowork-color-text-accent) 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     display: ${(e) => (e.$isStreaming ? "block" : "none")};
@@ -183663,14 +183663,14 @@ $t.button`
   }
 
   &:hover {
-    background: var(codely-color-surface-overlay);
-    border: 1px solid var(--codely-color-border-subtle);
+    background: var(gamecowork-color-surface-overlay);
+    border: 1px solid var(--gamecowork-color-border-subtle);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
   &:active {
     transform: translateX(-50%) translateY(1px);
-    background: var(--codely-color-surface-card);
+    background: var(--gamecowork-color-surface-card);
   }
 
   svg {

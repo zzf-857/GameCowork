@@ -1,11 +1,47 @@
-# Tuanjie Cowork (Codely) 还原工程
+# Tuanjie Cowork (GameCowork) 还原工程
 
 > 委托还原 · 2026-09-29 · 还原自 `E:\TuanjieCodely\EXE\Tuanjie Cowork`（v2.1.3-canary.2）
 > 委托语境：应用作者委托进行工程还原。
 
+## codely → GameCowork 重命名与本机隔离（2026-09-30）
+
+应用户要求，工程内 codely 系命名已全部改为 GameCowork（13,500+ 处，82+ 文件，脚本
+[tools/rename-codely.py](tools/rename-codely.py) 可复跑）。重命名后打包运行与已装 Codely **互不冲突**。
+
+### 映射表
+
+| 原名 | 现名 |
+|---|---|
+| codelycowork / Codely Cowork / codely-cowork | gamecowork / GameCowork |
+| `dev.codelycowork.desktop`（Tauri 标识符） | `dev.gamecowork.desktop` |
+| `~/.codely`、`~/.codely-cli`（core 数据目录） | `~/.gamecowork`、`~/.gamecowork-cli` |
+| `CODELY_*`（24 个环境变量，含 CLI_HOME/HOME/TOKEN） | `GAMECOWORK_*` |
+| `core-codely-binary/`、`cli-codely/`（工程目录） | `core-gamecowork-binary/`、`cli-gamecowork/` |
+| `Programs/Codely Cowork`（自身 CLI 探测路径） | `Programs/GameCowork` |
+| `# Managed by Codely Cowork (...)`（unity-insight.toml 标记） | `# Managed by GameCowork (...)`（读写一致） |
+
+> 文中其余事实性描述沿用重命名后写法；原安装目录内的原始文件名（如 `codely-binary.exe`）
+> 仅存在于 `original/` 镜像与外部安装目录，未做改动。
+
+### 保留未改（外部契约，改了断功能且不构成本机冲突）
+
+- 后端/更新源域名 `codely.tuanjie.cn`（含 `-stg`）；
+- 编辑器内桥接包名 `cn.tuanjie.codely.bridge`；
+- `tools/*.py` 中指向原安装目录的硬编码路径（再提取工具，针对原始文件名工作）。
+
+### 与已装 Codely 的隔离保证
+
+1. Tauri 标识符不同 → single-instance 互斥、AppData、WebView2 用户数据目录完全分离；
+2. 数据目录 `~/.gamecowork` 与原版 `~/.codely` 互不读写（会话/索引/令牌全隔离）；
+3. 环境变量命名空间不同，不会读到原版的全局 `CODELY_*` 配置；
+4. 程序自身服务端口为动态分配（实测无固定自绑端口；bundle 里的 localhost 端口均为外部服务示例）；
+5. 已知共享面：两版连同一后端为服务端同账号问题；编辑器桥接包为编辑器内单实例——
+   两版同时操作**同一个编辑器实例**时，桥接会话可能互相可见，建议不同时操作同一工程；
+6. `productName`/窗口标题已改为 `GameCowork`（`tauri.conf.json`），安装目录不再与原版重叠。
+
 ## 产品是什么
 
-Tuanjie Cowork（内部名 **Codely Cowork**，产品 ID `dev.codelycowork.desktop`）是
+Tuanjie Cowork（内部名 **GameCowork**，产品 ID `dev.gamecowork.desktop`）是
 Unity 中国（团结引擎 Tuanjie）的 AI 结对编程桌面应用，架构与开源项目
 **Continue.dev** 同源（二进制内残留 api.continue.dev 系列端点）。
 
@@ -14,8 +50,8 @@ Unity 中国（团结引擎 Tuanjie）的 AI 结对编程桌面应用，架构�
 ```
 Tauri 2 薄壳 (Rust, WebView2)          ← cowork.exe (58MB)
  ├── Web 前端 (React + Monaco, Vite)    ← app/resource/dist (87MB, 6 个 HTML 入口)
- ├── core 边车 (vercel/pkg Node)        ← codely-binary.exe (70MB, 入口 out/index.js)
- ├── CLI 边车 (Bun v1 编译)             ← cli/bin/win32-x64/codely.exe (204MB)
+ ├── core 边车 (vercel/pkg Node)        ← gamecowork-binary.exe (70MB, 入口 out/index.js)
+ ├── CLI 边车 (Bun v1 编译)             ← cli/bin/win32-x64/gamecowork.exe (204MB)
  ├── unity-insight (esbuild bundle)     ← cli/lib (tree-sitter 代码索引)
  └── hub 授权链 (Tuanjie Hub)           ← hub/ (217MB, .NET LicensingClient)
 ```
@@ -39,10 +75,10 @@ GameCowork/
 │   │   ├── capabilities/default.json
 │   │   ├── COMMAND_SURFACE.md    #   命令面/端点/插件/ACL 全记录
 │   │   └── icons/                #   exe 图标 + 品牌图
-│   ├── core-codely-binary/       # ★ pkg 解包: 258 文件全量还原(含 14MB 主 bundle)
+│   ├── core-gamecowork-binary/       # ★ pkg 解包: 258 文件全量还原(含 14MB 主 bundle)
 │   │   ├── binary/out/index.beautified.js   # 美化版主 bundle (18.1MB)
 │   │   └── _unpack-manifest.json
-│   ├── cli-codely/               # ★ Bun carve: 223 段明文模块
+│   ├── cli-gamecowork/               # ★ Bun carve: 223 段明文模块
 │   │   ├── carved/  cli-main.beautified.js  # 主 bundle 美化版 (20.5MB)
 │   ├── cli-unity-insight/        # ★ unity-insight 6 个 worker 美化版
 │   └── hub/README.md             # 成分鉴定(未深逆)
@@ -67,10 +103,10 @@ GameCowork/
 npx serve restored/frontend/dist-beautified
 
 # 边车源码抽查
-head -c 400 restored/core-codely-binary/binary/out/index.js
+head -c 400 restored/core-gamecowork-binary/binary/out/index.js
 
 # 用 node 跑解包出来的 core 边车(参考)
-node restored/core-codely-binary/binary/out/index.js   # 需按 package.json 补依赖环境
+node restored/core-gamecowork-binary/binary/out/index.js   # 需按 package.json 补依赖环境
 ```
 
 详见 [RESTORE_STATUS.md](RESTORE_STATUS.md)（逐层记录与未还原项）。

@@ -13445,14 +13445,14 @@ function $e(e, t, i) {
 function tr(e) {
   const t = getComputedStyle(e);
   return {
-    background: $e(t, "--codely-color-surface-primary", "#1e1e1e"),
-    foreground: $e(t, "--codely-color-text-default", "#d4d4d4"),
-    cursor: $e(t, "--codely-color-text-primary", "#ffffff"),
-    cursorAccent: $e(t, "--codely-color-surface-primary", "#1e1e1e"),
-    selectionBackground: $e(t, "--codely-color-interactive-selection", "#264f78"),
-    scrollbarSliderBackground: $e(t, "--codely-scrollbar-thumb", "rgba(255, 255, 255, 0.23)"),
-    scrollbarSliderHoverBackground: $e(t, "--codely-scrollbar-thumb-hover", "rgba(255, 255, 255, 0.4)"),
-    scrollbarSliderActiveBackground: $e(t, "--codely-scrollbar-thumb-hover", "rgba(255, 255, 255, 0.4)"),
+    background: $e(t, "--gamecowork-color-surface-primary", "#1e1e1e"),
+    foreground: $e(t, "--gamecowork-color-text-default", "#d4d4d4"),
+    cursor: $e(t, "--gamecowork-color-text-primary", "#ffffff"),
+    cursorAccent: $e(t, "--gamecowork-color-surface-primary", "#1e1e1e"),
+    selectionBackground: $e(t, "--gamecowork-color-interactive-selection", "#264f78"),
+    scrollbarSliderBackground: $e(t, "--gamecowork-scrollbar-thumb", "rgba(255, 255, 255, 0.23)"),
+    scrollbarSliderHoverBackground: $e(t, "--gamecowork-scrollbar-thumb-hover", "rgba(255, 255, 255, 0.4)"),
+    scrollbarSliderActiveBackground: $e(t, "--gamecowork-scrollbar-thumb-hover", "rgba(255, 255, 255, 0.4)"),
     overviewRulerBorder: "rgba(0, 0, 0, 0)",
   };
 }

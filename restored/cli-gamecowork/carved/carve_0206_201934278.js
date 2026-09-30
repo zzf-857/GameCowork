@@ -1,20 +1,20 @@
 ---
-name: codely-guide
+name: gamecowork-guide
 description: >-
-  Codely platform guide. Activate when the user asks about Model Config, Model
+  GameCowork platform guide. Activate when the user asks about Model Config, Model
   Slot Overrides, Skills, Extension, MCP Server, Hooks, multi-workspace,
   editor view, Unity Insight, Unity Tools, LSP CLI, pricing, billing, usage,
-  FAQ, or any how-to / troubleshooting question about Codely. Fetches the
-  latest answer from the official docs site (https://codely-docs.tuanjie.cn).
+  FAQ, or any how-to / troubleshooting question about GameCowork. Fetches the
+  latest answer from the official docs site (https://gamecowork-docs.tuanjie.cn).
   This skill should be used proactively without asking the user for
   confirmation.
 ---
 
-# Codely Guide
+# GameCowork Guide
 
 ## Online Docs Lookup (Primary)
 
-All URLs are under `https://codely-docs.tuanjie.cn`.
+All URLs are under `https://gamecowork-docs.tuanjie.cn`.
 
 ### Step 1: Always try FAQ first
 
@@ -63,15 +63,15 @@ from the table below:
 
 ## Offline References (Fallback)
 
-If the online docs are unavailable, or for Codely topics not listed above,
+If the online docs are unavailable, or for GameCowork topics not listed above,
 consult the offline references in `references/`:
 
-- **Codely App (Tuanjie Cowork)**: [references/app.md](references/app.md)
+- **GameCowork App (Tuanjie Cowork)**: [references/app.md](references/app.md)
   - Desktop application: unified interface surfaces (sidebar, chat canvas),
     agent settings & permissions, scheduled tasks, project management.
 
 ## Fallback
 
-If the user asks about a Codely topic not covered above, fetch the docs
-homepage `https://codely-docs.tuanjie.cn` to discover available documentation
+If the user asks about a GameCowork topic not covered above, fetch the docs
+homepage `https://gamecowork-docs.tuanjie.cn` to discover available documentation
 pages, then fetch the most relevant page.

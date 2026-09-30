@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/branding/logo_dark.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Codely Desktop</title>
-    <style id="codely-theme-bootstrap">
+    <title>GameCowork Desktop</title>
+    <style id="gamecowork-theme-bootstrap">
       html {
         background-color: #222222;
         color-scheme: dark;
@@ -22,7 +22,7 @@
     <script>
       (function () {
         try {
-          var theme = JSON.parse(localStorage.getItem("codely-theme") || "null");
+          var theme = JSON.parse(localStorage.getItem("gamecowork-theme") || "null");
           if (theme === "light" || theme === "dark") {
             document.documentElement.setAttribute("data-theme", theme);
           }

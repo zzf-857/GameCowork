@@ -11020,7 +11020,7 @@ const xrt = (n, e) => {
     manageExtensions: { title: "Manage extensions", description: "Install, enable/disable, uninstall extensions" },
     manageMcp: { title: "Manage MCP servers", description: "List, edit MCP servers" },
     manageSubagents: { title: "Manage subagents", description: "List, edit, enable/disable subagent configs" },
-    openTerminal: { title: "Open Codely in Terminal", description: "" },
+    openTerminal: { title: "Open GameCowork in Terminal", description: "" },
     initGeneral: { description: "Initialize a general-purpose project analysis (default behavior)" },
     initUnity: { description: "Initialize Unity-specific project analysis" },
     compress: { description: "Compress the context by replacing it with a summary" },
@@ -11128,7 +11128,7 @@ const xrt = (n, e) => {
     welcome4suffix: "Accelerates Every Step Forward.",
     welcome5prefix: "Unleash Your Creativity, Trust",
     welcome5suffix: ", Launch Games That Matter.",
-    askCodely: "Ask Cowork!",
+    askGameCowork: "Ask Cowork!",
     description:
       "Cowork uses locally deployed large language models,<br />with a full backend architecture ensuring code security.",
     selectCapability: "@ Select different built-in capabilities",
@@ -11164,7 +11164,7 @@ const xrt = (n, e) => {
   },
   qrt = { buttonLabel: "快速开始 - 生成项目总结", fileExists: "{{fileName}} 文件已存在，无需重新生成项目总结。" },
   Grt = JSON.parse(
-    `{"searchPlaceholder":"Search settings","tabs":{"general":"General","shortcuts":"Shortcuts","tjhub":"Projects","devices":"Devices","skills":"Skills","models":"Models","customModels":"Custom Models","subagents":"Subagents","commands":"Commands","extensions":"Extensions","mcpServers":"MCP Servers","insightIndex":"Index","accountUsage":"Account & Usage","planUsage":"Plan & Usage","permission":"Permission","beta":"Beta","docs":"Docs","about":"About","pets":"Pets"},"pets":{"starting":"Starting…","stopping":"Hiding…","close":"Close virtual pet","wake":"Wake up virtual pet","choosePet":"Choose a pet","quickGuides":"Quick Guides","addGuide":"Add Quick Guide","guidePlaceholder":"e.g. Rant","confirm":"Confirm","guidesLoadFailed":"Couldn't load your guides","guidesRetry":"Retry","appearance":"Appearance","petSize":"Pet size","petSizeDesc":"Adjust the pet size","sizeSmall":"S","sizeLarge":"L","settings":"Settings","bubbleTip":"Bubble tips","bubbleTipDesc":"Control when the pet speech bubble appears","all":"All","onlyCoding":"While coding","onlyChat":"While chatting","generalReminder":"General reminders","generalReminderDesc":"Receive daily messages from your pet","creationGuide":"Creation guides","creationGuideDesc":"Get creation tips and suggestions from your pet","greeting":{"squirrel":"I'm coco. A pixelated squirrel carrying a warm light bulb. Stay permanently on your desktop – a quiet companion, gentle yet never intrusive","uuuni":"Hey~ I'm UU✨ the chonky block desktop pet! Bouncing around alongside Uni, weaving wonderful creativity right on your desktop!","fallback":"Hi! I'm your Cowork pet"},"sayhello":{"squirrel":["Whoosh! Coco the squirrel is online.","I heard your call and rushed right over!","I can keep you company while you slack off, zone out, and I’ll even sneak a bite of pine cones~"],"uuuni":["Whoosh! UU and Uni from Planet U have answered the call, landed on your desktop, and are ready to embark on a digital creation journey with you."]},"saybye":{"squirrel":"Woo, Coco's heading back to the tree hole to stock up on pinecones, see you later!","uuuni":"Signal received ✨ UU and Uni are about to return to the Unity Planet. We’ll be temporarily away from your desktop, and look forward to meeting you again next time."},"name":{"squirrel":"COCO","uuuni":"UU & Uni"}},"permission":{"subtitle":"Execution And Approvals","commandAllowlist":{"title":"Command Allowlist","description":"Commands that can run automatically","placeholder":"Add commands...","addSuggestions":"Add Suggestions","remove":"Remove {{command}}","commandTooLong":"Command is too long (max {{count}} characters)","retry":"Retry"},"mcpAllowlist":{"title":"MCP Allowlist","description":"MCP tools that can run automatically. Format: 'server::tool' for a single tool, 'server::*' for all tools from a server","placeholder":"Add MCP tools...","remove":"Remove {{tool}}","invalidEntry":"Invalid format. Use 'server::tool' or 'server::*'.","retry":"Retry"}},"planUsage":{"currentPlan":"Current Plan","usage":"Usage","usageStats":"Usage statistics","adjustPlan":"Adjust Plan","viewUsageStats":"Visit Usage Management for details","check":"Go","expiresOn":"Expires on {{date}}","daysRemaining":"{{count}} days left","expiresTomorrow":"Tomorrow {{time}}","expiresToday":"Today {{time}}","expired":"Expired","planTypes":{"internal":"Internal","free":"Free","lite":"Lite","pro":"Pro","max":"Max","team_standard":"标准版","team_advanced":"高级版","team_flagship":"旗舰版","enterprise":"尊享版"},"contactAdmin":"Contact admin"},"sidebar":{"workspace":"WORKSPACE","personal":"PERSONAL","capabilities":"CAPABILITIES","help":"HELP","customModels":"Custom Models","other":"OTHER","upgrade":"Upgrade Plan","renewal":"Your subscription has an unpaid order","buyAddOn":"Top up"},"groups":{"remote":"Remote","chat":"Chat","notification":"Notification","appearance":"Appearance","externalTools":"External Tools","organization":"Organization"},"insightIndex":{"settings":"Settings","projects":"Projects","projectsEmpty":"No workspace projects yet","indexAction":"Index","indexedBadge":"Indexed","loadingBadge":"Loading","notIndexedBadge":"Not indexed","lastIndexed":"{{time}} indexed","justNow":"just now","minutesAgo_one":"{{count}} minute ago","minutesAgo_other":"{{count}} minutes ago","hoursAgo_one":"{{count}} hour ago","hoursAgo_other":"{{count}} hours ago","daysAgo_one":"{{count}} day ago","daysAgo_other":"{{count}} days ago","indexStepProgress":"({{current}}/{{total}})","indexBuilding":"Indexing…","indexPhase":{"waiting":"Waiting…","extract":"Extracting facts…","resolve":"Resolving refs…","publish":"Publishing…","sync":"Syncing…","reconcile":"Reconciling…"},"loadSettingsFailed":"Failed to load index settings","saveSettingsFailed":"Failed to save index settings","toggleProjectFailed":"Failed to toggle project indexing","indexProjectFailed":"Failed to start project indexing","rebuildFailed":{"mainText":"Index failed","notStarted":"Unity Insight acknowledged the request, but no rebuild was started.","retry":"Retry"},"closeBlockingProcesses":{"mainText":"Other processes are using the index","subText":"{{processes}} is using the index database. Close these processes and rebuild the index? Unsaved data may be lost.","confirm":"Close processes and index","unknownProcess":"Unknown process"},"enableForNewProjects":{"title":"Use globally","description":"Enabling Unity Insight analyzes scenes, prefabs, and related assets and references so the AI can understand your project and answer more accurately. You can still toggle each project below."},"subagentMaxRounds":{"title":"Subagent max rounds","description":"Limits how many turns the Unity Insight subagent can take on a single task (1–60). Higher values allow deeper analysis but may take longer."}},"beta":{"updateAccess":"Update Source","updateChannel":{"title":"Update Source","groupTitle":"Beta","description":"Toggle to receive stable or Canary update notifications here.","default":"Stable","canary":"Canary"}},"remoteTunnel":{"title":"Enable Remote Tunnel","description":"Keep the tunnel available for remote connection features. While connected, Cowork prevents this computer from sleeping."},"wrapCodeblocks":{"title":"Wrap Codeblocks","description":"Long lines in code blocks wrap to the next line instead of scrolling horizontally."},"sessionTitles":{"title":"Enable Session Titles","description":"Generate session titles with the model."},"formatMarkdown":{"title":"Format Markdown","description":"Render chat as formatted Markdown."},"yoloUserRequestTimeout":{"title":"Yolo Mode User Request Tool Timeout","description":"Seconds before model auto-chooses an answer for user-request tools (ask user, enter plan, etc). -1 = wait indefinitely, 0 = instant."},"newProjectMemoryEnabled":{"title":"Enable Self-Update Memory for New Projects","description":"This option only applies to new projects. Existing projects can toggle self-update memory on/off individually in the sidebar memory panel."},"autoEditMemory":{"title":"Self-Update Memory","description":"Allow the model to automatically append or update project memories. If Codely is still replying, the change takes effect after the current response finishes.","saveFailed":"Failed to save automatic memory update setting."},"codelyHome":{"title":"Codely Home Location","description":"Codely stores its user-level data in this directory. Changing it will interrupt running Codely sessions; other running Codely apps or IDE plugins must be restarted to use the new location.","migrationDialog":{"title":"Migrate Codely Data","description":"Data in the current Codely home will be migrated to the new location. Running sessions will be interrupted.","restartOtherHosts":"If other Codely apps or IDE plugins are running, restart them after the migration to use the new location.","sourceLabel":"Current Location:","targetLabel":"New Location:","targetNonEmpty":"The target directory is not empty. Files with the same names will be overwritten.","migrate":"Migrate","migrating":"Migrating…","cancel":"Cancel"},"busy":"Applying…","toast":{"applied":"Codely home location updated.","applyFailed":"Failed to update Codely home location.","envVarWarning":"Failed to write the system environment variable — codely in terminals will not use the new home; if a stale value remains, the app may also follow it after restarting. Consider setting CODELY_CLI_HOME manually.","migrateFailed":"Data migration failed. The previous location is unchanged."},"error":{"sameAsCurrent":"The new location is the same as the current one.","nestedPath":"The new location cannot be inside (or contain) the current Codely home directory.","invalid":"Invalid path.","sourceUnreadable":"Could not read the current Codely home directory. Check its access permissions."}},"enableNotification":{"title":"Enable Notification","description":"Prompt on task completion or input required."},"language":{"title":"Language","description":"Select your preferred language. Changes take effect immediately.","options":{"chinese":"Chinese","english":"English"}},"fontSize":{"title":"Font Size","description":"Font size for the Tuanjie Cowork user interface."},"externalScriptEditor":{"title":"External Script Editor","description":"Editor app for opening scripts from tool actions (e.g. VS Code)."},"version":"v{{version}}","devices":{"remoteAccess":"Remote access","allowRemoteControl":"Allow other computers to control this computer","allowRemoteControlDescription":"When enabled, other devices logged into the same Cowork account can browse and open folders on this computer via \\"Open Remote Folder\\". Only visible to devices using the same account.","allowRemoteConfirmTitle":"Allow remote access?","allowRemoteConfirmText":"Other devices signed in with the same Cowork account will be able to browse and open folders on this computer. Make sure you trust all devices logged into your account.","allowRemoteConfirmAllow":"Allow","powerAndAvailability":"Power & availability","keepAwake":"Keep computer awake","keepAwakeDescription":"When enabled, attempts to prevent the system from sleeping while Cowork is running, to ensure stable connections from other devices. Actual behavior may vary by operating system.","keepAwakeAutoEnabledTip":"Turned on automatically with remote connection. You can disable this if preferred.","sleepWarning":"If the computer goes to sleep, other devices may lose remote access. It is recommended to enable \\"Keep computer awake\\".","failedToUpdateTunnel":"Failed to update tunnel setting"},"about":{"versionInfo":"Version Information","versionInfoGroupTitle":"Check for updates","checkForUpdate":"Check for update","checking":"Checking for new version...","alreadyLatest":"Current version is already the latest","downloading":"Update is downloading, please wait...","helpDocs":"Help Docs","helpDocsGroupTitle":"Docs","releaseNotes":"Release Notes","viewDocs":"View","updateAvailable":"Discover The New Version !","latestVersion":"Version {{version}}","update":"Update","cancel":"Cancel"},"footer":{"serviceAgreement":"Service Agreement","privacyPolicy":"Privacy Policy","feedback":"Feedback","logUpload":"Log Upload","copyright":"Copyright © 2026 You San Di Technology (Shanghai) Co., Ltd."},"logout":"Log Out"}`,
+    `{"searchPlaceholder":"Search settings","tabs":{"general":"General","shortcuts":"Shortcuts","tjhub":"Projects","devices":"Devices","skills":"Skills","models":"Models","customModels":"Custom Models","subagents":"Subagents","commands":"Commands","extensions":"Extensions","mcpServers":"MCP Servers","insightIndex":"Index","accountUsage":"Account & Usage","planUsage":"Plan & Usage","permission":"Permission","beta":"Beta","docs":"Docs","about":"About","pets":"Pets"},"pets":{"starting":"Starting…","stopping":"Hiding…","close":"Close virtual pet","wake":"Wake up virtual pet","choosePet":"Choose a pet","quickGuides":"Quick Guides","addGuide":"Add Quick Guide","guidePlaceholder":"e.g. Rant","confirm":"Confirm","guidesLoadFailed":"Couldn't load your guides","guidesRetry":"Retry","appearance":"Appearance","petSize":"Pet size","petSizeDesc":"Adjust the pet size","sizeSmall":"S","sizeLarge":"L","settings":"Settings","bubbleTip":"Bubble tips","bubbleTipDesc":"Control when the pet speech bubble appears","all":"All","onlyCoding":"While coding","onlyChat":"While chatting","generalReminder":"General reminders","generalReminderDesc":"Receive daily messages from your pet","creationGuide":"Creation guides","creationGuideDesc":"Get creation tips and suggestions from your pet","greeting":{"squirrel":"I'm coco. A pixelated squirrel carrying a warm light bulb. Stay permanently on your desktop – a quiet companion, gentle yet never intrusive","uuuni":"Hey~ I'm UU✨ the chonky block desktop pet! Bouncing around alongside Uni, weaving wonderful creativity right on your desktop!","fallback":"Hi! I'm your Cowork pet"},"sayhello":{"squirrel":["Whoosh! Coco the squirrel is online.","I heard your call and rushed right over!","I can keep you company while you slack off, zone out, and I’ll even sneak a bite of pine cones~"],"uuuni":["Whoosh! UU and Uni from Planet U have answered the call, landed on your desktop, and are ready to embark on a digital creation journey with you."]},"saybye":{"squirrel":"Woo, Coco's heading back to the tree hole to stock up on pinecones, see you later!","uuuni":"Signal received ✨ UU and Uni are about to return to the Unity Planet. We’ll be temporarily away from your desktop, and look forward to meeting you again next time."},"name":{"squirrel":"COCO","uuuni":"UU & Uni"}},"permission":{"subtitle":"Execution And Approvals","commandAllowlist":{"title":"Command Allowlist","description":"Commands that can run automatically","placeholder":"Add commands...","addSuggestions":"Add Suggestions","remove":"Remove {{command}}","commandTooLong":"Command is too long (max {{count}} characters)","retry":"Retry"},"mcpAllowlist":{"title":"MCP Allowlist","description":"MCP tools that can run automatically. Format: 'server::tool' for a single tool, 'server::*' for all tools from a server","placeholder":"Add MCP tools...","remove":"Remove {{tool}}","invalidEntry":"Invalid format. Use 'server::tool' or 'server::*'.","retry":"Retry"}},"planUsage":{"currentPlan":"Current Plan","usage":"Usage","usageStats":"Usage statistics","adjustPlan":"Adjust Plan","viewUsageStats":"Visit Usage Management for details","check":"Go","expiresOn":"Expires on {{date}}","daysRemaining":"{{count}} days left","expiresTomorrow":"Tomorrow {{time}}","expiresToday":"Today {{time}}","expired":"Expired","planTypes":{"internal":"Internal","free":"Free","lite":"Lite","pro":"Pro","max":"Max","team_standard":"标准版","team_advanced":"高级版","team_flagship":"旗舰版","enterprise":"尊享版"},"contactAdmin":"Contact admin"},"sidebar":{"workspace":"WORKSPACE","personal":"PERSONAL","capabilities":"CAPABILITIES","help":"HELP","customModels":"Custom Models","other":"OTHER","upgrade":"Upgrade Plan","renewal":"Your subscription has an unpaid order","buyAddOn":"Top up"},"groups":{"remote":"Remote","chat":"Chat","notification":"Notification","appearance":"Appearance","externalTools":"External Tools","organization":"Organization"},"insightIndex":{"settings":"Settings","projects":"Projects","projectsEmpty":"No workspace projects yet","indexAction":"Index","indexedBadge":"Indexed","loadingBadge":"Loading","notIndexedBadge":"Not indexed","lastIndexed":"{{time}} indexed","justNow":"just now","minutesAgo_one":"{{count}} minute ago","minutesAgo_other":"{{count}} minutes ago","hoursAgo_one":"{{count}} hour ago","hoursAgo_other":"{{count}} hours ago","daysAgo_one":"{{count}} day ago","daysAgo_other":"{{count}} days ago","indexStepProgress":"({{current}}/{{total}})","indexBuilding":"Indexing…","indexPhase":{"waiting":"Waiting…","extract":"Extracting facts…","resolve":"Resolving refs…","publish":"Publishing…","sync":"Syncing…","reconcile":"Reconciling…"},"loadSettingsFailed":"Failed to load index settings","saveSettingsFailed":"Failed to save index settings","toggleProjectFailed":"Failed to toggle project indexing","indexProjectFailed":"Failed to start project indexing","rebuildFailed":{"mainText":"Index failed","notStarted":"Unity Insight acknowledged the request, but no rebuild was started.","retry":"Retry"},"closeBlockingProcesses":{"mainText":"Other processes are using the index","subText":"{{processes}} is using the index database. Close these processes and rebuild the index? Unsaved data may be lost.","confirm":"Close processes and index","unknownProcess":"Unknown process"},"enableForNewProjects":{"title":"Use globally","description":"Enabling Unity Insight analyzes scenes, prefabs, and related assets and references so the AI can understand your project and answer more accurately. You can still toggle each project below."},"subagentMaxRounds":{"title":"Subagent max rounds","description":"Limits how many turns the Unity Insight subagent can take on a single task (1–60). Higher values allow deeper analysis but may take longer."}},"beta":{"updateAccess":"Update Source","updateChannel":{"title":"Update Source","groupTitle":"Beta","description":"Toggle to receive stable or Canary update notifications here.","default":"Stable","canary":"Canary"}},"remoteTunnel":{"title":"Enable Remote Tunnel","description":"Keep the tunnel available for remote connection features. While connected, Cowork prevents this computer from sleeping."},"wrapCodeblocks":{"title":"Wrap Codeblocks","description":"Long lines in code blocks wrap to the next line instead of scrolling horizontally."},"sessionTitles":{"title":"Enable Session Titles","description":"Generate session titles with the model."},"formatMarkdown":{"title":"Format Markdown","description":"Render chat as formatted Markdown."},"yoloUserRequestTimeout":{"title":"Yolo Mode User Request Tool Timeout","description":"Seconds before model auto-chooses an answer for user-request tools (ask user, enter plan, etc). -1 = wait indefinitely, 0 = instant."},"newProjectMemoryEnabled":{"title":"Enable Self-Update Memory for New Projects","description":"This option only applies to new projects. Existing projects can toggle self-update memory on/off individually in the sidebar memory panel."},"autoEditMemory":{"title":"Self-Update Memory","description":"Allow the model to automatically append or update project memories. If GameCowork is still replying, the change takes effect after the current response finishes.","saveFailed":"Failed to save automatic memory update setting."},"gamecoworkHome":{"title":"GameCowork Home Location","description":"GameCowork stores its user-level data in this directory. Changing it will interrupt running GameCowork sessions; other running GameCowork apps or IDE plugins must be restarted to use the new location.","migrationDialog":{"title":"Migrate GameCowork Data","description":"Data in the current GameCowork home will be migrated to the new location. Running sessions will be interrupted.","restartOtherHosts":"If other GameCowork apps or IDE plugins are running, restart them after the migration to use the new location.","sourceLabel":"Current Location:","targetLabel":"New Location:","targetNonEmpty":"The target directory is not empty. Files with the same names will be overwritten.","migrate":"Migrate","migrating":"Migrating…","cancel":"Cancel"},"busy":"Applying…","toast":{"applied":"GameCowork home location updated.","applyFailed":"Failed to update GameCowork home location.","envVarWarning":"Failed to write the system environment variable — gamecowork in terminals will not use the new home; if a stale value remains, the app may also follow it after restarting. Consider setting GAMECOWORK_CLI_HOME manually.","migrateFailed":"Data migration failed. The previous location is unchanged."},"error":{"sameAsCurrent":"The new location is the same as the current one.","nestedPath":"The new location cannot be inside (or contain) the current GameCowork home directory.","invalid":"Invalid path.","sourceUnreadable":"Could not read the current GameCowork home directory. Check its access permissions."}},"enableNotification":{"title":"Enable Notification","description":"Prompt on task completion or input required."},"language":{"title":"Language","description":"Select your preferred language. Changes take effect immediately.","options":{"chinese":"Chinese","english":"English"}},"fontSize":{"title":"Font Size","description":"Font size for the Tuanjie Cowork user interface."},"externalScriptEditor":{"title":"External Script Editor","description":"Editor app for opening scripts from tool actions (e.g. VS Code)."},"version":"v{{version}}","devices":{"remoteAccess":"Remote access","allowRemoteControl":"Allow other computers to control this computer","allowRemoteControlDescription":"When enabled, other devices logged into the same Cowork account can browse and open folders on this computer via \\"Open Remote Folder\\". Only visible to devices using the same account.","allowRemoteConfirmTitle":"Allow remote access?","allowRemoteConfirmText":"Other devices signed in with the same Cowork account will be able to browse and open folders on this computer. Make sure you trust all devices logged into your account.","allowRemoteConfirmAllow":"Allow","powerAndAvailability":"Power & availability","keepAwake":"Keep computer awake","keepAwakeDescription":"When enabled, attempts to prevent the system from sleeping while Cowork is running, to ensure stable connections from other devices. Actual behavior may vary by operating system.","keepAwakeAutoEnabledTip":"Turned on automatically with remote connection. You can disable this if preferred.","sleepWarning":"If the computer goes to sleep, other devices may lose remote access. It is recommended to enable \\"Keep computer awake\\".","failedToUpdateTunnel":"Failed to update tunnel setting"},"about":{"versionInfo":"Version Information","versionInfoGroupTitle":"Check for updates","checkForUpdate":"Check for update","checking":"Checking for new version...","alreadyLatest":"Current version is already the latest","downloading":"Update is downloading, please wait...","helpDocs":"Help Docs","helpDocsGroupTitle":"Docs","releaseNotes":"Release Notes","viewDocs":"View","updateAvailable":"Discover The New Version !","latestVersion":"Version {{version}}","update":"Update","cancel":"Cancel"},"footer":{"serviceAgreement":"Service Agreement","privacyPolicy":"Privacy Policy","feedback":"Feedback","logUpload":"Log Upload","copyright":"Copyright © 2026 You San Di Technology (Shanghai) Co., Ltd."},"logout":"Log Out"}`,
   ),
   Krt = {
     title: "Open Remote Folder",
@@ -11499,7 +11499,7 @@ const xrt = (n, e) => {
     empty: {
       title: "No running MCP servers.",
       description:
-        "You can use the <code>codely mcp add</code> command-line tool to configure system-wide or private servers.",
+        "You can use the <code>gamecowork mcp add</code> command-line tool to configure system-wide or private servers.",
       configureNewServer: "Configure New Server",
     },
   },
@@ -11624,10 +11624,10 @@ const xrt = (n, e) => {
     },
   },
   dst = {
-    title: "Try TJ Codely Mobile",
+    title: "Try TJ GameCowork Mobile",
     description: "Connect to your computer with the app",
     learnMore: "Learn more",
-    qrCodeAlt: "Codely Mobile QR code",
+    qrCodeAlt: "GameCowork Mobile QR code",
   },
   hst = {
     notLoggedIn: "Not logged in",
@@ -11654,7 +11654,7 @@ const xrt = (n, e) => {
     skillsUpdateAvailable: "You have skills that need updating.",
     extensionsUpdateAvailable: "You have extensions that need updating.",
     downloadClient: "Download Desktop App",
-    getCodelyMobile: "Get Codely Mobile",
+    getGameCoworkMobile: "Get GameCowork Mobile",
     showPet: "Show Pet",
     hidePet: "Hide Pet",
     activityNotice: "Activity Notice",
@@ -11672,7 +11672,7 @@ const xrt = (n, e) => {
     tagOther: "Other",
     detailPlaceholder: "Fill in the details (mandatory)",
     includeProject: "Include the game project",
-    privacy: "Your feedback can be utilized to enhance Codely. <privacyLink>Learn more</privacyLink>",
+    privacy: "Your feedback can be utilized to enhance GameCowork. <privacyLink>Learn more</privacyLink>",
     submit: "Submit",
     uploadingTitle: "Uploading Feedback",
     uploadingDesc: "Your feedback ID is ready, and the diagnostic info is being uploaded",
@@ -11686,7 +11686,7 @@ const xrt = (n, e) => {
     errorDesc: "The Upload was not successful, but your feedback ID remains unchanged:",
   },
   pst = {
-    title: "Tuanjie Codely is Ready for You",
+    title: "Tuanjie GameCowork is Ready for You",
     subtitle: "Download the desktop app to write code, build scenes, and make games with AI",
     downloadButton: "Download Now",
     continueWeb: "Continue using Web Version",
@@ -11838,7 +11838,7 @@ const xrt = (n, e) => {
       unitySkillIncompatible: "This workspace does not support this {{type}}. Please select another workspace.",
     },
     tabs: { extensions: "Extensions", skills: "Skills", mcp: "MCPs" },
-    cardLabel: { extensions: "Extension", skills: "Skill", mcp: "MCP", source: "Codely" },
+    cardLabel: { extensions: "Extension", skills: "Skill", mcp: "MCP", source: "GameCowork" },
     filter: { all: "All", skills: "Skills", extensions: "Extensions", mcp: "MCP" },
     mcp: {
       install: "Install",
@@ -12158,7 +12158,7 @@ Click to attach`,
     back: "Back",
     next: "Next",
     gotIt: "Got it",
-    coworkLabel: "Codely Cowork",
+    coworkLabel: "GameCowork",
     beta: "Beta",
     headline: "Introduction to update function",
     slideHeadline1: "Multi Workspace",
@@ -12528,7 +12528,7 @@ Click to attach`,
     manageExtensions: { title: "扩展管理", description: "安装、启用/禁用、卸载扩展程序" },
     manageMcp: { title: "MCP 服务器管理", description: "列出、编辑 MCP 服务器" },
     manageSubagents: { title: "子代理管理", description: "列出、编辑、启用/禁用子代理配置" },
-    openTerminal: { title: "在终端中打开 Codely", description: "" },
+    openTerminal: { title: "在终端中打开 GameCowork", description: "" },
     initGeneral: { description: "初始化通用项目分析（默认行为）" },
     initUnity: { description: "初始化 Unity 项目分析" },
     compress: { description: "通过摘要替换来压缩上下文" },
@@ -12633,7 +12633,7 @@ Click to attach`,
     welcome4suffix: "— 让每个想法变成现实。",
     welcome5prefix: "创意无限，开发有道 —",
     welcome5suffix: "— 重新定义游戏开发。",
-    askCodely: "向 Cowork 提问！",
+    askGameCowork: "向 Cowork 提问！",
     description: "Cowork 使用本地部署的大语言模型作为基座，<br />全后端架构保证代码安全。",
     selectCapability: "@ 选择不同的内置能力",
     selectPrompt: "输入 / 选择自定义 Prompt",
@@ -12872,17 +12872,17 @@ Click to attach`,
     },
     autoEditMemory: {
       title: "自主更新记忆",
-      description: "允许模型自动追加或更新项目记忆。若 Codely 仍在回复，需等当前回复结束后才会生效。",
+      description: "允许模型自动追加或更新项目记忆。若 GameCowork 仍在回复，需等当前回复结束后才会生效。",
       saveFailed: "保存记忆自动更新设置失败。",
     },
-    codelyHome: {
-      title: "Codely 主目录位置",
+    gamecoworkHome: {
+      title: "GameCowork 主目录位置",
       description:
-        "Codely 的用户级数据存储在此目录。修改后将会中断正在运行的 Codely 会话；其他正在运行的 Codely 应用或 IDE 插件需重启后才会使用新位置。",
+        "GameCowork 的用户级数据存储在此目录。修改后将会中断正在运行的 GameCowork 会话；其他正在运行的 GameCowork 应用或 IDE 插件需重启后才会使用新位置。",
       migrationDialog: {
-        title: "迁移 Codely 数据",
-        description: "当前 Codely 主目录下的数据将迁移到新位置。正在运行的会话将被中断。",
-        restartOtherHosts: "如有其他正在运行的 Codely 应用或 IDE 插件，迁移完成后请重启它们以使用新位置。",
+        title: "迁移 GameCowork 数据",
+        description: "当前 GameCowork 主目录下的数据将迁移到新位置。正在运行的会话将被中断。",
+        restartOtherHosts: "如有其他正在运行的 GameCowork 应用或 IDE 插件，迁移完成后请重启它们以使用新位置。",
         sourceLabel: "当前位置：",
         targetLabel: "新位置：",
         targetNonEmpty: "目标目录非空，同名文件将被覆盖。",
@@ -12892,17 +12892,17 @@ Click to attach`,
       },
       busy: "应用中…",
       toast: {
-        applied: "Codely 主目录位置已更新。",
-        applyFailed: "更新 Codely 主目录位置失败。",
+        applied: "GameCowork 主目录位置已更新。",
+        applyFailed: "更新 GameCowork 主目录位置失败。",
         envVarWarning:
-          "写入系统环境变量失败，终端里的 codely 将不会使用新主目录；若系统里残留旧值，重启后应用也可能跟随旧值。建议手动设置 CODELY_CLI_HOME。",
+          "写入系统环境变量失败，终端里的 gamecowork 将不会使用新主目录；若系统里残留旧值，重启后应用也可能跟随旧值。建议手动设置 GAMECOWORK_CLI_HOME。",
         migrateFailed: "数据迁移失败，原位置数据未受影响。",
       },
       error: {
         sameAsCurrent: "新位置与当前位置相同。",
-        nestedPath: "新位置不能位于当前 Codely 主目录内部，也不能包含它。",
+        nestedPath: "新位置不能位于当前 GameCowork 主目录内部，也不能包含它。",
         invalid: "路径无效。",
-        sourceUnreadable: "无法读取当前 Codely 主目录，请检查其访问权限。",
+        sourceUnreadable: "无法读取当前 GameCowork 主目录，请检查其访问权限。",
       },
     },
     enableNotification: { title: "启用通知", description: "在任务完成或需要输入时提示。" },
@@ -13267,7 +13267,7 @@ Click to attach`,
     connectToAuthenticate: "连接以进行认证",
     empty: {
       title: "没有运行中的 MCP 服务器。",
-      description: "您可以使用 <code>codely mcp add</code> 命令行工具配置系统级或私有服务器。",
+      description: "您可以使用 <code>gamecowork mcp add</code> 命令行工具配置系统级或私有服务器。",
       configureNewServer: "配置新服务器",
     },
   },
@@ -13391,10 +13391,10 @@ Click to attach`,
     },
   },
   Aot = {
-    title: "体验 TJ Codely 移动版",
+    title: "体验 TJ GameCowork 移动版",
     description: "使用App连接电脑",
     learnMore: "查看详情",
-    qrCodeAlt: "Codely 移动端二维码",
+    qrCodeAlt: "GameCowork 移动端二维码",
   },
   Mot = {
     notLoggedIn: "未登录",
@@ -13421,7 +13421,7 @@ Click to attach`,
     skillsUpdateAvailable: "您有技能需要更新。",
     extensionsUpdateAvailable: "您有扩展需要更新。",
     downloadClient: "下载客户端",
-    getCodelyMobile: "获取 Codely 移动端",
+    getGameCoworkMobile: "获取 GameCowork 移动端",
     showPet: "显示宠物",
     hidePet: "隐藏宠物",
     activityNotice: "活动通知",
@@ -13439,7 +13439,7 @@ Click to attach`,
     tagOther: "其他",
     detailPlaceholder: "填写详情（必填）",
     includeProject: "包含游戏项目工程",
-    privacy: "你的反馈可用于改进 Codely。<privacyLink>了解更多</privacyLink>",
+    privacy: "你的反馈可用于改进 GameCowork。<privacyLink>了解更多</privacyLink>",
     submit: "提交",
     uploadingTitle: "正在上传反馈",
     uploadingDesc: "您的反馈 ID 已就绪，诊断信息正在上传中",
@@ -13453,7 +13453,7 @@ Click to attach`,
     errorDesc: "上传未成功，但您的反馈 ID 保持不变：",
   },
   Pot = {
-    title: "Tuanjie Codely 已为你准备好",
+    title: "Tuanjie GameCowork 已为你准备好",
     subtitle: "下载桌面应用，在终端里和 AI 一起写代码、建场景、做游戏",
     downloadButton: "立即下载",
     continueWeb: "继续使用云端智能体",
@@ -13598,7 +13598,7 @@ Click to attach`,
       unitySkillIncompatible: "该工作区不支持此{{type}}，请选择其他工作区。",
     },
     tabs: { extensions: "扩展", skills: "技能", mcp: "MCPs" },
-    cardLabel: { extensions: "扩展", skills: "技能", mcp: "MCP", source: "Codely" },
+    cardLabel: { extensions: "扩展", skills: "技能", mcp: "MCP", source: "GameCowork" },
     filter: { all: "全部", skills: "技能", extensions: "插件", mcp: "MCP" },
     mcp: {
       install: "安装",
@@ -14576,7 +14576,7 @@ Click to attach`,
     unityInsightConnecting: "Establishing connection...",
     unityInsightIndexNotReady: "Unity Insight index is not ready",
     unityInsightCliConnectionFailed:
-      "Could not connect to Unity Insight. Start a Codely CLI session for this project, then retry.",
+      "Could not connect to Unity Insight. Start a GameCowork CLI session for this project, then retry.",
     unityInsightIndexFailed: "Unity Insight index failed. Retry to rebuild the index.",
     unityInsightEnableMessage:
       "Enable Unity Insight to browse your project's virtual filesystem — assets, scenes, prefabs, and cross-references — without opening the Editor.",
@@ -14752,7 +14752,7 @@ Click to attach`,
     memory: "Memory",
     automaticUpdate: "Self-Update Memory",
     automaticUpdateStreamingHint:
-      "If Codely is still replying, the change takes effect after the current response finishes.",
+      "If GameCowork is still replying, the change takes effect after the current response finishes.",
     more: "More",
     showFolder: "Show Folder",
     clearMemory: "Clear Memory",
@@ -14770,9 +14770,9 @@ Click to attach`,
     workspaceTag: "Workspace",
     globalTag: "Global",
     noProjectMemoryYet: "No project memory yet",
-    letCodelyKnowProject: "Let Codely know your project",
+    letGameCoworkKnowProject: "Let GameCowork know your project",
     noGlobalMemoryYet: "No global memory yet",
-    letCodelyKnowGlobal: "Create global memory",
+    letGameCoworkKnowGlobal: "Create global memory",
     generatingGlobalMemory: "Generating...",
     createGlobalMemoryFailed: "Failed to create global memory file.",
     memoryUpdatedAt: "Updated at: {{time}}",
@@ -14847,7 +14847,7 @@ Click to attach`,
     unityInsightLoadingStatus: "准备 Unity Insight...",
     unityInsightConnecting: "建立连接中...",
     unityInsightIndexNotReady: "Unity Insight 索引尚未就绪",
-    unityInsightCliConnectionFailed: "无法连接 Unity Insight。请先在该项目启动 Codely CLI 会话后重试。",
+    unityInsightCliConnectionFailed: "无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。",
     unityInsightIndexFailed: "Unity Insight 索引失败。请重试以重新构建索引。",
     unityInsightEnableMessage:
       "开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。",
@@ -15021,7 +15021,7 @@ Click to attach`,
     openPlanFile: "打开计划文件 {{title}}",
     memory: "记忆",
     automaticUpdate: "自主更新记忆",
-    automaticUpdateStreamingHint: "若 Codely 仍在回复，需等当前回复结束后才会生效。",
+    automaticUpdateStreamingHint: "若 GameCowork 仍在回复，需等当前回复结束后才会生效。",
     more: "更多",
     showFolder: "显示文件夹",
     clearMemory: "消除记忆",
@@ -15037,9 +15037,9 @@ Click to attach`,
     workspaceTag: "工作区",
     globalTag: "全局",
     noProjectMemoryYet: "暂无项目记忆",
-    letCodelyKnowProject: "让 Codely 了解你的项目",
+    letGameCoworkKnowProject: "让 GameCowork 了解你的项目",
     noGlobalMemoryYet: "暂无全局记忆",
-    letCodelyKnowGlobal: "创建全局记忆",
+    letGameCoworkKnowGlobal: "创建全局记忆",
     generatingGlobalMemory: "生成中...",
     createGlobalMemoryFailed: "创建全局记忆文件失败。",
     memoryUpdatedAt: "更新时间：{{time}}",
@@ -15063,7 +15063,7 @@ Click to attach`,
   },
   Lat = { placeholder: "输入消息…" },
   Tat = { filePreview: wat, rightSidebar: Sat, insights: xat, updateButton: kat, fileTree: Eat, petInput: Lat },
-  Iat = "codely-language";
+  Iat = "gamecowork-language";
 function Nat() {
   if (typeof window > "u") return "zh";
   try {
@@ -19910,13 +19910,13 @@ function wMe(n) {
 }
 const Odt = {
     default: "",
-    active: "text-codely-color-accent-default",
-    warning: "text-codely-color-status-warning-default",
+    active: "text-gamecowork-color-accent-default",
+    warning: "text-gamecowork-color-status-warning-default",
   },
   Pdt = {
-    default: "text-codely-color-text-secondary",
-    active: "text-codely-color-text-default",
-    warning: "text-codely-color-text-default",
+    default: "text-gamecowork-color-text-secondary",
+    active: "text-gamecowork-color-text-default",
+    warning: "text-gamecowork-color-text-default",
   },
   Fdt = Ze.forwardRef((n, e) => {
     const { className: t, icon: i, children: r, disabled: s, variant: o = "default", ...a } = n,
@@ -19928,10 +19928,10 @@ const Odt = {
       type: "button",
       disabled: s,
       className: Lt(
-        "min-h-9 inline-flex cursor-pointer items-center gap-2 rounded-[6.25rem] border border-solid border-codely-color-border-subtle bg-codely-color-surface-primary px-3 py-1.5 text-sm transition-colors",
+        "min-h-9 inline-flex cursor-pointer items-center gap-2 rounded-[6.25rem] border border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary px-3 py-1.5 text-sm transition-colors",
         Pdt[o],
-        "hover:bg-codely-color-interactive-hover",
-        "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-codely-color-border-subtle disabled:hover:text-codely-color-text-secondary",
+        "hover:bg-gamecowork-color-interactive-hover",
+        "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-gamecowork-color-border-subtle disabled:hover:text-gamecowork-color-text-secondary",
         t,
       ),
       ...a,
@@ -20244,7 +20244,7 @@ function qdt({ shortcuts: n, size: e = "sm" }) {
         "span",
         {
           className: Lt(
-            "shrink-0 box-border inline-flex items-center justify-center bg-codely-color-surface-input p-0.5 text-xss text-codely-color-text-default",
+            "shrink-0 box-border inline-flex items-center justify-center bg-gamecowork-color-surface-input p-0.5 text-xss text-gamecowork-color-text-default",
             jdt[e],
             r === 0 && "rounded-l-default",
             r === t.length - 1 && "rounded-r-default",
@@ -20260,7 +20260,7 @@ const Gdt = { sm: "text-xss min-w-2.5 h-2.5", md: "text-xs min-w-3 h-3", lg: "te
 function Kdt({ shortcuts: n, size: e = "sm" }) {
   const t = SMe(n);
   return z.jsx("span", {
-    className: Lt("inline-flex items-center gap-0.5 text-codely-color-text-tertiary"),
+    className: Lt("inline-flex items-center gap-0.5 text-gamecowork-color-text-tertiary"),
     children: t.map((i, r) =>
       z.jsx("span", { className: Lt("inline-flex items-center justify-center", Gdt[e]), children: i }, `${i}-${r}`),
     ),
@@ -21398,7 +21398,7 @@ const T0 = U.forwardRef(function (
       edgeFadeBottom: s = !0,
       edgeFadeHorizontal: o = !1,
       edgeFadeHorizontalOnInteraction: a = !1,
-      edgeFadeColor: l = "var(--codely-color-surface-primary)",
+      edgeFadeColor: l = "var(--gamecowork-color-surface-primary)",
       edgeFadeHeight: c = 32,
       edgeFadeWidth: u = 32,
       horizontalScroll: d = !1,
@@ -23494,9 +23494,9 @@ typeof window < "u" &&
         }));
   });
 const Tft = {
-  "codely-color-surface-base": { vars: ["--codely-color-surface-base"], default: "rgba(224, 224, 224, 1)" },
-  "codely-color-text-default": { vars: ["--codely-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
-  "codely-color-border-subtle": { vars: ["--codely-color-border-subtle"], default: "rgba(255, 255, 255, 0.08)" },
+  "gamecowork-color-surface-base": { vars: ["--gamecowork-color-surface-base"], default: "rgba(224, 224, 224, 1)" },
+  "gamecowork-color-text-default": { vars: ["--gamecowork-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
+  "gamecowork-color-border-subtle": { vars: ["--gamecowork-color-border-subtle"], default: "rgba(255, 255, 255, 0.08)" },
 };
 function Ift(n, e) {
   return [...n].reverse().reduce((t, i) => `var(${i}, ${t})`, e);
@@ -23506,11 +23506,11 @@ function Lie(n) {
   if (!e) throw new Error(`Invalid theme color name ${n}`);
   return Ift(e.vars, e.default);
 }
-const Nft = `1px solid ${Lie("codely-color-border-subtle")}`,
+const Nft = `1px solid ${Lie("gamecowork-color-border-subtle")}`,
   Dft = {
     fontSize: "12px",
-    backgroundColor: Lie("codely-color-surface-base"),
-    color: Lie("codely-color-text-default"),
+    backgroundColor: Lie("gamecowork-color-surface-base"),
+    color: Lie("gamecowork-color-text-default"),
     padding: "0.25rem",
     borderRadius: "0.5rem",
     zIndex: 1e3,
@@ -23819,7 +23819,7 @@ const Bfe = U.forwardRef(function (e, t) {
       },
       disabled: l,
       className: Lt(
-        "cursor-pointer p-0 bg-transparent border-none flex items-center justify-center text-codely-color-text-secondary hover:bg-codely-color-interactive-hover transition-colors",
+        "cursor-pointer p-0 bg-transparent border-none flex items-center justify-center text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover transition-colors",
         { "cursor-not-allowed opacity-40": l },
         b,
         r,
@@ -23844,9 +23844,9 @@ const Bft = Ze.forwardRef((n, e) => {
     u = z.jsxs("span", {
       className: Lt(
         "relative inline-flex size-4 shrink-0 items-center justify-center rounded-default",
-        "bg-codely-color-surface-primary",
-        "border border-solid border-codely-color-border-strong hover:border-codely-color-border-bold",
-        "has-[:checked]:border-codely-color-accent-default has-[:checked]:bg-codely-color-accent-default",
+        "bg-gamecowork-color-surface-primary",
+        "border border-solid border-gamecowork-color-border-strong hover:border-gamecowork-color-border-bold",
+        "has-[:checked]:border-gamecowork-color-accent-default has-[:checked]:bg-gamecowork-color-accent-default",
         t,
       ),
       children: [
@@ -23868,7 +23868,7 @@ const Bft = Ze.forwardRef((n, e) => {
     ? u
     : z.jsxs("label", {
         className: Lt(
-          "inline-flex cursor-pointer items-center gap-2 text-sm text-codely-color-text-secondary",
+          "inline-flex cursor-pointer items-center gap-2 text-sm text-gamecowork-color-text-secondary",
           o && "cursor-not-allowed opacity-60",
           r,
         ),
@@ -23878,13 +23878,13 @@ const Bft = Ze.forwardRef((n, e) => {
 Bft.displayName = "Checkbox";
 const Hft = {
     primary:
-      "bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover active:bg-codely-color-accent-active disabled:hover:bg-codely-color-accent-default disabled:active:bg-codely-color-accent-default",
+      "bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover active:bg-gamecowork-color-accent-active disabled:hover:bg-gamecowork-color-accent-default disabled:active:bg-gamecowork-color-accent-default",
     secondary:
-      "bg-codely-secondary text-codely-color-text-primary hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+      "bg-gamecowork-secondary text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
     outline:
-      "bg-transparent text-codely-color-text-primary border border-solid border-codely-color-border-default hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+      "bg-transparent text-gamecowork-color-text-primary border border-solid border-gamecowork-color-border-default hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
     ghost:
-      "bg-transparent text-codely-color-text-default hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed disabled:hover:bg-transparent disabled:active:bg-transparent",
+      "bg-transparent text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed disabled:hover:bg-transparent disabled:active:bg-transparent",
   },
   zft = {
     sm: "h-8 px-2 py-1 text-xs rounded-md",
@@ -24015,7 +24015,7 @@ const jft = U.forwardRef(function (
       },
       children: z.jsx("div", {
         className: Lt(
-          "relative flex max-h-[min(90vh,100%)] w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-solid border-codely-color-surface-elevated bg-codely-color-surface-primary text-codely-color-text-default shadow-[0_0_10px_rgba(0,0,0,0.25)] break-words",
+          "relative flex max-h-[min(90vh,100%)] w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-solid border-gamecowork-color-surface-elevated bg-gamecowork-color-surface-primary text-gamecowork-color-text-default shadow-[0_0_10px_rgba(0,0,0,0.25)] break-words",
           i === "xxs" && "md:max-w-[21.25rem]",
           i === "xs" && "md:max-w-[25.75rem]",
           i === "sm" && "md:max-w-[31.25rem]",
@@ -27148,15 +27148,15 @@ function Bwe(n) {
 function RRe(n) {
   switch (n) {
     case "auto_edit":
-      return "text-codely-color-status-warning-text";
+      return "text-gamecowork-color-status-warning-text";
     case "yolo":
-      return "text-codely-color-status-danger-text";
+      return "text-gamecowork-color-status-danger-text";
     case "plan":
-      return "text-codely-color-status-info-text";
+      return "text-gamecowork-color-status-info-text";
     case "ask":
-      return "text-codely-color-status-info-text";
+      return "text-gamecowork-color-status-info-text";
     default:
-      return "text-codely-color-text-secondary";
+      return "text-gamecowork-color-text-secondary";
   }
 }
 function vmt({ modeKey: n, className: e }) {
@@ -27181,7 +27181,7 @@ const ORe = U.forwardRef(({ modeKey: n, valueLabel: e, tooltip: t, className: i 
   return z.jsx(Bfe, {
     ref: r,
     className: Lt(
-      "leading-4 text-codely-color-text-secondary w-auto pl-2 pr-1.5 py-1 h-7 rounded-full outline-offset-2",
+      "leading-4 text-gamecowork-color-text-secondary w-auto pl-2 pr-1.5 py-1 h-7 rounded-full outline-offset-2",
       i,
     ),
     tooltip: t,
@@ -27199,7 +27199,7 @@ const ORe = U.forwardRef(({ modeKey: n, valueLabel: e, tooltip: t, className: i 
           className: Lt("hidden overflow-hidden text-ellipsis whitespace-nowrap md:block text-[0.8125rem]", s),
           children: e,
         }),
-        z.jsx(wMe, { className: "!text-xs shrink-0 text-codely-color-text-secondary" }),
+        z.jsx(wMe, { className: "!text-xs shrink-0 text-gamecowork-color-text-secondary" }),
       ],
     }),
   });
@@ -27323,7 +27323,7 @@ function kmt({
         anchor: i,
         style: d,
         className: Lt(
-          "codely-popup-panel z-50 !p-1 !px-0 box-border flex w-auto max-h-[var(--anchor-max-height)] min-h-0 flex-col overflow-hidden rounded-xl bg-semantic-color-surface-card py-2 shadow-xl border-semantic-color-surface-elevated [--anchor-gap:8px] [--popup-scroll-max-height:calc(var(--anchor-max-height,70vh)-1rem)]",
+          "gamecowork-popup-panel z-50 !p-1 !px-0 box-border flex w-auto max-h-[var(--anchor-max-height)] min-h-0 flex-col overflow-hidden rounded-xl bg-semantic-color-surface-card py-2 shadow-xl border-semantic-color-surface-elevated [--anchor-gap:8px] [--popup-scroll-max-height:calc(var(--anchor-max-height,70vh)-1rem)]",
           l,
           p && "w-max max-w-[20rem]",
         ),
@@ -27380,11 +27380,11 @@ function kmt({
                             className: Lt("flex flex-col", c),
                             children: [
                               y > 0
-                                ? z.jsx("div", { className: "my-1 h-px w-full bg-codely-color-border-subtle" })
+                                ? z.jsx("div", { className: "my-1 h-px w-full bg-gamecowork-color-border-subtle" })
                                 : null,
                               b.title
                                 ? z.jsx("div", {
-                                    className: Lt("px-2 py-1.5 text-xss uppercase text-codely-color-text-tertiary", a),
+                                    className: Lt("px-2 py-1.5 text-xss uppercase text-gamecowork-color-text-tertiary", a),
                                     children: b.title,
                                   })
                                 : null,
@@ -27398,14 +27398,14 @@ function kmt({
                                         v.displayOnly
                                           ? z.jsxs("div", {
                                               className: Lt(
-                                                "min-h-7 flex cursor-default rounded-md items-center gap-2 px-2 py-1.5 text-left text-sm text-codely-color-text-secondary",
+                                                "min-h-7 flex cursor-default rounded-md items-center gap-2 px-2 py-1.5 text-left text-sm text-gamecowork-color-text-secondary",
                                                 u,
                                                 v.itemClassName,
                                               ),
                                               children: [
                                                 v.icon
                                                   ? z.jsx("span", {
-                                                      className: "flex color-codely-color-text-secondary",
+                                                      className: "flex color-gamecowork-color-text-secondary",
                                                       children: v.icon,
                                                     })
                                                   : null,
@@ -27439,7 +27439,7 @@ function kmt({
                                               children: [
                                                 v.icon
                                                   ? z.jsx("span", {
-                                                      className: "flex color-codely-color-text-secondary",
+                                                      className: "flex color-gamecowork-color-text-secondary",
                                                       children: v.icon,
                                                     })
                                                   : null,
@@ -27486,7 +27486,7 @@ function kmt({
                                         t && S < b.items.length - 1
                                           ? z.jsx("div", {
                                               className:
-                                                "h-px my-1 w-[calc(100%+8px)] -ml-1 bg-codely-color-border-subtle",
+                                                "h-px my-1 w-[calc(100%+8px)] -ml-1 bg-gamecowork-color-border-subtle",
                                             })
                                           : null,
                                       ],
@@ -27570,7 +27570,7 @@ const Lmt = U.forwardRef(function (
   return z.jsx(Emt, {
     anchor: a,
     panelClassName: Lt(
-      "!p-0 min-w-[18rem] border border-solid border-codely-color-border-default rounded-xl overflow-hidden",
+      "!p-0 min-w-[18rem] border border-solid border-gamecowork-color-border-default rounded-xl overflow-hidden",
       l,
     ),
     listClassName: "gap-0",
@@ -27580,7 +27580,7 @@ const Lmt = U.forwardRef(function (
       z.jsxs("div", {
         className: "flex flex-col",
         children: [
-          e ? z.jsx("div", { className: "px-3 pt-2 text-xs text-codely-color-text-tertiary", children: e }) : null,
+          e ? z.jsx("div", { className: "px-3 pt-2 text-xs text-gamecowork-color-text-tertiary", children: e }) : null,
           z.jsx("div", {
             className: Lt("flex flex-col p-1", e ? "pb-1" : "py-1"),
             children: t.map((m) => {
@@ -27592,7 +27592,7 @@ const Lmt = U.forwardRef(function (
                   disabled: m.disabled,
                   className: Lt(
                     "rounded-md cursor-pointer inline-flex w-full appearance-none items-center gap-2 border-0 bg-transparent px-2 py-1 text-left outline-none transition-colors",
-                    "hover:bg-codely-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
+                    "hover:bg-gamecowork-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
                   ),
                   onClick: () => {
                     (o(m.key), p());
@@ -27608,12 +27608,12 @@ const Lmt = U.forwardRef(function (
                       className: "min-w-0 flex-1",
                       children: [
                         z.jsx("span", {
-                          className: "block text-[0.8125rem] text-codely-color-text-default",
+                          className: "block text-[0.8125rem] text-gamecowork-color-text-default",
                           children: m.label,
                         }),
                         m.description
                           ? z.jsx("span", {
-                              className: "block text-xs text-codely-color-text-secondary mt-0.5",
+                              className: "block text-xs text-gamecowork-color-text-secondary mt-0.5",
                               children: m.description,
                             })
                           : null,
@@ -27621,7 +27621,7 @@ const Lmt = U.forwardRef(function (
                     }),
                     b
                       ? z.jsx("span", {
-                          className: "ml-2 mt-0.5 flex shrink-0 items-center text-codely-color-text-default",
+                          className: "ml-2 mt-0.5 flex shrink-0 items-center text-gamecowork-color-text-default",
                           children: z.jsx(qMe, { className: "!text-base" }),
                         })
                       : null,
@@ -28047,7 +28047,7 @@ function zRe({
                   g > 0
                     ? z.jsx("div", {
                         role: "separator",
-                        className: "border-codely-color-border-subtle my-1 border-0 border-t border-solid",
+                        className: "border-gamecowork-color-border-subtle my-1 border-0 border-t border-solid",
                       })
                     : null,
                   f,
@@ -28103,7 +28103,7 @@ function qmt({
       type: "button",
       role: "menuitem",
       className: Lt(
-        "min-h-7 hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 text-sm text-[0.8125rem] rounded-md",
+        "min-h-7 hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 text-sm text-[0.8125rem] rounded-md",
         i && "cursor-not-allowed opacity-40",
         l,
       ),
@@ -57422,13 +57422,13 @@ function j4t(n) {
 function kne({ icon: n, children: e, className: t, ...i }) {
   return z.jsxs("a", {
     ...i,
-    className: Lt("codely-link-with-icon inline-flex items-center gap-1 align-middle", t),
+    className: Lt("gamecowork-link-with-icon inline-flex items-center gap-1 align-middle", t),
     children: [
       z.jsx("span", {
-        className: "codely-link-with-icon__icon inline-flex size-4 shrink-0 items-center justify-center",
+        className: "gamecowork-link-with-icon__icon inline-flex size-4 shrink-0 items-center justify-center",
         children: n,
       }),
-      z.jsx("span", { className: "codely-link-with-icon__label min-w-0", children: e }),
+      z.jsx("span", { className: "gamecowork-link-with-icon__label min-w-0", children: e }),
     ],
   });
 }
@@ -58314,7 +58314,7 @@ const REt = {
     pink: "#d33682",
     purple: "#6c71c4",
     red: "#dc322f",
-    white: "var(--codely-color-text-default)",
+    white: "var(--gamecowork-color-text-default)",
     yellow: "#b58900",
     ignore: "#586e75",
   },
@@ -58327,10 +58327,10 @@ function hFe({ filename: n, className: e, size: t = 16 }) {
   const i = U.useMemo(() => PEt(n), [n]),
     { svg: r, color: s } = U.useMemo(() => OEt(i), [i]),
     o = U.useMemo(() => r.replace("<svg ", '<svg width="100%" height="100%" focusable="false" '), [r]),
-    a = i.toLowerCase().endsWith(".txt") ? "var(--codely-color-text-default)" : s;
+    a = i.toLowerCase().endsWith(".txt") ? "var(--gamecowork-color-text-default)" : s;
   return z.jsx("span", {
     "aria-hidden": "true",
-    className: Lt("codely-seti-file-icon inline-flex shrink-0", e),
+    className: Lt("gamecowork-seti-file-icon inline-flex shrink-0", e),
     dangerouslySetInnerHTML: { __html: o },
     style: { width: t, height: t, fill: a, lineHeight: 0 },
   });
@@ -98999,7 +98999,7 @@ ${b}
       const a = Ze.useDeferredValue(s);
       return z.jsx("div", {
         ref: i,
-        className: Lt("codely-markdown", { "simple-mode": t }, e),
+        className: Lt("gamecowork-markdown", { "simple-mode": t }, e),
         children: z.jsx(zWt, { content: a, simpleMode: t }),
       });
     }),
@@ -99009,7 +99009,7 @@ function oI({ shape: n = "line", animate: e = !0, className: t, ...i }) {
   return z.jsx("div", {
     "aria-hidden": !0,
     className: Lt(
-      "bg-codely-color-surface-card",
+      "bg-gamecowork-color-surface-card",
       n === "line" ? "rounded-full" : "rounded-lg",
       e && "animate-pulse",
       t,
@@ -100809,7 +100809,7 @@ function q$t({
 function G$t({ children: n = "Will resume when background task finishes", className: e }) {
   return z.jsx("div", {
     "data-testid": "background-task-resume-message",
-    className: EAe("text-xs font-normal leading-[1.4] text-[var(--codely-color-text-tertiary)]", e),
+    className: EAe("text-xs font-normal leading-[1.4] text-[var(--gamecowork-color-text-tertiary)]", e),
     children: n,
   });
 }
@@ -100845,7 +100845,7 @@ function Y$t({ error: n, title: e }) {
   return z.jsx("div", {
     "data-testid": "stream-error-history-message",
     className:
-      "bg-codely-color-status-danger-border text-codely-color-status-danger-text flex gap-2 rounded-2xl px-2.5 py-2",
+      "bg-gamecowork-color-status-danger-border text-gamecowork-color-status-danger-text flex gap-2 rounded-2xl px-2.5 py-2",
     children: z.jsxs("div", {
       className: "grid grid-cols-[auto_1fr] items-center gap-x-1.5 gap-y-1",
       children: [
@@ -102127,11 +102127,11 @@ function UVt({ ...n }) {
     icons: { info: z.jsx(bF, {}), warning: z.jsx(bF, {}), error: z.jsx(bF, {}) },
     toastOptions: {
       classNames: {
-        toast: "codely-toast",
-        title: "codely-toast-title",
-        description: "codely-toast-description",
-        closeButton: "codely-toast-close",
-        icon: "codely-toast-icon",
+        toast: "gamecowork-toast",
+        title: "gamecowork-toast-title",
+        description: "gamecowork-toast-description",
+        closeButton: "gamecowork-toast-close",
+        icon: "gamecowork-toast-icon",
       },
     },
     ...n,
@@ -102157,7 +102157,7 @@ function nRi({ children: n, theme: e = "dark", className: t }) {
   const i = U.useMemo(() => ({ theme: e, tooltipPortalId: xre }), [e]);
   return z.jsxs(DVe.Provider, {
     value: i,
-    children: [z.jsx("div", { className: Lt("codely-design-root", t), children: n }), z.jsx(UVt, {})],
+    children: [z.jsx("div", { className: Lt("gamecowork-design-root", t), children: n }), z.jsx(UVt, {})],
   });
 }
 function GVt(n) {
@@ -103118,7 +103118,7 @@ const MUt = U.forwardRef(function (
     V = !p && e.length > 0 && !I;
   return z.jsxs("div", {
     className: Lt(
-      "codely-chat-container relative flex h-full min-h-0 flex-col bg-[var(--semantic-color-surface-base)] pb-3",
+      "gamecowork-chat-container relative flex h-full min-h-0 flex-col bg-[var(--semantic-color-surface-base)] pb-3",
       S,
     ),
     children: [
@@ -107387,8 +107387,8 @@ const PGt = {
   maxWidth: "80vw",
   padding: "0.25rem 0",
   borderRadius: "0.75rem",
-  backgroundColor: "var(--codely-color-surface-primary, var(--semantic-color-surface-primary))",
-  color: "var(--codely-color-text-secondary, var(--semantic-color-text-secondary))",
+  backgroundColor: "var(--gamecowork-color-surface-primary, var(--semantic-color-surface-primary))",
+  color: "var(--gamecowork-color-text-secondary, var(--semantic-color-text-secondary))",
   boxShadow: "0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)",
 };
 function dUe(n, e, t = {}) {
@@ -109986,12 +109986,12 @@ const RUe = U.createContext("horizontal"),
     const s = U.useContext(RUe),
       o =
         s === "vertical"
-          ? "absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-codely-color-border-subtle transition-[height] duration-150 group-data-[separator=hover]:h-[3px] group-data-[separator=active]:h-[3px]"
-          : "absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-codely-color-border-subtle transition-[width] duration-150 group-data-[separator=hover]:w-[3px] group-data-[separator=active]:w-[3px]";
+          ? "absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gamecowork-color-border-subtle transition-[height] duration-150 group-data-[separator=hover]:h-[3px] group-data-[separator=active]:h-[3px]"
+          : "absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gamecowork-color-border-subtle transition-[width] duration-150 group-data-[separator=hover]:w-[3px] group-data-[separator=active]:w-[3px]";
     return z.jsxs(MUe, {
       elementRef: r,
       className: Lt(
-        "group relative flex w-px shrink-0 items-center justify-center bg-codely-color-border-subtle",
+        "group relative flex w-px shrink-0 items-center justify-center bg-gamecowork-color-border-subtle",
         s === "vertical" && "h-px w-full",
         t,
       ),
@@ -110001,7 +110001,7 @@ const RUe = U.createContext("horizontal"),
         e &&
           z.jsx("div", {
             className: Lt(
-              "z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-codely-color-border-subtle bg-codely-color-surface-sunken opacity-0 transition-opacity group-data-[separator=hover]:opacity-100 group-data-[separator=active]:opacity-100",
+              "z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sunken opacity-0 transition-opacity group-data-[separator=hover]:opacity-100 group-data-[separator=active]:opacity-100",
               s === "vertical" && "h-3 w-4",
             ),
             "data-handle": !0,
@@ -110112,7 +110112,7 @@ function cRi({
       ref: f,
       ...y,
       className: Lt(
-        "floating group/floating absolute inset-y-0 left-0 z-[70] overflow-hidden transition-[width] duration-200 ease-out bg-[var(--codely-color-surface-sidebar)]",
+        "floating group/floating absolute inset-y-0 left-0 z-[70] overflow-hidden transition-[width] duration-200 ease-out bg-[var(--gamecowork-color-surface-sidebar)]",
         l,
       ),
       style: { width: b, maxWidth: b },
@@ -110150,7 +110150,7 @@ const cYt = Ze.forwardRef((n, e) => {
         disabled: r,
         readOnly: s,
         className: Lt(
-          "text-codely-color-text-primary border-codely-color-border-default focus:border-codely-color-accent-default h-[2rem] w-full rounded-md border border-solid bg-transparent px-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 read-only:cursor-not-allowed read-only:opacity-60",
+          "text-gamecowork-color-text-primary border-gamecowork-color-border-default focus:border-gamecowork-color-accent-default h-[2rem] w-full rounded-md border border-solid bg-transparent px-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 read-only:cursor-not-allowed read-only:opacity-60",
           i && "pr-12",
         ),
         ...o,
@@ -110162,10 +110162,10 @@ const cYt = Ze.forwardRef((n, e) => {
           tabIndex: -1,
           onClick: () => l((c) => !c),
           className:
-            "text-codely-color-text-tertiary hover:text-codely-color-text-primary absolute right-2 top-0 flex h-full items-center justify-center border-none bg-transparent p-0 cursor-pointer",
+            "text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-primary absolute right-2 top-0 flex h-full items-center justify-center border-none bg-transparent p-0 cursor-pointer",
           children: a
-            ? z.jsx(aYt, { className: "!text-sm text-codely-color-text-default" })
-            : z.jsx(lYt, { className: "!text-sm text-codely-color-text-secondary" }),
+            ? z.jsx(aYt, { className: "!text-sm text-gamecowork-color-text-default" })
+            : z.jsx(lYt, { className: "!text-sm text-gamecowork-color-text-secondary" }),
         }),
     ],
   });
@@ -260416,21 +260416,21 @@ function cFi({
       s &&
         z.jsx("span", {
           className:
-            "absolute top-full left-0 mt-1 -translate-x-1/2 text-xs leading-[20px] text-codely-color-text-tertiary whitespace-nowrap",
+            "absolute top-full left-0 mt-1 -translate-x-1/2 text-xs leading-[20px] text-gamecowork-color-text-tertiary whitespace-nowrap",
           children: s,
         }),
       z.jsxs("div", {
         ref: u,
-        className: "relative h-1 bg-codely-color-border-subtle rounded-full cursor-pointer touch-none select-none",
+        className: "relative h-1 bg-gamecowork-color-border-subtle rounded-full cursor-pointer touch-none select-none",
         onPointerDown: g,
         children: [
           z.jsx("div", {
-            className: "absolute h-full bg-codely-color-accent-default rounded-full",
+            className: "absolute h-full bg-gamecowork-color-accent-default rounded-full",
             style: { width: `${h}%` },
           }),
           z.jsx("div", {
             className:
-              "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-3.5 rounded-full bg-codely-color-text-accent shadow-md ring-1 ring-black/5",
+              "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-3.5 rounded-full bg-gamecowork-color-text-accent shadow-md ring-1 ring-black/5",
             style: { left: `${h}%` },
           }),
         ],
@@ -260438,7 +260438,7 @@ function cFi({
       o &&
         z.jsx("span", {
           className:
-            "absolute top-full right-0 mt-1 translate-x-1/2 text-xs leading-[20px] text-codely-color-text-tertiary whitespace-nowrap",
+            "absolute top-full right-0 mt-1 translate-x-1/2 text-xs leading-[20px] text-gamecowork-color-text-tertiary whitespace-nowrap",
           children: o,
         }),
     ],
@@ -260456,8 +260456,8 @@ const I6i = {
   JNe = 16,
   eDe = "flex h-full min-h-0 select-none flex-col",
   eet =
-    "flex h-full w-max min-w-full cursor-pointer appearance-none items-center gap-1 rounded border-0 bg-transparent px-2 py-1 text-left font-inherit text-xs text-inherit text-codely-color-text-default",
-  tet = "bg-codely-color-accent-subtle",
+    "flex h-full w-max min-w-full cursor-pointer appearance-none items-center gap-1 rounded border-0 bg-transparent px-2 py-1 text-left font-inherit text-xs text-inherit text-gamecowork-color-text-default",
+  tet = "bg-gamecowork-color-accent-subtle",
   iet = "min-w-0 truncate whitespace-nowrap",
   tDe = "inline-flex size-3.5 shrink-0 items-center justify-center";
 function N6i(n, e, t = ".", i = 0) {
@@ -260576,10 +260576,10 @@ const P6i = U.memo(function ({
             p &&
               "w-full min-w-0 flex-1 overflow-hidden group-has-[.project-tree-row-actions:focus-within]:pr-12 group-hover:pr-12",
             r
-              ? "text-codely-color-text-disabled cursor-not-allowed select-none"
+              ? "text-gamecowork-color-text-disabled cursor-not-allowed select-none"
               : i
                 ? Lt(tet, "file-preview-tree__row--active")
-                : "hover:bg-codely-color-interactive-hover",
+                : "hover:bg-gamecowork-color-interactive-hover",
           ),
           style: { paddingLeft: `${8 + e.depth * 16}px` },
           onClick: () => {
@@ -260623,7 +260623,7 @@ const P6i = U.memo(function ({
                 className: Lt(
                   iet,
                   u == null ? void 0 : u(e.path, e.kind),
-                  r && "text-codely-color-text-disabled opacity-[0.35]",
+                  r && "text-gamecowork-color-text-disabled opacity-[0.35]",
                 ),
                 children: e.name,
               }),
@@ -260633,7 +260633,7 @@ const P6i = U.memo(function ({
         p &&
           z.jsx("span", {
             className:
-              "project-tree-row-actions bg-codely-color-surface-primary group-hover:bg-codely-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
+              "project-tree-row-actions bg-gamecowork-color-surface-primary group-hover:bg-gamecowork-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
             children: p,
           }),
       ],
@@ -260720,7 +260720,7 @@ function uFi({
     return z.jsx("div", {
       className: "flex flex-1 items-center justify-center p-4 text-center",
       children: z.jsx("p", {
-        className: "text-codely-color-text-default m-0 text-sm opacity-60",
+        className: "text-gamecowork-color-text-default m-0 text-sm opacity-60",
         children: T.loadingFiles,
       }),
     });
@@ -260734,7 +260734,7 @@ function uFi({
       return z.jsx("div", {
         className: "flex flex-1 items-center justify-center p-4 text-center",
         children: z.jsx("p", {
-          className: "text-codely-color-text-default m-0 text-sm opacity-60",
+          className: "text-gamecowork-color-text-default m-0 text-sm opacity-60",
           children: T.searching,
         }),
       });
@@ -260742,7 +260742,7 @@ function uFi({
       return z.jsx("div", {
         className: "flex flex-1 items-center justify-center p-4 text-center",
         children: z.jsx("p", {
-          className: "text-codely-color-text-default m-0 text-sm opacity-60",
+          className: "text-gamecowork-color-text-default m-0 text-sm opacity-60",
           children: T.noResultsFound,
         }),
       });
@@ -260784,7 +260784,7 @@ function uFi({
                         "h-auto",
                         Pt &&
                           "w-full min-w-0 flex-1 overflow-hidden group-has-[.project-tree-row-actions:focus-within]:pr-12 group-hover:pr-12",
-                        ht ? Lt(tet, "file-preview-tree__row--active") : "hover:bg-codely-color-interactive-hover",
+                        ht ? Lt(tet, "file-preview-tree__row--active") : "hover:bg-gamecowork-color-interactive-hover",
                       ),
                       onClick: () => o(Me.path),
                       onDoubleClick: () => o(Me.path, { pinned: !0 }),
@@ -260805,7 +260805,7 @@ function uFi({
                     Pt &&
                       z.jsx("span", {
                         className:
-                          "project-tree-row-actions bg-codely-color-surface-primary group-hover:bg-codely-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
+                          "project-tree-row-actions bg-gamecowork-color-surface-primary group-hover:bg-gamecowork-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
                         children: Pt,
                       }),
                   ],
@@ -260839,7 +260839,7 @@ function uFi({
     return z.jsx("div", {
       className: "flex flex-1 items-center justify-center p-4 text-center",
       children: z.jsx("p", {
-        className: "text-codely-color-text-default m-0 text-sm opacity-60",
+        className: "text-gamecowork-color-text-default m-0 text-sm opacity-60",
         children: T.noFilesAvailable,
       }),
     });

@@ -62,7 +62,7 @@ try {
   })();
 } catch {}
 function P(e) {
-  return "Codely Bridge";
+  return "GameCowork Bridge";
 }
 const q = (e) => `连接失败，请安装${e}并且打开Unity编译后重试`,
   Le = /connection closed|timeout|not ready|not valid acp/i;
@@ -420,9 +420,9 @@ function G() {
     ],
   });
 }
-const J = "cursor-pointer transition-colors rounded-lg group hover:bg-codely-color-accent-subtle",
-  Ee = "px-2 py-3 text-left text-2xs font-bold uppercase tracking-wider text-codely-color-text-tertiary",
-  _e = "flex bg-codely-color-surface-disabled px-6 border-y border-solid border-codely-color-border-subtle border-x-0";
+const J = "cursor-pointer transition-colors rounded-lg group hover:bg-gamecowork-color-accent-subtle",
+  Ee = "px-2 py-3 text-left text-2xs font-bold uppercase tracking-wider text-gamecowork-color-text-tertiary",
+  _e = "flex bg-gamecowork-color-surface-disabled px-6 border-y border-solid border-gamecowork-color-border-subtle border-x-0";
 function ae({
   columns: e,
   data: t,
@@ -468,7 +468,7 @@ function ae({
                       return s.jsx(
                         "div",
                         {
-                          className: b("flex", J, u && "bg-codely-color-interactive-selected", y),
+                          className: b("flex", J, u && "bg-gamecowork-color-interactive-selected", y),
                           "data-selected": u,
                           onClick: () => (o == null ? void 0 : o(c)),
                           "data-focus-item": "true",
@@ -480,7 +480,7 @@ function ae({
                               "div",
                               {
                                 className: b(
-                                  "px-2 py-3 text-xs text-codely-color-text-tertiary flex",
+                                  "px-2 py-3 text-xs text-gamecowork-color-text-tertiary flex",
                                   h.className,
                                   h.cellClassName,
                                 ),
@@ -511,7 +511,7 @@ function ae({
                     return s.jsx(
                       "div",
                       {
-                        className: b("flex", J, u && "bg-codely-color-interactive-selected", y),
+                        className: b("flex", J, u && "bg-gamecowork-color-interactive-selected", y),
                         "data-selected": u,
                         onClick: () => (o == null ? void 0 : o(c)),
                         "data-focus-item": "true",
@@ -523,7 +523,7 @@ function ae({
                             "div",
                             {
                               className: b(
-                                "px-2 py-3 text-xs text-codely-color-text-tertiary flex",
+                                "px-2 py-3 text-xs text-gamecowork-color-text-tertiary flex",
                                 h.className,
                                 h.cellClassName,
                               ),
@@ -562,10 +562,10 @@ const Ie = [
         children: s.jsxs("div", {
           children: [
             s.jsx("div", {
-              className: b("font-semibold text-sm leading-5 text-codely-color-text-default"),
+              className: b("font-semibold text-sm leading-5 text-gamecowork-color-text-default"),
               children: e.name,
             }),
-            s.jsx("div", { className: "text-xs text-codely-color-text-tertiary", children: Me(e.lastModifiedTs) }),
+            s.jsx("div", { className: "text-xs text-gamecowork-color-text-tertiary", children: Me(e.lastModifiedTs) }),
           ],
         }),
       }),
@@ -574,7 +574,7 @@ const Ie = [
     key: "path",
     header: "File Path",
     flex: "1 1 55%",
-    cellClassName: "truncate items-center text-codely-color-text-tertiary",
+    cellClassName: "truncate items-center text-gamecowork-color-text-tertiary",
     render: (e) =>
       s.jsx(Q, {
         text: e.path,
@@ -586,7 +586,7 @@ const Ie = [
     key: "version",
     header: "Editor Version",
     flex: "0 0 120px",
-    cellClassName: "justify-start items-center text-codely-color-text-tertiary",
+    cellClassName: "justify-start items-center text-gamecowork-color-text-tertiary",
     render: (e) => {
       var t;
       return s.jsx("span", {
@@ -613,7 +613,7 @@ function Pe({ projects: e, onSelect: t, onClose: d, isLoading: a = !1 }) {
     onConfirm: y,
     confirmDisabled: !n,
     confirmText: "Open",
-    cancelButtonClassName: "bg-transparent hover:bg-transparent text-codely-color-text-tertiary",
+    cancelButtonClassName: "bg-transparent hover:bg-transparent text-gamecowork-color-text-tertiary",
     children: s.jsxs("div", {
       className: "w-full min-h-[22.5rem] flex-col",
       children: [
@@ -621,22 +621,22 @@ function Pe({ projects: e, onSelect: t, onClose: d, isLoading: a = !1 }) {
           className: "p-8 pb-6",
           children: [
             s.jsx("h3", {
-              className: "text-2xl font-bold text-codely-color-text-default m-0 mb-1",
+              className: "text-2xl font-bold text-gamecowork-color-text-default m-0 mb-1",
               children: "Project",
             }),
             s.jsx("p", {
-              className: "mt-1 text-sm leading-5 text-codely-color-text-disabled mb-6",
+              className: "mt-1 text-sm leading-5 text-gamecowork-color-text-disabled mb-6",
               children: "Select a project to open",
             }),
             s.jsxs("div", {
-              className: "flex rounded-lg w-fit bg-codely-color-surface-base",
+              className: "flex rounded-lg w-fit bg-gamecowork-color-surface-base",
               children: [
                 s.jsxs("button", {
                   className: b(
                     "flex items-center gap-1 px-4 h-7 rounded-md text-sm font-medium transition-all border-none cursor-pointer",
                     l === "tuanjie"
-                      ? "bg-codely-color-text-default text-codely-color-surface-card"
-                      : "bg-transparent text-codely-color-text-secondary",
+                      ? "bg-gamecowork-color-text-default text-gamecowork-color-surface-card"
+                      : "bg-transparent text-gamecowork-color-text-secondary",
                   ),
                   onClick: () => {
                     (f("tuanjie"), r(null));
@@ -647,8 +647,8 @@ function Pe({ projects: e, onSelect: t, onClose: d, isLoading: a = !1 }) {
                   className: b(
                     "flex items-center gap-1 px-4 h-7 rounded-md text-sm font-medium transition-all border-none cursor-pointer",
                     l === "unity"
-                      ? "bg-codely-color-text-default text-codely-color-surface-card"
-                      : "bg-transparent text-codely-color-text-secondary",
+                      ? "bg-gamecowork-color-text-default text-gamecowork-color-surface-card"
+                      : "bg-transparent text-gamecowork-color-text-secondary",
                   ),
                   onClick: () => {
                     (f("unity"), r(null));
@@ -665,7 +665,7 @@ function Pe({ projects: e, onSelect: t, onClose: d, isLoading: a = !1 }) {
             columns: Ie,
             data: i,
             rowClassName:
-              "hover:bg-codely-color-interactive-hover data-[selected=true]:bg-codely-color-interactive-pressed",
+              "hover:bg-gamecowork-color-interactive-hover data-[selected=true]:bg-gamecowork-color-interactive-pressed",
             loading: a,
             getRowKey: (x) => x.path,
             onRowClick: r,
@@ -689,10 +689,10 @@ const Ue = [
       return s.jsxs("div", {
         className: "flex flex-col",
         children: [
-          s.jsx("span", { className: "font-semibold text-sm leading-5 text-codely-color-text-default", children: d }),
+          s.jsx("span", { className: "font-semibold text-sm leading-5 text-gamecowork-color-text-default", children: d }),
           t &&
             e.tuanjie_editor_version !== e.version &&
-            s.jsx("span", { className: "text-xs text-codely-color-text-tertiary", children: e.version }),
+            s.jsx("span", { className: "text-xs text-gamecowork-color-text-tertiary", children: e.version }),
         ],
       });
     },
@@ -701,7 +701,7 @@ const Ue = [
     key: "path",
     header: "Install Path",
     flex: "1 1 auto",
-    cellClassName: "truncate items-center text-codely-color-text-tertiary",
+    cellClassName: "truncate items-center text-gamecowork-color-text-tertiary",
     render: (e) =>
       s.jsx(Q, {
         text: e.path,
@@ -725,7 +725,7 @@ function De({ editors: e, requestedVersion: t, onSelect: d, onClose: a }) {
     onConfirm: l,
     confirmDisabled: !n,
     confirmText: "Open",
-    cancelButtonClassName: "bg-transparent hover:bg-transparent text-codely-color-text-tertiary",
+    cancelButtonClassName: "bg-transparent hover:bg-transparent text-gamecowork-color-text-tertiary",
     children: s.jsxs("div", {
       className: "w-full min-h-[20rem] flex-col",
       children: [
@@ -733,11 +733,11 @@ function De({ editors: e, requestedVersion: t, onSelect: d, onClose: a }) {
           className: "p-8 pb-6",
           children: [
             s.jsx("h3", {
-              className: "text-2xl font-bold text-codely-color-text-default m-0 mb-1",
+              className: "text-2xl font-bold text-gamecowork-color-text-default m-0 mb-1",
               children: "Select Editor Version",
             }),
             s.jsx("p", {
-              className: "mt-1 text-sm leading-5 text-codely-color-text-disabled mb-2",
+              className: "mt-1 text-sm leading-5 text-gamecowork-color-text-disabled mb-2",
               children: t
                 ? `Editor ${t} is not installed. Choose an installed editor to open this project.`
                 : "Choose an installed editor to open this project.",
@@ -750,7 +750,7 @@ function De({ editors: e, requestedVersion: t, onSelect: d, onClose: a }) {
             columns: Ue,
             data: e,
             rowClassName:
-              "hover:bg-codely-color-interactive-hover data-[selected=true]:bg-codely-color-interactive-pressed",
+              "hover:bg-gamecowork-color-interactive-hover data-[selected=true]:bg-gamecowork-color-interactive-pressed",
             getRowKey: (i) => `${i.version}\0${i.path}`,
             onRowClick: r,
             selectedKey: n ? `${n.version}\0${n.path}` : void 0,

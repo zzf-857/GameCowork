@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Codely CLI's capabilities with specialized knowledge, workflows, or tool integrations.
+description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends GameCowork CLI's capabilities with specialized knowledge, workflows, or tool integrations.
 ---
 
 # Skill Creator
@@ -9,7 +9,7 @@ This skill provides guidance for creating effective skills.
 
 ## About Skills
 
-Skills are modular, self-contained packages that extend Codely CLI's capabilities by providing specialized knowledge, workflows, and tools. Think of them as "onboarding guides" for specific domains or tasks—they transform Codely CLI from a general-purpose agent into a specialized agent equipped with procedural knowledge that no model can fully possess.
+Skills are modular, self-contained packages that extend GameCowork CLI's capabilities by providing specialized knowledge, workflows, and tools. Think of them as "onboarding guides" for specific domains or tasks—they transform GameCowork CLI from a general-purpose agent into a specialized agent equipped with procedural knowledge that no model can fully possess.
 
 ### What Skills Provide
 
@@ -22,9 +22,9 @@ Skills are modular, self-contained packages that extend Codely CLI's capabilitie
 
 ### Concise is Key
 
-The context window is a public good. Skills share the context window with everything else Codely CLI needs: system prompt, conversation history, other Skills' metadata, and the actual user request.
+The context window is a public good. Skills share the context window with everything else GameCowork CLI needs: system prompt, conversation history, other Skills' metadata, and the actual user request.
 
-**Default assumption: Codely CLI is already very smart.** Only add context Codely CLI doesn't already have. Challenge each piece of information: "Does Codely CLI really need this explanation?" and "Does this paragraph justify its token cost?"
+**Default assumption: GameCowork CLI is already very smart.** Only add context GameCowork CLI doesn't already have. Challenge each piece of information: "Does GameCowork CLI really need this explanation?" and "Does this paragraph justify its token cost?"
 
 Prefer concise examples over verbose explanations.
 
@@ -38,7 +38,7 @@ Match the level of specificity to the task's fragility and variability:
 
 **Low freedom (specific scripts, few parameters)**: Use when operations are fragile and error-prone, consistency is critical, or a specific sequence must be followed.
 
-Think of Codely CLI as exploring a path: a narrow bridge with cliffs needs specific guardrails (low freedom), while an open field allows many routes (high freedom).
+Think of GameCowork CLI as exploring a path: a narrow bridge with cliffs needs specific guardrails (low freedom), while an open field allows many routes (high freedom).
 
 ### Anatomy of a Skill
 
@@ -61,7 +61,7 @@ skill-name/
 
 Every SKILL.md consists of:
 
-- **Frontmatter** (YAML): Contains `name` and `description` fields. These are the only fields that Codely CLI reads to determine when the skill gets used, thus it is very important to be clear and comprehensive in describing what the skill is, and when it should be used.
+- **Frontmatter** (YAML): Contains `name` and `description` fields. These are the only fields that GameCowork CLI reads to determine when the skill gets used, thus it is very important to be clear and comprehensive in describing what the skill is, and when it should be used.
 - **Body** (Markdown): Instructions and guidance for using the skill. Only loaded AFTER the skill triggers (if at all).
 
 #### Bundled Resources (optional)
@@ -74,28 +74,28 @@ Executable code (Node.js/Python/Bash/etc.) for tasks that require deterministic 
 - **Example**: `scripts/rotate_pdf.cjs` for PDF rotation tasks
 - **Benefits**: Token efficient, deterministic, may be executed without loading into context
 - **Agentic Ergonomics**: Scripts must output LLM-friendly stdout. Suppress standard tracebacks. Output clear, concise success/failure messages, and paginate or truncate outputs (e.g., "Success: First 50 lines of processed file...") to prevent context window overflow.
-- **Note**: Scripts may still need to be read by Codely CLI for patching or environment-specific adjustments
+- **Note**: Scripts may still need to be read by GameCowork CLI for patching or environment-specific adjustments
 
 ##### References (`references/`)
 
-Documentation and reference material intended to be loaded as needed into context to inform Codely CLI's process and thinking.
+Documentation and reference material intended to be loaded as needed into context to inform GameCowork CLI's process and thinking.
 
-- **When to include**: For documentation that Codely CLI should reference while working
+- **When to include**: For documentation that GameCowork CLI should reference while working
 - **Examples**: `references/finance.md` for financial schemas, `references/mnda.md` for company NDA template, `references/policies.md` for company policies, `references/api_docs.md` for API specifications
 - **Use cases**: Database schemas, API documentation, domain knowledge, company policies, detailed workflow guides
-- **Benefits**: Keeps SKILL.md lean, loaded only when Codely CLI determines it's needed
+- **Benefits**: Keeps SKILL.md lean, loaded only when GameCowork CLI determines it's needed
 - **Best practice**: If files are large (>10k words), include grep search patterns in SKILL.md
 - **Avoid duplication**: Information should live in either SKILL.md or
   references files, not both. Prefer references files for detailed information unless it's truly core to the skill—this keeps SKILL.md lean while making information discoverable without hogging the context window. Keep only essential procedural instructions and workflow guidance in SKILL.md; move detailed reference material, schemas, and examples to references files.
 
 ##### Assets (`assets/`)
 
-Files not intended to be loaded into context, but rather used within the output Codely CLI produces.
+Files not intended to be loaded into context, but rather used within the output GameCowork CLI produces.
 
 - **When to include**: When the skill needs files that will be used in the final output
 - **Examples**: `assets/logo.png` for brand assets, `assets/slides.pptx` for PowerPoint templates, `assets/frontend-template/` for HTML/React boilerplate, `assets/font.ttf` for typography
 - **Use cases**: Templates, images, icons, boilerplate code, fonts, sample documents that get copied or modified
-- **Benefits**: Separates output resources from documentation, enables Codely CLI to use files without loading them into context
+- **Benefits**: Separates output resources from documentation, enables GameCowork CLI to use files without loading them into context
 
 #### What to Not Include in a Skill
 
@@ -115,7 +115,7 @@ Skills use a three-level loading system to manage context efficiently:
 
 1. **Metadata (name + description)** - Always in context (~100 words)
 2. **SKILL.md body** - When skill triggers (<5k words)
-3. **Bundled resources** - As needed by Codely CLI (Unlimited because scripts can be executed without reading into context window)
+3. **Bundled resources** - As needed by GameCowork CLI (Unlimited because scripts can be executed without reading into context window)
 
 #### Progressive Disclosure Patterns
 
@@ -139,7 +139,7 @@ Extract text with pdfplumber: [code example]
 - **Examples**: See [EXAMPLES.md](EXAMPLES.md) for common patterns
 ```
 
-Codely CLI loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
+GameCowork CLI loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
 
 **Pattern 2: Domain-specific organization**
 
@@ -155,7 +155,7 @@ bigquery-skill/
     └── marketing.md (campaigns, attribution)
 ```
 
-When a user asks about sales metrics, Codely CLI only reads sales.md.
+When a user asks about sales metrics, GameCowork CLI only reads sales.md.
 
 Similarly, for skills supporting multiple frameworks or variants, organize by variant:
 
@@ -168,7 +168,7 @@ cloud-deploy/
     └── azure.md (Azure deployment patterns)
 ```
 
-When the user chooses AWS, Codely CLI only reads aws.md.
+When the user chooses AWS, GameCowork CLI only reads aws.md.
 
 **Pattern 3: Conditional details**
 
@@ -185,13 +185,13 @@ Use pandas for loading and basic queries. See [PANDAS.md](PANDAS.md).
 
 For massive files that exceed memory, see [STREAMING.md](STREAMING.md). For timestamp normalization, see [TIMESTAMPS.md](TIMESTAMPS.md).
 
-Codely CLI reads REDLINING.md or OOXML.md only when the user needs those features.
+GameCowork CLI reads REDLINING.md or OOXML.md only when the user needs those features.
 ```
 
 **Important guidelines:**
 
 - **Avoid deeply nested references** - Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md.
-- **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so Codely CLI can see the full scope when previewing.
+- **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so GameCowork CLI can see the full scope when previewing.
 
 ## Skill Creation Process
 
@@ -285,7 +285,7 @@ The script:
 
 ### Step 4: Edit the Skill
 
-When editing the (newly-generated or existing) skill, remember that the skill is being created for another instance of Codely CLI to use. Include information that would be beneficial and non-obvious to Codely CLI. Consider what procedural knowledge, domain-specific details, or reusable assets would help another Codely CLI instance execute these tasks more effectively.
+When editing the (newly-generated or existing) skill, remember that the skill is being created for another instance of GameCowork CLI to use. Include information that would be beneficial and non-obvious to GameCowork CLI. Consider what procedural knowledge, domain-specific details, or reusable assets would help another GameCowork CLI instance execute these tasks more effectively.
 
 #### Learn Proven Design Patterns
 
@@ -313,11 +313,11 @@ Delete any example files and directories not needed for the skill. As noted in S
 Write the YAML frontmatter with `name` and `description`:
 
 - `name`: The skill name
-- `description`: This is the primary triggering mechanism for your skill, and helps Codely CLI understand when to use the skill.
+- `description`: This is the primary triggering mechanism for your skill, and helps GameCowork CLI understand when to use the skill.
   - Include both what the Skill does and specific triggers/contexts for when to use it.
   - **Must be a single-line string** (e.g., `description: Data ingestion...`). Quotes are optional.
-  - Include all "when to use" information here - Not in the body. The body is only loaded after triggering, so "When to Use This Skill" sections in the body are not helpful to Codely CLI.
-  - Example: `description: Data ingestion, cleaning, and transformation for tabular data. Use when Codely CLI needs to work with CSV/TSV files to analyze large datasets, normalize schemas, or merge sources.`
+  - Include all "when to use" information here - Not in the body. The body is only loaded after triggering, so "When to Use This Skill" sections in the body are not helpful to GameCowork CLI.
+  - Example: `description: Data ingestion, cleaning, and transformation for tabular data. Use when GameCowork CLI needs to work with CSV/TSV files to analyze large datasets, normalize schemas, or merge sources.`
 
 Do not include any other fields in YAML frontmatter.
 
@@ -331,7 +331,7 @@ Once development of the skill is complete, it must be packaged into a distributa
 
 **Note:** Use the absolute path to the script as provided in the `available_resources` section.
 
-By default, the `.skill` file is written to `<tmp>/codely-skills`. Specify an output directory to override:
+By default, the `.skill` file is written to `<tmp>/gamecowork-skills`. Specify an output directory to override:
 
 ```bash
 node <path-to-skill-creator>/scripts/package_skill.cjs <path/to/skill-folder>
@@ -358,16 +358,16 @@ If the user agrees to an installation, perform it immediately using the `run_she
 
 - **Interactive (user confirms in terminal)**:
   ```bash
-  codely skills install <path/to/skill-name.skill> --scope workspace
-  codely skills install <path/to/skill-name.skill> --scope user
+  gamecowork skills install <path/to/skill-name.skill> --scope workspace
+  gamecowork skills install <path/to/skill-name.skill> --scope user
   ```
 - **Non-interactive (scripted installs)**: Add `--consent` to skip the confirmation prompt:
   ```bash
-  codely skills install <path/to/skill-name.skill> --scope workspace --consent
-  codely skills install <path/to/skill-name.skill> --scope user --consent
+  gamecowork skills install <path/to/skill-name.skill> --scope workspace --consent
+  gamecowork skills install <path/to/skill-name.skill> --scope user --consent
   ```
 
-**Important:** After the installation is complete, notify the user that they MUST manually execute the `/skills reload` command in their interactive Codely CLI session to enable the new skill. You (the agent) cannot run `/skills reload` on their behalf. They can then verify the installation by running `/skills list`.
+**Important:** After the installation is complete, notify the user that they MUST manually execute the `/skills reload` command in their interactive GameCowork CLI session to enable the new skill. You (the agent) cannot run `/skills reload` on their behalf. They can then verify the installation by running `/skills list`.
 
 ### Step 7: Iterate
 

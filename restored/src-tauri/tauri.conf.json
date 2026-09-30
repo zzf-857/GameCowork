@@ -1,9 +1,9 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "//": "从 cowork.exe (v2.1.3-canary.2) 二进制字符串逆向重建，非官方原始文件；数值型窗口配置未能从编译后二进制恢复，标 TODO",
-  "productName": "Tuanjie Cowork",
+  "productName": "GameCowork",
   "version": "2.1.3-canary.2",
-  "identifier": "dev.codelycowork.desktop",
+  "identifier": "dev.gamecowork.desktop",
   "build": {
     "frontendDist": "../app/resource/dist"
   },
@@ -11,7 +11,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Tuanjie Cowork",
+        "title": "GameCowork",
         "url": "index.html",
         "TODO": "width/height/minWidth/minHeight 等数值配置无法从二进制可靠恢复"
       },

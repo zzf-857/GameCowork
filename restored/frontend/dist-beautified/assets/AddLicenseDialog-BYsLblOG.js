@@ -165,7 +165,7 @@ function F(r) {
 function w({ title: r, subtitle: l, leadingIcon: d, trailingIcon: t, onClick: a }) {
   return e.jsxs("div", {
     className: s(
-      "flex flex-row items-center p-4 bg-codely-color-surface-sidebar h-[44px] mx-5 rounded-lg gap-2 hover:bg-codely-color-surface-elevated cursor-pointer",
+      "flex flex-row items-center p-4 bg-gamecowork-color-surface-sidebar h-[44px] mx-5 rounded-lg gap-2 hover:bg-gamecowork-color-surface-elevated cursor-pointer",
     ),
     onClick: a,
     children: [
@@ -173,8 +173,8 @@ function w({ title: r, subtitle: l, leadingIcon: d, trailingIcon: t, onClick: a 
       e.jsxs("div", {
         className: s("flex flex-col flex-1 justify-center"),
         children: [
-          e.jsx("div", { className: s("text-sm text-codely-color-text-primary leading-[22px]"), children: r }),
-          e.jsx("div", { className: s("text-xs text-codely-color-text-secondary leading-[22px]"), children: l }),
+          e.jsx("div", { className: s("text-sm text-gamecowork-color-text-primary leading-[22px]"), children: r }),
+          e.jsx("div", { className: s("text-xs text-gamecowork-color-text-secondary leading-[22px]"), children: l }),
         ],
       }),
       t,
@@ -190,35 +190,35 @@ function B({ onActivate: r }) {
         className: s("flex flex-col gap-2 py-2"),
         children: [
           e.jsx("div", {
-            className: s("text-codely-color-text-secondary text-sm leading-[20px] mx-5"),
+            className: s("text-gamecowork-color-text-secondary text-sm leading-[20px] mx-5"),
             children: l("tjhub.licenses.activateLicense"),
           }),
           e.jsx(w, {
             title: l("tjhub.licenses.activateWithSerialTypo"),
             subtitle: l("tjhub.licenses.activateWithSerialDesc"),
-            leadingIcon: e.jsx(M, { className: s("text-codely-color-text-secondary") }),
-            trailingIcon: e.jsx(k, { className: s("text-codely-color-text-secondary") }),
+            leadingIcon: e.jsx(M, { className: s("text-gamecowork-color-text-secondary") }),
+            trailingIcon: e.jsx(k, { className: s("text-gamecowork-color-text-secondary") }),
             onClick: () => r("activate-serial", l("tjhub.licenses.activateWithSerial")),
           }),
           e.jsx(w, {
             title: l("tjhub.licenses.activateWithRequestTypo"),
             subtitle: l("tjhub.licenses.activateWithRequestDesc"),
-            leadingIcon: e.jsx(E, { className: s("text-codely-color-text-secondary") }),
-            trailingIcon: e.jsx(k, { className: s("text-codely-color-text-secondary") }),
+            leadingIcon: e.jsx(E, { className: s("text-gamecowork-color-text-secondary") }),
+            trailingIcon: e.jsx(k, { className: s("text-gamecowork-color-text-secondary") }),
             onClick: () => r("activate-request", l("tjhub.licenses.activateWithRequest")),
           }),
           e.jsx(w, {
             title: l("tjhub.licenses.configureServer"),
             subtitle: l("tjhub.licenses.configureServerDesc"),
-            leadingIcon: e.jsx(M, { className: s("text-codely-color-text-secondary") }),
-            trailingIcon: e.jsx(k, { className: s("text-codely-color-text-secondary") }),
+            leadingIcon: e.jsx(M, { className: s("text-gamecowork-color-text-secondary") }),
+            trailingIcon: e.jsx(k, { className: s("text-gamecowork-color-text-secondary") }),
             onClick: () => r("configure-server", l("tjhub.licenses.configureServer")),
           }),
           e.jsx(w, {
             title: l("tjhub.licenses.getPersonalLicense"),
             subtitle: l("tjhub.licenses.getPersonalLicenseDesc"),
-            leadingIcon: e.jsx(F, { className: s("text-codely-color-text-secondary") }),
-            trailingIcon: e.jsx(k, { className: s("text-codely-color-text-secondary") }),
+            leadingIcon: e.jsx(F, { className: s("text-gamecowork-color-text-secondary") }),
+            trailingIcon: e.jsx(k, { className: s("text-gamecowork-color-text-secondary") }),
             onClick: () => r("personal-license", l("tjhub.licenses.getPersonalLicense")),
           }),
         ],
@@ -227,14 +227,14 @@ function B({ onActivate: r }) {
         className: s("flex flex-col gap-2 py-2"),
         children: [
           e.jsx("div", {
-            className: s("text-codely-color-text-secondary text-sm leading-[20px] mx-5"),
+            className: s("text-gamecowork-color-text-secondary text-sm leading-[20px] mx-5"),
             children: l("tjhub.licenses.getNewLicense"),
           }),
           e.jsx(w, {
             title: l("tjhub.licenses.getTeamPlan"),
             subtitle: l("tjhub.licenses.getTeamPlanDesc"),
-            leadingIcon: e.jsx(D, { className: s("text-codely-color-text-secondary") }),
-            trailingIcon: e.jsx(L, { className: s("text-codely-color-text-secondary") }),
+            leadingIcon: e.jsx(D, { className: s("text-gamecowork-color-text-secondary") }),
+            trailingIcon: e.jsx(L, { className: s("text-gamecowork-color-text-secondary") }),
             onClick: () => d.post("openUrl", "mailto:onlinechina@unity.cn"),
           }),
         ],
@@ -248,11 +248,11 @@ function B({ onActivate: r }) {
             children: [
               e.jsx("div", {
                 className: s(
-                  "text-sm leading-[22px] text-codely-color-text-secondary group-hover:text-codely-color-text-primary",
+                  "text-sm leading-[22px] text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary",
                 ),
                 children: l("tjhub.licenses.help"),
               }),
-              e.jsx(L, { className: s("text-codely-color-text-secondary group-hover:text-codely-color-text-primary") }),
+              e.jsx(L, { className: s("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary") }),
             ],
           }),
           e.jsxs("div", {
@@ -261,11 +261,11 @@ function B({ onActivate: r }) {
             children: [
               e.jsx("div", {
                 className: s(
-                  "text-sm leading-[22px] text-codely-color-text-secondary group-hover:text-codely-color-text-primary",
+                  "text-sm leading-[22px] text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary",
                 ),
                 children: l("tjhub.licenses.faq"),
               }),
-              e.jsx(L, { className: s("text-codely-color-text-secondary group-hover:text-codely-color-text-primary") }),
+              e.jsx(L, { className: s("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary") }),
             ],
           }),
         ],
@@ -301,11 +301,11 @@ function U({ onBack: r, onActivated: l, onClose: d }) {
         className: s("px-5 py-2"),
         children: [
           e.jsx("div", {
-            className: s("text-sm text-codely-color-text-secondary mb-2"),
+            className: s("text-sm text-gamecowork-color-text-secondary mb-2"),
             children: t("tjhub.licenses.enterSerial"),
           }),
           e.jsx(T, { placeholder: t("tjhub.licenses.serialPlaceholder"), value: o, onChange: (u) => p(u) }),
-          i && e.jsx("div", { className: s("text-xs text-codely-color-status-danger-text mt-2"), children: i }),
+          i && e.jsx("div", { className: s("text-xs text-gamecowork-color-status-danger-text mt-2"), children: i }),
         ],
       }),
       e.jsxs("div", {
@@ -315,7 +315,7 @@ function U({ onBack: r, onActivated: l, onClose: d }) {
             variant: "ghost",
             size: "sm",
             onClick: r,
-            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: t("tjhub.common.back"),
           }),
           e.jsx(g, {
@@ -393,11 +393,11 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
         className: s("px-5 py-2 flex flex-col gap-2"),
         children: [
           e.jsxs("div", {
-            className: s("h-[80px] p-4 bg-codely-color-surface-sidebar rounded-lg flex flex-row gap-2"),
+            className: s("h-[80px] p-4 bg-gamecowork-color-surface-sidebar rounded-lg flex flex-row gap-2"),
             children: [
               e.jsx("div", {
                 className: s(
-                  "h-4 w-4 rounded-full bg-codely-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-codely-color-text-secondary self-center",
+                  "h-4 w-4 rounded-full bg-gamecowork-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-gamecowork-color-text-secondary self-center",
                 ),
                 children: "1",
               }),
@@ -405,24 +405,24 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
                 className: s("flex flex-col items-start"),
                 children: [
                   e.jsx("div", {
-                    className: s("text-sm text-codely-color-text-primary leading-[22px]"),
+                    className: s("text-sm text-gamecowork-color-text-primary leading-[22px]"),
                     children: t("tjhub.licenses.step1Title"),
                   }),
                   e.jsx("div", {
-                    className: s("text-xs text-codely-color-text-secondary leading-[22px]"),
+                    className: s("text-xs text-gamecowork-color-text-secondary leading-[22px]"),
                     children: t("tjhub.licenses.step1Desc"),
                   }),
                   e.jsxs(g, {
                     className: s(
-                      "h-7 mt-2 flex flex-row gap-1 px-3 border border-solid border-codely-color-border-default rounded-lg",
+                      "h-7 mt-2 flex flex-row gap-1 px-3 border border-solid border-gamecowork-color-border-default rounded-lg",
                     ),
                     variant: "ghost",
                     disabled: o,
                     onClick: () => void b(),
                     children: [
-                      e.jsx(_, { className: s("text-codely-color-text-secondary") }),
+                      e.jsx(_, { className: s("text-gamecowork-color-text-secondary") }),
                       e.jsx("div", {
-                        className: s("text-codely-color-text-primary"),
+                        className: s("text-gamecowork-color-text-primary"),
                         children: t(o ? "tjhub.licenses.generatingEllipsis" : "tjhub.licenses.createLicenseRequest"),
                       }),
                     ],
@@ -432,11 +432,11 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
             ],
           }),
           e.jsxs("div", {
-            className: s("h-[80px] p-4 bg-codely-color-surface-sidebar rounded-lg flex flex-row gap-2"),
+            className: s("h-[80px] p-4 bg-gamecowork-color-surface-sidebar rounded-lg flex flex-row gap-2"),
             children: [
               e.jsx("div", {
                 className: s(
-                  "h-4 w-4 rounded-full bg-codely-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-codely-color-text-secondary self-center",
+                  "h-4 w-4 rounded-full bg-gamecowork-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-gamecowork-color-text-secondary self-center",
                 ),
                 children: "2",
               }),
@@ -444,11 +444,11 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
                 className: s("flex flex-col"),
                 children: [
                   e.jsx("div", {
-                    className: s("text-sm text-codely-color-text-primary leading-[22px]"),
+                    className: s("text-sm text-gamecowork-color-text-primary leading-[22px]"),
                     children: t("tjhub.licenses.step2Title"),
                   }),
                   e.jsx("div", {
-                    className: s("text-xs text-codely-color-text-secondary leading-[22px]"),
+                    className: s("text-xs text-gamecowork-color-text-secondary leading-[22px]"),
                     children: t("tjhub.licenses.step2Desc"),
                   }),
                   e.jsxs("div", {
@@ -457,12 +457,12 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
                     children: [
                       e.jsx("div", {
                         className: s(
-                          "text-sm text-codely-color-text-secondary group-hover:text-codely-color-text-primary",
+                          "text-sm text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary",
                         ),
                         children: t("tjhub.licenses.uploadLicenseRequest"),
                       }),
                       e.jsx(L, {
-                        className: s("text-codely-color-text-secondary group-hover:text-codely-color-text-primary"),
+                        className: s("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary"),
                       }),
                     ],
                   }),
@@ -471,11 +471,11 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
             ],
           }),
           e.jsxs("div", {
-            className: s("h-[80px] p-4 bg-codely-color-surface-sidebar rounded-lg flex flex-row gap-2"),
+            className: s("h-[80px] p-4 bg-gamecowork-color-surface-sidebar rounded-lg flex flex-row gap-2"),
             children: [
               e.jsx("div", {
                 className: s(
-                  "h-4 w-4 rounded-full bg-codely-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-codely-color-text-secondary self-center",
+                  "h-4 w-4 rounded-full bg-gamecowork-color-surface-card p-1 flex flex-row items-center justify-center text-xs text-gamecowork-color-text-secondary self-center",
                 ),
                 children: "3",
               }),
@@ -483,32 +483,32 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
                 className: s("flex flex-col items-stretch flex-1"),
                 children: [
                   e.jsx("div", {
-                    className: s("text-sm text-codely-color-text-primary leading-[22px]"),
+                    className: s("text-sm text-gamecowork-color-text-primary leading-[22px]"),
                     children: t("tjhub.licenses.step3Title"),
                   }),
                   e.jsx("div", {
-                    className: s("text-xs text-codely-color-text-secondary leading-[22px]"),
+                    className: s("text-xs text-gamecowork-color-text-secondary leading-[22px]"),
                     children: t("tjhub.licenses.step3Desc"),
                   }),
                   e.jsxs(g, {
                     variant: "ghost",
                     className: s(
-                      "flex flex-row justify-between items-center h-8 mt-2 border border-solid border-codely-color-border-default rounded-lg px-3 bg-codely-color-surface-base",
+                      "flex flex-row justify-between items-center h-8 mt-2 border border-solid border-gamecowork-color-border-default rounded-lg px-3 bg-gamecowork-color-surface-base",
                     ),
                     onClick: () => void y(),
                     children: [
                       e.jsx("div", {
-                        className: s("text-sm truncate", "text-codely-color-text-primary"),
+                        className: s("text-sm truncate", "text-gamecowork-color-text-primary"),
                         children: n != null ? n : t("tjhub.licenses.licenseFile"),
                       }),
-                      e.jsx(R, { className: s("w-4 h-4 text-codely-color-text-secondary flex-shrink-0") }),
+                      e.jsx(R, { className: s("w-4 h-4 text-gamecowork-color-text-secondary flex-shrink-0") }),
                     ],
                   }),
                 ],
               }),
             ],
           }),
-          f && e.jsx("div", { className: s("text-xs text-codely-color-status-danger-text px-1"), children: f }),
+          f && e.jsx("div", { className: s("text-xs text-gamecowork-color-status-danger-text px-1"), children: f }),
         ],
       }),
       e.jsxs("div", {
@@ -518,7 +518,7 @@ function z({ onBack: r, onActivated: l, onClose: d }) {
             variant: "ghost",
             size: "sm",
             onClick: r,
-            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: t("tjhub.common.back"),
           }),
           e.jsx(g, {
@@ -578,7 +578,7 @@ function H({ onBack: r, onActivated: l, onClose: d }) {
         className: s("px-5 py-2"),
         children: [
           e.jsx("div", {
-            className: s("text-sm text-codely-color-text-secondary mb-2"),
+            className: s("text-sm text-gamecowork-color-text-secondary mb-2"),
             children: t("tjhub.licenses.enterServerUrl"),
           }),
           e.jsx(T, {
@@ -588,7 +588,7 @@ function H({ onBack: r, onActivated: l, onClose: d }) {
             onChange: (y) => p(y),
             disabled: n,
           }),
-          f && e.jsx("div", { className: s("text-xs text-codely-color-status-danger-text mt-2"), children: f }),
+          f && e.jsx("div", { className: s("text-xs text-gamecowork-color-status-danger-text mt-2"), children: f }),
         ],
       }),
       e.jsxs("div", {
@@ -598,7 +598,7 @@ function H({ onBack: r, onActivated: l, onClose: d }) {
             variant: "ghost",
             size: "sm",
             onClick: r,
-            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: t("tjhub.common.back"),
           }),
           e.jsx(g, {
@@ -649,13 +649,13 @@ function Z({ onBack: r, onActivated: l, onClose: d }) {
               i18nKey: "tjhub.licenses.personalLicenseBody2",
               components: {
                 terms: e.jsx("a", {
-                  className: s("text-codely-color-text-link cursor-pointer underline"),
+                  className: s("text-gamecowork-color-text-link cursor-pointer underline"),
                   onClick: () => a.post("openUrl", "https://unity.cn/tuanjie/legal/terms-of-service"),
                 }),
               },
             }),
           }),
-          n && e.jsx("div", { className: s("text-xs text-codely-color-status-danger-text mt-2"), children: n }),
+          n && e.jsx("div", { className: s("text-xs text-gamecowork-color-status-danger-text mt-2"), children: n }),
         ],
       }),
       e.jsxs("div", {
@@ -665,7 +665,7 @@ function Z({ onBack: r, onActivated: l, onClose: d }) {
             variant: "ghost",
             size: "sm",
             onClick: r,
-            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: s("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: t("tjhub.common.back"),
           }),
           e.jsx(g, {
@@ -700,7 +700,7 @@ function O({ onClose: r, onActivated: l }) {
           ? (i = e.jsx(H, { onBack: x, onActivated: l, onClose: r }))
           : t === "personal-license" && (i = e.jsx(Z, { onBack: x, onActivated: l, onClose: r })),
     e.jsxs("div", {
-      className: s("bg-codely-color-surface-card flex flex-col relative"),
+      className: s("bg-gamecowork-color-surface-card flex flex-col relative"),
       children: [
         e.jsxs("div", {
           className: s("pt-4 pb-2 px-5 flex flex-row justify-between h-8 items-center"),
@@ -708,14 +708,14 @@ function O({ onClose: r, onActivated: l }) {
             e.jsx("div", {
               className: s("flex flex-row items-center"),
               children: e.jsx("div", {
-                className: s("leading-[32px] font-medium text-codely-color-text-default"),
+                className: s("leading-[32px] font-medium text-gamecowork-color-text-default"),
                 children: o,
               }),
             }),
             e.jsx(V, {
               size: "sm",
               onClick: r,
-              children: e.jsx(q, { className: s("size-4 text-codely-color-text-tertiary") }),
+              children: e.jsx(q, { className: s("size-4 text-gamecowork-color-text-tertiary") }),
             }),
           ],
         }),
@@ -725,7 +725,7 @@ function O({ onClose: r, onActivated: l }) {
             e.jsx("div", { className: s(t === "main" ? "" : "invisible"), children: e.jsx(B, { onActivate: n }) }),
             t !== "main" &&
               e.jsx("div", {
-                className: s("absolute inset-0 bg-codely-color-surface-card flex flex-col justify-between"),
+                className: s("absolute inset-0 bg-gamecowork-color-surface-card flex flex-col justify-between"),
                 children: i,
               }),
           ],

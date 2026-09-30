@@ -9,11 +9,11 @@
 | 项 | 结果 |
 |---|---|
 | 主程序 | `cowork.exe` 58,555,736B，Rust(MSVC 14.29) + **Tauri 2**（tauri-runtime-wry / WebView2），Authode 签名 PKCS#7 |
-| 产品信息 | ProductName=Tuanjie Cowork, Version=2.1.3-canary.2, Company=codelycowork |
-| 标识符 | `dev.codelycowork.desktop`（与 `.tuanjie-cowork-install` 标记一致） |
+| 产品信息 | ProductName=Tuanjie Cowork, Version=2.1.3-canary.2, Company=gamecowork |
+| 标识符 | `dev.gamecowork.desktop`（与 `.tuanjie-cowork-install` 标记一致） |
 | 前端 | `app/resource/dist` 87MB：461 JS + 9 CSS + KaTeX 字体全套 + 图标；Vite 构建，双应用（desktop/gui）双构建代并置 |
-| core 边车 | `codely-binary.exe` 70,158,576B，**vercel/pkg**（Node 22.x），入口 `out/index.js` |
-| CLI 边车 | `cli/bin/win32-x64/codely.exe` 204,135,768B，**Bun v1** `--compile`，`@bytecode @bun-cjs` |
+| core 边车 | `gamecowork-binary.exe` 70,158,576B，**vercel/pkg**（Node 22.x），入口 `out/index.js` |
+| CLI 边车 | `cli/bin/win32-x64/gamecowork.exe` 204,135,768B，**Bun v1** `--compile`，`@bytecode @bun-cjs` |
 | unity-insight | `cli/lib`：原版 package.json 保留（name=unity-insight 0.0.1, esbuild+vitest 工程）+ 6 个 bundle worker |
 | hub | Tuanjie Hub 授权链 217MB（.NET LicensingClient + Sentinel HASP + v2c 许可证） |
 | 伴生 | `process_killer.exe`(PE64 小工具)、`uninstall.exe`(NSIS)、新旧版本 exe 并存（升级残留） |
@@ -64,7 +64,7 @@
 3. **Bun 字节码缓存段**（语义无损失）。
 4. **前端 sourcemap**（产物未随附，变量名保持压缩态）。
 5. **hub .NET 反编译**（待指示）。
-6. `cowork-old-*.exe` / `codely-binary-old-*.exe` 为旧版本残留，未单独还原（方法相同）。
+6. `cowork-old-*.exe` / `gamecowork-binary-old-*.exe` 为旧版本残留，未单独还原（方法相同）。
 
 ## 四、复跑工具（tools/）
 
@@ -83,3 +83,19 @@
 - 前端: 479 美化 + 280 原样拷贝 = 759 项 = dist 全量 ✅
 - pkg: 258 文件写入，0 失败 ✅
 - 关键抽样: 入口 JS 头部可读、wasm 文件大小正确、KaTeX 字体二进制一致 ✅
+
+## 六、codely → GameCowork 重命名与隔离（2026-09-30）
+
+- **范围**: restored/ + tools/ + 根文档，82+ 文件 13,524 处（规则: Codely Cowork→GameCowork、
+  codely-cowork→gamecowork、codelycowork→gamecowork、CODELY→GAMECOWORK、Codely→GameCowork、
+  codely→gamecowork，脚本 `tools/rename-codely.py` 可复跑）；目录同步改名
+  `core-codely-binary→core-gamecowork-binary`、`cli-codely→cli-gamecowork`。
+- **关键隔离点**: Tauri 标识符 `dev.gamecowork.desktop`；数据目录 `~/.gamecowork(+-cli)`；
+  23+ 个 `GAMECOWORK_*` 环境变量；`Programs/GameCowork` 探测路径；productName/窗口标题
+  → `GameCowork`（tauri.conf.json）。
+- **保护串还原**（外部契约，未改）: `codely.tuanjie.cn`(8 处)、`cn.tuanjie.codely.bridge`(1 处)、
+  源安装路径 `E:\TuanjieCodely`(3 文件)、`tools/*.py` 的原始路径引用。
+- **验证**: 非保护残留 0 处；4 个大 bundle prettier 语法重解析全过；
+  隔离点落位核对（~/.gamecowork ×15、.gamecowork-cli ×15、GAMECOWORK_* ×23）✅。
+- **已知共享面**: 同后端账号为服务端问题；编辑器桥接包单实例，两版勿同时操作同一编辑器工程。
+- **git**: 基线 commit（改名前）与本次改名 commit 分立，diff 可审计。

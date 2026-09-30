@@ -48,10 +48,10 @@ inherit_core_system_prompt = false
 
 [model]
 #### Builtin transport is pinned (TOML is the ground truth). explore always
-#### runs on codely-air via the Codely OAuth provider, independent of the
+#### runs on gamecowork-air via the GameCowork OAuth provider, independent of the
 #### user's main session model or subagent-slot (/model config) settings.
-model = "codely-air"
-auth = "codely-oauth"
+model = "gamecowork-air"
+auth = "gamecowork-oauth"
 wire_api = "chat"
 
 [run]

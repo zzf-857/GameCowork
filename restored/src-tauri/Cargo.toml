@@ -1,9 +1,9 @@
 [package]
 name = "tuanjie-cowork"
 version = "2.1.3-canary.2"
-description = "Tuanjie Cowork (Codely) 桌面壳 — 逆向重建骨架，非可编译原版"
+description = "Tuanjie Cowork (GameCowork) 桌面壳 — 逆向重建骨架，非可编译原版"
 edition = "2021"
-authors = ["codelycowork (原作) / 逆向重建"]
+authors = ["gamecowork (原作) / 逆向重建"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

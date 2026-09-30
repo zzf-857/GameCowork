@@ -8,14 +8,14 @@
 
 | HTML | 角色 | JS 入口 |
 |---|---|---|
-| `index.html` | Codely Desktop 主窗口（React，`#root`） | `index-DG7m4Xaq.js` + `index-DRnMDoPo.css` |
+| `index.html` | GameCowork Desktop 主窗口（React，`#root`） | `index-DG7m4Xaq.js` + `index-DRnMDoPo.css` |
 | `gui.html` | 编辑器内 GUI | `assets/index-BRxZ4eG7.js`（modulepreload: registry / VscTheme / unityInsightIndex / store / projectMenuFlows / MoveUpRightIcon） |
 | `pet.html` | 桌宠 | 独立入口 |
 | `windowBridge.html` | Unity SceneView 串流桥（WebRTC/视频 + 指针转发 + 前端弹出菜单） | 内联 |
 | `indexWalkthrough.html` | 新手引导 | 独立入口 |
 | `jetbrains_index.html` / `jetbrains_editorInset_index.html` | JetBrains IDE 宿主 | 独立入口 |
 
-主题: `codely-theme-bootstrap` 内联脚本按 localStorage `codely-theme` 切换 light/dark。
+主题: `gamecowork-theme-bootstrap` 内联脚本按 localStorage `gamecowork-theme` 切换 light/dark。
 
 ## 技术栈（依据产物签名）
 
@@ -40,7 +40,7 @@
 ## Tauri IPC 边界
 
 - 前端经 `core-*.js` 的 `invoke` 走 Tauri IPC 的仅 7 处（见 `../src-tauri/COMMAND_SURFACE.md`）；
-- **主窗口与后端逻辑通过 HTTP/WebSocket 与 codely-binary 边车通信**（Continue.dev 架构），
+- **主窗口与后端逻辑通过 HTTP/WebSocket 与 gamecowork-binary 边车通信**（Continue.dev 架构），
   因此美化后的前端源码 + 解包的边车源码 ≈ 应用逻辑全量。
 
 ## 与原版的差异

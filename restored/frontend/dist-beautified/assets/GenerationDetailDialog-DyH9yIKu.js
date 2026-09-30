@@ -1895,7 +1895,7 @@ function ra({ url: e, title: t }) {
         : r.jsx(l.Suspense, {
             fallback: r.jsx("div", {
               className: "flex h-full min-h-[22rem] items-center justify-center",
-              children: r.jsx(ft, { className: "text-codely-color-accent-default h-7 w-7 animate-spin" }),
+              children: r.jsx(ft, { className: "text-gamecowork-color-accent-default h-7 w-7 animate-spin" }),
             }),
             children: r.jsx(Yn, { url: e, title: t }),
           }),
@@ -1903,7 +1903,7 @@ function ra({ url: e, title: t }) {
         role: "group",
         "aria-label": n("generation.detail.skyboxView", "Skybox view"),
         className:
-          "border-codely-color-border-default bg-codely-color-surface-elevated absolute left-1/2 top-3 z-10 flex -translate-x-1/2 overflow-hidden rounded-lg border border-solid p-0.5 shadow-lg",
+          "border-gamecowork-color-border-default bg-gamecowork-color-surface-elevated absolute left-1/2 top-3 z-10 flex -translate-x-1/2 overflow-hidden rounded-lg border border-solid p-0.5 shadow-lg",
         children: [
           r.jsxs("button", {
             type: "button",
@@ -1912,8 +1912,8 @@ function ra({ url: e, title: t }) {
             className: le(
               "flex h-8 cursor-pointer items-center gap-1.5 rounded-md border-none px-2.5 text-xs transition-colors",
               a === "flat"
-                ? "bg-codely-color-interactive-selected text-codely-color-text-primary"
-                : "text-codely-color-text-secondary hover:bg-codely-color-interactive-hover bg-transparent",
+                ? "bg-gamecowork-color-interactive-selected text-gamecowork-color-text-primary"
+                : "text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover bg-transparent",
             ),
             children: [r.jsx(jr, { className: "h-3.5 w-3.5" }), n("generation.detail.skyboxFlat", "Flat")],
           }),
@@ -1924,8 +1924,8 @@ function ra({ url: e, title: t }) {
             className: le(
               "flex h-8 cursor-pointer items-center gap-1.5 rounded-md border-none px-2.5 text-xs transition-colors",
               a === "immersive"
-                ? "bg-codely-color-interactive-selected text-codely-color-text-primary"
-                : "text-codely-color-text-secondary hover:bg-codely-color-interactive-hover bg-transparent",
+                ? "bg-gamecowork-color-interactive-selected text-gamecowork-color-text-primary"
+                : "text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover bg-transparent",
             ),
             children: [r.jsx(Er, { className: "h-3.5 w-3.5" }), n("generation.detail.skyboxImmersive", "Immersive")],
           }),
@@ -1938,10 +1938,10 @@ function na({ label: e }) {
   const { t } = ie();
   return r.jsxs("div", {
     className:
-      "text-codely-color-text-tertiary flex h-full min-h-[18rem] w-full flex-col items-center justify-center gap-3 text-center",
+      "text-gamecowork-color-text-tertiary flex h-full min-h-[18rem] w-full flex-col items-center justify-center gap-3 text-center",
     children: [
       r.jsx(Nr, { className: "h-12 w-12 opacity-40" }),
-      r.jsx("span", { className: "text-codely-color-text-secondary text-sm font-medium", children: e }),
+      r.jsx("span", { className: "text-gamecowork-color-text-secondary text-sm font-medium", children: e }),
       r.jsx("span", {
         className: "max-w-sm px-6 text-xs leading-5",
         children: t(
@@ -1965,8 +1965,8 @@ function aa({ prompt: e }) {
     className: le(
       "ml-auto flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent transition-colors duration-200",
       n
-        ? "text-codely-color-status-success-text"
-        : "text-codely-color-text-tertiary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary",
+        ? "text-gamecowork-color-status-success-text"
+        : "text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary",
     ),
     children: n ? r.jsx(Tr, { className: "h-3.5 w-3.5" }) : r.jsx(Sr, { className: "h-3.5 w-3.5" }),
   });
@@ -2111,7 +2111,7 @@ function xa({
         return r.jsx(l.Suspense, {
           fallback: r.jsx("div", {
             className: "flex h-full min-h-[18rem] items-center justify-center",
-            children: r.jsx(ft, { className: "text-codely-color-accent-default h-7 w-7 animate-spin" }),
+            children: r.jsx(ft, { className: "text-gamecowork-color-accent-default h-7 w-7 animate-spin" }),
           }),
           children: r.jsx(zn, { url: o.modelAsset.url, format: N }),
         });
@@ -2146,25 +2146,25 @@ function xa({
           className: "flex min-h-full items-center justify-center",
           children: r.jsxs(wt, {
             className:
-              "border-codely-color-border-default bg-codely-color-surface-primary text-codely-color-text-default flex max-h-[calc(100vh-1.5rem)] w-full max-w-[104rem] flex-col overflow-hidden rounded-2xl border border-solid shadow-[0_28px_90px_rgba(0,0,0,.45)] transition duration-200 data-[closed]:scale-[.98] data-[closed]:opacity-0 xl:h-[min(48rem,calc(100vh-2.5rem))]",
+              "border-gamecowork-color-border-default bg-gamecowork-color-surface-primary text-gamecowork-color-text-default flex max-h-[calc(100vh-1.5rem)] w-full max-w-[104rem] flex-col overflow-hidden rounded-2xl border border-solid shadow-[0_28px_90px_rgba(0,0,0,.45)] transition duration-200 data-[closed]:scale-[.98] data-[closed]:opacity-0 xl:h-[min(48rem,calc(100vh-2.5rem))]",
             children: [
               r.jsxs("header", {
                 className:
-                  "border-codely-color-border-subtle flex shrink-0 items-center gap-3 border-0 border-b border-solid px-4 py-3.5 sm:px-5",
+                  "border-gamecowork-color-border-subtle flex shrink-0 items-center gap-3 border-0 border-b border-solid px-4 py-3.5 sm:px-5",
                 children: [
                   r.jsxs("div", {
                     className: "min-w-0 flex-1",
                     children: [
                       r.jsx(jt, {
-                        className: "text-codely-color-text-primary m-0 truncate text-base font-semibold",
+                        className: "text-gamecowork-color-text-primary m-0 truncate text-base font-semibold",
                         children: f,
                       }),
                       r.jsxs("div", {
-                        className: "text-codely-color-text-tertiary mt-1 flex items-center gap-2 text-xs",
+                        className: "text-gamecowork-color-text-tertiary mt-1 flex items-center gap-2 text-xs",
                         children: [
                           r.jsx("span", {
                             className:
-                              "bg-codely-color-interactive-hover text-codely-color-text-secondary rounded-full px-2 py-0.5",
+                              "bg-gamecowork-color-interactive-hover text-gamecowork-color-text-secondary rounded-full px-2 py-0.5",
                             children: d(`generation.category.${o.category}`, o.category),
                           }),
                           r.jsx("span", { className: "min-w-0 truncate", children: h }),
@@ -2181,12 +2181,12 @@ function xa({
                                   r.jsx(Kn, {
                                     "aria-hidden": "true",
                                     className:
-                                      "text-codely-color-text-tertiary h-3 w-3 opacity-35 transition-opacity duration-200 group-hover/credits:opacity-100",
+                                      "text-gamecowork-color-text-tertiary h-3 w-3 opacity-35 transition-opacity duration-200 group-hover/credits:opacity-100",
                                   }),
                                   r.jsx("span", {
                                     role: "tooltip",
                                     className:
-                                      "border-codely-color-border-default bg-codely-color-surface-primary text-codely-color-text-secondary pointer-events-none absolute top-[calc(100%+0.375rem)] left-1/2 z-[1300] -translate-x-1/2 rounded-md border border-solid px-2 py-1 text-[0.6875rem] tabular-nums whitespace-nowrap opacity-0 shadow-lg transition-opacity duration-150 group-hover/credits:opacity-100",
+                                      "border-gamecowork-color-border-default bg-gamecowork-color-surface-primary text-gamecowork-color-text-secondary pointer-events-none absolute top-[calc(100%+0.375rem)] left-1/2 z-[1300] -translate-x-1/2 rounded-md border border-solid px-2 py-1 text-[0.6875rem] tabular-nums whitespace-nowrap opacity-0 shadow-lg transition-opacity duration-150 group-hover/credits:opacity-100",
                                     children: d("generation.detail.creditsUsed", "Credits used: {{credits}}", {
                                       credits: g,
                                     }),
@@ -2198,7 +2198,7 @@ function xa({
                             r.jsx("span", {
                               "data-testid": "detail-discarded-badge",
                               className:
-                                "border-codely-color-border-default text-codely-color-text-tertiary shrink-0 rounded-full border border-solid px-2 py-0.5",
+                                "border-gamecowork-color-border-default text-gamecowork-color-text-tertiary shrink-0 rounded-full border border-solid px-2 py-0.5",
                               children: d("generation.discard.discardedFilter", "Discarded"),
                             }),
                         ],
@@ -2210,7 +2210,7 @@ function xa({
                     "aria-label": d("generation.detail.close", "Close details"),
                     onClick: t,
                     className:
-                      "text-codely-color-text-tertiary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent transition-colors",
+                      "text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent transition-colors",
                     children: r.jsx(ur, { className: "h-5 w-5" }),
                   }),
                 ],
@@ -2221,7 +2221,7 @@ function xa({
                 children: [
                   r.jsxs("section", {
                     className:
-                      "bg-codely-color-surface-sunken relative flex min-h-[22rem] items-center justify-center overflow-hidden xl:min-h-0",
+                      "bg-gamecowork-color-surface-sunken relative flex min-h-[22rem] items-center justify-center overflow-hidden xl:min-h-0",
                     children: [
                       r.jsx("div", {
                         className:
@@ -2260,7 +2260,7 @@ function xa({
                   }),
                   r.jsxs("aside", {
                     className:
-                      "border-codely-color-border-subtle bg-codely-color-surface-primary flex min-h-0 flex-col border-0 border-t border-solid xl:border-l xl:border-t-0",
+                      "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary flex min-h-0 flex-col border-0 border-t border-solid xl:border-l xl:border-t-0",
                     children: [
                       r.jsxs("div", {
                         className: "min-h-0 flex-1 space-y-5 overflow-y-auto p-4 sm:p-5",
@@ -2269,9 +2269,9 @@ function xa({
                             children: [
                               r.jsxs("div", {
                                 className:
-                                  "text-codely-color-text-secondary mb-2 flex min-w-0 items-center gap-2 text-xs font-medium",
+                                  "text-gamecowork-color-text-secondary mb-2 flex min-w-0 items-center gap-2 text-xs font-medium",
                                 children: [
-                                  r.jsx(Hn, { className: "text-codely-color-text-tertiary h-4 w-4 shrink-0" }),
+                                  r.jsx(Hn, { className: "text-gamecowork-color-text-tertiary h-4 w-4 shrink-0" }),
                                   r.jsx("span", {
                                     className: "truncate",
                                     children: d("generation.detail.prompt", "Prompt"),
@@ -2281,7 +2281,7 @@ function xa({
                               }),
                               r.jsx("div", {
                                 className:
-                                  "border-codely-color-border-subtle bg-codely-color-surface-sunken text-codely-color-text-secondary max-w-full overflow-hidden whitespace-pre-wrap break-words rounded-xl border border-solid px-3.5 py-3 text-sm leading-6 [overflow-wrap:anywhere]",
+                                  "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sunken text-gamecowork-color-text-secondary max-w-full overflow-hidden whitespace-pre-wrap break-words rounded-xl border border-solid px-3.5 py-3 text-sm leading-6 [overflow-wrap:anywhere]",
                                 children: o.prompt || d("generation.detail.noPrompt", "No prompt recorded"),
                               }),
                             ],
@@ -2291,29 +2291,29 @@ function xa({
                             children: [
                               r.jsxs("div", {
                                 className:
-                                  "border-codely-color-border-subtle rounded-xl border border-solid px-3 py-2.5",
+                                  "border-gamecowork-color-border-subtle rounded-xl border border-solid px-3 py-2.5",
                                 children: [
                                   r.jsxs("div", {
                                     className:
-                                      "text-codely-color-text-tertiary mb-1 flex items-center gap-1.5 text-[0.6875rem]",
+                                      "text-gamecowork-color-text-tertiary mb-1 flex items-center gap-1.5 text-[0.6875rem]",
                                     children: [
                                       r.jsx(On, { className: "h-3.5 w-3.5" }),
                                       d("generation.detail.createdAt", "Created"),
                                     ],
                                   }),
                                   r.jsx("div", {
-                                    className: "text-codely-color-text-primary text-xs leading-5",
+                                    className: "text-gamecowork-color-text-primary text-xs leading-5",
                                     children: P,
                                   }),
                                 ],
                               }),
                               r.jsxs("div", {
                                 className:
-                                  "border-codely-color-border-subtle min-w-0 overflow-hidden rounded-xl border border-solid px-3 py-2.5",
+                                  "border-gamecowork-color-border-subtle min-w-0 overflow-hidden rounded-xl border border-solid px-3 py-2.5",
                                 children: [
                                   r.jsxs("div", {
                                     className:
-                                      "text-codely-color-text-tertiary mb-1 flex items-center gap-1.5 text-[0.6875rem]",
+                                      "text-gamecowork-color-text-tertiary mb-1 flex items-center gap-1.5 text-[0.6875rem]",
                                     children: [
                                       r.jsx(Cr, { className: "h-3.5 w-3.5 shrink-0" }),
                                       d("generation.detail.taskType", "Task type"),
@@ -2321,7 +2321,7 @@ function xa({
                                   }),
                                   r.jsx("div", {
                                     className:
-                                      "text-codely-color-text-primary line-clamp-2 min-w-0 break-words text-xs font-medium leading-5 [overflow-wrap:anywhere]",
+                                      "text-gamecowork-color-text-primary line-clamp-2 min-w-0 break-words text-xs font-medium leading-5 [overflow-wrap:anywhere]",
                                     children: h,
                                   }),
                                 ],
@@ -2330,13 +2330,13 @@ function xa({
                           }),
                           O
                             ? r.jsxs("section", {
-                                className: "border-codely-color-border-subtle border-0 border-t border-solid pt-4",
+                                className: "border-gamecowork-color-border-subtle border-0 border-t border-solid pt-4",
                                 children: [
                                   r.jsxs("div", {
                                     className:
-                                      "text-codely-color-text-secondary mb-2 flex min-w-0 items-center gap-2 text-xs font-medium",
+                                      "text-gamecowork-color-text-secondary mb-2 flex min-w-0 items-center gap-2 text-xs font-medium",
                                     children: [
-                                      r.jsx(pr, { className: "text-codely-color-text-tertiary h-4 w-4 shrink-0" }),
+                                      r.jsx(pr, { className: "text-gamecowork-color-text-tertiary h-4 w-4 shrink-0" }),
                                       r.jsx("span", {
                                         className: "truncate",
                                         children: s
@@ -2349,7 +2349,7 @@ function xa({
                                   }),
                                   r.jsx("div", {
                                     className:
-                                      "border-codely-color-border-subtle bg-codely-color-surface-sunken text-codely-color-text-secondary max-w-full break-all rounded-lg border border-solid px-3 py-2.5 font-mono text-[0.6875rem] leading-5",
+                                      "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sunken text-gamecowork-color-text-secondary max-w-full break-all rounded-lg border border-solid px-3 py-2.5 font-mono text-[0.6875rem] leading-5",
                                     title: O,
                                     children: O,
                                   }),
@@ -2361,10 +2361,10 @@ function xa({
                                 className: le(
                                   "flex min-h-5 items-start gap-1.5 text-[0.6875rem] leading-5",
                                   c.status === "success"
-                                    ? "text-codely-color-status-success-text"
+                                    ? "text-gamecowork-color-status-success-text"
                                     : c.status === "error"
-                                      ? "text-codely-color-status-danger-text"
-                                      : "text-codely-color-text-tertiary",
+                                      ? "text-gamecowork-color-status-danger-text"
+                                      : "text-gamecowork-color-text-tertiary",
                                 ),
                                 role: "status",
                                 "aria-live": "polite",
@@ -2427,7 +2427,7 @@ function xa({
                       }),
                       r.jsxs("footer", {
                         className:
-                          "border-codely-color-border-subtle bg-codely-color-surface-primary flex shrink-0 flex-wrap items-center justify-between gap-2 border-0 border-t border-solid p-4 sm:px-5",
+                          "border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary flex shrink-0 flex-wrap items-center justify-between gap-2 border-0 border-t border-solid p-4 sm:px-5",
                         children: [
                           c != null && c.canReveal
                             ? r.jsxs("button", {
@@ -2436,7 +2436,7 @@ function xa({
                                 onClick: c.onReveal,
                                 disabled: T,
                                 className:
-                                  "border-codely-color-border-default bg-codely-color-surface-sunken text-codely-color-text-primary hover:bg-codely-color-interactive-hover flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors disabled:cursor-wait disabled:opacity-70",
+                                  "border-gamecowork-color-border-default bg-gamecowork-color-surface-sunken text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors disabled:cursor-wait disabled:opacity-70",
                                 children: [
                                   T
                                     ? r.jsx(de, { className: "h-4 w-4 animate-spin" })
@@ -2460,7 +2460,7 @@ function xa({
                                 "data-testid": "detail-regenerate-button",
                                 onClick: b,
                                 className:
-                                  "border-codely-color-accent-border bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors",
+                                  "border-gamecowork-color-accent-border bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors",
                                 children: [
                                   r.jsx(br, { className: "h-4 w-4" }),
                                   r.jsx("span", { children: d("generation.regenerate", "Regenerate") }),
@@ -2485,8 +2485,8 @@ function xa({
                                 className: le(
                                   "flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors disabled:cursor-wait disabled:opacity-70",
                                   e.discarded
-                                    ? "border-codely-color-accent-border bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover"
-                                    : "border-codely-color-border-default bg-codely-color-surface-sunken text-codely-color-text-secondary hover:bg-codely-color-interactive-hover hover:text-codely-color-text-primary",
+                                    ? "border-gamecowork-color-accent-border bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover"
+                                    : "border-gamecowork-color-border-default bg-gamecowork-color-surface-sunken text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover hover:text-gamecowork-color-text-primary",
                                 ),
                                 children: [
                                   v === "pending"
@@ -2514,10 +2514,10 @@ function xa({
                                         disabled: S === "pending",
                                         title: S === "error" && G ? G : m,
                                         className: le(
-                                          "border-codely-color-accent-border flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3.5 py-2 text-xs font-medium text-white shadow-[0_4px_14px_color-mix(in_srgb,var(--codely-color-accent-default)_38%,transparent)] transition-all duration-200 hover:brightness-110 hover:shadow-[0_4px_20px_color-mix(in_srgb,var(--codely-color-accent-default)_50%,transparent)] disabled:cursor-default",
+                                          "border-gamecowork-color-accent-border flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3.5 py-2 text-xs font-medium text-white shadow-[0_4px_14px_color-mix(in_srgb,var(--gamecowork-color-accent-default)_38%,transparent)] transition-all duration-200 hover:brightness-110 hover:shadow-[0_4px_20px_color-mix(in_srgb,var(--gamecowork-color-accent-default)_50%,transparent)] disabled:cursor-default",
                                           S === "error"
-                                            ? "border-codely-color-border-error bg-[linear-gradient(135deg,var(--codely-color-border-error),color-mix(in_srgb,var(--codely-color-border-error)_55%,#7a1f1f))]"
-                                            : "bg-[linear-gradient(135deg,var(--codely-color-accent-active),var(--codely-color-accent-default))]",
+                                            ? "border-gamecowork-color-border-error bg-[linear-gradient(135deg,var(--gamecowork-color-border-error),color-mix(in_srgb,var(--gamecowork-color-border-error)_55%,#7a1f1f))]"
+                                            : "bg-[linear-gradient(135deg,var(--gamecowork-color-accent-active),var(--gamecowork-color-accent-default))]",
                                         ),
                                         children: [
                                           S === "pending"
@@ -2544,7 +2544,7 @@ function xa({
                                         onClick: () => void te(),
                                         disabled: $,
                                         className:
-                                          "border-codely-color-accent-border bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors disabled:cursor-wait disabled:opacity-70",
+                                          "border-gamecowork-color-accent-border bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-solid px-3 py-2 text-xs font-medium transition-colors disabled:cursor-wait disabled:opacity-70",
                                         children: [
                                           $
                                             ? r.jsx(de, { className: "h-4 w-4 animate-spin" })
@@ -2555,7 +2555,7 @@ function xa({
                                     : null,
                                   r.jsxs("div", {
                                     className:
-                                      "border-codely-color-accent-border relative flex min-h-9 max-w-full rounded-lg border border-solid",
+                                      "border-gamecowork-color-accent-border relative flex min-h-9 max-w-full rounded-lg border border-solid",
                                     children: [
                                       r.jsxs("button", {
                                         type: "button",
@@ -2564,7 +2564,7 @@ function xa({
                                         }),
                                         onClick: () => n(w.url),
                                         className:
-                                          "bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover flex cursor-pointer items-center justify-center gap-2 rounded-l-[0.4375rem] border-none px-3 py-2 text-xs font-medium transition-colors",
+                                          "bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover flex cursor-pointer items-center justify-center gap-2 rounded-l-[0.4375rem] border-none px-3 py-2 text-xs font-medium transition-colors",
                                         children: [
                                           r.jsx(Ke, { className: "h-4 w-4" }),
                                           r.jsx("span", { children: d("generation.download", "Download") }),
@@ -2582,7 +2582,7 @@ function xa({
                                                   "Show download options",
                                                 ),
                                                 className:
-                                                  "border-codely-color-accent-border bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover flex min-w-[4.25rem] cursor-pointer items-center justify-center gap-1 rounded-r-[0.4375rem] border-0 border-l border-solid px-2.5 py-2 text-xs font-medium transition-colors",
+                                                  "border-gamecowork-color-accent-border bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover flex min-w-[4.25rem] cursor-pointer items-center justify-center gap-1 rounded-r-[0.4375rem] border-0 border-l border-solid px-2.5 py-2 text-xs font-medium transition-colors",
                                                 children: [
                                                   r.jsx("span", { className: "max-w-20 truncate", children: w.label }),
                                                   r.jsx(yr, { className: "h-3.5 w-3.5 shrink-0" }),
@@ -2590,7 +2590,7 @@ function xa({
                                               }),
                                               r.jsx(Nt, {
                                                 className:
-                                                  "border-codely-color-border-default bg-codely-color-surface-primary absolute bottom-[calc(100%+0.5rem)] right-0 z-[1300] box-border max-h-80 min-w-36 overflow-y-auto overflow-x-hidden overscroll-contain rounded-lg border border-solid p-1 shadow-2xl focus:outline-none",
+                                                  "border-gamecowork-color-border-default bg-gamecowork-color-surface-primary absolute bottom-[calc(100%+0.5rem)] right-0 z-[1300] box-border max-h-80 min-w-36 overflow-y-auto overflow-x-hidden overscroll-contain rounded-lg border border-solid p-1 shadow-2xl focus:outline-none",
                                                 children: o.downloads.map((N) =>
                                                   r.jsxs(
                                                     kt,
@@ -2599,13 +2599,13 @@ function xa({
                                                       type: "button",
                                                       onClick: () => E(N.url),
                                                       className:
-                                                        "text-codely-color-text-primary data-[focus]:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-3 rounded-md border-none bg-transparent px-2.5 py-2 text-left text-xs focus:outline-none",
+                                                        "text-gamecowork-color-text-primary data-[focus]:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center justify-between gap-3 rounded-md border-none bg-transparent px-2.5 py-2 text-left text-xs focus:outline-none",
                                                       children: [
                                                         r.jsx("span", { className: "truncate", children: N.label }),
                                                         N.url === w.url
                                                           ? r.jsx(We, {
                                                               className:
-                                                                "text-codely-color-accent-default h-3.5 w-3.5 shrink-0",
+                                                                "text-gamecowork-color-accent-default h-3.5 w-3.5 shrink-0",
                                                             })
                                                           : null,
                                                       ],
@@ -2618,7 +2618,7 @@ function xa({
                                           })
                                         : r.jsx("span", {
                                             className:
-                                              "border-codely-color-accent-border bg-codely-color-accent-default text-codely-color-text-accent flex min-w-[4.25rem] items-center justify-center rounded-r-[0.4375rem] border-0 border-l border-solid px-2.5 py-2 text-xs font-medium",
+                                              "border-gamecowork-color-accent-border bg-gamecowork-color-accent-default text-gamecowork-color-text-accent flex min-w-[4.25rem] items-center justify-center rounded-r-[0.4375rem] border-0 border-l border-solid px-2.5 py-2 text-xs font-medium",
                                             children: w.label,
                                           }),
                                     ],
@@ -2626,7 +2626,7 @@ function xa({
                                 ],
                               })
                             : r.jsx("span", {
-                                className: "text-codely-color-text-tertiary text-xs",
+                                className: "text-gamecowork-color-text-tertiary text-xs",
                                 children: d("generation.detail.noFiles", "No downloadable files"),
                               }),
                         ],

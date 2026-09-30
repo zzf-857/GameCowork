@@ -67,7 +67,7 @@
     (subpath (param "TARGET_DIR"))
     (subpath (param "TMP_DIR"))
     (subpath (param "CACHE_DIR"))
-    (subpath (param "CODELY_HOME_DIR"))
+    (subpath (param "GAMECOWORK_HOME_DIR"))
     (subpath (string-append (param "HOME_DIR") "/.npm"))
     (subpath (string-append (param "HOME_DIR") "/.cache"))
     (subpath (string-append (param "HOME_DIR") "/.gitconfig"))
@@ -91,3 +91,8 @@
 
 ;; allow inbound network traffic on debugger port
 (allow network-inbound (local ip "localhost:9229"))
+
+;; allow outbound network traffic through proxy on localhost:8877
+;; set `GEMINI_SANDBOX_PROXY_COMMAND=<command>` to run proxy alongside sandbox
+;; proxy must listen on :::8877 (see docs/examples/proxy-script.md)
+(allow network-outbound (remote tcp "localhost:8877"))

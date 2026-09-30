@@ -28,7 +28,7 @@
 .file-preview-monaco .monaco-editor .overflow-guard,
 .file-preview-monaco .monaco-editor-background,
 .file-preview-monaco .monaco-editor .margin {
-  background-color: var(--codely-color-surface-primary) !important;
+  background-color: var(--gamecowork-color-surface-primary) !important;
 }
 .file-preview-monaco-search-highlight {
   background-color: #ea5c0052;
@@ -47,13 +47,13 @@
   display: flex;
   align-items: center;
   min-height: 1.75rem;
-  border: 1px solid var(--codely-color-border-default, rgba(255, 255, 255, 0.14));
+  border: 1px solid var(--gamecowork-color-border-default, rgba(255, 255, 255, 0.14));
   border-radius: 0.25rem;
-  background-color: var(--codely-color-surface-sidebar);
+  background-color: var(--gamecowork-color-surface-sidebar);
   box-shadow: 0 0.125rem 0.5rem #0000003d;
 }
 .file-preview-infile-search__input-wrap:focus-within {
-  border-color: var(--codely-color-accent-default, #007fd4);
+  border-color: var(--gamecowork-color-accent-default, #007fd4);
 }
 .file-preview-infile-search__input {
   flex: 1;
@@ -62,15 +62,15 @@
   border: none;
   outline: none;
   background: transparent;
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
   font-size: 0.8125rem;
   line-height: 1.25rem;
 }
 .file-preview-infile-search__input::-moz-placeholder {
-  color: var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45));
+  color: var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45));
 }
 .file-preview-infile-search__input::placeholder {
-  color: var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45));
+  color: var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45));
 }
 .file-preview-infile-search__controls {
   display: flex;
@@ -82,7 +82,7 @@
 .file-preview-infile-search__count {
   min-width: 0;
   padding: 0 0.25rem;
-  color: var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45));
+  color: var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45));
   font-size: 0.6875rem;
   line-height: 1.25rem;
   text-align: right;
@@ -99,13 +99,13 @@
   border: 0;
   border-radius: 0.1875rem;
   background: transparent;
-  color: var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45));
+  color: var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45));
   cursor: pointer;
 }
 .file-preview-infile-search__nav:hover:not(:disabled),
 .file-preview-infile-search__close:hover {
-  background-color: var(--codely-color-interactive-hover, rgba(255, 255, 255, 0.08));
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+  background-color: var(--gamecowork-color-interactive-hover, rgba(255, 255, 255, 0.08));
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
 .file-preview-infile-search__nav:disabled {
   opacity: 0.35;
@@ -129,19 +129,19 @@
   border: 0;
   border-radius: 0.1875rem;
   background: transparent;
-  color: var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45));
+  color: var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45));
   cursor: pointer;
   font: inherit;
   font-size: 0.6875rem;
   line-height: 1.25rem;
 }
 .file-preview-find-input__option:hover {
-  background-color: var(--codely-color-interactive-hover, rgba(255, 255, 255, 0.08));
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+  background-color: var(--gamecowork-color-interactive-hover, rgba(255, 255, 255, 0.08));
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
 .file-preview-find-input__option--active {
-  background-color: var(--codely-color-interactive-selected, rgba(1, 167, 127, 0.16));
-  color: var(--codely-color-text-primary, rgba(255, 255, 255, 0.93));
+  background-color: var(--gamecowork-color-interactive-selected, rgba(1, 167, 127, 0.16));
+  color: var(--gamecowork-color-text-primary, rgba(255, 255, 255, 0.93));
 }
 .file-preview-monaco-infile-search-highlight {
   background-color: var(--find-match, rgba(81, 92, 106, 0.66));
@@ -150,7 +150,7 @@
 }
 .file-preview-monaco-infile-search-current {
   background-color: var(--find-match-selected, rgba(81, 92, 106, 0.88));
-  border: 1px solid var(--codely-color-focus-border, #007fd4);
+  border: 1px solid var(--gamecowork-color-focus-border, #007fd4);
   box-sizing: border-box;
 }
 .file-preview-state {
@@ -159,7 +159,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  color: var(--codely-color-text-default, #f2f2f2);
+  color: var(--gamecowork-color-text-default, #f2f2f2);
   text-align: center;
 }
 .file-preview-monaco--editable .monaco-editor .goto-definition-link {
@@ -190,7 +190,7 @@
   z-index: 9999;
   display: flex;
   align-items: center;
-  height: var(--codely-app-header-height);
+  height: var(--gamecowork-app-header-height);
   padding-left: 0.75rem;
   pointer-events: none;
 }
@@ -201,7 +201,7 @@
   z-index: 9999;
   display: flex;
   align-items: center;
-  height: var(--codely-app-header-height);
+  height: var(--gamecowork-app-header-height);
   pointer-events: none;
 }
 .shell-header-overlay-right button {
@@ -289,9 +289,9 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0 0.5rem;
-  height: var(--codely-app-header-height);
-  min-height: var(--codely-app-header-height);
-  max-height: var(--codely-app-header-height);
+  height: var(--gamecowork-app-header-height);
+  min-height: var(--gamecowork-app-header-height);
+  max-height: var(--gamecowork-app-header-height);
   background-color: var(--semantic-color-surface-base);
   border-bottom: none;
   box-shadow: 0 1px 0 0 var(--semantic-color-border-subtle, #ffffff14);
@@ -1522,7 +1522,7 @@
   border: 1px solid var(--semantic-color-border-default, rgba(255, 255, 255, 0.14));
   border-radius: 0.25rem;
   box-shadow: 0 0.25rem 1.25rem #0006;
-  font-size: var(--codely-text-sm, 0.75rem);
+  font-size: var(--gamecowork-text-sm, 0.75rem);
 }
 .file-preview-tree__context-menu-item {
   display: block;
@@ -2205,8 +2205,8 @@
 .top-\[calc\(100\%_-_8px\)\] {
   top: calc(100% - 8px);
 }
-.top-\[calc\(var\(--codely-app-header-height\)\/2\)\] {
-  top: calc(var(--codely-app-header-height) / 2);
+.top-\[calc\(var\(--gamecowork-app-header-height\)\/2\)\] {
+  top: calc(var(--gamecowork-app-header-height) / 2);
 }
 .top-full {
   top: 100%;
@@ -2629,8 +2629,8 @@
 .mt-\[6px\] {
   margin-top: 6px;
 }
-.mt-\[var\(--codely-app-header-height\)\] {
-  margin-top: var(--codely-app-header-height);
+.mt-\[var\(--gamecowork-app-header-height\)\] {
+  margin-top: var(--gamecowork-app-header-height);
 }
 .mt-auto {
   margin-top: auto;
@@ -2844,8 +2844,8 @@
 .\!h-\[66px\] {
   height: 66px !important;
 }
-.\!h-\[calc\(100\%-var\(--codely-app-header-height\)\)\] {
-  height: calc(100% - var(--codely-app-header-height)) !important;
+.\!h-\[calc\(100\%-var\(--gamecowork-app-header-height\)\)\] {
+  height: calc(100% - var(--gamecowork-app-header-height)) !important;
 }
 .\!h-auto {
   height: auto !important;
@@ -3066,8 +3066,8 @@
 .h-\[min\(680px\,82vh\)\] {
   height: min(680px, 82vh);
 }
-.h-\[var\(--codely-app-header-height\)\] {
-  height: var(--codely-app-header-height);
+.h-\[var\(--gamecowork-app-header-height\)\] {
+  height: var(--gamecowork-app-header-height);
 }
 .h-auto {
   height: auto;
@@ -3290,8 +3290,8 @@
 .min-h-\[88px\] {
   min-height: 88px;
 }
-.min-h-\[calc\(100dvh-var\(--codely-app-header-height\)-2rem\)\] {
-  min-height: calc(100dvh - var(--codely-app-header-height) - 2rem);
+.min-h-\[calc\(100dvh-var\(--gamecowork-app-header-height\)-2rem\)\] {
+  min-height: calc(100dvh - var(--gamecowork-app-header-height) - 2rem);
 }
 .min-h-full {
   min-height: 100%;
@@ -4681,8 +4681,8 @@
   --tw-border-opacity: 1;
   border-color: rgb(139 145 156 / var(--tw-border-opacity));
 }
-.border-\[var\(--codely-color-border-subtle\)\] {
-  border-color: var(--codely-color-border-subtle);
+.border-\[var\(--gamecowork-color-border-subtle\)\] {
+  border-color: var(--gamecowork-color-border-subtle);
 }
 .border-\[var\(--semantic-color-accent-text\)\] {
   border-color: var(--semantic-color-accent-text);
@@ -4713,49 +4713,49 @@
   --tw-border-opacity: 1;
   border-color: rgb(29 78 216 / var(--tw-border-opacity));
 }
-.border-codely-color-accent-border {
+.border-gamecowork-color-accent-border {
   border-color: var(--semantic-color-accent-border, rgba(36, 104, 84, 1));
 }
-.border-codely-color-accent-default {
+.border-gamecowork-color-accent-default {
   border-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.border-codely-color-border-default {
+.border-gamecowork-color-border-default {
   border-color: var(--semantic-color-border-default, rgba(72, 72, 72, 1));
 }
-.border-codely-color-border-error {
-  border-color: var(--codely-color-border-error, rgba(255, 69, 58, 1));
+.border-gamecowork-color-border-error {
+  border-color: var(--gamecowork-color-border-error, rgba(255, 69, 58, 1));
 }
-.border-codely-color-border-strong {
+.border-gamecowork-color-border-strong {
   border-color: var(--semantic-color-border-strong, rgba(96, 96, 96, 1));
 }
-.border-codely-color-border-subtle {
+.border-gamecowork-color-border-subtle {
   border-color: var(--semantic-color-border-subtle, rgba(58, 58, 58, 1));
 }
-.border-codely-color-interactive-selected {
+.border-gamecowork-color-interactive-selected {
   border-color: var(--semantic-color-interactive-selected, rgba(255, 255, 255, 0.1));
 }
-.border-codely-color-interactive-selected-strong {
+.border-gamecowork-color-interactive-selected-strong {
   border-color: var(--semantic-color-interactive-selected-strong, rgba(255, 255, 255, 0.16));
 }
-.border-codely-color-shadow-glow-accent {
+.border-gamecowork-color-shadow-glow-accent {
   border-color: var(--semantic-color-shadow-glow-accent, rgba(1, 167, 127, 0.2));
 }
-.border-codely-color-status-danger-border {
+.border-gamecowork-color-status-danger-border {
   border-color: var(--semantic-color-status-danger-border, rgba(140, 51, 58, 1));
 }
-.border-codely-color-status-warning-border {
+.border-gamecowork-color-status-warning-border {
   border-color: var(--semantic-color-status-warning-border, rgba(113, 79, 25, 1));
 }
-.border-codely-color-surface-elevated {
+.border-gamecowork-color-surface-elevated {
   border-color: var(--semantic-color-surface-elevated, rgba(42, 42, 42, 1));
 }
-.border-codely-color-surface-inverted {
-  border-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.border-gamecowork-color-surface-inverted {
+  border-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
-.border-codely-color-surface-primary {
+.border-gamecowork-color-surface-primary {
   border-color: var(--semantic-color-surface-base, rgba(17, 17, 17, 1));
 }
-.border-codely-color-text-tertiary {
+.border-gamecowork-color-text-tertiary {
   border-color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .border-error {
@@ -4844,7 +4844,7 @@
 .border-b-\[rgba\(255\,255\,255\,\.1\)\] {
   border-bottom-color: #ffffff1a;
 }
-.border-b-codely-color-border-subtle {
+.border-b-gamecowork-color-border-subtle {
   border-bottom-color: var(--semantic-color-border-subtle, rgba(58, 58, 58, 1));
 }
 .border-b-command-border {
@@ -4861,10 +4861,10 @@
   --tw-bg-opacity: 1 !important;
   background-color: rgb(10 92 74 / var(--tw-bg-opacity)) !important;
 }
-.\!bg-codely-color-surface-inverted {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1)) !important;
+.\!bg-gamecowork-color-surface-inverted {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1)) !important;
 }
-.\!bg-codely-color-surface-sidebar {
+.\!bg-gamecowork-color-surface-sidebar {
   background-color: var(--semantic-color-surface-sidebar, rgba(25, 25, 25, 1)) !important;
 }
 .bg-\[\#00A67E\] {
@@ -4921,44 +4921,44 @@
 .bg-\[rgba\(33\,33\,33\,1\)\] {
   background-color: #212121;
 }
-.bg-\[var\(--codely-color-accent-default\)\] {
-  background-color: var(--codely-color-accent-default);
+.bg-\[var\(--gamecowork-color-accent-default\)\] {
+  background-color: var(--gamecowork-color-accent-default);
 }
-.bg-\[var\(--codely-color-border-success\)\] {
-  background-color: var(--codely-color-border-success);
+.bg-\[var\(--gamecowork-color-border-success\)\] {
+  background-color: var(--gamecowork-color-border-success);
 }
-.bg-\[var\(--codely-color-file-preview-tab-dirty\)\] {
-  background-color: var(--codely-color-file-preview-tab-dirty);
+.bg-\[var\(--gamecowork-color-file-preview-tab-dirty\)\] {
+  background-color: var(--gamecowork-color-file-preview-tab-dirty);
 }
-.bg-\[var\(--codely-color-interactive-hover\)\] {
-  background-color: var(--codely-color-interactive-hover);
+.bg-\[var\(--gamecowork-color-interactive-hover\)\] {
+  background-color: var(--gamecowork-color-interactive-hover);
 }
-.bg-\[var\(--codely-color-status-danger-subtle\,rgba\(239\,68\,68\,0\.12\)\)\] {
-  background-color: var(--codely-color-status-danger-subtle, rgba(239, 68, 68, 0.12));
+.bg-\[var\(--gamecowork-color-status-danger-subtle\,rgba\(239\,68\,68\,0\.12\)\)\] {
+  background-color: var(--gamecowork-color-status-danger-subtle, rgba(239, 68, 68, 0.12));
 }
-.bg-\[var\(--codely-color-status-success-subtle\,rgba\(34\,197\,94\,0\.15\)\)\] {
-  background-color: var(--codely-color-status-success-subtle, rgba(34, 197, 94, 0.15));
+.bg-\[var\(--gamecowork-color-status-success-subtle\,rgba\(34\,197\,94\,0\.15\)\)\] {
+  background-color: var(--gamecowork-color-status-success-subtle, rgba(34, 197, 94, 0.15));
 }
-.bg-\[var\(--codely-color-surface-card\)\] {
-  background-color: var(--codely-color-surface-card);
+.bg-\[var\(--gamecowork-color-surface-card\)\] {
+  background-color: var(--gamecowork-color-surface-card);
 }
-.bg-\[var\(--codely-color-surface-disabled\)\] {
-  background-color: var(--codely-color-surface-disabled);
+.bg-\[var\(--gamecowork-color-surface-disabled\)\] {
+  background-color: var(--gamecowork-color-surface-disabled);
 }
-.bg-\[var\(--codely-color-surface-elevated\)\] {
-  background-color: var(--codely-color-surface-elevated);
+.bg-\[var\(--gamecowork-color-surface-elevated\)\] {
+  background-color: var(--gamecowork-color-surface-elevated);
 }
-.bg-\[var\(--codely-color-surface-primary\)\] {
-  background-color: var(--codely-color-surface-primary);
+.bg-\[var\(--gamecowork-color-surface-primary\)\] {
+  background-color: var(--gamecowork-color-surface-primary);
 }
-.bg-\[var\(--codely-color-surface-sidebar\)\] {
-  background-color: var(--codely-color-surface-sidebar);
+.bg-\[var\(--gamecowork-color-surface-sidebar\)\] {
+  background-color: var(--gamecowork-color-surface-sidebar);
 }
-.bg-\[var\(--codely-color-text-default\,\#fff\)\] {
-  background-color: var(--codely-color-text-default, #fff);
+.bg-\[var\(--gamecowork-color-text-default\,\#fff\)\] {
+  background-color: var(--gamecowork-color-text-default, #fff);
 }
-.bg-\[var\(--codely-color-text-tertiary\)\] {
-  background-color: var(--codely-color-text-tertiary);
+.bg-\[var\(--gamecowork-color-text-tertiary\)\] {
+  background-color: var(--gamecowork-color-text-tertiary);
 }
 .bg-\[var\(--semantic-color-accent-default\)\] {
   background-color: var(--semantic-color-accent-default);
@@ -5079,130 +5079,130 @@
 .bg-border {
   background-color: var(--vscode-sideBar-border, var(--vscode-panel-border, #2a2a2a));
 }
-.bg-codely-color-accent-active {
+.bg-gamecowork-color-accent-active {
   background-color: var(--semantic-color-accent-pressed, rgba(42, 126, 104, 1));
 }
-.bg-codely-color-accent-border {
+.bg-gamecowork-color-accent-border {
   background-color: var(--semantic-color-accent-border, rgba(36, 104, 84, 1));
 }
-.bg-codely-color-accent-default {
+.bg-gamecowork-color-accent-default {
   background-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.bg-codely-color-accent-muted {
+.bg-gamecowork-color-accent-muted {
   background-color: var(--semantic-color-accent-muted, rgba(15, 46, 34, 1));
 }
-.bg-codely-color-accent-subtle {
+.bg-gamecowork-color-accent-subtle {
   background-color: var(--semantic-color-accent-subtle, rgba(11, 59, 44, 1));
 }
-.bg-codely-color-border-default {
+.bg-gamecowork-color-border-default {
   background-color: var(--semantic-color-border-default, rgba(72, 72, 72, 1));
 }
-.bg-codely-color-border-error {
-  background-color: var(--codely-color-border-error, rgba(255, 69, 58, 1));
+.bg-gamecowork-color-border-error {
+  background-color: var(--gamecowork-color-border-error, rgba(255, 69, 58, 1));
 }
-.bg-codely-color-border-subtle {
+.bg-gamecowork-color-border-subtle {
   background-color: var(--semantic-color-border-subtle, rgba(58, 58, 58, 1));
 }
-.bg-codely-color-interactive-hover {
+.bg-gamecowork-color-interactive-hover {
   background-color: var(--semantic-color-interactive-hover, rgba(255, 255, 255, 0.08));
 }
-.bg-codely-color-interactive-pressed {
+.bg-gamecowork-color-interactive-pressed {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
-.bg-codely-color-interactive-selected {
+.bg-gamecowork-color-interactive-selected {
   background-color: var(--semantic-color-interactive-selected, rgba(255, 255, 255, 0.1));
 }
-.bg-codely-color-interactive-selected-hover {
-  background-color: var(--codely-color-interactive-selected-hover, rgba(44, 65, 57, 1));
+.bg-gamecowork-color-interactive-selected-hover {
+  background-color: var(--gamecowork-color-interactive-selected-hover, rgba(44, 65, 57, 1));
 }
-.bg-codely-color-item-surface {
-  background-color: var(--codely-color-item-surface, rgba(255, 255, 255, 0));
+.bg-gamecowork-color-item-surface {
+  background-color: var(--gamecowork-color-item-surface, rgba(255, 255, 255, 0));
 }
-.bg-codely-color-shadow-glow-accent {
+.bg-gamecowork-color-shadow-glow-accent {
   background-color: var(--semantic-color-shadow-glow-accent, rgba(1, 167, 127, 0.2));
 }
-.bg-codely-color-status-danger-border {
+.bg-gamecowork-color-status-danger-border {
   background-color: var(--semantic-color-status-danger-border, rgba(140, 51, 58, 1));
 }
-.bg-codely-color-status-danger-default {
+.bg-gamecowork-color-status-danger-default {
   background-color: var(--semantic-color-status-danger-text, rgba(255, 149, 146, 1));
 }
-.bg-codely-color-status-danger-muted {
+.bg-gamecowork-color-status-danger-muted {
   background-color: var(--semantic-color-status-danger-muted, rgba(59, 18, 25, 1));
 }
-.bg-codely-color-status-info-border {
+.bg-gamecowork-color-status-info-border {
   background-color: var(--semantic-color-status-info-border, rgba(32, 93, 158, 1));
 }
-.bg-codely-color-status-success-muted {
+.bg-gamecowork-color-status-success-muted {
   background-color: var(--semantic-color-status-success-muted, rgba(19, 45, 33, 1));
 }
-.bg-codely-color-status-warning-border {
+.bg-gamecowork-color-status-warning-border {
   background-color: var(--semantic-color-status-warning-border, rgba(113, 79, 25, 1));
 }
-.bg-codely-color-status-warning-default {
+.bg-gamecowork-color-status-warning-default {
   background-color: var(--semantic-color-status-warning-default, rgba(255, 197, 61, 1));
 }
-.bg-codely-color-status-warning-muted {
+.bg-gamecowork-color-status-warning-muted {
   background-color: var(--semantic-color-status-warning-muted, rgba(48, 32, 8, 1));
 }
-.bg-codely-color-surface-base {
+.bg-gamecowork-color-surface-base {
   background-color: var(--semantic-color-surface-base, rgba(17, 17, 17, 1));
 }
-.bg-codely-color-surface-capability-default {
-  background-color: var(--codely-color-surface-capability-default, rgba(228, 228, 228, 1));
+.bg-gamecowork-color-surface-capability-default {
+  background-color: var(--gamecowork-color-surface-capability-default, rgba(228, 228, 228, 1));
 }
-.bg-codely-color-surface-card {
+.bg-gamecowork-color-surface-card {
   background-color: var(--semantic-color-surface-card, rgba(34, 34, 34, 1));
 }
-.bg-codely-color-surface-codeBlockBg {
+.bg-gamecowork-color-surface-codeBlockBg {
   background-color: var(--semantic-color-code-bg, rgba(17, 17, 17, 1));
 }
-.bg-codely-color-surface-disabled {
+.bg-gamecowork-color-surface-disabled {
   background-color: var(--semantic-color-surface-disabled, rgba(34, 34, 34, 1));
 }
-.bg-codely-color-surface-elevated {
+.bg-gamecowork-color-surface-elevated {
   background-color: var(--semantic-color-surface-elevated, rgba(42, 42, 42, 1));
 }
-.bg-codely-color-surface-input {
+.bg-gamecowork-color-surface-input {
   background-color: var(--semantic-color-surface-input, rgba(25, 25, 25, 1));
 }
-.bg-codely-color-surface-inverted {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.bg-gamecowork-color-surface-inverted {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
-.bg-codely-color-surface-newcard {
-  background-color: var(--codely-color-surface-newcard, rgba(248, 248, 248, 1));
+.bg-gamecowork-color-surface-newcard {
+  background-color: var(--gamecowork-color-surface-newcard, rgba(248, 248, 248, 1));
 }
-.bg-codely-color-surface-overlay {
+.bg-gamecowork-color-surface-overlay {
   background-color: var(--semantic-color-surface-overlay, rgba(0, 0, 0, 0.6));
 }
-.bg-codely-color-surface-primary {
+.bg-gamecowork-color-surface-primary {
   background-color: var(--semantic-color-surface-base, rgba(17, 17, 17, 1));
 }
-.bg-codely-color-surface-sidebar {
+.bg-gamecowork-color-surface-sidebar {
   background-color: var(--semantic-color-surface-sidebar, rgba(25, 25, 25, 1));
 }
-.bg-codely-color-surface-sunken {
-  background-color: var(--codely-color-surface-sunken, rgba(22, 22, 22, 1));
+.bg-gamecowork-color-surface-sunken {
+  background-color: var(--gamecowork-color-surface-sunken, rgba(22, 22, 22, 1));
 }
-.bg-codely-color-text-accent {
-  background-color: var(--codely-color-text-accent, rgba(255, 255, 255, 1));
+.bg-gamecowork-color-text-accent {
+  background-color: var(--gamecowork-color-text-accent, rgba(255, 255, 255, 1));
 }
-.bg-codely-color-text-default {
-  background-color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+.bg-gamecowork-color-text-default {
+  background-color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
-.bg-codely-color-text-disabled {
+.bg-gamecowork-color-text-disabled {
   background-color: var(--semantic-color-text-disabled, rgba(96, 96, 96, 1));
 }
-.bg-codely-color-text-inverted {
+.bg-gamecowork-color-text-inverted {
   background-color: var(--semantic-color-text-inverse, rgba(17, 17, 17, 1));
 }
-.bg-codely-color-text-primary {
+.bg-gamecowork-color-text-primary {
   background-color: var(--semantic-color-text-primary, rgba(238, 238, 238, 1));
 }
-.bg-codely-color-text-secondary {
+.bg-gamecowork-color-text-secondary {
   background-color: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
-.bg-codely-color-text-tertiary {
+.bg-gamecowork-color-text-tertiary {
   background-color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .bg-current {
@@ -5362,24 +5362,24 @@
 .bg-zinc-900\/50 {
   background-color: #18181b80;
 }
-.bg-\[linear-gradient\(105deg\,var\(--codely-color-text-tertiary\)_0\%\,var\(--codely-color-text-tertiary\)_36\%\,\#fff_50\%\,var\(--codely-color-text-tertiary\)_64\%\,var\(--codely-color-text-tertiary\)_100\%\)\] {
+.bg-\[linear-gradient\(105deg\,var\(--gamecowork-color-text-tertiary\)_0\%\,var\(--gamecowork-color-text-tertiary\)_36\%\,\#fff_50\%\,var\(--gamecowork-color-text-tertiary\)_64\%\,var\(--gamecowork-color-text-tertiary\)_100\%\)\] {
   background-image: linear-gradient(
     105deg,
-    var(--codely-color-text-tertiary) 0%,
-    var(--codely-color-text-tertiary) 36%,
+    var(--gamecowork-color-text-tertiary) 0%,
+    var(--gamecowork-color-text-tertiary) 36%,
     #fff 50%,
-    var(--codely-color-text-tertiary) 64%,
-    var(--codely-color-text-tertiary) 100%
+    var(--gamecowork-color-text-tertiary) 64%,
+    var(--gamecowork-color-text-tertiary) 100%
   );
 }
-.bg-\[linear-gradient\(135deg\,var\(--codely-color-accent-active\)\,var\(--codely-color-accent-default\)\)\] {
-  background-image: linear-gradient(135deg, var(--codely-color-accent-active), var(--codely-color-accent-default));
+.bg-\[linear-gradient\(135deg\,var\(--gamecowork-color-accent-active\)\,var\(--gamecowork-color-accent-default\)\)\] {
+  background-image: linear-gradient(135deg, var(--gamecowork-color-accent-active), var(--gamecowork-color-accent-default));
 }
-.bg-\[linear-gradient\(135deg\,var\(--codely-color-border-error\)\,color-mix\(in_srgb\,var\(--codely-color-border-error\)_55\%\,\#7a1f1f\)\)\] {
+.bg-\[linear-gradient\(135deg\,var\(--gamecowork-color-border-error\)\,color-mix\(in_srgb\,var\(--gamecowork-color-border-error\)_55\%\,\#7a1f1f\)\)\] {
   background-image: linear-gradient(
     135deg,
-    var(--codely-color-border-error),
-    color-mix(in srgb, var(--codely-color-border-error) 55%, #7a1f1f)
+    var(--gamecowork-color-border-error),
+    color-mix(in srgb, var(--gamecowork-color-border-error) 55%, #7a1f1f)
   );
 }
 .bg-\[linear-gradient\(90deg\,transparent_0\%\,var\(--semantic-color-text-disabled\)_21\%\)\] {
@@ -5447,18 +5447,18 @@
   --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-codely-color-accent-muted {
+.from-gamecowork-color-accent-muted {
   --tw-gradient-from: var(--semantic-color-accent-muted, rgba(15, 46, 34, 1)) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-codely-color-surface-primary {
+.from-gamecowork-color-surface-primary {
   --tw-gradient-from: var(--semantic-color-surface-base, rgba(17, 17, 17, 1)) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-codely-color-text-default {
-  --tw-gradient-from: var(--codely-color-text-default, rgba(255, 255, 255, 0.8)) var(--tw-gradient-from-position);
+.from-gamecowork-color-text-default {
+  --tw-gradient-from: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8)) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -5501,14 +5501,14 @@
   --tw-gradient-stops:
     var(--tw-gradient-from), rgb(0 0 0 / 0.55) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
-.via-codely-color-text-tertiary {
+.via-gamecowork-color-text-tertiary {
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops:
     var(--tw-gradient-from),
     var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1)) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
-.to-\[var\(--codely-color-surface-primary\)\] {
-  --tw-gradient-to: var(--codely-color-surface-primary) var(--tw-gradient-to-position);
+.to-\[var\(--gamecowork-color-surface-primary\)\] {
+  --tw-gradient-to: var(--gamecowork-color-surface-primary) var(--tw-gradient-to-position);
 }
 .to-black\/70 {
   --tw-gradient-to: rgb(0 0 0 / 0.7) var(--tw-gradient-to-position);
@@ -5516,11 +5516,11 @@
 .to-blue-500\/20 {
   --tw-gradient-to: rgb(59 130 246 / 0.2) var(--tw-gradient-to-position);
 }
-.to-codely-color-surface-primary {
+.to-gamecowork-color-surface-primary {
   --tw-gradient-to: var(--semantic-color-surface-base, rgba(17, 17, 17, 1)) var(--tw-gradient-to-position);
 }
-.to-codely-color-text-default {
-  --tw-gradient-to: var(--codely-color-text-default, rgba(255, 255, 255, 0.8)) var(--tw-gradient-to-position);
+.to-gamecowork-color-text-default {
+  --tw-gradient-to: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8)) var(--tw-gradient-to-position);
 }
 .to-semantic-color-surface-card {
   --tw-gradient-to: var(--semantic-color-surface-card) var(--tw-gradient-to-position);
@@ -5559,16 +5559,16 @@
 .bg-no-repeat {
   background-repeat: no-repeat;
 }
-.fill-codely-color-text-secondary {
+.fill-gamecowork-color-text-secondary {
   fill: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
-.stroke-codely-color-accent-default {
+.stroke-gamecowork-color-accent-default {
   stroke: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.stroke-codely-color-text-primary {
+.stroke-gamecowork-color-text-primary {
   stroke: var(--semantic-color-text-primary, rgba(238, 238, 238, 1));
 }
-.stroke-codely-color-text-secondary {
+.stroke-gamecowork-color-text-secondary {
   stroke: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
 .object-contain {
@@ -6347,16 +6347,16 @@
 .tracking-wider {
   letter-spacing: 0.05em;
 }
-.\!text-\[var\(--codely-color-text-tertiary\)\] {
-  color: var(--codely-color-text-tertiary) !important;
+.\!text-\[var\(--gamecowork-color-text-tertiary\)\] {
+  color: var(--gamecowork-color-text-tertiary) !important;
 }
-.\!text-codely-color-status-danger-default {
+.\!text-gamecowork-color-status-danger-default {
   color: var(--semantic-color-status-danger-text, rgba(255, 149, 146, 1)) !important;
 }
-.\!text-codely-color-text-default {
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8)) !important;
+.\!text-gamecowork-color-text-default {
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8)) !important;
 }
-.\!text-codely-color-text-tertiary {
+.\!text-gamecowork-color-text-tertiary {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1)) !important;
 }
 .text-\[\#35C9A9\],
@@ -6420,35 +6420,35 @@
 .text-\[rgba\(255\,255\,255\,\.93\)\] {
   color: #ffffffed;
 }
-.text-\[var\(--codely-color-accent-text-default\)\] {
-  color: var(--codely-color-accent-text-default);
+.text-\[var\(--gamecowork-color-accent-text-default\)\] {
+  color: var(--gamecowork-color-accent-text-default);
 }
-.text-\[var\(--codely-color-border-error\)\] {
-  color: var(--codely-color-border-error);
+.text-\[var\(--gamecowork-color-border-error\)\] {
+  color: var(--gamecowork-color-border-error);
 }
-.text-\[var\(--codely-color-logo-fill-default\)\] {
-  color: var(--codely-color-logo-fill-default);
+.text-\[var\(--gamecowork-color-logo-fill-default\)\] {
+  color: var(--gamecowork-color-logo-fill-default);
 }
-.text-\[var\(--codely-color-status-danger-default\)\] {
-  color: var(--codely-color-status-danger-default);
+.text-\[var\(--gamecowork-color-status-danger-default\)\] {
+  color: var(--gamecowork-color-status-danger-default);
 }
-.text-\[var\(--codely-color-status-info-default\)\] {
-  color: var(--codely-color-status-info-default);
+.text-\[var\(--gamecowork-color-status-info-default\)\] {
+  color: var(--gamecowork-color-status-info-default);
 }
-.text-\[var\(--codely-color-status-success-default\)\] {
-  color: var(--codely-color-status-success-default);
+.text-\[var\(--gamecowork-color-status-success-default\)\] {
+  color: var(--gamecowork-color-status-success-default);
 }
-.text-\[var\(--codely-color-text-accent\)\] {
-  color: var(--codely-color-text-accent);
+.text-\[var\(--gamecowork-color-text-accent\)\] {
+  color: var(--gamecowork-color-text-accent);
 }
-.text-\[var\(--codely-color-text-default\)\] {
-  color: var(--codely-color-text-default);
+.text-\[var\(--gamecowork-color-text-default\)\] {
+  color: var(--gamecowork-color-text-default);
 }
-.text-\[var\(--codely-color-text-secondary\)\] {
-  color: var(--codely-color-text-secondary);
+.text-\[var\(--gamecowork-color-text-secondary\)\] {
+  color: var(--gamecowork-color-text-secondary);
 }
-.text-\[var\(--codely-color-text-tertiary\)\] {
-  color: var(--codely-color-text-tertiary);
+.text-\[var\(--gamecowork-color-text-tertiary\)\] {
+  color: var(--gamecowork-color-text-tertiary);
 }
 .text-\[var\(--semantic-color-accent-text\)\] {
   color: var(--semantic-color-accent-text);
@@ -6512,74 +6512,74 @@
   --tw-text-opacity: 1;
   color: rgb(30 64 175 / var(--tw-text-opacity));
 }
-.text-codely-color-accent-default {
+.text-gamecowork-color-accent-default {
   color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.text-codely-color-accent-hover {
+.text-gamecowork-color-accent-hover {
   color: var(--semantic-color-accent-hover, rgba(39, 176, 139, 1));
 }
-.text-codely-color-accent-text {
+.text-gamecowork-color-accent-text {
   color: var(--semantic-color-accent-text, rgba(31, 216, 164, 1));
 }
-.text-codely-color-border-bold {
-  color: var(--codely-color-border-bold, rgba(255, 255, 255, 0.3));
+.text-gamecowork-color-border-bold {
+  color: var(--gamecowork-color-border-bold, rgba(255, 255, 255, 0.3));
 }
-.text-codely-color-border-error {
-  color: var(--codely-color-border-error, rgba(255, 69, 58, 1));
+.text-gamecowork-color-border-error {
+  color: var(--gamecowork-color-border-error, rgba(255, 69, 58, 1));
 }
-.text-codely-color-border-strong {
+.text-gamecowork-color-border-strong {
   color: var(--semantic-color-border-strong, rgba(96, 96, 96, 1));
 }
-.text-codely-color-status-danger-default,
-.text-codely-color-status-danger-text {
+.text-gamecowork-color-status-danger-default,
+.text-gamecowork-color-status-danger-text {
   color: var(--semantic-color-status-danger-text, rgba(255, 149, 146, 1));
 }
-.text-codely-color-status-info-text {
+.text-gamecowork-color-status-info-text {
   color: var(--semantic-color-status-info-text, rgba(112, 184, 255, 1));
 }
-.text-codely-color-status-success-default {
+.text-gamecowork-color-status-success-default {
   color: var(--semantic-color-status-success-default, rgba(48, 164, 108, 1));
 }
-.text-codely-color-status-success-text {
+.text-gamecowork-color-status-success-text {
   color: var(--semantic-color-status-success-text, rgba(61, 214, 140, 1));
 }
-.text-codely-color-status-warning-default {
+.text-gamecowork-color-status-warning-default {
   color: var(--semantic-color-status-warning-default, rgba(255, 197, 61, 1));
 }
-.text-codely-color-status-warning-text {
+.text-gamecowork-color-status-warning-text {
   color: var(--semantic-color-status-warning-text, rgba(255, 202, 22, 1));
 }
-.text-codely-color-surface-card {
+.text-gamecowork-color-surface-card {
   color: var(--semantic-color-surface-card, rgba(34, 34, 34, 1));
 }
-.text-codely-color-surface-elevated {
+.text-gamecowork-color-surface-elevated {
   color: var(--semantic-color-surface-elevated, rgba(42, 42, 42, 1));
 }
-.text-codely-color-text-accent {
-  color: var(--codely-color-text-accent, rgba(255, 255, 255, 1));
+.text-gamecowork-color-text-accent {
+  color: var(--gamecowork-color-text-accent, rgba(255, 255, 255, 1));
 }
-.text-codely-color-text-capability-default {
-  color: var(--codely-color-text-capability-default, rgba(62, 62, 62, 1));
+.text-gamecowork-color-text-capability-default {
+  color: var(--gamecowork-color-text-capability-default, rgba(62, 62, 62, 1));
 }
-.text-codely-color-text-default {
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+.text-gamecowork-color-text-default {
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
-.text-codely-color-text-disabled {
+.text-gamecowork-color-text-disabled {
   color: var(--semantic-color-text-disabled, rgba(96, 96, 96, 1));
 }
-.text-codely-color-text-inverted {
+.text-gamecowork-color-text-inverted {
   color: var(--semantic-color-text-inverse, rgba(17, 17, 17, 1));
 }
-.text-codely-color-text-link {
+.text-gamecowork-color-text-link {
   color: var(--semantic-color-text-link, rgba(31, 216, 164, 1));
 }
-.text-codely-color-text-primary {
+.text-gamecowork-color-text-primary {
   color: var(--semantic-color-text-primary, rgba(238, 238, 238, 1));
 }
-.text-codely-color-text-secondary {
+.text-gamecowork-color-text-secondary {
   color: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
-.text-codely-color-text-tertiary {
+.text-gamecowork-color-text-tertiary {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .text-cyan-100\/90 {
@@ -6779,8 +6779,8 @@
 .no-underline {
   text-decoration-line: none;
 }
-.decoration-codely-color-text-default {
-  text-decoration-color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+.decoration-gamecowork-color-text-default {
+  text-decoration-color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
 .decoration-solid {
   text-decoration-style: solid;
@@ -6877,8 +6877,8 @@
   --tw-shadow-colored: 0 0 8px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.shadow-\[0_1px_5px_color-mix\(in_srgb\,var\(--codely-color-shadow-default\)_25\%\,transparent\)\] {
-  --tw-shadow: 0 1px 5px color-mix(in srgb, var(--codely-color-shadow-default) 25%, transparent);
+.shadow-\[0_1px_5px_color-mix\(in_srgb\,var\(--gamecowork-color-shadow-default\)_25\%\,transparent\)\] {
+  --tw-shadow: 0 1px 5px color-mix(in srgb, var(--gamecowork-color-shadow-default) 25%, transparent);
   --tw-shadow-colored: 0 1px 5px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -6887,8 +6887,8 @@
   --tw-shadow-colored: 0 28px 90px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.shadow-\[0_4px_14px_color-mix\(in_srgb\,var\(--codely-color-accent-default\)_38\%\,transparent\)\] {
-  --tw-shadow: 0 4px 14px color-mix(in srgb, var(--codely-color-accent-default) 38%, transparent);
+.shadow-\[0_4px_14px_color-mix\(in_srgb\,var\(--gamecowork-color-accent-default\)_38\%\,transparent\)\] {
+  --tw-shadow: 0 4px 14px color-mix(in srgb, var(--gamecowork-color-accent-default) 38%, transparent);
   --tw-shadow-colored: 0 4px 14px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -6897,14 +6897,14 @@
   --tw-shadow-colored: 0px 4px 16px 0px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.shadow-\[inset_0_1px_2px_color-mix\(in_srgb\,var\(--codely-color-shadow-default\)_22\%\,transparent\)\] {
-  --tw-shadow: inset 0 1px 2px color-mix(in srgb, var(--codely-color-shadow-default) 22%, transparent);
+.shadow-\[inset_0_1px_2px_color-mix\(in_srgb\,var\(--gamecowork-color-shadow-default\)_22\%\,transparent\)\] {
+  --tw-shadow: inset 0 1px 2px color-mix(in srgb, var(--gamecowork-color-shadow-default) 22%, transparent);
   --tw-shadow-colored: inset 0 1px 2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.shadow-codely-color-main-input-shadow {
+.shadow-gamecowork-color-main-input-shadow {
   --tw-shadow: var(
-    --codely-color-main-input-shadow,
+    --gamecowork-color-main-input-shadow,
     0px 0px 1px 0px rgba(0, 0, 0, 0.8),
     0px 4px 12px 0px rgba(0, 0, 0, 0.16),
     0px 1px 4px 0px rgba(0, 0, 0, 0.05)
@@ -7228,16 +7228,16 @@
 .\[scrollbar-width\:none\] {
   scrollbar-width: none;
 }
-.\[text-shadow\:0_1px_2px_var\(--codely-color-accent-default\)\,0_2px_8px_var\(--codely-color-accent-default\)\] {
+.\[text-shadow\:0_1px_2px_var\(--gamecowork-color-accent-default\)\,0_2px_8px_var\(--gamecowork-color-accent-default\)\] {
   text-shadow:
-    0 1px 2px var(--codely-color-accent-default),
-    0 2px 8px var(--codely-color-accent-default);
+    0 1px 2px var(--gamecowork-color-accent-default),
+    0 2px 8px var(--gamecowork-color-accent-default);
 }
 .\[transform-style\:preserve-3d\] {
   transform-style: preserve-3d;
 }
-.\[transform\:rotateX\(var\(--codely-logo-rx\)\)_rotateY\(var\(--codely-logo-ry\)\)_scale\(var\(--codely-logo-scale\)\)\] {
-  transform: rotateX(var(--codely-logo-rx)) rotateY(var(--codely-logo-ry)) scale(var(--codely-logo-scale));
+.\[transform\:rotateX\(var\(--gamecowork-logo-rx\)\)_rotateY\(var\(--gamecowork-logo-ry\)\)_scale\(var\(--gamecowork-logo-scale\)\)\] {
+  transform: rotateX(var(--gamecowork-logo-rx)) rotateY(var(--gamecowork-logo-ry)) scale(var(--gamecowork-logo-scale));
 }
 @font-face {
   font-family: JetBrains Mono;
@@ -7247,8 +7247,8 @@
   font-display: swap;
 }
 :root {
-  --codely-text-base: 0.8125rem;
-  --codely-text-sm: 0.75rem;
+  --gamecowork-text-base: 0.8125rem;
+  --gamecowork-text-sm: 0.75rem;
   --chat-content-max-width: 42.5rem;
   --chat-content-min-width: auto;
   --chat-content-padding: 0.5rem;
@@ -7274,7 +7274,7 @@ body,
 }
 body {
   padding: 0;
-  color: var(--codely-color-text-tertiary);
+  color: var(--gamecowork-color-text-tertiary);
   margin: 0;
   height: 100%;
 }
@@ -7291,7 +7291,7 @@ pre code *,
 .syntax-hljs-pre,
 .syntax-hljs-pre code,
 .syntax-hljs-pre code * {
-  font-family: var(--codely-font-family-mono);
+  font-family: var(--gamecowork-font-family-mono);
   background-color: unset;
 }
 .syntax-hljs-pre * {
@@ -7309,7 +7309,7 @@ pre code *,
 .custom-syntax-highlighter,
 .custom-syntax-highlighter code,
 .custom-syntax-highlighter code * {
-  font-family: var(--codely-font-family-mono) !important;
+  font-family: var(--gamecowork-font-family-mono) !important;
 }
 *:focus {
   outline: none;
@@ -7376,11 +7376,11 @@ img {
 .compacted-history-item *:not(:is(.is-latest-summary, .is-latest-summary *)) {
   color: rgb(from var(--vscode-editor-foreground) r g b / 0.5) !important;
 }
-.not-login-codely-input-box .continue-input-box-inner {
+.not-login-gamecowork-input-box .continue-input-box-inner {
   cursor: not-allowed;
   position: relative;
 }
-.not-login-codely-input-box .continue-input-box-inner * {
+.not-login-gamecowork-input-box .continue-input-box-inner * {
   pointer-events: none;
 }
 .reasoning-content *:first-child {
@@ -7396,26 +7396,26 @@ img {
 .assistant-text,
 .assistant-text * {
   font-size: 0.75rem;
-  color: var(--codely-color-text-secondary);
+  color: var(--gamecowork-color-text-secondary);
 }
 .assistant-text .seq-thinking-icon,
 .assistant-text .seq-thinking-icon *,
 .assistant-text .task-list-icon,
 .assistant-text .task-list-icon * {
-  color: var(--codely-color-accent-default) !important;
+  color: var(--gamecowork-color-accent-default) !important;
 }
 .assistant-muted-text,
 .assistant-muted-text * {
   font-size: 0.75rem;
-  color: rgb(from var(--codely-color-text-tertiary) r g b / 0.45) !important;
+  color: rgb(from var(--gamecowork-color-text-tertiary) r g b / 0.45) !important;
 }
 .assistant-muted-text.link {
   cursor: pointer;
 }
 .assistant-muted-text.link:hover {
-  color: rgb(from var(--codely-color-text-tertiary) r g b / 0.85) !important;
+  color: rgb(from var(--gamecowork-color-text-tertiary) r g b / 0.85) !important;
 }
-.intellij-plugin-body button.disabled\:text-codely-color-text-disabled:disabled {
+.intellij-plugin-body button.disabled\:text-gamecowork-color-text-disabled:disabled {
   color: #b5b5b5;
   opacity: 0.8;
 }
@@ -7538,17 +7538,17 @@ html.desktop-app {
 .chat-content-wrapper a,
 .markdown-context-menu-link,
 body code.markdown-context-menu-link:not(.hljs) {
-  color: var(--codely-color-accent-default);
+  color: var(--gamecowork-color-accent-default);
 }
 .chat-content-wrapper a:hover,
 .markdown-context-menu-link:hover,
 body code.markdown-context-menu-link:not(.hljs):hover {
-  color: var(--codely-color-accent-hover);
+  color: var(--gamecowork-color-accent-hover);
 }
 .chat-content-wrapper a:active,
 .markdown-context-menu-link:active,
 body code.markdown-context-menu-link:not(.hljs):active {
-  color: var(--codely-color-accent-active);
+  color: var(--gamecowork-color-accent-active);
 }
 html.desktop-app .chat-content-wrapper {
   max-width: var(--chat-content-max-width);
@@ -7581,38 +7581,38 @@ html.desktop-app .skeleton-content {
   padding: 0 var(--chat-content-padding);
   box-sizing: border-box;
 }
-html[data-theme="dark"] .codely-logo,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .codely-logo {
+html[data-theme="dark"] .gamecowork-logo,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .gamecowork-logo {
   color: #fff;
 }
-html[data-theme="light"] .codely-logo,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-logo {
+html[data-theme="light"] .gamecowork-logo,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .gamecowork-logo {
   color: #000;
 }
-html[data-theme="dark"] .codely-3d-icon-dark,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .codely-3d-icon-dark {
+html[data-theme="dark"] .gamecowork-3d-icon-dark,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .gamecowork-3d-icon-dark {
   display: none;
 }
-html[data-theme="dark"] .codely-3d-icon-light,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .codely-3d-icon-light {
+html[data-theme="dark"] .gamecowork-3d-icon-light,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-dark"] .gamecowork-3d-icon-light {
   display: inline-block;
 }
-html[data-theme="light"] .codely-3d-icon-light,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d-icon-light {
+html[data-theme="light"] .gamecowork-3d-icon-light,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .gamecowork-3d-icon-light {
   display: none;
 }
-html[data-theme="light"] .codely-3d-icon-dark,
-html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d-icon-dark {
+html[data-theme="light"] .gamecowork-3d-icon-dark,
+html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .gamecowork-3d-icon-dark {
   display: inline-block;
 }
 #tooltip-portal-div .react-tooltip {
-  border: 1px solid var(--codely-color-border-subtle);
+  border: 1px solid var(--gamecowork-color-border-subtle);
 }
 #editor-input-main.tiptap p.is-editor-empty:first-child:before {
-  color: var(--codely-color-text-disabled);
+  color: var(--gamecowork-color-text-disabled);
 }
 .reorder-drop-target > * {
-  border-color: var(--codely-color-accent-default);
+  border-color: var(--gamecowork-color-accent-default);
 }
 .server-push-enter {
   animation: server-push-slide-in 0.3s ease-out;
@@ -7646,16 +7646,16 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .placeholder\:text-\[var\(--semantic-color-text-tertiary\)\]::placeholder {
   color: var(--semantic-color-text-tertiary);
 }
-.placeholder\:text-codely-color-text-disabled::-moz-placeholder {
+.placeholder\:text-gamecowork-color-text-disabled::-moz-placeholder {
   color: var(--semantic-color-text-disabled, rgba(96, 96, 96, 1));
 }
-.placeholder\:text-codely-color-text-disabled::placeholder {
+.placeholder\:text-gamecowork-color-text-disabled::placeholder {
   color: var(--semantic-color-text-disabled, rgba(96, 96, 96, 1));
 }
-.placeholder\:text-codely-color-text-tertiary::-moz-placeholder {
+.placeholder\:text-gamecowork-color-text-tertiary::-moz-placeholder {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
-.placeholder\:text-codely-color-text-tertiary::placeholder {
+.placeholder\:text-gamecowork-color-text-tertiary::placeholder {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .placeholder\:text-zinc-500::-moz-placeholder {
@@ -7711,9 +7711,9 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.before\:to-\[var\(--codely-color-file-preview-tab-dirty\)\]:before {
+.before\:to-\[var\(--gamecowork-color-file-preview-tab-dirty\)\]:before {
   content: var(--tw-content);
-  --tw-gradient-to: var(--codely-color-file-preview-tab-dirty) var(--tw-gradient-to-position);
+  --tw-gradient-to: var(--gamecowork-color-file-preview-tab-dirty) var(--tw-gradient-to-position);
 }
 .before\:opacity-0:before {
   content: var(--tw-content);
@@ -7750,7 +7750,7 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .focus-within\:pointer-events-auto:focus-within {
   pointer-events: auto;
 }
-.focus-within\:border-codely-color-accent-default:focus-within {
+.focus-within\:border-gamecowork-color-accent-default:focus-within {
   border-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
 .focus-within\:opacity-100:focus-within {
@@ -7765,17 +7765,17 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .hover\:gap-6:hover {
   gap: 1.5rem;
 }
-.hover\:border-codely-color-border-bold:hover {
-  border-color: var(--codely-color-border-bold, rgba(255, 255, 255, 0.3));
+.hover\:border-gamecowork-color-border-bold:hover {
+  border-color: var(--gamecowork-color-border-bold, rgba(255, 255, 255, 0.3));
 }
-.hover\:border-codely-color-border-strong:hover {
+.hover\:border-gamecowork-color-border-strong:hover {
   border-color: var(--semantic-color-border-strong, rgba(96, 96, 96, 1));
 }
-.hover\:border-codely-color-interactive-hover:hover {
+.hover\:border-gamecowork-color-interactive-hover:hover {
   border-color: var(--semantic-color-interactive-hover, rgba(255, 255, 255, 0.08));
 }
-.hover\:border-codely-color-surface-inverted-hover:hover {
-  border-color: var(--codely-color-surface-inverted-hover, rgba(238, 238, 238, 1));
+.hover\:border-gamecowork-color-surface-inverted-hover:hover {
+  border-color: var(--gamecowork-color-surface-inverted-hover, rgba(238, 238, 238, 1));
 }
 .hover\:border-zinc-600:hover {
   --tw-border-opacity: 1;
@@ -7785,8 +7785,8 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-bg-opacity: 1 !important;
   background-color: rgb(10 92 74 / var(--tw-bg-opacity)) !important;
 }
-.hover\:\!bg-codely-color-text-default:hover {
-  background-color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8)) !important;
+.hover\:\!bg-gamecowork-color-text-default:hover {
+  background-color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8)) !important;
 }
 .hover\:\!bg-transparent:hover {
   background-color: transparent !important;
@@ -7804,14 +7804,14 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .hover\:bg-\[rgba\(255\,255\,255\,0\.08\)\]:hover {
   background-color: #ffffff14;
 }
-.hover\:bg-\[var\(--codely-color-accent-hover\)\]:hover {
-  background-color: var(--codely-color-accent-hover);
+.hover\:bg-\[var\(--gamecowork-color-accent-hover\)\]:hover {
+  background-color: var(--gamecowork-color-accent-hover);
 }
-.hover\:bg-\[var\(--codely-color-interactive-hover\)\]:hover {
-  background-color: var(--codely-color-interactive-hover);
+.hover\:bg-\[var\(--gamecowork-color-interactive-hover\)\]:hover {
+  background-color: var(--gamecowork-color-interactive-hover);
 }
-.hover\:bg-\[var\(--codely-color-interactive-pressed\)\]:hover {
-  background-color: var(--codely-color-interactive-pressed);
+.hover\:bg-\[var\(--gamecowork-color-interactive-pressed\)\]:hover {
+  background-color: var(--gamecowork-color-interactive-pressed);
 }
 .hover\:bg-\[var\(--semantic-color-interactive-hover\)\]:hover {
   background-color: var(--semantic-color-interactive-hover);
@@ -7847,59 +7847,59 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
-.hover\:bg-codely-color-accent-hover:hover {
+.hover\:bg-gamecowork-color-accent-hover:hover {
   background-color: var(--semantic-color-accent-hover, rgba(39, 176, 139, 1));
 }
-.hover\:bg-codely-color-accent-muted:hover {
+.hover\:bg-gamecowork-color-accent-muted:hover {
   background-color: var(--semantic-color-accent-muted, rgba(15, 46, 34, 1));
 }
-.hover\:bg-codely-color-accent-subtle:hover {
+.hover\:bg-gamecowork-color-accent-subtle:hover {
   background-color: var(--semantic-color-accent-subtle, rgba(11, 59, 44, 1));
 }
-.hover\:bg-codely-color-interactive-focus-ring:hover {
+.hover\:bg-gamecowork-color-interactive-focus-ring:hover {
   background-color: var(--semantic-color-interactive-focus-ring, rgba(41, 163, 131, 1));
 }
-.hover\:bg-codely-color-interactive-hover:hover {
+.hover\:bg-gamecowork-color-interactive-hover:hover {
   background-color: var(--semantic-color-interactive-hover, rgba(255, 255, 255, 0.08));
 }
-.hover\:bg-codely-color-interactive-pressed:hover {
+.hover\:bg-gamecowork-color-interactive-pressed:hover {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
-.hover\:bg-codely-color-interactive-selected:hover {
+.hover\:bg-gamecowork-color-interactive-selected:hover {
   background-color: var(--semantic-color-interactive-selected, rgba(255, 255, 255, 0.1));
 }
-.hover\:bg-codely-color-interactive-selected-strong:hover {
+.hover\:bg-gamecowork-color-interactive-selected-strong:hover {
   background-color: var(--semantic-color-interactive-selected-strong, rgba(255, 255, 255, 0.16));
 }
-.hover\:bg-codely-color-item-surface-hover:hover {
-  background-color: var(--codely-color-item-surface-hover, rgba(255, 255, 255, 0.08));
+.hover\:bg-gamecowork-color-item-surface-hover:hover {
+  background-color: var(--gamecowork-color-item-surface-hover, rgba(255, 255, 255, 0.08));
 }
-.hover\:bg-codely-color-mixture-surfaceCardInteractiveHover:hover {
+.hover\:bg-gamecowork-color-mixture-surfaceCardInteractiveHover:hover {
   background-color: var(
-    --codely-color-mixture-surface-card-interactive-hover,
+    --gamecowork-color-mixture-surface-card-interactive-hover,
     color-mix(in srgb, var(--semantic-color-surface-card), var(--semantic-color-interactive-hover))
   );
 }
-.hover\:bg-codely-color-status-danger-muted:hover {
+.hover\:bg-gamecowork-color-status-danger-muted:hover {
   background-color: var(--semantic-color-status-danger-muted, rgba(59, 18, 25, 1));
 }
-.hover\:bg-codely-color-status-info-muted:hover {
+.hover\:bg-gamecowork-color-status-info-muted:hover {
   background-color: var(--semantic-color-status-info-muted, rgba(13, 40, 71, 1));
 }
-.hover\:bg-codely-color-surface-elevated:hover {
+.hover\:bg-gamecowork-color-surface-elevated:hover {
   background-color: var(--semantic-color-surface-elevated, rgba(42, 42, 42, 1));
 }
-.hover\:bg-codely-color-surface-input:hover {
+.hover\:bg-gamecowork-color-surface-input:hover {
   background-color: var(--semantic-color-surface-input, rgba(25, 25, 25, 1));
 }
-.hover\:bg-codely-color-surface-inverted:hover {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.hover\:bg-gamecowork-color-surface-inverted:hover {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
-.hover\:bg-codely-color-surface-inverted-hover:hover {
-  background-color: var(--codely-color-surface-inverted-hover, rgba(238, 238, 238, 1));
+.hover\:bg-gamecowork-color-surface-inverted-hover:hover {
+  background-color: var(--gamecowork-color-surface-inverted-hover, rgba(238, 238, 238, 1));
 }
-.hover\:bg-codely-color-surface-sunken:hover {
-  background-color: var(--codely-color-surface-sunken, rgba(22, 22, 22, 1));
+.hover\:bg-gamecowork-color-surface-sunken:hover {
+  background-color: var(--gamecowork-color-surface-sunken, rgba(22, 22, 22, 1));
 }
 .hover\:bg-gray-700:hover {
   --tw-bg-opacity: 1;
@@ -7997,8 +7997,8 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .hover\:bg-zinc-700\/50:hover {
   background-color: #3f3f4680;
 }
-.hover\:\!text-codely-color-text-accent:hover {
-  color: var(--codely-color-text-accent, rgba(255, 255, 255, 1)) !important;
+.hover\:\!text-gamecowork-color-text-accent:hover {
+  color: var(--gamecowork-color-text-accent, rgba(255, 255, 255, 1)) !important;
 }
 .hover\:text-\[rgba\(238\,238\,238\,1\)\]:hover {
   color: #eee;
@@ -8017,25 +8017,25 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity));
 }
-.hover\:text-codely-color-accent-active:hover {
+.hover\:text-gamecowork-color-accent-active:hover {
   color: var(--semantic-color-accent-pressed, rgba(42, 126, 104, 1));
 }
-.hover\:text-codely-color-accent-hover:hover {
+.hover\:text-gamecowork-color-accent-hover:hover {
   color: var(--semantic-color-accent-hover, rgba(39, 176, 139, 1));
 }
-.hover\:text-codely-color-status-success-default:hover {
+.hover\:text-gamecowork-color-status-success-default:hover {
   color: var(--semantic-color-status-success-default, rgba(48, 164, 108, 1));
 }
-.hover\:text-codely-color-text-accent:hover {
-  color: var(--codely-color-text-accent, rgba(255, 255, 255, 1));
+.hover\:text-gamecowork-color-text-accent:hover {
+  color: var(--gamecowork-color-text-accent, rgba(255, 255, 255, 1));
 }
-.hover\:text-codely-color-text-default:hover {
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+.hover\:text-gamecowork-color-text-default:hover {
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
-.hover\:text-codely-color-text-primary:hover {
+.hover\:text-gamecowork-color-text-primary:hover {
   color: var(--semantic-color-text-primary, rgba(238, 238, 238, 1));
 }
-.hover\:text-codely-color-text-secondary:hover {
+.hover\:text-gamecowork-color-text-secondary:hover {
   color: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
 .hover\:text-list-active-foreground:hover {
@@ -8072,8 +8072,8 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .hover\:opacity-90:hover {
   opacity: 0.9;
 }
-.hover\:shadow-\[0_4px_20px_color-mix\(in_srgb\,var\(--codely-color-accent-default\)_50\%\,transparent\)\]:hover {
-  --tw-shadow: 0 4px 20px color-mix(in srgb, var(--codely-color-accent-default) 50%, transparent);
+.hover\:shadow-\[0_4px_20px_color-mix\(in_srgb\,var\(--gamecowork-color-accent-default\)_50\%\,transparent\)\]:hover {
+  --tw-shadow: 0 4px 20px color-mix(in srgb, var(--gamecowork-color-accent-default) 50%, transparent);
   --tw-shadow-colored: 0 4px 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -8100,22 +8100,22 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .focus\:border-blue-500\/50:focus {
   border-color: #3b82f680;
 }
-.focus\:border-codely-color-accent-default:focus {
+.focus\:border-gamecowork-color-accent-default:focus {
   border-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.focus\:border-codely-color-border-default:focus {
+.focus\:border-gamecowork-color-border-default:focus {
   border-color: var(--semantic-color-border-default, rgba(72, 72, 72, 1));
 }
-.focus\:border-codely-color-border-strong:focus {
+.focus\:border-gamecowork-color-border-strong:focus {
   border-color: var(--semantic-color-border-strong, rgba(96, 96, 96, 1));
 }
-.focus\:border-codely-color-border-subtle:focus {
+.focus\:border-gamecowork-color-border-subtle:focus {
   border-color: var(--semantic-color-border-subtle, rgba(58, 58, 58, 1));
 }
 .focus\:border-transparent:focus {
   border-color: transparent;
 }
-.focus\:bg-codely-color-surface-card:focus {
+.focus\:bg-gamecowork-color-surface-card:focus {
   background-color: var(--semantic-color-surface-card, rgba(34, 34, 34, 1));
 }
 .focus\:outline-none:focus {
@@ -8130,7 +8130,7 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .focus-visible\:pointer-events-auto:focus-visible {
   pointer-events: auto;
 }
-.focus-visible\:bg-codely-color-interactive-pressed:focus-visible {
+.focus-visible\:bg-gamecowork-color-interactive-pressed:focus-visible {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
 .focus-visible\:opacity-100:focus-visible {
@@ -8160,32 +8160,32 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-bg-opacity: 1;
   background-color: rgb(1 134 102 / var(--tw-bg-opacity));
 }
-.active\:bg-\[var\(--codely-color-interactive-pressed\)\]:active {
-  background-color: var(--codely-color-interactive-pressed);
+.active\:bg-\[var\(--gamecowork-color-interactive-pressed\)\]:active {
+  background-color: var(--gamecowork-color-interactive-pressed);
 }
 .active\:bg-\[var\(--semantic-color-interactive-pressed\)\]:active {
   background-color: var(--semantic-color-interactive-pressed);
 }
-.active\:bg-codely-color-accent-active:active {
+.active\:bg-gamecowork-color-accent-active:active {
   background-color: var(--semantic-color-accent-pressed, rgba(42, 126, 104, 1));
 }
-.active\:bg-codely-color-accent-muted:active {
+.active\:bg-gamecowork-color-accent-muted:active {
   background-color: var(--semantic-color-accent-muted, rgba(15, 46, 34, 1));
 }
-.active\:bg-codely-color-interactive-pressed:active {
+.active\:bg-gamecowork-color-interactive-pressed:active {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
-.active\:bg-codely-color-interactive-selected:active {
+.active\:bg-gamecowork-color-interactive-selected:active {
   background-color: var(--semantic-color-interactive-selected, rgba(255, 255, 255, 0.1));
 }
-.active\:bg-codely-color-surface-elevated:active {
+.active\:bg-gamecowork-color-surface-elevated:active {
   background-color: var(--semantic-color-surface-elevated, rgba(42, 42, 42, 1));
 }
-.active\:bg-codely-color-surface-inverted:active {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.active\:bg-gamecowork-color-surface-inverted:active {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
-.active\:bg-codely-color-surface-inverted-hover:active {
-  background-color: var(--codely-color-surface-inverted-hover, rgba(238, 238, 238, 1));
+.active\:bg-gamecowork-color-surface-inverted-hover:active {
+  background-color: var(--gamecowork-color-surface-inverted-hover, rgba(238, 238, 238, 1));
 }
 .active\:text-\[\#008563\]:active {
   --tw-text-opacity: 1;
@@ -8195,13 +8195,13 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
-.active\:text-codely-color-text-tertiary:active {
+.active\:text-gamecowork-color-text-tertiary:active {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .hover\:enabled\:cursor-pointer:enabled:hover {
   cursor: pointer;
 }
-.hover\:enabled\:bg-codely-color-surface-input:enabled:hover {
+.hover\:enabled\:bg-gamecowork-color-surface-input:enabled:hover {
   background-color: var(--semantic-color-surface-input, rgba(25, 25, 25, 1));
 }
 .hover\:enabled\:brightness-125:enabled:hover {
@@ -8221,25 +8221,25 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .disabled\:cursor-wait:disabled {
   cursor: wait;
 }
-.disabled\:border-codely-color-surface-inverted:disabled {
-  border-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.disabled\:border-gamecowork-color-surface-inverted:disabled {
+  border-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
 .disabled\:border-semantic-color-border-subtle:disabled {
   border-color: var(--semantic-color-border-subtle);
 }
-.disabled\:bg-codely-color-accent-muted:disabled {
+.disabled\:bg-gamecowork-color-accent-muted:disabled {
   background-color: var(--semantic-color-accent-muted, rgba(15, 46, 34, 1));
 }
-.disabled\:bg-codely-color-surface-inverted:disabled {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.disabled\:bg-gamecowork-color-surface-inverted:disabled {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
 .disabled\:bg-semantic-color-icon-disabled:disabled {
   background-color: var(--semantic-color-icon-disabled);
 }
-.disabled\:text-codely-color-text-disabled:disabled {
+.disabled\:text-gamecowork-color-text-disabled:disabled {
   color: var(--semantic-color-text-disabled, rgba(96, 96, 96, 1));
 }
-.disabled\:text-codely-color-text-tertiary:disabled {
+.disabled\:text-gamecowork-color-text-tertiary:disabled {
   color: var(--semantic-color-text-tertiary, rgba(123, 123, 123, 1));
 }
 .disabled\:text-semantic-color-text-secondary:disabled {
@@ -8268,32 +8268,32 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate)
     var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
-.disabled\:hover\:border-codely-color-border-subtle:hover:disabled {
+.disabled\:hover\:border-gamecowork-color-border-subtle:hover:disabled {
   border-color: var(--semantic-color-border-subtle, rgba(58, 58, 58, 1));
 }
-.disabled\:hover\:border-codely-color-surface-inverted:hover:disabled {
-  border-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.disabled\:hover\:border-gamecowork-color-surface-inverted:hover:disabled {
+  border-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
-.disabled\:hover\:bg-codely-color-accent-default:hover:disabled {
+.disabled\:hover\:bg-gamecowork-color-accent-default:hover:disabled {
   background-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.disabled\:hover\:bg-codely-color-surface-inverted:hover:disabled {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.disabled\:hover\:bg-gamecowork-color-surface-inverted:hover:disabled {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
 .disabled\:hover\:bg-transparent:hover:disabled {
   background-color: transparent;
 }
-.disabled\:hover\:text-codely-color-text-secondary:hover:disabled {
+.disabled\:hover\:text-gamecowork-color-text-secondary:hover:disabled {
   color: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
 }
 .disabled\:hover\:opacity-60:hover:disabled {
   opacity: 0.6;
 }
-.disabled\:active\:bg-codely-color-accent-default:active:disabled {
+.disabled\:active\:bg-gamecowork-color-accent-default:active:disabled {
   background-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.disabled\:active\:bg-codely-color-surface-inverted:active:disabled {
-  background-color: var(--codely-color-surface-inverted, rgba(245, 245, 245, 1));
+.disabled\:active\:bg-gamecowork-color-surface-inverted:active:disabled {
+  background-color: var(--gamecowork-color-surface-inverted, rgba(245, 245, 245, 1));
 }
 .disabled\:active\:bg-transparent:active:disabled {
   background-color: transparent;
@@ -8331,7 +8331,7 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .group:hover .group-hover\:hidden {
   display: none;
 }
-.group:hover .group-hover\:bg-codely-color-interactive-hover {
+.group:hover .group-hover\:bg-gamecowork-color-interactive-hover {
   background-color: var(--semantic-color-interactive-hover, rgba(255, 255, 255, 0.08));
 }
 .group:hover .group-hover\:pr-12 {
@@ -8341,8 +8341,8 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   --tw-text-opacity: 1;
   color: rgb(53 201 169 / var(--tw-text-opacity));
 }
-.group:hover .group-hover\:text-\[var\(--codely-primary\)\] {
-  color: var(--codely-primary);
+.group:hover .group-hover\:text-\[var\(--gamecowork-primary\)\] {
+  color: var(--gamecowork-primary);
 }
 .group:hover .group-hover\:text-\[var\(--semantic-color-text-primary\)\] {
   color: var(--semantic-color-text-primary);
@@ -8353,10 +8353,10 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .group:hover .group-hover\:text-\[var\(--semantic-color-text-tertiary\)\] {
   color: var(--semantic-color-text-tertiary);
 }
-.group:hover .group-hover\:text-codely-color-text-default {
-  color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+.group:hover .group-hover\:text-gamecowork-color-text-default {
+  color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
 }
-.group:hover .group-hover\:text-codely-color-text-primary {
+.group:hover .group-hover\:text-gamecowork-color-text-primary {
   color: var(--semantic-color-text-primary, rgba(238, 238, 238, 1));
 }
 .group:hover .group-hover\:text-foreground {
@@ -8388,10 +8388,10 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .peer:checked ~ .peer-checked\:inline-flex {
   display: inline-flex;
 }
-.has-\[\:checked\]\:border-codely-color-accent-default:has(:checked) {
+.has-\[\:checked\]\:border-gamecowork-color-accent-default:has(:checked) {
   border-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
-.has-\[\:checked\]\:bg-codely-color-accent-default:has(:checked) {
+.has-\[\:checked\]\:bg-gamecowork-color-accent-default:has(:checked) {
   background-color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
 .group:has(.project-tree-row-actions:focus-within) .group-has-\[\.project-tree-row-actions\:focus-within\]\:pr-12 {
@@ -8403,20 +8403,20 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x))
     skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-.data-\[focus\]\:bg-codely-color-interactive-hover[data-focus],
-.data-\[selected\=true\]\:bg-codely-color-interactive-hover[data-selected="true"] {
+.data-\[focus\]\:bg-gamecowork-color-interactive-hover[data-focus],
+.data-\[selected\=true\]\:bg-gamecowork-color-interactive-hover[data-selected="true"] {
   background-color: var(--semantic-color-interactive-hover, rgba(255, 255, 255, 0.08));
 }
-.data-\[selected\=true\]\:bg-codely-color-interactive-pressed[data-selected="true"] {
+.data-\[selected\=true\]\:bg-gamecowork-color-interactive-pressed[data-selected="true"] {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
-.data-\[selected\=true\]\:bg-codely-color-interactive-selected[data-selected="true"] {
+.data-\[selected\=true\]\:bg-gamecowork-color-interactive-selected[data-selected="true"] {
   background-color: var(--semantic-color-interactive-selected, rgba(255, 255, 255, 0.1));
 }
 .data-\[closed\]\:opacity-0[data-closed] {
   opacity: 0;
 }
-.data-\[selected\=true\]\:hover\:bg-codely-color-interactive-selected-strong:hover[data-selected="true"] {
+.data-\[selected\=true\]\:hover\:bg-gamecowork-color-interactive-selected-strong:hover[data-selected="true"] {
   background-color: var(--semantic-color-interactive-selected-strong, rgba(255, 255, 255, 0.16));
 }
 .group[data-separator="active"] .group-data-\[separator\=active\]\:h-\[3px\],
@@ -8444,10 +8444,10 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
   .motion-reduce\:text-\[var\(--semantic-color-text-tertiary\)\] {
     color: var(--semantic-color-text-tertiary);
   }
-  .motion-reduce\:text-codely-color-text-default {
-    color: var(--codely-color-text-default, rgba(255, 255, 255, 0.8));
+  .motion-reduce\:text-gamecowork-color-text-default {
+    color: var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8));
   }
-  .motion-reduce\:text-codely-color-text-secondary {
+  .motion-reduce\:text-gamecowork-color-text-secondary {
     color: var(--semantic-color-text-secondary, rgba(180, 180, 180, 1));
   }
 }
@@ -8716,7 +8716,7 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
 .\[\&\:\:-webkit-scrollbar\]\:hidden::-webkit-scrollbar {
   display: none;
 }
-.\[\&\:has\(\[data-download-badge\]\)\]\:text-codely-color-accent-default:has([data-download-badge]) {
+.\[\&\:has\(\[data-download-badge\]\)\]\:text-gamecowork-color-accent-default:has([data-download-badge]) {
   color: var(--semantic-color-accent-default, rgba(41, 163, 131, 1));
 }
 .\[\&\]\:\!max-h-\[30vh\] {
@@ -8809,8 +8809,8 @@ html[data-theme="vscode"] body[data-vscode-theme-kind="vscode-light"] .codely-3d
     opacity: 1;
   }
 }
-[data-headlessui-state~="open"] .\[\[data-headlessui-state\~\=open\]_\&\]\:bg-codely-color-interactive-pressed,
-[data-open] .\[\[data-open\]_\&\]\:bg-codely-color-interactive-pressed {
+[data-headlessui-state~="open"] .\[\[data-headlessui-state\~\=open\]_\&\]\:bg-gamecowork-color-interactive-pressed,
+[data-open] .\[\[data-open\]_\&\]\:bg-gamecowork-color-interactive-pressed {
   background-color: var(--semantic-color-interactive-pressed, rgba(255, 255, 255, 0.12));
 }
 body[data-vscode-theme-kind="vscode-light"]

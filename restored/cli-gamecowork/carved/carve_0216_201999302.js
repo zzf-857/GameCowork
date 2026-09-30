@@ -1,6 +1,6 @@
-# Codely built-in loop-detection evidence policy (DEFAULT tier).
+# GameCowork built-in loop-detection evidence policy (DEFAULT tier).
 # Override by placing files in:
-#   ~/.codely-cli/loop-detection-policies/*.toml
+#   ~/.gamecowork-cli/loop-detection-policies/*.toml
 #   (system) .../loop-detection-policies/*.toml
 #
 # judge_system_prompt configures only the policy body. The code always wraps it
@@ -78,7 +78,7 @@ content_probe_min_period_chars = 48
 # replaces the whole list (`[]` clears). Main and subagent each evaluate their
 # own active model independently.
 # Empty by default: no model is exempt out of the box. Opt in per model, e.g.
-#   loop_detection_exempt_model = ["codely-core*", "gpt-5*", "claude-*"]
+#   loop_detection_exempt_model = ["gamecowork-core*", "gpt-5*", "claude-*"]
 loop_detection_exempt_model = []
 
 judge_system_prompt = """

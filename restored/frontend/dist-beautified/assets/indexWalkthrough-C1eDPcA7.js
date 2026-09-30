@@ -76,7 +76,7 @@ function V(t) {
     children: [
       e.jsxs("span", {
         className: b("relative inline-flex size-4 shrink-0 items-center justify-center rounded", {
-          "border border-solid border-codely-primary-light size-3.5": !r.checked,
+          "border border-solid border-gamecowork-primary-light size-3.5": !r.checked,
         }),
         children: [
           e.jsx("input", {
@@ -86,7 +86,7 @@ function V(t) {
           }),
           e.jsx("span", {
             className: "pointer-events-none hidden size-full items-center justify-center peer-checked:inline-flex",
-            children: e.jsx(N, { className: "size-4 text-codely-color-accent-default" }),
+            children: e.jsx(N, { className: "size-4 text-gamecowork-color-accent-default" }),
           }),
         ],
       }),
@@ -100,7 +100,7 @@ function V(t) {
 const W = I(R)`
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--codely-color-text-secondary);
+  color: var(--gamecowork-color-text-secondary);
 
   * {
     margin: 0;
@@ -117,9 +117,9 @@ const W = I(R)`
   code {
     font-size: 0.85em;
     font-weight: 500;
-    color: var(--codely-color-accent-default);
-    background-color: var(--codely-color-surface-card);
-    border: 1px solid var(--codely-color-border-subtle);
+    color: var(--gamecowork-color-accent-default);
+    background-color: var(--gamecowork-color-surface-card);
+    border: 1px solid var(--gamecowork-color-border-subtle);
     border-radius: 4px;
     padding: 2px 4px;
   }
@@ -136,12 +136,12 @@ function j(t) {
           e.jsx("img", { className: "light-display max-w-[32rem] w-full", src: c }),
         ],
       }),
-      e.jsx("h3", { className: "m-0 mb-4 text-xl text-codely-color-text-primary font-semibold", children: r }),
+      e.jsx("h3", { className: "m-0 mb-4 text-xl text-gamecowork-color-text-primary font-semibold", children: r }),
       e.jsx(W, { children: i }),
       a &&
         e.jsx("div", {
           className:
-            "mt-10 bg-codely-color-surface-card border border-solid border-codely-color-border-subtle rounded-lg p-4",
+            "mt-10 bg-gamecowork-color-surface-card border border-solid border-gamecowork-color-border-subtle rounded-lg p-4",
           children: a,
         }),
     ],
@@ -156,13 +156,13 @@ function G(t) {
     children: [
       e.jsxs("h3", {
         className: b(
-          "flex items-center justify-between gap-2.5 text-base font-medium text-codely-color-text-tertiary m-0 hover:text-codely-color-text-tertiary-hover cursor-pointer",
-          { "text-codely-color-text-primary font-semibold text-xl mb-2.5": i },
+          "flex items-center justify-between gap-2.5 text-base font-medium text-gamecowork-color-text-tertiary m-0 hover:text-gamecowork-color-text-tertiary-hover cursor-pointer",
+          { "text-gamecowork-color-text-primary font-semibold text-xl mb-2.5": i },
         ),
         children: [e.jsx("span", { children: s }), a && e.jsx(N, { className: "size-6" })],
       }),
       e.jsx("p", {
-        className: b("m-0 text-sm text-codely-color-text-secondary leading-5 hidden", { block: i }),
+        className: b("m-0 text-sm text-gamecowork-color-text-secondary leading-5 hidden", { block: i }),
         children: c,
       }),
     ],
@@ -200,10 +200,10 @@ function J(t) {
       ref: d,
       className: "relative overflow-hidden pl-7 mb-12",
       children: [
-        e.jsx("div", { className: "absolute left-2 top-0 bottom-0 w-0.5 bg-codely-color-surface-elevated" }),
+        e.jsx("div", { className: "absolute left-2 top-0 bottom-0 w-0.5 bg-gamecowork-color-surface-elevated" }),
         e.jsx("div", {
           className:
-            "absolute left-[0.4375rem] rounded-full w-1 bg-codely-color-accent-default transition-all duration-200 ease-out",
+            "absolute left-[0.4375rem] rounded-full w-1 bg-gamecowork-color-accent-default transition-all duration-200 ease-out",
           style: { top: a.top, height: a.height, filter: "drop-shadow(0 0 4px rgba(53, 201, 169, 0.5))" },
         }),
         s.map((p, n) =>
@@ -230,15 +230,15 @@ function K() {
   return e.jsxs("div", {
     children: [
       e.jsx("h3", {
-        className: "text-base font-medium text-codely-color-text-primary m-0 mb-2",
+        className: "text-base font-medium text-gamecowork-color-text-primary m-0 mb-2",
         children: t("workflowNotification.title"),
       }),
       e.jsx("p", {
-        className: "text-sm leading-6 text-codely-color-text-secondary m-0",
+        className: "text-sm leading-6 text-gamecowork-color-text-secondary m-0",
         children: t("workflowNotification.description"),
       }),
       e.jsx("p", {
-        className: "text-sm leading-6 text-codely-color-accent-default m-0",
+        className: "text-sm leading-6 text-gamecowork-color-accent-default m-0",
         children: t("workflowNotification.menuPath"),
       }),
     ],
@@ -352,11 +352,11 @@ function U() {
           children: [
             e.jsx("div", {
               className:
-                "w-full xl:[width:50%] 2xl:[width:max(33.333%,calc(50%_-_13.333rem))] shrink-0 bg-codely-color-surface-sidebar",
+                "w-full xl:[width:50%] 2xl:[width:max(33.333%,calc(50%_-_13.333rem))] shrink-0 bg-gamecowork-color-surface-sidebar",
             }),
             e.jsx("div", {
               className:
-                "flex-1 hidden lg:block from-codely-color-accent-muted to-codely-color-surface-primary bg-gradient-to-b border-0 border-l border-solid border-codely-color-border-subtle",
+                "flex-1 hidden lg:block from-gamecowork-color-accent-muted to-gamecowork-color-surface-primary bg-gradient-to-b border-0 border-l border-solid border-gamecowork-color-border-subtle",
             }),
           ],
         }),
@@ -373,18 +373,18 @@ function U() {
                     className: "flex flex-col justify-between",
                     children: [
                       e.jsxs("h1", {
-                        className: "text-4xl text-codely-color-text-primary font-bold mt-0 mb-4",
+                        className: "text-4xl text-gamecowork-color-text-primary font-bold mt-0 mb-4",
                         children: [
                           t("walkthrough.getStarted"),
                           e.jsx("br", {}),
                           e.jsx("span", {
-                            className: "text-codely-color-accent-default",
+                            className: "text-gamecowork-color-accent-default",
                             children: t("walkthrough.withTuanjieAI"),
                           }),
                         ],
                       }),
                       e.jsx("p", {
-                        className: "text-codely-color-text-secondary mt-0 mb-12 text-sm leading-6 font-normal",
+                        className: "text-gamecowork-color-text-secondary mt-0 mb-12 text-sm leading-6 font-normal",
                         children: t("walkthrough.description"),
                       }),
                       e.jsx(J, { items: h, checkedSteps: u, currentStep: i, onChange: p }),

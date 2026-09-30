@@ -2,7 +2,7 @@
   "//": "从 cowork.exe 二进制内嵌 ACL 字符串重建的默认能力集（见 COMMAND_SURFACE.md）",
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Codely Desktop 主窗口默认能力",
+  "description": "GameCowork Desktop 主窗口默认能力",
   "windows": ["main", "*"],
   "permissions": [
     "core:default",

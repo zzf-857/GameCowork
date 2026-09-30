@@ -6487,7 +6487,7 @@ function Bt(t) {
   return { lowerBound: t, upperBound: `${t}\uFFFF` };
 }
 import pe from "node:path";
-var Ql = pe.join(".codely-cli", "UnityInsight"),
+var Ql = pe.join(".gamecowork-cli", "UnityInsight"),
   Hl = "index.db",
   Yl = "index.db.tmp",
   zl = "index.current",

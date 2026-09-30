@@ -535,14 +535,14 @@ function St({ items: s, activeId: o, onSelect: l, className: r = "" }) {
               className: t(
                 "relative py-3 px-6 text-sm leading-[22px] border-0 bg-transparent cursor-pointer transition-colors",
                 o === c.id
-                  ? "text-codely-color-text-primary"
-                  : "text-codely-color-text-secondary hover:text-codely-color-text-primary",
+                  ? "text-gamecowork-color-text-primary"
+                  : "text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary",
               ),
               children: [
                 c.label,
                 o === c.id &&
                   e.jsx("div", {
-                    className: t("absolute left-0 right-0 bottom-[-2px] h-[2px] bg-codely-color-accent-default"),
+                    className: t("absolute left-0 right-0 bottom-[-2px] h-[2px] bg-gamecowork-color-accent-default"),
                   }),
               ],
             },
@@ -550,7 +550,7 @@ function St({ items: s, activeId: o, onSelect: l, className: r = "" }) {
           ),
         ),
       }),
-      e.jsx("div", { className: t("h-px bg-codely-color-border-default") }),
+      e.jsx("div", { className: t("h-px bg-gamecowork-color-border-default") }),
     ],
   });
 }
@@ -652,7 +652,7 @@ function Bt({ onClose: s, initialRelease: o, installedModuleIds: l, archiveInsta
               archiveInstallParams: r,
             })),
     e.jsxs("div", {
-      className: t("bg-codely-color-surface-card h-[90vh] flex flex-col"),
+      className: t("bg-gamecowork-color-surface-card h-[90vh] flex flex-col"),
       children: [
         e.jsxs("div", {
           className: t("pt-4 pb-2 px-5 flex flex-row justify-between"),
@@ -661,7 +661,7 @@ function Bt({ onClose: s, initialRelease: o, installedModuleIds: l, archiveInsta
             e.jsx(ne, {
               size: "sm",
               onClick: s,
-              children: e.jsx(ze, { className: "size-4 text-codely-color-text-tertiary" }),
+              children: e.jsx(ze, { className: "size-4 text-gamecowork-color-text-tertiary" }),
             }),
           ],
         }),
@@ -746,23 +746,23 @@ function Us({ archiveInstallParams: s, onSelectRelease: o, onClose: l }) {
   let p;
   x
     ? (p = e.jsx("div", {
-        className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+        className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
         children: c("tjhub.common.loading"),
       }))
     : b
       ? (p = e.jsx("div", {
-          className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+          className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
           children: b,
         }))
       : a.length === 0
         ? (p = e.jsx("div", {
-            className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+            className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
             children: c("tjhub.install.noReleasesAvailable"),
           }))
         : a.length > 0 && a.every((g) => g.isAlreadyInstalled)
           ? (p = e.jsx("div", {
               className: t(
-                "flex items-center justify-center h-full text-sm text-codely-color-text-secondary text-center",
+                "flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary text-center",
               ),
               children: c("tjhub.install.alreadyInstalled"),
             }))
@@ -778,7 +778,7 @@ function Us({ archiveInstallParams: s, onSelectRelease: o, onClose: l }) {
     children: [
       !w &&
         e.jsx("div", {
-          className: t("mb-2 text-sm leading-5 text-codely-color-text-secondary mt-3"),
+          className: t("mb-2 text-sm leading-5 text-gamecowork-color-text-secondary mt-3"),
           children: s.version,
         }),
       e.jsx("div", {
@@ -793,7 +793,7 @@ function Us({ archiveInstallParams: s, onSelectRelease: o, onClose: l }) {
             onClick: l,
             variant: "ghost",
             size: "sm",
-            className: t("px-4 py-2 border border-solid border-codely-color-border-subtle rounded-lg text-sm"),
+            className: t("px-4 py-2 border border-solid border-gamecowork-color-border-subtle rounded-lg text-sm"),
             children: c(w ? "tjhub.common.close" : "tjhub.common.cancel"),
           }),
         ],
@@ -809,7 +809,7 @@ function Ws({ release: s, onSelect: o, ideMessenger: l }) {
     s.isAlreadyInstalled && ((c = r("tjhub.install.buttonInstalled")), (a = !0)),
     e.jsxs("div", {
       className: t(
-        "flex flex-row justify-between items-center p-4 rounded-lg bg-codely-color-surface-sidebar h-6 mb-2 mr-5 last:mb-0",
+        "flex flex-row justify-between items-center p-4 rounded-lg bg-gamecowork-color-surface-sidebar h-6 mb-2 mr-5 last:mb-0",
       ),
       children: [
         e.jsxs("div", {
@@ -818,20 +818,20 @@ function Ws({ release: s, onSelect: o, ideMessenger: l }) {
             e.jsx(De, { className: t("w-4") }),
             e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: s.semver }),
             e.jsxs("div", {
-              className: t("text-sm mr-1 text-codely-color-text-secondary"),
+              className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
               children: ["(", s.version, ")"],
             }),
             je() &&
               e.jsx("div", {
                 className: t(
-                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
                 ),
                 children: r(`tjhub.common.arch.${s.architecture}`, { defaultValue: s.architecture }),
               }),
             s.isRecommended &&
               e.jsx("div", {
                 className: t(
-                  "text-xs leading-[17px] ml-1 px-1 border border-solid bg-codely-color-accent-subtle border-codely-color-border-subtle rounded text-codely-color-accent-text",
+                  "text-xs leading-[17px] ml-1 px-1 border border-solid bg-gamecowork-color-accent-subtle border-gamecowork-color-border-subtle rounded text-gamecowork-color-accent-text",
                 ),
                 children: r("tjhub.common.recommended"),
               }),
@@ -900,7 +900,7 @@ function Zs({ onSelectRelease: s, onClose: o }) {
   return (
     p === "pre-releases"
       ? (S = e.jsx("div", {
-          className: t("flex items-center justify-center h-full w-full text-sm text-codely-color-text-secondary"),
+          className: t("flex items-center justify-center h-full w-full text-sm text-gamecowork-color-text-secondary"),
           children: r("tjhub.install.noPrereleases"),
         }))
       : p === "archive"
@@ -908,23 +908,23 @@ function Zs({ onSelectRelease: s, onClose: o }) {
             className: t("flex items-center justify-center h-full w-full"),
             children: e.jsx("div", {
               onClick: () => l.post("openUrl", "https://unity.cn/tuanjie/releases"),
-              className: t("cursor-pointer text-sm text-codely-color-accent-text"),
+              className: t("cursor-pointer text-sm text-gamecowork-color-accent-text"),
               children: r("tjhub.install.downloadPreviousVersions"),
             }),
           }))
         : d
           ? (S = e.jsx("div", {
-              className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+              className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
               children: r("tjhub.common.loading"),
             }))
           : i
             ? (S = e.jsx("div", {
-                className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+                className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
                 children: i,
               }))
             : u.length === 0
               ? (S = e.jsx("div", {
-                  className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+                  className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
                   children: r("tjhub.install.noReleasesAvailable"),
                 }))
               : (S = e.jsx("div", {
@@ -936,7 +936,7 @@ function Zs({ onSelectRelease: s, onClose: o }) {
                         className: "mb-2",
                         children: [
                           e.jsx("div", {
-                            className: "mb-2 text-sm leading-5 text-codely-color-text-secondary mt-3",
+                            className: "mb-2 text-sm leading-5 text-gamecowork-color-text-secondary mt-3",
                             children: k,
                           }),
                           L.map((I) =>
@@ -968,7 +968,7 @@ function Zs({ onSelectRelease: s, onClose: o }) {
               onClick: o,
               variant: "ghost",
               size: "sm",
-              className: t("px-4 py-2 border border-solid border-codely-color-border-subtle rounded-lg text-sm"),
+              className: t("px-4 py-2 border border-solid border-gamecowork-color-border-subtle rounded-lg text-sm"),
               children: r("tjhub.common.cancel"),
             }),
           ],
@@ -987,7 +987,7 @@ function Gs({ release: s, onSelectRelease: o, ideMessenger: l, installingVersion
       : s.isAlreadyInstalled && ((a = c("tjhub.install.buttonInstalled")), (u = !0)),
     e.jsxs("div", {
       className: t(
-        "flex flex-row justify-between items-center p-4 rounded-lg bg-codely-color-surface-sidebar h-6 mb-2 mr-5 last:mb-0",
+        "flex flex-row justify-between items-center p-4 rounded-lg bg-gamecowork-color-surface-sidebar h-6 mb-2 mr-5 last:mb-0",
       ),
       children: [
         e.jsxs("div", {
@@ -996,27 +996,27 @@ function Gs({ release: s, onSelectRelease: o, ideMessenger: l, installingVersion
             e.jsx(De, { className: t("w-4") }),
             e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: s.semver }),
             e.jsxs("div", {
-              className: t("text-sm mr-1 text-codely-color-text-secondary"),
+              className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
               children: ["(", s.version, ")"],
             }),
             s.isHmiRecommended &&
               e.jsx("div", {
                 className: t(
-                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
                 ),
                 children: c("tjhub.common.ltsForHmi"),
               }),
             je() &&
               e.jsx("div", {
                 className: t(
-                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                  "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
                 ),
                 children: c(`tjhub.common.arch.${s.architecture}`, { defaultValue: s.architecture }),
               }),
             s.isRecommended &&
               e.jsx("div", {
                 className: t(
-                  "text-xs leading-[17px] ml-1 px-1 border border-solid bg-codely-color-accent-subtle border-codely-color-border-subtle rounded text-codely-color-accent-text",
+                  "text-xs leading-[17px] ml-1 px-1 border border-solid bg-gamecowork-color-accent-subtle border-gamecowork-color-border-subtle rounded text-gamecowork-color-accent-text",
                 ),
                 children: c("tjhub.common.recommended"),
               }),
@@ -1028,13 +1028,13 @@ function Gs({ release: s, onSelectRelease: o, ideMessenger: l, installingVersion
             e.jsxs("div", {
               onClick: () => l.post("openUrl", `https://unity.cn/editor${s.semver.replace(/\./g, "-")}/release-note`),
               className: t(
-                "text-sm text-codely-color-text-secondary hover:text-codely-color-text-primary cursor-pointer flex flex-row items-center gap-1 group",
+                "text-sm text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary cursor-pointer flex flex-row items-center gap-1 group",
               ),
               children: [
                 c("tjhub.common.releaseNotes"),
                 " ",
                 e.jsx(Ye, {
-                  className: t("text-codely-color-text-secondary group-hover:text-codely-color-text-primary"),
+                  className: t("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary"),
                 }),
               ],
             }),
@@ -1052,7 +1052,7 @@ function Gs({ release: s, onSelectRelease: o, ideMessenger: l, installingVersion
 }
 function Ht({ mod: s, isChild: o, checked: l, installed: r, onToggle: c }) {
   const [a, u] = n.useState(!1),
-    x = a ? "bg-codely-color-surface-card" : "";
+    x = a ? "bg-gamecowork-color-surface-card" : "";
   return e.jsxs(e.Fragment, {
     children: [
       e.jsxs("div", {
@@ -1061,17 +1061,17 @@ function Ht({ mod: s, isChild: o, checked: l, installed: r, onToggle: c }) {
         onMouseLeave: () => u(!1),
         onClick: () => !r && c(s.id),
         children: [
-          o && e.jsx(Ms, { className: t("text-codely-color-text-tertiary") }),
+          o && e.jsx(Ms, { className: t("text-gamecowork-color-text-tertiary") }),
           !r && e.jsx(Re, { checked: l, onClick: (d) => d.stopPropagation(), onChange: () => c(s.id) }),
           e.jsx("div", {
-            className: t("text-sm text-codely-color-text-default leading-[22px] flex-1"),
+            className: t("text-sm text-gamecowork-color-text-default leading-[22px] flex-1"),
             children: s.name,
           }),
         ],
       }),
       e.jsx("div", {
         className: t(
-          "justify-end mb-1 text-sm leading-[22px] text-codely-color-text-default pr-10 flex flex-row items-center",
+          "justify-end mb-1 text-sm leading-[22px] text-gamecowork-color-text-default pr-10 flex flex-row items-center",
           x,
         ),
         onMouseEnter: () => u(!0),
@@ -1080,7 +1080,7 @@ function Ht({ mod: s, isChild: o, checked: l, installed: r, onToggle: c }) {
       }),
       e.jsx("div", {
         className: t(
-          "justify-end mr-2 pr-3 mb-1 text-sm leading-[22px] text-codely-color-text-default flex flex-row items-center rounded-r-md",
+          "justify-end mr-2 pr-3 mb-1 text-sm leading-[22px] text-gamecowork-color-text-default flex flex-row items-center rounded-r-md",
           x,
         ),
         onMouseEnter: () => u(!0),
@@ -1268,18 +1268,18 @@ function Ks({
   if (p)
     f = e.jsx("div", {
       className: t("w-full h-full flex flex-row items-center justify-center"),
-      children: e.jsx(at, { className: "h-8 w-8 animate-spin text-codely-color-text-accent" }),
+      children: e.jsx(at, { className: "h-8 w-8 animate-spin text-gamecowork-color-text-accent" }),
     });
   else if (g)
     f = e.jsx("div", {
       className: t("w-full h-full flex flex-row items-center justify-center"),
-      children: e.jsx("span", { className: t("text-sm text-codely-color-text-tertiary"), children: g }),
+      children: e.jsx("span", { className: t("text-sm text-gamecowork-color-text-tertiary"), children: g }),
     });
   else if (i.length === 0)
     f = e.jsx("div", {
       className: t("w-full h-full flex flex-row items-center justify-center"),
       children: e.jsx("span", {
-        className: t("text-sm text-codely-color-text-tertiary"),
+        className: t("text-sm text-gamecowork-color-text-tertiary"),
         children: d("tjhub.install.noModulesAvailable"),
       }),
     });
@@ -1290,7 +1290,7 @@ function Ks({
         (h.push(
           e.jsx("div", {
             className: t(
-              "justify-self-start pl-5 text-sm leading-[22px] font-semibold text-codely-color-text-primary pr-10 flex flex-row items-center",
+              "justify-self-start pl-5 text-sm leading-[22px] font-semibold text-gamecowork-color-text-primary pr-10 flex flex-row items-center",
             ),
             children: j,
           }),
@@ -1298,7 +1298,7 @@ function Ks({
         h.push(
           e.jsx("div", {
             className: t(
-              "justify-self-end text-sm leading-[22px] font-semibold text-codely-color-text-primary pr-10 flex flex-row items-center",
+              "justify-self-end text-sm leading-[22px] font-semibold text-gamecowork-color-text-primary pr-10 flex flex-row items-center",
             ),
             children: d("tjhub.install.downloadSize"),
           }),
@@ -1306,7 +1306,7 @@ function Ks({
         h.push(
           e.jsx("div", {
             className: t(
-              "justify-self-end pr-5 text-sm leading-[22px] font-semibold text-codely-color-text-primary flex flex-row items-center",
+              "justify-self-end pr-5 text-sm leading-[22px] font-semibold text-gamecowork-color-text-primary flex flex-row items-center",
             ),
             children: d("tjhub.install.sizeOnDisk"),
           }),
@@ -1316,7 +1316,7 @@ function Ks({
         h.push(
           e.jsx("div", {
             className: t(
-              "col-span-3 pl-8 text-sm leading-[22px] text-codely-color-text-tertiary flex flex-row items-center",
+              "col-span-3 pl-8 text-sm leading-[22px] text-gamecowork-color-text-tertiary flex flex-row items-center",
             ),
             children: d("tjhub.install.pleaseActivateLicense"),
           }),
@@ -1333,7 +1333,7 @@ function Ks({
     }
     f = e.jsx("div", {
       className: t(
-        "my-2 mx-5 bg-codely-color-surface-input rounded-lg border border-solid border-codely-color-border-default flex-1 min-h-0",
+        "my-2 mx-5 bg-gamecowork-color-surface-input rounded-lg border border-solid border-gamecowork-color-border-default flex-1 min-h-0",
       ),
       children: e.jsx(he, {
         children: e.jsxs("div", {
@@ -1350,7 +1350,7 @@ function Ks({
         children: [
           e.jsx("div", {
             className: t(
-              "text-sm font-semibold leading-[22px] text-codely-color-text-primary flex flex-row items-center",
+              "text-sm font-semibold leading-[22px] text-gamecowork-color-text-primary flex flex-row items-center",
             ),
             children: d("tjhub.install.addModules"),
           }),
@@ -1361,11 +1361,11 @@ function Ks({
                 className: t("flex flex-row gap-1"),
                 children: [
                   e.jsx("div", {
-                    className: t("text-sm leading-[22px] font-semibold text-codely-color-text-secondary"),
+                    className: t("text-sm leading-[22px] font-semibold text-gamecowork-color-text-secondary"),
                     children: d("tjhub.install.required"),
                   }),
                   e.jsx("div", {
-                    className: t("text-sm leading-[22px] font-semibold text-codely-color-text-primary"),
+                    className: t("text-sm leading-[22px] font-semibold text-gamecowork-color-text-primary"),
                     children: nt(U.required),
                   }),
                 ],
@@ -1374,11 +1374,11 @@ function Ks({
                 className: t("flex flex-row gap-1"),
                 children: [
                   e.jsx("div", {
-                    className: t("text-sm leading-[22px] font-semibold text-codely-color-text-secondary"),
+                    className: t("text-sm leading-[22px] font-semibold text-gamecowork-color-text-secondary"),
                     children: d("tjhub.install.available"),
                   }),
                   e.jsx("div", {
-                    className: t("text-sm leading-[22px] font-semibold text-codely-color-text-primary"),
+                    className: t("text-sm leading-[22px] font-semibold text-gamecowork-color-text-primary"),
                     children: nt(L),
                   }),
                 ],
@@ -1387,7 +1387,7 @@ function Ks({
           }),
         ],
       }),
-      e.jsx("div", { className: t("h-px bg-codely-color-border-default") }),
+      e.jsx("div", { className: t("h-px bg-gamecowork-color-border-default") }),
       f,
       (() => {
         let h = S || p || !!g || i.length === 0,
@@ -1401,7 +1401,7 @@ function Ks({
               e.jsx(A, {
                 variant: "ghost",
                 onClick: o,
-                className: t("border border-solid border-codely-color-border-subtle px-4 py-2 text-sm rounded-lg"),
+                className: t("border border-solid border-gamecowork-color-border-subtle px-4 py-2 text-sm rounded-lg"),
                 size: "sm",
                 children: d("tjhub.common.back"),
               }),
@@ -1535,15 +1535,15 @@ function Js({
     v
       ? (O = e.jsx("div", {
           className: t("w-full h-full flex flex-row items-center justify-center"),
-          children: e.jsx(at, { className: "h-8 w-8 animate-spin text-codely-color-text-accent" }),
+          children: e.jsx(at, { className: "h-8 w-8 animate-spin text-gamecowork-color-text-accent" }),
         }))
       : ee
-        ? (O = e.jsx("span", { className: t("text-sm text-codely-color-text-tertiary"), children: ee }))
+        ? (O = e.jsx("span", { className: t("text-sm text-gamecowork-color-text-tertiary"), children: ee }))
         : g
           ? (O = e.jsxs(e.Fragment, {
               children: [
                 e.jsx("div", {
-                  className: t("text-sm leading-[20px] text-codely-color-text-default whitespace-pre-wrap"),
+                  className: t("text-sm leading-[20px] text-gamecowork-color-text-default whitespace-pre-wrap"),
                   children: g,
                 }),
                 e.jsx("div", { className: t("h-2 w-full") }),
@@ -1553,7 +1553,7 @@ function Js({
             ? (O = e.jsxs(e.Fragment, {
                 children: [
                   e.jsx("p", {
-                    className: t("m-0 text-sm leading-5 text-codely-color-text-secondary pt-5"),
+                    className: t("m-0 text-sm leading-5 text-gamecowork-color-text-secondary pt-5"),
                     children: S,
                   }),
                   L &&
@@ -1564,13 +1564,13 @@ function Js({
                       onClick: (E) => {
                         (E.preventDefault(), r.post("openUrl", L));
                       },
-                      className: t("mt-4 inline-block text-sm text-codely-color-text-link"),
+                      className: t("mt-4 inline-block text-sm text-gamecowork-color-text-link"),
                       children: L,
                     }),
                 ],
               }))
             : (O = e.jsx("span", {
-                className: t("text-sm text-codely-color-text-tertiary"),
+                className: t("text-sm text-gamecowork-color-text-tertiary"),
                 children: d("tjhub.install.noEulaFound"),
               })),
     e.jsxs(e.Fragment, {
@@ -1578,7 +1578,7 @@ function Js({
         g
           ? e.jsx(he, {
               edgeFade: !0,
-              edgeFadeColor: "var(--codely-color-surface-card)",
+              edgeFadeColor: "var(--gamecowork-color-surface-card)",
               edgeFadeHeight: 6,
               className: t("flex-1 min-h-0 pt-2 px-5"),
               children: O,
@@ -1605,7 +1605,7 @@ function Js({
                     i > 0 ? (N((E) => E - 1), w(!1)) : c();
                   },
                   size: "sm",
-                  className: t("px-4 py-2 border border-solid border-codely-color-border-subtle"),
+                  className: t("px-4 py-2 border border-solid border-gamecowork-color-border-subtle"),
                   children: d("tjhub.common.back"),
                 }),
                 e.jsx(A, {
@@ -1629,7 +1629,7 @@ function Je({ placeholder: s, value: o, onChange: l, onEscape: r, onBlur: c, aut
   const x = n.useRef(null);
   return e.jsxs("div", {
     className: t(
-      "flex flex-row box-border items-center h-8 rounded-lg border border-solid border-codely-color-border-subtle bg-transparent focus-within:border-codely-color-accent-default cursor-text",
+      "flex flex-row box-border items-center h-8 rounded-lg border border-solid border-gamecowork-color-border-subtle bg-transparent focus-within:border-gamecowork-color-accent-default cursor-text",
       u,
     ),
     onClick: () => {
@@ -1637,11 +1637,11 @@ function Je({ placeholder: s, value: o, onChange: l, onEscape: r, onBlur: c, aut
       return (d = x.current) == null ? void 0 : d.focus();
     },
     children: [
-      e.jsx(kt, { className: t("size-4 flex-shrink-0 ml-2.5 text-codely-color-text-disabled") }),
+      e.jsx(kt, { className: t("size-4 flex-shrink-0 ml-2.5 text-gamecowork-color-text-disabled") }),
       e.jsx("input", {
         ref: x,
         className: t(
-          "flex-1 h-full m-0 p-0 pl-1.5 pr-3 bg-transparent text-sm text-codely-color-text-default outline-none placeholder:text-codely-color-text-disabled border-0",
+          "flex-1 h-full m-0 p-0 pl-1.5 pr-3 bg-transparent text-sm text-gamecowork-color-text-default outline-none placeholder:text-gamecowork-color-text-disabled border-0",
         ),
         placeholder: s,
         value: o,
@@ -1666,7 +1666,7 @@ function Xs() {
 function Qs({ platform: s }) {
   return e.jsx("div", {
     className: t(
-      "text-xs text-codely-color-text-default px-2 py-[2px] h-[17px] rounded-full border border-solid border-codely-color-border-subtle mr-1",
+      "text-xs text-gamecowork-color-text-default px-2 py-[2px] h-[17px] rounded-full border border-solid border-gamecowork-color-border-subtle mr-1",
     ),
     children: s,
   });
@@ -1681,7 +1681,7 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
     ? e.jsxs(e.Fragment, {
         children: [
           e.jsx(de, {
-            icon: e.jsx(It, { className: t("text-codely-color-text-secondary") }),
+            icon: e.jsx(It, { className: t("text-gamecowork-color-text-secondary") }),
             label: u != null ? u : "",
             onClick: () => {
               fetch(`${window.location.origin}/api/tauri/reveal-in-file-explorer`, {
@@ -1693,7 +1693,7 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           }),
           e.jsx(jt, {}),
           e.jsx(de, {
-            icon: e.jsx(lt, { className: t("text-codely-color-text-secondary") }),
+            icon: e.jsx(lt, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.removeFromCowork"),
             onClick: r,
           }),
@@ -1702,12 +1702,12 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
     : e.jsxs(e.Fragment, {
         children: [
           e.jsx(de, {
-            icon: e.jsx(Ps, { className: t("text-codely-color-text-secondary") }),
+            icon: e.jsx(Ps, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.addModules"),
             onClick: () => c(s),
           }),
           e.jsx(de, {
-            icon: e.jsx(It, { className: t("text-codely-color-text-secondary") }),
+            icon: e.jsx(It, { className: t("text-gamecowork-color-text-secondary") }),
             label: u != null ? u : "",
             onClick: () => {
               fetch(`${window.location.origin}/api/tauri/reveal-in-file-explorer`, {
@@ -1719,7 +1719,7 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           }),
           e.jsx(jt, {}),
           e.jsx(de, {
-            icon: e.jsx(lt, { className: t("text-codely-color-text-secondary") }),
+            icon: e.jsx(lt, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.uninstall"),
             disabled: o,
             onClick: l,
@@ -1758,7 +1758,7 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
     };
   return e.jsxs("div", {
     className: t(
-      "mt-2 min-h-[88px] p-3 bg-codely-color-surface-sunken rounded-2xl border border-solid border-codely-color-border-subtle flex flex-row",
+      "mt-2 min-h-[88px] p-3 bg-gamecowork-color-surface-sunken rounded-2xl border border-solid border-gamecowork-color-border-subtle flex flex-row",
     ),
     children: [
       e.jsx("div", {
@@ -1774,20 +1774,20 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
             className: t("flex flex-row items-center"),
             children: [
               e.jsx("div", {
-                className: t("text-sm leading-[15px] mr-1 text-codely-color-text-primary"),
+                className: t("text-sm leading-[15px] mr-1 text-gamecowork-color-text-primary"),
                 children: s.semver,
               }),
               s.isHmiRecommended &&
                 e.jsx("div", {
                   className: t(
-                    "text-sm ml-1 px-1 rounded-md text-xs leading-[17px] flex flex-row items-center border border-solid border-codely-color-border-subtle",
+                    "text-sm ml-1 px-1 rounded-md text-xs leading-[17px] flex flex-row items-center border border-solid border-gamecowork-color-border-subtle",
                   ),
                   children: c("tjhub.common.ltsForHmi"),
                 }),
               je() &&
                 e.jsx("div", {
                   className: t(
-                    "text-sm ml-1 px-1 rounded-md text-xs leading-[17px] flex flex-row items-center border border-solid border-codely-color-border-subtle",
+                    "text-sm ml-1 px-1 rounded-md text-xs leading-[17px] flex flex-row items-center border border-solid border-gamecowork-color-border-subtle",
                   ),
                   children: c(`tjhub.common.arch.${s.architecture}`, { defaultValue: s.architecture }),
                 }),
@@ -1801,23 +1801,23 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
                   variant: "ghost",
                   size: "sm",
                   className: t(
-                    "ml-3 px-3 border border-solid border-codely-color-border-subtle whitespace-nowrap text-sm rounded-lg h-7",
+                    "ml-3 px-3 border border-solid border-gamecowork-color-border-subtle whitespace-nowrap text-sm rounded-lg h-7",
                   ),
                   onClick: () => r(s.version, s.architecture),
                   children: [
-                    e.jsx(Gt, { className: t("!text-base text-codely-color-text-secondary mr-1") }),
+                    e.jsx(Gt, { className: t("!text-base text-gamecowork-color-text-secondary mr-1") }),
                     c("tjhub.install.viewProjects", { count: o }),
                   ],
                 }),
               u
                 ? e.jsxs("div", {
                     className: t(
-                      "flex flex-row ml-3 border border-solid border-codely-color-border-subtle px-3 rounded-lg h-7 gap-1 items-center bg-transparent cursor-not-allowed opacity-50",
+                      "flex flex-row ml-3 border border-solid border-gamecowork-color-border-subtle px-3 rounded-lg h-7 gap-1 items-center bg-transparent cursor-not-allowed opacity-50",
                     ),
                     children: [
-                      e.jsx(lt, { className: t("w-4 h-4 text-codely-color-text-secondary") }),
+                      e.jsx(lt, { className: t("w-4 h-4 text-gamecowork-color-text-secondary") }),
                       e.jsx("div", {
-                        className: t("text-codely-color-text-primary text-sm"),
+                        className: t("text-gamecowork-color-text-primary text-sm"),
                         children: c("tjhub.install.uninstallingEllipsis"),
                       }),
                     ],
@@ -1826,15 +1826,15 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
                     anchor: "bottom end",
                     trigger: e.jsxs(ye, {
                       className: t(
-                        "flex flex-row ml-3 border border-solid border-codely-color-border-subtle px-3 rounded-lg h-7 gap-1 items-center bg-transparent cursor-pointer whitespace-nowrap",
+                        "flex flex-row ml-3 border border-solid border-gamecowork-color-border-subtle px-3 rounded-lg h-7 gap-1 items-center bg-transparent cursor-pointer whitespace-nowrap",
                       ),
                       children: [
-                        e.jsx(Jt, { className: t("w-4 h-4 text-codely-color-text-secondary") }),
+                        e.jsx(Jt, { className: t("w-4 h-4 text-gamecowork-color-text-secondary") }),
                         e.jsx("div", {
-                          className: t("text-codely-color-text-primary text-sm"),
+                          className: t("text-gamecowork-color-text-primary text-sm"),
                           children: c("tjhub.install.manage"),
                         }),
-                        e.jsx(pe, { className: t("w-3 h-3 text-codely-color-text-primary rotate-90") }),
+                        e.jsx(pe, { className: t("w-3 h-3 text-gamecowork-color-text-primary rotate-90") }),
                       ],
                     }),
                     children: e.jsx(to, {
@@ -1848,7 +1848,7 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
             ],
           }),
           e.jsx("div", {
-            className: t("text-codely-color-text-secondary text-xs flex flex-row items-center overflow-hidden"),
+            className: t("text-gamecowork-color-text-secondary text-xs flex flex-row items-center overflow-hidden"),
             children: e.jsx("span", { className: t("truncate"), children: d }),
           }),
           e.jsx("div", {
@@ -2022,7 +2022,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
             "div",
             {
               className: t(
-                "mt-2 h-[88px] p-3 bg-codely-color-surface-sunken rounded-2xl border border-solid border-codely-color-border-subtle flex flex-row",
+                "mt-2 h-[88px] p-3 bg-gamecowork-color-surface-sunken rounded-2xl border border-solid border-gamecowork-color-border-subtle flex flex-row",
               ),
               children: [
                 e.jsx("div", {
@@ -2042,7 +2042,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
                 }),
                 e.jsx(re, {
                   shape: "block",
-                  className: "h-7 w-[80px] ml-3 rounded-lg border border-solid border-codely-color-border-subtle",
+                  className: "h-7 w-[80px] ml-3 rounded-lg border border-solid border-gamecowork-color-border-subtle",
                 }),
               ],
             },
@@ -2056,9 +2056,9 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     V = e.jsxs("div", {
       className: t("flex flex-col items-center justify-center flex-1 h-full"),
       children: [
-        e.jsx(yt, { className: t("size-[66px] text-codely-color-text-tertiary") }),
+        e.jsx(yt, { className: t("size-[66px] text-gamecowork-color-text-tertiary") }),
         e.jsx("div", {
-          className: t("text-sm text-codely-color-text-secondary mt-2"),
+          className: t("text-sm text-gamecowork-color-text-secondary mt-2"),
           children: r("tjhub.install.noPrereleasedEditors"),
         }),
       ],
@@ -2081,14 +2081,14 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
         className: t("flex flex-col items-center justify-center flex-1 h-full"),
         children: f
           ? e.jsx("div", {
-              className: t("text-sm text-codely-color-text-secondary"),
+              className: t("text-sm text-gamecowork-color-text-secondary"),
               children: r("tjhub.common.noResults"),
             })
           : e.jsxs(e.Fragment, {
               children: [
-                e.jsx(yt, { className: t("size-[66px] text-codely-color-text-tertiary") }),
+                e.jsx(yt, { className: t("size-[66px] text-gamecowork-color-text-tertiary") }),
                 e.jsx("div", {
-                  className: t("text-sm text-codely-color-text-secondary mt-2"),
+                  className: t("text-sm text-gamecowork-color-text-secondary mt-2"),
                   children: r(
                     i === "official" ? "tjhub.install.noOfficialReleasesEditors" : "tjhub.install.noEditorsInstalled",
                   ),
@@ -2120,12 +2120,12 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
             children: [
               e.jsx(pe, {
                 className: t(
-                  "text-codely-color-text-secondary group-hover:text-codely-color-text-primary rotate-180 w-4 h-4 ml-3",
+                  "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary rotate-180 w-4 h-4 ml-3",
                 ),
               }),
               e.jsx("span", {
                 className: t(
-                  "text-xl text-codely-color-text-secondary group-hover:text-codely-color-text-primary ml-2",
+                  "text-xl text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary ml-2",
                 ),
                 children: r("tjhub.install.title"),
               }),
@@ -2151,13 +2151,13 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
                     className: t("ml-2 rounded-lg"),
                     tooltip: r("tjhub.common.search"),
                     onClick: () => w(!0),
-                    children: e.jsx(kt, { className: t("text-codely-color-text-secondary") }),
+                    children: e.jsx(kt, { className: t("text-gamecowork-color-text-secondary") }),
                   }),
               e.jsx(A, {
                 variant: "ghost",
                 size: "sm",
                 className: t(
-                  "ml-2 px-4 border border-solid border-codely-color-border-subtle whitespace-nowrap text-sm rounded-lg",
+                  "ml-2 px-4 border border-solid border-gamecowork-color-border-subtle whitespace-nowrap text-sm rounded-lg",
                 ),
                 onClick: () => void E(),
                 children: r("tjhub.common.locate"),
@@ -2260,12 +2260,12 @@ function ro({ onBack: s }) {
                 "div",
                 {
                   className: t(
-                    "mt-2 flex flex-row bg-codely-color-surface-sunken h-[84px] rounded-2xl border border-solid border-codely-color-border-subtle overflow-hidden items-stretch",
+                    "mt-2 flex flex-row bg-gamecowork-color-surface-sunken h-[84px] rounded-2xl border border-solid border-gamecowork-color-border-subtle overflow-hidden items-stretch",
                   ),
                   children: [
                     e.jsx("div", {
                       className: t(
-                        "p-3 bg-codely-color-surface-input border-r border-t-0 border-b-0 border-l-0 border-solid border-codely-color-border-subtle w-[36px] items-stretch flex flex-row justify-center",
+                        "p-3 bg-gamecowork-color-surface-input border-r border-t-0 border-b-0 border-l-0 border-solid border-gamecowork-color-border-subtle w-[36px] items-stretch flex flex-row justify-center",
                       ),
                     }),
                     e.jsxs("div", {
@@ -2279,7 +2279,7 @@ function ro({ onBack: s }) {
                     e.jsx(re, {
                       shape: "block",
                       className:
-                        "h-7 w-[100px] m-3 rounded-lg border border-solid border-codely-color-border-subtle flex-shrink-0",
+                        "h-7 w-[100px] m-3 rounded-lg border border-solid border-gamecowork-color-border-subtle flex-shrink-0",
                     }),
                   ],
                 },
@@ -2292,16 +2292,16 @@ function ro({ onBack: s }) {
         ? (g = e.jsxs("div", {
             className: t("flex flex-row items-center justify-center w-full h-full flex-1 flex-col"),
             children: [
-              e.jsx(es, { className: t("size-[66px] text-codely-color-text-tertiary") }),
+              e.jsx(es, { className: t("size-[66px] text-gamecowork-color-text-tertiary") }),
               e.jsx("div", {
-                className: t("text-codely-color-text-secondary text-sm mt-2 mb-6"),
+                className: t("text-gamecowork-color-text-secondary text-sm mt-2 mb-6"),
                 children: o("tjhub.licenses.noLicensesYet"),
               }),
               e.jsx(A, {
                 variant: "ghost",
                 size: "sm",
                 className: t(
-                  "px-4 border border-solid border-codely-color-border-subtle text-codely-color-text-primary",
+                  "px-4 border border-solid border-gamecowork-color-border-subtle text-gamecowork-color-text-primary",
                 ),
                 onClick: w,
                 children: o("tjhub.licenses.addLicenseLower"),
@@ -2326,12 +2326,12 @@ function ro({ onBack: s }) {
               children: [
                 e.jsx(pe, {
                   className: t(
-                    "text-codely-color-text-secondary group-hover:text-codely-color-text-primary rotate-180 w-4 h-4 ml-3",
+                    "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary rotate-180 w-4 h-4 ml-3",
                   ),
                 }),
                 e.jsx("span", {
                   className: t(
-                    "text-xl text-codely-color-text-secondary group-hover:text-codely-color-text-primary ml-2",
+                    "text-xl text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary ml-2",
                   ),
                   children: o("tjhub.licenses.title"),
                 }),
@@ -2346,12 +2346,12 @@ function ro({ onBack: s }) {
                   children: [
                     e.jsx("div", {
                       className: t(
-                        "text-sm leading-[22px] text-codely-color-text-secondary group-hover:text-codely-color-text-primary",
+                        "text-sm leading-[22px] text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary",
                       ),
                       children: o("tjhub.licenses.getHelp"),
                     }),
                     e.jsx(Ye, {
-                      className: t("text-codely-color-text-secondary group-hover:text-codely-color-text-primary"),
+                      className: t("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary"),
                     }),
                   ],
                 }),
@@ -2359,13 +2359,13 @@ function ro({ onBack: s }) {
                   variant: "ghost",
                   size: "sm",
                   className: t(
-                    "px-4 border border-solid border-codely-color-border-subtle flex items-center justify-center gap-1",
+                    "px-4 border border-solid border-gamecowork-color-border-subtle flex items-center justify-center gap-1",
                   ),
                   onClick: () => void p(),
                   children: [
-                    e.jsx(us, { className: t("text-codely-color-text-primary") }),
+                    e.jsx(us, { className: t("text-gamecowork-color-text-primary") }),
                     e.jsx("div", {
-                      className: t("text-codely-color-text-primary text-sm"),
+                      className: t("text-gamecowork-color-text-primary text-sm"),
                       children: o("tjhub.licenses.refresh"),
                     }),
                   ],
@@ -2376,9 +2376,9 @@ function ro({ onBack: s }) {
                   className: t("px-4 flex items-center justify-center gap-1 text-sm rounded-lg"),
                   onClick: w,
                   children: [
-                    e.jsx(Ct, { className: t("text-codely-color-text-accent") }),
+                    e.jsx(Ct, { className: t("text-gamecowork-color-text-accent") }),
                     e.jsx("div", {
-                      className: t("text-sm text-codely-color-text-accent"),
+                      className: t("text-sm text-gamecowork-color-text-accent"),
                       children: o("tjhub.licenses.addLicense"),
                     }),
                   ],
@@ -2425,35 +2425,35 @@ function lo({ license: s, onReturned: o }) {
     };
   return e.jsxs("div", {
     className: t(
-      "mt-2 flex flex-row bg-codely-color-surface-sunken h-[84px] rounded-2xl border border-solid border-codely-color-border-subtle overflow-hidden items-stretch",
+      "mt-2 flex flex-row bg-gamecowork-color-surface-sunken h-[84px] rounded-2xl border border-solid border-gamecowork-color-border-subtle overflow-hidden items-stretch",
     ),
     children: [
       e.jsx("div", {
         className: t(
-          "p-3 bg-codely-color-surface-input border-r border-t-0 border-b-0 border-l-0 border-solid border-codely-color-border-subtle text-sm text-codely-color-text-secondary font-semibold capitalize w-[36px] items-stretch flex flex-row justify-center",
+          "p-3 bg-gamecowork-color-surface-input border-r border-t-0 border-b-0 border-l-0 border-solid border-gamecowork-color-border-subtle text-sm text-gamecowork-color-text-secondary font-semibold capitalize w-[36px] items-stretch flex flex-row justify-center",
         ),
         children: s.abbreviation,
       }),
       e.jsxs("div", {
         className: t("flex flex-col flex-1 p-3"),
         children: [
-          e.jsx("div", { className: t("text-sm text-codely-color-text-default leading-[15px]"), children: s.label }),
+          e.jsx("div", { className: t("text-sm text-gamecowork-color-text-default leading-[15px]"), children: s.label }),
           e.jsxs("div", {
-            className: t("text-xs text-codely-color-text-secondary leading-[16.8px] mt-2"),
+            className: t("text-xs text-gamecowork-color-text-secondary leading-[16.8px] mt-2"),
             children: [
               l("tjhub.licenses.activationDate"),
               e.jsx("span", {
-                className: t("text-codely-color-text-default ml-1"),
+                className: t("text-gamecowork-color-text-default ml-1"),
                 children: Vt(s.startDate, r.language),
               }),
             ],
           }),
           e.jsxs("div", {
-            className: t("text-xs text-codely-color-text-secondary leading-[16.8px] mt-[2px]"),
+            className: t("text-xs text-gamecowork-color-text-secondary leading-[16.8px] mt-[2px]"),
             children: [
               l("tjhub.licenses.expirationDate"),
               e.jsx("span", {
-                className: t("text-codely-color-text-default ml-1"),
+                className: t("text-gamecowork-color-text-default ml-1"),
                 children: Vt(s.stopDate, r.language),
               }),
             ],
@@ -2464,13 +2464,13 @@ function lo({ license: s, onReturned: o }) {
         variant: "ghost",
         disabled: u,
         className: t(
-          "border border-solid border-codely-color-border-subtle h-7 m-3 px-3 gap-1 flex flex-row items-center",
+          "border border-solid border-gamecowork-color-border-subtle h-7 m-3 px-3 gap-1 flex flex-row items-center",
         ),
         onClick: d,
         children: [
-          e.jsx(Vs, { className: t("text-codely-color-text-secondary") }),
+          e.jsx(Vs, { className: t("text-gamecowork-color-text-secondary") }),
           e.jsx("div", {
-            className: t("text-sm text-codely-color-text-primary"),
+            className: t("text-sm text-gamecowork-color-text-primary"),
             children: l(u ? "tjhub.licenses.returningEllipsis" : "tjhub.licenses.returnLicense"),
           }),
         ],
@@ -2554,8 +2554,8 @@ function Ge({ label: s, value: o }) {
   return e.jsxs("div", {
     className: t("flex flex-col gap-1"),
     children: [
-      e.jsx("div", { className: t("text-sm text-codely-color-text-secondary leading-[20px]"), children: s }),
-      e.jsx("div", { className: t("text-sm text-codely-color-text-primary leading-[20px]"), children: o }),
+      e.jsx("div", { className: t("text-sm text-gamecowork-color-text-secondary leading-[20px]"), children: s }),
+      e.jsx("div", { className: t("text-sm text-gamecowork-color-text-primary leading-[20px]"), children: o }),
     ],
   });
 }
@@ -2567,7 +2567,7 @@ function ho({ template: s, onClose: o }) {
       { id: "packages", label: l("tjhub.templateDetail.packages") },
     ];
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col h-[28rem]"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col h-[28rem]"),
     children: [
       e.jsxs("div", {
         className: t("flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0"),
@@ -2575,14 +2575,14 @@ function ho({ template: s, onClose: o }) {
           e.jsxs("div", {
             className: t("flex flex-row gap-2"),
             children: [
-              e.jsx("div", { className: t("text-codely-color-text-primary"), children: s.displayName }),
-              e.jsx("div", { className: t("text-codely-color-text-secondary"), children: s.version }),
+              e.jsx("div", { className: t("text-gamecowork-color-text-primary"), children: s.displayName }),
+              e.jsx("div", { className: t("text-gamecowork-color-text-secondary"), children: s.version }),
             ],
           }),
           e.jsx(ne, {
             size: "sm",
             onClick: o,
-            children: e.jsx(ze, { className: t("size-4 text-codely-color-text-tertiary") }),
+            children: e.jsx(ze, { className: t("size-4 text-gamecowork-color-text-tertiary") }),
           }),
         ],
       }),
@@ -2591,7 +2591,7 @@ function ho({ template: s, onClose: o }) {
         ? e.jsx("div", {
             className: t("flex items-center justify-center h-full"),
             children: e.jsx("span", {
-              className: t("text-sm text-codely-color-text-secondary"),
+              className: t("text-sm text-gamecowork-color-text-secondary"),
               children: l("tjhub.templateDetail.noPackages"),
             }),
           })
@@ -2625,15 +2625,15 @@ function ho({ template: s, onClose: o }) {
                         "div",
                         {
                           className: t(
-                            "flex flex-row items-center justify-between text-sm px-2 py-1 rounded-lg hover:bg-codely-color-interactive-hover",
+                            "flex flex-row items-center justify-between text-sm px-2 py-1 rounded-lg hover:bg-gamecowork-color-interactive-hover",
                           ),
                           children: [
                             e.jsx("div", {
-                              className: t("text-codely-color-text-primary leading-[20px]"),
+                              className: t("text-gamecowork-color-text-primary leading-[20px]"),
                               children: u.packageName,
                             }),
                             e.jsx("div", {
-                              className: t("text-codely-color-text-tertiary leading-[20px]"),
+                              className: t("text-gamecowork-color-text-tertiary leading-[20px]"),
                               children: u.version,
                             }),
                           ],
@@ -2666,19 +2666,19 @@ function fo({ onInstalled: s, onCancel: o }) {
       }
     };
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       e.jsx("div", {
         className: t("px-5 pt-4 pb-2"),
         children: e.jsx("div", {
-          className: t("text-base font-medium text-codely-color-text-primary"),
+          className: t("text-base font-medium text-gamecowork-color-text-primary"),
           children: l("tjhub.rosetta2.title"),
         }),
       }),
       e.jsx("div", {
         className: t("px-5 pb-2"),
         children: e.jsx("p", {
-          className: t("m-0 text-sm leading-5 text-codely-color-text-secondary"),
+          className: t("m-0 text-sm leading-5 text-gamecowork-color-text-secondary"),
           children: l("tjhub.rosetta2.body"),
         }),
       }),
@@ -2983,12 +2983,12 @@ function jo({ onBack: s }) {
             children: [
               e.jsx(pe, {
                 className: t(
-                  "text-codely-color-text-secondary group-hover:text-codely-color-text-primary rotate-180 w-4 h-4",
+                  "text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary rotate-180 w-4 h-4",
                 ),
               }),
               e.jsx("span", {
                 className: t(
-                  "text-xl text-codely-color-text-secondary group-hover:text-codely-color-text-primary ml-2",
+                  "text-xl text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary ml-2",
                 ),
                 children: o("tjhub.newProject.title"),
               }),
@@ -3003,10 +3003,10 @@ function jo({ onBack: s }) {
                   e.jsxs("div", {
                     children: [
                       e.jsxs("span", {
-                        className: t("text-sm text-codely-color-text-default"),
+                        className: t("text-sm text-gamecowork-color-text-default"),
                         children: [o("tjhub.newProject.editorVersion"), " "],
                       }),
-                      e.jsx("span", { className: t("text-sm text-codely-color-status-danger-default"), children: "*" }),
+                      e.jsx("span", { className: t("text-sm text-gamecowork-color-status-danger-default"), children: "*" }),
                     ],
                   }),
                   e.jsx("div", {
@@ -3016,16 +3016,16 @@ function jo({ onBack: s }) {
                           variant: "ghost",
                           disabled: !0,
                           className: t(
-                            "flex flex-row px-4 text-sm rounded-lg border border-solid border-codely-color-border-subtle",
+                            "flex flex-row px-4 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                           ),
                           children: [
                             e.jsx(at, {
                               className: t(
-                                "w-[12.8px] h-[14.824px] mr-1 animate-spin text-codely-color-text-secondary",
+                                "w-[12.8px] h-[14.824px] mr-1 animate-spin text-gamecowork-color-text-secondary",
                               ),
                             }),
                             e.jsx("div", {
-                              className: t("mr-1 text-codely-color-text-tertiary"),
+                              className: t("mr-1 text-gamecowork-color-text-tertiary"),
                               children: o("tjhub.common.loading"),
                             }),
                           ],
@@ -3039,7 +3039,7 @@ function jo({ onBack: s }) {
                               size: "sm",
                               variant: "ghost",
                               className: t(
-                                "flex flex-row px-4 text-sm rounded-lg border border-solid border-codely-color-border-subtle",
+                                "flex flex-row px-4 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                               ),
                               children: [
                                 e.jsx(De, { className: t("w-[12.8px] h-[14.824px] p-[1.6px] mr-1") }),
@@ -3049,7 +3049,7 @@ function jo({ onBack: s }) {
                                 }),
                                 e.jsx(pe, {
                                   className: t(
-                                    "text-codely-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
+                                    "text-gamecowork-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
                                     h && "rotate-[270deg]",
                                   ),
                                 }),
@@ -3091,18 +3091,18 @@ function jo({ onBack: s }) {
                         size: "sm",
                         variant: "ghost",
                         className: t(
-                          "flex flex-row px-3 h-8 text-sm rounded-lg border border-solid border-codely-color-border-subtle",
+                          "flex flex-row px-3 h-8 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                         ),
                         children: [
                           e.jsxs("div", {
                             className: t("mr-1 flex items-center"),
                             children: [
                               $ === "All" &&
-                                e.jsx(zt, { className: t("w-4 h-4 mr-1 text-codely-color-text-secondary") }),
+                                e.jsx(zt, { className: t("w-4 h-4 mr-1 text-gamecowork-color-text-secondary") }),
                               $ === "Core" &&
-                                e.jsx(gt, { className: t("w-4 h-4 mr-1 text-codely-color-text-secondary") }),
+                                e.jsx(gt, { className: t("w-4 h-4 mr-1 text-gamecowork-color-text-secondary") }),
                               $ === "Sample" &&
-                                e.jsx(vt, { className: t("w-4 h-4 mr-1 text-codely-color-text-secondary") }),
+                                e.jsx(vt, { className: t("w-4 h-4 mr-1 text-gamecowork-color-text-secondary") }),
                             ],
                           }),
                           e.jsx("div", {
@@ -3117,7 +3117,7 @@ function jo({ onBack: s }) {
                           }),
                           e.jsx(pe, {
                             className: t(
-                              "text-codely-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
+                              "text-gamecowork-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
                               M && "rotate-[270deg]",
                             ),
                           }),
@@ -3127,21 +3127,21 @@ function jo({ onBack: s }) {
                     onOpenChange: B,
                     children: [
                       e.jsx(de, {
-                        icon: e.jsx(zt, { className: t("text-codely-color-text-secondary") }),
+                        icon: e.jsx(zt, { className: t("text-gamecowork-color-text-secondary") }),
                         label: o("tjhub.newProject.filterAll"),
                         onClick: () => {
                           (f("All"), B(!1));
                         },
                       }),
                       e.jsx(de, {
-                        icon: e.jsx(gt, { className: t("text-codely-color-text-secondary") }),
+                        icon: e.jsx(gt, { className: t("text-gamecowork-color-text-secondary") }),
                         label: o("tjhub.newProject.filterCore"),
                         onClick: () => {
                           (f("Core"), B(!1));
                         },
                       }),
                       e.jsx(de, {
-                        icon: e.jsx(vt, { className: t("text-codely-color-text-secondary") }),
+                        icon: e.jsx(vt, { className: t("text-gamecowork-color-text-secondary") }),
                         label: o("tjhub.newProject.filterSample"),
                         onClick: () => {
                           (f("Sample"), B(!1));
@@ -3166,7 +3166,7 @@ function jo({ onBack: s }) {
                             "div",
                             {
                               className: t(
-                                "flex flex-col rounded-lg border-[2px] border-solid border-codely-color-border-subtle overflow-hidden",
+                                "flex flex-col rounded-lg border-[2px] border-solid border-gamecowork-color-border-subtle overflow-hidden",
                               ),
                               style: { boxSizing: "content-box" },
                               children: [
@@ -3188,7 +3188,7 @@ function jo({ onBack: s }) {
                   ? e.jsx("div", {
                       className: t("flex-1 flex items-center justify-center h-full"),
                       children: e.jsx("span", {
-                        className: t("text-sm text-codely-color-text-secondary"),
+                        className: t("text-sm text-gamecowork-color-text-secondary"),
                         children: o("tjhub.common.noResults"),
                       }),
                     })
@@ -3212,7 +3212,7 @@ function jo({ onBack: s }) {
           }),
         ],
       }),
-      e.jsx("div", { className: t("fixed inset-y-0 w-px bg-codely-color-border-subtle"), style: { right: E } }),
+      e.jsx("div", { className: t("fixed inset-y-0 w-px bg-gamecowork-color-border-subtle"), style: { right: E } }),
       e.jsx("div", {
         ref: Q,
         className: t("flex flex-col flex-[1_1_0%] min-w-[200px] max-w-[350px]"),
@@ -3275,7 +3275,7 @@ function bo({
       e.jsx("div", {
         className: t(
           "relative aspect-[7/4] flex items-center justify-center",
-          r ? "bg-codely-color-surface-sidebar" : "bg-cover",
+          r ? "bg-gamecowork-color-surface-sidebar" : "bg-cover",
         ),
         style: { backgroundImage: `url(${H})`, backgroundSize: "cover", backgroundPosition: "center" },
         children:
@@ -3331,12 +3331,12 @@ function bo({
                 className: t("flex flex-col gap-1"),
                 children: [
                   e.jsx("div", {
-                    className: t("text-sm text-codely-color-text-default"),
+                    className: t("text-sm text-gamecowork-color-text-default"),
                     children: v("tjhub.newProject.projectName"),
                   }),
                   e.jsx(Yt, {
                     className: t(
-                      "h-8 px-3 rounded-lg bg-codely-color-surface-base border border-solid border-codely-color-border-default",
+                      "h-8 px-3 rounded-lg bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-default",
                     ),
                     value: c,
                     onChange: (O) => a(O),
@@ -3347,21 +3347,21 @@ function bo({
                 className: t("flex flex-col gap-1"),
                 children: [
                   e.jsx("div", {
-                    className: t("text-sm text-codely-color-text-default"),
+                    className: t("text-sm text-gamecowork-color-text-default"),
                     children: v("tjhub.newProject.location"),
                   }),
                   e.jsxs(A, {
                     variant: "ghost",
                     onClick: l,
                     className: t(
-                      "flex flex-row justify-between items-center h-8 bg-codely-color-surface-base border border-solid border-codely-color-border-default rounded-lg px-3 w-full",
+                      "flex flex-row justify-between items-center h-8 bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-default rounded-lg px-3 w-full",
                     ),
                     children: [
                       e.jsx("div", {
-                        className: t("text-sm truncate text-codely-color-text-primary"),
+                        className: t("text-sm truncate text-gamecowork-color-text-primary"),
                         children: o || v("tjhub.common.selectFolder"),
                       }),
-                      e.jsx(js, { className: t("w-4 h-4 text-codely-color-text-secondary flex-shrink-0") }),
+                      e.jsx(js, { className: t("w-4 h-4 text-gamecowork-color-text-secondary flex-shrink-0") }),
                     ],
                   }),
                 ],
@@ -3376,12 +3376,12 @@ function bo({
                     children: [
                       e.jsx("div", {
                         className: t(
-                          "text-sm leading-[22px] text-codely-color-text-secondary group-hover:text-codely-color-text-primary",
+                          "text-sm leading-[22px] text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary",
                         ),
                         children: v("tjhub.newProject.enableOnlineServices"),
                       }),
                       e.jsx(Ye, {
-                        className: t("text-codely-color-text-secondary group-hover:text-codely-color-text-primary"),
+                        className: t("text-gamecowork-color-text-secondary group-hover:text-gamecowork-color-text-primary"),
                       }),
                     ],
                   }),
@@ -3392,16 +3392,16 @@ function bo({
                 children: [
                   e.jsx(Re, { checked: C, onChange: () => S(!C) }),
                   e.jsx("div", {
-                    className: t("text-sm leading-[22px] text-codely-color-text-secondary -mt-[1.5px]"),
+                    className: t("text-sm leading-[22px] text-gamecowork-color-text-secondary -mt-[1.5px]"),
                     children: e.jsx(dt, {
                       i18nKey: "tjhub.licenses.termsAgreement",
                       components: {
                         terms: e.jsx("a", {
-                          className: t("cursor-pointer text-codely-color-text-link underline"),
+                          className: t("cursor-pointer text-gamecowork-color-text-link underline"),
                           onClick: () => g.post("openUrl", "https://unity.cn/legal/terms"),
                         }),
                         privacy: e.jsx("a", {
-                          className: t("cursor-pointer text-codely-color-text-link underline"),
+                          className: t("cursor-pointer text-gamecowork-color-text-link underline"),
                           onClick: () => g.post("openUrl", "https://unity.cn/legal/privacy"),
                         }),
                       },
@@ -3414,7 +3414,7 @@ function bo({
                   className: t("flex flex-col gap-1"),
                   children: [
                     e.jsx("div", {
-                      className: t("text-sm text-codely-color-text-default"),
+                      className: t("text-sm text-gamecowork-color-text-default"),
                       children: v("tjhub.common.organization"),
                     }),
                     e.jsx(ge, {
@@ -3426,7 +3426,7 @@ function bo({
                           size: "sm",
                           variant: "ghost",
                           className: t(
-                            "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-codely-color-border-subtle bg-codely-color-surface-sidebar",
+                            "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sidebar",
                           ),
                           children: [
                             e.jsx("div", {
@@ -3434,7 +3434,7 @@ function bo({
                               children:
                                 (U = L == null ? void 0 : L.name) != null ? U : v("tjhub.common.selectOrganization"),
                             }),
-                            e.jsx(pe, { className: t("text-codely-color-text-default w-4 h-4 rotate-90") }),
+                            e.jsx(pe, { className: t("text-gamecowork-color-text-default w-4 h-4 rotate-90") }),
                           ],
                         }),
                       }),
@@ -3461,7 +3461,7 @@ function bo({
                 disabled: r || (u ? d.includes(u.name) : !1),
                 onClick: () => u && x(u.name),
                 children: [
-                  e.jsx(Nt, { className: t("text-codely-color-text-accent") }),
+                  e.jsx(Nt, { className: t("text-gamecowork-color-text-accent") }),
                   e.jsx("div", {
                     children:
                       u && d.includes(u.name)
@@ -3475,7 +3475,7 @@ function bo({
                 disabled: r || !N || p,
                 onClick: w,
                 children: [
-                  e.jsx(Ct, { className: t("text-codely-color-text-accent w-4 h-4") }),
+                  e.jsx(Ct, { className: t("text-gamecowork-color-text-accent w-4 h-4") }),
                   e.jsx("div", {
                     children: v(p ? "tjhub.newProject.creatingEllipsis" : "tjhub.newProject.createProject"),
                   }),
@@ -3491,7 +3491,7 @@ function go({ size: s = 14 }) {
     style: {
       width: s,
       height: s,
-      background: `conic-gradient(var(--codely-color-accent-default) ${30 * 3.6}deg, var(--codely-color-accent-border) 0deg)`,
+      background: `conic-gradient(var(--gamecowork-color-accent-default) ${30 * 3.6}deg, var(--gamecowork-color-accent-border) 0deg)`,
       WebkitMask: `radial-gradient(circle, transparent ${s / 2 - 3}px, black ${s / 2 - 3 + 1}px)`,
       mask: `radial-gradient(circle, transparent ${s / 2 - 3}px, black ${s / 2 - 3 + 1}px)`,
     },
@@ -3503,29 +3503,29 @@ function yo({ template: s, selected: o, onClick: l, downloadingTemplates: r, onD
     u = `${(N = window.vscMediaUrl) != null ? N : ""}/images/DTT-${a}.png`;
   let x = "";
   o
-    ? (x = "border-codely-color-accent-default")
-    : (x = "border-codely-color-border-subtle hover:border-codely-color-border-bold");
+    ? (x = "border-gamecowork-color-accent-default")
+    : (x = "border-gamecowork-color-border-subtle hover:border-gamecowork-color-border-bold");
   let d;
   s.type === "CORE"
     ? (d = e.jsx("div", {
-        className: t("w-4 h-4 p-[2px] bg-codely-color-status-info-border rounded"),
+        className: t("w-4 h-4 p-[2px] bg-gamecowork-color-status-info-border rounded"),
         children: e.jsx(gt, { className: t("text-[#64D2FF]") }),
       }))
     : s.type === "SAMPLE" &&
       (d = e.jsx("div", {
-        className: t("w-4 h-4 p-[2px] bg-codely-color-status-warning-border rounded"),
+        className: t("w-4 h-4 p-[2px] bg-gamecowork-color-status-warning-border rounded"),
         children: e.jsx(vt, { className: t("text-[#FFD60A]") }),
       }));
   let b = e.jsx(e.Fragment, {});
   return (
     r.includes(s.name)
       ? (b = e.jsx("div", {
-          className: t("w-4 h-4 p-[2px] bg-codely-color-surface-overlay rounded flex items-center justify-center"),
+          className: t("w-4 h-4 p-[2px] bg-gamecowork-color-surface-overlay rounded flex items-center justify-center"),
           children: e.jsx(go, {}),
         }))
       : s.status === "DOWNLOADABLE" &&
         (b = e.jsx("div", {
-          className: t("w-4 h-4 p-[2px] bg-codely-color-surface-overlay rounded cursor-pointer"),
+          className: t("w-4 h-4 p-[2px] bg-gamecowork-color-surface-overlay rounded cursor-pointer"),
           onClick: (w) => {
             (w.stopPropagation(), c(s.name));
           },
@@ -3550,13 +3550,13 @@ function yo({ template: s, selected: o, onClick: l, downloadingTemplates: r, onD
         }),
         e.jsx("div", {
           className: t(
-            "p-3 text-codely-color-text-default text-sm leading-[14px] overflow-hidden text-ellipsis whitespace-nowrap",
+            "p-3 text-gamecowork-color-text-default text-sm leading-[14px] overflow-hidden text-ellipsis whitespace-nowrap",
           ),
           children: s.displayName,
         }),
         e.jsx("div", {
           className: t(
-            "absolute h-full w-full bg-codely-color-interactive-hover opacity-0 group-hover:opacity-100 pointer-events-none",
+            "absolute h-full w-full bg-gamecowork-color-interactive-hover opacity-0 group-hover:opacity-100 pointer-events-none",
           ),
         }),
       ],
@@ -3577,19 +3577,19 @@ function vo({ onClose: s, onSave: o, initialValue: l = "" }) {
     c = n.useContext(ue),
     [a, u] = n.useState(l);
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col relative"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col relative"),
     children: [
       e.jsxs("div", {
         className: t("pt-4 pb-2 px-5 flex flex-row justify-between h-8 items-center"),
         children: [
           e.jsx("div", {
-            className: t("leading-[32px] font-medium text-codely-color-text-default"),
+            className: t("leading-[32px] font-medium text-gamecowork-color-text-default"),
             children: r("tjhub.projects.cmdArgsTitle"),
           }),
           e.jsx(ne, {
             size: "sm",
             onClick: s,
-            children: e.jsx(ze, { className: t("size-4 text-codely-color-text-tertiary") }),
+            children: e.jsx(ze, { className: t("size-4 text-gamecowork-color-text-tertiary") }),
           }),
         ],
       }),
@@ -3603,7 +3603,7 @@ function vo({ onClose: s, onSave: o, initialValue: l = "" }) {
             onChange: (x) => u(x),
           }),
           e.jsx("div", {
-            className: t("text-xs text-codely-color-text-secondary mt-1"),
+            className: t("text-xs text-gamecowork-color-text-secondary mt-1"),
             children: r("tjhub.projects.cmdArgsExample"),
           }),
         ],
@@ -3616,10 +3616,10 @@ function vo({ onClose: s, onSave: o, initialValue: l = "" }) {
             className: t("flex flex-row gap-1 cursor-pointer items-center"),
             children: [
               e.jsx("div", {
-                className: t("text-sm leading-[22px] text-codely-color-text-link"),
+                className: t("text-sm leading-[22px] text-gamecowork-color-text-link"),
                 children: r("tjhub.projects.documentation"),
               }),
-              e.jsx(Ye, { className: t("text-codely-color-text-link") }),
+              e.jsx(Ye, { className: t("text-gamecowork-color-text-link") }),
             ],
           }),
           e.jsxs("div", {
@@ -3629,7 +3629,7 @@ function vo({ onClose: s, onSave: o, initialValue: l = "" }) {
                 variant: "ghost",
                 size: "sm",
                 onClick: s,
-                className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+                className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
                 children: r("tjhub.common.cancel"),
               }),
               e.jsx(A, {
@@ -3688,7 +3688,7 @@ function _t(s, o, l) {
 }
 function Co({ anchor: s }) {
   const o = "absolute w-0 h-0",
-    l = "var(--codely-color-surface-card)",
+    l = "var(--gamecowork-color-surface-card)",
     r = "drop-shadow(0 4px 3px rgba(0,0,0,0.08))";
   switch (s) {
     case "top":
@@ -3768,7 +3768,7 @@ function ko({ anchor: s = "auto-vertical", trigger: o, children: l, className: r
             e.jsx("div", { className: t("fixed z-[1099]"), style: N }),
             e.jsxs("div", {
               ref: d,
-              className: t("fixed z-[1100] bg-codely-color-surface-card shadow-md overflow-visible rounded-xl", r),
+              className: t("fixed z-[1100] bg-gamecowork-color-surface-card shadow-md overflow-visible rounded-xl", r),
               style: b,
               onMouseEnter: () => C(!0),
               onMouseLeave: () => C(!1),
@@ -3782,12 +3782,12 @@ function ko({ anchor: s = "auto-vertical", trigger: o, children: l, className: r
 function So({ onClose: s, onConfirm: o }) {
   const { t: l } = q();
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       e.jsx("div", {
         className: t("px-5 pt-4 pb-2"),
         children: e.jsx("div", {
-          className: t("text-base font-medium text-codely-color-text-primary"),
+          className: t("text-base font-medium text-gamecowork-color-text-primary"),
           children: l("tjhub.projects.changeEditorTitle"),
         }),
       }),
@@ -3795,11 +3795,11 @@ function So({ onClose: s, onConfirm: o }) {
         className: t("px-5 pb-2"),
         children: [
           e.jsx("p", {
-            className: t("m-0 mb-3 text-sm leading-5 text-codely-color-text-primary"),
+            className: t("m-0 mb-3 text-sm leading-5 text-gamecowork-color-text-primary"),
             children: l("tjhub.projects.changeEditorBody1"),
           }),
           e.jsx("p", {
-            className: t("m-0 text-sm leading-5 text-codely-color-text-primary"),
+            className: t("m-0 text-sm leading-5 text-gamecowork-color-text-primary"),
             children: l("tjhub.projects.changeEditorBody2"),
           }),
         ],
@@ -3811,7 +3811,7 @@ function So({ onClose: s, onConfirm: o }) {
             variant: "ghost",
             size: "sm",
             onClick: s,
-            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: l("tjhub.common.cancel"),
           }),
           e.jsx(A, {
@@ -3887,19 +3887,19 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
     },
     se = w.filter((E) => (E.displayName || E.name).toLowerCase().includes(K.trim().toLowerCase()));
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col h-[28rem]"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col h-[28rem]"),
     children: [
       e.jsxs("div", {
         className: t("flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0"),
         children: [
           e.jsx("div", {
-            className: t("text-base font-medium text-codely-color-text-primary"),
+            className: t("text-base font-medium text-gamecowork-color-text-primary"),
             children: c("tjhub.connectCloud.title"),
           }),
           e.jsx(ne, {
             size: "sm",
             onClick: r,
-            children: e.jsx(ze, { className: t("size-4 text-codely-color-text-tertiary") }),
+            children: e.jsx(ze, { className: t("size-4 text-gamecowork-color-text-tertiary") }),
           }),
         ],
       }),
@@ -3910,7 +3910,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
             className: t("flex flex-col gap-1"),
             children: [
               e.jsx("div", {
-                className: t("text-sm text-codely-color-text-secondary leading-[22px]"),
+                className: t("text-sm text-gamecowork-color-text-secondary leading-[22px]"),
                 children: c("tjhub.common.organization"),
               }),
               e.jsx(ge, {
@@ -3923,7 +3923,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                     size: "sm",
                     variant: "ghost",
                     className: t(
-                      "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-codely-color-border-subtle h-8",
+                      "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle h-8",
                     ),
                     children: [
                       e.jsx("div", {
@@ -3931,7 +3931,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                         children: (U = b == null ? void 0 : b.name) != null ? U : c("tjhub.common.selectOrganization"),
                       }),
                       e.jsx(pe, {
-                        className: t("text-codely-color-text-default w-4 h-4 rotate-90", I && "rotate-[270deg]"),
+                        className: t("text-gamecowork-color-text-default w-4 h-4 rotate-90", I && "rotate-[270deg]"),
                       }),
                     ],
                   }),
@@ -3963,7 +3963,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                 },
               }),
               e.jsx("div", {
-                className: t("text-sm leading-[22px] text-codely-color-text-secondary"),
+                className: t("text-sm leading-[22px] text-gamecowork-color-text-secondary"),
                 children: c("tjhub.connectCloud.connectExisting"),
               }),
             ],
@@ -3973,7 +3973,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
               className: t("flex flex-col gap-1"),
               children: [
                 e.jsx("div", {
-                  className: t("text-sm text-codely-color-text-secondary leading-[22px]"),
+                  className: t("text-sm text-gamecowork-color-text-secondary leading-[22px]"),
                   children: c("tjhub.connectCloud.cloudProject"),
                 }),
                 e.jsxs(ge, {
@@ -3987,7 +3987,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                       size: "sm",
                       variant: "ghost",
                       className: t(
-                        "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-codely-color-border-subtle",
+                        "flex flex-row justify-between w-full px-3 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                       ),
                       children: [
                         e.jsx("div", {
@@ -3999,7 +3999,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                               : c("tjhub.connectCloud.selectCloudProject"),
                         }),
                         e.jsx(pe, {
-                          className: t("text-codely-color-text-default w-4 h-4 rotate-90", R && "rotate-[270deg]"),
+                          className: t("text-gamecowork-color-text-default w-4 h-4 rotate-90", R && "rotate-[270deg]"),
                         }),
                       ],
                     }),
@@ -4039,7 +4039,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
                         }),
                         se.length === 0 &&
                           e.jsx("div", {
-                            className: t("py-2 px-3 text-sm text-codely-color-text-tertiary"),
+                            className: t("py-2 px-3 text-sm text-gamecowork-color-text-tertiary"),
                             children: c("tjhub.common.noResults"),
                           }),
                       ],
@@ -4055,16 +4055,16 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
         children: [
           e.jsx(Re, { checked: k, onChange: () => L(!k) }),
           e.jsx("div", {
-            className: t("text-sm leading-[22px] text-codely-color-text-secondary"),
+            className: t("text-sm leading-[22px] text-gamecowork-color-text-secondary"),
             children: e.jsx(dt, {
               i18nKey: "tjhub.licenses.termsAgreement",
               components: {
                 terms: e.jsx("a", {
-                  className: t("cursor-pointer text-codely-color-accent-default"),
+                  className: t("cursor-pointer text-gamecowork-color-accent-default"),
                   onClick: () => a.post("openUrl", "https://unity.cn/legal/terms"),
                 }),
                 privacy: e.jsx("a", {
-                  className: t("cursor-pointer text-codely-color-accent-default"),
+                  className: t("cursor-pointer text-gamecowork-color-accent-default"),
                   onClick: () => a.post("openUrl", "https://unity.cn/legal/privacy"),
                 }),
               },
@@ -4079,7 +4079,7 @@ function Eo({ projectPath: s, projectVersion: o, projectArchitecture: l, onClose
             variant: "ghost",
             size: "sm",
             onClick: r,
-            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: c("tjhub.common.cancel"),
           }),
           e.jsx(A, {
@@ -4098,12 +4098,12 @@ function Po({ projectName: s, editorVersion: o, onInstall: l, onUseOtherVersion:
   const { t: c } = q(),
     a = o || c("tjhub.common.unknown");
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       e.jsx("div", {
         className: t("px-5 pt-4 pb-2"),
         children: e.jsx("div", {
-          className: t("text-base font-medium text-codely-color-text-primary"),
+          className: t("text-base font-medium text-gamecowork-color-text-primary"),
           children: c("tjhub.projects.missingEditorDialogTitle"),
         }),
       }),
@@ -4111,20 +4111,20 @@ function Po({ projectName: s, editorVersion: o, onInstall: l, onUseOtherVersion:
         className: t("px-5 pb-4"),
         children: [
           e.jsx("div", {
-            className: t("mb-3 text-sm leading-5 text-codely-color-text-secondary"),
+            className: t("mb-3 text-sm leading-5 text-gamecowork-color-text-secondary"),
             children: c("tjhub.projects.missingEditorDialogProjectVersion", { name: s, version: a }),
           }),
           e.jsx("div", {
-            className: t("text-sm leading-5 text-codely-color-text-secondary"),
+            className: t("text-sm leading-5 text-gamecowork-color-text-secondary"),
             children: e.jsx(dt, {
               i18nKey: "tjhub.projects.missingEditorDialogBody",
               components: {
                 install: e.jsx("a", {
-                  className: t("text-codely-color-text-link cursor-pointer underline"),
+                  className: t("text-gamecowork-color-text-link cursor-pointer underline"),
                   onClick: l,
                 }),
                 otherVersion: e.jsx("a", {
-                  className: t("text-codely-color-text-link cursor-pointer underline"),
+                  className: t("text-gamecowork-color-text-link cursor-pointer underline"),
                   onClick: r,
                 }),
               },
@@ -4138,19 +4138,19 @@ function Po({ projectName: s, editorVersion: o, onInstall: l, onUseOtherVersion:
 function Mo({ onLocate: s, onInstall: o }) {
   const { t: l } = q();
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       e.jsx("div", {
         className: t("px-5 pt-4 pb-2"),
         children: e.jsx("div", {
-          className: t("text-base font-medium text-codely-color-text-primary"),
+          className: t("text-base font-medium text-gamecowork-color-text-primary"),
           children: l("tjhub.noEditor.title"),
         }),
       }),
       e.jsx("div", {
         className: t("px-5 pb-2"),
         children: e.jsx("p", {
-          className: t("m-0 text-sm leading-5 text-codely-color-text-primary"),
+          className: t("m-0 text-sm leading-5 text-gamecowork-color-text-primary"),
           children: l("tjhub.noEditor.body"),
         }),
       }),
@@ -4161,7 +4161,7 @@ function Mo({ onLocate: s, onInstall: o }) {
             variant: "ghost",
             size: "sm",
             onClick: s,
-            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: l("tjhub.common.locate"),
           }),
           e.jsx(A, {
@@ -4200,14 +4200,14 @@ function ls({ value: s, label: o, disabled: l, className: r, onClick: c }) {
         className: t(
           "relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border-[2px] border-solid transition-colors box-border",
           u
-            ? "border-codely-color-accent-default"
-            : "border-codely-color-border-strong hover:border-codely-color-border-bold",
+            ? "border-gamecowork-color-accent-default"
+            : "border-gamecowork-color-border-strong hover:border-gamecowork-color-border-bold",
         ),
         children: [
           u &&
             e.jsx("span", {
               className: t(
-                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-2 rounded-full bg-codely-color-accent-default",
+                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-2 rounded-full bg-gamecowork-color-accent-default",
               ),
             }),
           e.jsx("input", {
@@ -4334,19 +4334,19 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
     },
     B = i.filter((f) => (f.displayName || f.name).toLowerCase().includes(g.trim().toLowerCase()));
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col h-[32rem]"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col h-[32rem]"),
     children: [
       e.jsxs("div", {
         className: t("flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0"),
         children: [
           e.jsx("div", {
-            className: t("text-base font-medium text-codely-color-text-primary"),
+            className: t("text-base font-medium text-gamecowork-color-text-primary"),
             children: r(W === "select" ? "tjhub.remoteProject.title" : "tjhub.remoteProject.selectEditorVersion"),
           }),
           e.jsx(ne, {
             size: "sm",
             onClick: s,
-            children: e.jsx(ze, { className: t("size-4 text-codely-color-text-tertiary") }),
+            children: e.jsx(ze, { className: t("size-4 text-gamecowork-color-text-tertiary") }),
           }),
         ],
       }),
@@ -4361,7 +4361,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                     className: t("flex flex-col gap-1 w-[38%] min-w-0"),
                     children: [
                       e.jsx("div", {
-                        className: t("text-sm text-codely-color-text-secondary leading-[22px]"),
+                        className: t("text-sm text-gamecowork-color-text-secondary leading-[22px]"),
                         children: r("tjhub.common.organization"),
                       }),
                       e.jsx(ge, {
@@ -4374,7 +4374,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                             size: "sm",
                             variant: "ghost",
                             className: t(
-                              "flex flex-row justify-between w-full px-3 h-8 text-sm rounded-lg border border-solid border-codely-color-border-subtle",
+                              "flex flex-row justify-between w-full px-3 h-8 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                             ),
                             children: [
                               e.jsx("div", {
@@ -4384,7 +4384,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                               }),
                               e.jsx(pe, {
                                 className: t(
-                                  "text-codely-color-text-default w-4 h-4 rotate-90",
+                                  "text-gamecowork-color-text-default w-4 h-4 rotate-90",
                                   ee && "rotate-[270deg]",
                                 ),
                               }),
@@ -4412,7 +4412,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                     className: t("flex flex-col gap-1 w-[62%] min-w-0"),
                     children: [
                       e.jsx("div", {
-                        className: t("text-sm text-codely-color-text-secondary leading-[22px] truncate"),
+                        className: t("text-sm text-gamecowork-color-text-secondary leading-[22px] truncate"),
                         children: p
                           ? r("tjhub.remoteProject.chooseLocation", { name: p.name })
                           : r("tjhub.remoteProject.chooseLocationDefault"),
@@ -4425,15 +4425,15 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                           disabled: !p,
                           onClick: () => void V(),
                           className: t(
-                            "flex flex-row justify-between items-center h-8 bg-codely-color-surface-base border border-solid border-codely-color-border-subtle rounded-lg px-3 w-full",
+                            "flex flex-row justify-between items-center h-8 bg-gamecowork-color-surface-base border border-solid border-gamecowork-color-border-subtle rounded-lg px-3 w-full",
                             !p && "cursor-not-allowed opacity-50",
                           ),
                           children: [
                             e.jsx("div", {
-                              className: t("text-sm truncate text-codely-color-text-primary"),
+                              className: t("text-sm truncate text-gamecowork-color-text-primary"),
                               children: O || r("tjhub.common.selectFolder"),
                             }),
-                            e.jsx(Et, { className: t("!text-base text-codely-color-text-secondary flex-shrink-0") }),
+                            e.jsx(Et, { className: t("!text-base text-gamecowork-color-text-secondary flex-shrink-0") }),
                           ],
                         }),
                       }),
@@ -4448,7 +4448,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                     className: t("flex flex-row items-center justify-between gap-3"),
                     children: [
                       e.jsx("div", {
-                        className: t("text-sm text-codely-color-text-secondary leading-[22px] whitespace-nowrap"),
+                        className: t("text-sm text-gamecowork-color-text-secondary leading-[22px] whitespace-nowrap"),
                         children: r("tjhub.remoteProject.remoteProject"),
                       }),
                       e.jsx(Je, {
@@ -4461,13 +4461,13 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                   }),
                   e.jsx(he, {
                     className: t(
-                      "flex-1 min-h-0 bg-codely-color-surface-input rounded border border-solid border-codely-color-border-default",
+                      "flex-1 min-h-0 bg-gamecowork-color-surface-input rounded border border-solid border-gamecowork-color-border-default",
                     ),
                     children:
                       B.length === 0
                         ? e.jsx("div", {
                             className: t(
-                              "flex items-center justify-center h-full text-sm text-codely-color-text-tertiary",
+                              "flex items-center justify-center h-full text-sm text-gamecowork-color-text-tertiary",
                             ),
                             children: r("tjhub.common.noResults"),
                           })
@@ -4478,29 +4478,29 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                               {
                                 onClick: () => !h && w(f),
                                 className: t(
-                                  "flex flex-row items-center px-3 h-[46px] border-0 border-b border-solid border-codely-color-border-subtle last:border-b-0 gap-2",
+                                  "flex flex-row items-center px-3 h-[46px] border-0 border-b border-solid border-gamecowork-color-border-subtle last:border-b-0 gap-2",
                                   h
                                     ? "opacity-50 cursor-not-allowed"
                                     : (p == null ? void 0 : p.id) === f.id
-                                      ? "bg-codely-color-interactive-selected cursor-pointer"
-                                      : "hover:bg-codely-color-interactive-hover cursor-pointer",
+                                      ? "bg-gamecowork-color-interactive-selected cursor-pointer"
+                                      : "hover:bg-gamecowork-color-interactive-hover cursor-pointer",
                                 ),
                                 children: [
                                   e.jsxs("div", {
                                     className: t("flex flex-col gap-0.5 min-w-0 flex-1"),
                                     children: [
                                       e.jsx("span", {
-                                        className: t("text-sm text-codely-color-text-primary truncate"),
+                                        className: t("text-sm text-gamecowork-color-text-primary truncate"),
                                         children: f.displayName || f.name,
                                       }),
                                       h
                                         ? e.jsx("span", {
-                                            className: t("text-xs text-codely-color-text-tertiary"),
+                                            className: t("text-xs text-gamecowork-color-text-tertiary"),
                                             children: r("tjhub.remoteProject.alreadyAdded"),
                                           })
                                         : f.updatedTime
                                           ? e.jsx("span", {
-                                              className: t("text-xs text-codely-color-text-tertiary"),
+                                              className: t("text-xs text-gamecowork-color-text-tertiary"),
                                               children: r("tjhub.remoteProject.lastModified", {
                                                 time: Pt(f.updatedTime, r),
                                               }),
@@ -4512,7 +4512,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                                     !h &&
                                     e.jsx("div", {
                                       className: t(
-                                        "flex items-center justify-center w-5 h-5 rounded-full bg-codely-color-accent-default flex-shrink-0",
+                                        "flex items-center justify-center w-5 h-5 rounded-full bg-gamecowork-color-accent-default flex-shrink-0",
                                       ),
                                       children: e.jsx(gs, { className: t("text-white w-3 h-3") }),
                                     }),
@@ -4534,7 +4534,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                 e.jsx("div", { className: t("h-3") }),
                 S.length === 0
                   ? e.jsx("div", {
-                      className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+                      className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
                       children: r("tjhub.common.noEditorsInstalled"),
                     })
                   : e.jsx(rs, {
@@ -4563,7 +4563,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                     variant: "ghost",
                     size: "sm",
                     onClick: s,
-                    className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+                    className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
                     children: r("tjhub.common.cancel"),
                   }),
                   e.jsx(A, {
@@ -4581,7 +4581,7 @@ function To({ onClose: s, onAdded: o, localProjects: l = [] }) {
                     variant: "ghost",
                     size: "sm",
                     onClick: () => se("select"),
-                    className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+                    className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
                     children: r("tjhub.common.back"),
                   }),
                   e.jsx(A, {
@@ -4602,8 +4602,8 @@ function Lo({ editor: s, value: o, selected: l, onClick: r }) {
   const { t: c } = q();
   return e.jsxs("div", {
     className: t(
-      "flex flex-row items-center gap-3 p-4 rounded-xl bg-codely-color-surface-sidebar mb-2 mr-5 last:mb-0 cursor-pointer border-[2px] border-solid",
-      l ? "border-codely-color-accent-default" : "border-transparent",
+      "flex flex-row items-center gap-3 p-4 rounded-xl bg-gamecowork-color-surface-sidebar mb-2 mr-5 last:mb-0 cursor-pointer border-[2px] border-solid",
+      l ? "border-gamecowork-color-accent-default" : "border-transparent",
     ),
     onClick: r,
     children: [
@@ -4614,20 +4614,20 @@ function Lo({ editor: s, value: o, selected: l, onClick: r }) {
           e.jsx(De, { className: t("w-4") }),
           e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: (a = s.semver) != null ? a : s.version }),
           e.jsxs("div", {
-            className: t("text-sm mr-1 text-codely-color-text-secondary"),
+            className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
             children: ["(", s.version, ")"],
           }),
           s.isHmiRecommended &&
             e.jsx("div", {
               className: t(
-                "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
               ),
               children: c("tjhub.common.ltsForHmi"),
             }),
           je() &&
             e.jsx("div", {
               className: t(
-                "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
               ),
               children: c(`tjhub.common.arch.${s.architecture}`, { defaultValue: s.architecture }),
             }),
@@ -4639,19 +4639,19 @@ function Lo({ editor: s, value: o, selected: l, onClick: r }) {
 function Do({ projectName: s, onCancel: o, onConfirm: l, removing: r }) {
   const { t: c } = q();
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card flex flex-col"),
     children: [
       e.jsx("div", {
         className: t("px-5 pt-4 pb-2"),
         children: e.jsx("div", {
-          className: t("text-base font-medium text-codely-color-text-primary"),
+          className: t("text-base font-medium text-gamecowork-color-text-primary"),
           children: c("tjhub.projects.removeTitle"),
         }),
       }),
       e.jsx("div", {
         className: t("px-5 pb-2"),
         children: e.jsx("p", {
-          className: t("m-0 text-sm leading-5 text-codely-color-text-primary"),
+          className: t("m-0 text-sm leading-5 text-gamecowork-color-text-primary"),
           children: e.jsx(dt, {
             i18nKey: "tjhub.projects.removeBody",
             values: { name: s },
@@ -4667,7 +4667,7 @@ function Do({ projectName: s, onCancel: o, onConfirm: l, removing: r }) {
             size: "sm",
             onClick: o,
             disabled: r,
-            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+            className: t("px-4 py-2 text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
             children: c("tjhub.common.cancel"),
           }),
           e.jsx(A, {
@@ -4696,19 +4696,19 @@ function qt({
     [d, b] = n.useState(`${l}-${r}`),
     i = o.find((p) => `${p.version}-${p.architecture}` === d);
   return e.jsxs("div", {
-    className: t("bg-codely-color-surface-card h-[90vh] max-h-[652px] flex flex-col"),
+    className: t("bg-gamecowork-color-surface-card h-[90vh] max-h-[652px] flex flex-col"),
     children: [
       e.jsxs("div", {
         className: t("pt-4 pb-2 px-5 flex flex-row justify-between items-center"),
         children: [
           e.jsx("div", {
-            className: t("text-base font-medium text-codely-color-text-primary"),
+            className: t("text-base font-medium text-gamecowork-color-text-primary"),
             children: x("tjhub.projects.selectEditorTitle", { name: s }),
           }),
           e.jsx(ne, {
             size: "sm",
             onClick: a,
-            children: e.jsx(ze, { className: "size-4 text-codely-color-text-tertiary" }),
+            children: e.jsx(ze, { className: "size-4 text-gamecowork-color-text-tertiary" }),
           }),
         ],
       }),
@@ -4719,12 +4719,12 @@ function qt({
           children: [
             e.jsx("div", { className: t("h-3") }),
             e.jsx("div", {
-              className: t("text-sm text-codely-color-text-secondary mb-2"),
+              className: t("text-sm text-gamecowork-color-text-secondary mb-2"),
               children: x("tjhub.common.installs"),
             }),
             o.length === 0
               ? e.jsx("div", {
-                  className: t("flex items-center justify-center h-full text-sm text-codely-color-text-secondary"),
+                  className: t("flex items-center justify-center h-full text-sm text-gamecowork-color-text-secondary"),
                   children: x("tjhub.common.noEditorsInstalled"),
                 })
               : e.jsx(rs, {
@@ -4766,9 +4766,9 @@ function Ao({ hasSelection: s, buttonLabel: o, onCancel: l, onConfirm: r, onInst
         className: t("flex flex-row items-center gap-1 cursor-pointer"),
         onClick: c,
         children: [
-          e.jsx(Nt, { className: t("text-codely-color-text-link size-4") }),
+          e.jsx(Nt, { className: t("text-gamecowork-color-text-link size-4") }),
           e.jsx("div", {
-            className: t("text-sm text-codely-color-text-link leading-[22px]"),
+            className: t("text-sm text-gamecowork-color-text-link leading-[22px]"),
             children: a("tjhub.projects.installOtherEditorVersion"),
           }),
         ],
@@ -4780,7 +4780,7 @@ function Ao({ hasSelection: s, buttonLabel: o, onCancel: l, onConfirm: r, onInst
             onClick: l,
             variant: "ghost",
             size: "sm",
-            className: t("px-4 py-2 border border-solid border-codely-color-border-subtle rounded-lg text-sm"),
+            className: t("px-4 py-2 border border-solid border-gamecowork-color-border-subtle rounded-lg text-sm"),
             children: a("tjhub.common.cancel"),
           }),
           e.jsx(A, { size: "sm", disabled: !s, className: t("px-4 py-2 text-sm rounded-lg"), onClick: r, children: o }),
@@ -4794,8 +4794,8 @@ function Io({ editor: s, value: o, selected: l, onClick: r }) {
   const { t: c } = q();
   return e.jsxs("div", {
     className: t(
-      "flex flex-row items-center gap-3 p-4 rounded-xl bg-codely-color-surface-sidebar mb-2 mr-5 last:mb-0 cursor-pointer border-[2px] border-solid",
-      l ? "border-codely-color-accent-default" : "border-transparent",
+      "flex flex-row items-center gap-3 p-4 rounded-xl bg-gamecowork-color-surface-sidebar mb-2 mr-5 last:mb-0 cursor-pointer border-[2px] border-solid",
+      l ? "border-gamecowork-color-accent-default" : "border-transparent",
     ),
     onClick: r,
     children: [
@@ -4806,20 +4806,20 @@ function Io({ editor: s, value: o, selected: l, onClick: r }) {
           e.jsx(De, { className: t("w-4") }),
           e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: (a = s.semver) != null ? a : s.version }),
           e.jsxs("div", {
-            className: t("text-sm mr-1 text-codely-color-text-secondary"),
+            className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
             children: ["(", s.version, ")"],
           }),
           s.isHmiRecommended &&
             e.jsx("div", {
               className: t(
-                "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
               ),
               children: c("tjhub.common.ltsForHmi"),
             }),
           je() &&
             e.jsx("div", {
               className: t(
-                "text-xs leading-[17px] ml-1 px-1 border border-solid border-codely-color-border-subtle rounded text-codely-color-text-secondary",
+                "text-xs leading-[17px] ml-1 px-1 border border-solid border-gamecowork-color-border-subtle rounded text-gamecowork-color-text-secondary",
               ),
               children: c(`tjhub.common.arch.${s.architecture}`, { defaultValue: s.architecture }),
             }),
@@ -4874,12 +4874,12 @@ function zo({
       children: e.jsxs(A, {
         size: "sm",
         variant: "ghost",
-        className: t("flex flex-row px-4 text-sm rounded-lg border border-solid border-codely-color-border-subtle"),
+        className: t("flex flex-row px-4 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle"),
         children: [
           e.jsx("div", { className: t("mr-1 whitespace-nowrap"), children: g("tjhub.projects.add") }),
           e.jsx(pe, {
             className: t(
-              "text-codely-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
+              "text-gamecowork-color-text-default w-4 h-4 rotate-90 transition-transform duration-200",
               C && "rotate-[270deg]",
             ),
           }),
@@ -4889,23 +4889,23 @@ function zo({
   return e.jsxs("div", {
     className: "flex flex-row justify-between pl-3 h-8 mb-6 items-center pr-11",
     children: [
-      e.jsx("div", { className: "text-xl text-codely-color-text-primary", children: g("tjhub.projects.title") }),
+      e.jsx("div", { className: "text-xl text-gamecowork-color-text-primary", children: g("tjhub.projects.title") }),
       e.jsxs("div", {
         className: "flex flex-row items-center",
         children: [
           p &&
             e.jsxs("div", {
-              className: t("flex flex-row items-center gap-1 px-3 h-7 rounded-full bg-codely-color-interactive-hover"),
+              className: t("flex flex-row items-center gap-1 px-3 h-7 rounded-full bg-gamecowork-color-interactive-hover"),
               children: [
                 e.jsxs("span", {
-                  className: t("text-sm text-codely-color-text-primary whitespace-nowrap"),
+                  className: t("text-sm text-gamecowork-color-text-primary whitespace-nowrap"),
                   children: [g("tjhub.projects.editorVersion"), " ", p],
                 }),
                 e.jsx("div", {
                   className: t("cursor-pointer rounded-full size-[14px] flex items-center justify-center"),
                   onClick: w,
                   children: e.jsx(Rs, {
-                    className: t("text-codely-color-text-secondary hover:text-codely-color-text-primary"),
+                    className: t("text-gamecowork-color-text-secondary hover:text-gamecowork-color-text-primary"),
                   }),
                 }),
               ],
@@ -4928,21 +4928,21 @@ function zo({
                   className: t("ml-2 rounded-lg"),
                   tooltip: g("tjhub.common.search"),
                   onClick: () => d(!0),
-                  children: e.jsx(kt, { className: t("text-codely-color-text-secondary") }),
+                  children: e.jsx(kt, { className: t("text-gamecowork-color-text-secondary") }),
                 })),
           e.jsx(ne, {
             size: "md",
             className: t("ml-2 w-8 flex-shrink-0 rounded-lg"),
             tooltip: g("tjhub.licenses.title"),
             onClick: c,
-            children: e.jsx(es, { className: t("text-codely-color-text-secondary") }),
+            children: e.jsx(es, { className: t("text-gamecowork-color-text-secondary") }),
           }),
           e.jsx(ne, {
             size: "md",
             className: t("ml-2 w-8 flex-shrink-0 rounded-lg"),
             tooltip: g("tjhub.install.title"),
             onClick: a,
-            children: e.jsx(yt, { className: t("text-codely-color-text-secondary") }),
+            children: e.jsx(yt, { className: t("text-gamecowork-color-text-secondary") }),
           }),
           e.jsxs(ge, {
             anchor: "bottom end",
@@ -4955,7 +4955,7 @@ function zo({
                 onClick: l,
               }),
               e.jsx(de, {
-                icon: e.jsx(xt, { className: t("text-codely-color-text-secondary") }),
+                icon: e.jsx(xt, { className: t("text-gamecowork-color-text-secondary") }),
                 label: g("tjhub.projects.openCloudProject"),
                 onClick: r,
               }),
@@ -4968,10 +4968,10 @@ function zo({
             className: "flex flex-row ml-2 px-4 items-center text-sm rounded-lg",
             children: [
               N
-                ? e.jsx(at, { className: t("w-4 h-4 mr-1 animate-spin text-codely-color-text-accent") })
-                : e.jsx(Ct, { className: t("text-codely-color-text-accent w-4 h-4 mr-1") }),
+                ? e.jsx(at, { className: t("w-4 h-4 mr-1 animate-spin text-gamecowork-color-text-accent") })
+                : e.jsx(Ct, { className: t("text-gamecowork-color-text-accent w-4 h-4 mr-1") }),
               e.jsx("div", {
-                className: t("text-codely-color-text-accent whitespace-nowrap"),
+                className: t("text-gamecowork-color-text-accent whitespace-nowrap"),
                 children: g("tjhub.projects.newProject"),
               }),
             ],
@@ -4982,7 +4982,7 @@ function zo({
   });
 }
 function Ce() {
-  return e.jsx("div", { className: t("h-5 bg-codely-color-border-subtle w-px flex-shrink-0 flex-grow-0 basis-[1px]") });
+  return e.jsx("div", { className: t("h-5 bg-gamecowork-color-border-subtle w-px flex-shrink-0 flex-grow-0 basis-[1px]") });
 }
 const Fo = [
   { key: "favorite", labelKey: "tjhub.projects.colFavorite" },
@@ -4995,26 +4995,26 @@ function ot({ label: s, sortKey: o, currentSortKey: l, sortAsc: r, onSortChange:
   const u = o === l;
   return e.jsxs("div", {
     className: t(
-      `basis-0 group flex flex-row items-center flex-grow-[${a}] flex-shrink-[${a}] cursor-pointer min-w-0 hover:bg-codely-color-interactive-hover self-stretch`,
+      `basis-0 group flex flex-row items-center flex-grow-[${a}] flex-shrink-[${a}] cursor-pointer min-w-0 hover:bg-gamecowork-color-interactive-hover self-stretch`,
     ),
     onClick: () => c(o),
     children: [
       e.jsx("div", {
         className: t(
-          "px-2 flex flex-row items-center gap-1 text-sm font-semibold min-w-0 overflow-hidden text-codely-color-text-secondary",
+          "px-2 flex flex-row items-center gap-1 text-sm font-semibold min-w-0 overflow-hidden text-gamecowork-color-text-secondary",
         ),
         children: e.jsx("span", { className: t("truncate"), children: s }),
       }),
       u
         ? e.jsx(Rt, {
             className: t(
-              "flex-shrink-0 transition-transform duration-200 text-codely-color-text-secondary",
+              "flex-shrink-0 transition-transform duration-200 text-gamecowork-color-text-secondary",
               (o === "modified" ? r : !r) && "rotate-180",
             ),
           })
         : e.jsx(Rt, {
             className: t(
-              "flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-codely-color-text-secondary",
+              "flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gamecowork-color-text-secondary",
             ),
           }),
     ],
@@ -5038,7 +5038,7 @@ function Ut({
       className: t(
         "flex",
         "flex-row",
-        "h-12 items-center bg-codely-color-surface-sidebar justify-stretch rounded-t-xl",
+        "h-12 items-center bg-gamecowork-color-surface-sidebar justify-stretch rounded-t-xl",
       ),
       children: [
         e.jsx("div", {
@@ -5047,11 +5047,11 @@ function Ut({
             size: "sm",
             tooltip: d(a ? "tjhub.projects.foldAll" : "tjhub.projects.expandAll"),
             onClick: u,
-            className: t("rounded-md", a && "bg-codely-color-interactive-hover"),
+            className: t("rounded-md", a && "bg-gamecowork-color-interactive-hover"),
             children: e.jsx(pe, {
               className: t(
                 "transition-transform duration-200",
-                a ? "rotate-90 text-codely-color-text-primary" : "text-codely-color-text-secondary",
+                a ? "rotate-90 text-gamecowork-color-text-primary" : "text-gamecowork-color-text-secondary",
               ),
             }),
           }),
@@ -5065,13 +5065,13 @@ function Ut({
                 onClick: () => l("favorite"),
                 children: e.jsx(ne, {
                   size: "sm",
-                  className: t("rounded-md", s === "favorite" && "bg-codely-color-interactive-hover"),
+                  className: t("rounded-md", s === "favorite" && "bg-gamecowork-color-interactive-hover"),
                   tooltip: d(
                     s === "favorite" ? "tjhub.projects.cancelSortByFavorite" : "tjhub.projects.sortByFavorite",
                   ),
                   children: e.jsx(ss, {
                     className: t(
-                      s === "favorite" ? "stroke-codely-color-text-primary" : "stroke-codely-color-text-secondary",
+                      s === "favorite" ? "stroke-gamecowork-color-text-primary" : "stroke-gamecowork-color-text-secondary",
                     ),
                   }),
                 }),
@@ -5087,10 +5087,10 @@ function Ut({
                 onClick: () => l("badge"),
                 children: e.jsx(ne, {
                   size: "sm",
-                  className: t("rounded-md", s === "badge" && "bg-codely-color-interactive-hover"),
+                  className: t("rounded-md", s === "badge" && "bg-gamecowork-color-interactive-hover"),
                   tooltip: d(s === "badge" ? "tjhub.projects.cancelSortByBadge" : "tjhub.projects.sortByBadge"),
                   children: e.jsx(Qt, {
-                    className: t(s === "badge" ? "text-codely-color-text-primary" : "text-codely-color-text-secondary"),
+                    className: t(s === "badge" ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-secondary"),
                   }),
                 }),
               }),
@@ -5107,10 +5107,10 @@ function Ut({
                   onClick: () => l("cloud"),
                   children: e.jsx(ne, {
                     size: "sm",
-                    className: t("rounded-md", s === "cloud" && "bg-codely-color-interactive-hover"),
+                    className: t("rounded-md", s === "cloud" && "bg-gamecowork-color-interactive-hover"),
                     children: e.jsx(xt, {
                       className: t(
-                        s === "cloud" ? "text-codely-color-text-primary" : "text-codely-color-text-secondary",
+                        s === "cloud" ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-secondary",
                       ),
                     }),
                   }),
@@ -5119,7 +5119,7 @@ function Ut({
                   className: t("py-3 px-4 w-[380px] flex flex-col gap-1"),
                   children: [
                     e.jsx("div", {
-                      className: t("text-sm leading-[24px] text-codely-color-text-default"),
+                      className: t("text-sm leading-[24px] text-gamecowork-color-text-default"),
                       children: d("tjhub.projects.cloudHeaderDesc"),
                     }),
                     e.jsxs("div", {
@@ -5127,10 +5127,10 @@ function Ut({
                       onClick: () => b.post("openUrl", "https://devops.unity.cn/"),
                       children: [
                         e.jsx("div", {
-                          className: t("text-sm text-codely-color-text-link"),
+                          className: t("text-sm text-gamecowork-color-text-link"),
                           children: d("tjhub.projects.cloudLearnMore"),
                         }),
-                        e.jsx(Ye, { className: t("text-codely-color-text-link") }),
+                        e.jsx(Ye, { className: t("text-gamecowork-color-text-link") }),
                       ],
                     }),
                   ],
@@ -5201,7 +5201,7 @@ function Ut({
                 size: "sm",
                 className: t("rounded-md"),
                 tooltip: d("tjhub.projects.columnSettings"),
-                children: e.jsx(Jt, { className: t("text-codely-color-text-secondary") }),
+                children: e.jsx(Jt, { className: t("text-gamecowork-color-text-secondary") }),
               }),
             }),
             children: Fo.map((i) =>
@@ -5212,13 +5212,13 @@ function Ut({
                   children: e.jsxs("button", {
                     type: "button",
                     className: t(
-                      "min-h-7 hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 rounded-md",
+                      "min-h-7 hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 rounded-md",
                     ),
                     onClick: () => c(i.key),
                     children: [
                       e.jsx(Re, { checked: r.has(i.key), onChange: () => {} }),
                       e.jsx("span", {
-                        className: t("min-w-0 flex-1 text-left text-codely-color-text-secondary"),
+                        className: t("min-w-0 flex-1 text-left text-gamecowork-color-text-secondary"),
                         children: d(i.labelKey),
                       }),
                     ],
@@ -5240,27 +5240,27 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
     className: t("py-2 px-[60px] flex flex-col"),
     children: [
       e.jsx("div", {
-        className: t("text-sm leading-[22px] text-codely-color-text-default"),
+        className: t("text-sm leading-[22px] text-gamecowork-color-text-default"),
         children: r("tjhub.projects.configuration"),
       }),
       e.jsxs("div", {
         className: t("flex flex-row mt-2 items-center"),
         children: [
           e.jsx("div", {
-            className: t("text-sm basis-[270px] text-codely-color-text-secondary leading-[22px]"),
+            className: t("text-sm basis-[270px] text-gamecowork-color-text-secondary leading-[22px]"),
             children: r("tjhub.projects.editorVersion"),
           }),
           e.jsxs("div", {
             className: t(
-              "cursor-pointer rounded hover:bg-codely-color-interactive-hover px-2 py-1 -mx-2 -my-1 flex flex-row items-center gap-1",
+              "cursor-pointer rounded hover:bg-gamecowork-color-interactive-hover px-2 py-1 -mx-2 -my-1 flex flex-row items-center gap-1",
             ),
             onClick: () => o(s),
             children: [
               e.jsx("div", {
-                className: t("text-sm text-codely-color-text-default leading-[22px]"),
+                className: t("text-sm text-gamecowork-color-text-default leading-[22px]"),
                 children: (c = s.semver) != null ? c : r("tjhub.common.unknown"),
               }),
-              e.jsx(ts, { className: t("text-codely-color-text-secondary flex-shrink-0") }),
+              e.jsx(ts, { className: t("text-gamecowork-color-text-secondary flex-shrink-0") }),
             ],
           }),
         ],
@@ -5269,18 +5269,18 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
         className: t("flex flex-row mt-2"),
         children: [
           e.jsx("div", {
-            className: t("text-sm basis-[270px] text-codely-color-text-secondary leading-[22px]"),
+            className: t("text-sm basis-[270px] text-gamecowork-color-text-secondary leading-[22px]"),
             children: r("tjhub.projects.modified"),
           }),
           e.jsxs("div", {
             className: t("flex flex-col"),
             children: [
               e.jsx("div", {
-                className: t("text-sm text-codely-color-text-default leading-[22px]"),
+                className: t("text-sm text-gamecowork-color-text-default leading-[22px]"),
                 children: Pt(s.lastModified, r),
               }),
               e.jsx("div", {
-                className: t("text-sm text-codely-color-text-secondary leading-[22px]"),
+                className: t("text-sm text-gamecowork-color-text-secondary leading-[22px]"),
                 children: s.lastModified,
               }),
             ],
@@ -5291,18 +5291,18 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
         e.jsxs(e.Fragment, {
           children: [
             e.jsx("div", {
-              className: t("text-sm leading-[22px] text-codely-color-text-default mt-4"),
+              className: t("text-sm leading-[22px] text-gamecowork-color-text-default mt-4"),
               children: r("tjhub.projects.connections"),
             }),
             e.jsxs("div", {
               className: t("flex flex-row mt-2"),
               children: [
                 e.jsx("div", {
-                  className: t("text-sm basis-[270px] text-codely-color-text-secondary leading-[22px]"),
+                  className: t("text-sm basis-[270px] text-gamecowork-color-text-secondary leading-[22px]"),
                   children: r("tjhub.projects.tuanjieOrganization"),
                 }),
                 e.jsx("div", {
-                  className: t("text-sm text-codely-color-text-default leading-[22px]"),
+                  className: t("text-sm text-gamecowork-color-text-default leading-[22px]"),
                   children: (a = s.organizationName) != null ? a : "—",
                 }),
               ],
@@ -5311,11 +5311,11 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
               className: t("flex flex-row mt-2"),
               children: [
                 e.jsx("div", {
-                  className: t("text-sm basis-[270px] text-codely-color-text-secondary leading-[22px]"),
+                  className: t("text-sm basis-[270px] text-gamecowork-color-text-secondary leading-[22px]"),
                   children: r("tjhub.projects.cloudProject"),
                 }),
                 e.jsx("div", {
-                  className: t("text-sm text-codely-color-text-default leading-[22px]"),
+                  className: t("text-sm text-gamecowork-color-text-default leading-[22px]"),
                   children: (u = s.repositoryName) != null ? u : "—",
                 }),
               ],
@@ -5325,25 +5325,25 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
       !s.repositoryName &&
         e.jsx(e.Fragment, {
           children: e.jsxs("div", {
-            className: t("flex flex-row bg-codely-color-accent-subtle rounded-lg px-3 py-2 mt-4"),
+            className: t("flex flex-row bg-gamecowork-color-accent-subtle rounded-lg px-3 py-2 mt-4"),
             children: [
-              e.jsx("div", { children: e.jsx(xt, { className: t("mr-2 stroke-codely-color-accent-default size-6") }) }),
+              e.jsx("div", { children: e.jsx(xt, { className: t("mr-2 stroke-gamecowork-color-accent-default size-6") }) }),
               e.jsxs("div", {
                 className: t("flex flex-col flex-1 gap-2"),
                 children: [
                   e.jsx("div", {
-                    className: t("text-sm text-codely-color-text-default leading-[22px]"),
+                    className: t("text-sm text-gamecowork-color-text-default leading-[22px]"),
                     children: r("tjhub.projects.cloudPromoTitle"),
                   }),
                   e.jsx("div", {
-                    className: t("text-sm text-codely-color-text-secondary leading-[22px]"),
+                    className: t("text-sm text-gamecowork-color-text-secondary leading-[22px]"),
                     children: r("tjhub.projects.cloudPromoDesc"),
                   }),
                 ],
               }),
               e.jsx("div", {
                 className: t(
-                  "flex flex-row items-center leading-[22px] ml-2 px-2 text-sm text-codely-color-accent-default cursor-pointer self-center",
+                  "flex flex-row items-center leading-[22px] ml-2 px-2 text-sm text-gamecowork-color-accent-default cursor-pointer self-center",
                 ),
                 onClick: () => l(s),
                 children: r("tjhub.projects.connectToCloud"),
@@ -5351,7 +5351,7 @@ function Oo({ project: s, onSelectEditor: o, onConnectCloud: l }) {
             ],
           }),
         }),
-      e.jsx("div", { className: t("bg-codely-color-border-subtle h-px -mx-[60px] mt-4") }),
+      e.jsx("div", { className: t("bg-gamecowork-color-border-subtle h-px -mx-[60px] mt-4") }),
     ],
   });
 }
@@ -5484,8 +5484,8 @@ function Vo({
               onClick: c,
               children: e.jsx(pe, {
                 className: t(
-                  "text-codely-color-text-secondary transition-transform duration-200",
-                  r && "rotate-90 text-codely-color-text-primary",
+                  "text-gamecowork-color-text-secondary transition-transform duration-200",
+                  r && "rotate-90 text-gamecowork-color-text-primary",
                 ),
               }),
             }),
@@ -5505,8 +5505,8 @@ function Vo({
                     onClick: () => u(s),
                     children: e.jsx(ss, {
                       className: t(
-                        "stroke-codely-color-text-secondary",
-                        s.isFavorite ? "fill-codely-color-text-secondary" : "",
+                        "stroke-gamecowork-color-text-secondary",
+                        s.isFavorite ? "fill-gamecowork-color-text-secondary" : "",
                       ),
                     }),
                   }),
@@ -5526,8 +5526,8 @@ function Vo({
                     onClick: N != null && N.url ? () => g.post("openUrl", N.url) : void 0,
                     children:
                       (N == null ? void 0 : N.status) === "certified"
-                        ? e.jsx(Is, { className: t("text-codely-color-text-secondary") })
-                        : e.jsx(Qt, { className: t("text-codely-color-text-secondary") }),
+                        ? e.jsx(Is, { className: t("text-gamecowork-color-text-secondary") })
+                        : e.jsx(Qt, { className: t("text-gamecowork-color-text-secondary") }),
                   }),
                 }),
               ],
@@ -5545,9 +5545,9 @@ function Vo({
                       ? w("tjhub.projects.cloudConnected")
                       : w("tjhub.projects.cloudNotConnected"),
                     children: s.repositoryName
-                      ? e.jsx(Os, { className: t("text-codely-color-text-secondary") })
+                      ? e.jsx(Os, { className: t("text-gamecowork-color-text-secondary") })
                       : e.jsx(xt, {
-                          className: t("text-codely-color-text-secondary cursor-pointer"),
+                          className: t("text-gamecowork-color-text-secondary cursor-pointer"),
                           onClick: () => p(s),
                         }),
                   }),
@@ -5563,7 +5563,7 @@ function Vo({
               text: k ? "" : w("tjhub.projects.editorNotInstalled"),
               children: e.jsxs("div", {
                 className: t(
-                  "relative px-2 flex flex-row rounded-lg hover:bg-codely-color-interactive-hover cursor-pointer",
+                  "relative px-2 flex flex-row rounded-lg hover:bg-gamecowork-color-interactive-hover cursor-pointer",
                 ),
                 onClick: () => !S && (k ? o(s) : l(s)),
                 children: [
@@ -5572,13 +5572,13 @@ function Vo({
                     children: [
                       e.jsx("div", {
                         className: t(
-                          "text-codely-color-text-default text-sm truncate whitespace-nowrap leading-[22px]",
+                          "text-gamecowork-color-text-default text-sm truncate whitespace-nowrap leading-[22px]",
                         ),
                         children: s.title,
                       }),
                       e.jsx("div", {
                         className: t(
-                          "text-codely-color-text-secondary text-xs truncate whitespace-nowrap leading-[22px]",
+                          "text-gamecowork-color-text-secondary text-xs truncate whitespace-nowrap leading-[22px]",
                         ),
                         children: s.path,
                       }),
@@ -5600,7 +5600,7 @@ function Vo({
                   className: t("basis-0 flex-grow-[1] flex-shrink-[1] min-w-0"),
                   children: e.jsx("div", {
                     className: t(
-                      "px-2 text-codely-color-text-secondary text-xs text-codely-color-text-default leading-[22px] whitespace-nowrap overflow-hidden truncate",
+                      "px-2 text-gamecowork-color-text-secondary text-xs text-gamecowork-color-text-default leading-[22px] whitespace-nowrap overflow-hidden truncate",
                     ),
                     children: Pt(s.lastModified, w),
                   }),
@@ -5615,14 +5615,14 @@ function Vo({
                   className: t("basis-0 flex-grow-[1] flex-shrink-[1] min-w-0"),
                   children: e.jsx("div", {
                     className: t(
-                      "w-full h-7 cursor-pointer hover:bg-codely-color-interactive-hover rounded-md flex flex-col justify-center",
+                      "w-full h-7 cursor-pointer hover:bg-gamecowork-color-interactive-hover rounded-md flex flex-col justify-center",
                     ),
                     onClick: () => i(s),
                     children: e.jsxs("div", {
                       className: t("px-2 overflow-hidden flex flex-row items-center justify-between"),
                       children: [
                         e.jsx("div", {
-                          className: t("text-xs text-codely-color-text-secondary leading-[22px] truncate"),
+                          className: t("text-xs text-gamecowork-color-text-secondary leading-[22px] truncate"),
                           children: (R = s.semver) != null ? R : w("tjhub.common.unknown"),
                         }),
                         e.jsxs("div", {
@@ -5632,10 +5632,10 @@ function Vo({
                               e.jsx(bt, {
                                 text: w("tjhub.projects.missingEditorVersion"),
                                 children: e.jsx(Ds, {
-                                  className: t("text-codely-color-status-warning-default flex-shrink-0 size-4"),
+                                  className: t("text-gamecowork-color-status-warning-default flex-shrink-0 size-4"),
                                 }),
                               }),
-                            e.jsx(ts, { className: t("text-codely-color-text-secondary flex-shrink-0") }),
+                            e.jsx(ts, { className: t("text-gamecowork-color-text-secondary flex-shrink-0") }),
                           ],
                         }),
                       ],
@@ -5652,7 +5652,7 @@ function Vo({
                   className: t("basis-0 flex-grow-[1] flex-shrink-[1] min-w-0"),
                   children: e.jsx("div", {
                     className: t(
-                      "px-2 text-codely-color-text-secondary text-xs text-codely-color-text-default leading-[22px] whitespace-nowrap overflow-hidden truncate",
+                      "px-2 text-gamecowork-color-text-secondary text-xs text-gamecowork-color-text-default leading-[22px] whitespace-nowrap overflow-hidden truncate",
                     ),
                     children: s.sizeInBytes === null ? "—" : Ro(s.sizeInBytes),
                   }),
@@ -5670,7 +5670,7 @@ function Vo({
                   size: "sm",
                   className: t("rounded-md"),
                   tooltip: w("common.more"),
-                  children: e.jsx(zs, { className: t("text-codely-color-text-secondary") }),
+                  children: e.jsx(zs, { className: t("text-gamecowork-color-text-secondary") }),
                 }),
               }),
               children: [
@@ -5693,13 +5693,13 @@ function Vo({
                   },
                 }),
                 e.jsx(de, {
-                  icon: e.jsx(Hs, { className: t("text-codely-color-text-secondary") }),
+                  icon: e.jsx(Hs, { className: t("text-gamecowork-color-text-secondary") }),
                   label: w("tjhub.projects.addCmdArgs"),
                   onClick: () => d(s),
                 }),
                 e.jsx(jt, {}),
                 e.jsx(de, {
-                  icon: e.jsx(lt, { className: t("text-codely-color-text-secondary") }),
+                  icon: e.jsx(lt, { className: t("text-gamecowork-color-text-secondary") }),
                   label: w("tjhub.projects.removeFromList"),
                   onClick: () => a(s),
                 }),
@@ -5721,11 +5721,11 @@ const $o = `
 .project-opening-sweep {
   background: linear-gradient(
     90deg,
-    var(--codely-color-accent-default) 0%,
-    var(--codely-color-accent-default) 30%,
+    var(--gamecowork-color-accent-default) 0%,
+    var(--gamecowork-color-accent-default) 30%,
     #D1F7EE 50%,
-    var(--codely-color-accent-default) 70%,
-    var(--codely-color-accent-default) 100%
+    var(--gamecowork-color-accent-default) 70%,
+    var(--gamecowork-color-accent-default) 100%
   );
   background-size: 200% 100%;
   animation: projectOpeningSweep 2s linear infinite;
@@ -5733,7 +5733,7 @@ const $o = `
 
 @media (prefers-reduced-motion: reduce) {
   .project-opening-sweep {
-    background: var(--codely-color-accent-default);
+    background: var(--gamecowork-color-accent-default);
     animation: none;
   }
 }
@@ -6317,9 +6317,9 @@ function _o({
           ? e.jsxs("div", {
               className: t("flex-1 flex items-center justify-center flex-col"),
               children: [
-                e.jsx(Gt, { className: t("!size-[66px] text-codely-color-text-tertiary") }),
+                e.jsx(Gt, { className: t("!size-[66px] text-gamecowork-color-text-tertiary") }),
                 e.jsx("span", {
-                  className: t("text-sm text-codely-color-text-secondary mt-2"),
+                  className: t("text-sm text-gamecowork-color-text-secondary mt-2"),
                   children: d("tjhub.projects.noProjectsYet"),
                 }),
               ],
@@ -6431,21 +6431,21 @@ function or() {
     ? e.jsx(Es, {})
     : o.state === "failed"
       ? e.jsx("div", {
-          className: "text-codely-color-status-error-text flex h-full items-center justify-center text-sm",
+          className: "text-gamecowork-color-status-error-text flex h-full items-center justify-center text-sm",
           children: o.error,
         })
       : o.state === "expired"
         ? e.jsxs("div", {
             className: t("flex flex-col items-center justify-center flex-1 px-6 py-8 max-w-[440px] mx-auto"),
             children: [
-              e.jsx(Fs, { className: t("text-codely-color-text-tertiary") }),
+              e.jsx(Fs, { className: t("text-gamecowork-color-text-tertiary") }),
               e.jsx("div", {
                 className: t("text-sm leading-[20px] mt-2 mb-6 text-center"),
                 children: s("tjhub.expired.message"),
               }),
               e.jsx(A, {
                 variant: "ghost",
-                className: t("text-sm rounded-lg border border-solid border-codely-color-border-strong"),
+                className: t("text-sm rounded-lg border border-solid border-gamecowork-color-border-strong"),
                 onClick: N,
                 children: s("tjhub.expired.relogin"),
               }),

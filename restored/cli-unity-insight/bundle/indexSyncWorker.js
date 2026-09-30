@@ -6122,7 +6122,7 @@ function Fd(e) {
   return e instanceof Error ? e.message : String(e);
 }
 import wt from "node:path";
-var MI = wt.join(".codely-cli", "UnityInsight"),
+var MI = wt.join(".gamecowork-cli", "UnityInsight"),
   TI = "index.db",
   UI = "index.db.tmp",
   AI = "index.current",
@@ -20575,7 +20575,7 @@ var od = new URL("https://codely.tuanjie.cn/api/metrics/events"),
   kU = 1e3 * 30,
   tI = 100,
   MU = "unity-metrics-distinct-id",
-  TU = "codely-unity-metrics-v1",
+  TU = "gamecowork-unity-metrics-v1",
   UU = xU(vU),
   ld = class e {
     static instance = null;
@@ -20648,7 +20648,7 @@ var od = new URL("https://codely.tuanjie.cn/api/metrics/events"),
         (this.events.length = 0));
     }
     shouldSkipEmission() {
-      let t = process.env.CODELY_UNITY_METRICS_NO_EMIT ?? process.env.CODELY_UNITY_METRICS_DISABLED;
+      let t = process.env.GAMECOWORK_UNITY_METRICS_NO_EMIT ?? process.env.GAMECOWORK_UNITY_METRICS_DISABLED;
       return t === "1" || t?.toLowerCase() === "true";
     }
     scheduleFlush() {

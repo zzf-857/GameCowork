@@ -239,10 +239,10 @@ async function K(e, n = {}, s) {
   return f;
 }
 function Ee(e) {
-  (window.dispatchEvent(new CustomEvent("codely:unity-insight-feature-changed", { detail: e })),
-    window.postMessage({ messageType: "codely:unity-insight-feature-changed", data: e }, "*"));
+  (window.dispatchEvent(new CustomEvent("gamecowork:unity-insight-feature-changed", { detail: e })),
+    window.postMessage({ messageType: "gamecowork:unity-insight-feature-changed", data: e }, "*"));
   try {
-    const n = new BroadcastChannel("codely-unity-insight-feature");
+    const n = new BroadcastChannel("gamecowork-unity-insight-feature");
     (n.postMessage(e), n.close());
   } catch {}
 }
@@ -353,7 +353,7 @@ function cn({ lineKey: e, label: n, percent: s, suffix: g }) {
         className: "prompt-bubble-in flex min-w-0 items-center gap-1",
         children: [
           x.jsxs("span", {
-            className: "phrase_cycler_text text-codely-color-text-tertiary min-w-0 truncate",
+            className: "phrase_cycler_text text-gamecowork-color-text-tertiary min-w-0 truncate",
             children: [n, u ? x.jsxs("span", { "aria-hidden": "true", children: [" ", s, "%"] }) : null],
           }),
           g,
@@ -378,7 +378,7 @@ function ct({ percent: e, label: n, progressPhase: s, progressDetail: g, active:
     label: n,
     percent: V,
     suffix: x.jsx("span", {
-      className: "text-codely-color-text-tertiary shrink-0 text-xs leading-5",
+      className: "text-gamecowork-color-text-tertiary shrink-0 text-xs leading-5",
       children: f("settings.insightIndex.indexStepProgress", {
         current: N.current,
         total: N.total,
@@ -408,30 +408,30 @@ function gt({ project: e, onToggle: n, onIndex: s, indexLabel: g, indexingLabel:
             className: "flex min-w-0 items-center gap-2",
             children: [
               x.jsx("div", {
-                className: "text-codely-color-text-primary truncate text-sm font-medium leading-6",
+                className: "text-gamecowork-color-text-primary truncate text-sm font-medium leading-6",
                 children: e.name,
               }),
               k === "indexed"
                 ? x.jsx("span", {
                     className:
-                      "bg-codely-color-surface-card border-codely-color-border-subtle text-codely-color-text-secondary shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
+                      "bg-gamecowork-color-surface-card border-gamecowork-color-border-subtle text-gamecowork-color-text-secondary shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
                     children: f("settings.insightIndex.indexedBadge"),
                   })
                 : k === "loading"
                   ? x.jsx("span", {
                       className:
-                        "bg-codely-color-surface-card border-codely-color-border-subtle text-codely-color-text-tertiary shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
+                        "bg-gamecowork-color-surface-card border-gamecowork-color-border-subtle text-gamecowork-color-text-tertiary shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
                       children: f("settings.insightIndex.loadingBadge"),
                     })
                   : x.jsx("span", {
                       className:
-                        "bg-codely-color-status-danger-muted border-codely-color-status-danger-border text-codely-color-status-danger-text shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
+                        "bg-gamecowork-color-status-danger-muted border-gamecowork-color-status-danger-border text-gamecowork-color-status-danger-text shrink-0 rounded border border-solid px-[5px] py-px text-xs leading-[1.4]",
                       children: f("settings.insightIndex.notIndexedBadge"),
                     }),
             ],
           }),
           x.jsx("div", {
-            className: "text-codely-color-text-tertiary truncate text-xs leading-5",
+            className: "text-gamecowork-color-text-tertiary truncate text-xs leading-5",
             title: e.path,
             children: e.path,
           }),
@@ -447,7 +447,7 @@ function gt({ project: e, onToggle: n, onIndex: s, indexLabel: g, indexingLabel:
               (C.preventDefault(), C.stopPropagation(), s());
             },
             className:
-              "border-codely-color-border-subtle text-codely-color-text-primary hover:bg-codely-color-interactive-hover flex h-[1.75rem] min-w-[3.5rem] cursor-pointer items-center justify-center rounded-lg border border-solid bg-transparent px-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+              "border-gamecowork-color-border-subtle text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover flex h-[1.75rem] min-w-[3.5rem] cursor-pointer items-center justify-center rounded-lg border border-solid bg-transparent px-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60",
             children: g,
           }),
           x.jsx(Fn, { value: e.enabled, onChange: n, disabled: e.toggling }),
@@ -476,7 +476,7 @@ function gt({ project: e, onToggle: n, onIndex: s, indexLabel: g, indexingLabel:
             })
           : T
             ? x.jsx("div", {
-                className: "text-codely-color-text-tertiary col-start-1 min-w-0 truncate text-xs leading-5",
+                className: "text-gamecowork-color-text-tertiary col-start-1 min-w-0 truncate text-xs leading-5",
                 children: T,
               })
             : null,
@@ -497,23 +497,23 @@ function ft({
   return x.jsxs("div", {
     className: "mt-8",
     children: [
-      x.jsx(Nn, { title: e, className: "text-codely-color-text-tertiary mb-4 text-sm capitalize" }),
+      x.jsx(Nn, { title: e, className: "text-gamecowork-color-text-tertiary mb-4 text-sm capitalize" }),
       x.jsx("div", {
-        className: "bg-codely-color-surface-card flex flex-col gap-2 rounded-[0.75rem] border",
+        className: "bg-gamecowork-color-surface-card flex flex-col gap-2 rounded-[0.75rem] border",
         children:
           n.length === 0
             ? s
               ? x.jsxs("div", {
-                  className: "text-codely-color-text-tertiary flex items-center gap-2 px-3 py-4 text-sm",
+                  className: "text-gamecowork-color-text-tertiary flex items-center gap-2 px-3 py-4 text-sm",
                   children: [x.jsx(jn, { className: "h-4 w-4 shrink-0 animate-spin" }), x.jsx("span", { children: u })],
                 })
-              : x.jsx("div", { className: "text-codely-color-text-tertiary px-3 py-4 text-sm", children: g })
+              : x.jsx("div", { className: "text-gamecowork-color-text-tertiary px-3 py-4 text-sm", children: g })
             : n.map((E, k) =>
                 x.jsx(
                   "div",
                   {
                     className: Sn(
-                      k < n.length - 1 && "border-codely-color-border-subtle border-0 border-b border-solid",
+                      k < n.length - 1 && "border-gamecowork-color-border-subtle border-0 border-b border-solid",
                     ),
                     children: x.jsx(gt, {
                       project: E,
@@ -1186,7 +1186,7 @@ function Pt({ isPlugin: e }) {
     emptyStateSettled: xn,
   });
   return x.jsxs("div", {
-    className: "bg-codely-color-surface-primary flex h-full flex-col",
+    className: "bg-gamecowork-color-surface-primary flex h-full flex-col",
     children: [
       x.jsx(Tn, { title: n("settings.tabs.insightIndex") }),
       x.jsx(In, {

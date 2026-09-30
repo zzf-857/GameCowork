@@ -4531,7 +4531,7 @@
         function resolveCompositeApplyMode(phase) {
           const currentPhase = phase || "update";
           const preset = compositeLayout ? compositeLayout.layoutPreset || "" : "";
-          const isPresetLayout = preset === "unity-default-layout" || preset === "codely-saved-layout";
+          const isPresetLayout = preset === "unity-default-layout" || preset === "gamecowork-saved-layout";
           // Preset layouts are explicit full snapshots only on first start.
           // During in-session updates (close/add tab), keep native auto-tracked views.
           if (isPresetLayout && currentPhase === "start") {

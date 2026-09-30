@@ -1,10 +1,10 @@
-# Codely App (Cowork) Reference
+# GameCowork App (Cowork) Reference
 
 Cowork is a standalone desktop application that provides a unified GUI
 platform to orchestrate agent activities independently of a terminal or IDE. It
-shares the same underlying agentic capabilities as Codely CLI.
+shares the same underlying agentic capabilities as GameCowork CLI.
 
-> [!NOTE] Cowork coexists with **Codely CLI**. While the CLI provides
+> [!NOTE] Cowork coexists with **GameCowork CLI**. While the CLI provides
 > a terminal-based experience, Cowork offers a full desktop application with
 > graphical project management, visual settings, and integrated workspaces. Both
 > share the same settings hierarchy, skills system, and MCP support.
@@ -76,18 +76,18 @@ The main panel for direct agent interaction, planning, and task execution.
 
 The **Settings** page provides global and project-level controls for agent
 behavior, security, and permissions. All settings are stored in JSON
-configuration files and shared with Codely CLI.
+configuration files and shared with GameCowork CLI.
 
 ### Global Settings
 
-Path: `~/.codely-cli/settings.json`
+Path: `~/.gamecowork-cli/settings.json`
 
 These settings apply across all projects and conversations:
 
-- **Model Selection**: Choose the active model (e.g., `codely-core`,
-  `codely-flash`, `codely-air`). Configured via `model-config.json`.
+- **Model Selection**: Choose the active model (e.g., `gamecowork-core`,
+  `gamecowork-flash`, `gamecowork-air`). Configured via `model-config.json`.
 - **Authentication**: Configure auth method via `selectedAuthType`
-  (e.g., `codely-oauth`).
+  (e.g., `gamecowork-oauth`).
 - **MCP Servers**: Add HTTP(S)-based MCP server endpoints under
   `mcpServers`.
 - **Unity Insight**: Enable/disable Unity project analysis via
@@ -96,14 +96,14 @@ These settings apply across all projects and conversations:
 
 ### Project-Level Settings
 
-Path: `<project-root>/.codely-cli/settings.json`
+Path: `<project-root>/.gamecowork-cli/settings.json`
 
 Each project can override specific fields from global settings:
 
 - **Model Override**: Use a different model for a specific project (e.g.,
-  `codely-core` for large codebases, `codely-flash` for lightweight tasks).
+  `gamecowork-core` for large codebases, `gamecowork-flash` for lightweight tasks).
 - **MCP Servers**: Project-level servers are merged with global servers.
-- **Skills**: Project-level skills in `.codely-cli/skills/` can be shared via
+- **Skills**: Project-level skills in `.gamecowork-cli/skills/` can be shared via
   Git. Team members clone and use the in-app Skills manager to install or
   enable them.
 
@@ -122,4 +122,4 @@ Each project can override specific fields from global settings:
 
 For common questions and troubleshooting (including pricing and billing),
 see the official FAQ page:
-<https://codely-docs.tuanjie.cn/faq/common-questions>
+<https://gamecowork-docs.tuanjie.cn/faq/common-questions>

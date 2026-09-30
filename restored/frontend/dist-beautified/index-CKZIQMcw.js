@@ -20964,13 +20964,13 @@ var Xy = vJe();
 const U7e = up(Xy),
   yJe = {
     default: "",
-    active: "text-codely-color-accent-default",
-    warning: "text-codely-color-status-warning-default",
+    active: "text-gamecowork-color-accent-default",
+    warning: "text-gamecowork-color-status-warning-default",
   },
   CJe = {
-    default: "text-codely-color-text-secondary",
-    active: "text-codely-color-text-default",
-    warning: "text-codely-color-text-default",
+    default: "text-gamecowork-color-text-secondary",
+    active: "text-gamecowork-color-text-default",
+    warning: "text-gamecowork-color-text-default",
   },
   wJe = ct.forwardRef((n, e) => {
     const { className: t, icon: i, children: r, disabled: s, variant: o = "default", ...a } = n,
@@ -20982,10 +20982,10 @@ const U7e = up(Xy),
       type: "button",
       disabled: s,
       className: gi(
-        "min-h-9 inline-flex cursor-pointer items-center gap-2 rounded-[6.25rem] border border-solid border-codely-color-border-subtle bg-codely-color-surface-primary px-3 py-1.5 text-sm transition-colors",
+        "min-h-9 inline-flex cursor-pointer items-center gap-2 rounded-[6.25rem] border border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-primary px-3 py-1.5 text-sm transition-colors",
         CJe[o],
-        "hover:bg-codely-color-interactive-hover",
-        "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-codely-color-border-subtle disabled:hover:text-codely-color-text-secondary",
+        "hover:bg-gamecowork-color-interactive-hover",
+        "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-gamecowork-color-border-subtle disabled:hover:text-gamecowork-color-text-secondary",
         t,
       ),
       ...a,
@@ -21298,7 +21298,7 @@ function DJe({ shortcuts: n, size: e = "sm" }) {
         "span",
         {
           className: gi(
-            "shrink-0 box-border inline-flex items-center justify-center bg-codely-color-surface-input p-0.5 text-xss text-codely-color-text-default",
+            "shrink-0 box-border inline-flex items-center justify-center bg-gamecowork-color-surface-input p-0.5 text-xss text-gamecowork-color-text-default",
             NJe[e],
             r === 0 && "rounded-l-default",
             r === t.length - 1 && "rounded-r-default",
@@ -21314,7 +21314,7 @@ const RJe = { sm: "text-xss min-w-2.5 h-2.5", md: "text-xs min-w-3 h-3", lg: "te
 function AJe({ shortcuts: n, size: e = "sm" }) {
   const t = j7e(n);
   return te.jsx("span", {
-    className: gi("inline-flex items-center gap-0.5 text-codely-color-text-tertiary"),
+    className: gi("inline-flex items-center gap-0.5 text-gamecowork-color-text-tertiary"),
     children: t.map((i, r) =>
       te.jsx("span", { className: gi("inline-flex items-center justify-center", RJe[e]), children: i }, `${i}-${r}`),
     ),
@@ -22449,7 +22449,7 @@ const EC = ie.forwardRef(function (
       edgeFadeBottom: s = !0,
       edgeFadeHorizontal: o = !1,
       edgeFadeHorizontalOnInteraction: a = !1,
-      edgeFadeColor: l = "var(--codely-color-surface-primary)",
+      edgeFadeColor: l = "var(--gamecowork-color-surface-primary)",
       edgeFadeHeight: c = 32,
       edgeFadeWidth: u = 32,
       horizontalScroll: d = !1,
@@ -24614,9 +24614,9 @@ typeof window < "u" &&
         }));
   });
 const mtt = {
-  "codely-color-surface-base": { vars: ["--codely-color-surface-base"], default: "rgba(224, 224, 224, 1)" },
-  "codely-color-text-default": { vars: ["--codely-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
-  "codely-color-border-subtle": { vars: ["--codely-color-border-subtle"], default: "rgba(255, 255, 255, 0.08)" },
+  "gamecowork-color-surface-base": { vars: ["--gamecowork-color-surface-base"], default: "rgba(224, 224, 224, 1)" },
+  "gamecowork-color-text-default": { vars: ["--gamecowork-color-text-default"], default: "rgba(255, 255, 255, 0.8)" },
+  "gamecowork-color-border-subtle": { vars: ["--gamecowork-color-border-subtle"], default: "rgba(255, 255, 255, 0.08)" },
 };
 function _tt(n, e) {
   return [...n].reverse().reduce((t, i) => `var(${i}, ${t})`, e);
@@ -24626,11 +24626,11 @@ function $ie(n) {
   if (!e) throw new Error(`Invalid theme color name ${n}`);
   return _tt(e.vars, e.default);
 }
-const btt = `1px solid ${$ie("codely-color-border-subtle")}`,
+const btt = `1px solid ${$ie("gamecowork-color-border-subtle")}`,
   vtt = {
     fontSize: "12px",
-    backgroundColor: $ie("codely-color-surface-base"),
-    color: $ie("codely-color-text-default"),
+    backgroundColor: $ie("gamecowork-color-surface-base"),
+    color: $ie("gamecowork-color-text-default"),
     padding: "0.25rem",
     borderRadius: "0.5rem",
     zIndex: 1e3,
@@ -24939,7 +24939,7 @@ const yfe = ie.forwardRef(function (e, t) {
       },
       disabled: l,
       className: gi(
-        "cursor-pointer p-0 bg-transparent border-none flex items-center justify-center text-codely-color-text-secondary hover:bg-codely-color-interactive-hover transition-colors",
+        "cursor-pointer p-0 bg-transparent border-none flex items-center justify-center text-gamecowork-color-text-secondary hover:bg-gamecowork-color-interactive-hover transition-colors",
         { "cursor-not-allowed opacity-40": l },
         y,
         r,
@@ -24964,9 +24964,9 @@ const Ett = ct.forwardRef((n, e) => {
     u = te.jsxs("span", {
       className: gi(
         "relative inline-flex size-4 shrink-0 items-center justify-center rounded-default",
-        "bg-codely-color-surface-primary",
-        "border border-solid border-codely-color-border-strong hover:border-codely-color-border-bold",
-        "has-[:checked]:border-codely-color-accent-default has-[:checked]:bg-codely-color-accent-default",
+        "bg-gamecowork-color-surface-primary",
+        "border border-solid border-gamecowork-color-border-strong hover:border-gamecowork-color-border-bold",
+        "has-[:checked]:border-gamecowork-color-accent-default has-[:checked]:bg-gamecowork-color-accent-default",
         t,
       ),
       children: [
@@ -24988,7 +24988,7 @@ const Ett = ct.forwardRef((n, e) => {
     ? u
     : te.jsxs("label", {
         className: gi(
-          "inline-flex cursor-pointer items-center gap-2 text-sm text-codely-color-text-secondary",
+          "inline-flex cursor-pointer items-center gap-2 text-sm text-gamecowork-color-text-secondary",
           o && "cursor-not-allowed opacity-60",
           r,
         ),
@@ -24998,13 +24998,13 @@ const Ett = ct.forwardRef((n, e) => {
 Ett.displayName = "Checkbox";
 const Ltt = {
     primary:
-      "bg-codely-color-accent-default text-codely-color-text-accent hover:bg-codely-color-accent-hover active:bg-codely-color-accent-active disabled:hover:bg-codely-color-accent-default disabled:active:bg-codely-color-accent-default",
+      "bg-gamecowork-color-accent-default text-gamecowork-color-text-accent hover:bg-gamecowork-color-accent-hover active:bg-gamecowork-color-accent-active disabled:hover:bg-gamecowork-color-accent-default disabled:active:bg-gamecowork-color-accent-default",
     secondary:
-      "bg-codely-secondary text-codely-color-text-primary hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+      "bg-gamecowork-secondary text-gamecowork-color-text-primary hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
     outline:
-      "bg-transparent text-codely-color-text-primary border border-solid border-codely-color-border-default hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed",
+      "bg-transparent text-gamecowork-color-text-primary border border-solid border-gamecowork-color-border-default hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed",
     ghost:
-      "bg-transparent text-codely-color-text-default hover:bg-codely-color-interactive-hover active:bg-codely-color-interactive-pressed disabled:hover:bg-transparent disabled:active:bg-transparent",
+      "bg-transparent text-gamecowork-color-text-default hover:bg-gamecowork-color-interactive-hover active:bg-gamecowork-color-interactive-pressed disabled:hover:bg-transparent disabled:active:bg-transparent",
   },
   Ttt = {
     sm: "h-8 px-2 py-1 text-xs rounded-md",
@@ -25090,7 +25090,7 @@ const Att = ie.forwardRef(function (
       },
       children: te.jsx("div", {
         className: gi(
-          "relative flex max-h-[min(90vh,100%)] w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-solid border-codely-color-surface-elevated bg-codely-color-surface-primary text-codely-color-text-default shadow-[0_0_10px_rgba(0,0,0,0.25)] break-words",
+          "relative flex max-h-[min(90vh,100%)] w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-solid border-gamecowork-color-surface-elevated bg-gamecowork-color-surface-primary text-gamecowork-color-text-default shadow-[0_0_10px_rgba(0,0,0,0.25)] break-words",
           i === "xxs" && "md:max-w-[21.25rem]",
           i === "xs" && "md:max-w-[25.75rem]",
           i === "sm" && "md:max-w-[31.25rem]",
@@ -28547,15 +28547,15 @@ function bve(n) {
 function uNe(n) {
   switch (n) {
     case "auto_edit":
-      return "text-codely-color-status-warning-text";
+      return "text-gamecowork-color-status-warning-text";
     case "yolo":
-      return "text-codely-color-status-danger-text";
+      return "text-gamecowork-color-status-danger-text";
     case "plan":
-      return "text-codely-color-status-info-text";
+      return "text-gamecowork-color-status-info-text";
     case "ask":
-      return "text-codely-color-status-info-text";
+      return "text-gamecowork-color-status-info-text";
     default:
-      return "text-codely-color-text-secondary";
+      return "text-gamecowork-color-text-secondary";
   }
 }
 function Ort({ modeKey: n, className: e }) {
@@ -28580,7 +28580,7 @@ const dNe = ie.forwardRef(({ modeKey: n, valueLabel: e, tooltip: t, className: i
   return te.jsx(yfe, {
     ref: r,
     className: gi(
-      "leading-4 text-codely-color-text-secondary w-auto pl-2 pr-1.5 py-1 h-7 rounded-full outline-offset-2",
+      "leading-4 text-gamecowork-color-text-secondary w-auto pl-2 pr-1.5 py-1 h-7 rounded-full outline-offset-2",
       i,
     ),
     tooltip: t,
@@ -28598,7 +28598,7 @@ const dNe = ie.forwardRef(({ modeKey: n, valueLabel: e, tooltip: t, className: i
           className: gi("hidden overflow-hidden text-ellipsis whitespace-nowrap md:block text-[0.8125rem]", s),
           children: e,
         }),
-        te.jsx($7e, { className: "!text-xs shrink-0 text-codely-color-text-secondary" }),
+        te.jsx($7e, { className: "!text-xs shrink-0 text-gamecowork-color-text-secondary" }),
       ],
     }),
   });
@@ -28722,7 +28722,7 @@ function zrt({
         anchor: i,
         style: d,
         className: gi(
-          "codely-popup-panel z-50 !p-1 !px-0 box-border flex w-auto max-h-[var(--anchor-max-height)] min-h-0 flex-col overflow-hidden rounded-xl bg-semantic-color-surface-card py-2 shadow-xl border-semantic-color-surface-elevated [--anchor-gap:8px] [--popup-scroll-max-height:calc(var(--anchor-max-height,70vh)-1rem)]",
+          "gamecowork-popup-panel z-50 !p-1 !px-0 box-border flex w-auto max-h-[var(--anchor-max-height)] min-h-0 flex-col overflow-hidden rounded-xl bg-semantic-color-surface-card py-2 shadow-xl border-semantic-color-surface-elevated [--anchor-gap:8px] [--popup-scroll-max-height:calc(var(--anchor-max-height,70vh)-1rem)]",
           l,
           _ && "w-max max-w-[20rem]",
         ),
@@ -28779,11 +28779,11 @@ function zrt({
                             className: gi("flex flex-col", c),
                             children: [
                               C > 0
-                                ? te.jsx("div", { className: "my-1 h-px w-full bg-codely-color-border-subtle" })
+                                ? te.jsx("div", { className: "my-1 h-px w-full bg-gamecowork-color-border-subtle" })
                                 : null,
                               y.title
                                 ? te.jsx("div", {
-                                    className: gi("px-2 py-1.5 text-xss uppercase text-codely-color-text-tertiary", a),
+                                    className: gi("px-2 py-1.5 text-xss uppercase text-gamecowork-color-text-tertiary", a),
                                     children: y.title,
                                   })
                                 : null,
@@ -28797,14 +28797,14 @@ function zrt({
                                         w.displayOnly
                                           ? te.jsxs("div", {
                                               className: gi(
-                                                "min-h-7 flex cursor-default rounded-md items-center gap-2 px-2 py-1.5 text-left text-sm text-codely-color-text-secondary",
+                                                "min-h-7 flex cursor-default rounded-md items-center gap-2 px-2 py-1.5 text-left text-sm text-gamecowork-color-text-secondary",
                                                 u,
                                                 w.itemClassName,
                                               ),
                                               children: [
                                                 w.icon
                                                   ? te.jsx("span", {
-                                                      className: "flex color-codely-color-text-secondary",
+                                                      className: "flex color-gamecowork-color-text-secondary",
                                                       children: w.icon,
                                                     })
                                                   : null,
@@ -28838,7 +28838,7 @@ function zrt({
                                               children: [
                                                 w.icon
                                                   ? te.jsx("span", {
-                                                      className: "flex color-codely-color-text-secondary",
+                                                      className: "flex color-gamecowork-color-text-secondary",
                                                       children: w.icon,
                                                     })
                                                   : null,
@@ -28885,7 +28885,7 @@ function zrt({
                                         t && x < y.items.length - 1
                                           ? te.jsx("div", {
                                               className:
-                                                "h-px my-1 w-[calc(100%+8px)] -ml-1 bg-codely-color-border-subtle",
+                                                "h-px my-1 w-[calc(100%+8px)] -ml-1 bg-gamecowork-color-border-subtle",
                                             })
                                           : null,
                                       ],
@@ -28969,7 +28969,7 @@ const Vrt = ie.forwardRef(function (
   return te.jsx(Wrt, {
     anchor: a,
     panelClassName: gi(
-      "!p-0 min-w-[18rem] border border-solid border-codely-color-border-default rounded-xl overflow-hidden",
+      "!p-0 min-w-[18rem] border border-solid border-gamecowork-color-border-default rounded-xl overflow-hidden",
       l,
     ),
     listClassName: "gap-0",
@@ -28979,7 +28979,7 @@ const Vrt = ie.forwardRef(function (
       te.jsxs("div", {
         className: "flex flex-col",
         children: [
-          e ? te.jsx("div", { className: "px-3 pt-2 text-xs text-codely-color-text-tertiary", children: e }) : null,
+          e ? te.jsx("div", { className: "px-3 pt-2 text-xs text-gamecowork-color-text-tertiary", children: e }) : null,
           te.jsx("div", {
             className: gi("flex flex-col p-1", e ? "pb-1" : "py-1"),
             children: t.map((b) => {
@@ -28991,7 +28991,7 @@ const Vrt = ie.forwardRef(function (
                   disabled: b.disabled,
                   className: gi(
                     "rounded-md cursor-pointer inline-flex w-full appearance-none items-center gap-2 border-0 bg-transparent px-2 py-1 text-left outline-none transition-colors",
-                    "hover:bg-codely-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
+                    "hover:bg-gamecowork-color-interactive-hover focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
                   ),
                   onClick: () => {
                     (o(b.key), _());
@@ -29007,12 +29007,12 @@ const Vrt = ie.forwardRef(function (
                       className: "min-w-0 flex-1",
                       children: [
                         te.jsx("span", {
-                          className: "block text-[0.8125rem] text-codely-color-text-default",
+                          className: "block text-[0.8125rem] text-gamecowork-color-text-default",
                           children: b.label,
                         }),
                         b.description
                           ? te.jsx("span", {
-                              className: "block text-xs text-codely-color-text-secondary mt-0.5",
+                              className: "block text-xs text-gamecowork-color-text-secondary mt-0.5",
                               children: b.description,
                             })
                           : null,
@@ -29020,7 +29020,7 @@ const Vrt = ie.forwardRef(function (
                     }),
                     y
                       ? te.jsx("span", {
-                          className: "ml-2 mt-0.5 flex shrink-0 items-center text-codely-color-text-default",
+                          className: "ml-2 mt-0.5 flex shrink-0 items-center text-gamecowork-color-text-default",
                           children: te.jsx(bIe, { className: "!text-base" }),
                         })
                       : null,
@@ -29366,7 +29366,7 @@ function pNe({
                   m > 0
                     ? te.jsx("div", {
                         role: "separator",
-                        className: "border-codely-color-border-subtle my-1 border-0 border-t border-solid",
+                        className: "border-gamecowork-color-border-subtle my-1 border-0 border-t border-solid",
                       })
                     : null,
                   g,
@@ -29422,7 +29422,7 @@ function rst({
       type: "button",
       role: "menuitem",
       className: gi(
-        "min-h-7 hover:bg-codely-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 text-sm text-[0.8125rem] rounded-md",
+        "min-h-7 hover:bg-gamecowork-color-interactive-hover flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2 py-1.5 text-sm text-[0.8125rem] rounded-md",
         i && "cursor-not-allowed opacity-40",
         l,
       ),
@@ -55997,13 +55997,13 @@ function d0t(n) {
 function Pne({ icon: n, children: e, className: t, ...i }) {
   return te.jsxs("a", {
     ...i,
-    className: gi("codely-link-with-icon inline-flex items-center gap-1 align-middle", t),
+    className: gi("gamecowork-link-with-icon inline-flex items-center gap-1 align-middle", t),
     children: [
       te.jsx("span", {
-        className: "codely-link-with-icon__icon inline-flex size-4 shrink-0 items-center justify-center",
+        className: "gamecowork-link-with-icon__icon inline-flex size-4 shrink-0 items-center justify-center",
         children: n,
       }),
-      te.jsx("span", { className: "codely-link-with-icon__label min-w-0", children: e }),
+      te.jsx("span", { className: "gamecowork-link-with-icon__label min-w-0", children: e }),
     ],
   });
 }
@@ -56889,7 +56889,7 @@ const ebt = {
     pink: "#d33682",
     purple: "#6c71c4",
     red: "#dc322f",
-    white: "var(--codely-color-text-default)",
+    white: "var(--gamecowork-color-text-default)",
     yellow: "#b58900",
     ignore: "#586e75",
   },
@@ -56902,10 +56902,10 @@ function fRe({ filename: n, className: e, size: t = 16 }) {
   const i = ie.useMemo(() => ibt(n), [n]),
     { svg: r, color: s } = ie.useMemo(() => tbt(i), [i]),
     o = ie.useMemo(() => r.replace("<svg ", '<svg width="100%" height="100%" focusable="false" '), [r]),
-    a = i.toLowerCase().endsWith(".txt") ? "var(--codely-color-text-default)" : s;
+    a = i.toLowerCase().endsWith(".txt") ? "var(--gamecowork-color-text-default)" : s;
   return te.jsx("span", {
     "aria-hidden": "true",
-    className: gi("codely-seti-file-icon inline-flex shrink-0", e),
+    className: gi("gamecowork-seti-file-icon inline-flex shrink-0", e),
     dangerouslySetInnerHTML: { __html: o },
     style: { width: t, height: t, fill: a, lineHeight: 0 },
   });
@@ -97509,7 +97509,7 @@ ${y}
       const a = ct.useDeferredValue(s);
       return te.jsx("div", {
         ref: i,
-        className: gi("codely-markdown", { "simple-mode": t }, e),
+        className: gi("gamecowork-markdown", { "simple-mode": t }, e),
         children: te.jsx(KIt, { content: a, simpleMode: t }),
       });
     }),
@@ -97519,7 +97519,7 @@ function rN({ shape: n = "line", animate: e = !0, className: t, ...i }) {
   return te.jsx("div", {
     "aria-hidden": !0,
     className: gi(
-      "bg-codely-color-surface-card",
+      "bg-gamecowork-color-surface-card",
       n === "line" ? "rounded-full" : "rounded-lg",
       e && "animate-pulse",
       t,
@@ -99134,7 +99134,7 @@ function ZNt({ onPreviewImage: n, children: e }) {
 function QNt({ children: n = "Will resume when background task finishes", className: e }) {
   return te.jsx("div", {
     "data-testid": "background-task-resume-message",
-    className: jj("text-xs font-normal leading-[1.4] text-[var(--codely-color-text-tertiary)]", e),
+    className: jj("text-xs font-normal leading-[1.4] text-[var(--gamecowork-color-text-tertiary)]", e),
     children: n,
   });
 }
@@ -99170,7 +99170,7 @@ function tDt({ error: n, title: e }) {
   return te.jsx("div", {
     "data-testid": "stream-error-history-message",
     className:
-      "bg-codely-color-status-danger-border text-codely-color-status-danger-text flex gap-2 rounded-2xl px-2.5 py-2",
+      "bg-gamecowork-color-status-danger-border text-gamecowork-color-status-danger-text flex gap-2 rounded-2xl px-2.5 py-2",
     children: te.jsxs("div", {
       className: "grid grid-cols-[auto_1fr] items-center gap-x-1.5 gap-y-1",
       children: [
@@ -101400,7 +101400,7 @@ const z9t = ie.forwardRef(function (
     j = !_ && e.length > 0 && !R;
   return te.jsxs("div", {
     className: gi(
-      "codely-chat-container relative flex h-full min-h-0 flex-col bg-[var(--semantic-color-surface-base)] pb-3",
+      "gamecowork-chat-container relative flex h-full min-h-0 flex-col bg-[var(--semantic-color-surface-base)] pb-3",
       x,
     ),
     children: [
@@ -104102,12 +104102,12 @@ ct.forwardRef(function ({ withHandle: e, className: t, ...i }, r) {
   const s = ie.useContext(tHe),
     o =
       s === "vertical"
-        ? "absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-codely-color-border-subtle transition-[height] duration-150 group-data-[separator=hover]:h-[3px] group-data-[separator=active]:h-[3px]"
-        : "absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-codely-color-border-subtle transition-[width] duration-150 group-data-[separator=hover]:w-[3px] group-data-[separator=active]:w-[3px]";
+        ? "absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gamecowork-color-border-subtle transition-[height] duration-150 group-data-[separator=hover]:h-[3px] group-data-[separator=active]:h-[3px]"
+        : "absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gamecowork-color-border-subtle transition-[width] duration-150 group-data-[separator=hover]:w-[3px] group-data-[separator=active]:w-[3px]";
   return te.jsxs(eHe, {
     elementRef: r,
     className: gi(
-      "group relative flex w-px shrink-0 items-center justify-center bg-codely-color-border-subtle",
+      "group relative flex w-px shrink-0 items-center justify-center bg-gamecowork-color-border-subtle",
       s === "vertical" && "h-px w-full",
       t,
     ),
@@ -104117,7 +104117,7 @@ ct.forwardRef(function ({ withHandle: e, className: t, ...i }, r) {
       e &&
         te.jsx("div", {
           className: gi(
-            "z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-codely-color-border-subtle bg-codely-color-surface-sunken opacity-0 transition-opacity group-data-[separator=hover]:opacity-100 group-data-[separator=active]:opacity-100",
+            "z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sunken opacity-0 transition-opacity group-data-[separator=hover]:opacity-100 group-data-[separator=active]:opacity-100",
             s === "vertical" && "h-3 w-4",
           ),
           "data-handle": !0,
@@ -104176,7 +104176,7 @@ const eAt = ct.forwardRef((n, e) => {
         disabled: r,
         readOnly: s,
         className: gi(
-          "text-codely-color-text-primary border-codely-color-border-default focus:border-codely-color-accent-default h-[2rem] w-full rounded-md border border-solid bg-transparent px-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 read-only:cursor-not-allowed read-only:opacity-60",
+          "text-gamecowork-color-text-primary border-gamecowork-color-border-default focus:border-gamecowork-color-accent-default h-[2rem] w-full rounded-md border border-solid bg-transparent px-2 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 read-only:cursor-not-allowed read-only:opacity-60",
           i && "pr-12",
         ),
         ...o,
@@ -104188,10 +104188,10 @@ const eAt = ct.forwardRef((n, e) => {
           tabIndex: -1,
           onClick: () => l((c) => !c),
           className:
-            "text-codely-color-text-tertiary hover:text-codely-color-text-primary absolute right-2 top-0 flex h-full items-center justify-center border-none bg-transparent p-0 cursor-pointer",
+            "text-gamecowork-color-text-tertiary hover:text-gamecowork-color-text-primary absolute right-2 top-0 flex h-full items-center justify-center border-none bg-transparent p-0 cursor-pointer",
           children: a
-            ? te.jsx(QRt, { className: "!text-sm text-codely-color-text-default" })
-            : te.jsx(JRt, { className: "!text-sm text-codely-color-text-secondary" }),
+            ? te.jsx(QRt, { className: "!text-sm text-gamecowork-color-text-default" })
+            : te.jsx(JRt, { className: "!text-sm text-gamecowork-color-text-secondary" }),
         }),
     ],
   });
@@ -254317,8 +254317,8 @@ class f_i extends Kt {
 Ct(f_i);
 const g_i = "file-preview:open-in-file-search",
   p_i =
-    "flex h-full w-max min-w-full cursor-pointer appearance-none items-center gap-1 rounded border-0 bg-transparent px-2 py-1 text-left font-inherit text-xs text-inherit text-codely-color-text-default",
-  m_i = "bg-codely-color-accent-subtle",
+    "flex h-full w-max min-w-full cursor-pointer appearance-none items-center gap-1 rounded border-0 bg-transparent px-2 py-1 text-left font-inherit text-xs text-inherit text-gamecowork-color-text-default",
+  m_i = "bg-gamecowork-color-accent-subtle",
   __i = "min-w-0 truncate whitespace-nowrap",
   c8e = "inline-flex size-3.5 shrink-0 items-center justify-center";
 function b_i({ path: n, children: e, renderContextMenu: t }) {
@@ -254378,10 +254378,10 @@ ie.memo(function ({
             _ &&
               "w-full min-w-0 flex-1 overflow-hidden group-has-[.project-tree-row-actions:focus-within]:pr-12 group-hover:pr-12",
             r
-              ? "text-codely-color-text-disabled cursor-not-allowed select-none"
+              ? "text-gamecowork-color-text-disabled cursor-not-allowed select-none"
               : i
                 ? gi(m_i, "file-preview-tree__row--active")
-                : "hover:bg-codely-color-interactive-hover",
+                : "hover:bg-gamecowork-color-interactive-hover",
           ),
           style: { paddingLeft: `${8 + e.depth * 16}px` },
           onClick: () => {
@@ -254425,7 +254425,7 @@ ie.memo(function ({
                 className: gi(
                   __i,
                   u == null ? void 0 : u(e.path, e.kind),
-                  r && "text-codely-color-text-disabled opacity-[0.35]",
+                  r && "text-gamecowork-color-text-disabled opacity-[0.35]",
                 ),
                 children: e.name,
               }),
@@ -254435,7 +254435,7 @@ ie.memo(function ({
         _ &&
           te.jsx("span", {
             className:
-              "project-tree-row-actions bg-codely-color-surface-primary group-hover:bg-codely-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
+              "project-tree-row-actions bg-gamecowork-color-surface-primary group-hover:bg-gamecowork-color-interactive-hover pointer-events-none absolute right-2 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-sm px-0.5 opacity-0 transition-opacity focus-within:pointer-events-auto focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
             children: _,
           }),
       ],
@@ -256590,12 +256590,12 @@ const tbi = (n, e) => {
   };
 function Jhe() {
   var e;
-  const n = window.__CODELY_WINDOW_LABEL__;
+  const n = window.__GAMECOWORK_WINDOW_LABEL__;
   return n || ((e = new URLSearchParams(window.location.search).get("windowLabel")) != null ? e : "");
 }
 function RH() {
   var e;
-  const n = window.__CODELY_WORKSPACE_DIR__;
+  const n = window.__GAMECOWORK_WORKSPACE_DIR__;
   return n || ((e = new URLSearchParams(window.location.search).get("workspaceDir")) != null ? e : "");
 }
 function xie(n) {
@@ -256613,7 +256613,7 @@ const sbi = ({ show: n }) =>
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: "var(--codely-color-surface-elevated, rgba(56, 56, 56, 0.5))",
+        backgroundColor: "var(--gamecowork-color-surface-elevated, rgba(56, 56, 56, 0.5))",
         display: n ? "flex" : "none",
         alignItems: "center",
         justifyContent: "center",
@@ -256642,7 +256642,7 @@ const sbi = ({ show: n }) =>
             alignItems: "center",
             gap: 12,
             borderRadius: 12,
-            background: "var(--codely-color-surface-card, rgba(44, 44, 44, 1))",
+            background: "var(--gamecowork-color-surface-card, rgba(44, 44, 44, 1))",
             padding: "32px 90px",
           },
           children: [
@@ -256654,7 +256654,7 @@ const sbi = ({ show: n }) =>
               xmlns: "http://www.w3.org/2000/svg",
               children: wi.jsx("path", {
                 d: "M14.7661 25.2167H17.2661V19.7333L19.3995 21.85L21.1828 20.05L16.0161 14.8833L10.8495 20.05L12.6661 21.8333L14.7661 19.7333V25.2167ZM8.13281 29C7.44526 29 6.8567 28.7552 6.36715 28.2657C5.87759 27.7761 5.63281 27.1876 5.63281 26.5V5.5C5.63281 4.81244 5.87759 4.22389 6.36715 3.73433C6.8567 3.24478 7.44526 3 8.13281 3H18.6661L26.3661 10.6833V26.5C26.3661 27.1876 26.1214 27.7761 25.6318 28.2657C25.1423 28.7552 24.5537 29 23.8661 29H8.13281ZM17.4328 11.9333V5.5H8.13281V26.5H23.8661V11.9333H17.4328Z",
-                fill: "var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45))",
+                fill: "var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45))",
               }),
             }),
             wi.jsxs("div", {
@@ -256669,7 +256669,7 @@ const sbi = ({ show: n }) =>
               children: [
                 wi.jsx("div", {
                   style: {
-                    color: "var(--codely-color-text-default, rgba(255, 255, 255, 0.8))",
+                    color: "var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8))",
                     fontSize: 14,
                     fontWeight: 500,
                     lineHeight: "20px",
@@ -256678,7 +256678,7 @@ const sbi = ({ show: n }) =>
                 }),
                 wi.jsx("div", {
                   style: {
-                    color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
+                    color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
                     fontSize: 12,
                     fontWeight: 400,
                     lineHeight: "16px",
@@ -256695,9 +256695,9 @@ const sbi = ({ show: n }) =>
                   {
                     style: {
                       padding: "2px 8px",
-                      color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
-                      background: "var(--codely-color-surface-elevated, rgba(56, 56, 56, 1))",
-                      border: "1px solid var(--codely-color-border-default, rgba(255, 255, 255, 0.14))",
+                      color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
+                      background: "var(--gamecowork-color-surface-elevated, rgba(56, 56, 56, 1))",
+                      border: "1px solid var(--gamecowork-color-border-default, rgba(255, 255, 255, 0.14))",
                       borderRadius: 4,
                       fontSize: 12,
                       fontWeight: 400,
@@ -256829,8 +256829,8 @@ const sbi = ({ show: n }) =>
         justifyContent: "center",
         width: "100vw",
         height: "100vh",
-        background: "var(--codely-color-surface-card, rgba(44, 44, 44, 1))",
-        color: "var(--codely-color-text-default, rgba(255, 255, 255, 0.8))",
+        background: "var(--gamecowork-color-surface-card, rgba(44, 44, 44, 1))",
+        color: "var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8))",
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       },
       onDragEnter: a,
@@ -256848,14 +256848,14 @@ const sbi = ({ show: n }) =>
                 fontWeight: 700,
                 margin: "0 0 16px",
                 lineHeight: 1.3,
-                color: "var(--codely-color-text-default)",
+                color: "var(--gamecowork-color-text-default)",
                 textTransform: "uppercase",
               },
-              children: "Codely is detached",
+              children: "GameCowork is detached",
             }),
             wi.jsx("p", {
               style: {
-                color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
+                color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
                 fontSize: 14,
                 lineHeight: "20px",
                 margin: "0 0 24px",
@@ -256871,7 +256871,7 @@ const sbi = ({ show: n }) =>
                 }
               },
               style: {
-                background: "var(--codely-color-accent-default, #01A77F)",
+                background: "var(--gamecowork-color-accent-default, #01A77F)",
                 color: "#fff",
                 border: "none",
                 borderRadius: 6,
@@ -256909,7 +256909,7 @@ const sbi = ({ show: n }) =>
               disabled: n,
               style: {
                 background: "transparent",
-                color: "var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45))",
+                color: "var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45))",
                 border: "none",
                 fontSize: 13,
                 fontWeight: 400,
@@ -256924,7 +256924,7 @@ const sbi = ({ show: n }) =>
               wi.jsx("div", {
                 style: {
                   marginTop: 8,
-                  color: "var(--codely-color-text-warning, rgba(255, 140, 140, 0.85))",
+                  color: "var(--gamecowork-color-text-warning, rgba(255, 140, 140, 0.85))",
                   fontSize: 12,
                   lineHeight: "16px",
                 },
@@ -256937,9 +256937,9 @@ const sbi = ({ show: n }) =>
             marginTop: 48,
             padding: "32px 90px",
             borderRadius: 12,
-            border: "2px dashed var(--codely-color-border-default, rgba(255, 255, 255, 0.14))",
-            background: "var(--codely-color-surface-card, rgba(44, 44, 44, 1))",
-            color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
+            border: "2px dashed var(--gamecowork-color-border-default, rgba(255, 255, 255, 0.14))",
+            background: "var(--gamecowork-color-surface-card, rgba(44, 44, 44, 1))",
+            color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -256954,7 +256954,7 @@ const sbi = ({ show: n }) =>
               xmlns: "http://www.w3.org/2000/svg",
               children: wi.jsx("path", {
                 d: "M14.7661 25.2167H17.2661V19.7333L19.3995 21.85L21.1828 20.05L16.0161 14.8833L10.8495 20.05L12.6661 21.8333L14.7661 19.7333V25.2167ZM8.13281 29C7.44526 29 6.8567 28.7552 6.36715 28.2657C5.87759 27.7761 5.63281 27.1876 5.63281 26.5V5.5C5.63281 4.81244 5.87759 4.22389 6.36715 3.73433C6.8567 3.24478 7.44526 3 8.13281 3H18.6661L26.3661 10.6833V26.5C26.3661 27.1876 26.1214 27.7761 25.6318 28.2657C25.1423 28.7552 24.5537 29 23.8661 29H8.13281ZM17.4328 11.9333V5.5H8.13281V26.5H23.8661V11.9333H17.4328Z",
-                fill: "var(--codely-color-text-tertiary, rgba(255, 255, 255, 0.45))",
+                fill: "var(--gamecowork-color-text-tertiary, rgba(255, 255, 255, 0.45))",
               }),
             }),
             wi.jsxs("div", {
@@ -256969,7 +256969,7 @@ const sbi = ({ show: n }) =>
               children: [
                 wi.jsx("div", {
                   style: {
-                    color: "var(--codely-color-text-default, rgba(255, 255, 255, 0.8))",
+                    color: "var(--gamecowork-color-text-default, rgba(255, 255, 255, 0.8))",
                     fontSize: 14,
                     fontWeight: 500,
                     lineHeight: "20px",
@@ -256978,7 +256978,7 @@ const sbi = ({ show: n }) =>
                 }),
                 wi.jsx("div", {
                   style: {
-                    color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
+                    color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
                     fontSize: 12,
                     fontWeight: 400,
                     lineHeight: "16px",
@@ -256995,9 +256995,9 @@ const sbi = ({ show: n }) =>
                   {
                     style: {
                       padding: "2px 8px",
-                      color: "var(--codely-color-text-secondary, rgba(255, 255, 255, 0.6))",
-                      background: "var(--codely-color-surface-elevated, rgba(56, 56, 56, 1))",
-                      border: "1px solid var(--codely-color-border-default, rgba(255, 255, 255, 0.14))",
+                      color: "var(--gamecowork-color-text-secondary, rgba(255, 255, 255, 0.6))",
+                      background: "var(--gamecowork-color-surface-elevated, rgba(56, 56, 56, 1))",
+                      border: "1px solid var(--gamecowork-color-border-default, rgba(255, 255, 255, 0.14))",
                       borderRadius: 4,
                       fontSize: 12,
                       fontWeight: 400,
@@ -257151,7 +257151,7 @@ function fbi() {
         wi.jsx("button", {
           type: "button",
           className:
-            "hover:bg-codely-color-interactive-hover inline-flex h-[var(--codely-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-codely-color-text-secondary transition-colors",
+            "hover:bg-gamecowork-color-interactive-hover inline-flex h-[var(--gamecowork-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-gamecowork-color-text-secondary transition-colors",
           onClick: t,
           "aria-label": "Minimize",
           "data-telemetry-id": "window_minimize",
@@ -257160,7 +257160,7 @@ function fbi() {
         wi.jsx("button", {
           type: "button",
           className:
-            "hover:bg-codely-color-interactive-hover inline-flex h-[var(--codely-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-codely-color-text-secondary transition-colors",
+            "hover:bg-gamecowork-color-interactive-hover inline-flex h-[var(--gamecowork-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-gamecowork-color-text-secondary transition-colors",
           onClick: i,
           "aria-label": n ? "Restore" : "Maximize",
           "data-telemetry-id": n ? "window_restore" : "window_maximize",
@@ -257169,7 +257169,7 @@ function fbi() {
         wi.jsx("button", {
           type: "button",
           className:
-            "hover:bg-codely-color-interactive-hover inline-flex h-[var(--codely-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-codely-color-text-secondary transition-colors",
+            "hover:bg-gamecowork-color-interactive-hover inline-flex h-[var(--gamecowork-app-header-height)] w-[2.5rem] items-center justify-center border-0 bg-transparent text-gamecowork-color-text-secondary transition-colors",
           onClick: r,
           "aria-label": "Close",
           "data-telemetry-id": "window_close",
@@ -257179,7 +257179,7 @@ function fbi() {
     }),
   });
 }
-const gbi = { python: "basedpyright", typescript: "vtsls", csharp: "codely-unity-lsp-server" };
+const gbi = { python: "basedpyright", typescript: "vtsls", csharp: "gamecowork-unity-lsp-server" };
 function T8e(n) {
   var e;
   try {
@@ -257205,9 +257205,9 @@ function eY(n) {
           body: { workspaceDir: t.workspaceDir, workspaceRef: t },
         }
       : { headers: {}, body: { workspaceRef: t } };
-  const i = e.__CODELY_ACTIVE_WORKSPACE_DIR__ || e.__CODELY_WORKSPACE_DIR__ || T8e("workspaceDir");
+  const i = e.__GAMECOWORK_ACTIVE_WORKSPACE_DIR__ || e.__GAMECOWORK_WORKSPACE_DIR__ || T8e("workspaceDir");
   if (i) return { headers: { "X-Workspace-Dir": encodeURIComponent(i) }, body: { workspaceDir: i } };
-  const r = e.__CODELY_WINDOW_LABEL__ || T8e("windowLabel");
+  const r = e.__GAMECOWORK_WINDOW_LABEL__ || T8e("windowLabel");
   return r ? { headers: { "X-Window-Label": r }, body: { windowLabel: r } } : { headers: {}, body: {} };
 }
 async function mbi(n, e) {
@@ -258460,8 +258460,8 @@ function u2i(n) {
   const { className: e } = n;
   return wi.jsxs(wi.Fragment, {
     children: [
-      wi.jsx(l2i, { className: P8e(e, "codely-3d-icon-light") }),
-      wi.jsx(c2i, { className: P8e(e, "codely-3d-icon-dark") }),
+      wi.jsx(l2i, { className: P8e(e, "gamecowork-3d-icon-light") }),
+      wi.jsx(c2i, { className: P8e(e, "gamecowork-3d-icon-dark") }),
     ],
   });
 }
@@ -258517,7 +258517,7 @@ const d2i = {
     unityInsightConnecting: "Establishing connection...",
     unityInsightIndexNotReady: "Unity Insight index is not ready",
     unityInsightCliConnectionFailed:
-      "Could not connect to Unity Insight. Start a Codely CLI session for this project, then retry.",
+      "Could not connect to Unity Insight. Start a GameCowork CLI session for this project, then retry.",
     unityInsightIndexFailed: "Unity Insight index failed. Retry to rebuild the index.",
     unityInsightEnableMessage:
       "Enable Unity Insight to browse your project's virtual filesystem — assets, scenes, prefabs, and cross-references — without opening the Editor.",
@@ -258693,7 +258693,7 @@ const d2i = {
     memory: "Memory",
     automaticUpdate: "Self-Update Memory",
     automaticUpdateStreamingHint:
-      "If Codely is still replying, the change takes effect after the current response finishes.",
+      "If GameCowork is still replying, the change takes effect after the current response finishes.",
     more: "More",
     showFolder: "Show Folder",
     clearMemory: "Clear Memory",
@@ -258711,9 +258711,9 @@ const d2i = {
     workspaceTag: "Workspace",
     globalTag: "Global",
     noProjectMemoryYet: "No project memory yet",
-    letCodelyKnowProject: "Let Codely know your project",
+    letGameCoworkKnowProject: "Let GameCowork know your project",
     noGlobalMemoryYet: "No global memory yet",
-    letCodelyKnowGlobal: "Create global memory",
+    letGameCoworkKnowGlobal: "Create global memory",
     generatingGlobalMemory: "Generating...",
     createGlobalMemoryFailed: "Failed to create global memory file.",
     memoryUpdatedAt: "Updated at: {{time}}",
@@ -258788,7 +258788,7 @@ const d2i = {
     unityInsightLoadingStatus: "准备 Unity Insight...",
     unityInsightConnecting: "建立连接中...",
     unityInsightIndexNotReady: "Unity Insight 索引尚未就绪",
-    unityInsightCliConnectionFailed: "无法连接 Unity Insight。请先在该项目启动 Codely CLI 会话后重试。",
+    unityInsightCliConnectionFailed: "无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。",
     unityInsightIndexFailed: "Unity Insight 索引失败。请重试以重新构建索引。",
     unityInsightEnableMessage:
       "开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。",
@@ -258962,7 +258962,7 @@ const d2i = {
     openPlanFile: "打开计划文件 {{title}}",
     memory: "记忆",
     automaticUpdate: "自主更新记忆",
-    automaticUpdateStreamingHint: "若 Codely 仍在回复，需等当前回复结束后才会生效。",
+    automaticUpdateStreamingHint: "若 GameCowork 仍在回复，需等当前回复结束后才会生效。",
     more: "更多",
     showFolder: "显示文件夹",
     clearMemory: "消除记忆",
@@ -258978,9 +258978,9 @@ const d2i = {
     workspaceTag: "工作区",
     globalTag: "全局",
     noProjectMemoryYet: "暂无项目记忆",
-    letCodelyKnowProject: "让 Codely 了解你的项目",
+    letGameCoworkKnowProject: "让 GameCowork 了解你的项目",
     noGlobalMemoryYet: "暂无全局记忆",
-    letCodelyKnowGlobal: "创建全局记忆",
+    letGameCoworkKnowGlobal: "创建全局记忆",
     generatingGlobalMemory: "生成中...",
     createGlobalMemoryFailed: "创建全局记忆文件失败。",
     memoryUpdatedAt: "更新时间：{{time}}",
@@ -259004,7 +259004,7 @@ const d2i = {
   },
   S2i = { placeholder: "输入消息…" },
   x2i = { filePreview: b2i, rightSidebar: v2i, insights: y2i, updateButton: C2i, fileTree: w2i, petInput: S2i },
-  k2i = "codely-language";
+  k2i = "gamecowork-language";
 function E2i() {
   if (typeof window > "u") return "zh";
   try {
@@ -259164,7 +259164,7 @@ async function WKe(n, e) {
   if (!(typeof navigator < "u" && !/Mac/i.test(navigator.platform)))
     try {
       const t = e != null ? e : parseFloat(getComputedStyle(document.documentElement).fontSize),
-        i = n != null ? n : parseFloat(localStorage.getItem("codely-zoom") || "1.0"),
+        i = n != null ? n : parseFloat(localStorage.getItem("gamecowork-zoom") || "1.0"),
         r = t * 2.5 * i,
         s = 16 * i,
         o = new URLSearchParams(window.location.search).get("windowLabel") || "";
@@ -259225,7 +259225,7 @@ function z8e(n) {
 }
 function Y2i() {
   if (typeof window < "u") {
-    const n = window.__CODELY_GUI_DEV_URL__;
+    const n = window.__GAMECOWORK_GUI_DEV_URL__;
     if (n) return n;
   }
   return "/gui.html";
@@ -259250,13 +259250,13 @@ function iU() {
 }
 function VKe() {
   var t;
-  const n = window.__CODELY_WINDOW_LABEL__;
+  const n = window.__GAMECOWORK_WINDOW_LABEL__;
   return n || ((t = new URLSearchParams(window.location.search).get("windowLabel")) != null ? t : "");
 }
 function V9() {
   var n, e;
   return (e =
-    (n = window.__CODELY_WORKSPACE_DIR__) != null
+    (n = window.__GAMECOWORK_WORKSPACE_DIR__) != null
       ? n
       : new URLSearchParams(window.location.search).get("workspaceDir")) != null
     ? e
@@ -259265,7 +259265,7 @@ function V9() {
 function ebe() {
   var n, e;
   return (e =
-    (n = window.__CODELY_EDITOR_TYPE__) != null ? n : new URLSearchParams(window.location.search).get("editorType")) !=
+    (n = window.__GAMECOWORK_EDITOR_TYPE__) != null ? n : new URLSearchParams(window.location.search).get("editorType")) !=
     null
     ? e
     : "";
@@ -259285,7 +259285,7 @@ function l3() {
   return n || ($Ke() ? zKe : "");
 }
 function $9() {
-  const n = "codely:guiViewId";
+  const n = "gamecowork:guiViewId";
   try {
     const e = window.sessionStorage.getItem(n);
     if (e) return e;
@@ -259337,7 +259337,7 @@ function evi() {
     i = Cn.useRef(null),
     r = Cn.useRef(!1),
     [s, o] = Cn.useState(() => {
-      const Le = window.__CODELY_INITIAL_EMBED_MODE__;
+      const Le = window.__GAMECOWORK_INITIAL_EMBED_MODE__;
       if (typeof Le == "boolean") return Le;
       const Xe = new URLSearchParams(window.location.search).get("mode");
       return window.location.pathname !== "/detach" && Xe === "embedded";
@@ -259351,7 +259351,7 @@ function evi() {
       const Le = W8e();
       if (Le) return Le;
       try {
-        const St = JSON.parse((Xe = localStorage.getItem("codely-theme")) != null ? Xe : "null");
+        const St = JSON.parse((Xe = localStorage.getItem("gamecowork-theme")) != null ? Xe : "null");
         if (St === "light" || St === "dark") return St;
       } catch {}
       return "dark";
@@ -259364,7 +259364,7 @@ function evi() {
     x = Cn.useRef(new Map()),
     [, E] = Cn.useState(() => {
       try {
-        const Le = localStorage.getItem("codely-zoom");
+        const Le = localStorage.getItem("gamecowork-zoom");
         if (Le) {
           const Xe = parseFloat(Le);
           if (Xe >= 0.5 && Xe <= 2) return Xe;
@@ -259423,7 +259423,7 @@ function evi() {
     se = (Le) => {
       if (((m.current = Le), g(Le), document.documentElement.setAttribute("data-theme", Le), !a.current))
         try {
-          localStorage.setItem("codely-theme", JSON.stringify(Le));
+          localStorage.setItem("gamecowork-theme", JSON.stringify(Le));
         } catch {}
       Z(Le);
     },
@@ -259516,7 +259516,7 @@ function evi() {
     Cn.useEffect(() => {
       if ((document.documentElement.setAttribute("data-theme", h), !a.current))
         try {
-          localStorage.setItem("codely-theme", JSON.stringify(h));
+          localStorage.setItem("gamecowork-theme", JSON.stringify(h));
         } catch {}
       Z(h);
     }, [h]),
@@ -259838,11 +259838,11 @@ function evi() {
               return;
             }
             if (((xe = ye.data) == null ? void 0 : xe.messageType) === "shell/syncProjectMenuState") {
-              window.dispatchEvent(new CustomEvent("codely:shellProjectMenuSync", { detail: ye.data.data }));
+              window.dispatchEvent(new CustomEvent("gamecowork:shellProjectMenuSync", { detail: ye.data.data }));
               return;
             }
             if (((He = ye.data) == null ? void 0 : He.messageType) === "shell/setShowProjectMenu") {
-              window.dispatchEvent(new CustomEvent("codely:shellShowProjectMenu", { detail: ye.data.data }));
+              window.dispatchEvent(new CustomEvent("gamecowork:shellShowProjectMenu", { detail: ye.data.data }));
               return;
             }
             if (((at = ye.data) == null ? void 0 : at.messageType) === "shell/modalStateChanged") {
@@ -259867,15 +259867,15 @@ function evi() {
               } else return;
             }
             if (
-              ((Jt = ye.data) == null ? void 0 : Jt.messageType) === "codely-language-change" ||
-              ((bt = ye.data) == null ? void 0 : bt.type) === "codely-language-change"
+              ((Jt = ye.data) == null ? void 0 : Jt.messageType) === "gamecowork-language-change" ||
+              ((bt = ye.data) == null ? void 0 : bt.type) === "gamecowork-language-change"
             ) {
               const zt = (hi = (si = ye.data.data) == null ? void 0 : si.language) != null ? hi : ye.data.language,
                 Ei = zt === "english" ? "en" : zt === "chinese" ? "zh" : zt;
               if (Ei === "en" || Ei === "zh") {
                 n.changeLanguage(Ei);
                 try {
-                  window.localStorage.setItem("codely-language", Ei);
+                  window.localStorage.setItem("gamecowork-language", Ei);
                 } catch {}
               }
               return;
@@ -259883,7 +259883,7 @@ function evi() {
             if (((On = ye.data) == null ? void 0 : On.messageType) === "busy-state" && window.parent !== window) {
               try {
                 window.parent.postMessage(
-                  { source: "codely", type: "busy-state", value: ye.data.value },
+                  { source: "gamecowork", type: "busy-state", value: ye.data.value },
                   window.location.origin,
                 );
               } catch {}
@@ -260074,7 +260074,7 @@ function evi() {
                 Zl = `我的 ${zt} LSP 服务器启动失败。
 执行命令：${Sl}
 报错信息：${Ei}${rl}
-请帮我诊断并修复这个问题。如果修复过程中安装了新的运行时或依赖，请在完成后提示用户重启 Codely 使更改生效。`;
+请帮我诊断并修复这个问题。如果修复过程中安装了新的运行时或依赖，请在完成后提示用户重启 GameCowork 使更改生效。`;
               H({ messageType: "userInput", data: { input: Zl } });
               return;
             }
@@ -260100,9 +260100,9 @@ function evi() {
 \`\`\`
 ${mn}
 \`\`\`
-安装完成后验证命令是否可用，然后提示用户重启 Codely 使新安装的命令生效。`
+安装完成后验证命令是否可用，然后提示用户重启 GameCowork 使新安装的命令生效。`
                 : `请帮我全局安装 ${zt} language server，参考安装文档：${Ei != null ? Ei : zt}
-安装完成后提示用户重启 Codely 使新安装的命令生效。`;
+安装完成后提示用户重启 GameCowork 使新安装的命令生效。`;
               H({ messageType: "userInput", data: { input: vs } });
               return;
             }
@@ -260283,9 +260283,9 @@ ${mn}
               const rl = Sl;
               if (
                 ((rl == null ? void 0 : rl.messageType) === "shell/syncProjectMenuState"
-                  ? window.dispatchEvent(new CustomEvent("codely:shellProjectMenuSync", { detail: rl.data }))
+                  ? window.dispatchEvent(new CustomEvent("gamecowork:shellProjectMenuSync", { detail: rl.data }))
                   : (rl == null ? void 0 : rl.messageType) === "shell/setShowProjectMenu" &&
-                    window.dispatchEvent(new CustomEvent("codely:shellShowProjectMenu", { detail: rl.data })),
+                    window.dispatchEvent(new CustomEvent("gamecowork:shellShowProjectMenu", { detail: rl.data })),
                 rl != null && rl.messageId && ((ge = Le.contentWindow) == null || ge.postMessage(rl, "*")),
                 ((Re = ye.data) == null ? void 0 : Re.messageType) === "editor/setEmbedMode" &&
                   ((gt = ye.data.data) == null ? void 0 : gt.embed_mode) === !1)
@@ -260385,7 +260385,7 @@ ${mn}
                   $t === "tauri/update-restart-required")
               )
                 try {
-                  window.dispatchEvent(new CustomEvent(`codely:${$t}`, { detail: ni != null ? ni : {} }));
+                  window.dispatchEvent(new CustomEvent(`gamecowork:${$t}`, { detail: ni != null ? ni : {} }));
                 } catch {}
               if ($t === "ide/showNotification" && typeof Dt._hubWorkspaceKey == "string") {
                 return;
@@ -260536,7 +260536,7 @@ ${mn}
                   if (typeof ze == "number" && ze >= 0.5 && ze <= 2) {
                     E(ze);
                     try {
-                      localStorage.setItem("codely-zoom", String(ze));
+                      localStorage.setItem("gamecowork-zoom", String(ze));
                     } catch {}
                     if (r.current) {
                       const ft = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -260581,7 +260581,7 @@ ${mn}
                 ref: i,
                 src: N,
                 className: `gui-iframe${C ? "" : " gui-iframe--hidden"}`,
-                title: "Codely Walkthrough",
+                title: "GameCowork Walkthrough",
                 "aria-hidden": !C,
                 allow: "clipboard-write",
                 sandbox:
@@ -260603,7 +260603,7 @@ ${mn}
                       children: [
                         wi.jsx(u2i, { className: "size-20 mb-5" }),
                         wi.jsx("div", {
-                          className: "text-[2.5rem] font-bold text-codely-color-text-default",
+                          className: "text-[2.5rem] font-bold text-gamecowork-color-text-default",
                           children: "Tuanjie AI",
                         }),
                       ],
@@ -260612,7 +260612,7 @@ ${mn}
                     ref: i,
                     src: I,
                     className: `gui-iframe${C ? "" : " gui-iframe--hidden"}`,
-                    title: "Codely GUI",
+                    title: "GameCowork GUI",
                     "aria-hidden": !C,
                     allow: "clipboard-write",
                     sandbox:
@@ -260639,7 +260639,7 @@ function rvi(n) {
 }
 function svi() {
   var t;
-  const n = window.__CODELY_EDITOR_TYPE__,
+  const n = window.__GAMECOWORK_EDITOR_TYPE__,
     e =
       (t = n != null ? n : new URLSearchParams(window.location.search).get("editorType")) != null
         ? t
@@ -260692,8 +260692,8 @@ function lvi(n) {
 function jKe() {
   var o, a, l, c, u;
   const n = new URLSearchParams(window.location.search),
-    e = (a = (o = window.__CODELY_WINDOW_LABEL__) != null ? o : n.get("windowLabel")) != null ? a : "",
-    t = (c = (l = window.__CODELY_WORKSPACE_DIR__) != null ? l : n.get("workspaceDir")) != null ? c : "",
+    e = (a = (o = window.__GAMECOWORK_WINDOW_LABEL__) != null ? o : n.get("windowLabel")) != null ? a : "",
+    t = (c = (l = window.__GAMECOWORK_WORKSPACE_DIR__) != null ? l : n.get("workspaceDir")) != null ? c : "",
     i = (u = n.get("guiViewId")) != null ? u : "",
     r = {},
     s = {};
@@ -260796,7 +260796,7 @@ document.addEventListener(
   !1,
 );
 function gvi({ children: n }) {
-  const e = window.__CODELY_INITIAL_EMBED_MODE__,
+  const e = window.__GAMECOWORK_INITIAL_EMBED_MODE__,
     t = typeof e == "boolean" ? e : new URLSearchParams(window.location.search).get("mode") === "embedded";
   return (fvi({ embedMode: t, captureLifecycle: !1 }), n);
 }

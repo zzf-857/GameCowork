@@ -11,7 +11,7 @@ const fs = require('node:fs');
 const { spawnSync } = require('node:child_process');
 const { validateSkill } = require('./validate_skill.cjs');
 
-const DEFAULT_OUTPUT_DIR = path.join(os.tmpdir(), 'codely-skills');
+const DEFAULT_OUTPUT_DIR = path.join(os.tmpdir(), 'gamecowork-skills');
 
 async function main() {
   const args = process.argv.slice(2);

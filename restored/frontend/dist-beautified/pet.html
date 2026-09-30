@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Codely Pet</title>
-    <style id="codely-pet-bootstrap">
+    <title>GameCowork Pet</title>
+    <style id="gamecowork-pet-bootstrap">
       /* color-scheme makes the browser's default foreground light in dark
          mode — icons using fill="currentColor" without an explicit text
          color class inherit it. */
@@ -30,7 +30,7 @@
           var theme = new URLSearchParams(window.location.search).get("theme");
           if (theme === "light" || theme === "dark") {
             document.documentElement.setAttribute("data-theme", theme);
-            localStorage.setItem("codely-theme", JSON.stringify(theme));
+            localStorage.setItem("gamecowork-theme", JSON.stringify(theme));
           }
         } catch (e) {}
       })();

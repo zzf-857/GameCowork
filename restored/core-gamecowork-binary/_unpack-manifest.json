@@ -12,7 +12,7 @@
    "decompressed": 124,
    "compressed": 108
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/index.js"
+  "path": "C:/snapshot/gamecowork/binary/out/index.js"
  },
  {
   "1": {
@@ -27,7 +27,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/pkgJson/win32-x64/package.json"
+  "path": "C:/snapshot/gamecowork/binary/pkgJson/win32-x64/package.json"
  },
  {
   "1": {
@@ -42,7 +42,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/binding.gyp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/binding.gyp"
  },
  {
   "1": {
@@ -57,7 +57,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/LICENSE"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/LICENSE"
  },
  {
   "1": {
@@ -72,7 +72,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/package.json"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/package.json"
  },
  {
   "1": {
@@ -87,7 +87,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/README.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/README.md"
  },
  {
   "1": {
@@ -102,7 +102,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/binding.sln"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/binding.sln"
  },
  {
   "1": {
@@ -117,7 +117,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/config.gypi"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/config.gypi"
  },
  {
   "1": {
@@ -132,7 +132,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj"
  },
  {
   "1": {
@@ -147,7 +147,7 @@
    "decompressed": 120,
    "compressed": 100
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj.filters"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_sqlite3.vcxproj.filters"
  },
  {
   "1": {
@@ -162,7 +162,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/common-sqlite.gypi"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/deps/common-sqlite.gypi"
  },
  {
   "1": {
@@ -177,7 +177,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/extract.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/deps/extract.js"
  },
  {
   "1": {
@@ -192,7 +192,7 @@
    "decompressed": 123,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/sqlite-autoconf-3440200.tar.gz"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/deps/sqlite-autoconf-3440200.tar.gz"
  },
  {
   "1": {
@@ -207,7 +207,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps/sqlite3.gyp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/deps/sqlite3.gyp"
  },
  {
   "1": {
@@ -222,7 +222,7 @@
    "decompressed": 118,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3-binding.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/lib/sqlite3-binding.js"
  },
  {
   "1": {
@@ -237,7 +237,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3.d.ts"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/lib/sqlite3.d.ts"
  },
  {
   "1": {
@@ -252,7 +252,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/sqlite3.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/lib/sqlite3.js"
  },
  {
   "1": {
@@ -267,7 +267,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib/trace.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/lib/trace.js"
  },
  {
   "1": {
@@ -282,7 +282,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/async.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/async.h"
  },
  {
   "1": {
@@ -297,7 +297,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/backup.cc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/backup.cc"
  },
  {
   "1": {
@@ -312,7 +312,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/backup.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/backup.h"
  },
  {
   "1": {
@@ -327,7 +327,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/database.cc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/database.cc"
  },
  {
   "1": {
@@ -342,7 +342,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/database.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/database.h"
  },
  {
   "1": {
@@ -357,7 +357,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/gcc-preinclude.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/gcc-preinclude.h"
  },
  {
   "1": {
@@ -372,7 +372,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/macros.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/macros.h"
  },
  {
   "1": {
@@ -387,7 +387,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/node_sqlite3.cc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/node_sqlite3.cc"
  },
  {
   "1": {
@@ -402,7 +402,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/statement.cc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/statement.cc"
  },
  {
   "1": {
@@ -417,7 +417,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/statement.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/statement.h"
  },
  {
   "1": {
@@ -432,7 +432,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src/threading.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src/threading.h"
  },
  {
   "1": {
@@ -447,7 +447,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj"
  },
  {
   "1": {
@@ -462,7 +462,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj.filters"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/action_before_build.vcxproj.filters"
  },
  {
   "1": {
@@ -477,7 +477,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.sln"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/sqlite3.sln"
  },
  {
   "1": {
@@ -492,7 +492,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj"
  },
  {
   "1": {
@@ -507,7 +507,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj.filters"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/sqlite3.vcxproj.filters"
  },
  {
   "1": {
@@ -522,7 +522,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.exp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.exp"
  },
  {
   "1": {
@@ -537,7 +537,7 @@
    "decompressed": 124,
    "compressed": 108
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.iobj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.iobj"
  },
  {
   "1": {
@@ -552,7 +552,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.ipdb"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.ipdb"
  },
  {
   "1": {
@@ -567,7 +567,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.lib"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.lib"
  },
  {
   "1": {
@@ -582,7 +582,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node"
  },
  {
   "1": {
@@ -597,7 +597,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node.bak"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.node.bak"
  },
  {
   "1": {
@@ -612,7 +612,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/node_sqlite3.pdb"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/node_sqlite3.pdb"
  },
  {
   "1": {
@@ -627,7 +627,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/nothing.lib"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/nothing.lib"
  },
  {
   "1": {
@@ -642,7 +642,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/sqlite3.lib"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/sqlite3.lib"
  },
  {
   "1": {
@@ -657,7 +657,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.d.ts"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/index.d.ts"
  },
  {
   "1": {
@@ -672,7 +672,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/index.js"
  },
  {
   "1": {
@@ -687,7 +687,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/index.mjs"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/index.mjs"
  },
  {
   "1": {
@@ -702,7 +702,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/LICENSE"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/LICENSE"
  },
  {
   "1": {
@@ -717,7 +717,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/package.json"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/package.json"
  },
  {
   "1": {
@@ -732,7 +732,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass/README.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass/README.md"
  },
  {
   "1": {
@@ -747,7 +747,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/common.gypi"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/common.gypi"
  },
  {
   "1": {
@@ -762,7 +762,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/except.gypi"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/except.gypi"
  },
  {
   "1": {
@@ -777,7 +777,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/index.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/index.js"
  },
  {
   "1": {
@@ -792,7 +792,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/LICENSE.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/LICENSE.md"
  },
  {
   "1": {
@@ -807,7 +807,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.deprecated.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.deprecated.h"
  },
  {
   "1": {
@@ -822,7 +822,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi-inl.h"
  },
  {
   "1": {
@@ -837,7 +837,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/napi.h"
  },
  {
   "1": {
@@ -852,7 +852,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_addon_api.gyp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_addon_api.gyp"
  },
  {
   "1": {
@@ -867,7 +867,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_api.gyp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/node_api.gyp"
  },
  {
   "1": {
@@ -882,7 +882,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/noexcept.gypi"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/noexcept.gypi"
  },
  {
   "1": {
@@ -897,7 +897,7 @@
    "decompressed": 117,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/nothing.c"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/nothing.c"
  },
  {
   "1": {
@@ -912,7 +912,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/package-support.json"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/package-support.json"
  },
  {
   "1": {
@@ -927,7 +927,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/package.json"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/package.json"
  },
  {
   "1": {
@@ -942,7 +942,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/README.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/README.md"
  },
  {
   "1": {
@@ -957,7 +957,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/index.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/index.js"
  },
  {
   "1": {
@@ -972,7 +972,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/LICENSE"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/LICENSE"
  },
  {
   "1": {
@@ -987,7 +987,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/package.json"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/package.json"
  },
  {
   "1": {
@@ -1002,7 +1002,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/README.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/README.md"
  },
  {
   "1": {
@@ -1017,7 +1017,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/node_api.sln"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/node_api.sln"
  },
  {
   "1": {
@@ -1032,7 +1032,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj"
  },
  {
   "1": {
@@ -1047,7 +1047,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj.filters"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/nothing.vcxproj.filters"
  },
  {
   "1": {
@@ -1062,7 +1062,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/check-napi.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/check-napi.js"
  },
  {
   "1": {
@@ -1077,7 +1077,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/clang-format.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/clang-format.js"
  },
  {
   "1": {
@@ -1092,7 +1092,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/conversion.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/conversion.js"
  },
  {
   "1": {
@@ -1107,7 +1107,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/eslint-format.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/eslint-format.js"
  },
  {
   "1": {
@@ -1122,7 +1122,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/README.md"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools/README.md"
  },
  {
   "1": {
@@ -1137,7 +1137,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/create.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/create.js"
  },
  {
   "1": {
@@ -1152,7 +1152,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/extract.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/extract.js"
  },
  {
   "1": {
@@ -1167,7 +1167,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/get-write-flag.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/get-write-flag.js"
  },
  {
   "1": {
@@ -1182,7 +1182,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/header.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/header.js"
  },
  {
   "1": {
@@ -1197,7 +1197,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/high-level-opt.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/high-level-opt.js"
  },
  {
   "1": {
@@ -1212,7 +1212,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/large-numbers.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/large-numbers.js"
  },
  {
   "1": {
@@ -1227,7 +1227,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/list.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/list.js"
  },
  {
   "1": {
@@ -1242,7 +1242,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/mkdir.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/mkdir.js"
  },
  {
   "1": {
@@ -1257,7 +1257,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/mode-fix.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/mode-fix.js"
  },
  {
   "1": {
@@ -1272,7 +1272,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-unicode.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-unicode.js"
  },
  {
   "1": {
@@ -1287,7 +1287,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-windows-path.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/normalize-windows-path.js"
  },
  {
   "1": {
@@ -1302,7 +1302,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/pack.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/pack.js"
  },
  {
   "1": {
@@ -1317,7 +1317,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/parse.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/parse.js"
  },
  {
   "1": {
@@ -1332,7 +1332,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/path-reservations.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/path-reservations.js"
  },
  {
   "1": {
@@ -1347,7 +1347,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/pax.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/pax.js"
  },
  {
   "1": {
@@ -1362,7 +1362,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/read-entry.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/read-entry.js"
  },
  {
   "1": {
@@ -1377,7 +1377,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/replace.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/replace.js"
  },
  {
   "1": {
@@ -1392,7 +1392,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-absolute-path.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-absolute-path.js"
  },
  {
   "1": {
@@ -1407,7 +1407,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-trailing-slashes.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/strip-trailing-slashes.js"
  },
  {
   "1": {
@@ -1422,7 +1422,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/types.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/types.js"
  },
  {
   "1": {
@@ -1437,7 +1437,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/unpack.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/unpack.js"
  },
  {
   "1": {
@@ -1452,7 +1452,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/update.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/update.js"
  },
  {
   "1": {
@@ -1467,7 +1467,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/warn-mixin.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/warn-mixin.js"
  },
  {
   "1": {
@@ -1482,7 +1482,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/winchars.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/winchars.js"
  },
  {
   "1": {
@@ -1497,7 +1497,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib/write-entry.js"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib/write-entry.js"
  },
  {
   "1": {
@@ -1512,7 +1512,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.node.recipe"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.node.recipe"
  },
  {
   "1": {
@@ -1527,7 +1527,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/win_delay_load_hook.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/win_delay_load_hook.obj"
  },
  {
   "1": {
@@ -1542,7 +1542,7 @@
    "decompressed": 119,
    "compressed": 100
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_before_build.recipe"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_before_build.recipe"
  },
  {
   "1": {
@@ -1557,7 +1557,7 @@
    "decompressed": 119,
    "compressed": 100
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.lib.recipe"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.lib.recipe"
  },
  {
   "1": {
@@ -1572,7 +1572,7 @@
    "decompressed": 121,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/win_delay_load_hook.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/win_delay_load_hook.obj"
  },
  {
   "1": {
@@ -1587,7 +1587,7 @@
    "decompressed": 122,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/aclocal.m4"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/aclocal.m4"
  },
  {
   "1": {
@@ -1602,7 +1602,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/compile"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/compile"
  },
  {
   "1": {
@@ -1617,7 +1617,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.guess"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.guess"
  },
  {
   "1": {
@@ -1632,7 +1632,7 @@
    "decompressed": 121,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.sub"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/config.sub"
  },
  {
   "1": {
@@ -1647,7 +1647,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure"
  },
  {
   "1": {
@@ -1662,7 +1662,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure.ac"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/configure.ac"
  },
  {
   "1": {
@@ -1677,7 +1677,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/depcomp"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/depcomp"
  },
  {
   "1": {
@@ -1692,7 +1692,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/INSTALL"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/INSTALL"
  },
  {
   "1": {
@@ -1707,7 +1707,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/install-sh"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/install-sh"
  },
  {
   "1": {
@@ -1722,7 +1722,7 @@
    "decompressed": 122,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/ltmain.sh"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/ltmain.sh"
  },
  {
   "1": {
@@ -1737,7 +1737,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.am"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.am"
  },
  {
   "1": {
@@ -1752,7 +1752,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.fallback"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.fallback"
  },
  {
   "1": {
@@ -1767,7 +1767,7 @@
    "decompressed": 121,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.in"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.in"
  },
  {
   "1": {
@@ -1782,7 +1782,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.msc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Makefile.msc"
  },
  {
   "1": {
@@ -1797,7 +1797,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/missing"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/missing"
  },
  {
   "1": {
@@ -1812,7 +1812,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/README.txt"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/README.txt"
  },
  {
   "1": {
@@ -1827,7 +1827,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Replace.cs"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/Replace.cs"
  },
  {
   "1": {
@@ -1842,7 +1842,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/shell.c"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/shell.c"
  },
  {
   "1": {
@@ -1857,7 +1857,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.1"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.1"
  },
  {
   "1": {
@@ -1872,7 +1872,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.c"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.c"
  },
  {
   "1": {
@@ -1887,7 +1887,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.h"
  },
  {
   "1": {
@@ -1902,7 +1902,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.pc.in"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.pc.in"
  },
  {
   "1": {
@@ -1917,7 +1917,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.rc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.rc"
  },
  {
   "1": {
@@ -1932,7 +1932,7 @@
    "decompressed": 121,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3ext.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3ext.h"
  },
  {
   "1": {
@@ -1947,7 +1947,7 @@
    "decompressed": 118,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3rc.h"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3rc.h"
  },
  {
   "1": {
@@ -1962,7 +1962,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.command.1.tlog"
  },
  {
   "1": {
@@ -1977,7 +1977,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.read.1.tlog"
  },
  {
   "1": {
@@ -1992,7 +1992,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/CL.write.1.tlog"
  },
  {
   "1": {
@@ -2007,7 +2007,7 @@
    "decompressed": 120,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.command.1.tlog"
  },
  {
   "1": {
@@ -2022,7 +2022,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.read.1.tlog"
  },
  {
   "1": {
@@ -2037,7 +2037,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/link.write.1.tlog"
  },
  {
   "1": {
@@ -2052,7 +2052,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.lastbuildstate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.lastbuildstate"
  },
  {
   "1": {
@@ -2067,7 +2067,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.write.1u.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog/node_sqlite3.write.1u.tlog"
  },
  {
   "1": {
@@ -2082,7 +2082,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/backup.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/backup.obj"
  },
  {
   "1": {
@@ -2097,7 +2097,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/database.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/database.obj"
  },
  {
   "1": {
@@ -2112,7 +2112,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/node_sqlite3.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/node_sqlite3.obj"
  },
  {
   "1": {
@@ -2127,7 +2127,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/statement.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src/statement.obj"
  },
  {
   "1": {
@@ -2142,7 +2142,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/action_before_build.lastbuildstate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/action_before_build.lastbuildstate"
  },
  {
   "1": {
@@ -2157,7 +2157,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.command.1.tlog"
  },
  {
   "1": {
@@ -2172,7 +2172,7 @@
    "decompressed": 118,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.read.1.tlog"
  },
  {
   "1": {
@@ -2187,7 +2187,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog/CustomBuild.write.1.tlog"
  },
  {
   "1": {
@@ -2202,7 +2202,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.command.1.tlog"
  },
  {
   "1": {
@@ -2217,7 +2217,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.read.1.tlog"
  },
  {
   "1": {
@@ -2232,7 +2232,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/CL.write.1.tlog"
  },
  {
   "1": {
@@ -2247,7 +2247,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.read.1.tlog"
  },
  {
   "1": {
@@ -2262,7 +2262,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib-link.write.1.tlog"
  },
  {
   "1": {
@@ -2277,7 +2277,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/Lib.command.1.tlog"
  },
  {
   "1": {
@@ -2292,7 +2292,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/sqlite3.lastbuildstate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog/sqlite3.lastbuildstate"
  },
  {
   "1": {
@@ -2307,7 +2307,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.lib.recipe"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.lib.recipe"
  },
  {
   "1": {
@@ -2322,7 +2322,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/win_delay_load_hook.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/win_delay_load_hook.obj"
  },
  {
   "1": {
@@ -2337,7 +2337,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/aclocal.m4"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/aclocal.m4"
  },
  {
   "1": {
@@ -2352,7 +2352,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure"
  },
  {
   "1": {
@@ -2367,7 +2367,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure.ac"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/configure.ac"
  },
  {
   "1": {
@@ -2382,7 +2382,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/license.terms"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/license.terms"
  },
  {
   "1": {
@@ -2397,7 +2397,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/Makefile.in"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/Makefile.in"
  },
  {
   "1": {
@@ -2412,7 +2412,7 @@
    "decompressed": 119,
    "compressed": 100
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/pkgIndex.tcl.in"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/pkgIndex.tcl.in"
  },
  {
   "1": {
@@ -2427,7 +2427,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/README"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/README"
  },
  {
   "1": {
@@ -2442,7 +2442,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.command.1.tlog"
  },
  {
   "1": {
@@ -2457,7 +2457,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.read.1.tlog"
  },
  {
   "1": {
@@ -2472,7 +2472,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/CL.write.1.tlog"
  },
  {
   "1": {
@@ -2487,7 +2487,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.read.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.read.1.tlog"
  },
  {
   "1": {
@@ -2502,7 +2502,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.write.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib-link.write.1.tlog"
  },
  {
   "1": {
@@ -2517,7 +2517,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib.command.1.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/Lib.command.1.tlog"
  },
  {
   "1": {
@@ -2532,7 +2532,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/nothing.lastbuildstate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog/nothing.lastbuildstate"
  },
  {
   "1": {
@@ -2547,7 +2547,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc/sqlite3.n"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc/sqlite3.n"
  },
  {
   "1": {
@@ -2562,7 +2562,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic/tclsqlite3.c"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic/tclsqlite3.c"
  },
  {
   "1": {
@@ -2577,7 +2577,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/install-sh"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/install-sh"
  },
  {
   "1": {
@@ -2592,7 +2592,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/tcl.m4"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig/tcl.m4"
  },
  {
   "1": {
@@ -2607,7 +2607,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/makefile.vc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/makefile.vc"
  },
  {
   "1": {
@@ -2622,7 +2622,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/nmakehlp.c"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/nmakehlp.c"
  },
  {
   "1": {
@@ -2637,7 +2637,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/rules.vc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win/rules.vc"
  },
  {
   "1": {
@@ -2652,7 +2652,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200/sqlite3.obj"
  },
  {
   "1": {
@@ -2667,7 +2667,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api/nothing.obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api/nothing.obj"
  },
  {
   "1": {
@@ -2682,7 +2682,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter.wasm"
  },
  {
   "1": {
@@ -2697,7 +2697,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-bash.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-bash.wasm"
  },
  {
   "1": {
@@ -2712,7 +2712,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-c.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-c.wasm"
  },
  {
   "1": {
@@ -2727,7 +2727,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-cpp.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-cpp.wasm"
  },
  {
   "1": {
@@ -2742,7 +2742,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-css.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-css.wasm"
  },
  {
   "1": {
@@ -2757,7 +2757,7 @@
    "decompressed": 123,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-c_sharp.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-c_sharp.wasm"
  },
  {
   "1": {
@@ -2772,7 +2772,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elisp.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-elisp.wasm"
  },
  {
   "1": {
@@ -2787,7 +2787,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elixir.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-elixir.wasm"
  },
  {
   "1": {
@@ -2802,7 +2802,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-elm.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-elm.wasm"
  },
  {
   "1": {
@@ -2817,7 +2817,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-embedded_template.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-embedded_template.wasm"
  },
  {
   "1": {
@@ -2832,7 +2832,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-go.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-go.wasm"
  },
  {
   "1": {
@@ -2847,7 +2847,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-html.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-html.wasm"
  },
  {
   "1": {
@@ -2862,7 +2862,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-java.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-java.wasm"
  },
  {
   "1": {
@@ -2877,7 +2877,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-javascript.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-javascript.wasm"
  },
  {
   "1": {
@@ -2892,7 +2892,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-json.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-json.wasm"
  },
  {
   "1": {
@@ -2907,7 +2907,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-kotlin.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-kotlin.wasm"
  },
  {
   "1": {
@@ -2922,7 +2922,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-lua.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-lua.wasm"
  },
  {
   "1": {
@@ -2937,7 +2937,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-objc.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-objc.wasm"
  },
  {
   "1": {
@@ -2952,7 +2952,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ocaml.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-ocaml.wasm"
  },
  {
   "1": {
@@ -2967,7 +2967,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-php.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-php.wasm"
  },
  {
   "1": {
@@ -2982,7 +2982,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-python.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-python.wasm"
  },
  {
   "1": {
@@ -2997,7 +2997,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ql.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-ql.wasm"
  },
  {
   "1": {
@@ -3012,7 +3012,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-rescript.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-rescript.wasm"
  },
  {
   "1": {
@@ -3027,7 +3027,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-ruby.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-ruby.wasm"
  },
  {
   "1": {
@@ -3042,7 +3042,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-rust.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-rust.wasm"
  },
  {
   "1": {
@@ -3057,7 +3057,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-scala.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-scala.wasm"
  },
  {
   "1": {
@@ -3072,7 +3072,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-solidity.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-solidity.wasm"
  },
  {
   "1": {
@@ -3087,7 +3087,7 @@
    "decompressed": 123,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-swift.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-swift.wasm"
  },
  {
   "1": {
@@ -3102,7 +3102,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-systemrdl.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-systemrdl.wasm"
  },
  {
   "1": {
@@ -3117,7 +3117,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-tlaplus.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-tlaplus.wasm"
  },
  {
   "1": {
@@ -3132,7 +3132,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-toml.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-toml.wasm"
  },
  {
   "1": {
@@ -3147,7 +3147,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-tsx.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-tsx.wasm"
  },
  {
   "1": {
@@ -3162,7 +3162,7 @@
    "decompressed": 123,
    "compressed": 107
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-typescript.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-typescript.wasm"
  },
  {
   "1": {
@@ -3177,7 +3177,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-vue.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-vue.wasm"
  },
  {
   "1": {
@@ -3192,7 +3192,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-yaml.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-yaml.wasm"
  },
  {
   "1": {
@@ -3207,7 +3207,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms/tree-sitter-zig.wasm"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms/tree-sitter-zig.wasm"
  },
  {
   "1": {
@@ -3222,7 +3222,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/c.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/c.scm"
  },
  {
   "1": {
@@ -3237,7 +3237,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/cpp.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/cpp.scm"
  },
  {
   "1": {
@@ -3252,7 +3252,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/c_sharp.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/c_sharp.scm"
  },
  {
   "1": {
@@ -3267,7 +3267,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/elisp.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/elisp.scm"
  },
  {
   "1": {
@@ -3282,7 +3282,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/elixir.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/elixir.scm"
  },
  {
   "1": {
@@ -3297,7 +3297,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/go.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/go.scm"
  },
  {
   "1": {
@@ -3312,7 +3312,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/java.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/java.scm"
  },
  {
   "1": {
@@ -3327,7 +3327,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/javascript.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/javascript.scm"
  },
  {
   "1": {
@@ -3342,7 +3342,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ocaml.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/ocaml.scm"
  },
  {
   "1": {
@@ -3357,7 +3357,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/php.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/php.scm"
  },
  {
   "1": {
@@ -3372,7 +3372,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/python.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/python.scm"
  },
  {
   "1": {
@@ -3387,7 +3387,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ql.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/ql.scm"
  },
  {
   "1": {
@@ -3402,7 +3402,7 @@
    "decompressed": 117,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/ruby.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/ruby.scm"
  },
  {
   "1": {
@@ -3417,7 +3417,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/rust.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/rust.scm"
  },
  {
   "1": {
@@ -3432,7 +3432,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries/typescript.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries/typescript.scm"
  },
  {
   "1": {
@@ -3447,7 +3447,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/cpp.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/import-queries/cpp.scm"
  },
  {
   "1": {
@@ -3462,7 +3462,7 @@
    "decompressed": 118,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/java.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/import-queries/java.scm"
  },
  {
   "1": {
@@ -3477,7 +3477,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/python.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/import-queries/python.scm"
  },
  {
   "1": {
@@ -3492,7 +3492,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries/typescript.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/import-queries/typescript.scm"
  },
  {
   "1": {
@@ -3507,7 +3507,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/cpp/function_definition.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/cpp/function_definition.scm"
  },
  {
   "1": {
@@ -3522,7 +3522,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/go/function_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/go/function_declaration.scm"
  },
  {
   "1": {
@@ -3537,7 +3537,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/java/method_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/java/method_declaration.scm"
  },
  {
   "1": {
@@ -3552,7 +3552,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/class_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/php/class_declaration.scm"
  },
  {
   "1": {
@@ -3567,7 +3567,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/function_definition.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/php/function_definition.scm"
  },
  {
   "1": {
@@ -3582,7 +3582,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php/method_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/php/method_declaration.scm"
  },
  {
   "1": {
@@ -3597,7 +3597,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python/class_definition.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/python/class_definition.scm"
  },
  {
   "1": {
@@ -3612,7 +3612,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python/function_definition.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/python/function_definition.scm"
  },
  {
   "1": {
@@ -3627,7 +3627,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/arrow_function.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript/arrow_function.scm"
  },
  {
   "1": {
@@ -3642,7 +3642,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/class_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript/class_declaration.scm"
  },
  {
   "1": {
@@ -3657,7 +3657,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/function_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript/function_declaration.scm"
  },
  {
   "1": {
@@ -3672,7 +3672,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/generator_function_declaration.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript/generator_function_declaration.scm"
  },
  {
   "1": {
@@ -3687,7 +3687,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript/method_definition.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript/method_definition.scm"
  },
  {
   "1": {
@@ -3702,7 +3702,7 @@
    "decompressed": 120,
    "compressed": 104
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/hole-queries/typescript.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/hole-queries/typescript.scm"
  },
  {
   "1": {
@@ -3717,7 +3717,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-headers-queries/typescript-get-toplevel-headers.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/relevant-headers-queries/typescript-get-toplevel-headers.scm"
  },
  {
   "1": {
@@ -3732,7 +3732,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-extract-identifiers.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-extract-identifiers.scm"
  },
  {
   "1": {
@@ -3747,7 +3747,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-find-typedecl-given-typeidentifier.scm"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/relevant-types-queries/typescript-find-typedecl-given-typeidentifier.scm"
  },
  {
   "1": {
@@ -3762,7 +3762,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/crypt32-ia32.node"
+  "path": "C:/snapshot/gamecowork/binary/node_modules/win-ca/lib/crypt32-ia32.node"
  },
  {
   "1": {
@@ -3777,7 +3777,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/crypt32-x64.node"
+  "path": "C:/snapshot/gamecowork/binary/node_modules/win-ca/lib/crypt32-x64.node"
  },
  {
   "1": {
@@ -3792,7 +3792,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib/roots.exe"
+  "path": "C:/snapshot/gamecowork/binary/node_modules/win-ca/lib/roots.exe"
  },
  {
   "1": {
@@ -3807,7 +3807,7 @@
    "decompressed": 122,
    "compressed": 106
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/llamaTokenizer.mjs"
+  "path": "C:/snapshot/gamecowork/binary/out/llamaTokenizer.mjs"
  },
  {
   "1": {
@@ -3822,7 +3822,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/llamaTokenizerWorkerPool.mjs"
+  "path": "C:/snapshot/gamecowork/binary/out/llamaTokenizerWorkerPool.mjs"
  },
  {
   "1": {
@@ -3837,7 +3837,7 @@
    "decompressed": 121,
    "compressed": 105
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/projectZipWorker.mjs"
+  "path": "C:/snapshot/gamecowork/binary/out/projectZipWorker.mjs"
  },
  {
   "1": {
@@ -3852,7 +3852,7 @@
    "decompressed": 119,
    "compressed": 101
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tiktokenWorkerPool.mjs"
+  "path": "C:/snapshot/gamecowork/binary/out/tiktokenWorkerPool.mjs"
  },
  {
   "1": {
@@ -3867,7 +3867,7 @@
    "decompressed": 119,
    "compressed": 103
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/package.json"
+  "path": "C:/snapshot/gamecowork/binary/out/package.json"
  },
  {
   "2": {
@@ -3882,7 +3882,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/out"
+  "path": "C:/snapshot/gamecowork/binary/out"
  },
  {
   "2": {
@@ -3897,7 +3897,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/pkgJson/win32-x64"
+  "path": "C:/snapshot/gamecowork/binary/pkgJson/win32-x64"
  },
  {
   "2": {
@@ -3912,7 +3912,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3"
  },
  {
   "2": {
@@ -3927,7 +3927,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build"
  },
  {
   "2": {
@@ -3942,7 +3942,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/deps"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/deps"
  },
  {
   "2": {
@@ -3957,7 +3957,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/lib"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/lib"
  },
  {
   "2": {
@@ -3972,7 +3972,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/src"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/src"
  },
  {
   "2": {
@@ -3987,7 +3987,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps"
  },
  {
   "2": {
@@ -4002,7 +4002,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release"
  },
  {
   "2": {
@@ -4017,7 +4017,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/minipass"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/minipass"
  },
  {
   "2": {
@@ -4032,7 +4032,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api"
  },
  {
   "2": {
@@ -4047,7 +4047,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar"
  },
  {
   "2": {
@@ -4062,7 +4062,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api"
  },
  {
   "2": {
@@ -4077,7 +4077,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/node-addon-api/tools"
  },
  {
   "2": {
@@ -4092,7 +4092,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules/tar/lib"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules/tar/lib"
  },
  {
   "2": {
@@ -4107,7 +4107,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3"
  },
  {
   "2": {
@@ -4122,7 +4122,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build"
  },
  {
   "2": {
@@ -4137,7 +4137,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3"
  },
  {
   "2": {
@@ -4152,7 +4152,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200"
  },
  {
   "2": {
@@ -4167,7 +4167,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/node_sqlite3.tlog"
  },
  {
   "2": {
@@ -4182,7 +4182,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/node_sqlite3/src"
  },
  {
   "2": {
@@ -4197,7 +4197,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/action_before_build/action_b.A318CF7E.tlog"
  },
  {
   "2": {
@@ -4212,7 +4212,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/sqlite3.tlog"
  },
  {
   "2": {
@@ -4227,7 +4227,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing"
  },
  {
   "2": {
@@ -4242,7 +4242,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea"
  },
  {
   "2": {
@@ -4257,7 +4257,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/nothing.tlog"
  },
  {
   "2": {
@@ -4272,7 +4272,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/doc"
  },
  {
   "2": {
@@ -4287,7 +4287,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/generic"
  },
  {
   "2": {
@@ -4302,7 +4302,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/tclconfig"
  },
  {
   "2": {
@@ -4317,7 +4317,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate/sqlite-autoconf-3440200/tea/win"
  },
  {
   "2": {
@@ -4332,7 +4332,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate/sqlite-autoconf-3440200"
  },
  {
   "2": {
@@ -4347,7 +4347,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules/node-addon-api"
  },
  {
   "2": {
@@ -4362,7 +4362,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/out/tree-sitter-wasms"
+  "path": "C:/snapshot/gamecowork/binary/out/tree-sitter-wasms"
  },
  {
   "2": {
@@ -4377,7 +4377,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/code-snippet-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/code-snippet-queries"
  },
  {
   "2": {
@@ -4392,7 +4392,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/import-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/import-queries"
  },
  {
   "2": {
@@ -4407,7 +4407,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/cpp"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/cpp"
  },
  {
   "2": {
@@ -4422,7 +4422,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/go"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/go"
  },
  {
   "2": {
@@ -4437,7 +4437,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/java"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/java"
  },
  {
   "2": {
@@ -4452,7 +4452,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/php"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/php"
  },
  {
   "2": {
@@ -4467,7 +4467,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/python"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/python"
  },
  {
   "2": {
@@ -4482,7 +4482,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries/typescript"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries/typescript"
  },
  {
   "2": {
@@ -4497,7 +4497,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/hole-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/hole-queries"
  },
  {
   "2": {
@@ -4512,7 +4512,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-headers-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/relevant-headers-queries"
  },
  {
   "2": {
@@ -4527,7 +4527,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries/relevant-types-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries/relevant-types-queries"
  },
  {
   "2": {
@@ -4542,7 +4542,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca/lib"
+  "path": "C:/snapshot/gamecowork/binary/node_modules/win-ca/lib"
  },
  {
   "2": {
@@ -4557,7 +4557,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary"
+  "path": "C:/snapshot/gamecowork/binary"
  },
  {
   "2": {
@@ -4572,7 +4572,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/pkgJson"
+  "path": "C:/snapshot/gamecowork/binary/pkgJson"
  },
  {
   "2": {
@@ -4587,7 +4587,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules"
+  "path": "C:/snapshot/gamecowork/core/node_modules"
  },
  {
   "2": {
@@ -4602,7 +4602,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/node_modules"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/node_modules"
  },
  {
   "2": {
@@ -4617,7 +4617,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules"
  },
  {
   "2": {
@@ -4632,7 +4632,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj"
  },
  {
   "2": {
@@ -4647,7 +4647,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj"
  },
  {
   "2": {
@@ -4662,7 +4662,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/Release/obj/global_intermediate"
  },
  {
   "2": {
@@ -4677,7 +4677,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj"
  },
  {
   "2": {
@@ -4692,7 +4692,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj/global_intermediate"
  },
  {
   "2": {
@@ -4707,7 +4707,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release/obj/nothing/node_modules"
  },
  {
   "2": {
@@ -4722,7 +4722,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter"
  },
  {
   "2": {
@@ -4737,7 +4737,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/root-path-context-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/root-path-context-queries"
  },
  {
   "2": {
@@ -4752,7 +4752,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/tree-sitter/static-context-queries"
+  "path": "C:/snapshot/gamecowork/binary/tree-sitter/static-context-queries"
  },
  {
   "2": {
@@ -4767,7 +4767,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules/win-ca"
+  "path": "C:/snapshot/gamecowork/binary/node_modules/win-ca"
  },
  {
   "2": {
@@ -4782,7 +4782,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork"
+  "path": "C:/snapshot/gamecowork"
  },
  {
   "2": {
@@ -4797,7 +4797,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core"
+  "path": "C:/snapshot/gamecowork/core"
  },
  {
   "2": {
@@ -4812,7 +4812,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release"
  },
  {
   "2": {
@@ -4827,7 +4827,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/node_modules/node-addon-api/Release"
  },
  {
   "2": {
@@ -4842,7 +4842,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj"
+  "path": "C:/snapshot/gamecowork/core/node_modules/sqlite3/build/deps/Release/obj/sqlite3/obj"
  },
  {
   "2": {
@@ -4857,7 +4857,7 @@
    "decompressed": 117,
    "compressed": 102
   },
-  "path": "C:/snapshot/codely-cowork/binary/node_modules"
+  "path": "C:/snapshot/gamecowork/binary/node_modules"
  },
  {
   "2": {

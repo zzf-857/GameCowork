@@ -139,8 +139,8 @@ function A1() {
     },
   };
 }
-const D1 = "codely-theme",
-  d2 = "codely-language",
+const D1 = "gamecowork-theme",
+  d2 = "gamecowork-language",
   f2 = "changeThemeMode";
 function L1(t) {
   return t === "light" || t === "dark";
@@ -223,9 +223,9 @@ const h2 = 5e3,
   S1 = 280,
   x2 = 12,
   V1 = u(
-    "leading-3 p-2 mr-px border border-solid border-codely-color-border-strong",
-    "bg-codely-color-surface-input [font-family:'Ark_Pixel'] select-none",
-    "text-codely-color-text-tertiary text-sm",
+    "leading-3 p-2 mr-px border border-solid border-gamecowork-color-border-strong",
+    "bg-gamecowork-color-surface-input [font-family:'Ark_Pixel'] select-none",
+    "text-gamecowork-color-text-tertiary text-sm",
   );
 function w2() {
   const [t, n] = i.useState(""),
@@ -774,7 +774,7 @@ function Z2() {
         C2,
         n2.configure({
           HTMLAttributes: {
-            class: "bg-codely-color-surface-card text-codely-color-text-default rounded px-2 py-px text-[0.8em]",
+            class: "bg-gamecowork-color-surface-card text-gamecowork-color-text-default rounded px-2 py-px text-[0.8em]",
           },
         }),
         k2,
@@ -1131,8 +1131,8 @@ function Z2() {
         }
       (v.insertContentAt(1, `${o} `).run(), r.commands.focus("end"));
     },
-    U = "border-codely-color-border-strong",
-    Y = "bg-codely-color-surface-input",
+    U = "border-gamecowork-color-border-strong",
+    Y = "bg-gamecowork-color-surface-input",
     [D, g1] = i.useState(null),
     [r1, z] = i.useState(!1);
   i.useEffect(() => {
@@ -1166,11 +1166,11 @@ function Z2() {
             !r1 && "opacity-0",
           ),
           children: [
-            e.jsx(V2, { className: u("shrink-0 text-codely-color-text-secondary mr-2") }),
+            e.jsx(V2, { className: u("shrink-0 text-gamecowork-color-text-secondary mr-2") }),
             e.jsxs("div", {
-              className: "flex-1 min-w-0 truncate text-codely-color-text-secondary text-sm",
+              className: "flex-1 min-w-0 truncate text-gamecowork-color-text-secondary text-sm",
               title: `${D.text}${o1}`,
-              children: [D.text, o1 && e.jsx("span", { className: "text-codely-color-text-tertiary", children: o1 })],
+              children: [D.text, o1 && e.jsx("span", { className: "text-gamecowork-color-text-tertiary", children: o1 })],
             }),
           ],
         }),
@@ -1202,7 +1202,7 @@ function Z2() {
       }),
       p &&
         e.jsx("div", {
-          className: u("px-2 py-1 text-sm leading-5 select-none", "text-codely-color-text-secondary"),
+          className: u("px-2 py-1 text-sm leading-5 select-none", "text-gamecowork-color-text-secondary"),
           "data-pet-no-drag": !0,
           children: p,
         }),
@@ -1245,7 +1245,7 @@ function Z2() {
                                   }),
                                   e.jsx("div", {
                                     className: u(
-                                      "absolute size-[14px] bg-codely-color-surface-overlay -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 flex items-center justify-center",
+                                      "absolute size-[14px] bg-gamecowork-color-surface-overlay -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 flex items-center justify-center",
                                     ),
                                     children: e.jsx(L2, {}),
                                   }),
@@ -1261,7 +1261,7 @@ function Z2() {
                               }),
                         e.jsx("div", {
                           className: u(
-                            "absolute top-0 right-0 hidden size-3.5 group-hover:flex items-center justify-center bg-codely-color-surface-overlay cursor-pointer",
+                            "absolute top-0 right-0 hidden size-3.5 group-hover:flex items-center justify-center bg-gamecowork-color-surface-overlay cursor-pointer",
                           ),
                           onMouseDown: (r) => r.preventDefault(),
                           onClick: (r) => {
@@ -1278,11 +1278,11 @@ function Z2() {
               E &&
                 e.jsx("div", {
                   className: u(
-                    "absolute left-0 top-1/2 -translate-y-1/2 ml-[-4px] z-10 flex size-3.5 items-center justify-center bg-codely-color-surface-overlay cursor-pointer",
+                    "absolute left-0 top-1/2 -translate-y-1/2 ml-[-4px] z-10 flex size-3.5 items-center justify-center bg-gamecowork-color-surface-overlay cursor-pointer",
                   ),
                   onMouseDown: (C) => C.preventDefault(),
                   onClick: () => x1(-1),
-                  children: e.jsx(H1, { className: u("text-codely-color-text-primary rotate-180 ml-1") }),
+                  children: e.jsx(H1, { className: u("text-gamecowork-color-text-primary rotate-180 ml-1") }),
                 }),
               E &&
                 e.jsx("div", {
@@ -1297,7 +1297,7 @@ function Z2() {
               x &&
                 e.jsx("div", {
                   className: u(
-                    "absolute right-0 top-1/2 -translate-y-1/2 mr-[-4px] z-10 flex size-3.5 items-center justify-center bg-codely-color-surface-overlay cursor-pointer text-codely-color-text-primary",
+                    "absolute right-0 top-1/2 -translate-y-1/2 mr-[-4px] z-10 flex size-3.5 items-center justify-center bg-gamecowork-color-surface-overlay cursor-pointer text-gamecowork-color-text-primary",
                   ),
                   onMouseDown: (C) => C.preventDefault(),
                   onClick: () => x1(1),
@@ -1308,7 +1308,7 @@ function Z2() {
         }),
       e.jsxs("div", {
         className: u(
-          `w-[292px] h-[60px] bg-codely-color-surface-input border border-solid ${U} box-content p-2`,
+          `w-[292px] h-[60px] bg-gamecowork-color-surface-input border border-solid ${U} box-content p-2`,
           a.length > 0 && "border-t-0",
         ),
         children: [
@@ -1319,7 +1319,7 @@ function Z2() {
               (O == null ? void 0 : O.isEmpty) &&
                 e.jsx("div", {
                   className: u(
-                    "pointer-events-none absolute left-0 top-0 select-none text-sm text-codely-color-text-tertiary",
+                    "pointer-events-none absolute left-0 top-0 select-none text-sm text-gamecowork-color-text-tertiary",
                   ),
                   children: t("petInput.placeholder"),
                 }),
@@ -1334,10 +1334,10 @@ function Z2() {
               e.jsxs("div", {
                 className: u("flex-grow flex flex-row gap-1 items-center min-w-0"),
                 children: [
-                  s && e.jsx(S2, { className: u("text-codely-color-text-secondary size-4 shrink-0") }),
+                  s && e.jsx(S2, { className: u("text-gamecowork-color-text-secondary size-4 shrink-0") }),
                   e.jsx("div", {
                     className: u(
-                      "flex-grow text-xs overflow-ellipsis truncate whitespace-nowrap min-w-0 tracking-[1px] text-codely-color-text-secondary",
+                      "flex-grow text-xs overflow-ellipsis truncate whitespace-nowrap min-w-0 tracking-[1px] text-gamecowork-color-text-secondary",
                     ),
                     title: s || void 0,
                     children: s || "",
@@ -1347,12 +1347,12 @@ function Z2() {
               e.jsx("div", {
                 className: u(
                   "w-[22px] h-[22px] shrink-0 flex items-center justify-center ml-3",
-                  G ? "bg-codely-color-accent-default cursor-pointer" : "bg-codely-color-surface-card cursor-default",
+                  G ? "bg-gamecowork-color-accent-default cursor-pointer" : "bg-gamecowork-color-surface-card cursor-default",
                 ),
                 onMouseDown: (C) => C.preventDefault(),
                 onClick: () => void h1(),
                 children: e.jsx(y2, {
-                  className: u(G ? "text-codely-color-text-primary" : "text-codely-color-text-tertiary"),
+                  className: u(G ? "text-gamecowork-color-text-primary" : "text-gamecowork-color-text-tertiary"),
                 }),
               }),
             ],
@@ -1387,7 +1387,7 @@ const A2 = [
   { action: "review" },
 ];
 function i1() {
-  return e.jsx("div", { className: "h-px my-1 bg-codely-color-border-subtle" });
+  return e.jsx("div", { className: "h-px my-1 bg-gamecowork-color-border-subtle" });
 }
 function a1({ label: t, onClick: n, onMouseEnter: s }) {
   const c = (a) => {
@@ -1397,8 +1397,8 @@ function a1({ label: t, onClick: n, onMouseEnter: s }) {
     onMouseEnter: s,
     onClick: c,
     className: u(
-      "rounded cursor-pointer px-3 h-7 text-sm hover:bg-codely-color-interactive-hover",
-      "flex flex-row items-center text-codely-color-text-default",
+      "rounded cursor-pointer px-3 h-7 text-sm hover:bg-gamecowork-color-interactive-hover",
+      "flex flex-row items-center text-gamecowork-color-text-default",
     ),
     children: t,
   });
@@ -1415,8 +1415,8 @@ function k1({ label: t, active: n, onHover: s, onClick: c }) {
     onClick: w,
     className: u(
       "cursor-pointer px-3 h-7 text-sm flex flex-row items-center justify-between",
-      "text-codely-color-text-default rounded",
-      n ? "bg-codely-color-interactive-hover" : "hover:bg-codely-color-interactive-hover",
+      "text-gamecowork-color-text-default rounded",
+      n ? "bg-gamecowork-color-interactive-hover" : "hover:bg-gamecowork-color-interactive-hover",
     ),
     children: [t, e.jsx(T2, { className: "opacity-60" })],
   });
@@ -1435,7 +1435,7 @@ function D2() {
   return e.jsxs("div", {
     className: u(
       "w-full overflow-hidden rounded-xl p-1 select-none border border-solid shadow-lg",
-      "bg-codely-color-surface-elevated border-codely-color-border-default",
+      "bg-gamecowork-color-surface-elevated border-gamecowork-color-border-default",
     ),
     children: [
       e.jsx(a1, { label: t("petMenu.openHub"), onClick: () => void h("pet/openHub"), onMouseEnter: a }),
@@ -1698,7 +1698,7 @@ function W2() {
     return e.jsx("div", {
       className: u(
         "h-[60px] w-[200px] overflow-hidden rounded-xl p-3 select-none border border-solid shadow-lg",
-        "bg-codely-color-surface-elevated border-codely-color-border-default flex items-center",
+        "bg-gamecowork-color-surface-elevated border-gamecowork-color-border-default flex items-center",
       ),
       children: e.jsx(s2, {
         min: 0.5,
@@ -1717,7 +1717,7 @@ function W2() {
   return e.jsx("div", {
     className: u(
       "w-[116px] overflow-hidden rounded-xl p-1 select-none border border-solid shadow-lg",
-      "bg-codely-color-surface-elevated border-codely-color-border-default",
+      "bg-gamecowork-color-surface-elevated border-gamecowork-color-border-default",
     ),
     children: n.map((g, y) => {
       const j = F2[g.action];
@@ -1726,8 +1726,8 @@ function W2() {
         {
           onClick: () => d(g.action),
           className: u(
-            "cursor-pointer px-3 h-8 text-sm hover:bg-codely-color-interactive-hover",
-            "flex flex-row items-center gap-2 text-codely-color-text-default rounded",
+            "cursor-pointer px-3 h-8 text-sm hover:bg-gamecowork-color-interactive-hover",
+            "flex flex-row items-center gap-2 text-gamecowork-color-text-default rounded",
           ),
           children: [
             j && e.jsx(j, { className: u("flex-shrink-0 size-4") }),

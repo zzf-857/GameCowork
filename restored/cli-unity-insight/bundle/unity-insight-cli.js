@@ -6030,7 +6030,7 @@ import { randomUUID as u1 } from "node:crypto";
 import { readFile as f1 } from "node:fs/promises";
 import vt from "node:path";
 import Mn from "node:path";
-var uv = Mn.join(".codely-cli", "UnityInsight"),
+var uv = Mn.join(".gamecowork-cli", "UnityInsight"),
   fv = "index.db",
   mv = "index.db.tmp",
   yv = "index.current",
@@ -20958,7 +20958,7 @@ var vm = new URL("https://codely.tuanjie.cn/api/metrics/events"),
   QD = 1e3 * 30,
   xE = 100,
   XD = "unity-metrics-distinct-id",
-  JD = "codely-unity-metrics-v1",
+  JD = "gamecowork-unity-metrics-v1",
   ZD = zD(qD),
   $l = class e {
     static instance = null;
@@ -21031,7 +21031,7 @@ var vm = new URL("https://codely.tuanjie.cn/api/metrics/events"),
         (this.events.length = 0));
     }
     shouldSkipEmission() {
-      let t = process.env.CODELY_UNITY_METRICS_NO_EMIT ?? process.env.CODELY_UNITY_METRICS_DISABLED;
+      let t = process.env.GAMECOWORK_UNITY_METRICS_NO_EMIT ?? process.env.GAMECOWORK_UNITY_METRICS_DISABLED;
       return t === "1" || t?.toLowerCase() === "true";
     }
     scheduleFlush() {
@@ -27568,7 +27568,7 @@ function Gw() {
 }
 import { readdirSync as a$, realpathSync as Kw, statSync as l$, watch as c$ } from "node:fs";
 import Kr from "node:path";
-var d$ = ["Library/", "Logs/", "Temp/", "Obj/", "UserSettings/", "node_modules/", ".git/", ".codely-cli/"],
+var d$ = ["Library/", "Logs/", "Temp/", "Obj/", "UserSettings/", "node_modules/", ".git/", ".gamecowork-cli/"],
   Py = 3,
   u$ = 6e4;
 function f$(e) {
@@ -30718,7 +30718,7 @@ function un() {
     "Commands:",
     "  serve --stdio    Start the Unity Insight stdio RPC server (NDJSON over stdin/stdout).",
     "                   Watches Assets/ by default; use --no-watch to disable.",
-    "  serve --daemon   Start the device-global shared TCP RPC server (used by Codely CLI).",
+    "  serve --daemon   Start the device-global shared TCP RPC server (used by GameCowork CLI).",
     "  index build      Build and publish the local SQLite Unity Insight index.",
     "  index sync       Incrementally update the live Unity Insight index.",
     "  index status     Show index metadata and disk reconcile summary.",
@@ -30730,7 +30730,7 @@ function un() {
     "",
     "Options:",
     "  --stdio                  Required flag for serve (logs on stderr, protocol on stdout).",
-    "  --daemon                 Start device-global shared TCP serve for Codely CLI.",
+    "  --daemon                 Start device-global shared TCP serve for GameCowork CLI.",
     "  --watch                  Explicitly enable file watch (default on for serve --stdio).",
     "  --no-watch               Disable watch (or set UNITY_INSIGHT_NO_WATCH=1).",
     "  --project                Unity project root (serve --stdio: required; serve --daemon: optional warmup; index: defaults to cwd).",
