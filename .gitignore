@@ -11,3 +11,6 @@ Thumbs.db
 
 # 运行时装配目录(exe+前端+core, 由 PACKAGING.md 步骤生成)
 app/
+
+# Rust 构建产物
+restored/shell/target/

@@ -1,7 +1,0 @@
-F:\AI\AgentMake\CyberSoftwares\GameCowork\restored\shell\target\release\deps\futures_sink-13efe1243ec0c55d.d: C:\Users\admin\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.34\src\lib.rs
-
-F:\AI\AgentMake\CyberSoftwares\GameCowork\restored\shell\target\release\deps\libfutures_sink-13efe1243ec0c55d.rlib: C:\Users\admin\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.34\src\lib.rs
-
-F:\AI\AgentMake\CyberSoftwares\GameCowork\restored\shell\target\release\deps\libfutures_sink-13efe1243ec0c55d.rmeta: C:\Users\admin\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.34\src\lib.rs
-
-C:\Users\admin\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.34\src\lib.rs:
