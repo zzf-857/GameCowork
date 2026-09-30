@@ -77,12 +77,18 @@ async fn handle_core_line(
     };
     let mid = v.get("messageId").and_then(|x| x.as_str()).unwrap_or("").to_string();
     let mtype = v.get("messageType").and_then(|x| x.as_str()).unwrap_or("").to_string();
-    eprintln!("[core-line] type={} id={} pending={}", mtype, &mid[..mid.len().min(20)], pending.lock().await.len());
+    // 1) 我们发出的请求的回执 → 按 messageId 关联
     let done = { let mut p = pending.lock().await; p.remove(&mid) };
     if let Some(tx) = done {
         let _ = tx.send(v);
         return;
     }
+    // 2) 无人认领但带 done = 重复回执/core 的错误回声: 丢弃, 防止 "No handler" 乒乓(曾 70 万行)
+    let is_reply = v.get("data").and_then(|d| d.get("done")).is_some();
+    if is_reply {
+        return;
+    }
+    // 3) core→shell 请求
     if mtype == "getWorkspaceDirs" {
         let dir = ws.read().await.clone();
         let content = dir.map(|d| vec![d]).unwrap_or_default();
@@ -195,10 +201,28 @@ fn basename(p: &str) -> String {
 }
 
 // tjhub/* 壳属消息: 用 unity/getHubProjectsAndEditors 的真机数据整形回填
+// Hub 扫描实测 ~11s, 加 60s 缓存避免页面每次轮询都重扫
+static HUB_CACHE: OnceLock<StdMutex<Option<(std::time::Instant, Value)>>> = OnceLock::new();
+
+async fn hub_snapshot(core: &CoreHandle) -> Option<Value> {
+    let cache = HUB_CACHE.get_or_init(|| StdMutex::new(None));
+    {
+        let c = cache.lock().unwrap();
+        if let Some((t, v)) = c.as_ref() {
+            if t.elapsed() < Duration::from_secs(60) {
+                return Some(v.clone());
+            }
+        }
+    }
+    let fresh = core_call(core, "unity/getHubProjectsAndEditors", json!({})).await?;
+    *cache.lock().unwrap() = Some((std::time::Instant::now(), fresh.clone()));
+    Some(fresh)
+}
+
 async fn tjhub_intercept(core: &CoreHandle, mtype: &str) -> Option<Response> {
     match mtype {
         "tjhub/getRecentProjects" => {
-            let content = core_call(core, "unity/getHubProjectsAndEditors", json!({})).await?;
+            let content = hub_snapshot(core).await?;
             let mut out = Vec::new();
             if let Some(products) = content.as_array() {
                 for prod in products {
@@ -227,7 +251,7 @@ async fn tjhub_intercept(core: &CoreHandle, mtype: &str) -> Option<Response> {
             })).into_response())
         }
         "tjhub/getEditors" => {
-            let content = core_call(core, "unity/getHubProjectsAndEditors", json!({})).await?;
+            let content = hub_snapshot(core).await?;
             let mut map = serde_json::Map::new();
             if let Some(products) = content.as_array() {
                 for prod in products {
