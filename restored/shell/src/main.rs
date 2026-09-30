@@ -169,6 +169,111 @@ async fn spawn_core(
     (handle, child)
 }
 
+// 经 pending 机制向 core 发请求, 返回 reply.data.content
+async fn core_call(core: &CoreHandle, mtype: &str, data: Value) -> Option<Value> {
+    let mut msg = json!({"messageType": mtype, "data": data});
+    let id = now_id();
+    msg["messageId"] = json!(id);
+    let (tx, rx) = oneshot::channel::<Value>();
+    core.pending.lock().await.insert(id.clone(), tx);
+    if core.stdin_tx.send(msg.to_string()).is_err() {
+        core.pending.lock().await.remove(&id);
+        return None;
+    }
+    match tokio::time::timeout(Duration::from_secs(30), rx).await {
+        Ok(Ok(reply)) => Some(reply["data"]["content"].clone()),
+        _ => None,
+    }
+}
+
+fn basename(p: &str) -> String {
+    p.trim_end_matches(['/', '\\'])
+        .rsplit(['/', '\\'])
+        .next()
+        .unwrap_or(p)
+        .to_string()
+}
+
+// tjhub/* 壳属消息: 用 unity/getHubProjectsAndEditors 的真机数据整形回填
+async fn tjhub_intercept(core: &CoreHandle, mtype: &str) -> Option<Response> {
+    match mtype {
+        "tjhub/getRecentProjects" => {
+            let content = core_call(core, "unity/getHubProjectsAndEditors", json!({})).await?;
+            let mut out = Vec::new();
+            if let Some(products) = content.as_array() {
+                for prod in products {
+                    if let Some(projects) = prod.get("projects").and_then(|x| x.as_array()) {
+                        for p in projects {
+                            let path = p.get("path").and_then(|x| x.as_str()).unwrap_or("").to_string();
+                            out.push(json!({
+                                "localProjectId": path,
+                                "title": basename(&path),
+                                "path": path,
+                                "lastModified": p.get("last_modified_display").cloned().unwrap_or(json!("")),
+                                "lastModifiedDisplay": p.get("last_modified_display").cloned().unwrap_or(json!("")),
+                                "version": p.get("editor_version").cloned().unwrap_or(json!("")),
+                                "editorVersion": p.get("editor_version").cloned().unwrap_or(json!("")),
+                                "architecture": "x64",
+                                "isRemote": false,
+                            }));
+                        }
+                    }
+                }
+            }
+            Some(Json(json!({
+                "messageType": mtype,
+                "data": {"done": true, "status": "success", "content": out},
+                "messageId": null
+            })).into_response())
+        }
+        "tjhub/getEditors" => {
+            let content = core_call(core, "unity/getHubProjectsAndEditors", json!({})).await?;
+            let mut map = serde_json::Map::new();
+            if let Some(products) = content.as_array() {
+                for prod in products {
+                    if let Some(editors) = prod.get("editors").and_then(|x| x.as_array()) {
+                        for e in editors {
+                            let ver = e.get("version").and_then(|x| x.as_str()).unwrap_or("").to_string();
+                            if ver.is_empty() { continue; }
+                            map.insert(ver.clone(), json!({
+                                "version": ver,
+                                "path": e.get("path").cloned().unwrap_or(json!("")),
+                                "architecture": "x64",
+                                "overallStatus": "INSTALL_FINISHED",
+                                "isDownloadCorrupted": false,
+                            }));
+                        }
+                    }
+                }
+            }
+            Some(Json(json!({
+                "messageType": mtype,
+                "data": {"done": true, "status": "success", "content": map},
+                "messageId": null
+            })).into_response())
+        }
+        "tjhub/getLicenses" => Some(Json(json!({
+            "messageType": mtype,
+            "data": {"done": true, "status": "success", "content": {"isValid": true, "licenses": []}},
+            "messageId": null
+        })).into_response()),
+        "tjhub/getTemplates" | "tjhub/getModules" => Some(Json(json!({
+            "messageType": mtype,
+            "data": {"done": true, "status": "success", "content": []},
+            "messageId": null
+        })).into_response()),
+        "tjhub/getUserInfo" => Some(Json(json!({
+            "messageType": mtype,
+            "data": {"done": true, "status": "success", "content": {
+                "id": "gamecowork-demo", "label": "GameCowork Demo User",
+                "name": "GameCowork Demo User", "email": "gamecowork-demo@local"
+            }},
+            "messageId": null
+        })).into_response()),
+        _ => None,
+    }
+}
+
 fn build_router(core: CoreHandle, dist_dir: PathBuf) -> Router {
     let c1 = core.clone();
     let invoke = post(move |Json(body): Json<Value>| {
@@ -222,6 +327,10 @@ fn build_router(core: CoreHandle, dist_dir: PathBuf) -> Router {
                 "controlPlane/getActivityNotifications" => return shell_reply(json!([])),
                 "versionUpdate/getSeenFeatures" => return shell_reply(json!([])),
                 _ => {}
+            }
+            // tjhub/* 数据面: 从 core 真机数据整形
+            if let Some(resp) = tjhub_intercept(&core, &mtype).await {
+                return resp;
             }
             let mut msg = body.clone();
             let id = now_id();
