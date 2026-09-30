@@ -6,7 +6,9 @@
 ## codely → GameCowork 重命名与本机隔离（2026-09-30）
 
 应用户要求，工程内 codely 系命名已全部改为 GameCowork（13,500+ 处，82+ 文件，脚本
-[tools/rename-codely.py](tools/rename-codely.py) 可复跑）。重命名后打包运行与已装 Codely **互不冲突**。
+[tools/rename-codely.py](tools/rename-codely.py) 可复跑）。同日完成**深度隔离**（第二轮，
+[tools/isolate-gamecowork.py](tools/isolate-gamecowork.py)）：外部契约标识全部分叉。
+打包要求与装配红线见 **[PACKAGING.md](restored/PACKAGING.md)**。
 
 ### 映射表
 
@@ -19,15 +21,18 @@
 | `core-codely-binary/`、`cli-codely/`（工程目录） | `core-gamecowork-binary/`、`cli-gamecowork/` |
 | `Programs/Codely Cowork`（自身 CLI 探测路径） | `Programs/GameCowork` |
 | `# Managed by Codely Cowork (...)`（unity-insight.toml 标记） | `# Managed by GameCowork (...)`（读写一致） |
+| `cn.tuanjie.codely.bridge`（编辑器桥接包） | `cn.gamecowork.bridge`（分叉，不再装/升官方桥） |
+| `https://codely(-stg).tuanjie.cn`（后端/指标） | `https://api(-stg).gamecowork.invalid`（占位域，永不误连） |
+| `codely.tuanjie.cn/plugins/cowork/latest`（更新源） | `update.gamecowork.invalid`（**自动更新物理断开**） |
+| 边车/伴生进程名 codely-binary.exe、codely.exe、process_killer.exe | gamecowork-binary.exe、gamecowork.exe、gamecowork-process-killer.exe（**装配层改名重打**，见 PACKAGING.md） |
 
 > 文中其余事实性描述沿用重命名后写法；原安装目录内的原始文件名（如 `codely-binary.exe`）
 > 仅存在于 `original/` 镜像与外部安装目录，未做改动。
 
-### 保留未改（外部契约，改了断功能且不构成本机冲突）
+### 保留未改
 
-- 后端/更新源域名 `codely.tuanjie.cn`（含 `-stg`）；
-- 编辑器内桥接包名 `cn.tuanjie.codely.bridge`；
-- `tools/*.py` 中指向原安装目录的硬编码路径（再提取工具，针对原始文件名工作）。
+- `tools/*.py` 中指向原安装目录的硬编码路径（再提取工具，针对原始文件名工作）；
+- 图标（按用户要求与原版保持一致）。
 
 ### 与已装 Codely 的隔离保证
 
@@ -35,9 +40,13 @@
 2. 数据目录 `~/.gamecowork` 与原版 `~/.codely` 互不读写（会话/索引/令牌全隔离）；
 3. 环境变量命名空间不同，不会读到原版的全局 `CODELY_*` 配置；
 4. 程序自身服务端口为动态分配（实测无固定自绑端口；bundle 里的 localhost 端口均为外部服务示例）；
-5. 已知共享面：两版连同一后端为服务端同账号问题；编辑器桥接包为编辑器内单实例——
-   两版同时操作**同一个编辑器实例**时，桥接会话可能互相可见，建议不同时操作同一工程；
-6. `productName`/窗口标题已改为 `GameCowork`（`tauri.conf.json`），安装目录不再与原版重叠。
+5. **外部标识全部分叉**（2026-09-30 第二轮）：桥接包不再共用、后端/指标/更新源全部切
+   `.invalid` 占位域——打包版不会向官方后端/更新源发任何请求，自动更新不可能把本工程
+   变回官方版；代价与接回方法见 PACKAGING.md §三；
+6. 边车进程名经装配层改名后与原版不同（cowork/codely-binary/codely → GameCowork/
+   gamecowork-binary/gamecowork）；
+7. `productName`/窗口标题已改为 `GameCowork`（`tauri.conf.json`），安装目录、卸载注册表
+   键、开始菜单均与原版分离。
 
 ## 产品是什么
 

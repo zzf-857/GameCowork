@@ -26,21 +26,21 @@
   "bundle": {
     "active": true,
     "targets": ["nsis"],
+    "//resources": "装配时按 PACKAGING.md 生成 app/resource/: 边车二进制一律带 gamecowork 名(codely-binary.exe→gamecowork-binary.exe 等), 保证进程名与已装 Codely 不同",
     "resources": ["app/resource/*"],
-    "externalBin": ["process_killer"],
+    "externalBin": ["gamecowork-process-killer"],
     "windows": {
       "nsis": {
-        "TODO": "uninstall.exe 为 NSIS 打包；正式安装器配置待还原"
+        "TODO": "uninstall.exe 为 NSIS 打包；正式安装器配置待还原；productName=GameCowork 保证安装目录/卸载注册表项/开始菜单与原版分离"
       }
     }
   },
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://codely.tuanjie.cn/plugins/cowork/latest",
-        "https://codely-stg.tuanjie.cn/plugins/cowork/latest"
+        "https://update.gamecowork.invalid/plugins/cowork/latest"
       ],
-      "//": "minisign 公钥: 二进制内含 base64 'Trusted comment: minisign pu(blic key)'，完整公钥需进一步提取"
+      "//": "占位域 .invalid 永不解析 = 自动更新被物理断开, 严禁指回官方 codely.tuanjie.cn(否则会把本工程更新成官方版); 自建更新源时替换此 URL 与 minisign 公钥"
     }
   }
 }

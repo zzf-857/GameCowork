@@ -27544,7 +27544,7 @@ function Op({
             const Ot = (Lt = or.error) != null ? Lt : "Failed to start Unity window stream server";
             throw /unknown.*(command|method)|not.*(support|found|implement)|manage_window_bridge/i.test(Ot)
               ? new Error(
-                  "The installed GameCowork Bridge package does not support streaming. Please update cn.tuanjie.codely.bridge to the latest version via Unity Package Manager.",
+                  "The installed GameCowork Bridge package does not support streaming. Please update cn.gamecowork.bridge to the latest version via Unity Package Manager.",
                 )
               : new Error(Ot);
           }
@@ -27559,7 +27559,7 @@ function Op({
             const Ot = (tn = Pn.error) != null ? tn : "Unity window stream server returned error";
             throw /unknown.*(command|method)|not.*(support|found|implement)|manage_window_bridge/i.test(Ot)
               ? new Error(
-                  "The installed GameCowork Bridge package does not support streaming. Please update cn.tuanjie.codely.bridge to the latest version via Unity Package Manager.",
+                  "The installed GameCowork Bridge package does not support streaming. Please update cn.gamecowork.bridge to the latest version via Unity Package Manager.",
                 )
               : new Error(Ot);
           }
@@ -37321,8 +37321,8 @@ function wu(e) {
     }),
   });
 }
-const uG = "https://codely.tuanjie.cn/privacy",
-  dG = "https://codely.tuanjie.cn/support",
+const uG = "https://api.gamecowork.invalid/privacy",
+  dG = "https://api.gamecowork.invalid/support",
   fG = [
     { id: "bug", labelKey: "feedbackDialog.tagBug" },
     { id: "abnormal_result", labelKey: "feedbackDialog.tagAbnormalResult" },

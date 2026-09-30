@@ -18554,7 +18554,7 @@ function $l() {
 function Wl() {
   return "6e92ad2ce0a2918d63e1faeb5e76d6660fdf8143";
 }
-var Vl = new URL("https://codely.tuanjie.cn/api/metrics/events"),
+var Vl = new URL("https://api.gamecowork.invalid/api/metrics/events"),
   ql = 5e3,
   PF = ql + 1e3,
   GN = 1e3 * 30,

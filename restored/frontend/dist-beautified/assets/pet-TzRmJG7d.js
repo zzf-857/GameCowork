@@ -1445,7 +1445,7 @@ function D2() {
       e.jsx(i1, {}),
       e.jsx(a1, {
         label: t("petMenu.help"),
-        onClick: () => void h("openUrl", { url: "https://codely.tuanjie.cn" }),
+        onClick: () => void h("openUrl", { url: "https://api.gamecowork.invalid" }),
         onMouseEnter: a,
       }),
       e.jsx(i1, {}),

@@ -296353,10 +296353,10 @@ function dfe() {
     case "test":
       return "http://localhost:8000/";
     case "staging":
-      return "https://codely-stg.tuanjie.cn/";
+      return "https://api-stg.gamecowork.invalid/";
     case "production":
     default:
-      return "https://codely.tuanjie.cn/";
+      return "https://api.gamecowork.invalid/";
   }
 }
 var U9 = class t {
@@ -297128,8 +297128,8 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
     AUTH_TYPE: "gamecowork",
     WORKOS_CLIENT_ID: Qdt,
     APP_URL: "https://hub.continue.dev/",
-    API_URL: "https://codely.tuanjie.cn/",
-    CONFIG_URL: "https://codely.tuanjie.cn/dashboard/config",
+    API_URL: "https://api.gamecowork.invalid/",
+    CONFIG_URL: "https://api.gamecowork.invalid/dashboard/config",
   },
   S8n = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.continue-stage.tools/",
@@ -297137,8 +297137,8 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
     AUTH_TYPE: "gamecowork-staging",
     WORKOS_CLIENT_ID: Xdt,
     APP_URL: "https://hub.continue-stage.tools/",
-    API_URL: "https://codely-stg.tuanjie.cn/",
-    CONFIG_URL: "https://codely-stg.tuanjie.cn/dashboard/config",
+    API_URL: "https://api-stg.gamecowork.invalid/",
+    CONFIG_URL: "https://api-stg.gamecowork.invalid/dashboard/config",
   },
   O3s = {
     DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api-test.continue.dev/",
@@ -297164,9 +297164,9 @@ var Qdt = "fdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536e",
     CONTROL_PLANE_URL: "https://api.continue.dev/",
     WORKOS_CLIENT_ID: Qdt,
     APP_URL: "https://hub.continue.dev/",
-    API_URL: "https://codely.tuanjie.cn/",
-    GRPC_URL: "codely.tuanjie.cn/",
-    CONFIG_URL: "https://codely.tuanjie.cn/dashboard/config",
+    API_URL: "https://api.gamecowork.invalid/",
+    GRPC_URL: "api.gamecowork.invalid/",
+    CONFIG_URL: "https://api.gamecowork.invalid/dashboard/config",
     PROJECT_NAME: "gamecowork",
     REPO_NAME: "gamecowork",
   };
@@ -297278,7 +297278,7 @@ var are = class {
       a = r && au(r),
       s = await this.getAccessToken();
     if (!s && !a) throw new Error("No access token");
-    let l = process.env.GAMECOWORK_MEDIA_CAPTURE_URL ?? "https://codely.tuanjie.cn/v2/api/",
+    let l = process.env.GAMECOWORK_MEDIA_CAPTURE_URL ?? "https://api.gamecowork.invalid/v2/api/",
       o = l.endsWith("/") ? l : `${l}/`,
       c = new URL(e, o).toString(),
       I = await this.ideInfoPromise;
@@ -297808,7 +297808,7 @@ m();
 var O8n = T(iZe(), 1);
 k7();
 var lre = T(require("node:fs"), 1);
-var M3s = "https://codely.tuanjie.cn/",
+var M3s = "https://api.gamecowork.invalid/",
   Jdt = 3e4,
   T8n = 12e4,
   z3s = 6e4,
@@ -325686,7 +325686,7 @@ async function bpa(t, e) {
 async function hpa(t, e) {
   return await t.callExtensionMethod(Ur.gamecowork_unity_insight_ensure, ab(e));
 }
-var R9e = "cn.tuanjie.codely.bridge",
+var R9e = "cn.gamecowork.bridge",
   GRi = eL.join("ProjectSettings", "ProjectVersion.txt"),
   bRi = eL.join("Packages", "manifest.json"),
   MOt = {

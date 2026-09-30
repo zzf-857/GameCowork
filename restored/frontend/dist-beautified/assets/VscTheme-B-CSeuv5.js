@@ -125319,7 +125319,7 @@ const VMt = $t.div`
   z-index: 100;
   width: 100%;
 `,
-  WMt = "https://codely.tuanjie.cn/support",
+  WMt = "https://api.gamecowork.invalid/support",
   gxn = E.forwardRef((e, t) => {
     const { t: n } = Rt(),
       [r, a] = E.useState(0),
@@ -169094,7 +169094,7 @@ function jdn(e) {
     children: p.jsx("path", { d: "m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z" }),
   });
 }
-const LSe = "https://codely.tuanjie.cn/product/mobile";
+const LSe = "https://api.gamecowork.invalid/product/mobile";
 function qdn({ layout: e = "popover" }) {
   const { t } = Rt(),
     n = E.useContext(Ft),

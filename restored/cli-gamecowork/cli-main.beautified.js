@@ -52206,7 +52206,7 @@ Please try running again with NO_BROWSER=true set.`,
     function NT() {
       return process.env.LOCAL_TEST === "true" || process.env.DEV === "true"
         ? "http://localhost:8000"
-        : "https://codely.tuanjie.cn";
+        : "https://api.gamecowork.invalid";
     }
     var Iw = Y(() => {
       D();
@@ -198960,7 +198960,7 @@ new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
       D();
     });
     function OBa() {
-      return `${"production"?.toLowerCase() === "staging" ? "https://codely-stg.tuanjie.cn" : "https://codely.tuanjie.cn"}/dashboard/usage`;
+      return `${"production"?.toLowerCase() === "staging" ? "https://api-stg.gamecowork.invalid" : "https://api.gamecowork.invalid"}/dashboard/usage`;
     }
     function u_n(e, t, r, n, s) {
       switch (e) {
@@ -222984,7 +222984,7 @@ ${K}
                 "User-Agent": n,
                 "x-litellm-session-id": s,
                 ...(this.isOpenRouterProvider()
-                  ? { "HTTP-Referer": "https://codely.tuanjie.cn/cli", "X-Title": "GameCowork CLI" }
+                  ? { "HTTP-Referer": "https://api.gamecowork.invalid/cli", "X-Title": "GameCowork CLI" }
                   : this.isDashScopeProvider()
                     ? { "X-DashScope-CacheControl": "enable", "X-DashScope-UserAgent": n }
                     : {}),
@@ -227434,7 +227434,7 @@ ${u}`
         (D(),
           (Tyn = He(IAe(), 1)),
           Zy(),
-          (gte = new URL("https://codely.tuanjie.cn/api/metrics/events")),
+          (gte = new URL("https://api.gamecowork.invalid/api/metrics/events")),
           (QSr = 5000),
           (qSr = 30000),
           (WSr = 100),
@@ -279250,7 +279250,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
           return (
             uS.existsSync(o) &&
               console.warn(
-                `[GameCowork] Unity config found at legacy path (${o}) but not at expected path (${r}). Your Unity bridge package may be outdated. Please update cn.tuanjie.codely.bridge in UPM.`,
+                `[GameCowork] Unity config found at legacy path (${o}) but not at expected path (${r}). Your Unity bridge package may be outdated. Please update cn.gamecowork.bridge in UPM.`,
               ),
             null
           );
@@ -279600,7 +279600,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
             verifyProjectRootFromHandshake(t, r) {
               if (!this.handshakeProjectRoot)
                 throw Error(
-                  `Unity Bridge (SERVER_VERSION=${this.serverVersion}) did not send PROJECT_ROOT. Update cn.tuanjie.codely.bridge in UPM.`,
+                  `Unity Bridge (SERVER_VERSION=${this.serverVersion}) did not send PROJECT_ROOT. Update cn.gamecowork.bridge in UPM.`,
                 );
               let n = typeof t.project_path == "string" ? t.project_path : void 0,
                 s = n?.trim() ? QAu.default.dirname(n.replace(/[\\/]+$/, "")) : e.getProjectRoot();
@@ -283216,7 +283216,7 @@ ${p}`
             static setUserConfig(e, t = {}) {
               let r = {
                 token: e,
-                baseUrl: t.baseUrl || "https://codely.tuanjie.cn",
+                baseUrl: t.baseUrl || "https://api.gamecowork.invalid",
                 profileId: t.profileId,
                 projectName: t.projectName,
                 repoName: t.repoName,
@@ -283405,7 +283405,7 @@ ${s}`
     function DUa() {
       return `# Unity / GameCowork
 # Add patterns to ignore files from GameCowork context (e.g. large binary or generated assets).
-# See https://codely.tuanjie.cn for more.
+# See https://api.gamecowork.invalid for more.
 `;
     }
     function vUa(e, t) {
@@ -283444,7 +283444,7 @@ ${s}`
       return r.includes(e) ? e : (r.filter((n) => tw(n, e) < 0).at(-1) ?? r[0] ?? null);
     }
     async function PTr(e = !1) {
-      let t = new URL("https://codely.tuanjie.cn/api/plugin/compatible-versions");
+      let t = new URL("https://api.gamecowork.invalid/api/plugin/compatible-versions");
       (t.searchParams.set("name1", "unity-mcp-client"),
         t.searchParams.set("version1", umu),
         t.searchParams.set("name2", "unity-mcp-server"),
@@ -283477,8 +283477,8 @@ ${s}`
       RUa = Y(() => {
         (D(),
           BUa(),
-          (rC = "cn.tuanjie.codely.bridge"),
-          (Kpe = "https://cnb.cool/unity/gamecowork/cn.tuanjie.codely.bridge.git"));
+          (rC = "cn.gamecowork.bridge"),
+          (Kpe = "https://cnb.cool/unity/gamecowork/cn.gamecowork.bridge.git"));
       }),
       wUa = j((e, t) => {
         D();
@@ -284486,7 +284486,7 @@ ${s}`
         (D(),
           Dmu(),
           (cue = "gamecowork-unity-lsp-server"),
-          (vmu = "https://codely.tuanjie.cn/skills/download/slug/gamecowork-unity-lsp-server"));
+          (vmu = "https://api.gamecowork.invalid/skills/download/slug/gamecowork-unity-lsp-server"));
       }),
       XUa = Y(() => {
         (D(), dJr(), Dmu(), JUa());
@@ -392291,7 +392291,7 @@ ${Qr.join(`
                     ),
                 })
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async (e) => {
               await bil(e.name, e.commandOrUrl, e.args, {
@@ -392342,7 +392342,7 @@ ${Qr.join(`
                   choices: ["user", "project"],
                 })
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async (e) => {
               await Bil(e.name, { scope: e.scope });
@@ -397597,7 +397597,7 @@ Value: `;
                 .usage("Usage: gamecowork mcp list")
                 .example([["$0 mcp list", "List all configured MCP servers and their connection status"]])
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async () => {
               await $sl();
@@ -397665,7 +397665,7 @@ Value: `;
                   choices: ["user", "project"],
                 })
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async (e) => {
               await Hsl(e.name, { scope: e.scope, tool: e.tool });
@@ -397738,7 +397738,7 @@ Value: `;
                   choices: ["user", "project"],
                 })
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async (e) => {
               await Wsl(e.name, { scope: e.scope, tool: e.tool });
@@ -397839,7 +397839,7 @@ Value: `;
                   ["$0 mcp auth my-server", 'Authenticate with "my-server"'],
                 ])
                 .epilogue(
-                  "For more information about MCP servers, see the documentation at: https://codely.tuanjie.cn/cli",
+                  "For more information about MCP servers, see the documentation at: https://api.gamecowork.invalid/cli",
                 ),
             handler: async (e) => {
               await Xsl(e.name);
@@ -397889,7 +397889,7 @@ Value: `;
                   ["$0 mcp auth", "Select and authenticate with an OAuth-capable MCP server"],
                   ["$0 mcp auth my-server", "Authenticate with an OAuth-capable MCP server"],
                 ])
-                .epilogue("For more information, see the documentation at: https://codely.tuanjie.cn/cli"),
+                .epilogue("For more information, see the documentation at: https://api.gamecowork.invalid/cli"),
             handler: () => {},
           }));
       });
@@ -448495,7 +448495,7 @@ ${Li}\uD83D\uDCA1 Tip: Built-in agents are pre-configured and cannot be modified
           (KRu = "Update disabled: GAMECOWORK_CLI_INTERNAL_DISABLE_AUTO_UPDATE=1 is set. Unset it to check for updates."));
       });
     function l0l() {
-      return process.env.GAMECOWORK_CLI_ENV === "dev" ? "http://localhost:8000" : "https://codely.tuanjie.cn";
+      return process.env.GAMECOWORK_CLI_ENV === "dev" ? "http://localhost:8000" : "https://api.gamecowork.invalid";
     }
     var c0l = Y(() => {
       D();
@@ -474900,7 +474900,7 @@ ${r.join(`
           v2(),
           zs(),
           vi(),
-          (sN = "https://codely.tuanjie.cn/marketplace"),
+          (sN = "https://api.gamecowork.invalid/marketplace"),
           (fMr = { name: "list", description: "List extensions", kind: "built-in", action: kyl }),
           (RIu = {
             name: "update",
@@ -480306,20 +480306,20 @@ Please restart your terminal for the changes to take effect.`),
           }),
           (mLn = {
             name: "install",
-            description: "Install cn.tuanjie.codely.bridge package to Unity project by updating Packages/manifest.json",
+            description: "Install cn.gamecowork.bridge package to Unity project by updating Packages/manifest.json",
             kind: "built-in",
             headlessStartup: { skipUnityPackageStartup: !0, skipUnityConnectionStartup: !0 },
             action: async (e, t) => {
               try {
-                let r = `${tc}\uD83D\uDCE6 Checking cn.tuanjie.codely.bridge installation...${hs}
+                let r = `${tc}\uD83D\uDCE6 Checking cn.gamecowork.bridge installation...${hs}
 `;
                 try {
                   let n = await bin();
                   return n.changed
                     ? (n.previousVersion
-                        ? (r += `${Lb}\u2705 Updated cn.tuanjie.codely.bridge from ${n.previousVersion} to ${n.installedVersion}${hs}
+                        ? (r += `${Lb}\u2705 Updated cn.gamecowork.bridge from ${n.previousVersion} to ${n.installedVersion}${hs}
 `)
-                        : (r += `${Lb}\u2705 Added cn.tuanjie.codely.bridge version ${n.installedVersion} to manifest.json${hs}
+                        : (r += `${Lb}\u2705 Added cn.gamecowork.bridge version ${n.installedVersion} to manifest.json${hs}
 `),
                       (r += `
 ${tc}\uD83D\uDCC1 Updated file: ${n.manifestPath}${hs}
@@ -498446,7 +498446,7 @@ if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
                     " ",
                     "- Add gamecowork package",
                     " ",
-                    (0, _f.jsx)(ye, { bold: !0, color: be.AccentPurple, children: "cn.tuanjie.codely.bridge" }),
+                    (0, _f.jsx)(ye, { bold: !0, color: be.AccentPurple, children: "cn.gamecowork.bridge" }),
                     " ",
                     "to your Unity project.",
                   ],

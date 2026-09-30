@@ -20952,7 +20952,7 @@ function Li() {
 function Oi() {
   return "6e92ad2ce0a2918d63e1faeb5e76d6660fdf8143";
 }
-var vm = new URL("https://codely.tuanjie.cn/api/metrics/events"),
+var vm = new URL("https://api.gamecowork.invalid/api/metrics/events"),
   xm = 5e3,
   HD = xm + 1e3,
   QD = 1e3 * 30,
