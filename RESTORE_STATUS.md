@@ -1,10 +1,35 @@
 # RESTORE_STATUS — Tuanjie Cowork 还原状态
 
+## 工程目录与开发入口整理（2026-10-01）
+
+本轮按用户要求规整项目分层和 README。实际维护输入统一到 `src/{shell,frontend,core,agent,unity-insight,editor-bridge}`，前端维护目录改为 `src/frontend/bundle/`；冻结 C# LSP 归 `vendor/csharp-lsp/`，历史 Tauri / Hub 骨架与推断依赖清单归 `research/`。134 个测试输入分为 contracts、integration、e2e、fixtures、support；历史提取探针归 `tools/research/`。打包、验证、Rust 开发 fallback、测试相对导入、冻结资源属性与现行文档链接已同步。
+
+README 现在只保留项目介绍、启动与开发命令、目录职责和文档导航；新增 [架构说明](docs/ARCHITECTURE.md) 与 [开发指南](docs/DEVELOPMENT.md)，历史交接 / 初期提取记录归 `docs/history/`。本文历史正文继续保留当时路径，按架构文档迁移表查找当前位置；`codelyreversebackup/` 和 `original/` 不迁移、不修改。根 package.json 只聚合命令，不引入 npm workspace 或伪造前端 Vite 构建。
+
+迁移前 Git 工作树干净。对原 2,417 个已跟踪文件逐项映射，无文件丢失；其中 2,286 个文件字节相同。临时 review index 确认 1,837 个重命名，真实 Git index 保持未暂存；未提交、未推送。前端 / Core / Agent 业务 bundle、自有 C# 桥实现与冻结资源均保持原字节；Rust 仅变更源码资源定位。现有大型 bundle 与 main.rs 的业务拆分不在本轮范围。
+
+验证证据位于 `F:/AI/AgentMake/temp/GameCowork/structure-20261001/`：
+
+| 本次执行 | 结果与证据 |
+| --- | --- |
+| 迁移前 `tools/verify-local.ps1 -SkipBrowser` | 通过，`baseline-verify.log` |
+| `npm run check:layout`、Node 语法与 PowerShell 解析 | 134 个测试输入、16 份文档、413 处路径检查通过；131 个 JS 测试 / 工具文件语法通过；三个 PS1 入口解析通过 |
+| 迁移后 `tools/verify-local.ps1` | 完整默认门禁通过，Rust 89/89、实际 Node 契约 / HTTP / 生命周期、终端与项目面板、Monaco、两代编辑器发现、安装面板、Git GUI、C# LSP GUI / 状态；`verify-migrated-03.log` |
+| `tools/build-local.ps1 -OutputDirectory F:/AI/AgentMake/temp/GameCowork/structure-20261001/candidate -SkipTests` | Release 候选装配通过，1,184 项资源 SHA 全部核对；正式 CLI guard=false；测试由上述完整门禁单独执行，`candidate-build.log` |
+| `node tests/integration/real-core-smoke.mjs` | 54/54，使用隔离工作区与 guard；`real-core-smoke.log` |
+| `tools/build-cli.ps1 -OutputDirectory .../guarded-cli -GuardFile tests/fixtures/cli-probe-guard.cjs`，随后 `node tests/integration/cli-runtime-smoke.mjs --package .../guarded-cli --prewarm` | 真实编译 Agent 19/19，loopback 模拟模型；`guarded-agent.log` |
+| `node tests/e2e/chat-e2e.mjs --binary .../candidate/GameCowork.exe --agent .../guarded-cli/gamecowork.exe --files --marketplace` | 聊天 / 取消 / read-file / 双工作区 / 冷重启 / 保存撤销 / 冲突 / 只读 / 市场边界 10 项通过；外站请求与 guard network attempts 均为空，`chat-e2e-02.log` |
+| 迁移完整性与 diff | `migration-integrity.json` 无遗漏；临时 index 的 `git diff --cached --check` 通过。日常 app 的 manifest、主 EXE 与 CLI EXE 哈希未变 |
+
+中间失败保留：首轮迁移验证发现拼接 URL 的相对层级遗漏；第二轮资源契约发现自动链接重写误改冻结 runtime 的上游 README，已恢复为迁移前逐字节版本，最终资源验收通过。额外聊天测试最初在 `.txt` 文件等待 C# 按钮超时；迁移前测试已有同一错误预期，原前端实际按 C# 文档路由显示按钮。本轮修正为等待文本加载后断言没有 C# 按钮，未删除运行错误检查、伪造 LSP 可用或修改产品逻辑，复跑完整聊天文件场景通过。
+
+候选包仅在统一 temp 验证，没有替换日常 app。聊天 GUI 使用候选宿主 + 维护前端 / Core + 同源码 guarded Agent，`packaged=false`，不冒称完整候选资源组合的 packaged 验收。未重跑真实 Unity / 团结 Editor、原生 Wry 几何或真实 Provider：本轮未改变桥实现和窗口行为，默认 gate 采用隔离 fixture / Chromium。日常产品功能与未完成项继续见下方原状态记录。
+
 ## 当前产品修复状态（2026-10-01，已恢复持续完善）
 
 用户目标是完善 GameCowork 直到实际功能链路跑通，对比原软件；优先修复已有界面不可显示、不可操作的问题，第三方模型/图片/视频/3D Provider 作为后续独立阶段。以下历史章节的“完整”“100%”只描述提取文件覆盖，不能用作产品功能验收。
 
-用户已重新要求持续完善至功能跑通；第五阶段已将实际 Tuanjie/双引擎预览、Git/Diff、Commands/Subagents 与 GUI 编辑器控制装配并验收。用户随后指出此前遗漏 NativeWindowBridgeHost 完整实现，当前以原 EXE/原桥加载链与通用窗口托管作为编辑器扩展主线。安装编辑器面板已修复，当前日常包已更新为1184资源（14:46 UTC，大屏修复版）；LSP菜单时序原因已查明，1179包真实LSP完整gate随后20/20通过；12:20包两代MCP15项修复已验收，12:53包品牌/营销版本/精确选择及完整GUI主流程均已完成本轮复验。新增模块进入包不等于全部包内功能已通过。接手入口 [HANDOFF.md](HANDOFF.md) 是第四阶段暂停时的历史交接；活动状态与新验收统一记录在本文件。目标仍持续进行，远程与第三方媒体 Provider 保留后续范围。
+用户已重新要求持续完善至功能跑通；第五阶段已将实际 Tuanjie/双引擎预览、Git/Diff、Commands/Subagents 与 GUI 编辑器控制装配并验收。用户随后指出此前遗漏 NativeWindowBridgeHost 完整实现，当前以原 EXE/原桥加载链与通用窗口托管作为编辑器扩展主线。安装编辑器面板已修复，当前日常包已更新为1184资源（14:46 UTC，大屏修复版）；LSP菜单时序原因已查明，1179包真实LSP完整gate随后20/20通过；12:20包两代MCP15项修复已验收，12:53包品牌/营销版本/精确选择及完整GUI主流程均已完成本轮复验。新增模块进入包不等于全部包内功能已通过。接手入口 [HANDOFF.md](./docs/history/HANDOFF.md) 是第四阶段暂停时的历史交接；活动状态与新验收统一记录在本文件。目标仍持续进行，远程与第三方媒体 Provider 保留后续范围。
 
 ### 大窗口复合画面尺寸越界与面板发现（2026-10-01，已装配并验收）
 
@@ -44,7 +69,7 @@
 
 正式日常 **app 已原位更新1184资源**：`builtAtUtc=2026-10-01T13:08:11.2086369Z`、revision2770113 dirty=true，资源SHA mismatches=[]，normal CLI Boolean guard=false。命令 `tools/build-local.ps1 -SkipTests -CliPackageDirectory ...cli-phase6-normal-20261001-01` 成功；SkipTests前已完成本轮门禁，产品CLI来源/entry/executable均仍由脚本核验。build/旧二进制在 `temp/GameCowork/build/bce638dc075d425bb54c2748f906e7c6`，日志 `unity-connectors-build-20261001.log`、完整性 `unity-connectors-package-integrity-20261001.json`；包未含原native DLL/guard，没有Git提交/推送。保留另一聊天品牌/版本选择与Core/Rust/C#改动，不重复装配旧包。
 
-以上产物路径均位于 `temp/GameCowork/`；用户操作步骤见 [UNITY_INTEGRATION.md](restored/UNITY_INTEGRATION.md) 的“当前 GameCowork 的连接与视图入口”。音频、WebRTC、远程及用户工程本身的编译问题仍有独立边界。
+以上产物路径均位于 `temp/GameCowork/`；用户操作步骤见 [UNITY_INTEGRATION.md](./docs/UNITY_INTEGRATION.md) 的“当前 GameCowork 的连接与视图入口”。音频、WebRTC、远程及用户工程本身的编译问题仍有独立边界。
 
 ### 研究增量吸收：模板详情、索引代际和历史清空（2026-10-01，13:03 heartbeat，源码已验证）
 
@@ -114,7 +139,7 @@ LSP context-menu根因是原Monaco鼠标执行mouseup handler由100ms scheduler�
 
 ### 反编译参考库 T1：cowork.exe 壳逻辑还原（2026-10-01，codelyreversebackup）
 
-按 [codelyreversebackup/REVERSE-PLAN.md](codelyreversebackup/REVERSE-PLAN.md) 完成 T1（原版壳 Rust 逻辑静态还原；用户已转入自主定制，本轮只产出参考文档，不修改壳/前端/core/app 任何代码）。方法：带字节偏移的双编码字符串提取（tools/extract-reverse-shell.py）+ 模块/命令/关键词窗口分析（tools/analyze-shell.py），全程未运行原 EXE、未读取账号许可数据。产出在 `codelyreversebackup/shell-logic/`（成品 6 文档 + 68 模块原始窗口转储 + raw 证据 + `_EXTRACT-MANIFEST.json` 92 文件），关键结论：
+按 [codelyreversebackup/REVERSE-PLAN.md](./codelyreversebackup/REVERSE-PLAN.md) 完成 T1（原版壳 Rust 逻辑静态还原；用户已转入自主定制，本轮只产出参考文档，不修改壳/前端/core/app 任何代码）。方法：带字节偏移的双编码字符串提取（tools/extract-reverse-shell.py）+ 模块/命令/关键词窗口分析（tools/analyze-shell.py），全程未运行原 EXE、未读取账号许可数据。产出在 `codelyreversebackup/shell-logic/`（成品 6 文档 + 68 模块原始窗口转储 + raw 证据 + `_EXTRACT-MANIFEST.json` 92 文件），关键结论：
 
 - 壳共 68 个自有 Rust 模块（此前侦察为 52）：LSP 9 模块、messages 14 域、unity 5、app 13。多通道并存：主 GUI 走 SSE（每窗口缓冲+replay）、core 备用 TCP、许可 Hub 走**匿名管道 stdio JSON-RPC**（`HUB_PIPE_HANDLE`/`HUB_COWORK_TOKEN`，方法表 8 条：auth.setToken/setCoworkToken、project.getRecent/getSizes、editor.available、devops.getOrganizations/getRepositories、system.shutdown）、Unity 走 `\\.\pipe\` 命名管道（消息含 `cowork.vfs_refs/vfs_children/vfs_entry`）。
 - 91 条壳独有 invoke 消息逐条定论（commands.md）：30+ 条 `shell/*`、`unity-window/*` 等在原版壳字符串级不存在（通用转发，SSE 广播同构即可）；tjhub/tauri/pet/drill/editor/update 等拿到参数级契约（含 `tauri/listRemoteWorkspaces` 的 `/api/v1/frp/remote-workspaces`、`excludeSelf`、tunnels/machines/workspaceAliases 响应）。
@@ -147,7 +172,7 @@ T5 收尾：MESSAGE-LAYERS.md 顶部已加后续结论回填块（??无持有=�
 
 ### 反编译参考库 T6-T10：core 业务域深挖（2026-10-01，codelyreversebackup）
 
-按 [codelyreversebackup/REVERSE-PLAN.md](codelyreversebackup/REVERSE-PLAN.md) §6 完成第二轮：core 在第一轮只有索引级（1168 方法串），本轮用「108 个 RPC 前缀 × 347 条前端 invoke（有 UI 入口才算用户功能）× 全库文档 grep 反查」交叉定位出五个从未深挖的业务域，串行逐域精读 core/CLI/前端美化维护副本（与原版 codely-binary/dist 同源，事实均带文件行号）。产出 `codelyreversebackup/api/` 五篇文档 + `api/_EXTRACT-MANIFEST.json`（第二批 SHA256 清单），README 索引与 REVERSE-PLAN §6 已同步：
+按 [codelyreversebackup/REVERSE-PLAN.md](./codelyreversebackup/REVERSE-PLAN.md) §6 完成第二轮：core 在第一轮只有索引级（1168 方法串），本轮用「108 个 RPC 前缀 × 347 条前端 invoke（有 UI 入口才算用户功能）× 全库文档 grep 反查」交叉定位出五个从未深挖的业务域，串行逐域精读 core/CLI/前端美化维护副本（与原版 codely-binary/dist 同源，事实均带文件行号）。产出 `codelyreversebackup/api/` 五篇文档 + `api/_EXTRACT-MANIFEST.json`（第二批 SHA256 清单），README 索引与 REVERSE-PLAN §6 已同步：
 
 - **session-checkpoints.md（T6）**：会话检查点三层协议，此前零文档。`history/rewind` 支持 `dryRun` 预览/`code` 执行，预览结构（canRewind/changedFiles/totalLineAdded/fileDetails…）经 ACP 回包 `_meta.gamecowork.rewindPreview` 传递；CLI RewindService 快照落 `<historyDir>/snapshots/`、按用户消息记 `fileHistorySnapshots`（trackedFileBackups+changeSummary）；`/chat save` 触发 `checkpoint_save` 会话更新（收不到按旧 CLI 处理）；`history/fork` 产生 `<旧标题> (forked)` 新会话、id 由用户消息序号换算；另含 history 17 方法全表、draft/未读、conversation/compact（originalTokenCount/newTokenCount）、tabs 上报形状。
 - **mcp-oauth-elicitation.md（T7）**：`config/addMcpServer` 实为 CLI 组装（stdio→`--env`、sse/http→`--header`、global→`--scope user`）；OAuth 仅 SSE/HTTP 传输，core 跑 `localhost:3000` 回调服、按 well-known 发现元数据、令牌存 `mcpOauthStorage[serverUrl]`、授权后同步 CLI 并重连，删除服务器先清 OAuth；**elicitation 在全部前端 chunk 零命中——原版只有 SDK 协议面无 UI**，复刻不得宣称完整 MCP 支持。
@@ -571,7 +596,7 @@ node tests/project-template-editor.mjs --project 'F:/AI/AgentMake/temp/GameCowor
 
 本节保留已有界面和菜单的完整范围，作为后续实现的检查入口。分类分为“已验收的明确子集”“接口存在但流程待验收”“明确缺少宿主接口/依赖”“后续 Provider 阶段”。任何 handler 注册、HTTP 200、外层 success 或模拟返回，都不能单独升级成“功能可用”；完成状态以本文件顶部的最新门禁结果和对应真实用户流程为准。
 
-源码盘点工具为 [tools/scan-host-contracts.mjs](tools/scan-host-contracts.mjs)。它只解析实际 [index.html](restored/frontend/dist-beautified/index.html)、[gui.html](restored/frontend/dist-beautified/gui.html) 的导入图和字面 HTML 视图引用，收集宿主路径、协议调用、Rust `local_message/host_response/invoke` 以及 core 的真实 messenger 注册段和 IDE facade。每条 JSON 证据包含绝对文件路径、当前行号和源码 SHA-256。动态类型、未解析的接收者、消息方向不明及 native invoke 标为 unknown/待验收；vendor 的通用 `.request("GET")` 不作为产品支持证据。扫描不执行前端、core、CLI，不读取账号状态，不调用服务。
+源码盘点工具为 [tools/scan-host-contracts.mjs](./tools/scan-host-contracts.mjs)。它只解析实际 [index.html](./src/frontend/bundle/index.html)、[gui.html](./src/frontend/bundle/gui.html) 的导入图和字面 HTML 视图引用，收集宿主路径、协议调用、Rust `local_message/host_response/invoke` 以及 core 的真实 messenger 注册段和 IDE facade。每条 JSON 证据包含绝对文件路径、当前行号和源码 SHA-256。动态类型、未解析的接收者、消息方向不明及 native invoke 标为 unknown/待验收；vendor 的通用 `.request("GET")` 不作为产品支持证据。扫描不执行前端、core、CLI，不读取账号状态，不调用服务。
 
 ```powershell
 node .\tools\scan-host-contracts.mjs
@@ -583,17 +608,17 @@ node .\tools\scan-host-contracts.mjs
 
 | 优先级 / 用户流程 | 当前明确状态与源码证据 | 必须完成的验收 |
 | --- | --- | --- |
-| **P0 · 项目列表、工作区和侧栏切换** | 明确子集已有真实前端 + Rust + 隔离 core 的浏览器验收：退出骨架、双引擎项目显示、从磁盘添加、A/B 切换并恢复会话、独立折叠、关闭 A 保留 B、错误不假选中。对应 [workspaces.rs](restored/shell/src/workspaces.rs)、[main.rs](restored/shell/src/main.rs) 的 open/switch/close 路由与 [project-panel-e2e.mjs](tests/project-panel-e2e.mjs)。真实编辑器选择与启动不能由这些 fixture 结果替代。 | 保持已有门禁；再用隔离真实 Unity/Tuanjie 项目验收版本不符、手选编辑器、已开置前、启动失败、取消和重启恢复。 |
-| **P0 · 新建会话、历史、聊天、批准和工具执行** | [core](restored/core-gamecowork-binary/binary/out/index.beautified.js) 的 `acp/*`、`history/*`、`llm/streamChat` 已接自编译 Agent。真实 GUI/Core/CLI/loopback 已验证流、取消、文件读/写/替换、命令退出码、批准/拒绝、关闭待批准会话、A/B 隔离、重命名/删除失败及重启恢复；存储层另验收 pin/archive/read/unread 和持久删除。详见最新门禁。 | 保持已验收链路；继续其它工具及 UI 归档/状态操作的流程，不把已注册接口当作所有工具已完成。 |
+| **P0 · 项目列表、工作区和侧栏切换** | 明确子集已有真实前端 + Rust + 隔离 core 的浏览器验收：退出骨架、双引擎项目显示、从磁盘添加、A/B 切换并恢复会话、独立折叠、关闭 A 保留 B、错误不假选中。对应 [workspaces.rs](./src/shell/src/workspaces.rs)、[main.rs](./src/shell/src/main.rs) 的 open/switch/close 路由与 [project-panel-e2e.mjs](./tests/e2e/project-panel-e2e.mjs)。真实编辑器选择与启动不能由这些 fixture 结果替代。 | 保持已有门禁；再用隔离真实 Unity/Tuanjie 项目验收版本不符、手选编辑器、已开置前、启动失败、取消和重启恢复。 |
+| **P0 · 新建会话、历史、聊天、批准和工具执行** | [core](./src/core/binary/out/index.beautified.js) 的 `acp/*`、`history/*`、`llm/streamChat` 已接自编译 Agent。真实 GUI/Core/CLI/loopback 已验证流、取消、文件读/写/替换、命令退出码、批准/拒绝、关闭待批准会话、A/B 隔离、重命名/删除失败及重启恢复；存储层另验收 pin/archive/read/unread 和持久删除。详见最新门禁。 | 保持已验收链路；继续其它工具及 UI 归档/状态操作的流程，不把已注册接口当作所有工具已完成。 |
 | **P0 · 设置、模型选择、模型与 Provider 配置** | 真实界面配置了本地文本 Provider/模型与必要槽位，实际 CLI 使用配置的认证驱动访问 loopback 模型，历史恢复保持所保存模型身份；非模拟 getter 证明见 CLI/HTTP/GUI 门禁。后续图片/视频/3D Provider 及真实第三方额度另行接入。 | 继续配置编辑/启停、更多认证驱动、错误凭据与删除模型等边界；真实第三方认证与额度须独立授权和验收，现有 loopback 结果不能冒称已调用真实商业服务。 |
-| **P0 · 文件树、预览、搜索、差异和终端** | [GUI](restored/frontend/dist-beautified/assets/index-BRxZ4eG7.js) 已接真实磁盘、保存/Undo 与 watcher；实际 Chromium 验收 PNG、GLB/GLTF、WAV/WebM、Unicode 搜索行定位、clean 外改刷新、rename/delete 与 dirty 草稿及旧名重建隔离。现有 [TerminalPanel](restored/frontend/dist-beautified/assets/TerminalPanel-DaIbEA-8.js) 对接实际 ConPTY WebSocket，已验收输入输出/cwd/resize/退出与回收。 | 差异接受/拒绝与真实磁盘一致；watcher overflow、大文件/range 与其它媒体编码；其它 IDE facade 和文件路由逐项验收。 |
-| **P1 · 自定义、Skills、Extensions、MCP 和 Marketplace** | [core](restored/core-gamecowork-binary/binary/out/index.beautified.js) 注册 `skills/list`、`extensions/list`、`mcp/list` 等；前端保留枚举、配置、安装、启用/禁用、移除入口。合法空态 fixture 只证明 UI 契约，不证明已有扩展安装或工具运行；下载/本地文件宿主路径也待补。 | 本地枚举的空态与错误态；配置、启停、移除、重启复用实际生效；隔离的自有工具执行一次并校验结果；安装失败不能变成“已安装”，远程 Marketplace 接自有来源。 |
-| **P1 · Unity Insight、代码与资产索引** | [InsightIndexPage](restored/frontend/dist-beautified/assets/InsightIndexPage-B7corD1V.js) 和 GUI 依赖 `/api/tauri/unity-insight/*` 的进度、开关、索引与 VFS 查询；当前 Rust 路由缺位。core 存在 `unityInsight/*`，但 HTTP/VFS 层和实际 worker 生命周期仍要接通。 | 实际隔离工程的启动/进度/完成；路径、引用、搜索与修改后更新；停用、错误、重启恢复；worker 与缓存可清理，进度不能仅由模拟百分比判断。 |
-| **P1 · 编辑器连接、Streaming、布局和多工程视图** | 实际 [editor_bridge.rs](restored/shell/src/editor_bridge.rs) 直接验证自有工程 TCP 身份，不依赖已配置模型；[UPM](restored/editor-bridge/README.md) 与 [帧页面](restored/frontend/dist-beautified/windowBridge.html) 已真实验收单 Unity 工程 Scene/Game JPEG、输入、resize、独立流/租约/释放、精确两槽保存恢复和断桥。`editorRenderedViews:true` 表示该子集；`editorStreaming:false` 仍表示原版完整窗口/WebRTC/音频未完成。CLI 原 TCP 单例不等于 N 工程连接。 | 程序集重载恢复、实际 Tuanjie、双引擎/多工程槽位连接与身份隔离；其它完整窗口、音频/WebRTC。 |
+| **P0 · 文件树、预览、搜索、差异和终端** | [GUI](./src/frontend/bundle/assets/index-BRxZ4eG7.js) 已接真实磁盘、保存/Undo 与 watcher；实际 Chromium 验收 PNG、GLB/GLTF、WAV/WebM、Unicode 搜索行定位、clean 外改刷新、rename/delete 与 dirty 草稿及旧名重建隔离。现有 [TerminalPanel](./src/frontend/bundle/assets/TerminalPanel-DaIbEA-8.js) 对接实际 ConPTY WebSocket，已验收输入输出/cwd/resize/退出与回收。 | 差异接受/拒绝与真实磁盘一致；watcher overflow、大文件/range 与其它媒体编码；其它 IDE facade 和文件路由逐项验收。 |
+| **P1 · 自定义、Skills、Extensions、MCP 和 Marketplace** | [core](./src/core/binary/out/index.beautified.js) 注册 `skills/list`、`extensions/list`、`mcp/list` 等；前端保留枚举、配置、安装、启用/禁用、移除入口。合法空态 fixture 只证明 UI 契约，不证明已有扩展安装或工具运行；下载/本地文件宿主路径也待补。 | 本地枚举的空态与错误态；配置、启停、移除、重启复用实际生效；隔离的自有工具执行一次并校验结果；安装失败不能变成“已安装”，远程 Marketplace 接自有来源。 |
+| **P1 · Unity Insight、代码与资产索引** | [InsightIndexPage](./src/frontend/bundle/assets/InsightIndexPage-B7corD1V.js) 和 GUI 依赖 `/api/tauri/unity-insight/*` 的进度、开关、索引与 VFS 查询；当前 Rust 路由缺位。core 存在 `unityInsight/*`，但 HTTP/VFS 层和实际 worker 生命周期仍要接通。 | 实际隔离工程的启动/进度/完成；路径、引用、搜索与修改后更新；停用、错误、重启恢复；worker 与缓存可清理，进度不能仅由模拟百分比判断。 |
+| **P1 · 编辑器连接、Streaming、布局和多工程视图** | 实际 [editor_bridge.rs](./src/shell/src/editor_bridge.rs) 直接验证自有工程 TCP 身份，不依赖已配置模型；[UPM](./src/editor-bridge/README.md) 与 [帧页面](./src/frontend/bundle/windowBridge.html) 已真实验收单 Unity 工程 Scene/Game JPEG、输入、resize、独立流/租约/释放、精确两槽保存恢复和断桥。`editorRenderedViews:true` 表示该子集；`editorStreaming:false` 仍表示原版完整窗口/WebRTC/音频未完成。CLI 原 TCP 单例不等于 N 工程连接。 | 程序集重载恢复、实际 Tuanjie、双引擎/多工程槽位连接与身份隔离；其它完整窗口、音频/WebRTC。 |
 | **P1 · 远程设备、访问、目录和远程工作区** | `tauri/listRemoteWorkspaces` 当前为准确空态，capabilities 为 `remoteWorkspaces:false`；前端的 `/api/tauri/remote/browse-folders` 缺少宿主路由，工作区打开主动拒绝 remote。监听 `127.0.0.1` 是本地边界，不是远程实现；改地址也不能补齐设备和传输链。 | 两个隔离设备的配对/授权、状态、目录、Agent 和编辑器转发；离线/未配对/断线重连/取消；工作区身份不混淆，不能以端口开放或 API 200 验收。 |
-| **P1 · 新项目、模板、编辑器安装、许可和云项目** | [TJHubRoute](restored/frontend/dist-beautified/assets/TJHubRoute-DN1YDDd-.js) 保留模板、安装/模块、许可、云项目入口。`tjhub/getTemplates` 明示 supported:false，`tjhub/createProject` 明确未实现；getReleases/getArchive/installEnqueue/卸载/许可/云项目等尚无当前 shell/core literal handler 证据，需逐项接自己的服务。本地 UI 身份和作用域仅是 GameCowork 本地模式，不能当作编辑器许可。 | 真实模板目录、ProjectVersion 和所选引擎一致；实际编辑器路径/版本/模块/磁盘检测；取消和失败无残留；编辑器许可独立验证，fixture 不能冒充安装、激活或云项目成功。 |
+| **P1 · 新项目、模板、编辑器安装、许可和云项目** | [TJHubRoute](./src/frontend/bundle/assets/TJHubRoute-DN1YDDd-.js) 保留模板、安装/模块、许可、云项目入口。`tjhub/getTemplates` 明示 supported:false，`tjhub/createProject` 明确未实现；getReleases/getArchive/installEnqueue/卸载/许可/云项目等尚无当前 shell/core literal handler 证据，需逐项接自己的服务。本地 UI 身份和作用域仅是 GameCowork 本地模式，不能当作编辑器许可。 | 真实模板目录、ProjectVersion 和所选引擎一致；实际编辑器路径/版本/模块/磁盘检测；取消和失败无残留；编辑器许可独立验证，fixture 不能冒充安装、激活或云项目成功。 |
 | **P1 · 原生窗口、桌面设置、更新、保活和桌宠** | 两代桌面按钮已向本地 HTTP 发送最小化/最大化/关闭；Rust 转发 native event，headless 模式明确没有窗口。HTTP/函数契约只能证明发送，不能证明 Windows 几何状态。`tauri/get/setUpdateChannel`、保活/隧道、`pet/*`、newWindow，以及 check/apply-update、traffic-lights 等原入口仍须各自复核。 | 隔离真实 wry 窗口的拖动/resize/最小化/还原/关闭；只清理自有 PID、core 和孙进程；逐项确认偏好实际生效及失败状态；版本更新与发布来源保持分离。 |
-| **P2 · AI 资产生成、图片/音频/视频/3D 与资源预览** | 侧栏入口保留；两代 [GUI](restored/frontend/dist-beautified/assets/index-BRxZ4eG7.js) 已在本地模式转入自己的“生成 Provider 尚未配置”页面，原资产/Canvas iframe 不挂载，shared bridge 不发送 auth 或项目数据；非本地宿主保留原逻辑。契约及浏览器菜单点击已验证未请求原域名。图片/视频/3D Provider 仍是后续阶段，pending 不是生成实现完成。 | 本地资源加载/预览/保存/定位；自有 Provider 配置与认证；任务进度、取消、失败和真实产物一致；配置完成前不冒称可生成。 |
+| **P2 · AI 资产生成、图片/音频/视频/3D 与资源预览** | 侧栏入口保留；两代 [GUI](./src/frontend/bundle/assets/index-BRxZ4eG7.js) 已在本地模式转入自己的“生成 Provider 尚未配置”页面，原资产/Canvas iframe 不挂载，shared bridge 不发送 auth 或项目数据；非本地宿主保留原逻辑。契约及浏览器菜单点击已验证未请求原域名。图片/视频/3D Provider 仍是后续阶段，pending 不是生成实现完成。 | 本地资源加载/预览/保存/定位；自有 Provider 配置与认证；任务进度、取消、失败和真实产物一致；配置完成前不冒称可生成。 |
 
 按依赖推进：先完成 Agent 对话与文件/终端宿主闭环，再补本地配置和自定义能力；编辑器桥先单工程后多工程，远程是独立传输层；资产生成和第三方 Provider 后置。原有入口保留并展示准确的“未配置/正在接入/错误”状态，不以隐藏入口、假数据成功或原服务嵌入页面替代实现。
 

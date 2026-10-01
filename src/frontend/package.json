@@ -1,0 +1,7 @@
+{
+  "name": "@gamecowork/frontend-bundle",
+  "version": "2.1.3-canary.2",
+  "private": true,
+  "type": "module",
+  "description": "Maintained recovered frontend bundle; assembled directly by tools/build-local.ps1, without a Vite source build"
+}

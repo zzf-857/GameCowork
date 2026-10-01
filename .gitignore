@@ -13,4 +13,4 @@ Thumbs.db
 app/
 
 # Rust 构建产物
-restored/shell/target/
+src/shell/target/

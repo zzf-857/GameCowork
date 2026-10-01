@@ -1,8 +1,8 @@
 # Frozen dependency resources are checked against their original byte hashes.
 # Disable newline conversion for this vendored input, including JSON and licenses.
-/restored/lsp-csharp/runtime/** -text
-/restored/lsp-csharp/dependency-ledger.json -text
-/restored/lsp-csharp/dependency-ledger.sha256 -text
-/restored/lsp-csharp/LICENSE -text
-/restored/cli-gamecowork/resources/** -text
-/restored/cli-unity-insight/resources/** -text
+/vendor/csharp-lsp/runtime/** -text
+/vendor/csharp-lsp/dependency-ledger.json -text
+/vendor/csharp-lsp/dependency-ledger.sha256 -text
+/vendor/csharp-lsp/LICENSE -text
+/src/agent/resources/** -text
+/src/unity-insight/resources/** -text

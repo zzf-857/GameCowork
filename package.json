@@ -1,0 +1,12 @@
+{
+  "name": "gamecowork-workspace",
+  "version": "2.1.3-canary.2",
+  "private": true,
+  "description": "Development command entrypoints for the GameCowork desktop workspace",
+  "scripts": {
+    "check:layout": "node tools/check-layout.mjs",
+    "verify": "pwsh -NoProfile -File tools/verify-local.ps1",
+    "verify:backend": "pwsh -NoProfile -File tools/verify-local.ps1 -SkipBrowser",
+    "build:local": "pwsh -NoProfile -File tools/build-local.ps1"
+  }
+}

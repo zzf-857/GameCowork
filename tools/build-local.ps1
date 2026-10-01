@@ -7,9 +7,11 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$shellRoot = Join-Path $projectRoot 'restored\shell'
-$lspSource = Join-Path $projectRoot 'restored\lsp-csharp'
-$lspResourceContract = Join-Path $projectRoot 'tests\lsp-resource-contract.mjs'
+& node (Join-Path $PSScriptRoot 'check-layout.mjs')
+if ($LASTEXITCODE -ne 0) { throw 'Repository layout checks failed' }
+$shellRoot = Join-Path $projectRoot 'src\shell'
+$lspSource = Join-Path $projectRoot 'vendor\csharp-lsp'
+$lspResourceContract = Join-Path $projectRoot 'tests\contracts\lsp-resource-contract.mjs'
 # Freeze the compiler pin, official shim/package closure and MIT notice before building.
 & node $lspResourceContract --root $lspSource
 if ($LASTEXITCODE -ne 0) { throw 'Frozen C# LSP source resources failed integrity checks.' }
@@ -24,7 +26,7 @@ try {
     if (-not $SkipTests) {
         & cargo test --offline --locked
         if ($LASTEXITCODE -ne 0) { throw 'Rust tests failed' }
-        & node (Join-Path $projectRoot 'tests\frontend-request-contract.mjs')
+        & node (Join-Path $projectRoot 'tests\contracts\frontend-request-contract.mjs')
         if ($LASTEXITCODE -ne 0) { throw 'Frontend contract tests failed' }
     }
     $buildArgs = @('build', '--offline', '--locked')
@@ -36,15 +38,15 @@ try {
 $profile = $Configuration.ToLowerInvariant()
 $shellBinary = Join-Path $shellRoot "target\$profile\GameCowork.exe"
 Copy-Item -LiteralPath $shellBinary -Destination (Join-Path $stagingRoot 'GameCowork.exe')
-$frontendSource = Join-Path $projectRoot 'restored\frontend\dist-beautified'
-$coreSource = Join-Path $projectRoot 'restored\core-gamecowork-binary\binary\out'
+$frontendSource = Join-Path $projectRoot 'src\frontend\bundle'
+$coreSource = Join-Path $projectRoot 'src\core\binary\out'
 New-Item -ItemType Directory -Path (Join-Path $stagingRoot 'frontend'), (Join-Path $stagingRoot 'core') -Force | Out-Null
 Copy-Item -Path (Join-Path $frontendSource '*') -Destination (Join-Path $stagingRoot 'frontend') -Recurse
-$bridgeSource = Join-Path $projectRoot 'restored\editor-bridge'
+$bridgeSource = Join-Path $projectRoot 'src\editor-bridge'
 if (Test-Path -LiteralPath (Join-Path $bridgeSource 'package.json')) {
     Copy-Item -LiteralPath $bridgeSource -Destination $stagingRoot -Recurse
 }
-$insightSource = Join-Path $projectRoot 'restored\cli-unity-insight'
+$insightSource = Join-Path $projectRoot 'src\unity-insight'
 if (-not (Test-Path -LiteralPath (Join-Path $insightSource 'bundle\gamecowork-worker-entry.mjs'))) { throw 'Missing restored local Unity Insight worker entry.' }
 New-Item -ItemType Directory -Path (Join-Path $stagingRoot 'unity-insight') -Force | Out-Null
 foreach ($item in @('package.json','bundle','resources')) {
@@ -78,7 +80,7 @@ if (-not $CliPackageDirectory) {
 $cliRoot = [IO.Path]::GetFullPath($CliPackageDirectory)
 $cliManifest = Get-Content -LiteralPath (Join-Path $cliRoot 'cli-package-manifest.json') -Raw | ConvertFrom-Json
 if ($cliManifest.testGuardIncluded -isnot [bool] -or $cliManifest.testGuardIncluded -ne $false) { throw 'A product Agent must explicitly declare the Boolean testGuardIncluded=false.' }
-$cliSource = Join-Path $projectRoot 'restored\cli-gamecowork\cli-main.beautified.js'
+$cliSource = Join-Path $projectRoot 'src\agent\cli-main.beautified.js'
 if ($cliManifest.sourceSha256 -ne (Get-FileHash -LiteralPath $cliSource).Hash) { throw 'Agent package was built from a different source revision.' }
 $expectedEntry = Join-Path $taskRoot 'expected-product-cli.cjs'
 & node (Join-Path $PSScriptRoot 'restore-cli-entry.mjs') --source $cliSource --output $expectedEntry

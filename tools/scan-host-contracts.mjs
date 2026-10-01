@@ -8,9 +8,9 @@ import * as prettier from "prettier";
 // Static inventory only. Registration/reference evidence never means runtime
 // support. No modules under restored, core, app, or original are executed.
 const root = fileURLToPath(new URL("../", import.meta.url));
-const frontend = path.join(root, "restored/frontend/dist-beautified");
-const coreFile = path.join(root, "restored/core-gamecowork-binary/binary/out/index.beautified.js");
-const shellFile = path.join(root, "restored/shell/src/main.rs");
+const frontend = path.join(root, "src/frontend/bundle");
+const coreFile = path.join(root, "src/core/binary/out/index.beautified.js");
+const shellFile = path.join(root, "src/shell/src/main.rs");
 const args = process.argv.slice(2);
 const outputArg = args.indexOf("--output");
 const output = path.resolve(outputArg < 0 ? path.join(root, "../../temp/GameCowork/host-contracts-2026-10-01.json") : args[outputArg + 1]);

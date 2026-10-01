@@ -12,10 +12,10 @@ function option(name, fallback) {
   return path.resolve(args[index + 1]);
 }
 const binaryFile = option('--source', path.join(project, 'original/Tuanjie Cowork/cli/bin/win32-x64/codely.exe'));
-const outputRoot = option('--output', path.join(project, 'restored/cli-gamecowork/resources'));
+const outputRoot = option('--output', path.join(project, 'src/agent/resources'));
 const binary = fs.readFileSync(binaryFile);
 const decoder = new TextDecoder('utf8', { fatal: true });
-const source = fs.readFileSync(path.join(project, 'restored/cli-gamecowork/cli-main.beautified.js'), 'utf8');
+const source = fs.readFileSync(path.join(project, 'src/agent/cli-main.beautified.js'), 'utf8');
 const variables = new Map([...source.matchAll(/var ([\w$]+) = "(B:\/~BUN\/root\/[^"\r\n]+)";/g)].map(match => [match[1], match[2]]));
 const objectStart = source.indexOf('var b3l = {');
 const objectEnd = source.indexOf('globalThis.__GAMECOWORK_EMBEDDED_ASSETS = b3l;', objectStart);

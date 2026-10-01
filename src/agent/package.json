@@ -1,0 +1,11 @@
+{
+  "name": "@gamecowork/restored-cli",
+  "version": "1.0.0-release.57",
+  "private": true,
+  "description": "Recovered Bun CJS factory and embedded assets for GameCowork CLI",
+  "scripts": {
+    "prepare:entry": "node ../../tools/restore-cli-entry.mjs",
+    "build": "pwsh -NoProfile -File ../../tools/build-cli.ps1",
+    "test": "node --test ../../tests/contracts/cli-recovery.test.cjs"
+  }
+}

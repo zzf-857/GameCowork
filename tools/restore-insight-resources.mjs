@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const project=fileURLToPath(new URL('../',import.meta.url));
 const input=path.join(project,'original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules');
-const output=path.join(project,'restored/cli-unity-insight/resources');
+const output=path.join(project,'src/unity-insight/resources');
 const items=[
  ['web-tree-sitter/tree-sitter.js','web-tree-sitter/tree-sitter.cjs'],
  ['web-tree-sitter/tree-sitter.wasm','web-tree-sitter/tree-sitter.wasm'],

@@ -13,7 +13,7 @@ function option(name, fallback) {
   if (!args[index + 1]) throw new Error(`${name} requires a value`);
   return path.resolve(args[index + 1]);
 }
-const sourceFile = option('--source', path.join(project, 'restored/cli-gamecowork/cli-main.beautified.js'));
+const sourceFile = option('--source', path.join(project, 'src/agent/cli-main.beautified.js'));
 const outputFile = option('--output', 'F:/AI/AgentMake/temp/GameCowork/cli-recovery/cli-entry.cjs');
 const original = fs.readFileSync(sourceFile, 'utf8');
 const prefix = '// @bun @bytecode @bun-cjs';
