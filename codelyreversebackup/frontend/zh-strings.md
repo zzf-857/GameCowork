@@ -1,0 +1,4398 @@
+## gamecowork-image-frames.js（1 条）
+- reason: 正在解析原工程
+
+## index-BRxZ4eG7.js（23 条）
+- defaultValue: 每次确认
+- defaultValue: 文件修改和命令执行前请求批准
+- defaultValue: 每次确认
+- children: 插件版本过旧
+- children: 您的插件版本不支持当前的功能
+- children: 检测到您的插件版本过旧，无法使用此功能。请升级到最新版本以继续使用。
+- children: 立即升级
+- label: 对话+画布+右栏
+- label: 对话+画布
+- label: 对话+右栏
+- label: 仅对话
+- label: 仅画布
+- label: 仅右栏
+- lsp_project_missing: 未找到 C# 项目文件。请在所选 Unity/团结编辑器中生成 .sln/.csproj。
+- lsp_restore_required: C# 项目的依赖尚未准备，请先在自己的开发工具中恢复依赖。
+- lsp_disabled: 此工作区的 C# 语言支持尚未启用。
+- lsp_runtime_missing: 本地 C# 语言服务不可用。
+- lsp_runtime_integrity: 本地 C# 语言服务资源校验失败。
+- lsp_project_ambiguous: 存在多个 C# 解决方案，请先明确使用的解决方案。
+- defaultValue: 作为参考插入所属会话
+- defaultValue: 未保存的更改
+- defaultValue: 不保存
+- defaultValue: 是否要保存所有未保存的更改？
+
+## index-DvRYaIVa.js（23 条）
+- defaultValue: 每次确认
+- defaultValue: 文件修改和命令执行前请求批准
+- defaultValue: 每次确认
+- children: 插件版本过旧
+- children: 您的插件版本不支持当前的功能
+- children: 检测到您的插件版本过旧，无法使用此功能。请升级到最新版本以继续使用。
+- children: 立即升级
+- label: 对话+画布+右栏
+- label: 对话+画布
+- label: 对话+右栏
+- label: 仅对话
+- label: 仅画布
+- label: 仅右栏
+- lsp_project_missing: 未找到 C# 项目文件。请在所选 Unity/团结编辑器中生成 .sln/.csproj。
+- lsp_restore_required: C# 项目的依赖尚未准备，请先在自己的开发工具中恢复依赖。
+- lsp_disabled: 此工作区的 C# 语言支持尚未启用。
+- lsp_runtime_missing: 本地 C# 语言服务不可用。
+- lsp_runtime_integrity: 本地 C# 语言服务资源校验失败。
+- lsp_project_ambiguous: 存在多个 C# 解决方案，请先明确使用的解决方案。
+- defaultValue: 作为参考插入所属会话
+- defaultValue: 未保存的更改
+- defaultValue: 不保存
+- defaultValue: 是否要保存所有未保存的更改？
+
+## registry-BL-NPVNy.js（1875 条）
+- deviceFlowManual: 如果浏览器未自动打开，请手动访问：
+- deviceFlowCode: 并输入验证码：
+- buttonLabel: 快速开始 - 生成项目总结
+- fileExists: {{fileName}} 文件已存在，无需重新生成项目总结。
+- cancel: 取消
+- delete: 删除
+- save: 保存
+- update: 更新
+- add: 添加
+- back: 返回
+- search: 搜索
+- accept: 接受
+- reject: 拒绝
+- proceed: 继续
+- dismiss: 忽略
+- edit: 编辑
+- more: 更多
+- browse: 浏览...
+- systemDefault: 系统默认
+- auto: 自动
+- always: 始终
+- never: 从不
+- loading: 加载中...
+- untitled: 未命名
+- refresh: 刷新
+- reconnect: 重新连接
+- close: 关闭
+- enabled: 已启用
+- disabled: 已禁用
+- stop: 停止
+- send: 发送
+- new: 新建
+- fromMarketplace: 从市场安装
+- fromLocal: 本地新建
+- showMore: 显示更多
+- showLess: 显示较少
+- active: 已启用
+- check: 检查
+- title_other: {{count}} 条排队消息
+- edit: 编辑
+- stopSending: 由于你中断了当前响应，队列已暂停
+- editing: 编辑中
+- editQueuedMessage: 在主输入框中编辑此排队消息
+- editingQueued: 编辑队列消息
+- cancelEdit: 取消编辑
+- delete: 删除
+- deleteQueuedMessage: 删除此排队消息
+- moreActions: 更多操作
+- moreQueueAction: 更多队列操作
+- inject: 立刻发送
+- injectDescription: 插入当前轮次并立刻发送，不中断
+- sendNow: 立刻发送
+- sendNowQueuedMessage: 插入当前轮次并立刻发送，不中断
+- interrupt: 中断并发送
+- interruptDescription: 停止当前回答并发送此消息
+- imageAttachment: 图片附件
+- attachment: 附件
+- expand: 展开队列
+- collapse: 收起队列
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- openFile: 打开文件
+- openLink: 打开链接
+- copyLink: 复制链接
+- copyUrl: 复制 URL
+- revealInFinder: 在 Finder 中显示
+- revealInFileExplorer: 在文件资源管理器中显示
+- openInVsCode: 在 VS Code 中打开
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- searchingFiles: 搜索文件...
+- nofiles: 未找到文件
+- typeToSearch: 输入搜索工作空间文件
+- recentFiles: 最近文件
+- recentSessions: 最近会话
+- loadMore: 加载更多
+- loadingMore: 加载中...
+- clear: 清除搜索内容
+- showCommandMenu: 命令菜单
+- uploadFile: 上传文件
+- addContext: 添加上下文
+- label: 资产自动刷新
+- helpTooltip: 开启后，编辑器会自动导入并编译变更的资产；关闭后暂停自动刷新，重新开启时会一次性导入暂停期间的全部变更。
+- titleUnity: Unity 编辑器
+- titleTuanjie: 团结引擎编辑器
+- statusConnected: 已连接
+- statusConnecting: 连接中…
+- statusUnconnected: 未连接
+- open: 打开
+- connect: 连接
+- askMode: 仅问答
+- askModeDescription: 只回答问题，不修改文件或执行命令
+- planMode: 计划模式
+- planModeDescription: 先探索代码并提出计划，再执行编辑
+- title: 上下文窗口
+- usedPercent: 已使用 {{percent}}%
+- remaining: 剩余 {{tokens}}
+- compact: 压缩
+- systemPrompt: 系统提示词
+- toolsDefinitions: 工具定义
+- skills: 技能
+- subagent: 子代理
+- conversation: 对话
+- context: 语境
+- model: 模型
+- customize: 自定义
+- slashCommands: 斜杠命令
+- support: 支持
+- title: 附加文件
+- title: 提及此项目中的文件
+- title: 清除会话
+- title: 切换模型
+- descriptionDefault: 选择其他模型
+- title: 账户使用情况
+- title: 技能管理
+- description: 可列出、编辑、启用/禁用技能
+- title: 命令管理
+- description: 列出、编辑、启用/禁用自定义命令
+- title: 扩展管理
+- description: 安装、启用/禁用、卸载扩展程序
+- title: MCP 服务器管理
+- description: 列出、编辑 MCP 服务器
+- title: 子代理管理
+- description: 列出、编辑、启用/禁用子代理配置
+- title: 在终端中打开 GameCowork
+- description: 初始化通用项目分析（默认行为）
+- description: 初始化 Unity 项目分析
+- description: 通过摘要替换来压缩上下文
+- title: 设置
+- description: 配置你的偏好
+- title: 导出
+- description: 导出当前会话
+- title: 查看帮助文档
+- description: 阅读指南和文档
+- title: 快捷键
+- description: 配置键盘快捷键
+- title: 切换账户
+- description: 使用其他账户登录
+- reportProblem: 报告问题
+- filterActions: 筛选操作...
+- noMatchResults: 无匹配结果
+- rewindErrorStreaming: 流式输出时无法回退代码
+- forkErrorStreaming: 流式输出时无法分支对话
+- rewindErrorFailed: 代码回退失败
+- rewindSuccess: 代码回退成功
+- showLess: 收起
+- showMore: 展开
+- rewind: 回退
+- messageActions: 消息操作
+- forkConversation: 从此处分支对话
+- rewindCode: 回退代码至此处
+- forkAndRewind: 分支对话并回退代码
+- yesterday: 昨天
+- title: 图片预览
+- copy: 复制图片
+- copying: 正在复制图片
+- copied: 已复制
+- copyFailed: 复制失败
+- copyFailedHelp: 无法复制此图片，请下载后从本地复制。
+- close: 关闭预览
+- update: 更新
+- updateWithVersion: 更新至 ({{version}})
+- name: 名称
+- storage: 存储位置
+- project: 仅用于此工作空间
+- global: 对所有工作空间可用
+- globalLabel: 全局
+- projectLabel: 项目
+- fromUser: 用户创建
+- path: 路径
+- errorName: 请输入名称
+- errorHomeDir: 无法确定主目录。
+- adding: 创建中...
+- addNow: 创建
+- onlyFor: 仅用于 
+- workspace:  工作区
+- welcome: 欢迎
+- signingIn: 登录中
+- authenticating: 请等待，正在验证您的账户。
+- loginToStart: 登录或注册账户以开始使用 Cowork。
+- loginSignUp: 登录 / 注册
+- welcomeToast: 🎉 欢迎使用 Cowork！
+- agreePrefix: 使用 Cowork 即表示您同意我们的 
+- eula: 最终用户许可协议
+- privacyPolicy: 隐私政策
+- terms: 条款
+- deviceFlowManual: 如果浏览器未自动打开，请手动访问：
+- deviceFlowCode: 并输入验证码：
+- expired: 设备授权请求已过期，请重试。
+- denied: 授权请求已被拒绝。
+- agreeFooter: 使用 Cowork 即表示您同意我们的 <eula>最终用户许可协议</eula>、<privacy>隐私政策</privacy> 和 <terms>条款</terms>。
+- title: GameCowork 应用
+- downloadToStart: 下载 GameCowork 应用以开始使用
+- downloadForDesktop: 下载桌面版
+- installedDesktop: 我已安装桌面客户端。
+- title: 加载中...
+- subtitle: 正在打开项目，请稍候。
+- scrollToBottom: 滚动到底部
+- aiGeneratedDisclaimer: 内容由 AI 生成，仅供参考。
+- cancelStreamEscape: 双击 Escape 取消流式输出
+- createNewSession: 创建新会话
+- rolledBack: 已回滚
+- rolledBackReason: 检测到敏感内容，已回滚。
+- conflictOccupied: 该会话已在另一个窗口中打开，之后的请求可能发生冲突。
+- attachmentsStillProcessing: 图片或文件仍在处理中，请稍候再发送。
+- title: 聊天
+- default: 向 Cowork 提问或分配任务...
+- focusHint: 按 {{modifier}}+L 聚焦或取消聚焦 Cowork
+- subagentDisabled: 无法向子代理发送消息
+- newSessionIn: 新会话于
+- welcome1prefix: 想象力决定上限 —
+- welcome1suffix: — 执行力决定成品。
+- welcome2prefix: 构思、开发、发布 —
+- welcome2suffix: — 一站式游戏开发伙伴。
+- welcome3prefix: 你的游戏，你的规则 —
+- welcome3suffix: — 让我们帮你实现代码。
+- welcome4prefix: 大胆设计，高效落地 —
+- welcome4suffix: — 让每个想法变成现实。
+- welcome5prefix: 创意无限，开发有道 —
+- welcome5suffix: — 重新定义游戏开发。
+- askGameCowork: 向 Cowork 提问！
+- description: Cowork 使用本地部署的大语言模型作为基座，<br />全后端架构保证代码安全。
+- selectCapability: @ 选择不同的内置能力
+- selectPrompt: 输入 / 选择自定义 Prompt
+- whatCanWeDo: 我们可以做什么
+- refreshPrompts: 刷新推荐
+- unitySamplePrompt1: 帮我检索一个 low poly 3D 模型
+- unitySamplePrompt2: 我想要检索一个写实风格的环境资产包
+- unitySamplePrompt3: 我想要检索一个卡通风格、带动画的角色模型
+- unitySamplePrompt4: 给我检索一个 fantasy 风的小镇房屋模型
+- extensionsBubble: 获取全部 AI 游戏创作必备扩展
+- engineTuanjie: 团结
+- unityProjectDetected: 检测到 Unity 项目
+- tuanjieProjectDetected: 检测到团结项目
+- introTitle: 为 {{engine}} 项目推荐的扩展：
+- introDescription: 根据您当前的 {{engine}} 项目，我们找到了以下实用扩展。
+- dontShowAgain: 此项目不再显示
+- installAll: 全部安装
+- installingAll: 安装中…
+- install: 安装
+- installing: 安装中…
+- installed: 已安装
+- required: 必需
+- close: 关闭
+- unknownAuthor: 未知
+- authorBy: 作者 {{author}}
+- tjGeneratorsRequiredMessage: 多模态资产生成和资产检索功能依赖此扩展，请安装。
+- defaultProjectName: 为你推荐
+- buttonLabel: 快速开始 - 生成项目总结
+- fileExists: {{fileName}} 文件已存在，无需重新生成项目总结。
+- searchPlaceholder: 搜索设置
+- general: 通用
+- shortcuts: 快捷键
+- tjhub: 项目
+- devices: 设备
+- skills: 技能 (Skills)
+- models: 模型 (Models)
+- customModels: 自定义模型
+- subagents: 子代理 (Subagents)
+- commands: 命令 (Commands)
+- extensions: 扩展 (Extensions)
+- mcpServers: MCP 服务器
+- insightIndex: 索引
+- accountUsage: 账户与用量
+- planUsage: 套餐与用量
+- permission: 权限
+- docs: 文档
+- about: 关于
+- pets: 宠物
+- starting: 启动中…
+- stopping: 隐藏中…
+- close: 关闭虚拟宠物
+- wake: 唤醒虚拟宠物
+- choosePet: 选择宠物
+- quickGuides: 快捷提问指引
+- addGuide: 添加快捷指引
+- guidePlaceholder: 例如：吐槽
+- confirm: 确认
+- guidesLoadFailed: 指引加载失败
+- guidesRetry: 重试
+- appearance: 外观
+- petSize: 宠物大小
+- petSizeDesc: 调整宠物大小
+- settings: 设置
+- bubbleTip: 气泡提示
+- bubbleTipDesc: 控制宠物对话气泡的生效范围
+- all: 全部
+- onlyCoding: 仅编程时
+- onlyChat: 仅闲聊时
+- generalReminder: 通用提醒
+- generalReminderDesc: 接受宠物日常消息提醒
+- creationGuide: 创作引导
+- creationGuideDesc: 宠物给出创作相关提示与建议
+- squirrel: 我是可可。 提着一盏暖灯的像素小松鼠。 常驻你的桌面，安静相伴，温柔不吵闹。
+- uuuni: 嗨～我是 UU✨圆滚滚方块桌宠！和 Uni 相伴，蹦跳着在桌面编织奇妙创意！
+- fallback: Hi！我是你的Cowork宠物
+- squirrel: 呜，可可回树洞囤松果去咯，回头见！
+- uuuni: 收到信号✨UU 与 Uni 即将返回 Unity 星球，暂别你的桌面，期待下次再会
+- squirrel: 可可
+- uuuni: 优优&优尼
+- subtitle: 执行与审批
+- title: 命令白名单
+- description: 可自动运行的命令
+- placeholder: 添加命令...
+- addSuggestions: 添加建议命令
+- remove: 移除 {{command}}
+- commandTooLong: 命令过长（最多 {{count}} 个字符）
+- retry: 重试
+- title: MCP 白名单
+- description: 可自动运行的 MCP 工具。格式：'server::tool' 允许单个工具，'server::*' 允许某个服务器的全部工具
+- placeholder: 添加 MCP 工具...
+- remove: 移除 {{tool}}
+- invalidEntry: 格式无效。请使用 'server::tool' 或 'server::*'。
+- retry: 重试
+- currentPlan: 当前套餐
+- usage: 用量
+- usageStats: 用量统计
+- adjustPlan: 调整套餐
+- viewUsageStats: 详细内容访问用量管理
+- check: 前往
+- expiresOn: 到期时间 {{date}}
+- daysRemaining: 剩余 {{count}} 天
+- expiresTomorrow: 明天 {{time}} 到期
+- expiresToday: 今天 {{time}} 到期
+- expired: 已过期
+- internal: 内部用户
+- team_standard: 标准版
+- team_advanced: 高级版
+- team_flagship: 旗舰版
+- enterprise: 尊享版
+- contactAdmin: 联系管理员
+- workspace: 工作区
+- personal: 个人
+- capabilities: 能力
+- help: 帮助
+- customModels: 自定义模型
+- other: 其他
+- upgrade: 升级套餐
+- renewal: 当前订阅有未支付订单
+- buyAddOn: 购买算力增值包
+- remote: 远程
+- chat: 聊天
+- notification: 通知
+- appearance: 外观
+- externalTools: 外部工具
+- organization: 组织
+- settings: 设置
+- projects: 项目
+- projectsEmpty: 暂无工作区项目
+- indexAction: 索引
+- indexedBadge: 已索引
+- loadingBadge: 加载中
+- notIndexedBadge: 未索引
+- lastIndexed: {{time}}已索引
+- justNow: 刚刚
+- minutesAgo: {{count}}分钟前
+- hoursAgo: {{count}}小时前
+- daysAgo: {{count}}天前
+- indexBuilding: 正在索引…
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- loadSettingsFailed: 加载索引设置失败
+- saveSettingsFailed: 保存索引设置失败
+- toggleProjectFailed: 切换项目索引开关失败
+- indexProjectFailed: 触发项目索引失败
+- mainText: 索引失败
+- notStarted: Unity Insight 已响应请求，但没有真正启动索引重建。
+- retry: 重试
+- mainText: 其他进程正在使用索引文件
+- subText: {{processes}} 正在占用索引数据库。是否关闭这些进程并重新建立索引？未保存的数据可能会丢失。
+- confirm: 关闭进程并索引
+- unknownProcess: 未知进程
+- title: 全局使用
+- description: 开启 Unity Insight 后会解析 Unity 场景、Prefab 等资源及其引用关系，帮助 AI 更准确理解项目并回答相关问题。下方列表仍可按项目单独开关。
+- title: 子代理最大轮次
+- description: 限制 Unity Insight 子代理单次任务的最大对话轮次（1–60）。数值越高，复杂分析可走得更远，但耗时也可能更长。
+- updateAccess: 检查更新来源
+- title: 检查更新来源
+- description: 可在此切换接收正式版或 Canary 测试版更新提醒。
+- default: 正式版
+- canary: Canary 测试版
+- title: 启用远程隧道
+- description: 保持隧道可用以支持远程连接功能。连接期间 Cowork 会阻止此电脑进入睡眠。
+- title: 代码块自动换行
+- description: 代码块中的长行将自动换行，而非水平滚动。
+- title: 启用会话标题
+- description: 使用模型生成会话标题。
+- title: 格式化 Markdown
+- description: 将聊天内容渲染为格式化的 Markdown。
+- title: Yolo 模式工具自动选择时间
+- description: Yolo 模式中，模型调用需要用户交互工具（Ask User, Enter Plan 等）时自动选择默认选项的倒计时（秒）。-1 = 无限等待，0 = 立即选择。
+- title: 新项目开启记忆系统自主更新记忆
+- description: 本选项仅对新项目起效，已有项目可以在侧边记忆面板单独开/关自主更新记忆功能。
+- title: 自主更新记忆
+- description: 允许模型自动追加或更新项目记忆。若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- saveFailed: 保存记忆自动更新设置失败。
+- title: GameCowork 主目录位置
+- description: GameCowork 的用户级数据存储在此目录。修改后将会中断正在运行的 GameCowork 会话；其他正在运行的 GameCowork 应用或 IDE 插件需重启后才会使用新位置。
+- title: 迁移 GameCowork 数据
+- description: 当前 GameCowork 主目录下的数据将迁移到新位置。正在运行的会话将被中断。
+- restartOtherHosts: 如有其他正在运行的 GameCowork 应用或 IDE 插件，迁移完成后请重启它们以使用新位置。
+- sourceLabel: 当前位置：
+- targetLabel: 新位置：
+- targetNonEmpty: 目标目录非空，同名文件将被覆盖。
+- migrate: 迁移
+- migrating: 迁移中…
+- cancel: 取消
+- busy: 应用中…
+- applied: GameCowork 主目录位置已更新。
+- applyFailed: 更新 GameCowork 主目录位置失败。
+- envVarWarning: 写入系统环境变量失败，终端里的 gamecowork 将不会使用新主目录；若系统里残留旧值，重启后应用也可能跟随旧值。建议手动设置 GAMECOWORK_CLI_HOME。
+- migrateFailed: 数据迁移失败，原位置数据未受影响。
+- sameAsCurrent: 新位置与当前位置相同。
+- nestedPath: 新位置不能位于当前 GameCowork 主目录内部，也不能包含它。
+- invalid: 路径无效。
+- sourceUnreadable: 无法读取当前 GameCowork 主目录，请检查其访问权限。
+- title: 启用通知
+- description: 在任务完成或需要输入时提示。
+- title: 语言
+- description: 选择界面显示语言。更改后立即生效。
+- chinese: 中文
+- title: 字体大小
+- description: GameCowork 用户界面的字体大小。
+- title: 外部IDE
+- description: 用于从工具操作中打开脚本的编辑器应用(例如 VS Code)。
+- remoteAccess: 远程访问
+- allowRemoteControl: 允许其他电脑控制我的电脑
+- allowRemoteControlDescription: 开启后，使用同一 Cowork 账号登录的其它设备可在「打开远程文件夹」中浏览并打开本机文件夹。仅同账号设备可见。
+- allowRemoteConfirmTitle: 允许远程访问？
+- allowRemoteConfirmText: 使用同一 Cowork 账号登录的其它设备将能够浏览并打开本机文件夹。请确保您信任该账号下的所有已登录设备。
+- allowRemoteConfirmAllow: 允许
+- powerAndAvailability: 电源与在线
+- keepAwake: 保持电脑处于唤醒状态
+- keepAwakeDescription: 开启后，在 Cowork 运行期间尽量防止系统进入睡眠，以便其它设备能稳定连接本机。具体效果因操作系统而异。
+- keepAwakeAutoEnabledTip: 随远程连接自动开启。您可根据需要手动关闭。
+- sleepWarning: 如果电脑进入休眠状态，其它设备可能无法远程访问。建议开启「保持电脑处于唤醒状态」。
+- failedToUpdateTunnel: 更新隧道设置失败
+- versionInfo: 版本信息
+- versionInfoGroupTitle: 检查更新
+- checkForUpdate: 检查更新
+- checking: 正在检查新版本...
+- alreadyLatest: 当前版本已是最新
+- downloading: 更新正在下载中，请稍候...
+- helpDocs: 帮助文档
+- helpDocsGroupTitle: 文档
+- releaseNotes: 发布记录
+- viewDocs: 查看
+- updateAvailable: 发现新版本 !
+- latestVersion: 版本 {{version}}
+- update: 更新
+- cancel: 取消
+- serviceAgreement: 服务协议
+- privacyPolicy: 隐私政策
+- feedback: 意见反馈
+- logUpload: 日志上传
+- copyright: Copyright © 2026 优山地科技（上海）有限公司
+- logout: 退出登录
+- title: 打开远程文件夹
+- subtitle: 选择一台远程电脑，然后选择该电脑上的文件夹。
+- howToAddDevice: 如何添加新设备？
+- howToAddDeviceTitle: 如何添加新设备
+- remoteMachine: 远程电脑
+- selectFolder: 选择文件夹
+- selectMachinePlaceholder: 请选择一台远程电脑以浏览文件夹。
+- discovering: 正在发现远程机器...
+- noRemoteMachines: 没有远程机器
+- cancel: 取消
+- open: 打开
+- filterPlaceholder: 筛选...
+- loadingFolders: 加载文件夹中...
+- noSubfolders: 无子文件夹
+- noDrivesFound: 未找到驱动器
+- errorWifi: 网络连接错误
+- title: 还没有可用的远程电脑
+- subtitle: 请在您想要连接的设备上开启远程访问。
+- step1: 第一步：点击【设置】
+- step2: 第二步：找到【设备】
+- step3: 第三步：开启远程开关
+- refresh: 刷新
+- network: 无法加载远程电脑，请检查网络连接。
+- server: 出了点问题，请重试。
+- retry: 重试
+- noModels: 暂无自定义模型
+- noModelsDescription: 请配置 API 以访问其他模型。
+- add: 添加
+- update: 更新
+- adding: 添加中...
+- updating: 更新中...
+- addModel: 添加模型
+- editModel: 编辑模型
+- modelName: 模型名称
+- modelNameDuplicate: 已存在同名模型。
+- displayName: 显示名称
+- displayNamePlaceholder: 我的 GPT-4o
+- apiKeyLeaveBlank: （留空以保留现有密钥）
+- apiKeyPlaceholderEdit: 留空以保留当前密钥
+- roleVL: 视觉语言
+- roleFlash: 快速
+- deleteModel: 删除模型
+- deleteSubText: 删除后无法恢复。
+- activeModels: 活跃的自定义模型 ({{count}})
+- providers: 服务提供方
+- addProvider: 添加服务提供方
+- editProvider: 编辑服务提供方
+- deleteProvider: 删除服务提供方
+- deleteProviderConfirm: 删除服务提供方“{{name}}”？
+- deleteProviderCascade: 这也将永久删除属于该服务提供方的全部模型。
+- providerName: 服务提供方名称
+- providerNamePlaceholder: 我的服务提供方
+- providerNameDuplicate: 已存在同名服务提供方。
+- providerTitle: 服务提供方
+- providerDescription: 配置 OpenAI 兼容服务提供方。
+- providerBaseUrl: 基础 URL
+- providerApiKey: API 密钥
+- providerSave: 保存
+- providerSaveFailed: 保存服务提供方失败，请重试。
+- providerSaved: 服务提供方已保存。
+- providerRequired: 请先创建服务提供方，再添加模型。
+- noProviders: 暂无服务提供方
+- noProvidersDescription: 添加服务提供方后即可配置自定义模型。
+- noModelsForProvider: 尚未向 {{name}} 添加模型。
+- modelsCount: 模型 ({{count}})
+- roleExclusiveHint: 同一时间只能有一个 Flash 模型和一个 VL 模型生效。
+- flashModelLabel: Flash 模型
+- flashModelDesc: 用于轻量、快速任务的模型。
+- vlModelLabel: VL 模型
+- vlModelDesc: 用于图像 / 多模态输入的模型。
+- wireApi: API 格式
+- wireApiDescription: 该模型服务端点使用的协议。
+- supportsMultimodal: 支持多模态
+- supportsMultimodalDescription: 该模型原生支持图像输入。作为聊天模型启用时，图像会直接发送给该模型，而不再经过单独的多模态分析工具。
+- extraBodyDescription: 以 JSON 对象形式发送到 API 请求的 extra_body 字段（如 reasoning_effort、temperature 等）。
+- extraBodyInvalid: Extra Body 的 JSON 格式无效，请检查。
+- editorActions: 编辑器操作
+- focusChat: 聚焦聊天
+- focusChatDescription: 快速聚焦聊天输入框。
+- cycleModes: 切换模式
+- cycleModesDescription: 在聊天输入框聚焦时，于 Default / Ask / Plan 协作模式间循环切换。
+- startNewChat: 开始新对话
+- startNewChatDescription: 开始新的对话
+- cancelResponse: 取消响应
+- cancelResponseDescription: 取消响应
+- zoomIn: 放大
+- zoomInDescription: 放大界面
+- zoomOut: 缩小
+- zoomOutDescription: 缩小界面
+- toggleSidebar: 切换侧边栏
+- toggleSidebarDescription: 显示或隐藏侧边栏
+- togglePanel: 切换面板
+- togglePanelDescription: 显示或隐藏面板
+- openFiles: 打开文件
+- openFilesDescription: 快速打开文件
+- sessionInfos: 会话信息
+- sessionInfosDescription: 查看会话信息
+- searchSessions: 搜索会话
+- searchSessionsDescription: 搜索历史会话
+- toggleFullScreen: 切换全屏
+- toggleFullScreenDescription: 切换全屏模式
+- openHub: 打开Hub
+- openHubDescription: 打开Hub
+- settings: 打开设置
+- settingsDescription: 打开设置页面
+- searchPlaceholder: 搜索快捷键
+- searchFiles: 搜索文件
+- searchFilesDescription: 搜索工作区中的文件
+- openGit: 打开 Git
+- openGitDescription: 打开 Git 面板
+- newTerminal: 新建终端
+- newTerminalDescription: 新建一个终端
+- petShortcut: 唤醒/隐藏宠物
+- petShortcutDescription: 系统级全局快捷键，无论窗口是否聚焦都能唤醒或隐藏桌面宠物
+- title: 帮助中心
+- quickStart: 快速开始
+- quickStartDescription: 重新打开快速入门和教程文件
+- title: 聊天
+- today: 今天
+- yesterday: 昨天
+- last7Days: 最近 7 天
+- last30Days: 最近 30 天
+- older: 更早
+- loadMore: 加载更多历史记录...
+- loadFailed: 加载会话失败
+- streamErrorTitle: 模型调用出错
+- clearSession: 清除会话
+- clearSessionWarning: 清除会话将中止当前对话。确认？
+- confirm: 确认
+- folderNotFound: 文件夹不存在，已从最近项目中移除: {{path}}
+- projectAlreadyOpen: 项目 {{path}} 已在另一个窗口中打开
+- noHistory: 暂无历史记录
+- pinned: 已固定
+- showLess: 收起
+- showMore: 显示更多
+- loading: 加载中...
+- unpin: 取消置顶
+- pin: 置顶
+- more: 更多
+- archive: 归档
+- rename: 重命名
+- markAsRead: 标为已读
+- markAsUnread: 标为未读
+- unarchive: 取消归档
+- delete: 删除
+- deleteSession: 删除会话
+- confirmDeletionTitle: 确认删除
+- confirmDeletionBody: 删除后，任务及其所有产物将被一并删除且无法恢复。
+- saved: 已保存 {{count}} 条
+- updated: 已更新 {{count}} 条
+- label: {{parts}}记忆
+- generating: 正在生成记忆
+- scopeProject: 项目
+- scopeGlobal: 全局
+- heading: 开始使用<br /><span>Tuanjie AI</span>
+- getStarted: 开始使用
+- description: 使用 Tuanjie AI 掌握编码工作流——您轻松编写、编辑和理解游戏的 AI 伙伴。
+- nextStep: 下一步
+- welcomeToTuanjieAI: 欢迎使用 Tuanjie AI
+- markAsAllDone: 全部标记为已完成
+- aiPartnerTitle: 您的 AI 驱动编码伙伴
+- aiPartnerDescription: Tuanjie AI 将直观的代码编写、编辑和分析直接带入 Tuanjie Editor。
+- openTuanjieAITitle: 打开 Tuanjie AI
+- openTuanjieAIDescription: 点击左侧边栏的 Tuanjie AI 图标，或按 Ctrl+L（Mac 上 Cmd+L）开始关于游戏项目的新对话。
+- openTuanjieAIAppDescription: 点击右上角的 Tuanjie AI 图标，或按 Ctrl+L（Mac 上 Cmd+L）开始关于游戏项目的新对话。
+- chatWithTuanjieAITitle: 与 Tuanjie AI 对话
+- chatWithTuanjieAIDescription: 输入消息并按回车。提问、请求游戏玩法修改或获取游戏项目帮助。
+- accessPastConversationsTitle: 查看历史对话
+- accessPastConversationsDescription: 点击顶部的历史按钮或输入/resume 重访您之前的游戏开发会话。
+- aiPartnerTitle: Tuanjie AI 使您能够编写、编辑和充分理解您的游戏项目。
+- aiPartnerDescription: 它解析您的游戏项目文件，提供智能代码编辑，并帮助您轻松导航复杂代码库。无论您是在构建机制、调试脚本还是优化性能，Tuanjie AI 都是您的得力伙伴。
+- openTitle: 点击左侧边栏的 Tuanjie AI 图标。
+- openTitleApp: 点击编辑器右上角的 Tuanjie AI 图标。
+- openDescription: 您也可以使用快捷键 Ctrl+L（Mac 上 Cmd+L）打开 Tuanjie AI。它将作为侧边面板出现，您可以立即开始对话。
+- chatTitle: 提问、请求游戏玩法修改或获取游戏项目帮助。
+- chatDescription: 只需在聊天输入框中输入您的问题或请求。您可以询问特定脚本、请求新功能、调试错误或获取复杂代码的解释。Tuanjie AI 理解您的项目上下文并提供相关回答。
+- historyTitle: 随时访问您的游戏开发聊天历史并开始新对话。
+- historyDescription: 您的对话会自动保存。点击面板顶部的历史按钮浏览过去的会话。您可以恢复任何之前的对话或开始新的对话。
+- title: 更喜欢基于终端的工作流？
+- description: 更喜欢基于终端的工作流？通过菜单直接在终端中启动团结 AI：
+- menuPath: 窗口 > 团结 AI > 在终端中打开。
+- skillUpdateAvailable_one: 技能 {{name}} 有新版本可更新。
+- skillUpdateAvailable_other: {{count}} 个技能有新版本可更新。
+- extensionUpdateAvailable_one: 扩展 {{name}} 有新版本可更新。
+- extensionUpdateAvailable_other: {{count}} 个扩展有新版本可更新。
+- combinedUpdateAvailable: {{skillCount}} 个技能和 {{extensionCount}} 个扩展有新版本可更新。
+- newVersionAvailable: 新版本可用！
+- updateDownloaded: 更新已下载，重启以应用更改。
+- restartNow: 立即重启
+- remoteConnectionDisconnected: 连接已断开，请检查远程应用是否在线
+- markdownFileNotFound: 文件不存在：{{path}}
+- cannotExportWhileStreaming: 流式输出时无法导出对话
+- cannotSendWhileCompacting: 压缩对话时无法发送消息
+- pasteTooLarge: 粘贴内容过大（{{count}} 字符），已拦截。请将内容保存为文件后作为附件添加。
+- compressionFailed: 上下文压缩失败
+- compressionSkipped: 未执行上下文压缩
+- compressionCancelled: 上下文压缩已取消
+- installLspExtension: 安装 LSP 扩展以启用代码能力
+- lspInstallDescription: {{languageLabel}} 文件可安装扩展 {{extensionName}}
+- confirmInstall: 确定安装
+- later: 稍后
+- installLanguageServer: 安装 {{extensionName}} language server
+- lspNotInstalledDescription: {{languageLabel}} LSP 服务未安装，点击让 AI 帮你安装
+- aiInstall: AI 安装
+- installExtension: 安装 {{extensionName}} 集成扩展
+- extensionNotInstalledDescription: {{languageLabel}} LSP 集成扩展未安装，点击自动安装
+- lspStartFailed: {{extensionName}} LSP 启动失败
+- lspStartFailedDescription: {{languageLabel}} LSP 服务启动出错：{{error}}
+- aiFix: AI 修复
+- generationCompleted: {{type}}生成任务已完成
+- generationFailed: {{type}}生成任务失败
+- generationFailedWithError: {{type}}生成任务失败：{{error}}
+- generationInterrupted: {{type}}生成任务已中断
+- bridgeInstallFailed: 安装 {{bridgeName}} 失败
+- bridgeInstallFailedWithError: 安装 {{bridgeName}} 失败：{{error}}
+- bridgeAdded: {{bridgeName}} 已成功添加，请打开 Unity 界面，等待编译完成后，回到此界面点击刷新。
+- bridgeUpdated: {{bridgeName}} 版本已更新。
+- orgSwitchSuccess: 组织切换成功
+- orgSwitchFailed: 切换组织失败
+- projectUploadSuccess: 反馈接收成功
+- projectUploadFailed: 上传失败，遇到未知问题
+- projectUploadRetry: 重试
+- projectUploadEdit: 编辑
+- addServer: 配置新 MCP 服务器
+- editServer: 编辑 MCP 服务器
+- typeStdio: 标准输入输出(Stdio)
+- typeSse: 服务端推送事件(SSE)
+- typeStreamableHttp: 可流式传输 HTTP
+- command: 命令(Command)
+- commandPlaceholder: 例如 npx
+- arguments: 参数(Arguments)
+- argumentsPlaceholder: 例如 -y server
+- argumentsHelper: 传递给命令的空格分隔参数。
+- environmentVariables: 环境变量
+- addVariable: 添加变量
+- headers: 请求头(Headers)
+- headerKeyPlaceholder: 请求头名称
+- headerValuePlaceholder: 请求头值
+- addHeader: 添加请求头
+- urlPlaceholder: 例如 http://localhost:3000/mcp
+- chat: 聊天
+- name: 名称
+- namePlaceholder: 我的服务器名称
+- type: 类型
+- configuration: 配置
+- editMcpFile: 编辑 MCP 文件
+- updateServer: 更新服务器
+- add: 添加
+- searchPlaceholder: 搜索 MCP 服务器...
+- loadingList: 正在加载 MCP 列表...
+- createNew: 新建 MCP
+- activeServers: 运行中的服务器（{{count}}）
+- system: 系统
+- authenticating: 认证中
+- connectingError: 连接错误
+- needsAuthentication: 需要认证
+- running: 运行中
+- connecting: 连接中
+- stopped: 已停止
+- unknown: 未知
+- authenticatingAction: 认证中...
+- connect: 连接
+- connectToAuthenticate: 连接以进行认证
+- title: 没有运行中的 MCP 服务器。
+- description: 您可以使用 <code>gamecowork mcp add</code> 命令行工具配置系统级或私有服务器。
+- configureNewServer: 配置新服务器
+- title: 删除
+- deleteServer: 删除此服务器？
+- deleteSkill: 删除此技能？
+- deleteSubagent: 删除此子代理？
+- deleteCommand: 删除此命令？
+- deleteExtension: 删除此扩展？
+- cannotRestore: 删除后无法恢复。
+- toolRequest: 工具请求
+- yourAnswer: 您的回答
+- submitAnswer: 提交回答
+- submitAnswers: 提交回答
+- submit: 提交
+- skip: 跳过 (Esc)
+- other: 其他（告诉我接下来做什么）...
+- question: 问题 {{index}}
+- escToCancel: Esc 取消
+- autoContinueIn: {{message}}（{{seconds}} 秒后）
+- title: 计划审批
+- approvePlan: 批准计划
+- rejectPlan: 拒绝计划
+- cancel: 取消 (Esc)
+- autoContinueIn: {{message}}（{{seconds}} 秒后）
+- prompt: 提示词
+- title: Shell 命令执行
+- proceedQuestion: 是否继续？
+- allowOnce: 是，仅允许一次
+- allowAlwaysSession: 是，本次会话始终允许
+- needApproval: Shell 命令需要批准才能渲染提示：
+- reject: 拒绝
+- accept: 接受
+- rejectAll: 全部拒绝
+- acceptAll: 全部接受
+- title: 选择审批策略
+- autoEdit: 请求授权
+- autoEditDescription: 重要操作由你确认。
+- yolo: 全自动
+- yoloDescription: 所有操作自动批准，无需确认。
+- planLabel: 计划
+- askLabel: 仅问答
+- exitPlan: 退出计划模式
+- exitAsk: 退出仅问答模式
+- closeSidebar: 关闭侧边栏
+- openSidebar: 打开侧边栏
+- newSession: 新建会话
+- searchSessions: 搜索会话
+- searchFiles: 在工作区中搜索文件
+- searchFilesInWorkspace: 在「{{workspaceName}}」中搜索文件
+- searchInsight: 搜索 Insight 路径
+- searchInsightInWorkspace: 在「{{workspaceName}}」中搜索 Insight 路径
+- assetMarketplace: 资产市场
+- projects: 项目
+- installs: 安装
+- newTab: 新建标签页
+- history: 历史记录
+- openEditor: 打开编辑器
+- editorOpening: 编辑器正在打开，请勿重复操作。
+- editorLaunching: 编辑器正在启动中，请稍后。
+- openCowork: 打开 Cowork
+- noEditorAvailable: 未找到可用的编辑器版本。
+- editorVersionNotInstalled: 编辑器 {{version}} 未安装，且未找到其他可用的编辑器版本。
+- editorStatusConnected: 编辑器已连接
+- editorStatusConnecting: 正在连接编辑器，请稍候
+- editorStatusDisconnected: 编辑器未连接
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- sessionInfos: 会话信息
+- explorer: 资源管理器
+- togglePanel: 切换面板
+- openUnityWindow: 在侧边栏中打开 Unity 窗口
+- enableUnityWindowFirst: 请先启用 Unity 窗口
+- subagent: 子代理
+- unknown: 未知
+- search: 搜索
+- download: 下载
+- historicalQuestions: 历史提问 ({{count}})
+- historicalQuestionsTooltip: 历史提问
+- showFolder: 显示文件夹
+- openTerminal: 打开终端
+- newTerminal: 新建终端
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- markAllAsRead: 全部标记为已读
+- removeFromSidebar: 从侧边栏移除
+- archiveAll: 全部归档
+- coreIsLoading: 核心加载中...
+- noWorkspacesOpen: 没有打开的工作区
+- workspaceReorderFailed: 保存工作区顺序失败
+- reorderWorkspace: 拖动排序工作区
+- workspaces: 工作区
+- hideArchived: 隐藏已归档 ({{count}})
+- showArchived: 显示已归档 ({{count}})
+- remoteWorkspaceOffline: 远程工作区已离线
+- marketplace: 自定义
+- allWorkspaces: 所有工作区
+- user: 全局
+- title: 布局模式
+- title: 体验 TJ GameCowork 移动版
+- description: 使用App连接电脑
+- learnMore: 查看详情
+- qrCodeAlt: GameCowork 移动端二维码
+- notLoggedIn: 未登录
+- email: 邮箱：{{email}}
+- officialWebsite: 官方网站
+- account: 账户
+- settings: 设置
+- upgrade: 升级套餐
+- buyAddOn: 购买算力增值包
+- credits: 积分
+- usage: 积分
+- window5h: 5小时
+- windowResets: {{time}}重置
+- theme: 主题
+- lightMode: 浅色模式
+- darkMode: 深色模式
+- switchToDarkMode: 切换到深色模式
+- switchToLightMode: 切换到浅色模式
+- logout: 退出登录
+- login: 登录
+- combinedUpdateAvailable: 您有技能和扩展需要更新。
+- skillsUpdateAvailable: 您有技能需要更新。
+- extensionsUpdateAvailable: 您有扩展需要更新。
+- downloadClient: 下载客户端
+- getGameCoworkMobile: 获取 GameCowork 移动端
+- showPet: 显示宠物
+- hidePet: 隐藏宠物
+- activityNotice: 活动通知
+- feedback: 意见反馈
+- help: 帮助
+- openLogFolder: 打开日志文件夹
+- uploading: 上传中...
+- title: 活动通知
+- next: 下一个
+- viewDetails: 查看详情
+- title: 反馈
+- tagAbnormalResult: 结果异常
+- tagUnityTool: Unity 工具
+- tagOther: 其他
+- detailPlaceholder: 填写详情（必填）
+- includeProject: 包含游戏项目工程
+- privacy: 你的反馈可用于改进 GameCowork。<privacyLink>了解更多</privacyLink>
+- submit: 提交
+- uploadingTitle: 正在上传反馈
+- uploadingDesc: 您的反馈 ID 已就绪，诊断信息正在上传中
+- feedbackId: 反馈 ID
+- close: 关闭
+- retry: 重试
+- doneTitle: 反馈已上传
+- doneBody: 如果问题仍然存在，请<contactLink>联系我们</contactLink>
+- partialWarning: 部分诊断信息收集失败，未包含在上传内容中。
+- errorTitle: 上传失败
+- errorDesc: 上传未成功，但您的反馈 ID 保持不变：
+- title: Tuanjie GameCowork 已为你准备好
+- subtitle: 下载桌面应用，在终端里和 AI 一起写代码、建场景、做游戏
+- downloadButton: 立即下载
+- continueWeb: 继续使用云端智能体
+- lookingForAssets: 寻找素材？
+- justAskPrefix: 只需在 Cowork 中
+- justAsk: 提问
+- justAskSuffix: 即可！
+- openInUnity: 请在 Unity/Tuanjie 项目中打开
+- runAnywhere: 在任何地方运行 Cowork...
+- thisPC: 此电脑
+- workspaceOptions: 工作区选项
+- openWorkspace: 打开工作区
+- openFolder: 打开文件夹
+- openRemoteFolder: 打开远程文件夹
+- default: 默认
+- runOn: 所有的工作区
+- noAvailableWorkspaces: 没有可用的工作区
+- discoveringRemoteMachines: 正在发现远程机器...
+- noRemoteMachines: 没有远程机器
+- noMatchingWorkspaces: 没有匹配的工作区
+- recents: 最近
+- offlineRemoteWorkspaces: 离线远程工作区
+- offlineWorkspaceLabel: {{name}}（离线）
+- failedToBrowseRemoteFolders: 浏览远程文件夹失败
+- failedToOpenRemoteWorkspace: 打开远程工作区失败
+- rejectAll: 全部拒绝 ({{shortcut}})
+- acceptAll: 全部接受 ({{shortcut}})
+- commands: 自定义命令(Custom Commands)
+- skills: 技能 (Skills)
+- subagents: 子代理 (Subagents)
+- extensions: 扩展 (Extensions)
+- commandsDescription: 管理自定义斜杠命令
+- skillsDescription: 管理技能
+- subagentsDescription: 管理子代理配置
+- extensionsDescription: 管理扩展
+- searchPlaceholder: 搜索{{type}}...
+- loading: 加载中...
+- noMatchesFound: 未找到匹配项。
+- noItemsFound: 未找到{{type}}。
+- noAvailableItemsFound: 未找到可用的{{type}}。
+- clickToEdit: 点击编辑
+- enable: 启用
+- disable: 禁用
+- confirm: 确认
+- deleteQuestion: 删除？
+- installed: 已安装
+- available: 可用
+- installing: 安装中
+- install: 安装
+- by: 作者：
+- byAuthor: 作者：{{author}}
+- browseMarketplace: 浏览市场
+- uninstalling: 卸载中...
+- uninstall: 卸载
+- showMore: 显示更多
+- showLess: 显示更少
+- searchPlaceholder: 搜索模型(Models)
+- switchModel: 切换模型
+- selectModel: 选择模型
+- builtInModels: 内置模型
+- customModels: 自定义模型
+- noModelsConfigured: 未配置模型
+- addCustomModel: 添加自定义模型
+- noMatchingModels: 未找到匹配模型
+- noAvailableModels: 暂无可用模型
+- model: 模型
+- reasoning: 推理
+- context: 上下文
+- cannotSwitchWhileStreaming: 对话进行中，请稍候再切换模型
+- searchPlaceholder: 搜索技能(Skills)...
+- namePlaceholder: 输入技能名称（例如 code-review）
+- loadingList: 正在加载技能列表...
+- createNew: 创建技能
+- active: 已启用技能
+- fromUserDescription: 来源：用户创建
+- available: 可用技能
+- title: 尚未配置技能。
+- description: 技能会教 AI 如何执行特定任务。创建技能即可为您的工作流定制 AI 行为。
+- createdToast: 已创建技能：{{path}}。开启新对话以使用该技能。
+- failedToast: 创建技能失败：{{error}}
+- userSkills: 全局技能（{{count}}）
+- marketplaceSkills: 市场技能（{{count}}）
+- noMatching: 未找到与 [{{query}}] 匹配的技能。
+- notFound: 未找到技能。
+- uploadZip: 从 ZIP 上传
+- title: 从 ZIP 安装 Skill
+- file: 文件
+- selectFile: 选择 .zip 或 .skill 文件
+- invalidFileType: 请选择 .zip 或 .skill 文件
+- installing: 安装中...
+- install: 安装
+- uploadSuccess: Skill 安装成功
+- uploadFailed: 安装失败：{{error}}
+- searchPlaceholder: 搜索子代理（Subagents）...
+- namePlaceholder: 输入子代理名称（例如 code-analyzer）
+- loadingList: 正在加载子代理列表...
+- createNew: 新建子代理
+- active: 已启用子代理（{{count}}）
+- title: 尚未配置子代理。
+- description: 子代理可用于定义面向特定任务或工作流的可复用代理配置。
+- createdToast: 已创建子代理配置：{{path}}。
+- failedToast: 创建子代理失败：{{error}}
+- loadError: 加载子代理活动记录失败
+- retry: 重试
+- all: 全部
+- unity_game_dev: Unity 游戏开发
+- code_dev_env: 代码与开发环境
+- creative_design_art: 创意设计与美术
+- office_collaboration: 企业办公与协作
+- business_support: 业务职能支持
+- research_professional: 研究与专业领域
+- content_asset_generation: 内容与素材生成
+- testing_qa: 测试与质量保障
+- heat: 按热度(下载)
+- recommended: 按推荐
+- likes: 按点赞
+- recent: 最近更新
+- installSuccessExtension: 安装扩展成功！
+- installSuccessSkill: 安装技能成功！
+- installFailedExtension: 安装扩展失败
+- installFailedSkill: 安装技能失败
+- removeSuccessExtension: 移除扩展成功！
+- removeSuccessSkill: 移除技能成功！
+- removeFailedExtension: 移除扩展失败
+- removeFailedSkill: 移除技能失败
+- unitySkillIncompatible: 该工作区不支持此{{type}}，请选择其他工作区。
+- extensions: 扩展
+- skills: 技能
+- extensions: 扩展
+- skills: 技能
+- all: 全部
+- skills: 技能
+- extensions: 插件
+- install: 安装
+- uninstall: 卸载
+- installing: 安装中...
+- uninstalling: 卸载中...
+- getGuide: 获取配置指引
+- installSuccess: 安装 MCP 服务成功！
+- installFailed: 安装 MCP 服务失败
+- uninstallSuccess: 卸载 MCP 服务成功！
+- uninstallFailed: 卸载 MCP 服务失败
+- saveSuccess: MCP 服务更新成功
+- saveFailed: 更新 MCP 服务失败
+- saving: 保存中...
+- added: 已安装
+- manage: 管理
+- discover: 发现
+- searchAll: 搜索{{type}}  -  全局
+- searchFor: 搜索{{type}}  -  {{workspace}}
+- searchPlaceholderAll: 搜索扩展、技能、MCP...
+- searchPlaceholderExtensions: 搜索扩展...
+- searchPlaceholderSkills: 搜索技能...
+- searchPlaceholderMcp: 搜索 MCP...
+- retry: 重试
+- notFound: 未找到项目。
+- noMatching: 未找到匹配 [{{query}}] 的项目。
+- recommend: 推荐
+- entry: AI资产生成
+- backToChat: 返回聊天
+- title: AI资产生成
+- tabCreator: 快速生成
+- tabCanvas: 画布
+- tabHistory: 生成记录
+- canvasLoading: 正在加载画布…
+- total: 共 {{count}} 条
+- emptyTitle: 暂时没有可显示的生成记录
+- emptyDescription: 用 AI 生成图片、视频、音频或 3D 模型，让游戏素材创作更简单。选择一个生成扩展，马上试试吧。
+- createNow: 即刻创作
+- regenerate: 再次生成
+- viewGuide: 查看使用指南
+- search: 搜索
+- refresh: 刷新
+- retry: 重试
+- loadFailed: 加载生成记录失败
+- loading: 正在加载创作空间…
+- download: 下载
+- downloadAll: 全部下载
+- downloadSelected: 下载所选
+- downloadStartedToast: 已开始下载 {{count}} 个文件
+- noDownloadableFilesToast: 所选记录没有可下载的文件
+- showDownloadOptions: 显示下载选项
+- title: 生成详情
+- image: 图片生成详情
+- video: 视频生成详情
+- audio: 音频生成详情
+- other: 生成详情
+- viewDetails: 查看生成详情
+- close: 关闭详情
+- previousRecord: 上一条记录
+- nextRecord: 下一条记录
+- prompt: 提示词
+- noPrompt: 未记录提示词
+- copyPrompt: 复制提示词
+- copied: 已复制
+- createdAt: 创建时间
+- taskType: 任务类型
+- creditsUsed: 消耗积分 {{credits}}
+- unknown: 未知
+- projectPath: 项目路径
+- projectAsset: {{editor}} 项目资源
+- downloadSelected: 下载 {{format}}
+- revealInEditor: 在 {{editor}} 中定位
+- revealAgain: 再次在 {{editor}} 中定位
+- openingEditor: 正在打开 {{editor}} 并等待 Bridge 连接…
+- locatingAsset: 正在项目视图中定位资源…
+- assetRevealed: 已在 {{editor}} 的项目视图中高亮
+- revealHint: 打开项目并在项目视图中高亮此资源。
+- revealFailed: 无法在 {{editor}} 中定位此资源
+- invalidProjectAssetPath: 无法识别项目内的资源路径
+- remoteRevealUnsupported: 远程工作区暂不支持在 {{editor}} 中定位资源
+- editorConnectionTimeout: {{editor}} 已启动，但 Bridge 未连接。请检查 Bridge 包后重试。
+- files: 文件列表
+- fileCount: {{count}} 个文件
+- downloadFile: 下载 {{file}}
+- noFiles: 暂无可下载文件
+- noPreviewHint: 该结果暂不支持预览，但仍可从文件列表下载。
+- loadingModel: 正在加载 3D 模型…
+- modelError: 无法预览此模型
+- modelErrorHint: 仍可从文件列表下载该文件。
+- modelHint: 拖动旋转 · 滚轮缩放
+- triangleCount: 三角面
+- imageResolution: 分辨率
+- autoRotate: 自动旋转
+- resetView: 重置视角
+- skyboxView: Skybox 预览方式
+- skyboxFlat: 展开图
+- skyboxImmersive: 沉浸预览
+- skyboxLoading: 正在加载沉浸预览…
+- skyboxHint: 拖动环视 · 滚轮缩放
+- skyboxError: 无法加载沉浸预览
+- play: 播放
+- pause: 暂停
+- progress: 播放进度
+- mute: 静音
+- unmute: 取消静音
+- fullscreen: 全屏
+- all: 全部
+- image: 图片
+- video: 视频
+- audio: 音频
+- other: 其他
+- dateRange: 日期范围
+- fromDate: 开始日期
+- toDate: 结束日期
+- clearDates: 清除
+- today: 今天
+- startDatePlaceholder: 开始日期
+- endDatePlaceholder: 结束日期
+- previousMonth: 上个月
+- nextMonth: 下个月
+- selectStartDate: 请选择开始日期
+- selectEndDate: 请选择结束日期
+- image: 图片
+- video: 视频
+- audio: 音频
+- other: 其他
+- pending: 待执行
+- queued: 排队中
+- running: 执行中
+- completed: 已完成
+- failed: 失败
+- retrying: 重试中
+- cancelled: 已取消
+- useAsReference: 作为参考
+- adding: 添加中…
+- added: 已添加到对话
+- failed: 添加失败
+- targetSession: 作为参考插入所属会话
+- targetNew: 作为参考插入新会话
+- action: 废弃
+- restore: 恢复
+- actionHint: 废弃后记录将从生成记录列表隐藏，可随时恢复
+- restoreHint: 恢复后记录将重新出现在生成记录列表中
+- discardedFilter: 已废弃
+- discardedToast: 已废弃 {{count}} 条记录
+- restoredToast: 已恢复 {{count}} 条记录
+- failed: 操作失败，请重试
+- select: 选择
+- selectAll: 全选
+- deselectAll: 取消全选
+- cancelSelect: 取消
+- selectedCount: 已选 {{count}} 项
+- batchDiscard: 批量废弃
+- batchRestore: 批量恢复
+- emptyDiscardedTitle: 没有已废弃的记录
+- emptyDiscardedDescription: 废弃的记录会集中显示在这里，可随时恢复。
+- searchPlaceholder: 搜索扩展(Extensions)...
+- namePlaceholder: 输入扩展名称（例如 my-extension）
+- loadingList: 正在加载扩展列表...
+- createNew: 新建扩展
+- active: 已启用扩展（{{count}}）
+- fromUserDescription: 来源：用户创建
+- available: 可用扩展（{{count}}）
+- title: 尚未安装扩展。
+- description: 扩展会将技能、代理和 MCP 服务器打包成可复用组件。安装或创建扩展即可增强您的工作流。
+- createdToast: 已创建扩展：{{path}}。请在 JSON 文件中配置技能、代理和 MCP 服务器。
+- failedToast: 创建扩展失败：{{error}}
+- userExtensions: 全局扩展（{{count}}）
+- marketplaceExtensions: 市场扩展（{{count}}）
+- noMatching: 未找到与 [{{query}}] 匹配的扩展。
+- notFound: 未找到扩展。
+- searchPlaceholder: 搜索命令(Commands)...
+- namePlaceholder: 输入命令名称（例如 my-prompt）
+- loadingList: 正在加载命令列表...
+- createNew: 新建命令
+- active: 已启用命令（{{count}}）
+- title: 暂无自定义命令。
+- description: 自定义命令可将可复用提示定义为斜杠命令。创建命令即可简化您的工作流。
+- createdToast: 已创建命令配置：{{path}}。运行 /commands reload 或开启新对话以使用该命令。
+- failedToast: 创建命令失败：{{error}}
+- viewOutput: 查看错误输出
+- title: 模型响应错误
+- defaultMessage: 处理来自 {{model}} 的响应时出现错误。
+- defaultAction: 请尝试重新提交消息，如果错误仍然存在，请使用下方按钮报告问题。
+- overloaded: 提供商服务器可能已过载，流式传输被中断。请稍后重试。
+- provider: 提供商：
+- errorDetails: 错误详情
+- reportError: 上报错误
+- reporting: 上报中
+- reported: 已上报
+- reportFailed: 重试
+- resubmit: 重新提交上一条消息
+- continue: 继续
+- continueMessage: 继续
+- sessionId: 会话 ID：
+- conversationId: 对话 ID：
+- rebuild: 重建代码库索引
+- largeRepoDisabled: 您的仓库体积较大，目前暂时无法完成索引。不过我们建议使用线上 Code Search 服务，或使用 MCP 工具对仓库进行索引。
+- done: 索引完成
+- loading: 初始化中
+- waiting: 正在索引其他工作区
+- inProgress: 索引进行中
+- paused: 索引已暂停
+- failed: 索引失败
+- disabled: 索引已禁用
+- cancelled: 索引已取消
+- expand: 展开显示完整内容
+- collapse: 折叠为紧凑视图
+- describePlaceholder: 描述您的规则...
+- namePlaceholder: 输入规则名称...
+- descriptionPlaceholder: 此规则适用的任务描述...
+- contentPlaceholder: 您的规则内容...
+- inputExample: 输入示例
+- creditsTitle: 积分不足
+- creditsDescription: 升级套餐或充值。如果您是新用户，请耐心等待试用积分发放。
+- quotaTitle: 已超出积分配额
+- coding_plan_usage_5h: 您已用完 5 小时积分配额。请升级套餐或充值。
+- coding_plan_subscription_week: 您已用完本周积分配额。请升级套餐或充值。
+- coding_plan_subscription_month: 您已用完本月积分配额。请升级套餐或充值。
+- coding_plan_usage_5h: 您已用完 5 小时积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- coding_plan_subscription_week: 您已用完本周积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- coding_plan_subscription_month: 您已用完本月积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- upgrade: 升级套餐
+- buyAddOn: 购买算力增值包
+- renewalDescription: 当前订阅有未支付订单，完成支付后即可恢复使用。
+- payRenewal: 去支付
+- notNow: 稍后
+- title: 出现了一个错误
+- defaultMessage: 组件渲染时发生未知错误
+- retry: 重试
+- title: 您的登录已过期。
+- description: 请重新登录以继续使用。
+- relogin: 重新登录
+- title: 重命名会话
+- description: 保持标题简短且易于识别。
+- placeholder: 会话名称
+- title: 登出
+- description: 您将从GameCowork登出。
+- subText: 登出后将返回登录页面。
+- logout: 登出
+- lineRangeSuffix: ，第 {{lineRange}} 行
+- sharingGameObject: 当前已附加于 GameObject（{{path}}）。点击以取消附加。
+- notSharingGameObject: 当前未附加，点击附加到对话
+- sharingAsset: 当前已附加于 Asset（{{path}}）。点击以取消附加。
+- linesSelected_other: 已选择 {{count}} 行
+- noFiles: 无文件
+- skip: 跳过
+- back: 上一步
+- next: 下一步
+- gotIt: 知道了
+- coworkLabel: 团结一起干
+- headline: 更新功能介绍
+- slideHeadline1: 多工作区
+- slideHeadline2: 远程访问
+- slideHeadline3: 编辑器串流
+- badge: 全新旗舰
+- title: {{model}} 重磅登场
+- description: Tuanjie AI 现已适配智谱新一代开源旗舰模型 {{model}}。该模型登顶开源 SOTA，在 Artificial Analysis 综合榜单位列全球前列，专为长程任务打造，具备稳定百万级上下文窗口，代码实操能力全面升级。
+- cta: 立即使用 {{model}}
+- title: 跨项目统一 AI 聊天
+- description: 同时面向多个文件夹/仓库对话，不再需要频繁切换项目，提升开发效率。
+- title: 跨设备远程访问
+- description: 开启远程连接，即可在单台本地主机上便捷访问、操控多台远端设备。
+- title: 内置 Unity 多视口实时预览
+- description: 内置多 Unity 窗口嵌入能力，可在应用内多窗口并行展示，实时预览修改效果，无需频繁切换软件。
+- remainsEnabled: 在嵌入模式下，{{bridgeName}} 保持启用
+- enabledClickToDisable: {{bridgeName}} 已启用 - 点击禁用
+- disabledClickToEnable: {{bridgeName}} 已禁用 — 点击启用
+- disconnected: {{bridgeName}}: 未连接
+- connecting: {{bridgeName}}: 连接中…
+- connected: {{bridgeName}}: 已连接
+- model3d: 3D 模型
+- sprite: 精灵图
+- spriteSequence: 精灵序列帧
+- image: 图片
+- video: 视频
+- material: 材质
+- character: 角色
+- skybox: 天空盒
+- soundEffect: 音效
+- audioClip: 音频
+- asset: 资产
+- terrain: 地形
+- texture: 纹理
+- mesh: 网格
+- hierarchy: 场景层级
+- stepPrefix: 步骤 {{step}}：
+- message: 很抱歉，项目功能丢失了您的身份信息，如需使用，请重新登录您的账号。
+- relogin: 重新登录
+- search: 搜索
+- cancel: 取消
+- back: 返回
+- save: 保存
+- install: 安装
+- close: 关闭
+- installing: 正在安装
+- installingEllipsis: 正在安装…
+- locate: 从本地添加
+- installEditor: 安装编辑器
+- viewDetails: 查看详情
+- skip: 跳过
+- ltsForHmi: HMI 专用 LTS
+- recommended: 推荐
+- unknown: 未知
+- selectFolder: 选择文件夹…
+- selectOrganization: 选择组织
+- organization: 组织
+- noResults: 没有结果
+- loading: 加载中…
+- noEditorsInstalled: 尚未安装
+- releaseNotes: 发行说明
+- open: 打开
+- installs: 已安装
+- next: 下一步
+- title: 安装
+- installTuanjieEditor: 安装团结编辑器
+- addModules: 添加模块
+- tabOfficial: 正式发行
+- tabPrereleases: 预发行版
+- tabArchive: 已归档版
+- noPrereleases: 当前没有预发行版可用
+- downloadPreviousVersions: 下载历史版本
+- noReleasesAvailable: 没有可用版本
+- buttonInstall: 安装
+- buttonInstalled: 已安装
+- alreadyInstalled: 该版本已安装。
+- buttonInstalling: 正在安装
+- showInExplorer: 在资源管理器中显示
+- revealInFinder: 在 Finder 中显示
+- removeFromCowork: 从 Cowork 移除
+- uninstall: 卸载
+- uninstallingEllipsis: 正在卸载…
+- manage: 管理
+- viewProjects: 查看项目 ({{count}})
+- noPrereleasedEditors: 没有安装预发行版
+- noOfficialReleasesEditors: 没有安装正式发行版
+- noEditorsInstalled: 尚未安装
+- downloadSize: 下载大小
+- sizeOnDisk: 磁盘大小
+- noModulesAvailable: 没有可用模块
+- required: 需要
+- available: 可用：
+- continue: 继续
+- iHaveReadAndAgree: 我已阅读并同意上述条款和条件
+- noEulaFound: 没有找到 EULA
+- pleaseActivateLicense: 请激活您的许可证以查看所有平台
+- failedToLoadReleases: 加载发行版失败
+- failedToLoadModules: 加载模块失败
+- failedToStartInstallation: 开始安装失败
+- failedToLoadEula: 加载 EULA 失败
+- emptyResponse: 服务器返回空响应
+- unexpectedResponseFormat: 响应格式不符合预期
+- invalidModulesData: 响应中的模块数据无效
+- title: 项目
+- add: 添加
+- newProject: 新项目
+- addFromDisk: 从磁盘添加项目
+- openCloudProject: 打开云项目
+- colFavorite: 收藏
+- addToFavorites: 添加收藏
+- removeFromFavorites: 取消收藏
+- columnSettings: 列设置
+- sortByFavorite: 按收藏排序
+- cancelSortByFavorite: 取消按收藏排序
+- colBadge: 徽章
+- sortByBadge: 按个人版认证状态排序
+- cancelSortByBadge: 取消按个人版认证状态排序
+- colCloud: 云端
+- colModified: 修改于
+- colVersion: 编辑器版本
+- colSize: 大小
+- colName: 名称
+- configuration: 配置
+- editorVersion: 编辑器版本：
+- modified: 修改于：
+- noProjectsYet: 尚未创建项目。首先创建或打开一个项目。
+- showInExplorer: 在资源管理器中显示
+- revealInFinder: 在 Finder 中显示
+- addCmdArgs: 添加命令行参数
+- removeFromList: 从列表移除项目
+- editorNotInstalled: 编辑器未安装
+- missingEditorVersion: 缺少编辑器版本
+- missingEditorDialogTitle: 未安装的编辑器版本
+- missingEditorDialogProjectVersion: {{name}} 创建自编辑器版本 {{version}}
+- missingEditorDialogBody: 要打开此项目，请 <install>安装</install> 缺少的编辑器版本或 <otherVersion>使用其他版本打开</otherVersion>它。
+- selectEditorTitle: 为 {{name}} 选择编辑器
+- select: 选择
+- selected: 已选择
+- openWithVersion: 使用 {{version}} 打开
+- installOtherEditorVersion: 安装其他编辑器版本
+- cloudConnected: 项目已连接到团结云
+- cloudNotConnected: 项目未连接到团结云，点击连接
+- expandAll: 全部展开
+- foldAll: 全部收起
+- expand: 展开
+- fold: 收起
+- watermarkNotSupported: 不支持
+- watermarkNotCertified: 未认证
+- watermarkPending: 认证中
+- watermarkCertified: 已认证
+- removeTitle: 从列表中移除项目
+- removeBody: 如果从列表中移除 <span>{{name}}</span>，文件将保存在您的磁盘上。
+- remove: 移除项目
+- removingEllipsis: 移除中…
+- changeEditorTitle: 是否更改编辑器版本？
+- changeEditorBody1: 如果更改项目的编辑器版本，脚本可能会更改并且项目库可能会重新构建。根据项目的大小，这可能需要一些时间。
+- changeEditorBody2: 确定要更改项目的编辑器版本吗？
+- changeVersion: 更改版本
+- cmdArgsTitle: 命令行参数
+- cmdArgsPlaceholder: 在此添加命令行参数
+- documentation: 文档
+- justNow: 刚刚
+- minutesAgo: {{count}}分钟前
+- hoursAgo: {{count}}小时前
+- daysAgo: {{count}}天前
+- connections: 连接
+- tuanjieOrganization: 团结云组织：
+- cloudProject: 云开发项目：
+- cloudPromoTitle: 使用团结云提升您的开发体验
+- cloudPromoDesc: 使用构建自动化、版本控制、AI 辅助和数据诊断等高级工具，实现无缝协作、更快构建并充满信心地发布。
+- connectToCloud: 连接到团结云
+- cloudHeaderDesc: 将您的项目连接到团结云，以设置分析、广告和其他游戏服务
+- cloudLearnMore: 了解更多团结游戏服务
+- title: 许可证
+- getHelp: 获取帮助
+- refresh: 刷新
+- addLicense: 添加许可证
+- addLicenseLower: 添加许可证
+- noLicensesYet: 尚无许可证
+- activationDate: 激活时间：
+- expirationDate: 到期时间：
+- returnLicense: 退还许可证
+- returningEllipsis: 退还中…
+- returnTitle: 退还许可证
+- returnBody: 退还此许可证后，您可以重用该序列号在另一台机器上激活它。
+- addNewLicense: 添加新许可证
+- addNewLicenseLower: 添加新许可证
+- activateLicense: 激活许可证
+- getNewLicense: 获取新许可证
+- activateWithSerial: 通过序列号激活
+- activateWithSerialTypo: 通过序列号激活
+- activateWithSerialDesc: 输入序列号以激活现有的beta许可证
+- activateWithRequest: 通过许可证请求激活
+- activateWithRequestTypo: 通过许可证请求激活
+- activateWithRequestDesc: 创建和上传许可证请求以激活现有的许可证
+- configureServer: 配置许可证服务器
+- configureServerDesc: 通过配置许可证服务器来获取许可证
+- getPersonalLicense: 获取免费的个人版许可证
+- getPersonalLicenseDesc: 激活个人版许可证可使用免费版团结编辑器
+- getTeamPlan: 为团队选择一个订阅计划
+- getTeamPlanDesc: 请联系我们获取专业版(Pro)许可证
+- help: 帮助
+- faq: 常见问题解答
+- enterSerial: 输入序列号以激活专业版(Pro)许可证
+- serialNumber: 序列号
+- serialPlaceholder: 序列号
+- activate: 激活
+- activatingEllipsis: 激活中…
+- activationFailed: 激活失败
+- step1Title: 下载许可证请求
+- step1Desc: 首先，创建和保存一个许可证请求。
+- generatingEllipsis: 生成中…
+- createLicenseRequest: 创建许可证请求
+- step2Title: 生成许可证文件
+- step2Desc: 上传许可证请求到 Web 端口以生成许可证文件。
+- uploadLicenseRequest: 上传许可证请求
+- step3Title: 通过许可证文件激活
+- step3Desc: 上传许可证文件，然后选择激活。
+- licenseFile: 许可证文件
+- enterServerUrl: 输入许可证服务器的URL
+- serverUrlPlaceholder: 许可证服务器URL
+- savingEllipsis: 保存中…
+- failedToSave: 保存失败
+- failedToGenerateRequest: 生成许可证请求失败
+- agreeAndGetPersonal: 同意并取得团结引擎个人版授权
+- personalLicenseBody1: 您需要激活许可证才能使用团结引擎。同意下方的条款，即表示您确认您符合使用团结引擎个人版许可证的资格条件
+- personalLicenseBody2: 请参阅团结引擎 <terms>使用条款和条件</terms>，了解更多详细信息。请注意，如果您所属的组织使用团结引擎专业版，则您不符合团结引擎个人版的使用资格。
+- termsAgreement: 为使用团结云开发功能，我已阅读并同意 <terms>优三缔服务协议</terms> 和 <privacy>隐私政策</privacy>。
+- title: 新项目
+- editorVersion: 编辑器版本
+- projectName: 项目名称
+- location: 位置
+- enableOnlineServices: 启用游戏云服务
+- downloadTemplate: 下载模板
+- downloadingEllipsis: 下载中…
+- createProject: 创建项目
+- creatingEllipsis: 创建中…
+- filterAll: 全部
+- filterCore: 核心模板
+- filterSample: 示例模板
+- statusReady: 已就绪
+- statusDownloadable: 需下载
+- statusUpgradable: 可升级
+- downloadingTemplateToast: 正在下载模板…
+- projectCreatedToast: 项目已创建，打开编辑器中…
+- downloadFailedToast: 下载失败
+- downloadFailedWithError: 下载失败：{{error}}
+- errProjectExists: 此位置已存在此名称的项目
+- errInsufficientPermissions: 所选位置无写入权限
+- errTemplateNotFound: 未找到模板
+- errTemplateNotReady: 模板尚未下载
+- errEditorNotFound: 未找到编辑器
+- errCreateFailed: 无法创建项目
+- errCreateFailedWithError: 创建项目失败：{{error}}
+- viewDetails: 查看详情
+- information: 信息
+- packages: 软件包
+- noPackages: 此模板没有关联的软件包
+- description: 描述
+- renderPipeline: 渲染管线
+- size: 大小
+- platform: 平台
+- category: 类别
+- renderPipelineBuiltin: 内置
+- renderPipelineURP: 通用渲染管线(URP)
+- renderPipelineHDRP: 高清渲染管线(HDRP)
+- renderPipelineSRP: 可编程渲染管线(SRP)
+- renderPipelineUnknown: 未知
+- platformWeixinMiniGame: 微信小游戏
+- cancelDownloadTitle: 取消下载？
+- cancelDownloadBody: 确定要停止下载所有项吗？
+- close: 关闭
+- cancelDownload: 取消下载
+- noDownloads: 尚无下载内容
+- noDownloadsDesc: 最新的和正在进行中的下载将显示在这里
+- cancelPendingTooltip: 取消待处理的项目并从列表中删除
+- clearTooltip: 清理
+- cannotCancelWhileInstalling: 安装期间无法取消
+- retryFailedTooltip: 重试所有失败的下载
+- inProgress: 正在进行(已完成 {{completed}} 项/共 {{total}} 项)
+- installed: 已安装
+- downloaded: 下载完成
+- failed: 失败
+- completedWithErrors: 已完成(有错误)
+- downloading: 正在下载 ({{progress}}%) {{speed}}
+- downloadQueued: 下载队列中
+- validating: 正在验证
+- downloadFailed: 下载失败
+- downloadSuccessful: 下载成功
+- installQueued: 安装队列中
+- installValidating: 安装验证中
+- installing: 正在安装
+- installCleanup: 正在清理
+- installFinished: 安装完成
+- installFailed: 安装失败
+- validationFailed: 验证失败
+- validationFailedTooltip: Cowork没有安装团结的权限。请重试并同意UAC。
+- tjhub: 项目设置
+- project: 项目
+- projectLocation: 项目位置
+- projectLocationDesc: 新项目将保存到此位置。Cowork中已有的其他项目不受影响。
+- install: 安装
+- installLocation: 安装位置
+- installLocationDesc: 为编辑器的安装选择一个位置。已有安装不会受到影响。
+- downloadLocation: 下载位置
+- downloadLocationDesc: 为编辑器下载文件选择一个位置。
+- title: 将项目连接到团结云
+- connectExisting: 连接到现有的云开发项目
+- cloudProject: 云开发项目
+- selectCloudProject: 选择一个云项目
+- connect: 连接
+- title: 添加云项目
+- tuanjieVersion: 团结版本
+- chooseLocation: 为 {{name}} 选择一个位置
+- chooseLocationDefault: 为项目选择一个位置
+- selectRemoteFirst: 先选择一个云项目
+- remoteProject: 云项目
+- alreadyAdded: 已添加至本地
+- lastModified: 最新修改时间: {{time}}
+- addOpen: 添加并打开
+- addingEllipsis: 添加中…
+- selectEditorVersion: 选择编辑器版本
+- title: 指定或安装团结编辑器
+- body: 请为新项目指定或安装一个版本的团结编辑器。
+- title: 没有激活的许可证
+- body: 要创建和打开项目，您需要一个有效的许可证。
+- manageLicenses: 管理许可证
+- title: 需要安装 Rosetta 2
+- body: 要使用团结引擎，您需要安装 Rosetta 2。点击安装以在您的 Mac 上自动下载并安装 Rosetta 2。
+- placeholder: 查找
+- noResults: 无结果
+- previousMatch: 上一个匹配
+- nextMatch: 下一个匹配
+- caseSensitiveOn: 关闭区分大小写
+- caseSensitiveOff: 开启区分大小写
+- openHub: 打开 Cowork
+- switchState: 切换状态
+- petSize: 宠物大小
+- help: 帮助
+- hide: 隐藏
+- idle: 待机
+- runRight: 向右奔跑
+- runLeft: 向左奔跑
+- waving: 挥手
+- jumping: 跳跃
+- failed: 摔倒
+- running: 奔跑
+- review: 回看
+- placeholder: 问点什么…
+- errorNoSession: 暂无可用会话
+- errorRemoteAttachments: 远程工作区暂不支持附件
+- errorRemoteOffline: 远程工作区离线或不可达
+- errorSendFailed: 发送失败，请重试
+- unsupported: 无法预览此文件
+- selectFileToPreview: 选择文件以预览
+- loadingFiles: 加载文件中...
+- binaryPreviewUnavailable: 二进制预览不可用 — {{size}} 字节
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- noFilesAvailable: 没有可用文件
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- search: 搜索
+- matchCase: 区分大小写
+- matchWholeWord: 全词匹配
+- useRegularExpression: 使用正则表达式
+- lineNumbers: 行号
+- wordWrap: 自动换行
+- splitDiffView: 拆分差异视图
+- more: 更多
+- enableLsp: 启用 LSP
+- disableLsp: 禁用 LSP
+- preview: 预览
+- source: 源码
+- indexReady: 索引已就绪
+- indexError: 索引失败
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- index: 索引中…
+- title: 正在索引项目…
+- title: 初始化中…
+- description: 准备环境并扫描项目文件
+- title: 提取实体
+- description: 提取代码实体与结构信息
+- title: 解析引用
+- description: 解析实体间的引用关系
+- title: 发布索引
+- description: 生成虚拟文件系统并发布索引快照
+- indexStatusUnknown: 索引状态未知（VFS / CLI 进度稍后接入）
+- mediaFormatNotSupported: 不支持此媒体格式
+- unityInsightLoadingStatus: 准备 Unity Insight...
+- unityInsightConnecting: 建立连接中...
+- unityInsightIndexNotReady: Unity Insight 索引尚未就绪
+- unityInsightCliConnectionFailed: 无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。
+- unityInsightIndexFailed: Unity Insight 索引失败。请重试以重新构建索引。
+- unityInsightEnableMessage: 开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。
+- unityInsightEnableAction: 开启 Unity Insight
+- unityInsightOpeningAction: 打开中…
+- unityInsightFolderSelectChild: 在左侧选择文件或节点以预览
+- unityInsightFolderItemCount: {{count}} 项
+- viewReference: 查看引用
+- viewReferenceOut: 依赖项
+- viewReferenceIn: 使用方
+- viewReferenceEmpty: 无引用
+- showFileTree: 显示文件树
+- hideFileTree: 隐藏文件树
+- searchFiles: 搜索文件
+- searchInFile: 在文件中查找
+- inFileSearchNext: 下一个匹配
+- inFileSearchPrevious: 上一个匹配
+- inFileSearchNoResults: 无结果
+- hideSearch: 隐藏搜索
+- goBack: 后退
+- goForward: 前进
+- showLineNumbers: 显示行号
+- hideLineNumbers: 隐藏行号
+- failedToSearch: 搜索文件失败
+- failedToLoad: 加载文件失败
+- pin: 固定
+- close: 关闭
+- closeOthers: 关闭其他
+- closeToRight: 关闭右侧
+- closeAll: 关闭全部
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- unsavedAppChangesDescription: 是否要保存所有未保存的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- stagedChanges: 已暂存的更改
+- unstagedChanges: 更改
+- untrackedFiles: 未跟踪的文件
+- workspaceRoot: 工作区
+- stageFile: 暂存更改
+- unstageFile: 取消暂存
+- discardChanges: 放弃更改
+- cancel: 取消
+- confirmDiscardChanges: 确定放弃 {{path}} 的更改吗？此操作无法撤销。
+- gitActionFailed: Git 操作失败
+- gitActionFailedDescription: 无法更新此文件的 Git 状态。请刷新变更后重试。
+- currentBranch: 当前分支：{{branch}}
+- switchBranch: 切换分支
+- branches: 分支
+- noBranches: 没有本地分支
+- switchingBranch: 正在切换分支…
+- switchBranchErrorTitle: 无法切换分支
+- switchBranchFailed: 无法切换分支。请提交或暂存冲突的更改后重试。
+- aiSwitchBranch: AI 切换
+- aiSwitchBranchPrompt: git 切换至 {{branch}}，请妥善处理未提交的更改
+- commitChanges: AI 提交
+- commitChangesHint: 在聊天输入框中填写提交并推送请求
+- commitChangesPrompt: git 提交并推送相关更改
+- fileTooLarge: 文件过大，无法语法高亮预览 — {{path}}
+- savePermissionTitle: 无法保存文件
+- savePermissionDescription: {{path}} 当前不可写，或你没有保存该文件的权限。
+- explorer: 资源管理器
+- closeTab: 关闭标签页
+- newTerminal: 新建终端
+- showBottomTerminal: 显示底部终端
+- hideBottomTerminal: 收起底部终端
+- resizeTerminal: 调整终端面板高度
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- play: 播放
+- stop: 停止
+- pause: 暂停
+- step: 单步
+- captureToChat: 截屏到聊天
+- moreControls: 更多控制
+- muteAudio: 静音
+- unmuteAudio: 取消静音
+- domainReloading: Unity 正在重新加载程序集...
+- refreshStream: 刷新 Unity 流连接
+- addUnityView: 添加 Unity 视图
+- addView: 添加视图
+- defaultLayout: 默认布局
+- lastLayout: 加载最新布局
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- fullscreen: 全屏
+- exitFullscreen: 退出全屏
+- returnToChat: 返回聊天
+- sessionInfos: 会话信息
+- unityWindowStream: Unity 窗口流
+- startingUnityStream: 正在启动 Unity 流...
+- openUnityEditorRequired: 需要打开 Unity 编辑器。你可以在 Cowork 中使用串流功能以便更轻松地操作
+- streamingUnavailableMac: 暂不支持 macOS 串流
+- goOpen: 去打开
+- unityStreamReadyHint: 选择一个 Unity 视图开始串流。
+- connectingToUnityEditor: 正在连接 Unity 编辑器...
+- streamingTab: 串流
+- stopStreaming: 停止串流
+- retry: 重试
+- unityStreamNotStarted: Unity 流尚未启动。
+- addUnityViewHint: 为保证流式质量，将隐藏该 Editor 窗口。
+- otherWindows: 其他窗口
+- streamStreaming: 流式中
+- streamConnecting: 连接中…
+- streamStalled: 帧已暂停
+- streamReconnecting: 重连中…
+- streamDomainReloading: 程序集重载中…
+- streamCompiling: 编译中：
+- streamCompilingStarting: 正在开始编译…
+- streamCompileDone: 编译完成，重载中…
+- streamCompileFailed: 编译失败
+- streamTitleCompiling: 请稍候…
+- streamTitleReloading: 请稍候…
+- streamTitleFailed: 编译失败
+- close: 关闭
+- streamDisconnected: 已断开
+- streamIdle: 空闲
+- streamNetworkLatency: 延迟：{{ms}} ms
+- streamNetworkQualityGood: 网络连接正常
+- streamNetworkQualityAvg: 网络连接一般
+- streamNetworkQualityBad: 网络连接较差
+- extensionMenu: 新建标签页
+- aiCanvasTab: AI 画布
+- aiCanvasLoading: 正在加载 AI 画布...
+- aiCanvasLoadError: 无法加载 AI 画布，请关闭标签页后重试。
+- loading: 加载中...
+- contextWindow: 上下文窗口
+- noData: 暂无数据
+- tokensRemaining: 剩余 {{tokens}}
+- compressTooltip: 压缩上下文
+- compress: 压缩
+- jobs: 任务
+- noJobsYet: 暂无任务
+- plans: 计划
+- noPlansYet: 暂无计划
+- artifacts: 生成产物
+- artifactPath: 路径：{{path}}
+- artifactLocalPath: 本地：{{path}}
+- artifactGenerating: 生成中
+- artifactGeneratingProgress: 生成中 · {{progress}}%
+- artifactFailed: 生成失败
+- seeAllArtifacts: 查看全部（{{count}}）
+- openArtifact: 打开生成产物 {{title}}
+- image: 图片
+- video: 视频
+- audio: 音频文件
+- other: 生成产物
+- subagents: 子代理 (Subagents)
+- noSubagentsYet: 暂无子代理
+- backgroundTask: 后台任务
+- background: 后台
+- showMore: 显示更多
+- showLess: 收起
+- stopSubagent: 停止后台子代理
+- openSubagent: 打开子代理 {{title}}
+- backgroundShells: 后台命令 (Shells)
+- noBackgroundShellsYet: 暂无后台命令
+- stopShell: 停止后台命令
+- openShell: 打开后台命令输出 {{title}}
+- openPlanFile: 打开计划文件 {{title}}
+- memory: 记忆
+- automaticUpdate: 自主更新记忆
+- automaticUpdateStreamingHint: 若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- more: 更多
+- showFolder: 显示文件夹
+- clearMemory: 消除记忆
+- clearMemorySuccess: 记忆已消除
+- organize: 整理
+- organizeMemoryTitle: 整理记忆
+- organizeMemoryDescription: 为了不影响当前对话的上下文，将开启新对话进行整理。
+- organizeDontShowAgain: 不再显示
+- organizeCancel: 取消
+- organizeContinue: 继续
+- organizeClose: 关闭
+- organizeMemoryPrompt: 请整理当前{{scope}}记忆：去除冗余、过期以及长期价值不高的内容。
+- workspaceTag: 工作区
+- globalTag: 全局
+- noProjectMemoryYet: 暂无项目记忆
+- letGameCoworkKnowProject: 让 GameCowork 了解你的项目
+- noGlobalMemoryYet: 暂无全局记忆
+- letGameCoworkKnowGlobal: 创建全局记忆
+- generatingGlobalMemory: 生成中...
+- createGlobalMemoryFailed: 创建全局记忆文件失败。
+- memoryUpdatedAt: 更新时间：{{time}}
+- memoryFileSize: 大小：{{size}}
+- audioPlay: 播放
+- audioPause: 暂停
+- audioProgress: 播放进度
+- update: 更新
+- updateWithVersion: 更新 ({{version}})
+- loadingFiles: 加载文件中...
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- noFilesAvailable: 没有可用文件
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- placeholder: 输入消息…
+- tooltip: 发送
+
+## registry-CHHSpXp3.js（1873 条）
+- deviceFlowManual: 如果浏览器未自动打开，请手动访问：
+- deviceFlowCode: 并输入验证码：
+- buttonLabel: 快速开始 - 生成项目总结
+- fileExists: {{fileName}} 文件已存在，无需重新生成项目总结。
+- cancel: 取消
+- delete: 删除
+- save: 保存
+- update: 更新
+- add: 添加
+- back: 返回
+- search: 搜索
+- accept: 接受
+- reject: 拒绝
+- proceed: 继续
+- dismiss: 忽略
+- edit: 编辑
+- more: 更多
+- browse: 浏览...
+- systemDefault: 系统默认
+- auto: 自动
+- always: 始终
+- never: 从不
+- loading: 加载中...
+- untitled: 未命名
+- refresh: 刷新
+- reconnect: 重新连接
+- close: 关闭
+- enabled: 已启用
+- disabled: 已禁用
+- stop: 停止
+- send: 发送
+- new: 新建
+- fromMarketplace: 从市场安装
+- fromLocal: 本地新建
+- showMore: 显示更多
+- showLess: 显示较少
+- active: 已启用
+- check: 检查
+- title_other: {{count}} 条排队消息
+- edit: 编辑
+- stopSending: 由于你中断了当前响应，队列已暂停
+- editing: 编辑中
+- editQueuedMessage: 在主输入框中编辑此排队消息
+- editingQueued: 编辑队列消息
+- cancelEdit: 取消编辑
+- delete: 删除
+- deleteQueuedMessage: 删除此排队消息
+- moreActions: 更多操作
+- moreQueueAction: 更多队列操作
+- inject: 立刻发送
+- injectDescription: 插入当前轮次并立刻发送，不中断
+- sendNow: 立刻发送
+- sendNowQueuedMessage: 插入当前轮次并立刻发送，不中断
+- interrupt: 中断并发送
+- interruptDescription: 停止当前回答并发送此消息
+- imageAttachment: 图片附件
+- attachment: 附件
+- expand: 展开队列
+- collapse: 收起队列
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- openFile: 打开文件
+- openLink: 打开链接
+- copyLink: 复制链接
+- copyUrl: 复制 URL
+- revealInFinder: 在 Finder 中显示
+- revealInFileExplorer: 在文件资源管理器中显示
+- openInVsCode: 在 VS Code 中打开
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- searchingFiles: 搜索文件...
+- nofiles: 未找到文件
+- typeToSearch: 输入搜索工作空间文件
+- recentFiles: 最近文件
+- recentSessions: 最近会话
+- loadMore: 加载更多
+- loadingMore: 加载中...
+- clear: 清除搜索内容
+- showCommandMenu: 命令菜单
+- uploadFile: 上传文件
+- addContext: 添加上下文
+- label: 资产自动刷新
+- helpTooltip: 开启后，编辑器会自动导入并编译变更的资产；关闭后暂停自动刷新，重新开启时会一次性导入暂停期间的全部变更。
+- titleUnity: Unity 编辑器
+- titleTuanjie: 团结引擎编辑器
+- statusConnected: 已连接
+- statusConnecting: 连接中…
+- statusUnconnected: 未连接
+- open: 打开
+- connect: 连接
+- askMode: 仅问答
+- askModeDescription: 只回答问题，不修改文件或执行命令
+- planMode: 计划模式
+- planModeDescription: 先探索代码并提出计划，再执行编辑
+- title: 上下文窗口
+- usedPercent: 已使用 {{percent}}%
+- remaining: 剩余 {{tokens}}
+- compact: 压缩
+- systemPrompt: 系统提示词
+- toolsDefinitions: 工具定义
+- skills: 技能
+- subagent: 子代理
+- conversation: 对话
+- context: 语境
+- model: 模型
+- customize: 自定义
+- slashCommands: 斜杠命令
+- support: 支持
+- title: 附加文件
+- title: 提及此项目中的文件
+- title: 清除会话
+- title: 切换模型
+- descriptionDefault: 选择其他模型
+- title: 账户使用情况
+- title: 技能管理
+- description: 可列出、编辑、启用/禁用技能
+- title: 命令管理
+- description: 列出、编辑、启用/禁用自定义命令
+- title: 扩展管理
+- description: 安装、启用/禁用、卸载扩展程序
+- title: MCP 服务器管理
+- description: 列出、编辑 MCP 服务器
+- title: 子代理管理
+- description: 列出、编辑、启用/禁用子代理配置
+- title: 在终端中打开 GameCowork
+- description: 初始化通用项目分析（默认行为）
+- description: 初始化 Unity 项目分析
+- description: 通过摘要替换来压缩上下文
+- title: 设置
+- description: 配置你的偏好
+- title: 导出
+- description: 导出当前会话
+- title: 查看帮助文档
+- description: 阅读指南和文档
+- title: 快捷键
+- description: 配置键盘快捷键
+- title: 切换账户
+- description: 使用其他账户登录
+- reportProblem: 报告问题
+- filterActions: 筛选操作...
+- noMatchResults: 无匹配结果
+- rewindErrorStreaming: 流式输出时无法回退代码
+- forkErrorStreaming: 流式输出时无法分支对话
+- rewindErrorFailed: 代码回退失败
+- rewindSuccess: 代码回退成功
+- showLess: 收起
+- showMore: 展开
+- rewind: 回退
+- messageActions: 消息操作
+- forkConversation: 从此处分支对话
+- rewindCode: 回退代码至此处
+- forkAndRewind: 分支对话并回退代码
+- yesterday: 昨天
+- title: 图片预览
+- copy: 复制图片
+- copying: 正在复制图片
+- copied: 已复制
+- copyFailed: 复制失败
+- copyFailedHelp: 无法复制此图片，请下载后从本地复制。
+- close: 关闭预览
+- update: 更新
+- updateWithVersion: 更新至 ({{version}})
+- name: 名称
+- storage: 存储位置
+- project: 仅用于此工作空间
+- global: 对所有工作空间可用
+- globalLabel: 全局
+- projectLabel: 项目
+- fromUser: 用户创建
+- path: 路径
+- errorName: 请输入名称
+- errorHomeDir: 无法确定主目录。
+- adding: 创建中...
+- addNow: 创建
+- onlyFor: 仅用于 
+- workspace:  工作区
+- welcome: 欢迎
+- signingIn: 登录中
+- authenticating: 请等待，正在验证您的账户。
+- loginToStart: 登录或注册账户以开始使用 Cowork。
+- loginSignUp: 登录 / 注册
+- welcomeToast: 🎉 欢迎使用 Cowork！
+- agreePrefix: 使用 Cowork 即表示您同意我们的 
+- eula: 最终用户许可协议
+- privacyPolicy: 隐私政策
+- terms: 条款
+- deviceFlowManual: 如果浏览器未自动打开，请手动访问：
+- deviceFlowCode: 并输入验证码：
+- expired: 设备授权请求已过期，请重试。
+- denied: 授权请求已被拒绝。
+- agreeFooter: 使用 Cowork 即表示您同意我们的 <eula>最终用户许可协议</eula>、<privacy>隐私政策</privacy> 和 <terms>条款</terms>。
+- title: GameCowork 应用
+- downloadToStart: 下载 GameCowork 应用以开始使用
+- downloadForDesktop: 下载桌面版
+- installedDesktop: 我已安装桌面客户端。
+- title: 加载中...
+- subtitle: 正在打开项目，请稍候。
+- scrollToBottom: 滚动到底部
+- aiGeneratedDisclaimer: 内容由 AI 生成，仅供参考。
+- cancelStreamEscape: 双击 Escape 取消流式输出
+- createNewSession: 创建新会话
+- rolledBack: 已回滚
+- rolledBackReason: 检测到敏感内容，已回滚。
+- conflictOccupied: 该会话已在另一个窗口中打开，之后的请求可能发生冲突。
+- attachmentsStillProcessing: 图片或文件仍在处理中，请稍候再发送。
+- title: 聊天
+- default: 向 Cowork 提问或分配任务...
+- focusHint: 按 {{modifier}}+L 聚焦或取消聚焦 Cowork
+- subagentDisabled: 无法向子代理发送消息
+- newSessionIn: 新会话于
+- welcome1prefix: 想象力决定上限 —
+- welcome1suffix: — 执行力决定成品。
+- welcome2prefix: 构思、开发、发布 —
+- welcome2suffix: — 一站式游戏开发伙伴。
+- welcome3prefix: 你的游戏，你的规则 —
+- welcome3suffix: — 让我们帮你实现代码。
+- welcome4prefix: 大胆设计，高效落地 —
+- welcome4suffix: — 让每个想法变成现实。
+- welcome5prefix: 创意无限，开发有道 —
+- welcome5suffix: — 重新定义游戏开发。
+- askGameCowork: 向 Cowork 提问！
+- description: Cowork 使用本地部署的大语言模型作为基座，<br />全后端架构保证代码安全。
+- selectCapability: @ 选择不同的内置能力
+- selectPrompt: 输入 / 选择自定义 Prompt
+- whatCanWeDo: 我们可以做什么
+- refreshPrompts: 刷新推荐
+- unitySamplePrompt1: 帮我检索一个 low poly 3D 模型
+- unitySamplePrompt2: 我想要检索一个写实风格的环境资产包
+- unitySamplePrompt3: 我想要检索一个卡通风格、带动画的角色模型
+- unitySamplePrompt4: 给我检索一个 fantasy 风的小镇房屋模型
+- extensionsBubble: 获取全部 AI 游戏创作必备扩展
+- engineTuanjie: 团结
+- unityProjectDetected: 检测到 Unity 项目
+- tuanjieProjectDetected: 检测到团结项目
+- introTitle: 为 {{engine}} 项目推荐的扩展：
+- introDescription: 根据您当前的 {{engine}} 项目，我们找到了以下实用扩展。
+- dontShowAgain: 此项目不再显示
+- installAll: 全部安装
+- installingAll: 安装中…
+- install: 安装
+- installing: 安装中…
+- installed: 已安装
+- required: 必需
+- close: 关闭
+- unknownAuthor: 未知
+- authorBy: 作者 {{author}}
+- tjGeneratorsRequiredMessage: 多模态资产生成和资产检索功能依赖此扩展，请安装。
+- defaultProjectName: 为你推荐
+- buttonLabel: 快速开始 - 生成项目总结
+- fileExists: {{fileName}} 文件已存在，无需重新生成项目总结。
+- searchPlaceholder: 搜索设置
+- general: 通用
+- shortcuts: 快捷键
+- tjhub: 项目
+- devices: 设备
+- skills: 技能 (Skills)
+- models: 模型 (Models)
+- customModels: 自定义模型
+- subagents: 子代理 (Subagents)
+- commands: 命令 (Commands)
+- extensions: 扩展 (Extensions)
+- mcpServers: MCP 服务器
+- insightIndex: 索引
+- accountUsage: 账户与用量
+- planUsage: 套餐与用量
+- permission: 权限
+- docs: 文档
+- about: 关于
+- pets: 宠物
+- starting: 启动中…
+- stopping: 隐藏中…
+- close: 关闭虚拟宠物
+- wake: 唤醒虚拟宠物
+- choosePet: 选择宠物
+- quickGuides: 快捷提问指引
+- addGuide: 添加快捷指引
+- guidePlaceholder: 例如：吐槽
+- confirm: 确认
+- guidesLoadFailed: 指引加载失败
+- guidesRetry: 重试
+- appearance: 外观
+- petSize: 宠物大小
+- petSizeDesc: 调整宠物大小
+- settings: 设置
+- bubbleTip: 气泡提示
+- bubbleTipDesc: 控制宠物对话气泡的生效范围
+- all: 全部
+- onlyCoding: 仅编程时
+- onlyChat: 仅闲聊时
+- generalReminder: 通用提醒
+- generalReminderDesc: 接受宠物日常消息提醒
+- creationGuide: 创作引导
+- creationGuideDesc: 宠物给出创作相关提示与建议
+- squirrel: 我是可可。 提着一盏暖灯的像素小松鼠。 常驻你的桌面，安静相伴，温柔不吵闹。
+- uuuni: 嗨～我是 UU✨圆滚滚方块桌宠！和 Uni 相伴，蹦跳着在桌面编织奇妙创意！
+- fallback: Hi！我是你的Cowork宠物
+- squirrel: 呜，可可回树洞囤松果去咯，回头见！
+- uuuni: 收到信号✨UU 与 Uni 即将返回 Unity 星球，暂别你的桌面，期待下次再会
+- squirrel: 可可
+- uuuni: 优优&优尼
+- subtitle: 执行与审批
+- title: 命令白名单
+- description: 可自动运行的命令
+- placeholder: 添加命令...
+- addSuggestions: 添加建议命令
+- remove: 移除 {{command}}
+- commandTooLong: 命令过长（最多 {{count}} 个字符）
+- retry: 重试
+- title: MCP 白名单
+- description: 可自动运行的 MCP 工具。格式：'server::tool' 允许单个工具，'server::*' 允许某个服务器的全部工具
+- placeholder: 添加 MCP 工具...
+- remove: 移除 {{tool}}
+- invalidEntry: 格式无效。请使用 'server::tool' 或 'server::*'。
+- retry: 重试
+- currentPlan: 当前套餐
+- usage: 用量
+- usageStats: 用量统计
+- adjustPlan: 调整套餐
+- viewUsageStats: 详细内容访问用量管理
+- check: 前往
+- expiresOn: 到期时间 {{date}}
+- daysRemaining: 剩余 {{count}} 天
+- expiresTomorrow: 明天 {{time}} 到期
+- expiresToday: 今天 {{time}} 到期
+- expired: 已过期
+- internal: 内部用户
+- team_standard: 标准版
+- team_advanced: 高级版
+- team_flagship: 旗舰版
+- enterprise: 尊享版
+- contactAdmin: 联系管理员
+- workspace: 工作区
+- personal: 个人
+- capabilities: 能力
+- help: 帮助
+- customModels: 自定义模型
+- other: 其他
+- upgrade: 升级套餐
+- renewal: 当前订阅有未支付订单
+- buyAddOn: 购买算力增值包
+- remote: 远程
+- chat: 聊天
+- notification: 通知
+- appearance: 外观
+- externalTools: 外部工具
+- organization: 组织
+- settings: 设置
+- projects: 项目
+- projectsEmpty: 暂无工作区项目
+- indexAction: 索引
+- indexedBadge: 已索引
+- loadingBadge: 加载中
+- notIndexedBadge: 未索引
+- lastIndexed: {{time}}已索引
+- justNow: 刚刚
+- minutesAgo: {{count}}分钟前
+- hoursAgo: {{count}}小时前
+- daysAgo: {{count}}天前
+- indexBuilding: 正在索引…
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- loadSettingsFailed: 加载索引设置失败
+- saveSettingsFailed: 保存索引设置失败
+- toggleProjectFailed: 切换项目索引开关失败
+- indexProjectFailed: 触发项目索引失败
+- mainText: 索引失败
+- notStarted: Unity Insight 已响应请求，但没有真正启动索引重建。
+- retry: 重试
+- mainText: 其他进程正在使用索引文件
+- subText: {{processes}} 正在占用索引数据库。是否关闭这些进程并重新建立索引？未保存的数据可能会丢失。
+- confirm: 关闭进程并索引
+- unknownProcess: 未知进程
+- title: 全局使用
+- description: 开启 Unity Insight 后会解析 Unity 场景、Prefab 等资源及其引用关系，帮助 AI 更准确理解项目并回答相关问题。下方列表仍可按项目单独开关。
+- title: 子代理最大轮次
+- description: 限制 Unity Insight 子代理单次任务的最大对话轮次（1–60）。数值越高，复杂分析可走得更远，但耗时也可能更长。
+- updateAccess: 检查更新来源
+- title: 检查更新来源
+- description: 可在此切换接收正式版或 Canary 测试版更新提醒。
+- default: 正式版
+- canary: Canary 测试版
+- title: 启用远程隧道
+- description: 保持隧道可用以支持远程连接功能。连接期间 Cowork 会阻止此电脑进入睡眠。
+- title: 代码块自动换行
+- description: 代码块中的长行将自动换行，而非水平滚动。
+- title: 启用会话标题
+- description: 使用模型生成会话标题。
+- title: 格式化 Markdown
+- description: 将聊天内容渲染为格式化的 Markdown。
+- title: Yolo 模式工具自动选择时间
+- description: Yolo 模式中，模型调用需要用户交互工具（Ask User, Enter Plan 等）时自动选择默认选项的倒计时（秒）。-1 = 无限等待，0 = 立即选择。
+- title: 新项目开启记忆系统自主更新记忆
+- description: 本选项仅对新项目起效，已有项目可以在侧边记忆面板单独开/关自主更新记忆功能。
+- title: 自主更新记忆
+- description: 允许模型自动追加或更新项目记忆。若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- saveFailed: 保存记忆自动更新设置失败。
+- title: GameCowork 主目录位置
+- description: GameCowork 的用户级数据存储在此目录。修改后将会中断正在运行的 GameCowork 会话；其他正在运行的 GameCowork 应用或 IDE 插件需重启后才会使用新位置。
+- title: 迁移 GameCowork 数据
+- description: 当前 GameCowork 主目录下的数据将迁移到新位置。正在运行的会话将被中断。
+- restartOtherHosts: 如有其他正在运行的 GameCowork 应用或 IDE 插件，迁移完成后请重启它们以使用新位置。
+- sourceLabel: 当前位置：
+- targetLabel: 新位置：
+- targetNonEmpty: 目标目录非空，同名文件将被覆盖。
+- migrate: 迁移
+- migrating: 迁移中…
+- cancel: 取消
+- busy: 应用中…
+- applied: GameCowork 主目录位置已更新。
+- applyFailed: 更新 GameCowork 主目录位置失败。
+- envVarWarning: 写入系统环境变量失败，终端里的 gamecowork 将不会使用新主目录；若系统里残留旧值，重启后应用也可能跟随旧值。建议手动设置 GAMECOWORK_CLI_HOME。
+- migrateFailed: 数据迁移失败，原位置数据未受影响。
+- sameAsCurrent: 新位置与当前位置相同。
+- nestedPath: 新位置不能位于当前 GameCowork 主目录内部，也不能包含它。
+- invalid: 路径无效。
+- sourceUnreadable: 无法读取当前 GameCowork 主目录，请检查其访问权限。
+- title: 启用通知
+- description: 在任务完成或需要输入时提示。
+- title: 语言
+- description: 选择界面显示语言。更改后立即生效。
+- chinese: 中文
+- title: 字体大小
+- description: GameCowork 用户界面的字体大小。
+- title: 外部IDE
+- description: 用于从工具操作中打开脚本的编辑器应用(例如 VS Code)。
+- remoteAccess: 远程访问
+- allowRemoteControl: 允许其他电脑控制我的电脑
+- allowRemoteControlDescription: 开启后，使用同一 Cowork 账号登录的其它设备可在「打开远程文件夹」中浏览并打开本机文件夹。仅同账号设备可见。
+- allowRemoteConfirmTitle: 允许远程访问？
+- allowRemoteConfirmText: 使用同一 Cowork 账号登录的其它设备将能够浏览并打开本机文件夹。请确保您信任该账号下的所有已登录设备。
+- allowRemoteConfirmAllow: 允许
+- powerAndAvailability: 电源与在线
+- keepAwake: 保持电脑处于唤醒状态
+- keepAwakeDescription: 开启后，在 Cowork 运行期间尽量防止系统进入睡眠，以便其它设备能稳定连接本机。具体效果因操作系统而异。
+- keepAwakeAutoEnabledTip: 随远程连接自动开启。您可根据需要手动关闭。
+- sleepWarning: 如果电脑进入休眠状态，其它设备可能无法远程访问。建议开启「保持电脑处于唤醒状态」。
+- failedToUpdateTunnel: 更新隧道设置失败
+- versionInfo: 版本信息
+- versionInfoGroupTitle: 检查更新
+- checkForUpdate: 检查更新
+- checking: 正在检查新版本...
+- alreadyLatest: 当前版本已是最新
+- downloading: 更新正在下载中，请稍候...
+- helpDocs: 帮助文档
+- helpDocsGroupTitle: 文档
+- releaseNotes: 发布记录
+- viewDocs: 查看
+- updateAvailable: 发现新版本 !
+- latestVersion: 版本 {{version}}
+- update: 更新
+- cancel: 取消
+- serviceAgreement: 服务协议
+- privacyPolicy: 隐私政策
+- feedback: 意见反馈
+- logUpload: 日志上传
+- copyright: Copyright © 2026 优山地科技（上海）有限公司
+- logout: 退出登录
+- title: 打开远程文件夹
+- subtitle: 选择一台远程电脑，然后选择该电脑上的文件夹。
+- howToAddDevice: 如何添加新设备？
+- howToAddDeviceTitle: 如何添加新设备
+- remoteMachine: 远程电脑
+- selectFolder: 选择文件夹
+- selectMachinePlaceholder: 请选择一台远程电脑以浏览文件夹。
+- discovering: 正在发现远程机器...
+- noRemoteMachines: 没有远程机器
+- cancel: 取消
+- open: 打开
+- filterPlaceholder: 筛选...
+- loadingFolders: 加载文件夹中...
+- noSubfolders: 无子文件夹
+- noDrivesFound: 未找到驱动器
+- errorWifi: 网络连接错误
+- title: 还没有可用的远程电脑
+- subtitle: 请在您想要连接的设备上开启远程访问。
+- step1: 第一步：点击【设置】
+- step2: 第二步：找到【设备】
+- step3: 第三步：开启远程开关
+- refresh: 刷新
+- network: 无法加载远程电脑，请检查网络连接。
+- server: 出了点问题，请重试。
+- retry: 重试
+- noModels: 暂无自定义模型
+- noModelsDescription: 请配置 API 以访问其他模型。
+- add: 添加
+- update: 更新
+- adding: 添加中...
+- updating: 更新中...
+- addModel: 添加模型
+- editModel: 编辑模型
+- modelName: 模型名称
+- modelNameDuplicate: 已存在同名模型。
+- displayName: 显示名称
+- displayNamePlaceholder: 我的 GPT-4o
+- apiKeyLeaveBlank: （留空以保留现有密钥）
+- apiKeyPlaceholderEdit: 留空以保留当前密钥
+- roleVL: 视觉语言
+- roleFlash: 快速
+- deleteModel: 删除模型
+- deleteSubText: 删除后无法恢复。
+- activeModels: 活跃的自定义模型 ({{count}})
+- providers: 服务提供方
+- addProvider: 添加服务提供方
+- editProvider: 编辑服务提供方
+- deleteProvider: 删除服务提供方
+- deleteProviderConfirm: 删除服务提供方“{{name}}”？
+- deleteProviderCascade: 这也将永久删除属于该服务提供方的全部模型。
+- providerName: 服务提供方名称
+- providerNamePlaceholder: 我的服务提供方
+- providerNameDuplicate: 已存在同名服务提供方。
+- providerTitle: 服务提供方
+- providerDescription: 配置 OpenAI 兼容服务提供方。
+- providerBaseUrl: 基础 URL
+- providerApiKey: API 密钥
+- providerSave: 保存
+- providerSaveFailed: 保存服务提供方失败，请重试。
+- providerSaved: 服务提供方已保存。
+- providerRequired: 请先创建服务提供方，再添加模型。
+- noProviders: 暂无服务提供方
+- noProvidersDescription: 添加服务提供方后即可配置自定义模型。
+- noModelsForProvider: 尚未向 {{name}} 添加模型。
+- modelsCount: 模型 ({{count}})
+- roleExclusiveHint: 同一时间只能有一个 Flash 模型和一个 VL 模型生效。
+- flashModelLabel: Flash 模型
+- flashModelDesc: 用于轻量、快速任务的模型。
+- vlModelLabel: VL 模型
+- vlModelDesc: 用于图像 / 多模态输入的模型。
+- wireApi: API 格式
+- wireApiDescription: 该模型服务端点使用的协议。
+- supportsMultimodal: 支持多模态
+- supportsMultimodalDescription: 该模型原生支持图像输入。作为聊天模型启用时，图像会直接发送给该模型，而不再经过单独的多模态分析工具。
+- extraBodyDescription: 以 JSON 对象形式发送到 API 请求的 extra_body 字段（如 reasoning_effort、temperature 等）。
+- extraBodyInvalid: Extra Body 的 JSON 格式无效，请检查。
+- editorActions: 编辑器操作
+- focusChat: 聚焦聊天
+- focusChatDescription: 快速聚焦聊天输入框。
+- cycleModes: 切换模式
+- cycleModesDescription: 在聊天输入框聚焦时，于 Default / Ask / Plan 协作模式间循环切换。
+- startNewChat: 开始新对话
+- startNewChatDescription: 开始新的对话
+- cancelResponse: 取消响应
+- cancelResponseDescription: 取消响应
+- zoomIn: 放大
+- zoomInDescription: 放大界面
+- zoomOut: 缩小
+- zoomOutDescription: 缩小界面
+- toggleSidebar: 切换侧边栏
+- toggleSidebarDescription: 显示或隐藏侧边栏
+- togglePanel: 切换面板
+- togglePanelDescription: 显示或隐藏面板
+- openFiles: 打开文件
+- openFilesDescription: 快速打开文件
+- sessionInfos: 会话信息
+- sessionInfosDescription: 查看会话信息
+- searchSessions: 搜索会话
+- searchSessionsDescription: 搜索历史会话
+- toggleFullScreen: 切换全屏
+- toggleFullScreenDescription: 切换全屏模式
+- openHub: 打开Hub
+- openHubDescription: 打开Hub
+- settings: 打开设置
+- settingsDescription: 打开设置页面
+- searchPlaceholder: 搜索快捷键
+- searchFiles: 搜索文件
+- searchFilesDescription: 搜索工作区中的文件
+- openGit: 打开 Git
+- openGitDescription: 打开 Git 面板
+- newTerminal: 新建终端
+- newTerminalDescription: 新建一个终端
+- title: 帮助中心
+- quickStart: 快速开始
+- quickStartDescription: 重新打开快速入门和教程文件
+- title: 聊天
+- today: 今天
+- yesterday: 昨天
+- last7Days: 最近 7 天
+- last30Days: 最近 30 天
+- older: 更早
+- loadMore: 加载更多历史记录...
+- loadFailed: 加载会话失败
+- streamErrorTitle: 模型调用出错
+- clearSession: 清除会话
+- clearSessionWarning: 清除会话将中止当前对话。确认？
+- confirm: 确认
+- folderNotFound: 文件夹不存在，已从最近项目中移除: {{path}}
+- projectAlreadyOpen: 项目 {{path}} 已在另一个窗口中打开
+- noHistory: 暂无历史记录
+- pinned: 已固定
+- showLess: 收起
+- showMore: 显示更多
+- loading: 加载中...
+- unpin: 取消置顶
+- pin: 置顶
+- more: 更多
+- archive: 归档
+- rename: 重命名
+- markAsRead: 标为已读
+- markAsUnread: 标为未读
+- unarchive: 取消归档
+- delete: 删除
+- deleteSession: 删除会话
+- confirmDeletionTitle: 确认删除
+- confirmDeletionBody: 删除后，任务及其所有产物将被一并删除且无法恢复。
+- saved: 已保存 {{count}} 条
+- updated: 已更新 {{count}} 条
+- label: {{parts}}记忆
+- generating: 正在生成记忆
+- scopeProject: 项目
+- scopeGlobal: 全局
+- heading: 开始使用<br /><span>Tuanjie AI</span>
+- getStarted: 开始使用
+- description: 使用 Tuanjie AI 掌握编码工作流——您轻松编写、编辑和理解游戏的 AI 伙伴。
+- nextStep: 下一步
+- welcomeToTuanjieAI: 欢迎使用 Tuanjie AI
+- markAsAllDone: 全部标记为已完成
+- aiPartnerTitle: 您的 AI 驱动编码伙伴
+- aiPartnerDescription: Tuanjie AI 将直观的代码编写、编辑和分析直接带入 Tuanjie Editor。
+- openTuanjieAITitle: 打开 Tuanjie AI
+- openTuanjieAIDescription: 点击左侧边栏的 Tuanjie AI 图标，或按 Ctrl+L（Mac 上 Cmd+L）开始关于游戏项目的新对话。
+- openTuanjieAIAppDescription: 点击右上角的 Tuanjie AI 图标，或按 Ctrl+L（Mac 上 Cmd+L）开始关于游戏项目的新对话。
+- chatWithTuanjieAITitle: 与 Tuanjie AI 对话
+- chatWithTuanjieAIDescription: 输入消息并按回车。提问、请求游戏玩法修改或获取游戏项目帮助。
+- accessPastConversationsTitle: 查看历史对话
+- accessPastConversationsDescription: 点击顶部的历史按钮或输入/resume 重访您之前的游戏开发会话。
+- aiPartnerTitle: Tuanjie AI 使您能够编写、编辑和充分理解您的游戏项目。
+- aiPartnerDescription: 它解析您的游戏项目文件，提供智能代码编辑，并帮助您轻松导航复杂代码库。无论您是在构建机制、调试脚本还是优化性能，Tuanjie AI 都是您的得力伙伴。
+- openTitle: 点击左侧边栏的 Tuanjie AI 图标。
+- openTitleApp: 点击编辑器右上角的 Tuanjie AI 图标。
+- openDescription: 您也可以使用快捷键 Ctrl+L（Mac 上 Cmd+L）打开 Tuanjie AI。它将作为侧边面板出现，您可以立即开始对话。
+- chatTitle: 提问、请求游戏玩法修改或获取游戏项目帮助。
+- chatDescription: 只需在聊天输入框中输入您的问题或请求。您可以询问特定脚本、请求新功能、调试错误或获取复杂代码的解释。Tuanjie AI 理解您的项目上下文并提供相关回答。
+- historyTitle: 随时访问您的游戏开发聊天历史并开始新对话。
+- historyDescription: 您的对话会自动保存。点击面板顶部的历史按钮浏览过去的会话。您可以恢复任何之前的对话或开始新的对话。
+- title: 更喜欢基于终端的工作流？
+- description: 更喜欢基于终端的工作流？通过菜单直接在终端中启动团结 AI：
+- menuPath: 窗口 > 团结 AI > 在终端中打开。
+- skillUpdateAvailable_one: 技能 {{name}} 有新版本可更新。
+- skillUpdateAvailable_other: {{count}} 个技能有新版本可更新。
+- extensionUpdateAvailable_one: 扩展 {{name}} 有新版本可更新。
+- extensionUpdateAvailable_other: {{count}} 个扩展有新版本可更新。
+- combinedUpdateAvailable: {{skillCount}} 个技能和 {{extensionCount}} 个扩展有新版本可更新。
+- newVersionAvailable: 新版本可用！
+- updateDownloaded: 更新已下载，重启以应用更改。
+- restartNow: 立即重启
+- remoteConnectionDisconnected: 连接已断开，请检查远程应用是否在线
+- markdownFileNotFound: 文件不存在：{{path}}
+- cannotExportWhileStreaming: 流式输出时无法导出对话
+- cannotSendWhileCompacting: 压缩对话时无法发送消息
+- pasteTooLarge: 粘贴内容过大（{{count}} 字符），已拦截。请将内容保存为文件后作为附件添加。
+- compressionFailed: 上下文压缩失败
+- compressionSkipped: 未执行上下文压缩
+- compressionCancelled: 上下文压缩已取消
+- installLspExtension: 安装 LSP 扩展以启用代码能力
+- lspInstallDescription: {{languageLabel}} 文件可安装扩展 {{extensionName}}
+- confirmInstall: 确定安装
+- later: 稍后
+- installLanguageServer: 安装 {{extensionName}} language server
+- lspNotInstalledDescription: {{languageLabel}} LSP 服务未安装，点击让 AI 帮你安装
+- aiInstall: AI 安装
+- installExtension: 安装 {{extensionName}} 集成扩展
+- extensionNotInstalledDescription: {{languageLabel}} LSP 集成扩展未安装，点击自动安装
+- lspStartFailed: {{extensionName}} LSP 启动失败
+- lspStartFailedDescription: {{languageLabel}} LSP 服务启动出错：{{error}}
+- aiFix: AI 修复
+- generationCompleted: {{type}}生成任务已完成
+- generationFailed: {{type}}生成任务失败
+- generationFailedWithError: {{type}}生成任务失败：{{error}}
+- generationInterrupted: {{type}}生成任务已中断
+- bridgeInstallFailed: 安装 {{bridgeName}} 失败
+- bridgeInstallFailedWithError: 安装 {{bridgeName}} 失败：{{error}}
+- bridgeAdded: {{bridgeName}} 已成功添加，请打开 Unity 界面，等待编译完成后，回到此界面点击刷新。
+- bridgeUpdated: {{bridgeName}} 版本已更新。
+- orgSwitchSuccess: 组织切换成功
+- orgSwitchFailed: 切换组织失败
+- projectUploadSuccess: 反馈接收成功
+- projectUploadFailed: 上传失败，遇到未知问题
+- projectUploadRetry: 重试
+- projectUploadEdit: 编辑
+- addServer: 配置新 MCP 服务器
+- editServer: 编辑 MCP 服务器
+- typeStdio: 标准输入输出(Stdio)
+- typeSse: 服务端推送事件(SSE)
+- typeStreamableHttp: 可流式传输 HTTP
+- command: 命令(Command)
+- commandPlaceholder: 例如 npx
+- arguments: 参数(Arguments)
+- argumentsPlaceholder: 例如 -y server
+- argumentsHelper: 传递给命令的空格分隔参数。
+- environmentVariables: 环境变量
+- addVariable: 添加变量
+- headers: 请求头(Headers)
+- headerKeyPlaceholder: 请求头名称
+- headerValuePlaceholder: 请求头值
+- addHeader: 添加请求头
+- urlPlaceholder: 例如 http://localhost:3000/mcp
+- chat: 聊天
+- name: 名称
+- namePlaceholder: 我的服务器名称
+- type: 类型
+- configuration: 配置
+- editMcpFile: 编辑 MCP 文件
+- updateServer: 更新服务器
+- add: 添加
+- searchPlaceholder: 搜索 MCP 服务器...
+- loadingList: 正在加载 MCP 列表...
+- createNew: 新建 MCP
+- activeServers: 运行中的服务器（{{count}}）
+- system: 系统
+- authenticating: 认证中
+- connectingError: 连接错误
+- needsAuthentication: 需要认证
+- running: 运行中
+- connecting: 连接中
+- stopped: 已停止
+- unknown: 未知
+- authenticatingAction: 认证中...
+- connect: 连接
+- connectToAuthenticate: 连接以进行认证
+- title: 没有运行中的 MCP 服务器。
+- description: 您可以使用 <code>gamecowork mcp add</code> 命令行工具配置系统级或私有服务器。
+- configureNewServer: 配置新服务器
+- title: 删除
+- deleteServer: 删除此服务器？
+- deleteSkill: 删除此技能？
+- deleteSubagent: 删除此子代理？
+- deleteCommand: 删除此命令？
+- deleteExtension: 删除此扩展？
+- cannotRestore: 删除后无法恢复。
+- toolRequest: 工具请求
+- yourAnswer: 您的回答
+- submitAnswer: 提交回答
+- submitAnswers: 提交回答
+- submit: 提交
+- skip: 跳过 (Esc)
+- other: 其他（告诉我接下来做什么）...
+- question: 问题 {{index}}
+- escToCancel: Esc 取消
+- autoContinueIn: {{message}}（{{seconds}} 秒后）
+- title: 计划审批
+- approvePlan: 批准计划
+- rejectPlan: 拒绝计划
+- cancel: 取消 (Esc)
+- autoContinueIn: {{message}}（{{seconds}} 秒后）
+- prompt: 提示词
+- title: Shell 命令执行
+- proceedQuestion: 是否继续？
+- allowOnce: 是，仅允许一次
+- allowAlwaysSession: 是，本次会话始终允许
+- needApproval: Shell 命令需要批准才能渲染提示：
+- reject: 拒绝
+- accept: 接受
+- rejectAll: 全部拒绝
+- acceptAll: 全部接受
+- title: 选择审批策略
+- autoEdit: 请求授权
+- autoEditDescription: 重要操作由你确认。
+- yolo: 全自动
+- yoloDescription: 所有操作自动批准，无需确认。
+- planLabel: 计划
+- askLabel: 仅问答
+- exitPlan: 退出计划模式
+- exitAsk: 退出仅问答模式
+- closeSidebar: 关闭侧边栏
+- openSidebar: 打开侧边栏
+- newSession: 新建会话
+- searchSessions: 搜索会话
+- searchFiles: 在工作区中搜索文件
+- searchFilesInWorkspace: 在「{{workspaceName}}」中搜索文件
+- searchInsight: 搜索 Insight 路径
+- searchInsightInWorkspace: 在「{{workspaceName}}」中搜索 Insight 路径
+- assetMarketplace: 资产市场
+- projects: 项目
+- installs: 安装
+- newTab: 新建标签页
+- history: 历史记录
+- openEditor: 打开编辑器
+- editorOpening: 编辑器正在打开，请勿重复操作。
+- editorLaunching: 编辑器正在启动中，请稍后。
+- openCowork: 打开 Cowork
+- noEditorAvailable: 未找到可用的编辑器版本。
+- editorVersionNotInstalled: 编辑器 {{version}} 未安装，且未找到其他可用的编辑器版本。
+- editorStatusConnected: 编辑器已连接
+- editorStatusConnecting: 正在连接编辑器，请稍候
+- editorStatusDisconnected: 编辑器未连接
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- sessionInfos: 会话信息
+- explorer: 资源管理器
+- togglePanel: 切换面板
+- openUnityWindow: 在侧边栏中打开 Unity 窗口
+- enableUnityWindowFirst: 请先启用 Unity 窗口
+- subagent: 子代理
+- unknown: 未知
+- search: 搜索
+- download: 下载
+- historicalQuestions: 历史提问 ({{count}})
+- historicalQuestionsTooltip: 历史提问
+- showFolder: 显示文件夹
+- openTerminal: 打开终端
+- newTerminal: 新建终端
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- markAllAsRead: 全部标记为已读
+- removeFromSidebar: 从侧边栏移除
+- archiveAll: 全部归档
+- coreIsLoading: 核心加载中...
+- noWorkspacesOpen: 没有打开的工作区
+- workspaceReorderFailed: 保存工作区顺序失败
+- reorderWorkspace: 拖动排序工作区
+- workspaces: 工作区
+- hideArchived: 隐藏已归档 ({{count}})
+- showArchived: 显示已归档 ({{count}})
+- remoteWorkspaceOffline: 远程工作区已离线
+- marketplace: 自定义
+- allWorkspaces: 所有工作区
+- user: 全局
+- title: 布局模式
+- title: 体验 TJ GameCowork 移动版
+- description: 使用App连接电脑
+- learnMore: 查看详情
+- qrCodeAlt: GameCowork 移动端二维码
+- notLoggedIn: 未登录
+- email: 邮箱：{{email}}
+- officialWebsite: 官方网站
+- account: 账户
+- settings: 设置
+- upgrade: 升级套餐
+- buyAddOn: 购买算力增值包
+- credits: 积分
+- usage: 积分
+- window5h: 5小时
+- windowResets: {{time}}重置
+- theme: 主题
+- lightMode: 浅色模式
+- darkMode: 深色模式
+- switchToDarkMode: 切换到深色模式
+- switchToLightMode: 切换到浅色模式
+- logout: 退出登录
+- login: 登录
+- combinedUpdateAvailable: 您有技能和扩展需要更新。
+- skillsUpdateAvailable: 您有技能需要更新。
+- extensionsUpdateAvailable: 您有扩展需要更新。
+- downloadClient: 下载客户端
+- getGameCoworkMobile: 获取 GameCowork 移动端
+- showPet: 显示宠物
+- hidePet: 隐藏宠物
+- activityNotice: 活动通知
+- feedback: 意见反馈
+- help: 帮助
+- openLogFolder: 打开日志文件夹
+- uploading: 上传中...
+- title: 活动通知
+- next: 下一个
+- viewDetails: 查看详情
+- title: 反馈
+- tagAbnormalResult: 结果异常
+- tagUnityTool: Unity 工具
+- tagOther: 其他
+- detailPlaceholder: 填写详情（必填）
+- includeProject: 包含游戏项目工程
+- privacy: 你的反馈可用于改进 GameCowork。<privacyLink>了解更多</privacyLink>
+- submit: 提交
+- uploadingTitle: 正在上传反馈
+- uploadingDesc: 您的反馈 ID 已就绪，诊断信息正在上传中
+- feedbackId: 反馈 ID
+- close: 关闭
+- retry: 重试
+- doneTitle: 反馈已上传
+- doneBody: 如果问题仍然存在，请<contactLink>联系我们</contactLink>
+- partialWarning: 部分诊断信息收集失败，未包含在上传内容中。
+- errorTitle: 上传失败
+- errorDesc: 上传未成功，但您的反馈 ID 保持不变：
+- title: Tuanjie GameCowork 已为你准备好
+- subtitle: 下载桌面应用，在终端里和 AI 一起写代码、建场景、做游戏
+- downloadButton: 立即下载
+- continueWeb: 继续使用云端智能体
+- lookingForAssets: 寻找素材？
+- justAskPrefix: 只需在 Cowork 中
+- justAsk: 提问
+- justAskSuffix: 即可！
+- openInUnity: 请在 Unity/Tuanjie 项目中打开
+- runAnywhere: 在任何地方运行 Cowork...
+- thisPC: 此电脑
+- workspaceOptions: 工作区选项
+- openWorkspace: 打开工作区
+- openFolder: 打开文件夹
+- openRemoteFolder: 打开远程文件夹
+- default: 默认
+- runOn: 所有的工作区
+- noAvailableWorkspaces: 没有可用的工作区
+- discoveringRemoteMachines: 正在发现远程机器...
+- noRemoteMachines: 没有远程机器
+- noMatchingWorkspaces: 没有匹配的工作区
+- recents: 最近
+- offlineRemoteWorkspaces: 离线远程工作区
+- offlineWorkspaceLabel: {{name}}（离线）
+- failedToBrowseRemoteFolders: 浏览远程文件夹失败
+- failedToOpenRemoteWorkspace: 打开远程工作区失败
+- rejectAll: 全部拒绝 ({{shortcut}})
+- acceptAll: 全部接受 ({{shortcut}})
+- commands: 自定义命令(Custom Commands)
+- skills: 技能 (Skills)
+- subagents: 子代理 (Subagents)
+- extensions: 扩展 (Extensions)
+- commandsDescription: 管理自定义斜杠命令
+- skillsDescription: 管理技能
+- subagentsDescription: 管理子代理配置
+- extensionsDescription: 管理扩展
+- searchPlaceholder: 搜索{{type}}...
+- loading: 加载中...
+- noMatchesFound: 未找到匹配项。
+- noItemsFound: 未找到{{type}}。
+- noAvailableItemsFound: 未找到可用的{{type}}。
+- clickToEdit: 点击编辑
+- enable: 启用
+- disable: 禁用
+- confirm: 确认
+- deleteQuestion: 删除？
+- installed: 已安装
+- available: 可用
+- installing: 安装中
+- install: 安装
+- by: 作者：
+- byAuthor: 作者：{{author}}
+- browseMarketplace: 浏览市场
+- uninstalling: 卸载中...
+- uninstall: 卸载
+- showMore: 显示更多
+- showLess: 显示更少
+- searchPlaceholder: 搜索模型(Models)
+- switchModel: 切换模型
+- selectModel: 选择模型
+- builtInModels: 内置模型
+- customModels: 自定义模型
+- noModelsConfigured: 未配置模型
+- addCustomModel: 添加自定义模型
+- noMatchingModels: 未找到匹配模型
+- noAvailableModels: 暂无可用模型
+- model: 模型
+- reasoning: 推理
+- context: 上下文
+- cannotSwitchWhileStreaming: 对话进行中，请稍候再切换模型
+- searchPlaceholder: 搜索技能(Skills)...
+- namePlaceholder: 输入技能名称（例如 code-review）
+- loadingList: 正在加载技能列表...
+- createNew: 创建技能
+- active: 已启用技能
+- fromUserDescription: 来源：用户创建
+- available: 可用技能
+- title: 尚未配置技能。
+- description: 技能会教 AI 如何执行特定任务。创建技能即可为您的工作流定制 AI 行为。
+- createdToast: 已创建技能：{{path}}。开启新对话以使用该技能。
+- failedToast: 创建技能失败：{{error}}
+- userSkills: 全局技能（{{count}}）
+- marketplaceSkills: 市场技能（{{count}}）
+- noMatching: 未找到与 [{{query}}] 匹配的技能。
+- notFound: 未找到技能。
+- uploadZip: 从 ZIP 上传
+- title: 从 ZIP 安装 Skill
+- file: 文件
+- selectFile: 选择 .zip 或 .skill 文件
+- invalidFileType: 请选择 .zip 或 .skill 文件
+- installing: 安装中...
+- install: 安装
+- uploadSuccess: Skill 安装成功
+- uploadFailed: 安装失败：{{error}}
+- searchPlaceholder: 搜索子代理（Subagents）...
+- namePlaceholder: 输入子代理名称（例如 code-analyzer）
+- loadingList: 正在加载子代理列表...
+- createNew: 新建子代理
+- active: 已启用子代理（{{count}}）
+- title: 尚未配置子代理。
+- description: 子代理可用于定义面向特定任务或工作流的可复用代理配置。
+- createdToast: 已创建子代理配置：{{path}}。
+- failedToast: 创建子代理失败：{{error}}
+- loadError: 加载子代理活动记录失败
+- retry: 重试
+- all: 全部
+- unity_game_dev: Unity 游戏开发
+- code_dev_env: 代码与开发环境
+- creative_design_art: 创意设计与美术
+- office_collaboration: 企业办公与协作
+- business_support: 业务职能支持
+- research_professional: 研究与专业领域
+- content_asset_generation: 内容与素材生成
+- testing_qa: 测试与质量保障
+- heat: 按热度(下载)
+- recommended: 按推荐
+- likes: 按点赞
+- recent: 最近更新
+- installSuccessExtension: 安装扩展成功！
+- installSuccessSkill: 安装技能成功！
+- installFailedExtension: 安装扩展失败
+- installFailedSkill: 安装技能失败
+- removeSuccessExtension: 移除扩展成功！
+- removeSuccessSkill: 移除技能成功！
+- removeFailedExtension: 移除扩展失败
+- removeFailedSkill: 移除技能失败
+- unitySkillIncompatible: 该工作区不支持此{{type}}，请选择其他工作区。
+- extensions: 扩展
+- skills: 技能
+- extensions: 扩展
+- skills: 技能
+- all: 全部
+- skills: 技能
+- extensions: 插件
+- install: 安装
+- uninstall: 卸载
+- installing: 安装中...
+- uninstalling: 卸载中...
+- getGuide: 获取配置指引
+- installSuccess: 安装 MCP 服务成功！
+- installFailed: 安装 MCP 服务失败
+- uninstallSuccess: 卸载 MCP 服务成功！
+- uninstallFailed: 卸载 MCP 服务失败
+- saveSuccess: MCP 服务更新成功
+- saveFailed: 更新 MCP 服务失败
+- saving: 保存中...
+- added: 已安装
+- manage: 管理
+- discover: 发现
+- searchAll: 搜索{{type}}  -  全局
+- searchFor: 搜索{{type}}  -  {{workspace}}
+- searchPlaceholderAll: 搜索扩展、技能、MCP...
+- searchPlaceholderExtensions: 搜索扩展...
+- searchPlaceholderSkills: 搜索技能...
+- searchPlaceholderMcp: 搜索 MCP...
+- retry: 重试
+- notFound: 未找到项目。
+- noMatching: 未找到匹配 [{{query}}] 的项目。
+- recommend: 推荐
+- entry: AI资产生成
+- backToChat: 返回聊天
+- title: AI资产生成
+- tabCreator: 快速生成
+- tabCanvas: 画布
+- tabHistory: 生成记录
+- canvasLoading: 正在加载画布…
+- total: 共 {{count}} 条
+- emptyTitle: 暂时没有可显示的生成记录
+- emptyDescription: 用 AI 生成图片、视频、音频或 3D 模型，让游戏素材创作更简单。选择一个生成扩展，马上试试吧。
+- createNow: 即刻创作
+- regenerate: 再次生成
+- viewGuide: 查看使用指南
+- search: 搜索
+- refresh: 刷新
+- retry: 重试
+- loadFailed: 加载生成记录失败
+- loading: 正在加载创作空间…
+- download: 下载
+- downloadAll: 全部下载
+- downloadSelected: 下载所选
+- downloadStartedToast: 已开始下载 {{count}} 个文件
+- noDownloadableFilesToast: 所选记录没有可下载的文件
+- showDownloadOptions: 显示下载选项
+- title: 生成详情
+- image: 图片生成详情
+- video: 视频生成详情
+- audio: 音频生成详情
+- other: 生成详情
+- viewDetails: 查看生成详情
+- close: 关闭详情
+- previousRecord: 上一条记录
+- nextRecord: 下一条记录
+- prompt: 提示词
+- noPrompt: 未记录提示词
+- copyPrompt: 复制提示词
+- copied: 已复制
+- createdAt: 创建时间
+- taskType: 任务类型
+- creditsUsed: 消耗积分 {{credits}}
+- unknown: 未知
+- projectPath: 项目路径
+- projectAsset: {{editor}} 项目资源
+- downloadSelected: 下载 {{format}}
+- revealInEditor: 在 {{editor}} 中定位
+- revealAgain: 再次在 {{editor}} 中定位
+- openingEditor: 正在打开 {{editor}} 并等待 Bridge 连接…
+- locatingAsset: 正在项目视图中定位资源…
+- assetRevealed: 已在 {{editor}} 的项目视图中高亮
+- revealHint: 打开项目并在项目视图中高亮此资源。
+- revealFailed: 无法在 {{editor}} 中定位此资源
+- invalidProjectAssetPath: 无法识别项目内的资源路径
+- remoteRevealUnsupported: 远程工作区暂不支持在 {{editor}} 中定位资源
+- editorConnectionTimeout: {{editor}} 已启动，但 Bridge 未连接。请检查 Bridge 包后重试。
+- files: 文件列表
+- fileCount: {{count}} 个文件
+- downloadFile: 下载 {{file}}
+- noFiles: 暂无可下载文件
+- noPreviewHint: 该结果暂不支持预览，但仍可从文件列表下载。
+- loadingModel: 正在加载 3D 模型…
+- modelError: 无法预览此模型
+- modelErrorHint: 仍可从文件列表下载该文件。
+- modelHint: 拖动旋转 · 滚轮缩放
+- triangleCount: 三角面
+- imageResolution: 分辨率
+- autoRotate: 自动旋转
+- resetView: 重置视角
+- skyboxView: Skybox 预览方式
+- skyboxFlat: 展开图
+- skyboxImmersive: 沉浸预览
+- skyboxLoading: 正在加载沉浸预览…
+- skyboxHint: 拖动环视 · 滚轮缩放
+- skyboxError: 无法加载沉浸预览
+- play: 播放
+- pause: 暂停
+- progress: 播放进度
+- mute: 静音
+- unmute: 取消静音
+- fullscreen: 全屏
+- all: 全部
+- image: 图片
+- video: 视频
+- audio: 音频
+- other: 其他
+- dateRange: 日期范围
+- fromDate: 开始日期
+- toDate: 结束日期
+- clearDates: 清除
+- today: 今天
+- startDatePlaceholder: 开始日期
+- endDatePlaceholder: 结束日期
+- previousMonth: 上个月
+- nextMonth: 下个月
+- selectStartDate: 请选择开始日期
+- selectEndDate: 请选择结束日期
+- image: 图片
+- video: 视频
+- audio: 音频
+- other: 其他
+- pending: 待执行
+- queued: 排队中
+- running: 执行中
+- completed: 已完成
+- failed: 失败
+- retrying: 重试中
+- cancelled: 已取消
+- useAsReference: 作为参考
+- adding: 添加中…
+- added: 已添加到对话
+- failed: 添加失败
+- targetSession: 作为参考插入所属会话
+- targetNew: 作为参考插入新会话
+- action: 废弃
+- restore: 恢复
+- actionHint: 废弃后记录将从生成记录列表隐藏，可随时恢复
+- restoreHint: 恢复后记录将重新出现在生成记录列表中
+- discardedFilter: 已废弃
+- discardedToast: 已废弃 {{count}} 条记录
+- restoredToast: 已恢复 {{count}} 条记录
+- failed: 操作失败，请重试
+- select: 选择
+- selectAll: 全选
+- deselectAll: 取消全选
+- cancelSelect: 取消
+- selectedCount: 已选 {{count}} 项
+- batchDiscard: 批量废弃
+- batchRestore: 批量恢复
+- emptyDiscardedTitle: 没有已废弃的记录
+- emptyDiscardedDescription: 废弃的记录会集中显示在这里，可随时恢复。
+- searchPlaceholder: 搜索扩展(Extensions)...
+- namePlaceholder: 输入扩展名称（例如 my-extension）
+- loadingList: 正在加载扩展列表...
+- createNew: 新建扩展
+- active: 已启用扩展（{{count}}）
+- fromUserDescription: 来源：用户创建
+- available: 可用扩展（{{count}}）
+- title: 尚未安装扩展。
+- description: 扩展会将技能、代理和 MCP 服务器打包成可复用组件。安装或创建扩展即可增强您的工作流。
+- createdToast: 已创建扩展：{{path}}。请在 JSON 文件中配置技能、代理和 MCP 服务器。
+- failedToast: 创建扩展失败：{{error}}
+- userExtensions: 全局扩展（{{count}}）
+- marketplaceExtensions: 市场扩展（{{count}}）
+- noMatching: 未找到与 [{{query}}] 匹配的扩展。
+- notFound: 未找到扩展。
+- searchPlaceholder: 搜索命令(Commands)...
+- namePlaceholder: 输入命令名称（例如 my-prompt）
+- loadingList: 正在加载命令列表...
+- createNew: 新建命令
+- active: 已启用命令（{{count}}）
+- title: 暂无自定义命令。
+- description: 自定义命令可将可复用提示定义为斜杠命令。创建命令即可简化您的工作流。
+- createdToast: 已创建命令配置：{{path}}。运行 /commands reload 或开启新对话以使用该命令。
+- failedToast: 创建命令失败：{{error}}
+- viewOutput: 查看错误输出
+- title: 模型响应错误
+- defaultMessage: 处理来自 {{model}} 的响应时出现错误。
+- defaultAction: 请尝试重新提交消息，如果错误仍然存在，请使用下方按钮报告问题。
+- overloaded: 提供商服务器可能已过载，流式传输被中断。请稍后重试。
+- provider: 提供商：
+- errorDetails: 错误详情
+- reportError: 上报错误
+- reporting: 上报中
+- reported: 已上报
+- reportFailed: 重试
+- resubmit: 重新提交上一条消息
+- continue: 继续
+- continueMessage: 继续
+- sessionId: 会话 ID：
+- conversationId: 对话 ID：
+- rebuild: 重建代码库索引
+- largeRepoDisabled: 您的仓库体积较大，目前暂时无法完成索引。不过我们建议使用线上 Code Search 服务，或使用 MCP 工具对仓库进行索引。
+- done: 索引完成
+- loading: 初始化中
+- waiting: 正在索引其他工作区
+- inProgress: 索引进行中
+- paused: 索引已暂停
+- failed: 索引失败
+- disabled: 索引已禁用
+- cancelled: 索引已取消
+- expand: 展开显示完整内容
+- collapse: 折叠为紧凑视图
+- describePlaceholder: 描述您的规则...
+- namePlaceholder: 输入规则名称...
+- descriptionPlaceholder: 此规则适用的任务描述...
+- contentPlaceholder: 您的规则内容...
+- inputExample: 输入示例
+- creditsTitle: 积分不足
+- creditsDescription: 升级套餐或充值。如果您是新用户，请耐心等待试用积分发放。
+- quotaTitle: 已超出积分配额
+- coding_plan_usage_5h: 您已用完 5 小时积分配额。请升级套餐或充值。
+- coding_plan_subscription_week: 您已用完本周积分配额。请升级套餐或充值。
+- coding_plan_subscription_month: 您已用完本月积分配额。请升级套餐或充值。
+- coding_plan_usage_5h: 您已用完 5 小时积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- coding_plan_subscription_week: 您已用完本周积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- coding_plan_subscription_month: 您已用完本月积分配额，配额将在<resetTime>{{resetTime}}</resetTime>重置。请耐心等待或升级套餐或充值。
+- upgrade: 升级套餐
+- buyAddOn: 购买算力增值包
+- renewalDescription: 当前订阅有未支付订单，完成支付后即可恢复使用。
+- payRenewal: 去支付
+- notNow: 稍后
+- title: 出现了一个错误
+- defaultMessage: 组件渲染时发生未知错误
+- retry: 重试
+- title: 您的登录已过期。
+- description: 请重新登录以继续使用。
+- relogin: 重新登录
+- title: 重命名会话
+- description: 保持标题简短且易于识别。
+- placeholder: 会话名称
+- title: 登出
+- description: 您将从GameCowork登出。
+- subText: 登出后将返回登录页面。
+- logout: 登出
+- lineRangeSuffix: ，第 {{lineRange}} 行
+- sharingGameObject: 当前已附加于 GameObject（{{path}}）。点击以取消附加。
+- notSharingGameObject: 当前未附加，点击附加到对话
+- sharingAsset: 当前已附加于 Asset（{{path}}）。点击以取消附加。
+- linesSelected_other: 已选择 {{count}} 行
+- noFiles: 无文件
+- skip: 跳过
+- back: 上一步
+- next: 下一步
+- gotIt: 知道了
+- coworkLabel: 团结一起干
+- headline: 更新功能介绍
+- slideHeadline1: 多工作区
+- slideHeadline2: 远程访问
+- slideHeadline3: 编辑器串流
+- badge: 全新旗舰
+- title: {{model}} 重磅登场
+- description: Tuanjie AI 现已适配智谱新一代开源旗舰模型 {{model}}。该模型登顶开源 SOTA，在 Artificial Analysis 综合榜单位列全球前列，专为长程任务打造，具备稳定百万级上下文窗口，代码实操能力全面升级。
+- cta: 立即使用 {{model}}
+- title: 跨项目统一 AI 聊天
+- description: 同时面向多个文件夹/仓库对话，不再需要频繁切换项目，提升开发效率。
+- title: 跨设备远程访问
+- description: 开启远程连接，即可在单台本地主机上便捷访问、操控多台远端设备。
+- title: 内置 Unity 多视口实时预览
+- description: 内置多 Unity 窗口嵌入能力，可在应用内多窗口并行展示，实时预览修改效果，无需频繁切换软件。
+- remainsEnabled: 在嵌入模式下，{{bridgeName}} 保持启用
+- enabledClickToDisable: {{bridgeName}} 已启用 - 点击禁用
+- disabledClickToEnable: {{bridgeName}} 已禁用 — 点击启用
+- disconnected: {{bridgeName}}: 未连接
+- connecting: {{bridgeName}}: 连接中…
+- connected: {{bridgeName}}: 已连接
+- model3d: 3D 模型
+- sprite: 精灵图
+- spriteSequence: 精灵序列帧
+- image: 图片
+- video: 视频
+- material: 材质
+- character: 角色
+- skybox: 天空盒
+- soundEffect: 音效
+- audioClip: 音频
+- asset: 资产
+- terrain: 地形
+- texture: 纹理
+- mesh: 网格
+- hierarchy: 场景层级
+- stepPrefix: 步骤 {{step}}：
+- message: 很抱歉，项目功能丢失了您的身份信息，如需使用，请重新登录您的账号。
+- relogin: 重新登录
+- search: 搜索
+- cancel: 取消
+- back: 返回
+- save: 保存
+- install: 安装
+- close: 关闭
+- installing: 正在安装
+- installingEllipsis: 正在安装…
+- locate: 从本地添加
+- installEditor: 安装编辑器
+- viewDetails: 查看详情
+- skip: 跳过
+- ltsForHmi: HMI 专用 LTS
+- recommended: 推荐
+- unknown: 未知
+- selectFolder: 选择文件夹…
+- selectOrganization: 选择组织
+- organization: 组织
+- noResults: 没有结果
+- loading: 加载中…
+- noEditorsInstalled: 尚未安装
+- releaseNotes: 发行说明
+- open: 打开
+- installs: 已安装
+- next: 下一步
+- title: 安装
+- installTuanjieEditor: 安装团结编辑器
+- addModules: 添加模块
+- tabOfficial: 正式发行
+- tabPrereleases: 预发行版
+- tabArchive: 已归档版
+- noPrereleases: 当前没有预发行版可用
+- downloadPreviousVersions: 下载历史版本
+- noReleasesAvailable: 没有可用版本
+- buttonInstall: 安装
+- buttonInstalled: 已安装
+- alreadyInstalled: 该版本已安装。
+- buttonInstalling: 正在安装
+- showInExplorer: 在资源管理器中显示
+- revealInFinder: 在 Finder 中显示
+- removeFromCowork: 从 Cowork 移除
+- uninstall: 卸载
+- uninstallingEllipsis: 正在卸载…
+- manage: 管理
+- viewProjects: 查看项目 ({{count}})
+- noPrereleasedEditors: 没有安装预发行版
+- noOfficialReleasesEditors: 没有安装正式发行版
+- noEditorsInstalled: 尚未安装
+- downloadSize: 下载大小
+- sizeOnDisk: 磁盘大小
+- noModulesAvailable: 没有可用模块
+- required: 需要
+- available: 可用：
+- continue: 继续
+- iHaveReadAndAgree: 我已阅读并同意上述条款和条件
+- noEulaFound: 没有找到 EULA
+- pleaseActivateLicense: 请激活您的许可证以查看所有平台
+- failedToLoadReleases: 加载发行版失败
+- failedToLoadModules: 加载模块失败
+- failedToStartInstallation: 开始安装失败
+- failedToLoadEula: 加载 EULA 失败
+- emptyResponse: 服务器返回空响应
+- unexpectedResponseFormat: 响应格式不符合预期
+- invalidModulesData: 响应中的模块数据无效
+- title: 项目
+- add: 添加
+- newProject: 新项目
+- addFromDisk: 从磁盘添加项目
+- openCloudProject: 打开云项目
+- colFavorite: 收藏
+- addToFavorites: 添加收藏
+- removeFromFavorites: 取消收藏
+- columnSettings: 列设置
+- sortByFavorite: 按收藏排序
+- cancelSortByFavorite: 取消按收藏排序
+- colBadge: 徽章
+- sortByBadge: 按个人版认证状态排序
+- cancelSortByBadge: 取消按个人版认证状态排序
+- colCloud: 云端
+- colModified: 修改于
+- colVersion: 编辑器版本
+- colSize: 大小
+- colName: 名称
+- configuration: 配置
+- editorVersion: 编辑器版本：
+- modified: 修改于：
+- noProjectsYet: 尚未创建项目。首先创建或打开一个项目。
+- showInExplorer: 在资源管理器中显示
+- revealInFinder: 在 Finder 中显示
+- addCmdArgs: 添加命令行参数
+- removeFromList: 从列表移除项目
+- editorNotInstalled: 编辑器未安装
+- missingEditorVersion: 缺少编辑器版本
+- missingEditorDialogTitle: 未安装的编辑器版本
+- missingEditorDialogProjectVersion: {{name}} 创建自编辑器版本 {{version}}
+- missingEditorDialogBody: 要打开此项目，请 <install>安装</install> 缺少的编辑器版本或 <otherVersion>使用其他版本打开</otherVersion>它。
+- selectEditorTitle: 为 {{name}} 选择编辑器
+- select: 选择
+- selected: 已选择
+- openWithVersion: 使用 {{version}} 打开
+- installOtherEditorVersion: 安装其他编辑器版本
+- cloudConnected: 项目已连接到团结云
+- cloudNotConnected: 项目未连接到团结云，点击连接
+- expandAll: 全部展开
+- foldAll: 全部收起
+- expand: 展开
+- fold: 收起
+- watermarkNotSupported: 不支持
+- watermarkNotCertified: 未认证
+- watermarkPending: 认证中
+- watermarkCertified: 已认证
+- removeTitle: 从列表中移除项目
+- removeBody: 如果从列表中移除 <span>{{name}}</span>，文件将保存在您的磁盘上。
+- remove: 移除项目
+- removingEllipsis: 移除中…
+- changeEditorTitle: 是否更改编辑器版本？
+- changeEditorBody1: 如果更改项目的编辑器版本，脚本可能会更改并且项目库可能会重新构建。根据项目的大小，这可能需要一些时间。
+- changeEditorBody2: 确定要更改项目的编辑器版本吗？
+- changeVersion: 更改版本
+- cmdArgsTitle: 命令行参数
+- cmdArgsPlaceholder: 在此添加命令行参数
+- documentation: 文档
+- justNow: 刚刚
+- minutesAgo: {{count}}分钟前
+- hoursAgo: {{count}}小时前
+- daysAgo: {{count}}天前
+- connections: 连接
+- tuanjieOrganization: 团结云组织：
+- cloudProject: 云开发项目：
+- cloudPromoTitle: 使用团结云提升您的开发体验
+- cloudPromoDesc: 使用构建自动化、版本控制、AI 辅助和数据诊断等高级工具，实现无缝协作、更快构建并充满信心地发布。
+- connectToCloud: 连接到团结云
+- cloudHeaderDesc: 将您的项目连接到团结云，以设置分析、广告和其他游戏服务
+- cloudLearnMore: 了解更多团结游戏服务
+- title: 许可证
+- getHelp: 获取帮助
+- refresh: 刷新
+- addLicense: 添加许可证
+- addLicenseLower: 添加许可证
+- noLicensesYet: 尚无许可证
+- activationDate: 激活时间：
+- expirationDate: 到期时间：
+- returnLicense: 退还许可证
+- returningEllipsis: 退还中…
+- returnTitle: 退还许可证
+- returnBody: 退还此许可证后，您可以重用该序列号在另一台机器上激活它。
+- addNewLicense: 添加新许可证
+- addNewLicenseLower: 添加新许可证
+- activateLicense: 激活许可证
+- getNewLicense: 获取新许可证
+- activateWithSerial: 通过序列号激活
+- activateWithSerialTypo: 通过序列号激活
+- activateWithSerialDesc: 输入序列号以激活现有的beta许可证
+- activateWithRequest: 通过许可证请求激活
+- activateWithRequestTypo: 通过许可证请求激活
+- activateWithRequestDesc: 创建和上传许可证请求以激活现有的许可证
+- configureServer: 配置许可证服务器
+- configureServerDesc: 通过配置许可证服务器来获取许可证
+- getPersonalLicense: 获取免费的个人版许可证
+- getPersonalLicenseDesc: 激活个人版许可证可使用免费版团结编辑器
+- getTeamPlan: 为团队选择一个订阅计划
+- getTeamPlanDesc: 请联系我们获取专业版(Pro)许可证
+- help: 帮助
+- faq: 常见问题解答
+- enterSerial: 输入序列号以激活专业版(Pro)许可证
+- serialNumber: 序列号
+- serialPlaceholder: 序列号
+- activate: 激活
+- activatingEllipsis: 激活中…
+- activationFailed: 激活失败
+- step1Title: 下载许可证请求
+- step1Desc: 首先，创建和保存一个许可证请求。
+- generatingEllipsis: 生成中…
+- createLicenseRequest: 创建许可证请求
+- step2Title: 生成许可证文件
+- step2Desc: 上传许可证请求到 Web 端口以生成许可证文件。
+- uploadLicenseRequest: 上传许可证请求
+- step3Title: 通过许可证文件激活
+- step3Desc: 上传许可证文件，然后选择激活。
+- licenseFile: 许可证文件
+- enterServerUrl: 输入许可证服务器的URL
+- serverUrlPlaceholder: 许可证服务器URL
+- savingEllipsis: 保存中…
+- failedToSave: 保存失败
+- failedToGenerateRequest: 生成许可证请求失败
+- agreeAndGetPersonal: 同意并取得团结引擎个人版授权
+- personalLicenseBody1: 您需要激活许可证才能使用团结引擎。同意下方的条款，即表示您确认您符合使用团结引擎个人版许可证的资格条件
+- personalLicenseBody2: 请参阅团结引擎 <terms>使用条款和条件</terms>，了解更多详细信息。请注意，如果您所属的组织使用团结引擎专业版，则您不符合团结引擎个人版的使用资格。
+- termsAgreement: 为使用团结云开发功能，我已阅读并同意 <terms>优三缔服务协议</terms> 和 <privacy>隐私政策</privacy>。
+- title: 新项目
+- editorVersion: 编辑器版本
+- projectName: 项目名称
+- location: 位置
+- enableOnlineServices: 启用游戏云服务
+- downloadTemplate: 下载模板
+- downloadingEllipsis: 下载中…
+- createProject: 创建项目
+- creatingEllipsis: 创建中…
+- filterAll: 全部
+- filterCore: 核心模板
+- filterSample: 示例模板
+- statusReady: 已就绪
+- statusDownloadable: 需下载
+- statusUpgradable: 可升级
+- downloadingTemplateToast: 正在下载模板…
+- projectCreatedToast: 项目已创建，打开编辑器中…
+- downloadFailedToast: 下载失败
+- downloadFailedWithError: 下载失败：{{error}}
+- errProjectExists: 此位置已存在此名称的项目
+- errInsufficientPermissions: 所选位置无写入权限
+- errTemplateNotFound: 未找到模板
+- errTemplateNotReady: 模板尚未下载
+- errEditorNotFound: 未找到编辑器
+- errCreateFailed: 无法创建项目
+- errCreateFailedWithError: 创建项目失败：{{error}}
+- viewDetails: 查看详情
+- information: 信息
+- packages: 软件包
+- noPackages: 此模板没有关联的软件包
+- description: 描述
+- renderPipeline: 渲染管线
+- size: 大小
+- platform: 平台
+- category: 类别
+- renderPipelineBuiltin: 内置
+- renderPipelineURP: 通用渲染管线(URP)
+- renderPipelineHDRP: 高清渲染管线(HDRP)
+- renderPipelineSRP: 可编程渲染管线(SRP)
+- renderPipelineUnknown: 未知
+- platformWeixinMiniGame: 微信小游戏
+- cancelDownloadTitle: 取消下载？
+- cancelDownloadBody: 确定要停止下载所有项吗？
+- close: 关闭
+- cancelDownload: 取消下载
+- noDownloads: 尚无下载内容
+- noDownloadsDesc: 最新的和正在进行中的下载将显示在这里
+- cancelPendingTooltip: 取消待处理的项目并从列表中删除
+- clearTooltip: 清理
+- cannotCancelWhileInstalling: 安装期间无法取消
+- retryFailedTooltip: 重试所有失败的下载
+- inProgress: 正在进行(已完成 {{completed}} 项/共 {{total}} 项)
+- installed: 已安装
+- downloaded: 下载完成
+- failed: 失败
+- completedWithErrors: 已完成(有错误)
+- downloading: 正在下载 ({{progress}}%) {{speed}}
+- downloadQueued: 下载队列中
+- validating: 正在验证
+- downloadFailed: 下载失败
+- downloadSuccessful: 下载成功
+- installQueued: 安装队列中
+- installValidating: 安装验证中
+- installing: 正在安装
+- installCleanup: 正在清理
+- installFinished: 安装完成
+- installFailed: 安装失败
+- validationFailed: 验证失败
+- validationFailedTooltip: Cowork没有安装团结的权限。请重试并同意UAC。
+- tjhub: 项目设置
+- project: 项目
+- projectLocation: 项目位置
+- projectLocationDesc: 新项目将保存到此位置。Cowork中已有的其他项目不受影响。
+- install: 安装
+- installLocation: 安装位置
+- installLocationDesc: 为编辑器的安装选择一个位置。已有安装不会受到影响。
+- downloadLocation: 下载位置
+- downloadLocationDesc: 为编辑器下载文件选择一个位置。
+- title: 将项目连接到团结云
+- connectExisting: 连接到现有的云开发项目
+- cloudProject: 云开发项目
+- selectCloudProject: 选择一个云项目
+- connect: 连接
+- title: 添加云项目
+- tuanjieVersion: 团结版本
+- chooseLocation: 为 {{name}} 选择一个位置
+- chooseLocationDefault: 为项目选择一个位置
+- selectRemoteFirst: 先选择一个云项目
+- remoteProject: 云项目
+- alreadyAdded: 已添加至本地
+- lastModified: 最新修改时间: {{time}}
+- addOpen: 添加并打开
+- addingEllipsis: 添加中…
+- selectEditorVersion: 选择编辑器版本
+- title: 指定或安装团结编辑器
+- body: 请为新项目指定或安装一个版本的团结编辑器。
+- title: 没有激活的许可证
+- body: 要创建和打开项目，您需要一个有效的许可证。
+- manageLicenses: 管理许可证
+- title: 需要安装 Rosetta 2
+- body: 要使用团结引擎，您需要安装 Rosetta 2。点击安装以在您的 Mac 上自动下载并安装 Rosetta 2。
+- placeholder: 查找
+- noResults: 无结果
+- previousMatch: 上一个匹配
+- nextMatch: 下一个匹配
+- caseSensitiveOn: 关闭区分大小写
+- caseSensitiveOff: 开启区分大小写
+- openHub: 打开 Cowork
+- switchState: 切换状态
+- petSize: 宠物大小
+- help: 帮助
+- hide: 隐藏
+- idle: 待机
+- runRight: 向右奔跑
+- runLeft: 向左奔跑
+- waving: 挥手
+- jumping: 跳跃
+- failed: 摔倒
+- running: 奔跑
+- review: 回看
+- placeholder: 问点什么…
+- errorNoSession: 暂无可用会话
+- errorRemoteAttachments: 远程工作区暂不支持附件
+- errorRemoteOffline: 远程工作区离线或不可达
+- errorSendFailed: 发送失败，请重试
+- unsupported: 无法预览此文件
+- selectFileToPreview: 选择文件以预览
+- loadingFiles: 加载文件中...
+- binaryPreviewUnavailable: 二进制预览不可用 — {{size}} 字节
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- noFilesAvailable: 没有可用文件
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- search: 搜索
+- matchCase: 区分大小写
+- matchWholeWord: 全词匹配
+- useRegularExpression: 使用正则表达式
+- lineNumbers: 行号
+- wordWrap: 自动换行
+- splitDiffView: 拆分差异视图
+- more: 更多
+- enableLsp: 启用 LSP
+- disableLsp: 禁用 LSP
+- preview: 预览
+- source: 源码
+- indexReady: 索引已就绪
+- indexError: 索引失败
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- index: 索引中…
+- title: 正在索引项目…
+- title: 初始化中…
+- description: 准备环境并扫描项目文件
+- title: 提取实体
+- description: 提取代码实体与结构信息
+- title: 解析引用
+- description: 解析实体间的引用关系
+- title: 发布索引
+- description: 生成虚拟文件系统并发布索引快照
+- indexStatusUnknown: 索引状态未知（VFS / CLI 进度稍后接入）
+- mediaFormatNotSupported: 不支持此媒体格式
+- unityInsightLoadingStatus: 准备 Unity Insight...
+- unityInsightConnecting: 建立连接中...
+- unityInsightIndexNotReady: Unity Insight 索引尚未就绪
+- unityInsightCliConnectionFailed: 无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。
+- unityInsightIndexFailed: Unity Insight 索引失败。请重试以重新构建索引。
+- unityInsightEnableMessage: 开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。
+- unityInsightEnableAction: 开启 Unity Insight
+- unityInsightOpeningAction: 打开中…
+- unityInsightFolderSelectChild: 在左侧选择文件或节点以预览
+- unityInsightFolderItemCount: {{count}} 项
+- viewReference: 查看引用
+- viewReferenceOut: 依赖项
+- viewReferenceIn: 使用方
+- viewReferenceEmpty: 无引用
+- showFileTree: 显示文件树
+- hideFileTree: 隐藏文件树
+- searchFiles: 搜索文件
+- searchInFile: 在文件中查找
+- inFileSearchNext: 下一个匹配
+- inFileSearchPrevious: 上一个匹配
+- inFileSearchNoResults: 无结果
+- hideSearch: 隐藏搜索
+- goBack: 后退
+- goForward: 前进
+- showLineNumbers: 显示行号
+- hideLineNumbers: 隐藏行号
+- failedToSearch: 搜索文件失败
+- failedToLoad: 加载文件失败
+- pin: 固定
+- close: 关闭
+- closeOthers: 关闭其他
+- closeToRight: 关闭右侧
+- closeAll: 关闭全部
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- unsavedAppChangesDescription: 是否要保存所有未保存的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- stagedChanges: 已暂存的更改
+- unstagedChanges: 更改
+- untrackedFiles: 未跟踪的文件
+- workspaceRoot: 工作区
+- stageFile: 暂存更改
+- unstageFile: 取消暂存
+- discardChanges: 放弃更改
+- cancel: 取消
+- confirmDiscardChanges: 确定放弃 {{path}} 的更改吗？此操作无法撤销。
+- gitActionFailed: Git 操作失败
+- gitActionFailedDescription: 无法更新此文件的 Git 状态。请刷新变更后重试。
+- currentBranch: 当前分支：{{branch}}
+- switchBranch: 切换分支
+- branches: 分支
+- noBranches: 没有本地分支
+- switchingBranch: 正在切换分支…
+- switchBranchErrorTitle: 无法切换分支
+- switchBranchFailed: 无法切换分支。请提交或暂存冲突的更改后重试。
+- aiSwitchBranch: AI 切换
+- aiSwitchBranchPrompt: git 切换至 {{branch}}，请妥善处理未提交的更改
+- commitChanges: AI 提交
+- commitChangesHint: 在聊天输入框中填写提交并推送请求
+- commitChangesPrompt: git 提交并推送相关更改
+- fileTooLarge: 文件过大，无法语法高亮预览 — {{path}}
+- savePermissionTitle: 无法保存文件
+- savePermissionDescription: {{path}} 当前不可写，或你没有保存该文件的权限。
+- explorer: 资源管理器
+- closeTab: 关闭标签页
+- newTerminal: 新建终端
+- showBottomTerminal: 显示底部终端
+- hideBottomTerminal: 收起底部终端
+- resizeTerminal: 调整终端面板高度
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- play: 播放
+- stop: 停止
+- pause: 暂停
+- step: 单步
+- captureToChat: 截屏到聊天
+- moreControls: 更多控制
+- muteAudio: 静音
+- unmuteAudio: 取消静音
+- domainReloading: Unity 正在重新加载程序集...
+- refreshStream: 刷新 Unity 流连接
+- addUnityView: 添加 Unity 视图
+- addView: 添加视图
+- defaultLayout: 默认布局
+- lastLayout: 加载最新布局
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- fullscreen: 全屏
+- exitFullscreen: 退出全屏
+- returnToChat: 返回聊天
+- sessionInfos: 会话信息
+- unityWindowStream: Unity 窗口流
+- startingUnityStream: 正在启动 Unity 流...
+- openUnityEditorRequired: 需要打开 Unity 编辑器。你可以在 Cowork 中使用串流功能以便更轻松地操作
+- streamingUnavailableMac: 暂不支持 macOS 串流
+- goOpen: 去打开
+- unityStreamReadyHint: 选择一个 Unity 视图开始串流。
+- connectingToUnityEditor: 正在连接 Unity 编辑器...
+- streamingTab: 串流
+- stopStreaming: 停止串流
+- retry: 重试
+- unityStreamNotStarted: Unity 流尚未启动。
+- addUnityViewHint: 为保证流式质量，将隐藏该 Editor 窗口。
+- otherWindows: 其他窗口
+- streamStreaming: 流式中
+- streamConnecting: 连接中…
+- streamStalled: 帧已暂停
+- streamReconnecting: 重连中…
+- streamDomainReloading: 程序集重载中…
+- streamCompiling: 编译中：
+- streamCompilingStarting: 正在开始编译…
+- streamCompileDone: 编译完成，重载中…
+- streamCompileFailed: 编译失败
+- streamTitleCompiling: 请稍候…
+- streamTitleReloading: 请稍候…
+- streamTitleFailed: 编译失败
+- close: 关闭
+- streamDisconnected: 已断开
+- streamIdle: 空闲
+- streamNetworkLatency: 延迟：{{ms}} ms
+- streamNetworkQualityGood: 网络连接正常
+- streamNetworkQualityAvg: 网络连接一般
+- streamNetworkQualityBad: 网络连接较差
+- extensionMenu: 新建标签页
+- aiCanvasTab: AI 画布
+- aiCanvasLoading: 正在加载 AI 画布...
+- aiCanvasLoadError: 无法加载 AI 画布，请关闭标签页后重试。
+- loading: 加载中...
+- contextWindow: 上下文窗口
+- noData: 暂无数据
+- tokensRemaining: 剩余 {{tokens}}
+- compressTooltip: 压缩上下文
+- compress: 压缩
+- jobs: 任务
+- noJobsYet: 暂无任务
+- plans: 计划
+- noPlansYet: 暂无计划
+- artifacts: 生成产物
+- artifactPath: 路径：{{path}}
+- artifactLocalPath: 本地：{{path}}
+- artifactGenerating: 生成中
+- artifactGeneratingProgress: 生成中 · {{progress}}%
+- artifactFailed: 生成失败
+- seeAllArtifacts: 查看全部（{{count}}）
+- openArtifact: 打开生成产物 {{title}}
+- image: 图片
+- video: 视频
+- audio: 音频文件
+- other: 生成产物
+- subagents: 子代理 (Subagents)
+- noSubagentsYet: 暂无子代理
+- backgroundTask: 后台任务
+- background: 后台
+- showMore: 显示更多
+- showLess: 收起
+- stopSubagent: 停止后台子代理
+- openSubagent: 打开子代理 {{title}}
+- backgroundShells: 后台命令 (Shells)
+- noBackgroundShellsYet: 暂无后台命令
+- stopShell: 停止后台命令
+- openShell: 打开后台命令输出 {{title}}
+- openPlanFile: 打开计划文件 {{title}}
+- memory: 记忆
+- automaticUpdate: 自主更新记忆
+- automaticUpdateStreamingHint: 若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- more: 更多
+- showFolder: 显示文件夹
+- clearMemory: 消除记忆
+- clearMemorySuccess: 记忆已消除
+- organize: 整理
+- organizeMemoryTitle: 整理记忆
+- organizeMemoryDescription: 为了不影响当前对话的上下文，将开启新对话进行整理。
+- organizeDontShowAgain: 不再显示
+- organizeCancel: 取消
+- organizeContinue: 继续
+- organizeClose: 关闭
+- organizeMemoryPrompt: 请整理当前{{scope}}记忆：去除冗余、过期以及长期价值不高的内容。
+- workspaceTag: 工作区
+- globalTag: 全局
+- noProjectMemoryYet: 暂无项目记忆
+- letGameCoworkKnowProject: 让 GameCowork 了解你的项目
+- noGlobalMemoryYet: 暂无全局记忆
+- letGameCoworkKnowGlobal: 创建全局记忆
+- generatingGlobalMemory: 生成中...
+- createGlobalMemoryFailed: 创建全局记忆文件失败。
+- memoryUpdatedAt: 更新时间：{{time}}
+- memoryFileSize: 大小：{{size}}
+- audioPlay: 播放
+- audioPause: 暂停
+- audioProgress: 播放进度
+- update: 更新
+- updateWithVersion: 更新 ({{version}})
+- loadingFiles: 加载文件中...
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- noFilesAvailable: 没有可用文件
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- placeholder: 输入消息…
+- tooltip: 发送
+
+## RightSideBarPanel-B2OWNNNX.js（13 条）
+- kind: 定义
+- kind: 引用
+- label: 转到 C# 定义
+- label: 查找 C# 引用
+- children: 定义
+- children: 引用
+- children: 关闭
+- defaultValue: 文件监听暂不可用，请重新打开文件面板以恢复自动刷新。
+- defaultValue: 保存
+- defaultValue: 只读
+- defaultValue: 撤销上次保存
+- children: 选择工程
+- children: 停止
+
+## RightSideBarPanel-JSPvAs5c.js（13 条）
+- kind: 定义
+- kind: 引用
+- label: 转到 C# 定义
+- label: 查找 C# 引用
+- children: 定义
+- children: 引用
+- children: 关闭
+- defaultValue: 文件监听暂不可用，请重新打开文件面板以恢复自动刷新。
+- defaultValue: 保存
+- defaultValue: 只读
+- defaultValue: 撤销上次保存
+- children: 选择工程
+- children: 停止
+
+## TerminalPanel-CZlNfaqp.js（2 条）
+- defaultValue: 正在连接终端…
+- defaultValue: 终端已断开
+
+## TerminalPanel-DaIbEA-8.js（2 条）
+- defaultValue: 正在连接终端…
+- defaultValue: 终端已断开
+
+## VscTheme-B-CSeuv5.js（20 条）
+- defaultValue: 尚未配置 GameCowork 扩展市场来源
+- defaultValue: 本地技能、扩展和 MCP 可在管理页继续使用；市场下载将在接入自有来源后开放。
+- children: 重新载入
+- children: 关闭
+- children: 重新载入
+- children: 关闭
+- text: 吐槽
+- zh: 火焰法师
+- zh: 森林守卫
+- zh: 发条骑士
+- zh: 水晶史莱姆
+- zh: 宝箱
+- zh: 像素飞船
+- zh: 魔法药水
+- zh: 骷髅战士
+- zh: 冰霜巨龙
+- zh: 蘑菇商人
+- zh: 赛博忍者
+- zh: 沙漠狐狸
+- zh: 你有哪些游戏资产生成能力
+
+## VscTheme-BExNMG_K.js（20 条）
+- defaultValue: 尚未配置 GameCowork 扩展市场来源
+- defaultValue: 本地技能、扩展和 MCP 可在管理页继续使用；市场下载将在接入自有来源后开放。
+- children: 重新载入
+- children: 关闭
+- children: 重新载入
+- children: 关闭
+- text: 吐槽
+- zh: 火焰法师
+- zh: 森林守卫
+- zh: 发条骑士
+- zh: 水晶史莱姆
+- zh: 宝箱
+- zh: 像素飞船
+- zh: 魔法药水
+- zh: 骷髅战士
+- zh: 冰霜巨龙
+- zh: 蘑菇商人
+- zh: 赛博忍者
+- zh: 沙漠狐狸
+- zh: 你有哪些游戏资产生成能力
+
+## index-CKZIQMcw.js（254 条）
+- tooltip: 发送
+- selectFileToPreview: 选择文件以预览
+- loadingFiles: 加载文件中...
+- binaryPreviewUnavailable: 二进制预览不可用 — {{size}} 字节
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- noFilesAvailable: 没有可用文件
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- search: 搜索
+- matchCase: 区分大小写
+- matchWholeWord: 全词匹配
+- useRegularExpression: 使用正则表达式
+- lineNumbers: 行号
+- wordWrap: 自动换行
+- splitDiffView: 拆分差异视图
+- more: 更多
+- enableLsp: 启用 LSP
+- disableLsp: 禁用 LSP
+- preview: 预览
+- source: 源码
+- indexReady: 索引已就绪
+- indexError: 索引失败
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- index: 索引中…
+- title: 正在索引项目…
+- title: 初始化中…
+- description: 准备环境并扫描项目文件
+- title: 提取实体
+- description: 提取代码实体与结构信息
+- title: 解析引用
+- description: 解析实体间的引用关系
+- title: 发布索引
+- description: 生成虚拟文件系统并发布索引快照
+- indexStatusUnknown: 索引状态未知（VFS / CLI 进度稍后接入）
+- mediaFormatNotSupported: 不支持此媒体格式
+- unityInsightLoadingStatus: 准备 Unity Insight...
+- unityInsightConnecting: 建立连接中...
+- unityInsightIndexNotReady: Unity Insight 索引尚未就绪
+- unityInsightCliConnectionFailed: 无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。
+- unityInsightIndexFailed: Unity Insight 索引失败。请重试以重新构建索引。
+- unityInsightEnableMessage: 开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。
+- unityInsightEnableAction: 开启 Unity Insight
+- unityInsightOpeningAction: 打开中…
+- unityInsightFolderSelectChild: 在左侧选择文件或节点以预览
+- unityInsightFolderItemCount: {{count}} 项
+- viewReference: 查看引用
+- viewReferenceOut: 依赖项
+- viewReferenceIn: 使用方
+- viewReferenceEmpty: 无引用
+- showFileTree: 显示文件树
+- hideFileTree: 隐藏文件树
+- searchFiles: 搜索文件
+- searchInFile: 在文件中查找
+- inFileSearchNext: 下一个匹配
+- inFileSearchPrevious: 上一个匹配
+- inFileSearchNoResults: 无结果
+- hideSearch: 隐藏搜索
+- goBack: 后退
+- goForward: 前进
+- showLineNumbers: 显示行号
+- hideLineNumbers: 隐藏行号
+- failedToSearch: 搜索文件失败
+- failedToLoad: 加载文件失败
+- pin: 固定
+- close: 关闭
+- closeOthers: 关闭其他
+- closeToRight: 关闭右侧
+- closeAll: 关闭全部
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- unsavedAppChangesDescription: 是否要保存所有未保存的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- stagedChanges: 已暂存的更改
+- unstagedChanges: 更改
+- untrackedFiles: 未跟踪的文件
+- workspaceRoot: 工作区
+- stageFile: 暂存更改
+- unstageFile: 取消暂存
+- discardChanges: 放弃更改
+- cancel: 取消
+- confirmDiscardChanges: 确定放弃 {{path}} 的更改吗？此操作无法撤销。
+- gitActionFailed: Git 操作失败
+- gitActionFailedDescription: 无法更新此文件的 Git 状态。请刷新变更后重试。
+- currentBranch: 当前分支：{{branch}}
+- switchBranch: 切换分支
+- branches: 分支
+- noBranches: 没有本地分支
+- switchingBranch: 正在切换分支…
+- switchBranchErrorTitle: 无法切换分支
+- switchBranchFailed: 无法切换分支。请提交或暂存冲突的更改后重试。
+- aiSwitchBranch: AI 切换
+- aiSwitchBranchPrompt: git 切换至 {{branch}}，请妥善处理未提交的更改
+- commitChanges: AI 提交
+- commitChangesHint: 在聊天输入框中填写提交并推送请求
+- commitChangesPrompt: git 提交并推送相关更改
+- fileTooLarge: 文件过大，无法语法高亮预览 — {{path}}
+- savePermissionTitle: 无法保存文件
+- savePermissionDescription: {{path}} 当前不可写，或你没有保存该文件的权限。
+- explorer: 资源管理器
+- closeTab: 关闭标签页
+- newTerminal: 新建终端
+- showBottomTerminal: 显示底部终端
+- hideBottomTerminal: 收起底部终端
+- resizeTerminal: 调整终端面板高度
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- play: 播放
+- stop: 停止
+- pause: 暂停
+- step: 单步
+- captureToChat: 截屏到聊天
+- moreControls: 更多控制
+- muteAudio: 静音
+- unmuteAudio: 取消静音
+- domainReloading: Unity 正在重新加载程序集...
+- refreshStream: 刷新 Unity 流连接
+- addUnityView: 添加 Unity 视图
+- addView: 添加视图
+- defaultLayout: 默认布局
+- lastLayout: 加载最新布局
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- fullscreen: 全屏
+- exitFullscreen: 退出全屏
+- returnToChat: 返回聊天
+- sessionInfos: 会话信息
+- unityWindowStream: Unity 窗口流
+- startingUnityStream: 正在启动 Unity 流...
+- openUnityEditorRequired: 需要打开 Unity 编辑器。你可以在 Cowork 中使用串流功能以便更轻松地操作
+- streamingUnavailableMac: 暂不支持 macOS 串流
+- goOpen: 去打开
+- unityStreamReadyHint: 选择一个 Unity 视图开始串流。
+- connectingToUnityEditor: 正在连接 Unity 编辑器...
+- streamingTab: 串流
+- stopStreaming: 停止串流
+- retry: 重试
+- unityStreamNotStarted: Unity 流尚未启动。
+- addUnityViewHint: 为保证流式质量，将隐藏该 Editor 窗口。
+- otherWindows: 其他窗口
+- streamStreaming: 流式中
+- streamConnecting: 连接中…
+- streamStalled: 帧已暂停
+- streamReconnecting: 重连中…
+- streamDomainReloading: 程序集重载中…
+- streamCompiling: 编译中：
+- streamCompilingStarting: 正在开始编译…
+- streamCompileDone: 编译完成，重载中…
+- streamCompileFailed: 编译失败
+- streamTitleCompiling: 请稍候…
+- streamTitleReloading: 请稍候…
+- streamTitleFailed: 编译失败
+- close: 关闭
+- streamDisconnected: 已断开
+- streamIdle: 空闲
+- streamNetworkLatency: 延迟：{{ms}} ms
+- streamNetworkQualityGood: 网络连接正常
+- streamNetworkQualityAvg: 网络连接一般
+- streamNetworkQualityBad: 网络连接较差
+- extensionMenu: 新建标签页
+- aiCanvasTab: AI 画布
+- aiCanvasLoading: 正在加载 AI 画布...
+- aiCanvasLoadError: 无法加载 AI 画布，请关闭标签页后重试。
+- loading: 加载中...
+- contextWindow: 上下文窗口
+- noData: 暂无数据
+- tokensRemaining: 剩余 {{tokens}}
+- compressTooltip: 压缩上下文
+- compress: 压缩
+- jobs: 任务
+- noJobsYet: 暂无任务
+- plans: 计划
+- noPlansYet: 暂无计划
+- artifacts: 生成产物
+- artifactPath: 路径：{{path}}
+- artifactLocalPath: 本地：{{path}}
+- artifactGenerating: 生成中
+- artifactGeneratingProgress: 生成中 · {{progress}}%
+- artifactFailed: 生成失败
+- seeAllArtifacts: 查看全部（{{count}}）
+- openArtifact: 打开生成产物 {{title}}
+- image: 图片
+- video: 视频
+- audio: 音频文件
+- other: 生成产物
+- subagents: 子代理 (Subagents)
+- noSubagentsYet: 暂无子代理
+- backgroundTask: 后台任务
+- background: 后台
+- showMore: 显示更多
+- showLess: 收起
+- stopSubagent: 停止后台子代理
+- openSubagent: 打开子代理 {{title}}
+- backgroundShells: 后台命令 (Shells)
+- noBackgroundShellsYet: 暂无后台命令
+- stopShell: 停止后台命令
+- openShell: 打开后台命令输出 {{title}}
+- openPlanFile: 打开计划文件 {{title}}
+- memory: 记忆
+- automaticUpdate: 自主更新记忆
+- automaticUpdateStreamingHint: 若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- more: 更多
+- showFolder: 显示文件夹
+- clearMemory: 消除记忆
+- clearMemorySuccess: 记忆已消除
+- organize: 整理
+- organizeMemoryTitle: 整理记忆
+- organizeMemoryDescription: 为了不影响当前对话的上下文，将开启新对话进行整理。
+- organizeDontShowAgain: 不再显示
+- organizeCancel: 取消
+- organizeContinue: 继续
+- organizeClose: 关闭
+- organizeMemoryPrompt: 请整理当前{{scope}}记忆：去除冗余、过期以及长期价值不高的内容。
+- workspaceTag: 工作区
+- globalTag: 全局
+- noProjectMemoryYet: 暂无项目记忆
+- letGameCoworkKnowProject: 让 GameCowork 了解你的项目
+- noGlobalMemoryYet: 暂无全局记忆
+- letGameCoworkKnowGlobal: 创建全局记忆
+- generatingGlobalMemory: 生成中...
+- createGlobalMemoryFailed: 创建全局记忆文件失败。
+- memoryUpdatedAt: 更新时间：{{time}}
+- memoryFileSize: 大小：{{size}}
+- audioPlay: 播放
+- audioPause: 暂停
+- audioProgress: 播放进度
+- update: 更新
+- updateWithVersion: 更新 ({{version}})
+- loadingFiles: 加载文件中...
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- noFilesAvailable: 没有可用文件
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- placeholder: 输入消息…
+
+## index-DG7m4Xaq.js（254 条）
+- tooltip: 发送
+- selectFileToPreview: 选择文件以预览
+- loadingFiles: 加载文件中...
+- binaryPreviewUnavailable: 二进制预览不可用 — {{size}} 字节
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- noFilesAvailable: 没有可用文件
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- search: 搜索
+- matchCase: 区分大小写
+- matchWholeWord: 全词匹配
+- useRegularExpression: 使用正则表达式
+- lineNumbers: 行号
+- wordWrap: 自动换行
+- splitDiffView: 拆分差异视图
+- more: 更多
+- enableLsp: 启用 LSP
+- disableLsp: 禁用 LSP
+- preview: 预览
+- source: 源码
+- indexReady: 索引已就绪
+- indexError: 索引失败
+- waiting: 等待中…
+- extract: 提取实体中…
+- resolve: 解析引用中…
+- publish: 发布索引中…
+- sync: 正在同步…
+- reconcile: 正在核对…
+- index: 索引中…
+- title: 正在索引项目…
+- title: 初始化中…
+- description: 准备环境并扫描项目文件
+- title: 提取实体
+- description: 提取代码实体与结构信息
+- title: 解析引用
+- description: 解析实体间的引用关系
+- title: 发布索引
+- description: 生成虚拟文件系统并发布索引快照
+- indexStatusUnknown: 索引状态未知（VFS / CLI 进度稍后接入）
+- mediaFormatNotSupported: 不支持此媒体格式
+- unityInsightLoadingStatus: 准备 Unity Insight...
+- unityInsightConnecting: 建立连接中...
+- unityInsightIndexNotReady: Unity Insight 索引尚未就绪
+- unityInsightCliConnectionFailed: 无法连接 Unity Insight。请先在该项目启动 GameCowork CLI 会话后重试。
+- unityInsightIndexFailed: Unity Insight 索引失败。请重试以重新构建索引。
+- unityInsightEnableMessage: 开启 Unity Insight，即可浏览项目的虚拟文件系统：资源、场景、Prefab 与引用关系，无需打开 Unity Editor。
+- unityInsightEnableAction: 开启 Unity Insight
+- unityInsightOpeningAction: 打开中…
+- unityInsightFolderSelectChild: 在左侧选择文件或节点以预览
+- unityInsightFolderItemCount: {{count}} 项
+- viewReference: 查看引用
+- viewReferenceOut: 依赖项
+- viewReferenceIn: 使用方
+- viewReferenceEmpty: 无引用
+- showFileTree: 显示文件树
+- hideFileTree: 隐藏文件树
+- searchFiles: 搜索文件
+- searchInFile: 在文件中查找
+- inFileSearchNext: 下一个匹配
+- inFileSearchPrevious: 上一个匹配
+- inFileSearchNoResults: 无结果
+- hideSearch: 隐藏搜索
+- goBack: 后退
+- goForward: 前进
+- showLineNumbers: 显示行号
+- hideLineNumbers: 隐藏行号
+- failedToSearch: 搜索文件失败
+- failedToLoad: 加载文件失败
+- pin: 固定
+- close: 关闭
+- closeOthers: 关闭其他
+- closeToRight: 关闭右侧
+- closeAll: 关闭全部
+- unsavedChanges: 未保存的更改
+- unsavedChangesDescription: 是否要保存对 {{path}} 的更改？
+- unsavedAppChangesDescription: 是否要保存所有未保存的更改？
+- dontSave: 不保存
+- saving: 保存中...
+- gitChanges: Git 变更
+- viewDiff: 查看 Diff
+- stagedChanges: 已暂存的更改
+- unstagedChanges: 更改
+- untrackedFiles: 未跟踪的文件
+- workspaceRoot: 工作区
+- stageFile: 暂存更改
+- unstageFile: 取消暂存
+- discardChanges: 放弃更改
+- cancel: 取消
+- confirmDiscardChanges: 确定放弃 {{path}} 的更改吗？此操作无法撤销。
+- gitActionFailed: Git 操作失败
+- gitActionFailedDescription: 无法更新此文件的 Git 状态。请刷新变更后重试。
+- currentBranch: 当前分支：{{branch}}
+- switchBranch: 切换分支
+- branches: 分支
+- noBranches: 没有本地分支
+- switchingBranch: 正在切换分支…
+- switchBranchErrorTitle: 无法切换分支
+- switchBranchFailed: 无法切换分支。请提交或暂存冲突的更改后重试。
+- aiSwitchBranch: AI 切换
+- aiSwitchBranchPrompt: git 切换至 {{branch}}，请妥善处理未提交的更改
+- commitChanges: AI 提交
+- commitChangesHint: 在聊天输入框中填写提交并推送请求
+- commitChangesPrompt: git 提交并推送相关更改
+- fileTooLarge: 文件过大，无法语法高亮预览 — {{path}}
+- savePermissionTitle: 无法保存文件
+- savePermissionDescription: {{path}} 当前不可写，或你没有保存该文件的权限。
+- explorer: 资源管理器
+- closeTab: 关闭标签页
+- newTerminal: 新建终端
+- showBottomTerminal: 显示底部终端
+- hideBottomTerminal: 收起底部终端
+- resizeTerminal: 调整终端面板高度
+- terminalTitle: 终端
+- closeTerminal: 关闭{{title}}
+- terminalConnectionError: 终端错误：{{message}}
+- terminalConnectionFailed: 终端连接失败
+- terminalDisconnected: 终端连接已断开
+- play: 播放
+- stop: 停止
+- pause: 暂停
+- step: 单步
+- captureToChat: 截屏到聊天
+- moreControls: 更多控制
+- muteAudio: 静音
+- unmuteAudio: 取消静音
+- domainReloading: Unity 正在重新加载程序集...
+- refreshStream: 刷新 Unity 流连接
+- addUnityView: 添加 Unity 视图
+- addView: 添加视图
+- defaultLayout: 默认布局
+- lastLayout: 加载最新布局
+- showPanel: 显示面板
+- hidePanel: 隐藏面板
+- fullscreen: 全屏
+- exitFullscreen: 退出全屏
+- returnToChat: 返回聊天
+- sessionInfos: 会话信息
+- unityWindowStream: Unity 窗口流
+- startingUnityStream: 正在启动 Unity 流...
+- openUnityEditorRequired: 需要打开 Unity 编辑器。你可以在 Cowork 中使用串流功能以便更轻松地操作
+- streamingUnavailableMac: 暂不支持 macOS 串流
+- goOpen: 去打开
+- unityStreamReadyHint: 选择一个 Unity 视图开始串流。
+- connectingToUnityEditor: 正在连接 Unity 编辑器...
+- streamingTab: 串流
+- stopStreaming: 停止串流
+- retry: 重试
+- unityStreamNotStarted: Unity 流尚未启动。
+- addUnityViewHint: 为保证流式质量，将隐藏该 Editor 窗口。
+- otherWindows: 其他窗口
+- streamStreaming: 流式中
+- streamConnecting: 连接中…
+- streamStalled: 帧已暂停
+- streamReconnecting: 重连中…
+- streamDomainReloading: 程序集重载中…
+- streamCompiling: 编译中：
+- streamCompilingStarting: 正在开始编译…
+- streamCompileDone: 编译完成，重载中…
+- streamCompileFailed: 编译失败
+- streamTitleCompiling: 请稍候…
+- streamTitleReloading: 请稍候…
+- streamTitleFailed: 编译失败
+- close: 关闭
+- streamDisconnected: 已断开
+- streamIdle: 空闲
+- streamNetworkLatency: 延迟：{{ms}} ms
+- streamNetworkQualityGood: 网络连接正常
+- streamNetworkQualityAvg: 网络连接一般
+- streamNetworkQualityBad: 网络连接较差
+- extensionMenu: 新建标签页
+- aiCanvasTab: AI 画布
+- aiCanvasLoading: 正在加载 AI 画布...
+- aiCanvasLoadError: 无法加载 AI 画布，请关闭标签页后重试。
+- loading: 加载中...
+- contextWindow: 上下文窗口
+- noData: 暂无数据
+- tokensRemaining: 剩余 {{tokens}}
+- compressTooltip: 压缩上下文
+- compress: 压缩
+- jobs: 任务
+- noJobsYet: 暂无任务
+- plans: 计划
+- noPlansYet: 暂无计划
+- artifacts: 生成产物
+- artifactPath: 路径：{{path}}
+- artifactLocalPath: 本地：{{path}}
+- artifactGenerating: 生成中
+- artifactGeneratingProgress: 生成中 · {{progress}}%
+- artifactFailed: 生成失败
+- seeAllArtifacts: 查看全部（{{count}}）
+- openArtifact: 打开生成产物 {{title}}
+- image: 图片
+- video: 视频
+- audio: 音频文件
+- other: 生成产物
+- subagents: 子代理 (Subagents)
+- noSubagentsYet: 暂无子代理
+- backgroundTask: 后台任务
+- background: 后台
+- showMore: 显示更多
+- showLess: 收起
+- stopSubagent: 停止后台子代理
+- openSubagent: 打开子代理 {{title}}
+- backgroundShells: 后台命令 (Shells)
+- noBackgroundShellsYet: 暂无后台命令
+- stopShell: 停止后台命令
+- openShell: 打开后台命令输出 {{title}}
+- openPlanFile: 打开计划文件 {{title}}
+- memory: 记忆
+- automaticUpdate: 自主更新记忆
+- automaticUpdateStreamingHint: 若 GameCowork 仍在回复，需等当前回复结束后才会生效。
+- more: 更多
+- showFolder: 显示文件夹
+- clearMemory: 消除记忆
+- clearMemorySuccess: 记忆已消除
+- organize: 整理
+- organizeMemoryTitle: 整理记忆
+- organizeMemoryDescription: 为了不影响当前对话的上下文，将开启新对话进行整理。
+- organizeDontShowAgain: 不再显示
+- organizeCancel: 取消
+- organizeContinue: 继续
+- organizeClose: 关闭
+- organizeMemoryPrompt: 请整理当前{{scope}}记忆：去除冗余、过期以及长期价值不高的内容。
+- workspaceTag: 工作区
+- globalTag: 全局
+- noProjectMemoryYet: 暂无项目记忆
+- letGameCoworkKnowProject: 让 GameCowork 了解你的项目
+- noGlobalMemoryYet: 暂无全局记忆
+- letGameCoworkKnowGlobal: 创建全局记忆
+- generatingGlobalMemory: 生成中...
+- createGlobalMemoryFailed: 创建全局记忆文件失败。
+- memoryUpdatedAt: 更新时间：{{time}}
+- memoryFileSize: 大小：{{size}}
+- audioPlay: 播放
+- audioPause: 暂停
+- audioProgress: 播放进度
+- update: 更新
+- updateWithVersion: 更新 ({{version}})
+- loadingFiles: 加载文件中...
+- searching: 搜索中...
+- noResultsFound: 未找到结果
+- file: 个文件
+- files: 个文件
+- noFilesAvailable: 没有可用文件
+- addToChat: 添加到聊天
+- copyPath: 复制路径
+- copyRelativePath: 复制相对路径
+- revealInFileExplorer: 在文件资源管理器中显示
+- placeholder: 输入消息…

@@ -1,0 +1,2084 @@
+[
+ {
+  "message": "openUrl",
+  "count": 72,
+  "layer": "core+shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js,TJHubRoute-D42CgVct.js"
+ },
+ {
+  "message": "openFile",
+  "count": 40,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "controlPlane/openUrl",
+  "count": 36,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "showToast",
+  "count": 28,
+  "layer": "core+shell_exe",
+  "files": "InsightIndexPage-B7corD1V.js,InsightIndexPage-BEZ5Ffki.js,VscTheme-B-CSeuv5.js"
+ },
+ {
+  "message": "unity/invokeTool",
+  "count": 24,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "acp/modelProfiles",
+  "count": 16,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/openFileInPreview",
+  "count": 16,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "showLines",
+  "count": 16,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "config/refreshMemory",
+  "count": 14,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "extensions/list",
+  "count": 14,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "controlPlane/openBrowser",
+  "count": 12,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "getWorkspaceDirs",
+  "count": 12,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "task/stop",
+  "count": 12,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "userInput",
+  "count": 12,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "getIdeInfo",
+  "count": 10,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "history/rewind",
+  "count": 10,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "history/save",
+  "count": 10,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "mcp/list",
+  "count": 10,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "showFile",
+  "count": 10,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "showVirtualFile",
+  "count": 10,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-CKZIQMcw.js"
+ },
+ {
+  "message": "config/updateSharedConfig",
+  "count": 9,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "acp/refreshCommands",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "config/addMcpServer",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "extensions/install",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "getHomedir",
+  "count": 8,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "history/fork",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "history/updateState",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/modalStateChanged",
+  "count": 8,
+  "layer": "??无持有(需壳新实现)",
+  "files": "GenerationDetailDialog-CHyQsGpW.js,GenerationDetailDialog-DyH9yIKu.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "shell/openVirtualFileInPreview",
+  "count": 8,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/rightSidebarStateChanged",
+  "count": 8,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/showLspServerInstallToast",
+  "count": 8,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "skills/list",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "stream/getActiveStreams",
+  "count": 8,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "tjhub/getEditors",
+  "count": 8,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getLicenses",
+  "count": 8,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js,VscTheme-B-CSeuv5.js"
+ },
+ {
+  "message": "context/getContextItems",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "editor/getEmbedMode",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "getControlPlaneSessionInfo",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "history/load",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "marketplace/listRemote",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "metrics/trackEvent",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "openContentDiff",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-CKZIQMcw.js"
+ },
+ {
+  "message": "pet/getVisible",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "pet/setVisible",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "ping",
+  "count": 6,
+  "layer": "core+cli+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-CKZIQMcw.js"
+ },
+ {
+  "message": "readFile",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "readRangeInFile",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "samplePrompts/click",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/showToast",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-CKZIQMcw.js"
+ },
+ {
+  "message": "shell/unityGameControlResult",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/unityWindowStatusResult",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "subagents/list",
+  "count": 6,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "tauri/openHub",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js,projectMenuFlows-B5bpQmCU.js"
+ },
+ {
+  "message": "tauri/setKeepAwake",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tjhub/getInstallLocation",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getOrganizations",
+  "count": 6,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "unity-window/request-stop",
+  "count": 6,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "unity/windowBridge/startStreamServer",
+  "count": 5,
+  "layer": "core+shell_exe",
+  "files": "gamecowork-image-frames.js,index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "abort",
+  "count": 4,
+  "layer": "core+cli+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/getBackgroundSubagents",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "acp/notifyUpdate",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/retryCheckIsCLIValid",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "acp/webviewSurfaceReady",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "commands/delete",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "commands/list",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "config/checkRemoteConfig",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "config/deleteMcpServer",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/refreshProfiles",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "context/getSymbolsForFiles",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "context/loadSubmenuItems",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "controlPlane/openTerminal",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "custom/create",
+  "count": 4,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "custom/read",
+  "count": 4,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "debugUnityConsole",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "deep-link",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "device-flow-started",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "drill/updateProgress",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "indexWalkthrough-8hsJvdq0.js,indexWalkthrough-C1eDPcA7.js"
+ },
+ {
+  "message": "extensions/listRemote",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "extensions/uninstall",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "external-drag-enter",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "external-drag-leave",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "external-drop",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "filePreviewContext",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "focusContinueInputWithNewSession",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "focusContinueSessionId",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "getUniqueId",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "history/clearDraftInput",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "history/markAsRead",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "logoutOfControlPlane",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "lsp/isServerInstalled",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "marketplace/installedList",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "reportLogs",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "saveTempFile",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "settings/getGameCoworkHome",
+  "count": 4,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/adjustFontSize",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/checkUnsavedFilesAndClose",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/fullscreenStateChanged",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/maximizeStateChanged",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/openDiffInPreview",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/openInFileSearch",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/openUnityWindowInPreview",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "shell/showLspExtensionInstallToast",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/showLspServerStartFailedToast",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/themeChanged",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-CKZIQMcw.js,index-DG7m4Xaq.js"
+ },
+ {
+  "message": "shell/unityWindowStop",
+  "count": 4,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "showOpenFilePicker",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "skills/install",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "skills/uninstall",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "subagents/delete",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "tjhub/checkRosetta2",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/enqueueArchive",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getProjectDirectory",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getRecentProjects",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getRepositories",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getTemplates",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/installCancel",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tjhub/installEnqueue",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/locateEditor",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/openProject",
+  "count": 4,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "unity/getEditorPid",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "writeFile",
+  "count": 4,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js,index-BRxZ4eG7.js"
+ },
+ {
+  "message": "config/getSharedConfig",
+  "count": 3,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "unity-window/composite-layout-snapshot",
+  "count": 3,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "acp/backgroundSubagentsUpdate",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/cancelAutoContinue",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "acp/enqueueSessionMessage",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/exportSession",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "acp/getRewindFileDiff",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "acp/initSession",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "acp/loadSubagentActivity",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/withdrawLastUserPrompt",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "applyToFile",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "busy-state",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "calculateRelativePath",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "cancelLogin",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "chatDescriber/describe",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "chatDescriber/describeSubagent",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "clearFilePreviewContext",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "commands/",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/addLocalWorkspaceBlock",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/getMcpAllowlist",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/getSerializedProfileInfo",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "config/getShellAllowlist",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/updateMcpAllowlist",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/updateSelectMode",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "config/updateSelectedModel",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "config/updateShellAllowlist",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "controlPlane/getActivityNotifications",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "controlPlane/getUserExhaustion",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "controlPlane/getUserPlan",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "controlPlane/getUserUsageSummary",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "conversation/compact",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "copyText",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "custom/update",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "deleteFile",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "didChangeSelectedProfile",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "drill/drillCompleted",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "indexWalkthrough-8hsJvdq0.js,indexWalkthrough-C1eDPcA7.js"
+ },
+ {
+  "message": "drill/getProgress",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "indexWalkthrough-8hsJvdq0.js,indexWalkthrough-C1eDPcA7.js"
+ },
+ {
+  "message": "editor/getColors",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "editor/getSidechat",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "editor/onLoad",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "editor/selectAsset",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "extensions/disable",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "extensions/update",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "feedback/getProjectUploadState",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "feedback/reportStreamError",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "feedback/retryProjectUpload",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "feedback/submitReport",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "fileExists",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "focusContinueInputWithoutClear",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "gamecowork-language-change",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "generator/listTasks",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "generator/resolveDownloadUrl",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "generator/updateTasksDiscarded",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "getAllPromptFiles",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getAvailableThreads",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getBranch",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getBuildContents",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getClipboardFilePath",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getCurrentFile",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getCurrentOrg",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getCursorPosition",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getDebugContents",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getDebugLocals",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getDeclarationTextInRange",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getDiff",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getDocumentSymbols",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getFileResults",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getFileStats",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getFilesByName",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getGitRootPath",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getIdeSettings",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getOpenFiles",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getPinnedFiles",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getProblems",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getProjectRoot",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getReferences",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getRepoName",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getRunContents",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getSearchResults",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getSearchResultsWithOptions",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getSignatureHelp",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getTags",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getTerminalContents",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "getTopLevelCallStackSources",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "gotoDefinition",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "gotoTypeDefinition",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "guiContextReady",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "history/clear",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "history/delete",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "history/getSessionFolderPath",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "history/list",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "history/markAsUnread",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "history/renameTitle",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "history/saveDraftInput",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "history/saveSessionSettings",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "history/saveSubagentDisplayNames",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "ide/setActiveSessionId",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "initWorkspace",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "insertFileMention",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "isItemTooBig",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "isTelemetryEnabled",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "isWorkspaceRemote",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "jetbrains/getColors",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "jetbrains/isOSREnabled",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "jetbrains/onLoad",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "listDir",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "livePush/markRead",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "mcp/getResource",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "mcp/setServerEnabled",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "mcp/startAuthentication",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "mkdir",
+  "count": 2,
+  "layer": "core+cli+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "notifyDeviceFlowExpired",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "openLogFolder",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "pet/getGuides",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/getScale",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/getSelectedPet",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/scale",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/scaleEnd",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/scaleStart",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/setGuides",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "pet/setSelectedPet",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "readSecrets",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "refreshOrgList",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "runCommand",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "samplePrompts/fetch",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "samplePrompts/skip",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "saveClipboardImage",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "saveFile",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "settings/applyGameCoworkHomeChange",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "settings/prepareGameCoworkHomeChange",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/checkAndSuggestLspInstall",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/fixLspServerStartFailed",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/forceCloseApp",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/growWindowToWidth",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/hideRightSidebar",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/installLspExtension",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/installLspServer",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/openRightSidebar",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/openTerminalInPreview",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/openUnityEditor",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "shell/openUnityInsightInPreview",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/openUnityWindowInPreviewError",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/setFontSize",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/setMinWindowSize",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/setShowProjectMenu",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/setTheme",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/syncProjectMenuState",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "shell/toggleRightSidebar",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "shell/unityGameControl",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "shell/unityWindowStatusRequest",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "skills/disable",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "skills/installUpload",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "skills/update",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "subagents/",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "subprocess",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "switchOrg",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tabs/getOpenTabs",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tabs/reportOpenTabs",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "store-0rGrUshb.js,store-c6kNGz30.js"
+ },
+ {
+  "message": "tauri/bringToFront",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/getKeepAwake",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/getTunnelEnabled",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/getUpdateChannel",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/listRemoteWorkspaces",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/newWindow",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "tauri/setTunnelEnabled",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tauri/setUpdateChannel",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "telemetry",
+  "count": 2,
+  "layer": "core+cli+shell_exe",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "tjhub/activateLicense",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "tjhub/activatePersonalLicense",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "tjhub/addFromDisk",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/addProject",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/cancelCreateProject",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/connectCloud",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/createProject",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/downloadTemplate",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/generateLicenseRequest",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "tjhub/getArchive",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getArchiveEulaContent",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getEulaContent",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getModules",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getPendingDeepLink",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tjhub/getPendingIpcPassthrough",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tjhub/getReleases",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/getServerConfig",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "tjhub/getStatus",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tjhub/getUniqueProjectName",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/importLicenseFile",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "tjhub/installRetry",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "tjhub/installRosetta2",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/local/getDiskSpace",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/openRemoteProject",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/removeEditor",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/removeProject",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/returnLicense",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/setCliArgs",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/toggleFavorite",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/uninstallEditor",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "TJHubRoute-D42CgVct.js,TJHubRoute-DN1YDDd-.js"
+ },
+ {
+  "message": "tjhub/updateServerConfig",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js"
+ },
+ {
+  "message": "unity-window/request-capture",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "unity-window/request-composite-layout",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "unity-window/set-audio",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "unity-window/update-composite-layout",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "RightSideBarPanel-B2OWNNNX.js,RightSideBarPanel-JSPvAs5c.js"
+ },
+ {
+  "message": "unity/getHubProjectsAndEditors",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/getProjectStatus",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/getStatus",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/installMcpPackage",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/openEditor",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/refresh",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "projectMenuFlows-B5bpQmCU.js,projectMenuFlows-CXiqDIYb.js"
+ },
+ {
+  "message": "unity/windowBridge/getStreamServerStatus",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "unityInsight/getEnabled",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "InsightIndexPage-B7corD1V.js,InsightIndexPage-BEZ5Ffki.js"
+ },
+ {
+  "message": "unityInsight/getMaxTurns",
+  "count": 2,
+  "layer": "core",
+  "files": "InsightIndexPage-B7corD1V.js,InsightIndexPage-BEZ5Ffki.js"
+ },
+ {
+  "message": "unityInsight/setEnabled",
+  "count": 2,
+  "layer": "core+shell_exe",
+  "files": "InsightIndexPage-B7corD1V.js,InsightIndexPage-BEZ5Ffki.js"
+ },
+ {
+  "message": "unityInsight/setMaxTurns",
+  "count": 2,
+  "layer": "core",
+  "files": "InsightIndexPage-B7corD1V.js,InsightIndexPage-BEZ5Ffki.js"
+ },
+ {
+  "message": "versionUpdate/getSeenFeatures",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "versionUpdate/markFeatureSeen",
+  "count": 2,
+  "layer": "shell_exe",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "visualstudio/getColors",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "visualstudio/onLoad",
+  "count": 2,
+  "layer": "??无持有(需壳新实现)",
+  "files": "index-BRxZ4eG7.js,index-DvRYaIVa.js"
+ },
+ {
+  "message": "writeSecrets",
+  "count": 2,
+  "layer": "core",
+  "files": "VscTheme-B-CSeuv5.js,VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "acp/getSessionMode",
+  "count": 1,
+  "layer": "core+shell_exe",
+  "files": "VscTheme-BExNMG_K.js"
+ },
+ {
+  "message": "unity-window/capture-to-chat",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/compilation-progress",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/editor-windows-changed",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/request-url-refresh",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/slot-removed",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/stream-metrics",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ },
+ {
+  "message": "unity-window/stream-status",
+  "count": 1,
+  "layer": "??无持有(需壳新实现)",
+  "files": "windowBridge.html"
+ }
+]

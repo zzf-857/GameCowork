@@ -1,0 +1,5 @@
+tauri://drag-entertauri://drag-overtauri://drag-droptauri://drag-leavetauri://webview-created
+tauri://localhost
+tauri://localhostC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\crossbeam-channel-0.5.15\src\waker.rs
+tauri://resizetauri://movetauri://close-requestedtauri://destroyedtauri://blurtauri://focustauri://scale-changetauri://drag-entertauri://drag-overtauri://drag-droptauri://drag-leavetauri://theme-changedpathspoisoned window managerC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\manager\window.rs
+tauri://window-createdwindows

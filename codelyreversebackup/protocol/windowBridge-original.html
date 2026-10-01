@@ -1,0 +1,4213 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity Window Bridge</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a2e; color: #e0e0e0; height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  select, button {
+    background: #0f3460; color: #e0e0e0; border: 1px solid #533483;
+    padding: 6px 14px; border-radius: 6px; font-size: 13px;
+    cursor: pointer; outline: none;
+  }
+  select:hover, button:hover { border-color: #e94560; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .main-area {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; background: #111;
+    cursor: default;
+    user-select: none;
+    touch-action: none;
+    -webkit-user-drag: none;
+  }
+  /* SceneView drag cursor: DOM overlay approach.
+     CSS cursor is unreliable when Unity's Focus() steals macOS app activation.
+     Instead we hide the OS cursor and show a positioned <div> overlay. */
+  .main-area.cursor-dragging { cursor: none !important; }
+  .main-area.cursor-dragging * { cursor: none !important; }
+  /* Browsers ignore element cursor during pointer-capture drag; force it. */
+  .main-area.force-editor-cursor,
+  .main-area.force-editor-cursor * {
+    cursor: var(--editor-cursor, default) !important;
+  }
+  #cursorOverlay {
+    position: absolute; pointer-events: none; z-index: 9999;
+    width: 32px; height: 32px; display: none;
+    background-size: 32px 32px; background-repeat: no-repeat;
+    image-rendering: auto;
+  }
+  #remoteVideo {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    background: #000; display: none;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  #streamCanvas {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    display: none;
+    pointer-events: none;
+    user-select: none;
+  }
+  .placeholder {
+    color: #555; font-size: 16px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .placeholder svg { width: 64px; height: 64px; opacity: 0.3; }
+
+  /* ========== Frontend Popup Menu Styles ========== */
+  .popup-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1000;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .popup-overlay .popup-menu {
+    pointer-events: auto;
+  }
+  .popup-menu {
+    position: absolute;
+    min-width: 160px; max-width: 350px;
+    background: #3c3c3c; border: 1px solid #555;
+    border-radius: 4px; padding: 2px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px; color: #e0e0e0;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  .popup-menu-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  .popup-menu-context {
+    max-width: 420px;
+  }
+  .popup-menu-context > .popup-menu-scroll {
+    max-height: none;
+    overflow: visible;
+  }
+  .popup-submenu-context {
+    max-height: none;
+    overflow: visible;
+  }
+  .popup-menu-annotation {
+    min-width: 290px;
+    max-width: 420px;
+    max-height: 620px;
+  }
+  .popup-menu-icon-selector {
+    min-width: 140px;
+    max-width: 140px;
+    width: 140px;
+    padding: 4px 4px 6px;
+    box-sizing: border-box;
+  }
+  .icon-selector-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px 4px;
+    font-size: 11px;
+    color: #ddd;
+  }
+  .icon-selector-none-btn {
+    border: none;
+    background: #4a4a4a;
+    color: #ddd;
+    font-size: 10px;
+    line-height: 12px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    cursor: default;
+  }
+  .icon-selector-none-btn:hover {
+    background: #2d6da3;
+    color: #fff;
+  }
+  .icon-selector-sep {
+    height: 1px;
+    background: #555;
+    margin: 3px 2px;
+  }
+  .icon-selector-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 2px 4px;
+    justify-content: flex-start;
+  }
+  .icon-selector-icon {
+    width: 12px;
+    height: 12px;
+    padding: 1px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    box-sizing: content-box;
+    cursor: default;
+    image-rendering: pixelated;
+  }
+  .icon-selector-icon:hover {
+    border-color: #888;
+    background: rgba(255,255,255,0.08);
+  }
+  .icon-selector-icon.selected {
+    border-color: #6eb1ff;
+    background: rgba(45,109,163,0.45);
+  }
+  .popup-item {
+    padding: 4px 24px 4px 28px; cursor: default;
+    white-space: nowrap; position: relative;
+    line-height: 20px;
+  }
+  .popup-item-has-shortcut {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .popup-item-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .popup-item-shortcut {
+    flex: none;
+    color: #999;
+    font-size: 11px;
+    margin-left: auto;
+    padding-left: 12px;
+  }
+  .popup-item:hover:not(.popup-item-disabled) .popup-item-shortcut,
+  .popup-item.popup-item-hover:not(.popup-item-disabled) .popup-item-shortcut {
+    color: #ddd;
+  }
+  .popup-item:hover:not(.popup-item-disabled),
+  .popup-item.popup-item-hover:not(.popup-item-disabled) {
+    background: #2d6da3; color: #fff;
+  }
+  .popup-item-disabled {
+    color: #777; cursor: default;
+  }
+  .popup-section-header {
+    color: #aaa; font-size: 11px; font-weight: 600;
+    padding: 4px 8px 2px 8px; cursor: default;
+    text-transform: none; letter-spacing: 0.3px;
+  }
+  .popup-item-checked::before {
+    content: '\2713'; position: absolute; left: 8px;
+    font-size: 13px; line-height: 20px;
+  }
+  .popup-separator {
+    height: 1px; margin: 4px 0;
+    background: #555;
+  }
+  .popup-item-submenu::after {
+    content: '\25B6'; position: absolute; right: 8px;
+    font-size: 9px; line-height: 20px;
+  }
+  .popup-item-has-submenu {
+    padding-right: 28px;
+  }
+  .popup-submenu {
+    display: none;
+    min-width: 160px;
+    max-width: 350px;
+    background: #3c3c3c;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 2px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: min(60vh, 480px);
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+  .popup-submenu.popup-submenu-floating {
+    position: absolute;
+    z-index: 1001;
+  }
+  .popup-header {
+    padding: 6px 10px 4px 10px;
+    background: #383838;
+    border-radius: 4px 4px 0 0;
+  }
+  .popup-toggle-row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 2px 0; cursor: default;
+    font-size: 12px; color: #e0e0e0;
+    white-space: nowrap;
+  }
+  .popup-toggle-row-annotation {
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .popup-toggle-row-annotation .popup-toggle-main {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 130px;
+  }
+  .popup-toggle-row-annotation .popup-toggle-slider {
+    flex: 1;
+    min-width: 110px;
+  }
+  .popup-toggle-row-annotation .popup-toggle-slider input[type="range"] {
+    width: 100%;
+  }
+  .popup-toggle-row input[type="checkbox"] {
+    margin: 0; accent-color: #4a90d9;
+  }
+  .popup-toggle-disabled {
+    opacity: 0.5; cursor: default;
+  }
+  .popup-add-btn {
+    text-align: center; font-size: 16px; font-weight: bold;
+    color: #aaa; padding: 2px 0;
+  }
+  .popup-add-btn:hover {
+    background: #2d6da3; color: #fff;
+  }
+  .popup-search-row {
+    padding: 4px 10px;
+    border-bottom: 1px solid #555;
+    background: #383838;
+  }
+  .popup-search-input {
+    width: 100%;
+    padding: 3px 6px;
+    font-size: 11px;
+    color: #e0e0e0;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 3px;
+    outline: none;
+  }
+  .popup-search-input:focus { border-color: #2d6da3; }
+  .popup-tab-row {
+    display: flex;
+    gap: 4px;
+    padding: 4px 6px;
+  }
+  .popup-tab {
+    flex: 1;
+    font-size: 11px;
+    padding: 3px 6px;
+    color: #ccc;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 3px;
+    cursor: default;
+  }
+  .popup-tab.active {
+    background: #2d6da3;
+    border-color: #2d6da3;
+    color: #fff;
+  }
+  .popup-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+  }
+  .popup-slider-row input[type="range"] {
+    flex: 1;
+  }
+  .popup-slider-value {
+    width: 42px;
+    text-align: right;
+    color: #aaa;
+    font-size: 11px;
+  }
+  .popup-column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #8f8f8f;
+    font-size: 10px;
+    padding: 2px 8px 4px 8px;
+    text-transform: lowercase;
+    border-bottom: 1px solid #4f4f4f;
+    margin-bottom: 2px;
+  }
+  .popup-column-header-label {
+    flex: 1;
+  }
+  .popup-column-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 76px;
+    justify-content: flex-end;
+  }
+  .popup-column-header-cell {
+    width: 38px;
+    text-align: center;
+  }
+  .popup-item-annotation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-right: 6px;
+    min-height: 20px;
+  }
+  .popup-item-annotation.popup-item-disabled {
+    color: #7a7a7a;
+  }
+  .popup-anno-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+  .popup-anno-toggles {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    width: 76px;
+    justify-content: flex-end;
+  }
+  .popup-anno-cell {
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .popup-anno-icon-btn {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
+  .popup-anno-icon-btn img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    image-rendering: auto;
+  }
+  .popup-anno-icon-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .popup-anno-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+  }
+  .popup-anno-toggle input[type="checkbox"] {
+    margin: 0;
+    accent-color: #4a90d9;
+  }
+  .popup-anno-toggle input[type="checkbox"]:disabled {
+    opacity: 0.35;
+  }
+
+  /* ========== Frontend Panel UI Styles (Grid Settings, etc.) ========== */
+  .panel-container {
+    position: absolute;
+    min-width: 230px; max-width: 360px;
+    background: #383838; border: 1px solid #4a4a4a;
+    border-radius: 2px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px; color: #e0e0e0;
+    padding: 0;
+  }
+  .panel-title {
+    padding: 6px 10px 5px 10px; font-weight: 600; font-size: 12px;
+    background: #383838; border-radius: 2px 2px 0 0;
+    border-bottom: 1px solid #4a4a4a;
+    color: #e0e0e0;
+  }
+  .panel-section-header {
+    padding: 6px 10px 2px 10px;
+    color: #c8c8c8;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .panel-control {
+    padding: 3px 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-control-subfield {
+    padding-left: 28px;
+  }
+  .panel-control-subfield .panel-control-label {
+    min-width: 36px;
+    color: #a8a8a8;
+  }
+  .panel-control-disabled {
+    opacity: 0.42;
+  }
+  .panel-control-label {
+    min-width: 104px; font-size: 12px; color: #c2c2c2;
+    flex-shrink: 0;
+  }
+  .panel-checkbox-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .panel-checkbox-wrap input[type="checkbox"] {
+    margin: 0;
+    accent-color: #4a90d9;
+  }
+  .panel-btn-strip {
+    display: flex; gap: 0;
+    border: 1px solid #555; border-radius: 3px;
+    overflow: hidden; flex: 1;
+  }
+  .panel-btn-strip button {
+    flex: 1; padding: 3px 10px; font-size: 11px;
+    background: #4a4a4a; color: #ccc; border: none;
+    border-right: 1px solid #555; cursor: default;
+    outline: none; min-width: 30px;
+  }
+  .panel-btn-strip button:last-child { border-right: none; }
+  .panel-btn-strip button:hover { background: #555; color: #fff; }
+  .panel-btn-strip button.active {
+    background: #2d6da3; color: #fff;
+  }
+  .panel-slider {
+    flex: 1; display: flex; align-items: center; gap: 6px;
+  }
+  .panel-slider input[type="range"] {
+    flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+    background: #555; border-radius: 2px; outline: none;
+    cursor: default;
+  }
+  .panel-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #e0e0e0; cursor: default;
+  }
+  .panel-slider-value {
+    font-size: 11px; color: #aaa; min-width: 46px; text-align: right;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 2px;
+    padding: 2px 4px;
+  }
+  .panel-action-btn {
+    flex: 1; padding: 4px 10px; font-size: 11px;
+    background: #4a4a4a; color: #ccc; border: 1px solid #555;
+    border-radius: 3px; cursor: default; outline: none;
+  }
+  .panel-action-btn:hover { background: #555; color: #fff; }
+  .panel-btn-row {
+    display: flex; gap: 6px; flex: 1;
+  }
+  .panel-linked-v3 {
+    display: flex; align-items: center; gap: 2px; flex: 1;
+    min-width: 0;
+  }
+  .panel-link-btn {
+    width: 22px; height: 22px; padding: 0; font-size: 11px;
+    background: #4a4a4a; color: #888; border: 1px solid #555;
+    border-radius: 3px; cursor: default; outline: none;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .panel-link-btn.active { background: #2d6da3; color: #fff; }
+  .panel-v3-label {
+    font-size: 10px; color: #999; min-width: 8px; text-align: center;
+  }
+  .panel-v3-input {
+    width: 40px; padding: 2px 3px; font-size: 11px;
+    background: #2a2a2a; color: #e0e0e0; border: 1px solid #555;
+    border-radius: 3px; outline: none; text-align: right;
+    box-sizing: border-box;
+  }
+  .panel-v3-input::-webkit-outer-spin-button,
+  .panel-v3-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .panel-v3-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .panel-v3-input:disabled { opacity: 0.4; }
+  .panel-v3-input:focus { border-color: #2d6da3; }
+  .panel-float-input {
+    flex: 1; padding: 2px 6px; font-size: 11px;
+    background: #2a2a2a; color: #e0e0e0; border: 1px solid #555;
+    border-radius: 3px; outline: none; text-align: right;
+  }
+  .panel-float-input:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .panel-float-input:focus { border-color: #2d6da3; }
+  .panel-text-input {
+    flex: 1; padding: 3px 6px; font-size: 11px;
+    background: #2a2a2a; color: #e0e0e0; border: 1px solid #555;
+    border-radius: 3px; outline: none;
+  }
+  .panel-text-input:focus { border-color: #2d6da3; }
+  .panel-dropdown {
+    flex: 1; padding: 2px 4px; font-size: 11px;
+    background: #2a2a2a; color: #e0e0e0; border: 1px solid #555;
+    border-radius: 3px; outline: none; cursor: default;
+  }
+  .panel-dropdown:focus { border-color: #2d6da3; }
+  .panel-int2-wrap {
+    display: flex; align-items: center; gap: 4px; flex: 1;
+  }
+  .panel-int-input {
+    width: 48px; padding: 2px 4px; font-size: 11px;
+    background: #2a2a2a; color: #e0e0e0; border: 1px solid #555;
+    border-radius: 3px; outline: none; text-align: right;
+  }
+  .panel-int-input:focus { border-color: #2d6da3; }
+  .panel-preview-text {
+    font-size: 11px; color: #999; text-align: center;
+    padding: 2px 0; min-height: 16px;
+  }
+  .unity-tooltip {
+    position: fixed;
+    z-index: 2000;
+    max-width: 420px;
+    padding: 6px 10px;
+    border: 1px solid #5f5f5f;
+    background: #202020;
+    color: #e8e8e8;
+    font-size: 12px;
+    line-height: 1.35;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+    pointer-events: none;
+    display: none;
+    white-space: normal;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+<div class="main-area" id="mainArea" tabindex="0">
+  <div class="placeholder" id="placeholder">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="2" y="3" width="20" height="14" rx="2"/>
+      <path d="M8 21h8M12 17v4"/>
+    </svg>
+    <div>Waiting for stream target...</div>
+  </div>
+  <video id="remoteVideo" autoplay playsinline></video>
+  <canvas id="streamCanvas"></canvas>
+  <div id="popupOverlay" class="popup-overlay" style="display:none;"></div>
+  <div id="cursorOverlay"></div>
+</div>
+
+<script>
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  // When served from Tauri, the native stream server runs on a different origin.
+  // Accept ?serverUrl=http://host:port for direct local access, or a same-origin
+  // /api/tauri/window-bridge/... path for Tauri/reverse-proxy access.
+  function sanitizeServerUrl(raw) {
+    if (!raw) return null;
+    try {
+      var u = new URL(raw, window.location.origin);
+      var isLoopback =
+        u.hostname === 'localhost' ||
+        u.hostname === '127.0.0.1' ||
+        u.hostname === '::1';
+      var isWindowBridgeProxy =
+        u.pathname.indexOf('/api/tauri/window-bridge/') === 0;
+      var isCloudCoworkWindowBridgeProxy =
+        /^\/api\/cloud-cowork\/window-bridge\/[^/]+\/[^/]+\/?$/.test(
+          u.pathname,
+        );
+      if (
+        u.origin === window.location.origin &&
+        (isWindowBridgeProxy || isCloudCoworkWindowBridgeProxy)
+      ) {
+        return (u.pathname + u.search).replace(/\/$/, '');
+      }
+      if (isLoopback) {
+        return (
+          u.origin + (isWindowBridgeProxy ? u.pathname + u.search : '')
+        ).replace(/\/$/, '');
+      }
+      console.warn('[WindowBridge] Rejected serverUrl:', raw);
+      return null;
+    } catch (e) {
+      console.warn('[WindowBridge] Invalid serverUrl:', raw, e);
+      return null;
+    }
+  }
+  const EXTERNAL_API = sanitizeServerUrl(urlParams.get('serverUrl'));
+  const IS_FILL_MODE = urlParams.get('displayMode') === 'fill';
+  const LOCAL_API = EXTERNAL_API || (IS_FILL_MODE ? '' : window.location.origin);
+  let API = LOCAL_API;
+  function updateServerApi(raw) {
+    var nextApi = sanitizeServerUrl(raw);
+    if (!nextApi) return false;
+    API = nextApi;
+    urlRefreshRequested = false;
+    consecutiveHealthFailures = 0;
+    return true;
+  }
+  function apiFetch(path, opts) {
+    if (!API) {
+      requestParentUrlRefresh();
+      return Promise.reject(new Error('Window bridge server URL is unavailable'));
+    }
+    return fetch(API + path, opts);
+  }
+  function isRemoteWindowBridgeApi(api) {
+    return typeof api === 'string' && (
+      api.indexOf('/api/tauri/window-bridge/remote/') >= 0 ||
+      api.indexOf('/api/cloud-cowork/window-bridge/') >= 0
+    );
+  }
+  const $ = (id) => document.getElementById(id);
+
+  // The page is always embedded in the right sidebar and receives stream targets
+  // from parentPanel via `unity-window/switch-stream`.
+  let autoWindowType = '';
+  let compositeLayout = null;
+  let activeCompositeSlotId = '';
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #remoteVideo, #streamCanvas {
+      max-width: none !important; max-height: none !important;
+      width: 100% !important; height: 100% !important;
+      object-fit: fill !important;
+      position: absolute !important;
+      inset: 0 !important;
+    }
+    .main-area {
+      align-items: stretch !important;
+      justify-content: stretch !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Notify native stream server when panel size changes so Unity can resize its RT.
+  // Use a short debounce + dedupe so Windows can converge quickly without spamming.
+  let resizeTimer = null;
+  let pendingResizeW = 0;
+  let pendingResizeH = 0;
+  let lastSentResizeW = 0;
+  let lastSentResizeH = 0;
+  function flushPendingResize() {
+    if (pendingResizeW <= 0 || pendingResizeH <= 0) return;
+    if (pendingResizeW === lastSentResizeW && pendingResizeH === lastSentResizeH) return;
+    const sendW = pendingResizeW;
+    const sendH = pendingResizeH;
+    lastSentResizeW = sendW;
+    lastSentResizeH = sendH;
+    apiFetch('/stream/resize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ width: sendW, height: sendH, dpr: window.devicePixelRatio || 1 })
+    }).catch(() => {});
+    if (activeOffscreenWindowType === '__composite__' && compositeLayout) {
+      updateCompositeLayout().catch(() => {});
+    }
+  }
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      // CSS pixel size is sent to Unity along with devicePixelRatio.
+      // C# uses max(clientDPR, localPP) for capture scaling — not pre-multiplying here
+      // avoids Unity GameView "Scale 1/2" black bars.
+      const w = Math.round(entry.contentRect.width);
+      const h = Math.round(entry.contentRect.height);
+      if (w <= 0 || h <= 0) continue;
+      pendingResizeW = w;
+      pendingResizeH = h;
+      // Send one immediate update so clarity follows resize quickly.
+      if (lastSentResizeW === 0 && lastSentResizeH === 0) {
+        flushPendingResize();
+      }
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        flushPendingResize();
+      }, 90);
+    }
+  });
+  // Observe after DOM ready.
+  requestAnimationFrame(() => {
+    const area = document.getElementById('mainArea');
+    if (area) resizeObserver.observe(area);
+  });
+  const unityTooltipEl = document.createElement('div');
+  unityTooltipEl.className = 'unity-tooltip';
+  document.body.appendChild(unityTooltipEl);
+  let unityTooltipTimer = null;
+  let unityTooltipVisible = false;
+  let serverTooltipText = '';
+  let lastPointerClient = { x: 0, y: 0 };
+  let activeOffscreenWindowType = '';
+
+  function hideUnityTooltip() {
+    if (unityTooltipTimer) { clearTimeout(unityTooltipTimer); unityTooltipTimer = null; }
+    unityTooltipVisible = false;
+    unityTooltipEl.style.display = 'none';
+    unityTooltipEl.textContent = '';
+  }
+
+  function positionUnityTooltip(clientX, clientY) {
+    const xPad = 14;
+    const yPad = 18;
+    const vw = window.innerWidth || document.documentElement.clientWidth;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    unityTooltipEl.style.left = '0px';
+    unityTooltipEl.style.top = '0px';
+    const rect = unityTooltipEl.getBoundingClientRect();
+    let x = clientX + xPad;
+    let y = clientY + yPad;
+    if (x + rect.width > vw - 6) x = Math.max(6, vw - rect.width - 6);
+    if (y + rect.height > vh - 6) y = Math.max(6, clientY - rect.height - 10);
+    unityTooltipEl.style.left = x + 'px';
+    unityTooltipEl.style.top = y + 'px';
+  }
+
+  function showUnityTooltip(text, clientX, clientY, delayMs = 240) {
+    if (!text) { hideUnityTooltip(); return; }
+    if (unityTooltipTimer) clearTimeout(unityTooltipTimer);
+    unityTooltipTimer = setTimeout(() => {
+      unityTooltipTimer = null;
+      unityTooltipEl.textContent = text;
+      unityTooltipEl.style.display = 'block';
+      unityTooltipVisible = true;
+      positionUnityTooltip(clientX, clientY);
+    }, delayMs);
+  }
+
+  function bindTooltip(el, text, opts = {}) {
+    if (!el || !text) return;
+    const delayMs = opts.delayMs !== undefined ? opts.delayMs : 180;
+    const dynamic = !!opts.dynamic;
+    const hideOnLeave = opts.hideOnLeave !== false;
+    const tipText = String(text);
+    el.addEventListener('mouseenter', (e) => {
+      if (!dynamic && serverTooltipText) return;
+      showUnityTooltip(tipText, e.clientX, e.clientY, delayMs);
+    });
+    el.addEventListener('mousemove', (e) => {
+      if (!dynamic && serverTooltipText) return;
+      if (unityTooltipVisible) positionUnityTooltip(e.clientX, e.clientY);
+    });
+    if (hideOnLeave) {
+      el.addEventListener('mouseleave', () => {
+        if (!dynamic && serverTooltipText) return;
+        hideUnityTooltip();
+      });
+    }
+  }
+
+  const remoteVideo = $('remoteVideo');
+  const canvas = $('streamCanvas');
+  const placeholder = $('placeholder');
+  const STREAM_FPS = 30;
+
+  let capturing = false;
+  let pc = null;
+  let inputChannel = null;
+  let icePollingTimer = null;
+  let heartbeatTimer = null;
+
+  // WebRTC auto-reconnect state (survives domain reload in Unity)
+  let reconnectTimer = null;
+  let reconnectAttempt = 0;
+  const RECONNECT_MAX_ATTEMPTS = 10;
+  const RECONNECT_BASE_DELAY_MS = 3000;
+  const RECONNECT_MAX_DELAY_MS = 30000;
+
+  // When true, a domain reload was signalled via DataChannel. Suppresses
+  // auto-reconnect (the WebRTC connection stays alive). Reset when frames
+  // resume or the PC reconnects.
+  let domainReloading = false;
+
+  // Pointer Lock state: confines the OS cursor within the streaming area
+  // when the game sets Cursor.lockState = Locked. This prevents the cursor
+  // from leaving the GameView during gameplay. The game's Input.GetAxisRaw
+  // receives hardware delta via RIDEV_INPUTSINK independently.
+  let pointerLocked = false;
+  let pointerLockRequestedByGame = false;
+  let gameCursorLocked = false;
+  // Whether this is a remote streaming connection (set by detectAndReportConnectionType).
+  let isRemoteConnection = false;
+  let virtualClientX = 0;
+  let virtualClientY = 0;
+  // Accumulator for remote delta injection — batches high-frequency
+  // pointermove deltas into lower-frequency messages to the server.
+  let remoteDeltaAccumX = 0;
+  let remoteDeltaAccumY = 0;
+  let remoteDeltaFlushTimer = null;
+  // Track held keys to flush on focus loss / capturing change.
+  const frontendHeldKeys = new Set();
+  function flushAllHeldKeys() {
+    if (frontendHeldKeys.size === 0) return;
+    log('Flushing ' + frontendHeldKeys.size + ' stuck keys: ' + Array.from(frontendHeldKeys).join(','), 'warn');
+    // Also cancel any pending debounced keyups.
+    for (const [, tid] of pendingKeyupTimers) clearTimeout(tid);
+    pendingKeyupTimers.clear();
+    for (const key of frontendHeldKeys) {
+      sendInput({ type: 'keyup', key: key, code: '', keyCode: 0,
+        shift: false, ctrl: false, alt: false, meta: false });
+    }
+    frontendHeldKeys.clear();
+  }
+  // Debounce keyup: browser autorepeat in some WebViews generates
+  // rapid keydown+keyup pairs instead of sustained keydown. Delaying
+  // keyup by 60ms and cancelling if a new keydown arrives converts
+  // the pairs back into a single sustained press.
+  const pendingKeyupTimers = new Map();
+  const KEYUP_DEBOUNCE_MS = 60;
+  function flushRemoteDelta() {
+    remoteDeltaFlushTimer = null;
+    if (remoteDeltaAccumX !== 0 || remoteDeltaAccumY !== 0) {
+      sendInput({ type: 'mousedelta', dx: remoteDeltaAccumX, dy: remoteDeltaAccumY });
+      remoteDeltaAccumX = 0;
+      remoteDeltaAccumY = 0;
+    }
+  }
+
+  function requestGamePointerLock() {
+    if (document.pointerLockElement === mainArea) return;
+    pointerLockRequestedByGame = true;
+    const rect = mainArea.getBoundingClientRect();
+    virtualClientX = lastPointerClient ? lastPointerClient.x : (rect.left + rect.width / 2);
+    virtualClientY = lastPointerClient ? lastPointerClient.y : (rect.top + rect.height / 2);
+    try {
+      const lockPromise = mainArea.requestPointerLock();
+      if (lockPromise && typeof lockPromise.catch === 'function') {
+        lockPromise.catch((err) => {
+          log('Pointer Lock request rejected: ' + (err && err.message ? err.message : String(err)), 'warn');
+        });
+      }
+    } catch (err) {
+      log('Pointer Lock request failed: ' + (err && err.message ? err.message : String(err)), 'warn');
+    }
+  }
+
+  function exitGamePointerLock() {
+    pointerLockRequestedByGame = false;
+    if (document.pointerLockElement === mainArea) {
+      document.exitPointerLock();
+    }
+  }
+
+  document.addEventListener('pointerlockchange', () => {
+    const wasLocked = pointerLocked;
+    pointerLocked = document.pointerLockElement === mainArea;
+    log('Pointer Lock: ' + (pointerLocked ? 'engaged' : 'released'), 'info');
+    // Re-focus mainArea after Pointer Lock engages. In iframe/Tauri contexts
+    // requestPointerLock() can shift keyboard focus away from the element,
+    // causing document-level keydown events to stop firing (keyup still works
+    // because pointerdown -> focus() restores it). Both immediate and deferred
+    // calls are needed: the immediate call works on the first engagement, and
+    // the deferred calls handle cases where the browser overrides focus during
+    // the Pointer Lock transition (observed on second+ engagement after user
+    // interacted with menu UI between game sessions).
+    if (pointerLocked && !wasLocked) {
+      mainArea.focus();
+      setTimeout(function() { if (pointerLocked) mainArea.focus(); }, 0);
+      setTimeout(function() { if (pointerLocked) mainArea.focus(); }, 100);
+    }
+    if (wasLocked && !pointerLocked) {
+      // Reset virtual position to center of element so the next event
+      // after Pointer Lock exit doesn't carry a stale edge position.
+      const el = getActiveElement();
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        virtualClientX = rect.left + rect.width / 2;
+        virtualClientY = rect.top + rect.height / 2;
+        lastPointerClient = { x: virtualClientX, y: virtualClientY };
+      }
+    }
+    if (wasLocked && !pointerLocked && pointerLockRequestedByGame) {
+      // User pressed ESC to exit Pointer Lock. The browser consumes the
+      // ESC keydown event, so forward it to Unity for the game to handle.
+      pointerLockRequestedByGame = false;
+      if (capturing) {
+        sendInput({ type: 'keydown', key: 'Escape', code: 'Escape',
+          shift: false, ctrl: false, alt: false, meta: false });
+        setTimeout(() => {
+          if (capturing) {
+            sendInput({ type: 'keyup', key: 'Escape', code: 'Escape',
+              shift: false, ctrl: false, alt: false, meta: false });
+          }
+        }, 50);
+      }
+    }
+  });
+
+  document.addEventListener('pointerlockerror', () => {
+    log('Pointer Lock error (may require user gesture)', 'warn');
+    pointerLocked = false;
+  });
+
+  // Video stall detection: track framesDecoded to detect zombie connections
+  let lastFramesDecoded = 0;
+  let stallCheckCount = 0;
+  const STALL_THRESHOLD = 15; // consecutive checks (30s) with no new frames before reconnect
+
+  // C++ heartbeat_ack tracking: distinguishes "C# main thread blocked"
+  // (C++ alive, frames paused) from "connection truly dead" (C++ unreachable).
+  // When C++ responds to heartbeats, stall recovery is suppressed because
+  // C# will resume pushing frames once it unblocks.
+  let lastHeartbeatAckTime = 0;
+  let cppAlive = false;
+  const CPP_ALIVE_TIMEOUT_MS = 6000; // consider C++ dead if no ack for 6s
+  function encodeCompactImageDataUrl(frameW, frameH, drawFrame) {
+    // Keep source capture reasonably small; GUI writes this to local file.
+    const MAX_EDGE = 1280;
+    const JPEG_QUALITY = 0.82;
+
+    const scale = Math.min(1, MAX_EDGE / Math.max(frameW, frameH));
+    const shot = document.createElement('canvas');
+    shot.width = Math.max(1, Math.round(frameW * scale));
+    shot.height = Math.max(1, Math.round(frameH * scale));
+    const shotCtx = shot.getContext('2d');
+    if (!shotCtx) throw new Error('Screenshot canvas context unavailable');
+
+    drawFrame(shotCtx, shot.width, shot.height);
+    return shot.toDataURL('image/jpeg', JPEG_QUALITY);
+  }
+
+  // Capture currently visible stream frame and hand it to parent chat UI.
+  function captureCurrentFrameDataUrl() {
+    // Prefer WebRTC video when available.
+    if (remoteVideo && remoteVideo.style.display !== 'none' && remoteVideo.videoWidth > 0 && remoteVideo.videoHeight > 0) {
+      return encodeCompactImageDataUrl(
+        remoteVideo.videoWidth,
+        remoteVideo.videoHeight,
+        (shotCtx, outW, outH) => {
+          shotCtx.drawImage(remoteVideo, 0, 0, outW, outH);
+        }
+      );
+    }
+
+    // Fallback for non-WebRTC/canvas rendering paths.
+    if (canvas && canvas.style.display !== 'none' && canvas.width > 0 && canvas.height > 0) {
+      return encodeCompactImageDataUrl(
+        canvas.width,
+        canvas.height,
+        (shotCtx, outW, outH) => {
+          shotCtx.drawImage(canvas, 0, 0, outW, outH);
+        }
+      );
+    }
+
+    throw new Error('No active stream frame available');
+  }
+
+  function captureToChat() {
+    if (!capturing) {
+      log('Capture to chat ignored: stream is not active.', 'err');
+      return;
+    }
+    try {
+      const dataUrl = captureCurrentFrameDataUrl();
+      const ts = new Date().toISOString().replace(/[:.]/g, '-');
+      window.parent.postMessage({
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/capture-to-chat',
+        data: {
+          dataUrl,
+          fileName: 'unity-view-' + ts + '.jpg',
+          windowType: currentWindowType || activeOffscreenWindowType || ''
+        }
+      }, '*');
+      log('Captured current view and sent to chat.', 'ok');
+    } catch (e) {
+      const msg = e && e.message ? e.message : String(e);
+      log('Capture to chat failed: ' + msg, 'err');
+    }
+  }
+
+  let audioEnabled = true;
+
+  // Audio is controlled via postMessage from the parent panel.
+  function setAudioEnabled(enabled) {
+    audioEnabled = enabled;
+    log('Audio ' + (audioEnabled ? 'enabled' : 'muted'), 'info');
+    fetchJson('/audio', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ enabled: audioEnabled })
+    });
+    remoteVideo.muted = !audioEnabled;
+  }
+
+  function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+  function log(msg, cls) {
+    // Write to both DOM and browser console for cross-iframe debugging.
+    var ts = new Date().toLocaleTimeString();
+    var full = '[Stream ' + ts + '] ' + msg;
+    if (cls === 'err') console.error(full);
+    else if (cls === 'warn') console.warn(full);
+    else console.log(full);
+  }
+
+  async function fetchJson(path, opts) {
+    try {
+      const r = await apiFetch(path, opts);
+      return await r.json();
+    } catch(e) {
+      log('Fetch error: ' + e.message, 'err');
+      return null;
+    }
+  }
+
+  // Report stream status to the parent panel (RightSideBarPanel) so it can
+  // update its connection indicator without polling the C++ server.
+  // Statuses: 'idle' | 'connecting' | 'streaming' | 'stalled' | 'reconnecting' | 'disconnected'
+  let lastReportedStreamStatus = 'idle';
+  function notifyParentStreamStatus(status, reason) {
+    if (status === lastReportedStreamStatus && !reason) return;
+    lastReportedStreamStatus = status;
+    var data = { status: status };
+    if (reason) data.reason = reason;
+    window.parent.postMessage({
+      source: 'unityWindowBridge',
+      messageType: 'unity-window/stream-status',
+      data: data
+    }, '*');
+    if (status === 'streaming') {
+      void collectStreamMetrics();
+    }
+  }
+
+  // Report WebRTC network metrics to the parent panel for the toolbar indicator.
+  let lastReportedMetricsKey = '';
+  function notifyParentStreamMetrics(metrics) {
+    if (!metrics) return;
+    var key = JSON.stringify(metrics);
+    if (key === lastReportedMetricsKey) return;
+    lastReportedMetricsKey = key;
+    window.parent.postMessage({
+      source: 'unityWindowBridge',
+      messageType: 'unity-window/stream-metrics',
+      data: metrics
+    }, '*');
+  }
+
+  async function measureSignalingLatencyMs() {
+    var start = performance.now();
+    var ok = await checkHealth();
+    if (!ok) return null;
+    return Math.max(0, Math.round(performance.now() - start));
+  }
+
+  function extractRttMsFromStats(stats) {
+    var selectedPairId = null;
+    var rttMs = null;
+    stats.forEach(function(report) {
+      if (report.type === 'transport' && report.selectedCandidatePairId) {
+        selectedPairId = report.selectedCandidatePairId;
+      }
+    });
+    stats.forEach(function(report) {
+      if (report.type === 'candidate-pair') {
+        var isActivePair = selectedPairId
+          ? report.id === selectedPairId
+          : report.state === 'succeeded' && (report.selected || report.nominated);
+        if (
+          isActivePair &&
+          typeof report.currentRoundTripTime === 'number' &&
+          !isNaN(report.currentRoundTripTime)
+        ) {
+          rttMs = Math.round(report.currentRoundTripTime * 1000);
+        }
+      }
+      if (
+        report.type === 'remote-inbound-rtp' &&
+        typeof report.roundTripTime === 'number' &&
+        !isNaN(report.roundTripTime)
+      ) {
+        rttMs = Math.round(report.roundTripTime * 1000);
+      }
+    });
+    return rttMs;
+  }
+
+  async function collectStreamMetrics() {
+    if (!capturing) return;
+    try {
+      var rttMs = null;
+      var jitterMs = null;
+      var packetsLost = null;
+      if (pc) {
+        var stats = await pc.getStats();
+        rttMs = extractRttMsFromStats(stats);
+        stats.forEach(function(report) {
+          if (report.type === 'inbound-rtp' && report.kind === 'video') {
+            if (typeof report.jitter === 'number' && report.jitter >= 0) {
+              jitterMs = Math.round(report.jitter * 1000);
+            }
+            if (typeof report.packetsLost === 'number') {
+              packetsLost = report.packetsLost;
+            }
+          }
+        });
+      }
+      // Local/host ICE often omits currentRoundTripTime — fall back to signaling health RTT.
+      if (rttMs == null) {
+        rttMs = await measureSignalingLatencyMs();
+      }
+      notifyParentStreamMetrics({
+        rttMs: rttMs,
+        jitterMs: jitterMs,
+        packetsLost: packetsLost,
+      });
+    } catch (e) { /* ignore stats errors */ }
+  }
+
+  async function checkHealth() {
+    const h = await fetchJson('/health');
+    if (h && h.status === 'ok') {
+      return true;
+    }
+    return false;
+  }
+
+  // =================== WebRTC ===================
+
+  async function startWebRTC() {
+    log('Starting WebRTC connection (server-offer model)...', 'info');
+    notifyParentStreamStatus('connecting');
+
+    // Fetch ICE servers from native signaling server.
+    let iceServers = [];
+    try {
+      const iceResp = await fetchJson('/ice-servers');
+      if (iceResp && iceResp.iceServers) {
+        iceServers = iceResp.iceServers.map(function(s) {
+          if (typeof s !== 'string') return s;
+          // Parse TURN/TURNS URIs with embedded credentials:
+          //   turn://user:pass@host?transport=tcp
+          //   turns://user:pass@host:port
+          // RTCPeerConnection requires username/credential as separate fields.
+          var m = s.match(/^(turns?):\/\/([^:]+):([^@]+)@(.+)$/);
+          if (m) {
+            return {
+              urls: m[1] + ':' + m[4],
+              username: decodeURIComponent(m[2]),
+              credential: decodeURIComponent(m[3])
+            };
+          }
+          return { urls: s };
+        }).filter(function(s) {
+          return s && (typeof s.urls === 'string' || Array.isArray(s.urls));
+        });
+        log('ICE servers: ' + JSON.stringify(iceResp.iceServers), 'info');
+      }
+    } catch (e) { log('No ICE server config, using local-only', 'info'); }
+
+    // Local connections (same machine) don't need STUN/TURN. Using STUN
+    // can cause 20-30s delay on first connection due to DNS/STUN timeout.
+    var isLocal = !isRemoteWindowBridgeApi(API);
+    if (isLocal && iceServers.length > 0) {
+      log('Local connection detected, skipping STUN/TURN (host candidates suffice)', 'info');
+      iceServers = [];
+    }
+
+    try {
+      pc = new RTCPeerConnection({ iceServers });
+    } catch (iceErr) {
+      log('RTCPeerConnection failed with ICE servers, falling back to local-only: ' + iceErr.message, 'err');
+      pc = new RTCPeerConnection({ iceServers: [] });
+    }
+
+    // Collect all remote tracks into a single MediaStream for the video element.
+    let remoteStream = new MediaStream();
+
+    pc.ontrack = (ev) => {
+      log('Remote track received: ' + ev.track.kind + ', streams=' + ev.streams.length, 'ok');
+
+      remoteStream.addTrack(ev.track);
+      remoteVideo.srcObject = remoteStream;
+
+      if (ev.track.kind === 'video') {
+        remoteVideo.style.display = 'block';
+        canvas.style.display = 'none';
+        placeholder.style.display = 'none';
+
+        ev.track.onended = () => log('Video track ended', 'err');
+        ev.track.onmute = () => log('Video track muted', 'err');
+        ev.track.onunmute = () => log('Video track unmuted (receiving data)', 'ok');
+
+        let checkCount = 0;
+        const frameChecker = setInterval(() => {
+          checkCount++;
+          const w = remoteVideo.videoWidth;
+          const h = remoteVideo.videoHeight;
+          const readyState = remoteVideo.readyState;
+          log('Video check #' + checkCount + ': ' + w + 'x' + h +
+              ' ready=' + readyState +
+              ' track=' + ev.track.readyState +
+              ' muted=' + ev.track.muted, 'info');
+
+          if (w > 0 && h > 0) {
+            log('WebRTC video frames arriving: ' + w + 'x' + h, 'ok');
+            clearInterval(frameChecker);
+          }
+          if (checkCount >= 10) {
+            log('No video frames after 10 checks', 'err');
+            clearInterval(frameChecker);
+          }
+        }, 1000);
+      }
+
+      if (ev.track.kind === 'audio') {
+        log('Audio track received, muted=' + !audioEnabled, 'ok');
+        remoteVideo.muted = !audioEnabled;
+      }
+    };
+
+    pc.onicecandidate = async (ev) => {
+      if (ev.candidate) {
+        await fetchJson('/signaling/ice', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            candidate: ev.candidate.candidate,
+            sdpMid: ev.candidate.sdpMid,
+            sdpMLineIndex: ev.candidate.sdpMLineIndex
+          })
+        });
+      }
+    };
+
+    pc.onconnectionstatechange = () => {
+      log('PC state: ' + pc.connectionState, 'info');
+      if (pc.connectionState === 'connected') {
+        log('WebRTC connected successfully', 'ok');
+        reconnectAttempt = 0;
+        resumeAttempt = 0;
+        cancelReconnect();
+        stallCheckCount = 0;
+        lastFramesDecoded = 0;
+        // During domain reload, PC stays connected (C++ native singleton
+        // keeps WebRTC alive). Only notify streaming if not reloading —
+        // trackWebRTCFps and domain_reload_complete handle the reload case.
+        if (!domainReloading && lastReportedStreamStatus !== 'streaming') {
+          notifyParentStreamStatus('streaming');
+        }
+      }
+      if (pc.connectionState === 'failed') {
+        log('WebRTC connection failed — will auto-reconnect', 'err');
+        notifyParentStreamStatus('reconnecting');
+        scheduleReconnect(0);
+      }
+      if (pc.connectionState === 'disconnected') {
+        log('WebRTC disconnected — waiting 3s before reconnect', 'err');
+        notifyParentStreamStatus('disconnected');
+        scheduleReconnect(RECONNECT_BASE_DELAY_MS);
+      }
+    };
+
+    // Server creates the DataChannel in its offer; receive it here.
+    pc.ondatachannel = (event) => {
+      inputChannel = event.channel;
+      inputChannel.onopen = () => {
+        log('Input DataChannel opened (label=' + inputChannel.label + ')', 'ok');
+        detectAndReportConnectionType();
+      };
+      inputChannel.onclose = () => log('Input DataChannel closed', 'err');
+      inputChannel.onerror = (e) => log('Input DataChannel error: ' + e.message, 'err');
+      // Handle server-to-browser messages (popup data, etc.)
+      inputChannel.onmessage = (msgEvt) => {
+        try {
+          // Fast path: heartbeat_ack is high-frequency, skip full parse overhead
+          if (msgEvt.data.indexOf('heartbeat_ack') !== -1) {
+            lastHeartbeatAckTime = Date.now();
+            cppAlive = true;
+            return;
+          }
+          const msg = JSON.parse(msgEvt.data);
+          if (msg.type === 'popup_payload_begin') handlePopupPayloadBegin(msg);
+          else if (msg.type === 'popup_payload_chunk') handlePopupPayloadChunk(msg);
+          else if (msg.type === 'popup_payload_end') handlePopupPayloadEnd(msg);
+          else handleServerDcMessage(msg);
+        } catch (e) {
+          log('DC onmessage error: ' + e.message + ' data=' + String(msgEvt.data).substring(0, 200), 'err');
+        }
+      };
+    };
+
+    // Step 1: Request the server-generated offer.
+    const serverOffer = await fetchJson('/signaling/offer', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({})
+    });
+
+    if (!serverOffer || !serverOffer.sdp) {
+      log('WebRTC signaling: no server offer: ' + JSON.stringify(serverOffer), 'err');
+      throw new Error('Signaling failed: no server offer (backend may be unreachable)');
+    }
+
+    log('Server offer received (' + serverOffer.sdp.length + ' bytes)', 'info');
+
+    // Step 2: Set server offer as remote description.
+    log('Setting remote description (offer)...', 'info');
+    await pc.setRemoteDescription({ type: 'offer', sdp: serverOffer.sdp });
+
+    // Step 3: Create answer and set as local description.
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+
+    // Log the answer SDP to check codec negotiation.
+    const answerLines = answer.sdp.split('\n');
+    for (const line of answerLines) {
+      if (line.startsWith('a=rtpmap') || line.startsWith('a=fmtp') || line.startsWith('m=video') || line.startsWith('m=audio')) {
+        log('Answer SDP: ' + line.trim(), 'info');
+      }
+    }
+
+    // Step 4: Send answer back to server.
+    const ansResp = await fetchJson('/signaling/answer', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ sdp: answer.sdp, type: 'answer' })
+    });
+
+    if (ansResp && !ansResp.error) {
+      log('SDP answer sent to server', 'ok');
+      startIcePolling();
+
+      // Periodically check WebRTC stats for incoming RTP packets.
+      let statsCheckCount = 0;
+      const statsInterval = setInterval(async () => {
+        statsCheckCount++;
+        if (!pc || statsCheckCount > 15) { clearInterval(statsInterval); return; }
+        try {
+          const stats = await pc.getStats();
+          stats.forEach(report => {
+            if (report.type === 'inbound-rtp' && report.kind === 'video') {
+              log('Video RTP: pkts=' + report.packetsReceived +
+                  ' bytes=' + report.bytesReceived +
+                  ' frames=' + (report.framesDecoded || 0) +
+                  ' keysDecoded=' + (report.keyFramesDecoded || 0) +
+                  ' lost=' + report.packetsLost +
+                  ' jitter=' + (report.jitter || 0) +
+                  ' decoderImpl=' + (report.decoderImplementation || '?'), 'info');
+            }
+            if (report.type === 'inbound-rtp' && report.kind === 'audio') {
+              log('Audio RTP: pkts=' + report.packetsReceived +
+                  ' bytes=' + report.bytesReceived +
+                  ' lost=' + report.packetsLost +
+                  ' jitter=' + (report.jitter || 0), 'info');
+            }
+            if (report.type === 'codec' && report.mimeType) {
+              log('Codec: ' + report.mimeType + ' pt=' + report.payloadType +
+                  ' sdpFmtp=' + (report.sdpFmtpLine || 'none'), 'info');
+            }
+          });
+        } catch(e) {}
+      }, 2000);
+
+    } else {
+      log('Failed to send answer: ' + JSON.stringify(ansResp), 'err');
+    }
+  }
+
+  function startIcePolling() {
+    stopIcePolling();
+    async function poll() {
+      const candidates = await fetchJson('/signaling/ice');
+      if (candidates && Array.isArray(candidates)) {
+        for (const c of candidates) {
+          if (c.candidate) {
+            try {
+              await pc.addIceCandidate({ candidate: c.candidate, sdpMid: c.sdpMid || '' });
+            } catch(e) { /* ignore */ }
+          }
+        }
+      }
+      if (capturing) icePollingTimer = setTimeout(poll, 500);
+    }
+    poll();
+  }
+
+  function stopIcePolling() {
+    if (icePollingTimer) { clearTimeout(icePollingTimer); icePollingTimer = null; }
+  }
+
+  // Detect whether this is a remote streaming session and inform the Unity
+  // server via DataChannel so it can choose the correct mouse delta path.
+  // The Tauri proxy uses distinct URL patterns:
+  //   /api/tauri/window-bridge/local/:token  → local streaming
+  //   /api/tauri/window-bridge/remote/:token → remote streaming
+  // Only the "remote" variant means the physical mouse is on another machine.
+  function detectAndReportConnectionType() {
+    try {
+      var isRemote = isRemoteWindowBridgeApi(API);
+      isRemoteConnection = isRemote;
+      log('Connection type: remote=' + isRemote +
+          ' API=' + (API || '(none)').substring(0, 80), 'info');
+      if (inputChannel && inputChannel.readyState === 'open') {
+        inputChannel.send(JSON.stringify({
+          type: 'connection_info', remote: isRemote
+        }));
+        log('Sent connection_info: remote=' + isRemote, 'ok');
+      } else {
+        log('connection_info NOT sent: DataChannel not open', 'err');
+      }
+    } catch (e) {
+      log('detectConnectionType error: ' + (e.message || e), 'err');
+    }
+  }
+
+  function closeWebRTC() {
+    stopIcePolling();
+    if (inputChannel) { try { inputChannel.close(); } catch(e) {} inputChannel = null; }
+    if (pc) { try { pc.close(); } catch(e) {} pc = null; }
+    remoteVideo.style.display = 'none';
+    remoteVideo.srcObject = null;
+  }
+
+  // =================== WebRTC Auto-Reconnect ===================
+
+  function cancelReconnect() {
+    if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+  }
+
+  function scheduleReconnect(delayMs) {
+    if (!capturing) return;
+    // During domain reload the URL refresh handles recovery; skip reconnect.
+    if (domainReloading) return;
+    cancelReconnect();
+    if (reconnectAttempt >= RECONNECT_MAX_ATTEMPTS) {
+      log('Auto-reconnect gave up after ' + RECONNECT_MAX_ATTEMPTS + ' attempts', 'err');
+      return;
+    }
+    var delay = delayMs > 0 ? delayMs : Math.min(
+      RECONNECT_BASE_DELAY_MS * Math.pow(2, reconnectAttempt),
+      RECONNECT_MAX_DELAY_MS
+    );
+    log('Scheduling WebRTC reconnect #' + (reconnectAttempt + 1) + ' in ' + delay + 'ms', 'info');
+    reconnectTimer = setTimeout(function() { reconnectTimer = null; doReconnect(); }, delay);
+  }
+
+  var consecutiveSignalingFailures = 0;
+  const SIGNALING_FAILURES_BEFORE_URL_REFRESH = 3;
+
+  async function doReconnect() {
+    if (!capturing) return;
+    if (domainReloading) {
+      log('Skip reconnect during domain reload (server/capture auto-resume handles recovery)', 'info');
+      return;
+    }
+    reconnectAttempt++;
+    log('WebRTC reconnect attempt #' + reconnectAttempt, 'info');
+    notifyParentStreamStatus('reconnecting');
+
+    // Wait for HTTP server to be reachable (C++ server may need a moment after domain reload)
+    var healthy = await checkHealth();
+    if (!healthy) {
+      log('Server not reachable, retrying...', 'err');
+      scheduleReconnect(0);
+      return;
+    }
+
+    // If we were in offscreen mode, re-send the start-offscreen request.
+    // After domain reload, C# may have stopped pushing frames and C++ offscreen
+    // mode may have ended. Re-sending ensures the pipeline is fully restarted.
+    if (activeOffscreenWindowType) {
+      log('Re-sending offscreen start for: ' + activeOffscreenWindowType, 'info');
+      var fps = STREAM_FPS;
+      var sz = getMainAreaSizeForStream();
+      var resumeEndpoint = activeOffscreenWindowType === '__composite__'
+        ? '/stream/start-composite'
+        : '/stream/start-offscreen';
+      var resumeBody = activeOffscreenWindowType === '__composite__'
+        ? buildCompositeRequestPayload(sz)
+        : {
+          fps: fps,
+          width: sz.width,
+          height: sz.height,
+          dpr: sz.dpr,
+          windowType: activeOffscreenWindowType
+        };
+      await fetchJson(resumeEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(resumeBody)
+      });
+    }
+
+    // Tear down old WebRTC connection
+    closeWebRTC();
+
+    // Re-establish WebRTC session
+    try {
+      await startWebRTC();
+      trackWebRTCFps();
+      log('WebRTC reconnect successful', 'ok');
+      resumeAttempt = 0;
+      consecutiveSignalingFailures = 0;
+    } catch (e) {
+      log('WebRTC reconnect failed: ' + e.message, 'err');
+      consecutiveSignalingFailures++;
+      // The /health endpoint may be served by the Tauri proxy itself and
+      // returns OK even when the Unity backend is unreachable (502 on
+      // signaling). After repeated signaling failures, ask the parent to
+      // re-resolve the stream URL so we get a fresh proxy session.
+      if (consecutiveSignalingFailures >= SIGNALING_FAILURES_BEFORE_URL_REFRESH) {
+        log('Signaling failed ' + consecutiveSignalingFailures + ' times — requesting URL refresh', 'err');
+        requestParentUrlRefresh();
+      }
+      scheduleReconnect(0);
+    }
+  }
+
+  // Detect zombie connections: WebRTC reports "connected" but no video frames arrive.
+  // This can happen when C# stops pushing frames after domain reload but the DTLS
+  // session hasn't timed out yet.
+  function startStallDetection() {
+    stallCheckCount = 0;
+    lastFramesDecoded = 0;
+  }
+
+  // Check if C++ is still responding to heartbeat (independent of C# main thread).
+  function isCppAlive() {
+    if (!cppAlive) return false;
+    return (Date.now() - lastHeartbeatAckTime) < CPP_ALIVE_TIMEOUT_MS;
+  }
+
+  async function checkVideoStall() {
+    if (!capturing || !pc) return;
+    try {
+      var stats = await pc.getStats();
+      var currentFrames = 0;
+      stats.forEach(function(report) {
+        if (report.type === 'inbound-rtp' && report.kind === 'video') {
+          currentFrames = report.framesDecoded || 0;
+        }
+      });
+      if (currentFrames > 0 && currentFrames === lastFramesDecoded) {
+        stallCheckCount++;
+
+        // If C++ is responding to heartbeats, the stall is caused by the
+        // C# main thread being temporarily blocked (compilation, asset
+        // import, modal dialog, etc.). Suppress resume/reconnect — frames
+        // will resume automatically once C# unblocks. Attempting to resume
+        // while blocked is pointless and can cause cascading side-effects.
+        if (isCppAlive()) {
+          if (stallCheckCount === 3) {
+            notifyParentStreamStatus('unity_busy');
+            log('Frames stalled but C++ is alive (heartbeat_ack OK) — Unity main thread likely busy, waiting...', 'info');
+          }
+          if (stallCheckCount % 15 === 0) {
+            log('Still waiting for Unity main thread (' + (stallCheckCount * 2) + 's), C++ heartbeat_ack alive', 'info');
+          }
+          lastFramesDecoded = currentFrames;
+          return;
+        }
+
+        // C++ is NOT responding — connection may be truly dead.
+        if (stallCheckCount === 3) {
+          notifyParentStreamStatus('stalled');
+          log('Early stall detected (' + stallCheckCount + ' checks, no heartbeat_ack), trying fast offscreen resume', 'info');
+          tryResumeOffscreen();
+        }
+        if (stallCheckCount >= STALL_THRESHOLD) {
+          log('Video stall detected (' + stallCheckCount + ' checks, stuck at ' + currentFrames + ' frames) — resuming offscreen', 'err');
+          stallCheckCount = 0;
+          tryResumeOffscreen();
+          return;
+        }
+      } else {
+        if (currentFrames > lastFramesDecoded) {
+          if (domainReloading) {
+            if (stallCheckCount > 0) {
+              // Frames were stalled (C# unloaded) and are now resuming
+              // (C# reloaded) — this is a true reload complete signal.
+              // log('Frame recovery after stall during domain reload — reload confirmed', 'info');
+              resumeAttempt = 0;
+              domainReloading = false;
+              stallCheckCount = 0;
+              if (lastReportedStreamStatus !== 'streaming') {
+                notifyParentStreamStatus('streaming');
+              }
+            } else {
+              // Pre-unload frame growth — OnBeforeAssemblyReload fired but
+              // C# hasn't actually unloaded yet. Ignore.
+              log('Frame growth during domain reload — ignoring (pre-unload, stallCount=0)', 'info');
+            }
+          } else {
+            resumeAttempt = 0;
+            if (lastReportedStreamStatus !== 'streaming') {
+              notifyParentStreamStatus('streaming');
+            }
+          }
+        } else if (stallCheckCount >= 3 && !domainReloading) {
+          notifyParentStreamStatus('streaming');
+        }
+        // During domain reload, don't reset stallCheckCount on pre-unload
+        // frame growth — we need it to detect the stall when C# unloads.
+        if (!domainReloading) {
+          stallCheckCount = 0;
+        }
+      }
+      lastFramesDecoded = currentFrames;
+    } catch (e) { /* ignore stats errors */ }
+  }
+
+  // Resume offscreen frame pushing without rebuilding WebRTC.
+  // If resume alone doesn't work (e.g. WebRTC session is truly dead),
+  // fall back to full doReconnect after a second stall cycle.
+  let resumeAttempt = 0;
+  const MAX_RESUME_ATTEMPTS = 2;
+  async function tryResumeOffscreen() {
+    if (domainReloading) {
+      // During domain reload, C# auto-restore rebinds capture after assemblies
+      // are back. Avoid sending redundant start-* requests from the browser.
+      log('Skip offscreen resume request during domain reload', 'info');
+      return;
+    }
+    if (!activeOffscreenWindowType) {
+      // Not in offscreen mode — fall back to full reconnect
+      scheduleReconnect(0);
+      return;
+    }
+    resumeAttempt++;
+    if (resumeAttempt > MAX_RESUME_ATTEMPTS) {
+      log('Resume failed after ' + MAX_RESUME_ATTEMPTS + ' attempts, doing full WebRTC reconnect', 'err');
+      resumeAttempt = 0;
+      scheduleReconnect(0);
+      return;
+    }
+    log('Resuming offscreen capture (attempt ' + resumeAttempt + '): ' + activeOffscreenWindowType, 'info');
+    notifyParentStreamStatus('reconnecting');
+    var fps = STREAM_FPS;
+    var sz = getMainAreaSizeForStream();
+    try {
+      var resumeEndpoint = activeOffscreenWindowType === '__composite__'
+        ? '/stream/start-composite'
+        : '/stream/start-offscreen';
+      var resumeBody = activeOffscreenWindowType === '__composite__'
+        ? buildCompositeRequestPayload(sz)
+        : {
+          fps: fps,
+          width: sz.width,
+          height: sz.height,
+          dpr: sz.dpr,
+          windowType: activeOffscreenWindowType
+        };
+      await fetchJson(resumeEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(resumeBody)
+      });
+      log('Offscreen resume request sent', 'ok');
+    } catch (e) {
+      log('Offscreen resume failed: ' + e.message + ', will try full reconnect', 'err');
+      scheduleReconnect(0);
+    }
+  }
+
+  function startHeartbeat() {
+    if (heartbeatTimer) return;
+    startStallDetection();
+    void collectStreamMetrics();
+    heartbeatTimer = setInterval(() => {
+      if (!capturing || typeof sendInput !== 'function') return;
+      sendInput({ type: 'heartbeat' });
+      // Piggyback stall detection on the heartbeat interval
+      checkVideoStall();
+      void collectStreamMetrics();
+    }, 2000);
+  }
+
+  function stopHeartbeat() {
+    if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+  }
+
+  // Video element FPS tracking for WebRTC mode.
+  function trackWebRTCFps() {
+    if (!capturing) return;
+    const v = remoteVideo;
+    if (v.videoWidth > 0 && lastReportedStreamStatus !== 'streaming' && !domainReloading) {
+      notifyParentStreamStatus('streaming');
+    }
+    requestAnimationFrame(trackWebRTCFps);
+  }
+
+  // =================== Control ===================
+
+  function getMainAreaSizeForStream() {
+    const area = $('mainArea');
+    if (!area) return { width: 0, height: 0, dpr: 1 };
+    const rect = area.getBoundingClientRect();
+    return {
+      width: Math.max(0, Math.round(rect.width)),
+      height: Math.max(0, Math.round(rect.height)),
+      dpr: window.devicePixelRatio || 1
+    };
+  }
+
+  async function stopCapture() {
+    capturing = false;
+    activeOffscreenWindowType = '';
+    compositeLayout = null;
+    activeCompositeSlotId = '';
+    currentWindowType = '';
+    serverEditorCursor = 'default';
+    clearDragCursorLock();
+    gameCursorLocked = false;
+    exitGamePointerLock();
+    cppAlive = false;
+    lastHeartbeatAckTime = 0;
+    notifyParentStreamStatus('idle');
+    lastReportedMetricsKey = '';
+    notifyParentStreamMetrics({ rttMs: null, jitterMs: null, packetsLost: null });
+    hideCursorOverlay();
+    mainArea.style.cursor = '';
+    // Ensure drag state is fully cleared when capture stops unexpectedly.
+    dragging = false;
+    dragButton = -1;
+    if (capturedPointerId !== -1) {
+      try { mainArea.releasePointerCapture(capturedPointerId); } catch (_) {}
+      capturedPointerId = -1;
+    }
+    cancelReconnect();
+    reconnectAttempt = 0;
+    stopHeartbeat();
+    serverTooltipText = '';
+    hideUnityTooltip();
+    closeWebRTC();
+    await fetchJson('/stream/stop', { method: 'POST' });
+    canvas.style.display = 'none';
+    remoteVideo.style.display = 'none';
+    placeholder.style.display = 'flex';
+    log('Capture stopped (window re-docked if previously undocked)');
+    // Fill-only mode: stream target is controlled by parent switch-stream.
+  }
+
+  function notifyStopOnPageClose() {
+    if (!capturing) return;
+    // Same-origin fetch to the stream server — no CORS issues here.
+    try {
+      apiFetch('/stream/stop', {
+        method: 'POST',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}'
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
+  // =================== Input ===================
+
+  // Shared state between setupInputForwarding and Frontend Popup Menu.
+  // Must be at IIFE scope so showPopupMenu / hidePopupMenu can access them.
+  const mainArea = $('mainArea');
+  let dragging = false;
+  let dragButton = -1;
+  let capturedPointerId = -1;
+  // Track whether any mousedrag was sent during the current drag gesture.
+  // Used by pointerup to synthesize a mousedrag if the browser skipped
+  // pointermove events between pointerdown and pointerup.
+  let dragSentMove = false;
+  let dragStartCanvasPos = null;
+  let sendInput;  // assigned in setupInputForwarding
+
+  // Editor cursor sync — Unity sends cursor_style via DataChannel.
+  // Custom SceneView cursors use a DOM overlay (CSS is unreliable on macOS during Focus()).
+  const cursorOverlay = document.getElementById('cursorOverlay');
+  // Base64 encoded cursor images (32x32 display, from Tuanjie assets).
+  const CURSOR_IMAGES = {
+    'cursor-pan':        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAASZJREFUeNrslrENgzAQRWGJRKKiZQFESZuCNrPQxVN4BBcus0BEzxoUTOH4B4wMgmCjQzT+kiUL+fjPx+mOWCkVXak4AASAAHA1QASAI0uLI3xc/PB7PAxvlikf2AdZIN4wLsZGL62ZoQ2wgHHOsA/AR+tnwhjbA+Cu2fABYDDeMrX3VVXZz8lq4G5nIc/zydTeG5iu67DvKDLwhLFJqZ2FNRmYtm1xvqUAmG5dluUs3f8kpcRZSQGwesM9oQ50bEUBwNM0VT7C90+SBMEJSRECwlS2i4QQCBLUnfCt5QRQ1zUCaupO+MD3d4EoigKBBXUndILo+15lWYbA7AyACWJLTdMgqDljFixmzLrGOcHOBuCLETwbx2PbdgIIv2QBIABcDvAVYAC8ot6o2UhrWQAAAABJRU5ErkJggg==',
+    'cursor-orbit':      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAnJJREFUeNrsVr+LGkEUnl0Pz5hbyAWry8KBEhDEwh8YsFNyMfpX2EmSRghYBi6VIKRLbZfCQsFmVUgnoiBYWIqiElJponirnsSbvLeMYbOunOaOXLMLH8t7++Z737yZebMcpZQ85MOTB34MAYYAQ4Ah4EjPyXHcrniuXq8LTqfztcViecXz/HOIPYFuegXoLhYLqdVqSaFQSIZY3Rar7bycXivWEcDVarVTt9v9Dr59rFQqpFwuk06nQ2azGREEgTgcDhKLxUgkEiHr9fpDu93+HAwGf2qFbOVDhxbaZZpMJm9WqxVNp9PU4/FQRqoLl8ulxGH8dDp9q13mrVy3CDAByeVgMKA+n++vRPF4nJZKJSrLsvJGW/3d6/XSfr+PIi6RRy/PbQJM4/H4fbfbpaIobiXPZrMUyk2tVqvyRlsrAsfheOTZJWKXAC6ZTD5ZLpdKSbVlxhljUrUPbfTrLQnyIN9mz+0lYDgcxnO5HIVNt0WKZceZq31oo18vHnmQ7xABpmg0KsKxurcKhMPhZ7gh964A4LTRaKTVe2Azu0P3APKAfdgSAB4BzqvVahZ386GnAOPx9OB45GF83EGnACAAHMVi8dOmD2iXRLvmmz6AZcdxOJ7xmP6pD7DB536//0KSpC/z+Zzm83maSCQotFwaCASUN9qFQoHid4zDeDbzP8n1BOzTirGTWQAngKd2u11MpVIvocQvbDbbmdlsPobqXI9Go+/NZrOeyWS+9nq9bxD7A3AFWAJu7nwXsFkcAx4zWJmNAteAFWAOkBmumZ/ex2WkFsKzW/SIieLZDDHZL4abO92Gxh+RIcAQ8D+f3wIMALOT32dgKVXbAAAAAElFTkSuQmCC',
+    'cursor-zoom':       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAkBJREFUeNrsl8FrGkEUxnerNptomkihoBA09FByaQ8JESIe7MmbF096aS7mEBCKf4Bei/+BgVysJ4XEJJBLTgUPlV4sKIhXD5VgaUURJTp932YXbLK6Y7RIYQc+fL75Zt5vZ2dGFBljwjLbM2HJzQAwAAyA/wdApOb3+83dbvfDYDA4G41GPyDEyKEPnpkJcBNOk1q/VCptUUGWyWRYKBRiDodDFmLk0AcPvLPU4QEQ3W63hAKJRAIJTaEPHni1IOYBMDUajSM8JeZxOp0smUyySqUiCzFy6IMHXozhBeDZA2abzRYsFAryl2g0Kng8notUKvURQowcGjzwYsyEV/mkPbBOG+0W7xt2PHUsFjukeAdCjBz64IEXY/TmVWXmWIFHy+lyuVCkMRbrjpm4vDymVqv13ev1vs/n80IulxMikUjA5/M10We32wPZbFb2kUf2LvoeGNbr9ZtgMCh/SafTAhU8tlqtJQgxcmjw9Pv9n8rJWNg9sCJJ0rbeMVSF1m63T/FwPHuA6xhipcPhsH/aRfQQotfrnfBAcF1EWAXSK4vF8o72wKdarfa10+n8gqrV6rdisfiF3Zs1Iea9iMYh7CQ36S1pX9Ee6aBcLl9Pg5gXQIUwKSDrpE1FG6SXpDd0H1xpQdDn80UA6J0mG+k1vZJLFQKbttlsfqZ47V8D/AVBe+QcEHR8z+Lx+C7lpEnzi3pFZvyJB8Qa6QVplXRH+k3qUJ07zfkXDKBCmBWNFIghm1BINP6aGQDLBvgjwAC80k8ikVNwKwAAAABJRU5ErkJggg==',
+    'cursor-fps':        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAv9JREFUeNrsVs9rGkEU3t0YNTaWpuTUCoFIIRC8aLDgTWlr9a/wUAhpL0LBYyE9CaG99dBePLUHCwmEgonQWwgGBA8ePIhiQulBkjap8XfN9H12VjZm3eymKbm48LE7M+/HN2/em7ciY0y4yUcSbvgZExgTGBMYEzCpTYqiOEpezGQy9oWFhadWq/WJJEkPSHaabtNTQqnZbKZyuVzK7/fXmc4rVlSTUyEg7u7uzrhcrhe09jqdTgvb29tCsVgUarWaYLfbBafTKYTDYSEYDAq9Xu9VPp9/5/P5fl5KBOvDGD6m4+PjlU6nw+LxOFtcXITAAETo3BjrkIP8ycnJc+ir+Rj40lwUhAkysrq/v888Hs85h5FIhG1tbbF6vd5/Y6wk4na7WaVSAYlV2DFMAEpHR0cvS6USczgc54zDWSKRYBRuZrPZ+m+Mh0lAD/qwM4rEKOdiNBq902q1LoQcwI7hVDmHMeaHZaEPO7An55wuAgcHB5FkMnnhjAGEHTtXzmGMeTV52IE9IwQmQqGQg8rq2iIQCATuqyXkyAgQZvb29uLKHFAmoJEcgB0aGzsCwhRhbmdnJ4FslqtAmYhaVQB5VA/0YYfb002gfwwEO8G5ubn51ug9gLBDD/rcjqEqGCYxt7S09DiVSn1qNBpsfX2dLS8vM7pymdfr7b8x3tjYYFiHHOT5zu1a94CeqxgNy0qYJtydn593xGKxRxTih7Ozs/fMZrOFotM+PDz8ns1mM2tra1/L5fI3kv1BOCW0yMfZP/cCHg0L4RaHjY9BsEfoEBqEOpxSBb2hhvUMyt1u9wMRXVEjopeAkojEu6iJk8L4jJP4zTFJdpuynX6oRdFK77audqzVu7gjoC0bV9nAlIrupKzzX35IyKlEoX7/lxOr0c33WU40/l3DGmQga6Qd62rnyAfe+xknofVtkfWu85ds8iqykt6fFI22PXiq1epHeb5QKHxR+4bMpVVwxRxASd7msI4QaxF+AXJFmK7xCLrceFMjuc+4XFee+CPAADAvqag2wjmQAAAAAElFTkSuQmCC'
+  };
+  // Hotspot offsets per cursor type (pixels into the 32x32 image).
+  const CURSOR_HOTSPOTS = {
+    'cursor-pan':   { x: 8, y: 8 },
+    'cursor-orbit': { x: 16, y: 16 },
+    'cursor-zoom':  { x: 16, y: 16 },
+    'cursor-fps':   { x: 16, y: 16 }
+  };
+  const OVERLAY_CURSOR_KEYS = {
+    pan: 'cursor-pan',
+    orbit: 'cursor-orbit',
+    zoom: 'cursor-zoom',
+    fps: 'cursor-fps'
+  };
+  const CSS_CURSOR_MAP = {
+    default: 'default',
+    text: 'text',
+    pointer: 'pointer',
+    move: 'move',
+    'ew-resize': 'ew-resize',
+    'ns-resize': 'ns-resize',
+    'nesw-resize': 'nesw-resize',
+    'nwse-resize': 'nwse-resize',
+    'col-resize': 'col-resize',
+    copy: 'copy',
+    'not-allowed': 'not-allowed'
+  };
+  let serverEditorCursor = 'default';
+  let activeOverlayCursor = '';
+  let dragCursorLock = '';
+
+  function clearDragCursorLock() {
+    dragCursorLock = '';
+    mainArea.classList.remove('force-editor-cursor');
+    mainArea.style.removeProperty('--editor-cursor');
+  }
+
+  function showCursorOverlay(name, clientX, clientY) {
+    if (!CURSOR_IMAGES[name]) { hideCursorOverlay(); return; }
+    var hs = CURSOR_HOTSPOTS[name] || { x: 16, y: 16 };
+    cursorOverlay.style.backgroundImage = 'url(' + CURSOR_IMAGES[name] + ')';
+    // Position relative to mainArea, offset by hotspot.
+    var rect = mainArea.getBoundingClientRect();
+    cursorOverlay.style.left = (clientX - rect.left - hs.x) + 'px';
+    cursorOverlay.style.top  = (clientY - rect.top  - hs.y) + 'px';
+    cursorOverlay.style.display = 'block';
+    if (!mainArea.classList.contains('cursor-dragging')) {
+      mainArea.classList.add('cursor-dragging');
+    }
+  }
+  function moveCursorOverlay(clientX, clientY) {
+    if (!activeOverlayCursor) return;
+    var hs = CURSOR_HOTSPOTS[activeOverlayCursor] || { x: 16, y: 16 };
+    var rect = mainArea.getBoundingClientRect();
+    cursorOverlay.style.left = (clientX - rect.left - hs.x) + 'px';
+    cursorOverlay.style.top  = (clientY - rect.top  - hs.y) + 'px';
+  }
+  function hideCursorOverlay() {
+    cursorOverlay.style.display = 'none';
+    mainArea.classList.remove('cursor-dragging');
+    activeOverlayCursor = '';
+  }
+  function applyEditorCursorFromServer(cursorId) {
+    if (dragging && dragCursorLock && (!cursorId || cursorId === 'default'))
+      cursorId = dragCursorLock;
+    if (!cursorId) cursorId = 'default';
+    if (dragging && OVERLAY_CURSOR_KEYS[cursorId])
+      dragCursorLock = cursorId;
+    serverEditorCursor = cursorId;
+    if (gameCursorLocked) return;
+
+    var overlayKey = OVERLAY_CURSOR_KEYS[cursorId];
+    if (overlayKey) {
+      activeOverlayCursor = overlayKey;
+      mainArea.classList.remove('force-editor-cursor');
+      mainArea.style.removeProperty('--editor-cursor');
+      mainArea.style.cursor = 'none';
+      showCursorOverlay(overlayKey, lastPointerClient.x, lastPointerClient.y);
+      return;
+    }
+
+    hideCursorOverlay();
+    var cssCursor = CSS_CURSOR_MAP[cursorId] || 'default';
+    mainArea.style.cursor = cssCursor;
+    if (dragging && cssCursor !== 'default') {
+      mainArea.classList.add('force-editor-cursor');
+      mainArea.style.setProperty('--editor-cursor', cssCursor);
+    } else {
+      mainArea.classList.remove('force-editor-cursor');
+      mainArea.style.removeProperty('--editor-cursor');
+    }
+  }
+  function refreshViewCursorForMove(e) {
+    var rect = mainArea.getBoundingClientRect();
+    var insideMainArea = e.clientX >= rect.left && e.clientX <= rect.right &&
+      e.clientY >= rect.top && e.clientY <= rect.bottom;
+    if (!insideMainArea) {
+      if (activeOverlayCursor || mainArea.style.cursor === 'none') {
+        hideCursorOverlay();
+        mainArea.style.cursor = 'default';
+      }
+      return;
+    }
+    if (activeOverlayCursor) moveCursorOverlay(e.clientX, e.clientY);
+    else if (dragging && dragCursorLock) applyEditorCursorFromServer(dragCursorLock);
+  }
+  // Track the current window type for shortcut routing.
+  let currentWindowType = '';
+
+  function getActiveElement() {
+    return (remoteVideo.style.display !== 'none') ? remoteVideo : canvas;
+  }
+
+  function setupInputForwarding() {
+
+    // Map pointer coordinates from mainArea to the video's native resolution.
+    // In contain mode accounts for letterboxing; in fill mode the element rect
+    // matches the full display area, so the mapping is a simple linear scale.
+    function canvasCoords(e) {
+      const el = getActiveElement();
+      const nw = el.videoWidth || el.width || 0;
+      const nh = el.videoHeight || el.height || 0;
+      if (nw <= 0 || nh <= 0) return { x: 0, y: 0 };
+
+      // Use the video/canvas element's own bounding rect, not mainArea.
+      // The element is flex-centered inside mainArea, so its rect gives
+      // the exact displayed region on screen.
+      const rect = el.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return { x: 0, y: 0 };
+
+      // During Pointer Lock, e.clientX/Y are frozen at the lock point.
+      // Use virtual position accumulated from movementX/Y instead.
+      const cx = pointerLocked ? virtualClientX : e.clientX;
+      const cy = pointerLocked ? virtualClientY : e.clientY;
+
+      const relX = cx - rect.left;
+      const relY = cy - rect.top;
+      const x = Math.max(0, Math.min(nw - 1, Math.round(relX * nw / rect.width)));
+      const y = Math.max(0, Math.min(nh - 1, Math.round(relY * nh / rect.height)));
+      return { x, y };
+    }
+
+    let inputLogCount = 0;
+    let clickLogCount = 0;
+    sendInput = function(data) {
+      inputLogCount++;
+      // Always log click/key events; throttle mousemove logs.
+      const isAction = data.type !== 'mousemove' && data.type !== 'mousedrag';
+      if (isAction) {
+        clickLogCount++;
+        const keyInfo = data.key ? ' key=' + data.key : '';
+        const posInfo = data.type === 'mousedelta'
+          ? 'dx=' + (data.dx||0) + ',dy=' + (data.dy||0)
+          : '(' + (data.x||0) + ',' + (data.y||0) + ')';
+        log('Action #' + clickLogCount + ': ' + data.type + ' ' + posInfo +
+            ' btn=' + (data.button||0) + keyInfo + ' ch=' + (inputChannel ? inputChannel.readyState : 'null'), 'info');
+      } else if (inputLogCount <= 10 || inputLogCount % 100 === 0) {
+        log('Move #' + inputLogCount + ': (' + (data.x||0) + ',' + (data.y||0) + ') ch=' +
+            (inputChannel ? inputChannel.readyState : 'null'), 'info');
+      }
+      if (inputChannel && inputChannel.readyState === 'open') {
+        inputChannel.send(JSON.stringify(data));
+      } else {
+        apiFetch('/input', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        }).catch(() => {});
+      }
+    }
+
+    mainArea.addEventListener('pointerdown', (e) => {
+      lastPointerClient = { x: e.clientX, y: e.clientY };
+      hideUnityTooltip();
+      // When a frontend popup or panel is visible, close it first if clicking
+      // outside. Don't forward input to Unity while popup/panel is open.
+      if (currentPopupId) {
+        hidePopupMenu(true);
+        e.preventDefault();
+        return;
+      }
+      if (currentPanelId) {
+        sendInput({ type: 'panel_close', id: currentPanelId });
+        log('Panel close sent: ' + currentPanelId, 'info');
+        hidePanelUI();
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault();
+      mainArea.focus();
+      dragging = true;
+      dragButton = e.button;
+      dragCursorLock = (e.button === 0 && serverEditorCursor !== 'default') ? serverEditorCursor : '';
+      if (dragCursorLock) applyEditorCursorFromServer(dragCursorLock);
+      // Record the pointerdown position so pointerup can detect whether
+      // a drag occurred and synthesize a mousedrag if the browser did
+      // not fire any pointermove events in between (common for fast swipes
+      // where the browser coalesces or skips intermediate moves).
+      dragStartCanvasPos = canvasCoords(e);
+      dragSentMove = false;
+      // Use pointer capture for left-button drags. Also capture
+      // right-button when gameCursorLocked to keep receiving
+      // pointermove events for delta calculation even when the
+      // cursor leaves the element — this replaces Pointer Lock
+      // which is unreliable in nested iframe/Tauri contexts.
+      capturedPointerId = -1;
+      if (e.button === 0 || (e.button === 2 && gameCursorLocked)) {
+        capturedPointerId = e.pointerId;
+        try { mainArea.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      if (gameCursorLocked && !pointerLocked) {
+        requestGamePointerLock();
+      }
+      if (!capturing) return;
+      // Middle-click (button=1) is handled exclusively by the mousedown
+      // capture-phase listener to ensure it works even when another button
+      // is held. Skip here to avoid double-send.
+      if (e.button === 1) return;
+      const pos = canvasCoords(e);
+      sendInput({ type: 'mousedown', x: pos.x, y: pos.y, button: e.button,
+        clickCount: e.detail || 1,
+        shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+    });
+
+    mainArea.addEventListener('pointerup', (e) => {
+      lastPointerClient = { x: e.clientX, y: e.clientY };
+      // Flush any pending accumulated remote deltas before releasing drag.
+      if (remoteDeltaFlushTimer) { clearTimeout(remoteDeltaFlushTimer); remoteDeltaFlushTimer = null; }
+      if (remoteDeltaAccumX !== 0 || remoteDeltaAccumY !== 0) flushRemoteDelta();
+      // Remember whether this was a left-button drag before resetting state.
+      const wasLeftDrag = (dragButton === 0);
+      // Always release pointer capture to avoid stuck states.
+      if (dragging && capturedPointerId === e.pointerId) {
+        try { mainArea.releasePointerCapture(e.pointerId); } catch (_) {}
+        dragging = false;
+        dragButton = -1;
+        capturedPointerId = -1;
+        clearDragCursorLock();
+      } else if (dragging && capturedPointerId === -1 && dragButton === e.button) {
+        dragging = false;
+        dragButton = -1;
+        clearDragCursorLock();
+      }
+      if (currentPopupId || currentPanelId) return;
+      if (!capturing) return;
+      if (e.button === 1) return;
+      const pos = canvasCoords(e);
+      // If the pointer moved between pointerdown and pointerup but no
+      // mousedrag was sent (browser coalesced/skipped pointermove),
+      // synthesize one so the server-side drag detection sees the
+      // updated position before mouseup arrives.
+      // NOTE: check dragButton BEFORE it was reset above — store it.
+      if (wasLeftDrag && !dragSentMove && dragStartCanvasPos) {
+        const ddx = pos.x - dragStartCanvasPos.x;
+        const ddy = pos.y - dragStartCanvasPos.y;
+        if (ddx * ddx + ddy * ddy > 25) { // >5px
+          sendInput({ type: 'mousedrag', x: pos.x, y: pos.y, button: 0,
+            shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+        }
+      }
+      dragStartCanvasPos = null;
+      dragSentMove = false;
+      sendInput({ type: 'mouseup', x: pos.x, y: pos.y, button: e.button,
+        shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+    });
+
+    mainArea.addEventListener('pointercancel', (e) => {
+      // Do NOT reset dragging or cursor — WebKit fires spurious pointercancel
+      // in cross-origin iframes. Input continues via pointermove/pointerup.
+    });
+
+    // Middle-click (button=1) fallback: some Chromium/Tauri webviews do
+    // not fire pointerdown for middle-click when another button is held
+    // (e.g., right-click + middle-click combo). Use a mousedown handler
+    // in the capture phase to ensure middle-click always reaches Unity.
+    // Also prevents browser auto-scroll which consumes the event.
+    mainArea.addEventListener('mousedown', (e) => {
+      if (e.button === 1) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!capturing) return;
+        const pos = canvasCoords(e);
+        sendInput({ type: 'mousedown', x: pos.x, y: pos.y, button: 1,
+          clickCount: e.detail || 1,
+          shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+      }
+    }, true);
+
+    mainArea.addEventListener('mouseup', (e) => {
+      if (e.button === 1) {
+        e.preventDefault();
+        if (!capturing) return;
+        const pos = canvasCoords(e);
+        sendInput({ type: 'mouseup', x: pos.x, y: pos.y, button: 1,
+          shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+      }
+    }, true);
+
+    mainArea.addEventListener('pointermove', (e) => {
+      if (pointerLocked) {
+        // Ensure keyboard focus during Pointer Lock — acts as a safety net
+        // if the pointerlockchange focus call was overridden by the browser.
+        if (document.activeElement !== mainArea) mainArea.focus();
+        // Accumulate virtual position from movement deltas.
+        virtualClientX += e.movementX;
+        virtualClientY += e.movementY;
+        // Clamp virtual position to the video element bounds.
+        const el = getActiveElement();
+        const rect = el.getBoundingClientRect();
+        virtualClientX = Math.max(rect.left, Math.min(rect.right, virtualClientX));
+        virtualClientY = Math.max(rect.top, Math.min(rect.bottom, virtualClientY));
+        lastPointerClient = { x: virtualClientX, y: virtualClientY };
+      } else {
+        lastPointerClient = { x: e.clientX, y: e.clientY };
+      }
+
+      // Remote fallback: when gameCursorLocked but Pointer Lock is not
+      // available (nested iframe/Tauri), accumulate raw movementX/Y deltas
+      // and flush to the server at a throttled rate. The server uses these
+      // deltas directly for SendInput (WM_INPUT) without needing to
+      // compute them from absolute position differences.
+      if (isRemoteConnection && gameCursorLocked && !pointerLocked && dragging) {
+        remoteDeltaAccumX += e.movementX;
+        remoteDeltaAccumY += e.movementY;
+        if (!remoteDeltaFlushTimer && (remoteDeltaAccumX !== 0 || remoteDeltaAccumY !== 0)) {
+          remoteDeltaFlushTimer = setTimeout(flushRemoteDelta, 16);
+        }
+      }
+
+      // During drag: keep sticky drag cursor. Otherwise: hover cursor.
+      refreshViewCursorForMove(e);
+      // Do NOT use e.buttons to detect lost pointerup — WebKit cross-origin
+      // iframes report e.buttons=0 during right/middle-button drags. Trust
+      // the dragging state set on pointerdown and cleared on pointerup.
+      if (serverTooltipText && unityTooltipVisible) {
+        const tooltipX = pointerLocked ? virtualClientX : e.clientX;
+        const tooltipY = pointerLocked ? virtualClientY : e.clientY;
+        positionUnityTooltip(tooltipX, tooltipY);
+      }
+      if (currentPopupId || currentPanelId) return;
+      if (!capturing) return;
+      // When remote + gameCursorLocked + dragging, delta injection is handled
+      // by the mousedelta path above. Skip sending the absolute mousedrag
+      // to avoid conflicting with SendInput-based delta injection on the server.
+      if (isRemoteConnection && gameCursorLocked && !pointerLocked && dragging) return;
+      const pos = canvasCoords(e);
+      const evtType = dragging ? 'mousedrag' : 'mousemove';
+      if (dragging) dragSentMove = true;
+      sendInput({ type: evtType, x: pos.x, y: pos.y, button: dragging ? dragButton : -1,
+        shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+    });
+
+    mainArea.addEventListener('pointerleave', () => {
+      if (gameCursorLocked) return;
+      hideCursorOverlay();
+      mainArea.style.cursor = OVERLAY_CURSOR_KEYS[serverEditorCursor] ? 'default'
+        : (CSS_CURSOR_MAP[serverEditorCursor] || 'default');
+    });
+
+    mainArea.addEventListener('wheel', (e) => {
+      hideUnityTooltip();
+      if (currentPopupId || currentPanelId) {
+        if (currentPopupId) hidePopupMenu(true);
+        if (currentPanelId) {
+          sendInput({ type: 'panel_close', id: currentPanelId });
+          hidePanelUI();
+        }
+        e.preventDefault();
+        return;
+      }
+      if (!capturing) return;
+      e.preventDefault();
+      const pos = canvasCoords(e);
+      sendInput({ type: 'wheel', x: pos.x, y: pos.y, deltaX: e.deltaX, deltaY: e.deltaY,
+        shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey });
+    }, { passive: false });
+
+    // Block native drag and context menu.
+    mainArea.addEventListener('dragstart', (e) => e.preventDefault());
+    mainArea.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    document.addEventListener('keydown', (e) => {
+      if (!capturing) return;
+      // Let panel input fields consume key events instead of forwarding to Unity.
+      const ae = document.activeElement;
+      const isInputFocused = ae && (ae.tagName === 'INPUT' || ae.tagName === 'SELECT' || ae.tagName === 'TEXTAREA');
+      if (isInputFocused && e.key !== 'Escape') return;
+      // If a popup or panel is open, Escape closes it.
+      if (e.key === 'Escape' && currentPopupId) {
+        hidePopupMenu(true);
+        e.preventDefault();
+        return;
+      }
+      if (e.key === 'Escape' && currentPanelId) {
+        sendInput({ type: 'panel_close', id: currentPanelId });
+        hidePanelUI();
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault();
+      // Cancel any pending debounced keyup for this key — the key is
+      // being re-pressed, so the previous keyup was a spurious
+      // autorepeat artifact.
+      if (pendingKeyupTimers.has(e.key)) {
+        clearTimeout(pendingKeyupTimers.get(e.key));
+        pendingKeyupTimers.delete(e.key);
+        // Key is already held on Unity side; skip redundant keydown.
+        return;
+      }
+      frontendHeldKeys.add(e.key);
+      sendInput({
+        type: 'keydown', key: e.key, code: e.code, keyCode: e.keyCode,
+        shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey, meta: e.metaKey
+      });
+    });
+    document.addEventListener('keyup', (e) => {
+      frontendHeldKeys.delete(e.key);
+      if (!capturing) return;
+      const ae = document.activeElement;
+      const isInputFocused = ae && (ae.tagName === 'INPUT' || ae.tagName === 'SELECT' || ae.tagName === 'TEXTAREA');
+      if (isInputFocused) return;
+      // Debounce: delay the keyup and cancel it if the same key is
+      // pressed again within KEYUP_DEBOUNCE_MS (autorepeat artifact).
+      if (pendingKeyupTimers.has(e.key)) {
+        clearTimeout(pendingKeyupTimers.get(e.key));
+      }
+      const keySnap = e.key, codeSnap = e.code, kcSnap = e.keyCode;
+      const shSnap = e.shiftKey, ctSnap = e.ctrlKey, alSnap = e.altKey, meSnap = e.metaKey;
+      pendingKeyupTimers.set(e.key, setTimeout(() => {
+        pendingKeyupTimers.delete(keySnap);
+        sendInput({
+          type: 'keyup', key: keySnap, code: codeSnap, keyCode: kcSnap,
+          shift: shSnap, ctrl: ctSnap, alt: alSnap, meta: meSnap
+        });
+      }, KEYUP_DEBOUNCE_MS));
+    });
+    // Flush held keys when the page loses focus — the browser will
+    // swallow keyup events that arrive while unfocused.
+    window.addEventListener('blur', flushAllHeldKeys);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) flushAllHeldKeys();
+    });
+  }
+
+  // =================== Frontend Popup Menu ===================
+  const popupOverlay = $('popupOverlay');
+  let currentPopupId = null;
+  let popupSubmenuTimer = null;
+  let popupSearchDebounce = null;
+  // Timestamp when the current popup was shown. Used to ignore residual
+  // pointerup events from the mouse click that originally opened the popup.
+  let popupShowTime = 0;
+  let popupInitialPointerUpGuardArmed = false;
+  let popupInitialPointerUpGuardUntilMs = 0;
+  let popupInitialPointerClient = null;
+  let popupInitialTriggerRect = null;
+  const kPopupInitialPointerUpGuardMs = 220;
+  const kPopupOpeningPointerMaxDeltaPx = 8;
+  const popupChunkBufferById = new Map();
+
+  /**
+   * Arm a short guard window to swallow the pointerup event that
+   * belongs to the same click that opened the popup.
+   */
+  function armPopupInitialPointerUpGuard(data, popupDomPos) {
+    popupInitialPointerUpGuardArmed = true;
+    popupInitialPointerUpGuardUntilMs = performance.now() + kPopupInitialPointerUpGuardMs;
+    popupInitialPointerClient = { x: lastPointerClient.x, y: lastPointerClient.y };
+    popupInitialTriggerRect = null;
+
+    const anchorRect = data && data.anchorRect;
+    if (anchorRect &&
+        Number.isFinite(Number(anchorRect.x)) &&
+        Number.isFinite(Number(anchorRect.y)) &&
+        Number.isFinite(Number(anchorRect.w)) &&
+        Number.isFinite(Number(anchorRect.h)) &&
+        Number(anchorRect.w) > 0 &&
+        Number(anchorRect.h) > 0) {
+      const a = unityPixelToDOM(Number(anchorRect.x), Number(anchorRect.y));
+      const b = unityPixelToDOM(Number(anchorRect.x) + Number(anchorRect.w), Number(anchorRect.y) + Number(anchorRect.h));
+      const left = Math.min(a.x, b.x);
+      const top = Math.min(a.y, b.y);
+      const right = Math.max(a.x, b.x);
+      const bottom = Math.max(a.y, b.y);
+      popupInitialTriggerRect = { left, top, right, bottom };
+    } else if (popupDomPos && Number.isFinite(popupDomPos.x) && Number.isFinite(popupDomPos.y)) {
+      popupInitialTriggerRect = {
+        left: popupDomPos.x - 8,
+        top: popupDomPos.y - 10,
+        right: popupDomPos.x + 80,
+        bottom: popupDomPos.y + 12
+      };
+    }
+  }
+
+  /**
+   * Consume the opening click's pointerup to prevent accidental
+   * selection of the first popup item.
+   * @returns {boolean} true when consumed
+   */
+  function consumePopupInitialPointerUpIfNeeded(e) {
+    if (!popupInitialPointerUpGuardArmed) return false;
+    const now = performance.now();
+    if (now > popupInitialPointerUpGuardUntilMs) {
+      popupInitialPointerUpGuardArmed = false;
+      popupInitialPointerClient = null;
+      popupInitialTriggerRect = null;
+      return false;
+    }
+
+    // Always consume within the time window (one-shot).
+    // Hitbox check is diagnostic only — never gates the guard.
+    const mainRect = mainArea.getBoundingClientRect();
+    const x = e.clientX - mainRect.left;
+    const y = e.clientY - mainRect.top;
+    const nearOpeningPointer = popupInitialPointerClient
+      ? (Math.abs(e.clientX - popupInitialPointerClient.x) <= kPopupOpeningPointerMaxDeltaPx &&
+         Math.abs(e.clientY - popupInitialPointerClient.y) <= kPopupOpeningPointerMaxDeltaPx)
+      : false;
+    const inTriggerRect = popupInitialTriggerRect
+      ? (x >= popupInitialTriggerRect.left && x <= popupInitialTriggerRect.right &&
+         y >= popupInitialTriggerRect.top && y <= popupInitialTriggerRect.bottom)
+      : false;
+    const reason = nearOpeningPointer ? 'near-pointer' : inTriggerRect ? 'in-trigger' : 'time-only';
+
+    popupInitialPointerUpGuardArmed = false;
+    popupInitialPointerClient = null;
+    popupInitialTriggerRect = null;
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+    }
+    log('Popup guard: ignored opening pointerup (' + reason + ')', 'info');
+    return true;
+  }
+
+  function handlePopupPayloadBegin(msg) {
+    const id = String(msg.id || '');
+    const totalChunks = Math.max(1, Number(msg.totalChunks || 0));
+    popupChunkBufferById.set(id, {
+      totalChunks,
+      chunks: new Array(totalChunks),
+      received: 0,
+      totalBytes: Number(msg.totalBytes || 0)
+    });
+    log('DC recv popup_payload_begin: id=' + id + ' chunks=' + totalChunks, 'info');
+  }
+
+  function handlePopupPayloadChunk(msg) {
+    const id = String(msg.id || '');
+    const seq = Number(msg.seq || 0);
+    const data = String(msg.data || '');
+    const state = popupChunkBufferById.get(id);
+    if (!state) return;
+    if (seq < 0 || seq >= state.totalChunks) return;
+    if (state.chunks[seq] === undefined) state.received++;
+    state.chunks[seq] = data;
+  }
+
+  function handlePopupPayloadEnd(msg) {
+    const id = String(msg.id || '');
+    const state = popupChunkBufferById.get(id);
+    if (!state) return;
+    popupChunkBufferById.delete(id);
+    if (state.received !== state.totalChunks) {
+      log('popup payload incomplete: id=' + id + ' received=' + state.received + '/' + state.totalChunks, 'err');
+      return;
+    }
+    const payloadJson = state.chunks.join('');
+    try {
+      const payload = JSON.parse(payloadJson);
+      log('popup payload assembled: id=' + id + ' bytes=' + payloadJson.length + ' chunks=' + state.totalChunks, 'info');
+      handleServerDcMessage(payload);
+    } catch (err) {
+      log('popup payload parse error: ' + String(err && err.message ? err.message : err), 'err');
+    }
+  }
+
+  function handleServerDcMessage(msg) {
+    if (msg.type === 'popup_show') {
+      log('DC recv popup_show: id=' + msg.id + ' items=' + (msg.items ? msg.items.length : 0), 'info');
+      showPopupMenu(msg);
+    } else if (msg.type === 'popup_hide') {
+      log('DC recv popup_hide', 'info');
+      hidePopupMenu();
+    } else if (msg.type === 'panel_show') {
+      log('DC recv panel_show: id=' + msg.id + ' controls=' + (msg.controls ? msg.controls.length : 0), 'info');
+      showPanelUI(msg);
+    } else if (msg.type === 'panel_hide') {
+      log('DC recv panel_hide', 'info');
+      hidePanelUI();
+    } else if (msg.type === 'tooltip_show') {
+      serverTooltipText = msg.text || '';
+      if (serverTooltipText) {
+        showUnityTooltip(serverTooltipText, lastPointerClient.x, lastPointerClient.y, 120);
+      } else {
+        hideUnityTooltip();
+      }
+    } else if (msg.type === 'tooltip_hide') {
+      serverTooltipText = '';
+      hideUnityTooltip();
+    } else if (msg.type === 'editor_windows_changed') {
+      log('DC recv editor_windows_changed', 'info');
+      window.parent.postMessage({
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/editor-windows-changed'
+      }, '*');
+    } else if (msg.type === 'composite_slot_removed') {
+      // Unity detected a "Close Tab" action and reports which window type
+      // was closed. Forward to parent panel so it can remove the tab before
+      // the next composite layout update.
+      var removedType = msg.windowType || '';
+      log('DC recv composite_slot_removed: ' + removedType, 'info');
+      window.parent.postMessage({
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/slot-removed',
+        data: { windowType: removedType }
+      }, '*');
+    } else if (msg.type === 'composite_layout_snapshot') {
+      log('DC recv composite_layout_snapshot: slots=' + (msg.slots ? msg.slots.length : 0), 'info');
+      window.parent.postMessage({
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/composite-layout-snapshot',
+        data: { slots: Array.isArray(msg.slots) ? msg.slots : [] }
+      }, '*');
+    } else if (msg.type === 'domain_reload') {
+      // Server stays alive during domain reload (port unchanged, WebRTC persists).
+      // No URL refresh needed. Stall detection + tryResumeOffscreen will
+      // automatically recover frame pushing after C# finishes reloading.
+      log('DC recv domain_reload: assembly reload imminent (server stays alive)', 'info');
+      domainReloading = true;
+      notifyParentStreamStatus('domain_reloading');
+    } else if (msg.type === 'domain_reload_complete') {
+      // C# OnDomainReload has finished — domain reload is complete.
+      // Reset domainReloading and notify parent immediately.
+      log('DC recv domain_reload_complete: domain reload finished', 'info');
+      domainReloading = false;
+      if (lastReportedStreamStatus !== 'streaming') {
+        notifyParentStreamStatus('streaming');
+      }
+    } else if (msg.type === 'compilation_progress') {
+      // Forward compilation progress from Unity Progress API to parent panel.
+      // phase: "compiling" (with description), "compile_done" (compilation
+      // succeeded — domain_reload will follow from C#), or "failed"
+      // (compilation errors — domain reload will NOT happen).
+      log('DC recv compilation_progress: phase=' + (msg.phase || 'compiling') + ' desc=' + (msg.description || ''), 'info');
+      // On "failed", reset domainReloading since compilation failed and
+      // no domain reload will occur.
+      if (msg.phase === 'failed') {
+        if (domainReloading) {
+          domainReloading = false;
+          if (lastReportedStreamStatus !== 'streaming') {
+            notifyParentStreamStatus('streaming');
+          }
+        }
+      }
+      window.parent.postMessage({
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/compilation-progress',
+        data: { phase: msg.phase || 'compiling', description: msg.description || '', errors: msg.errors }
+      }, '*');
+    } else if (msg.type === 'stream_stop') {
+      // Server-initiated stop: the editor explicitly stopped streaming
+      // (e.g. user clicked disconnect in the mask window). Set capturing
+      // to false so auto-reconnect does NOT fire. Also set
+      // serverStoppedStream to suppress health-check-driven URL refresh.
+      log('DC recv stream_stop: server requested stop', 'info');
+      capturing = false;
+      serverStoppedStream = true;
+      activeOffscreenWindowType = '';
+      compositeLayout = null;
+      activeCompositeSlotId = '';
+      currentWindowType = '';
+      cancelReconnect();
+      stopHeartbeat();
+      notifyParentStreamStatus('disconnected', 'server_stop');
+      closeWebRTC();
+      placeholder.style.display = '';
+    } else if (msg.type === 'cursor_style') {
+      applyEditorCursorFromServer(msg.cursor || 'default');
+    } else if (msg.type === 'cursor_lock') {
+      // Game runtime changed Cursor.lockState / Cursor.visible.
+      // Hide or restore the CSS cursor on the streaming area to match.
+      // Only Cursor.visible controls CSS visibility — lockState controls
+      // confinement, not visibility. Games may set visible=true while
+      // still in Locked mode (e.g. ESC opens a menu with cursor shown).
+      var locked = msg.locked;
+      var visible = msg.visible;
+      log('DC recv cursor_lock: locked=' + locked + ' visible=' + visible, 'info');
+      // Hide CSS cursor whenever game is in Locked mode, even if
+      // Cursor.visible=true (e.g. ESC pause menu). In Locked+visible
+      // the game renders its own software cursor in the video frame
+      // and tracks movement via Input.GetAxis deltas (delivered by
+      // RIDEV_INPUTSINK from the physical mouse). Showing the CSS
+      // cursor would only confuse the user because the OS cursor is
+      // confined offscreen by ClipCursor and cannot move.
+      if (!visible || locked) {
+        mainArea.style.cursor = 'none';
+        hideCursorOverlay();
+      } else {
+        applyEditorCursorFromServer(serverEditorCursor);
+      }
+      // Pointer Lock: confine OS cursor when game has lockState=Locked
+      // and cursor is hidden. This prevents the mouse from leaving the
+      // streaming area during gameplay (e.g. FPS aiming).
+      // Pointer Lock is requested whenever Cursor.lockState == Locked,
+      // regardless of Cursor.visible. Some games use locked+visible for
+      // FPS gameplay with a visible crosshair — Pointer Lock is still
+      // needed so the browser keeps the mouse confined to the iframe and
+      // provides movementX/Y deltas. Without it, the mouse can leave
+      // the iframe boundary, causing premature mouseup events.
+      // When the game sets Cursor.lockState = None (e.g. after ESC),
+      // locked=false and Pointer Lock is released.
+      gameCursorLocked = locked;
+      if (gameCursorLocked) {
+        requestGamePointerLock();
+      } else {
+        exitGamePointerLock();
+      }
+    } else {
+      log('DC recv unknown: ' + msg.type, 'info');
+    }
+  }
+
+  /**
+   * Convert Unity pixel coordinates to DOM pixel coordinates relative
+   * to the mainArea container in fill mode.
+   */
+  function unityPixelToDOM(ux, uy) {
+    const video = remoteVideo;
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+      return { x: ux, y: uy };
+    }
+
+    const rect = video.getBoundingClientRect();
+    const mainRect = mainArea.getBoundingClientRect();
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    const displayW = rect.width;
+    const displayH = rect.height;
+
+    // video element offset relative to mainArea
+    const videoOffX = rect.left - mainRect.left;
+    const videoOffY = rect.top - mainRect.top;
+
+    return {
+      x: videoOffX + ux * (displayW / vw),
+      y: videoOffY + uy * (displayH / vh)
+    };
+  }
+
+  /**
+   * Compute a robust fallback anchor when Unity sends invalid popup/panel
+   * coordinates (typically hidden-window space on Windows offscreen mode).
+   * For SceneView toolbar buttons, apply icon half-width compensation so
+   * the menu/panel aligns to the button's left edge more strictly.
+   * @param {'popup'|'panel'} kind
+   * @returns {{x:number,y:number}}
+   */
+  function getFallbackAnchor(kind) {
+    const mainRect = mainArea.getBoundingClientRect();
+    const pointerX = Math.max(0, lastPointerClient.x - mainRect.left);
+    const pointerY = Math.max(0, lastPointerClient.y - mainRect.top);
+
+    const isSceneView = String(activeOffscreenWindowType || '').indexOf('SceneView') >= 0;
+    let leftOffset = 4;
+    let downOffset = 8;
+    if (isSceneView) {
+      // SceneView toolbar trigger buttons are icon buttons (~28-32px wide).
+      // Subtract half-width to align popup/panel left edge to button left edge.
+      leftOffset = kind === 'panel' ? 16 : 14;
+      downOffset = 8;
+    }
+
+    return {
+      x: Math.max(0, pointerX - leftOffset),
+      y: Math.max(0, pointerY + downOffset)
+    };
+  }
+
+  function applyPopupMenuViewportBounds(menuEl, preferredLeft, preferredTop) {
+    const mainRect = mainArea.getBoundingClientRect();
+    const padding = 8;
+    let left = preferredLeft;
+    let top = preferredTop;
+    const maxW = Math.max(160, mainRect.width - padding * 2);
+    menuEl.style.maxWidth = Math.min(420, maxW) + 'px';
+
+    const isContextMenu = menuEl.classList.contains('popup-menu-context');
+    const scrollEl = menuEl.querySelector(':scope > .popup-menu-scroll') || menuEl;
+
+    if (isContextMenu) {
+      scrollEl.style.maxHeight = 'none';
+      scrollEl.style.overflowY = 'visible';
+    } else {
+      const spaceBelow = mainRect.height - top - padding;
+      const spaceAbove = top - padding;
+      const preferredMax = menuEl.classList.contains('popup-menu-annotation') ? 620
+        : (menuEl.classList.contains('popup-menu-object-selector') ? 520 : 400);
+      let maxHeight = Math.max(120, Math.min(preferredMax, spaceBelow));
+      if (maxHeight < 160 && spaceAbove > spaceBelow) {
+        maxHeight = Math.max(120, Math.min(preferredMax, spaceAbove));
+        const estHeight = Math.min(scrollEl.scrollHeight || maxHeight, maxHeight);
+        top = Math.max(padding, top - estHeight);
+      }
+      scrollEl.style.maxHeight = maxHeight + 'px';
+    }
+
+    menuEl.style.left = left + 'px';
+    menuEl.style.top = top + 'px';
+
+    const menuRect = menuEl.getBoundingClientRect();
+    left = parseFloat(menuEl.style.left);
+    top = parseFloat(menuEl.style.top);
+    if (left + menuRect.width > mainRect.width - padding) {
+      left = Math.max(padding, mainRect.width - menuRect.width - padding);
+    }
+    if (left < padding) left = padding;
+    if (top + menuRect.height > mainRect.height - padding) {
+      top = Math.max(padding, mainRect.height - menuRect.height - padding);
+    }
+    if (top < padding) top = padding;
+    menuEl.style.left = left + 'px';
+    menuEl.style.top = top + 'px';
+  }
+
+  function closeAllFloatingSubmenus() {
+    popupOverlay.querySelectorAll('.popup-submenu.popup-submenu-floating').forEach((submenuEl) => {
+      submenuEl.style.display = 'none';
+    });
+    popupOverlay.querySelectorAll('.popup-item-has-submenu.popup-submenu-open').forEach((itemEl) => {
+      itemEl.classList.remove('popup-submenu-open');
+    });
+  }
+
+  function positionFloatingSubmenu(itemEl, submenuEl) {
+    const overlayRect = popupOverlay.getBoundingClientRect();
+    const mainRect = mainArea.getBoundingClientRect();
+    const itemRect = itemEl.getBoundingClientRect();
+    const padding = 8;
+
+    submenuEl.style.display = 'block';
+    submenuEl.style.maxHeight = '';
+    submenuEl.style.left = (itemRect.right - overlayRect.left) + 'px';
+    submenuEl.style.top = (itemRect.top - overlayRect.top) + 'px';
+
+    const submenuRect = submenuEl.getBoundingClientRect();
+    let left = parseFloat(submenuEl.style.left);
+    let top = parseFloat(submenuEl.style.top);
+
+    if (submenuRect.right > mainRect.right - padding) {
+      left = itemRect.left - overlayRect.left - submenuRect.width;
+    }
+    if (left < padding) left = padding;
+    submenuEl.style.left = left + 'px';
+
+    const refreshedRect = submenuEl.getBoundingClientRect();
+    if (refreshedRect.bottom > mainRect.bottom - padding) {
+      top -= refreshedRect.bottom - (mainRect.bottom - padding);
+    }
+    if (refreshedRect.top < mainRect.top + padding) {
+      top += (mainRect.top + padding) - refreshedRect.top;
+    }
+    submenuEl.style.top = Math.max(0, top) + 'px';
+
+    if (!submenuEl.classList.contains('popup-submenu-context')) {
+      const finalRect = submenuEl.getBoundingClientRect();
+      const available = mainRect.bottom - padding - finalRect.top;
+      submenuEl.style.maxHeight = Math.max(120, Math.min(480, available)) + 'px';
+    } else {
+      submenuEl.style.maxHeight = 'none';
+      submenuEl.style.overflowY = 'visible';
+    }
+  }
+
+  function closeSiblingFloatingSubmenus(itemEl) {
+    const keepSubmenus = new Set();
+    let node = itemEl;
+    while (node) {
+      if (node.classList && node.classList.contains('popup-submenu-floating')) {
+        keepSubmenus.add(node);
+      }
+      node = node.parentElement;
+    }
+    popupOverlay.querySelectorAll('.popup-submenu.popup-submenu-floating').forEach((el) => {
+      if (!keepSubmenus.has(el)) {
+        el.style.display = 'none';
+      }
+    });
+    popupOverlay.querySelectorAll('.popup-item-has-submenu.popup-submenu-open').forEach((el) => {
+      if (!itemEl.contains(el) && !el.contains(itemEl)) {
+        el.classList.remove('popup-submenu-open');
+      }
+    });
+  }
+
+  function openFloatingSubmenu(itemEl, submenuEl) {
+    if (popupSubmenuTimer) {
+      clearTimeout(popupSubmenuTimer);
+      popupSubmenuTimer = null;
+    }
+    closeSiblingFloatingSubmenus(itemEl);
+    if (submenuEl.parentElement !== popupOverlay) {
+      popupOverlay.appendChild(submenuEl);
+    }
+    submenuEl.classList.add('popup-submenu-floating');
+    itemEl.classList.add('popup-submenu-open');
+    requestAnimationFrame(() => positionFloatingSubmenu(itemEl, submenuEl));
+  }
+
+  /**
+   * Build Inspector IconSelector popup (GameObject / script icon grid).
+   */
+  function buildIconSelectorPopup(menuEl, data) {
+    menuEl.classList.add('popup-menu-icon-selector');
+
+    let selectedPath = data.selectedPath || '';
+
+    const header = document.createElement('div');
+    header.className = 'icon-selector-header';
+    const title = document.createElement('span');
+    title.textContent = data.title || 'Select Icon';
+    header.appendChild(title);
+    const noneBtn = document.createElement('button');
+    noneBtn.type = 'button';
+    noneBtn.className = 'icon-selector-none-btn';
+    noneBtn.textContent = 'None';
+    header.appendChild(noneBtn);
+    menuEl.appendChild(header);
+
+    function appendSep() {
+      const sep = document.createElement('div');
+      sep.className = 'icon-selector-sep';
+      menuEl.appendChild(sep);
+    }
+
+    function bindIconButton(btn, path) {
+      btn.addEventListener('pointerdown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      });
+      btn.addEventListener('pointerup', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (Date.now() - popupShowTime < 350) return;
+        selectedPath = path;
+        menuEl.querySelectorAll('.icon-selector-icon.selected').forEach((el) => {
+          el.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+        sendInput({
+          type: 'popup_select',
+          id: currentPopupId,
+          index: 0,
+          path,
+        });
+      });
+    }
+
+    function appendIconGrid(icons) {
+      const grid = document.createElement('div');
+      grid.className = 'icon-selector-grid';
+      (icons || []).forEach((icon) => {
+        const btn = document.createElement('img');
+        btn.className = 'icon-selector-icon';
+        btn.draggable = false;
+        btn.alt = icon.path || '';
+        if (icon.image) btn.src = icon.image;
+        if (icon.path && icon.path === selectedPath) btn.classList.add('selected');
+        bindIconButton(btn, icon.path);
+        grid.appendChild(btn);
+      });
+      menuEl.appendChild(grid);
+    }
+
+    if (data.showLabelIcons !== false && Array.isArray(data.labelIcons) && data.labelIcons.length > 0) {
+      appendSep();
+      appendIconGrid(data.labelIcons);
+    }
+
+    appendSep();
+    appendIconGrid(data.dotIcons || []);
+
+    noneBtn.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    noneBtn.addEventListener('pointerup', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (Date.now() - popupShowTime < 350) return;
+      selectedPath = '__none__';
+      menuEl.querySelectorAll('.icon-selector-icon.selected').forEach((el) => {
+        el.classList.remove('selected');
+      });
+      sendInput({
+        type: 'popup_select',
+        id: currentPopupId,
+        index: 0,
+        path: '__none__',
+      });
+    });
+  }
+
+  /**
+   * Show a popup menu received from the Unity server.
+   * @param {Object} data - popup_show message with id, x, y, items[]
+   */
+  function showPopupMenu(data) {
+    hidePopupMenu(false);
+    closeAllFloatingSubmenus();
+    currentPopupId = data.id;
+    popupShowTime = Date.now();
+
+    // Release any active pointer capture on mainArea so that
+    // subsequent pointer events reach the popup overlay / items
+    // instead of being routed to mainArea.
+    if (capturedPointerId >= 0) {
+      try { mainArea.releasePointerCapture(capturedPointerId); } catch (_) {}
+      dragging = false;
+      dragButton = -1;
+      capturedPointerId = -1;
+    }
+
+    const menuEl = document.createElement('div');
+    menuEl.className = 'popup-menu';
+    if (data.sourceType === 'annotation_full') menuEl.classList.add('popup-menu-annotation');
+    if (data.sourceType === 'generic_context') menuEl.classList.add('popup-menu-context');
+    if (data.sourceType === 'object_selector') menuEl.classList.add('popup-menu-object-selector');
+    if (data.sourceType === 'icon_selector') menuEl.classList.add('popup-menu-icon-selector');
+
+    if (data.sourceType === 'icon_selector') {
+      buildIconSelectorPopup(menuEl, data);
+      const rawUnityX = Number(data.x || 0);
+      const rawUnityY = Number(data.y || 0);
+      let domPos = unityPixelToDOM(rawUnityX, rawUnityY);
+      let anchorSource = 'unity_xy';
+      const anchorRect = data.anchorRect || null;
+      const ax = Number(anchorRect && anchorRect.x);
+      const ay = Number(anchorRect && anchorRect.y);
+      const aw = Number(anchorRect && anchorRect.w);
+      const ah = Number(anchorRect && anchorRect.h);
+      const hasValidAnchorRect =
+        Number.isFinite(ax) && Number.isFinite(ay) &&
+        Number.isFinite(aw) && Number.isFinite(ah) &&
+        aw > 0 && ah > 0;
+      if (hasValidAnchorRect) {
+        domPos = unityPixelToDOM(ax, ay + ah);
+        anchorSource = 'anchor_rect';
+      }
+      const vw = Math.max(1, Number(remoteVideo.videoWidth || 0));
+      const vh = Math.max(1, Number(remoteVideo.videoHeight || 0));
+      const unityAnchorLooksInvalid =
+        !Number.isFinite(rawUnityX) || !Number.isFinite(rawUnityY) ||
+        rawUnityX < -vw || rawUnityY < -vh ||
+        rawUnityX > vw * 2 || rawUnityY > vh * 2;
+      if (!hasValidAnchorRect && unityAnchorLooksInvalid) {
+        domPos = getFallbackAnchor('popup');
+        anchorSource = 'pointer_fallback';
+      }
+      armPopupInitialPointerUpGuard(data, domPos);
+      menuEl.style.left = domPos.x + 'px';
+      menuEl.style.top = domPos.y + 'px';
+      popupOverlay.innerHTML = '';
+      popupOverlay.appendChild(menuEl);
+      popupOverlay.style.display = 'block';
+      requestAnimationFrame(() => {
+        applyPopupMenuViewportBounds(menuEl, domPos.x, domPos.y);
+      });
+      log('Icon selector popup shown: ' + currentPopupId + ' at DOM(' + Math.round(domPos.x) + ',' + Math.round(domPos.y) + ') source=' + anchorSource, 'info');
+      return;
+    }
+
+    const headerToggles = data.headerToggles || [];
+    const headerSliders = data.headerSliders || [];
+    const isAnnotationFullPopup = data.sourceType === 'annotation_full';
+    if (headerToggles.length > 0) {
+      const sliderByKey = {};
+      headerSliders.forEach((slider) => { sliderByKey[slider.key] = slider; });
+
+      const headerEl = document.createElement('div');
+      headerEl.className = 'popup-header';
+      headerToggles.forEach((toggle) => {
+        const row = document.createElement('label');
+        row.className = 'popup-toggle-row';
+        if (isAnnotationFullPopup) row.classList.add('popup-toggle-row-annotation');
+        if (!toggle.enabled) row.classList.add('popup-toggle-disabled');
+        if (toggle.tooltip) bindTooltip(row, toggle.tooltip);
+
+        const leftWrap = document.createElement('span');
+        leftWrap.className = isAnnotationFullPopup ? 'popup-toggle-main' : '';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = toggle.checked;
+        cb.disabled = !toggle.enabled;
+        cb.addEventListener('change', (e) => {
+          e.stopPropagation();
+          sendInput({
+            type: 'popup_toggle',
+            id: currentPopupId,
+            key: toggle.key,
+            value: cb.checked
+          });
+          log('Popup toggle: ' + toggle.key + ' = ' + cb.checked, 'info');
+        });
+        leftWrap.appendChild(cb);
+        const span = document.createElement('span');
+        span.textContent = toggle.label;
+        leftWrap.appendChild(span);
+        row.appendChild(leftWrap);
+
+        // For AnnotationWindow, 3D Icons/Fade Gizmos sliders should be on the same row.
+        if (isAnnotationFullPopup) {
+          const sliderKey = toggle.key === 'use3dGizmos' ? 'iconSize'
+            : (toggle.key === 'fadeGizmos' ? 'fadeGizmoSize' : null);
+          const slider = sliderKey ? sliderByKey[sliderKey] : null;
+          if (slider) {
+            const sliderWrap = document.createElement('span');
+            sliderWrap.className = 'popup-toggle-slider';
+            const input = document.createElement('input');
+            input.type = 'range';
+            input.min = slider.min !== undefined ? slider.min : 0;
+            input.max = slider.max !== undefined ? slider.max : 1;
+            input.step = slider.step !== undefined ? slider.step : 0.01;
+            input.value = slider.value !== undefined ? slider.value : 0;
+            input.disabled = !toggle.enabled || !toggle.checked;
+            if (slider.tooltip) bindTooltip(input, slider.tooltip, { delayMs: 120 });
+            input.addEventListener('input', (e) => {
+              e.stopPropagation();
+              const v = parseFloat(input.value) || 0;
+              sendInput({ type: 'popup_slider', id: currentPopupId, key: slider.key, value: v });
+            });
+            input.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+            input.addEventListener('pointerup', (e) => { e.stopPropagation(); });
+            sliderWrap.appendChild(input);
+            row.appendChild(sliderWrap);
+          }
+        }
+
+        headerEl.appendChild(row);
+      });
+      menuEl.appendChild(headerEl);
+      const sep = document.createElement('div');
+      sep.className = 'popup-separator';
+      menuEl.appendChild(sep);
+    }
+
+    // Render popup header sliders for non-annotation popups.
+    if (headerSliders.length > 0 && !isAnnotationFullPopup) {
+      const sliderWrap = document.createElement('div');
+      sliderWrap.className = 'popup-header';
+      headerSliders.forEach((slider) => {
+        const row = document.createElement('div');
+        row.className = 'popup-slider-row';
+        if (slider.tooltip) bindTooltip(row, slider.tooltip);
+        const label = document.createElement('span');
+        label.textContent = slider.label || slider.key;
+        label.style.minWidth = '72px';
+        label.style.fontSize = '11px';
+        const input = document.createElement('input');
+        input.type = 'range';
+        input.min = slider.min !== undefined ? slider.min : 0;
+        input.max = slider.max !== undefined ? slider.max : 1;
+        input.step = slider.step !== undefined ? slider.step : 0.01;
+        input.value = slider.value !== undefined ? slider.value : 0;
+        if (slider.tooltip) bindTooltip(input, slider.tooltip, { delayMs: 120 });
+        const showValue = slider.showValue !== false;
+        const valueEl = document.createElement('span');
+        valueEl.className = 'popup-slider-value';
+        valueEl.style.display = showValue ? '' : 'none';
+        valueEl.textContent = Number(input.value).toFixed(2);
+        input.addEventListener('input', (e) => {
+          e.stopPropagation();
+          const v = parseFloat(input.value) || 0;
+          if (showValue) valueEl.textContent = v.toFixed(2);
+          sendInput({ type: 'popup_slider', id: currentPopupId, key: slider.key, value: v });
+        });
+        input.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        input.addEventListener('pointerup', (e) => { e.stopPropagation(); });
+        row.appendChild(label);
+        row.appendChild(input);
+        row.appendChild(valueEl);
+        sliderWrap.appendChild(row);
+      });
+      menuEl.appendChild(sliderWrap);
+      const sep = document.createElement('div');
+      sep.className = 'popup-separator';
+      menuEl.appendChild(sep);
+    }
+
+    // Object picker tabs (Assets / Scene).
+    if (Array.isArray(data.tabs) && data.tabs.length > 0) {
+      const tabRow = document.createElement('div');
+      tabRow.className = 'popup-tab-row';
+      data.tabs.forEach((tab) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'popup-tab' + (tab.active ? ' active' : '');
+        btn.textContent = tab.label || tab.id || '';
+        btn.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        btn.addEventListener('pointerup', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          if (Date.now() - popupShowTime < 350) return;
+          sendInput({ type: 'popup_tab', id: currentPopupId, tab: tab.id });
+        });
+        tabRow.appendChild(btn);
+      });
+      menuEl.appendChild(tabRow);
+      const sep = document.createElement('div');
+      sep.className = 'popup-separator';
+      menuEl.appendChild(sep);
+    }
+
+    // Render popup search input (used by Annotation full popup).
+    if (data.searchText !== undefined) {
+      const searchRow = document.createElement('div');
+      searchRow.className = 'popup-search-row';
+      const input = document.createElement('input');
+      input.className = 'popup-search-input';
+      input.type = 'text';
+      input.value = data.searchText || '';
+      input.placeholder = 'Search';
+      input.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+      input.addEventListener('input', (e) => {
+        e.stopPropagation();
+        if (popupSearchDebounce) clearTimeout(popupSearchDebounce);
+        const value = input.value;
+        popupSearchDebounce = setTimeout(() => {
+          sendInput({ type: 'popup_search', id: currentPopupId, value });
+        }, 120);
+      });
+      searchRow.appendChild(input);
+      menuEl.appendChild(searchRow);
+      const sep = document.createElement('div');
+      sep.className = 'popup-separator';
+      menuEl.appendChild(sep);
+    }
+
+    if (isAnnotationFullPopup && data.showColumnHeaders) {
+      const colHeader = document.createElement('div');
+      colHeader.className = 'popup-column-header';
+      const left = document.createElement('span');
+      left.className = 'popup-column-header-label';
+      left.textContent = '';
+      const right = document.createElement('div');
+      right.className = 'popup-column-header-right';
+      const icon = document.createElement('span');
+      icon.className = 'popup-column-header-cell';
+      icon.textContent = 'icon';
+      const gizmo = document.createElement('span');
+      gizmo.className = 'popup-column-header-cell';
+      gizmo.textContent = 'gizmo';
+      right.appendChild(icon);
+      right.appendChild(gizmo);
+      colHeader.appendChild(left);
+      colHeader.appendChild(right);
+      menuEl.appendChild(colHeader);
+    }
+
+    const isContextPopup = data.sourceType === 'generic_context';
+
+    /** Unity menus: "Save _%s" or "UI Toolkit Debugger %F5" → label + shortcut. */
+    function looksLikeUnityMenuShortcutTail(tail) {
+      if (!tail || tail.length < 2) return false;
+      let i = 0;
+      while (i < tail.length) {
+        const c = tail[i];
+        if (c === '%' || c === '#' || c === '&' || c === '^' || c === '_') {
+          i++;
+          continue;
+        }
+        break;
+      }
+      if (i >= tail.length || i === 0) return false;
+      for (let j = i; j < tail.length; j++) {
+        const k = tail[j];
+        if (!((k >= 'a' && k <= 'z') || (k >= 'A' && k <= 'Z') || (k >= '0' && k <= '9')))
+          return false;
+      }
+      return true;
+    }
+
+    function formatUnityMenuLabel(text) {
+      if (!text) return { label: '', shortcut: '' };
+      const sep = text.lastIndexOf(' _');
+      if (sep >= 0) {
+        return {
+          label: text.substring(0, sep),
+          shortcut: decodeUnityShortcut(text.substring(sep + 2)),
+        };
+      }
+      const space = text.lastIndexOf(' ');
+      if (space >= 0) {
+        const tail = text.substring(space + 1);
+        if (looksLikeUnityMenuShortcutTail(tail)) {
+          return {
+            label: text.substring(0, space),
+            shortcut: decodeUnityShortcut(tail),
+          };
+        }
+      }
+      return { label: text, shortcut: '' };
+    }
+
+    function decodeUnityShortcut(raw) {
+      if (!raw) return '';
+      if (raw.length > 1 && raw[0] === '_') raw = raw.substring(1);
+      let out = '';
+      for (let i = 0; i < raw.length; i++) {
+        const c = raw[i];
+        if (c === '%' || c === '^') out += 'Ctrl+';
+        else if (c === '#') out += 'Shift+';
+        else if (c === '&') out += 'Alt+';
+        else out += c;
+      }
+      if (out.endsWith('+')) out = out.slice(0, -1);
+      if (out.length >= 2 && out[0] === 'f' && out[1] >= '0' && out[1] <= '9')
+        out = out.toUpperCase();
+      return out || raw;
+    }
+
+    function appendPopupMenuItemLabel(el, displayLabel, shortcut) {
+      if (shortcut) {
+        el.classList.add('popup-item-has-shortcut');
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'popup-item-label';
+        labelSpan.textContent = displayLabel;
+        const shortcutSpan = document.createElement('span');
+        shortcutSpan.className = 'popup-item-shortcut';
+        shortcutSpan.textContent = shortcut;
+        el.appendChild(labelSpan);
+        el.appendChild(shortcutSpan);
+      } else {
+        el.textContent = displayLabel;
+      }
+    }
+
+    function appendPopupMenuItems(container, items, isAnnotationFull) {
+      (items || []).forEach((item) => {
+        if (item.separator) {
+          const sep = document.createElement('div');
+          sep.className = 'popup-separator';
+          container.appendChild(sep);
+          return;
+        }
+
+        const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+        const isSubmenuBranch = hasChildren;
+        let displayLabel = item.label || item.path || '';
+        let shortcut = item.shortcut || '';
+        if (!shortcut && displayLabel) {
+          const parsed = formatUnityMenuLabel(displayLabel);
+          if (parsed.shortcut) {
+            displayLabel = parsed.label;
+            shortcut = parsed.shortcut;
+          }
+        }
+        const slashIdx = displayLabel.lastIndexOf('/');
+        if (slashIdx >= 0) displayLabel = displayLabel.substring(slashIdx + 1);
+        if (!item.separator && !hasChildren && !displayLabel)
+          return;
+
+        const el = document.createElement('div');
+        const itemEnabled = item.enabled !== false;
+
+        // Section headers: disabled items with index == -1 and empty path.
+        if (!itemEnabled && item.index === -1 && !item.path && !hasChildren) {
+          el.className = 'popup-section-header';
+          el.textContent = item.label || '';
+          container.appendChild(el);
+          return;
+        }
+
+        el.className = 'popup-item';
+        if (isAnnotationFull) el.classList.add('popup-item-annotation');
+        if (isSubmenuBranch) {
+          el.classList.add('popup-item-submenu');
+          el.classList.add('popup-item-has-submenu');
+        }
+        if (!itemEnabled) el.classList.add('popup-item-disabled');
+        if (item.tooltip) bindTooltip(el, item.tooltip);
+        if (item.checked && !isAnnotationFull) el.classList.add('popup-item-checked');
+
+        if (!isAnnotationFull) {
+          appendPopupMenuItemLabel(el, displayLabel, shortcut);
+        } else {
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'popup-anno-label';
+          labelSpan.textContent = displayLabel;
+          el.appendChild(labelSpan);
+          const right = document.createElement('div');
+          right.className = 'popup-anno-toggles';
+          if (item.hasIcon) {
+            const iconCell = document.createElement('span');
+            iconCell.className = 'popup-anno-cell';
+            if (item.iconImage) {
+              const iconBtn = document.createElement('button');
+              iconBtn.className = 'popup-anno-icon-btn';
+              const iconImg = document.createElement('img');
+              iconImg.src = item.iconImage;
+              iconImg.alt = '';
+              iconImg.style.opacity = item.iconChecked ? '1' : '0.35';
+              if (item.iconTooltip) bindTooltip(iconBtn, item.iconTooltip, { delayMs: 120 });
+              iconBtn.appendChild(iconImg);
+              iconBtn.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+              iconBtn.addEventListener('pointerup', (e) => { e.stopPropagation(); e.preventDefault(); });
+              iconBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                item.iconChecked = !item.iconChecked;
+                iconImg.style.opacity = item.iconChecked ? '1' : '0.35';
+                sendInput({ type: 'popup_select', id: currentPopupId, index: item.index, path: item.iconPath || '' });
+              });
+              iconCell.appendChild(iconBtn);
+            }
+            right.appendChild(iconCell);
+          } else {
+            const emptyIconCell = document.createElement('span');
+            emptyIconCell.className = 'popup-anno-cell';
+            right.appendChild(emptyIconCell);
+          }
+          if (item.hasGizmo) {
+            const gizmoCell = document.createElement('span');
+            gizmoCell.className = 'popup-anno-cell';
+            const gizmoLabel = document.createElement('label');
+            gizmoLabel.className = 'popup-anno-toggle';
+            const gizmoCb = document.createElement('input');
+            gizmoCb.type = 'checkbox';
+            gizmoCb.checked = !!item.gizmoChecked;
+            if (item.gizmoTooltip) bindTooltip(gizmoCb, item.gizmoTooltip, { delayMs: 120 });
+            gizmoCb.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+            gizmoCb.addEventListener('pointerup', (e) => { e.stopPropagation(); e.preventDefault(); });
+            gizmoCb.addEventListener('change', (e) => {
+              e.stopPropagation();
+              sendInput({ type: 'popup_select', id: currentPopupId, index: item.index, path: item.path || '' });
+            });
+            gizmoLabel.appendChild(gizmoCb);
+            gizmoCell.appendChild(gizmoLabel);
+            right.appendChild(gizmoCell);
+          } else {
+            const emptyGizmoCell = document.createElement('span');
+            emptyGizmoCell.className = 'popup-anno-cell';
+            right.appendChild(emptyGizmoCell);
+          }
+          el.appendChild(right);
+        }
+
+        if (hasChildren) {
+          const submenuEl = document.createElement('div');
+          submenuEl.className = 'popup-menu popup-submenu';
+          if (isContextPopup) submenuEl.classList.add('popup-submenu-context');
+          appendPopupMenuItems(submenuEl, item.children, isAnnotationFull);
+          el.appendChild(submenuEl);
+          el.addEventListener('mouseenter', () => {
+            openFloatingSubmenu(el, submenuEl);
+          });
+          el.addEventListener('mouseleave', () => {
+            popupSubmenuTimer = setTimeout(() => {
+              if (!submenuEl.matches(':hover') && !el.matches(':hover')) {
+                submenuEl.style.display = 'none';
+                el.classList.remove('popup-submenu-open');
+              }
+            }, 120);
+          });
+          submenuEl.addEventListener('mouseenter', () => {
+            if (popupSubmenuTimer) {
+              clearTimeout(popupSubmenuTimer);
+              popupSubmenuTimer = null;
+            }
+            el.classList.add('popup-submenu-open');
+            submenuEl.style.display = 'block';
+          });
+          submenuEl.addEventListener('mouseleave', () => {
+            popupSubmenuTimer = setTimeout(() => {
+              submenuEl.style.display = 'none';
+              el.classList.remove('popup-submenu-open');
+            }, 120);
+          });
+        }
+
+        const hasSelectablePath = item.path !== undefined && item.path !== null && String(item.path) !== '';
+        const isActionableLeaf = itemEnabled && !isSubmenuBranch && hasSelectablePath;
+        if (isActionableLeaf) {
+          el.addEventListener('mouseenter', () => { el.classList.add('popup-item-hover'); });
+          el.addEventListener('mouseleave', () => { el.classList.remove('popup-item-hover'); });
+
+          el.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          });
+          el.addEventListener('pointerup', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            if (Date.now() - popupShowTime < 350) return;
+            sendInput({
+              type: 'popup_select',
+              id: currentPopupId,
+              index: item.index,
+              path: String(item.path)
+            });
+            log('Popup select: idx=' + item.index + ' path=' + item.path, 'info');
+            if (!item.keepOpen) hidePopupMenu(false);
+          });
+        } else if (isSubmenuBranch) {
+          el.addEventListener('mouseenter', () => { el.classList.add('popup-item-hover'); });
+          el.addEventListener('mouseleave', () => { el.classList.remove('popup-item-hover'); });
+        }
+
+        container.appendChild(el);
+      });
+    }
+
+    const menuScrollEl = document.createElement('div');
+    menuScrollEl.className = 'popup-menu-scroll';
+    appendPopupMenuItems(menuScrollEl, data.items || [], isAnnotationFullPopup);
+    menuEl.appendChild(menuScrollEl);
+
+    // Render "+" add button if present.
+    if (data.showAddButton) {
+      const addEl = document.createElement('div');
+      addEl.className = 'popup-item popup-add-btn';
+      addEl.textContent = '+';
+      bindTooltip(addEl, 'Add New Item');
+      addEl.addEventListener('mouseenter', () => { addEl.classList.add('popup-item-hover'); });
+      addEl.addEventListener('mouseleave', () => { addEl.classList.remove('popup-item-hover'); });
+      addEl.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+      addEl.addEventListener('pointerup', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (Date.now() - popupShowTime < 350) return;
+        sendInput({ type: 'popup_select', id: currentPopupId, index: -2, path: '__add__' });
+        log('Popup add button clicked', 'info');
+        hidePopupMenu(false);
+      });
+      menuEl.appendChild(addEl);
+    }
+
+    const rawUnityX = Number(data.x || 0);
+    const rawUnityY = Number(data.y || 0);
+    let domPos = unityPixelToDOM(rawUnityX, rawUnityY);
+    let anchorSource = 'unity_xy';
+
+    const anchorRect = data.anchorRect || null;
+    const ax = Number(anchorRect && anchorRect.x);
+    const ay = Number(anchorRect && anchorRect.y);
+    const aw = Number(anchorRect && anchorRect.w);
+    const ah = Number(anchorRect && anchorRect.h);
+    const hasValidAnchorRect =
+      Number.isFinite(ax) && Number.isFinite(ay) &&
+      Number.isFinite(aw) && Number.isFinite(ah) &&
+      aw > 0 && ah > 0;
+    if (hasValidAnchorRect) {
+      domPos = unityPixelToDOM(ax, ay + ah);
+      anchorSource = 'anchor_rect';
+    }
+
+    // Windows offscreen mode can report popup anchors in hidden-window
+    // screen space (e.g. ~32000,32000). When that happens, anchor the menu
+    // to the latest pointer position so it stays near the clicked toolbar button.
+    const vw = Math.max(1, Number(remoteVideo.videoWidth || 0));
+    const vh = Math.max(1, Number(remoteVideo.videoHeight || 0));
+    const unityAnchorLooksInvalid =
+      !Number.isFinite(rawUnityX) || !Number.isFinite(rawUnityY) ||
+      rawUnityX < -vw || rawUnityY < -vh ||
+      rawUnityX > vw * 2 || rawUnityY > vh * 2;
+    if (!hasValidAnchorRect && unityAnchorLooksInvalid) {
+      domPos = getFallbackAnchor('popup');
+      anchorSource = 'pointer_fallback';
+      log('Popup anchor fallback: unity=(' + Math.round(rawUnityX) + ',' + Math.round(rawUnityY) +
+          ') pointer=(' + Math.round(domPos.x) + ',' + Math.round(domPos.y) + ')', 'info');
+    }
+    armPopupInitialPointerUpGuard(data, domPos);
+
+    menuEl.style.left = domPos.x + 'px';
+    menuEl.style.top = domPos.y + 'px';
+
+    popupOverlay.innerHTML = '';
+    popupOverlay.appendChild(menuEl);
+    popupOverlay.style.display = 'block';
+
+    // Fit within the stream viewport; context menus grow to full content height.
+    requestAnimationFrame(() => {
+      applyPopupMenuViewportBounds(menuEl, domPos.x, domPos.y);
+    });
+
+    const itemCount = (data.items || []).length;
+    log('Popup shown: ' + currentPopupId + ' (' + itemCount + ' items) at DOM(' + Math.round(domPos.x) + ',' + Math.round(domPos.y) + ') source=' + anchorSource, 'info');
+  }
+
+  // All pointer events on the overlay (and its children) must be
+  // captured here to prevent them from bubbling up to mainArea,
+  // which would either close the popup prematurely or inject Unity
+  // input events while the popup is open.
+  popupOverlay.addEventListener('pointerdown', (e) => {
+    if (e.target !== popupOverlay) {
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
+    e.stopPropagation();
+    e.preventDefault();
+    // Click on the transparent overlay background closes the popup/panel.
+    if (e.target === popupOverlay) {
+      if (currentPopupId) hidePopupMenu(true);
+      if (currentPanelId) {
+        sendInput({ type: 'panel_close', id: currentPanelId });
+        log('Panel close sent (overlay click): ' + currentPanelId, 'info');
+        hidePanelUI();
+      }
+    }
+  });
+  popupOverlay.addEventListener('pointerup', (e) => {
+    if (consumePopupInitialPointerUpIfNeeded(e)) return;
+  }, true);
+  popupOverlay.addEventListener('pointerup', (e) => {
+    if (consumePopupInitialPointerUpIfNeeded(e)) return;
+    if (e.target !== popupOverlay) return;
+    e.stopPropagation();
+    e.preventDefault();
+  });
+  popupOverlay.addEventListener('pointermove', (e) => {
+    e.stopPropagation();
+  });
+  popupOverlay.addEventListener('wheel', (e) => {
+    if (e.target === popupOverlay) {
+      e.stopPropagation();
+      return;
+    }
+    // Allow wheel scrolling inside popup menus/submenus.
+    e.stopPropagation();
+  }, { passive: true });
+
+  /**
+   * Hide the popup menu and optionally notify the server.
+   * @param {boolean} notify - if true, send popup_close to server
+   */
+  function hidePopupMenu(notify) {
+    hideUnityTooltip();
+    closeAllFloatingSubmenus();
+    if (popupSubmenuTimer) { clearTimeout(popupSubmenuTimer); popupSubmenuTimer = null; }
+    if (popupSearchDebounce) { clearTimeout(popupSearchDebounce); popupSearchDebounce = null; }
+    popupInitialPointerUpGuardArmed = false;
+    popupInitialPointerClient = null;
+    popupInitialTriggerRect = null;
+    popupOverlay.style.display = 'none';
+    popupOverlay.innerHTML = '';
+
+    if (notify && currentPopupId) {
+      sendInput({ type: 'popup_close', id: currentPopupId });
+      log('Popup close sent: ' + currentPopupId, 'info');
+    }
+    currentPopupId = null;
+  }
+
+  // =================== Frontend Panel UI ===================
+  let currentPanelId = null;
+
+  /**
+   * Render an interactive panel (e.g. Grid Settings) received from Unity.
+   * The panel supports button_strip, slider, and button control types.
+   * @param {Object} data - panel_show message with id, x, y, title, controls[]
+   */
+  function showPanelUI(data) {
+    hidePanelUI();
+    hidePopupMenu(false);
+    currentPanelId = data.id;
+
+    // Release pointer capture so panel receives pointer events.
+    if (capturedPointerId >= 0) {
+      try { mainArea.releasePointerCapture(capturedPointerId); } catch (_) {}
+      dragging = false;
+      dragButton = -1;
+      capturedPointerId = -1;
+    }
+
+    const panelEl = document.createElement('div');
+    panelEl.className = 'panel-container';
+
+    // Title bar
+    if (data.title) {
+      const titleEl = document.createElement('div');
+      titleEl.className = 'panel-title';
+      titleEl.textContent = data.title;
+      panelEl.appendChild(titleEl);
+    }
+
+    // Render each control based on its type.
+    const controls = data.controls || [];
+
+    controls.forEach((ctrl) => {
+      if (ctrl.type === 'section_header') {
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'panel-section-header';
+        sectionEl.textContent = ctrl.label || '';
+        panelEl.appendChild(sectionEl);
+        return;
+      }
+
+      const row = document.createElement('div');
+      row.className = 'panel-control';
+      if (ctrl.disabled) row.classList.add('panel-control-disabled');
+      if (ctrl.subField) row.classList.add('panel-control-subfield');
+      if (ctrl.tooltip) bindTooltip(row, ctrl.tooltip);
+
+      // All control types except standalone button get a label column.
+      if (ctrl.type !== 'button' && ctrl.type !== 'checkbox') {
+        const label = document.createElement('span');
+        label.className = 'panel-control-label';
+        label.textContent = ctrl.label || ctrl.id;
+        row.appendChild(label);
+      }
+
+      if (ctrl.type === 'checkbox') {
+        const label = document.createElement('span');
+        label.className = 'panel-control-label';
+        label.textContent = ctrl.label || ctrl.id;
+        row.appendChild(label);
+
+        const checkWrap = document.createElement('div');
+        checkWrap.className = 'panel-checkbox-wrap';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!ctrl.value;
+        cb.disabled = !!ctrl.disabled;
+        if (ctrl.tooltip) bindTooltip(cb, ctrl.tooltip, { delayMs: 120 });
+        cb.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        cb.addEventListener('change', (e) => {
+          e.stopPropagation();
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: cb.checked });
+        });
+        checkWrap.appendChild(cb);
+        row.appendChild(checkWrap);
+
+      } else if (ctrl.type === 'button_strip') {
+        const strip = document.createElement('div');
+        strip.className = 'panel-btn-strip';
+        const options = ctrl.options || [];
+        options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.textContent = opt;
+          if (idx === ctrl.value) btn.classList.add('active');
+          if (ctrl.disabled) btn.disabled = true;
+          btn.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+          btn.addEventListener('pointerup', (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if (ctrl.disabled) return;
+            strip.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: idx });
+            log('Panel change: ' + ctrl.id + ' = ' + idx, 'info');
+          });
+          strip.appendChild(btn);
+        });
+        row.appendChild(strip);
+
+      } else if (ctrl.type === 'slider') {
+        const sliderWrap = document.createElement('div');
+        sliderWrap.className = 'panel-slider';
+        const input = document.createElement('input');
+        input.type = 'range';
+        input.min = ctrl.min !== undefined ? ctrl.min : 0;
+        input.max = ctrl.max !== undefined ? ctrl.max : 1;
+        input.step = ctrl.step !== undefined ? ctrl.step : 0.01;
+        input.value = ctrl.value !== undefined ? ctrl.value : 0.5;
+        input.disabled = !!ctrl.disabled;
+        if (ctrl.tooltip) bindTooltip(input, ctrl.tooltip, { delayMs: 120 });
+        const valDisplay = document.createElement('span');
+        valDisplay.className = 'panel-slider-value';
+        valDisplay.textContent = parseFloat(input.value).toFixed(2);
+        input.addEventListener('input', () => {
+          if (ctrl.disabled) return;
+          const v = parseFloat(input.value);
+          valDisplay.textContent = v.toFixed(2);
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: v });
+        });
+        input.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        input.addEventListener('pointerup', (e) => { e.stopPropagation(); });
+        sliderWrap.appendChild(input);
+        sliderWrap.appendChild(valDisplay);
+        row.appendChild(sliderWrap);
+
+      } else if (ctrl.type === 'button_row') {
+        // Label + multiple action buttons on the same row.
+        const btnRow = document.createElement('div');
+        btnRow.className = 'panel-btn-row';
+        (ctrl.buttons || []).forEach((btnDef) => {
+          const btn = document.createElement('button');
+          btn.className = 'panel-action-btn';
+          btn.textContent = btnDef.label || btnDef.id;
+          btn.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+          btn.addEventListener('pointerup', (e) => {
+            e.stopPropagation(); e.preventDefault();
+            // Collect form data from all inputs within the panel for form-style panels.
+            const msg = { type: 'panel_change', id: currentPanelId,
+              controlId: ctrl.id, buttonId: btnDef.id, value: true };
+            // Gather form fields from the panel DOM.
+            const panel = panelEl;
+            const textInputs = panel.querySelectorAll('input[type="text"][data-ctrl-id]');
+            textInputs.forEach(inp => { msg['form' + capitalize(inp.dataset.ctrlId)] = inp.value; });
+            const selects = panel.querySelectorAll('select[data-ctrl-id]');
+            selects.forEach(sel => { msg['form' + capitalize(sel.dataset.ctrlId)] = parseInt(sel.value); });
+            const intInputs = panel.querySelectorAll('input[type="number"][data-ctrl-id]');
+            intInputs.forEach(inp => {
+              const key = 'form' + capitalize(inp.dataset.ctrlId);
+              const axis = parseInt(inp.dataset.axis || '0');
+              if (axis === 0) msg[key.replace('WidthHeight', 'Width')] = parseInt(inp.value) || 0;
+              if (axis === 1) msg[key.replace('WidthHeight', 'Height')] = parseInt(inp.value) || 0;
+            });
+            sendInput(msg);
+            log('Panel button_row: ' + ctrl.id + '.' + btnDef.id, 'info');
+          });
+          btnRow.appendChild(btn);
+        });
+        row.appendChild(btnRow);
+
+      } else if (ctrl.type === 'linked_vector3') {
+        // Linked X/Y/Z float inputs with a link toggle button.
+        const v3Wrap = document.createElement('div');
+        v3Wrap.className = 'panel-linked-v3';
+        let linked = ctrl.linked !== false;
+        const linkBtn = document.createElement('button');
+        linkBtn.className = 'panel-link-btn' + (linked ? ' active' : '');
+        linkBtn.textContent = '\u{1F517}';
+        bindTooltip(linkBtn, 'Link axes');
+        linkBtn.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+        linkBtn.addEventListener('pointerup', (e) => {
+          e.stopPropagation(); e.preventDefault();
+          linked = !linked;
+          linkBtn.classList.toggle('active', linked);
+          yInput.disabled = linked; zInput.disabled = linked;
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id + '_link', value: linked });
+        });
+        v3Wrap.appendChild(linkBtn);
+        const axes = ['x', 'y', 'z'];
+        const vals = ctrl.value || [0.25, 0.25, 0.25];
+        const inputs = [];
+        axes.forEach((axis, idx) => {
+          const lbl = document.createElement('span');
+          lbl.className = 'panel-v3-label';
+          lbl.textContent = axis.toUpperCase();
+          v3Wrap.appendChild(lbl);
+          const inp = document.createElement('input');
+          inp.type = 'number';
+          inp.className = 'panel-v3-input';
+          inp.value = vals[idx];
+          inp.step = '0.01';
+          if (linked && idx > 0) inp.disabled = true;
+          inp.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+          inp.addEventListener('change', () => {
+            const fv = parseFloat(inp.value) || 0;
+            if (linked) {
+              inputs.forEach(i => { i.value = fv; });
+              sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id,
+                value: [fv, fv, fv] });
+            } else {
+              sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id,
+                value: inputs.map(i => parseFloat(i.value) || 0) });
+            }
+          });
+          inputs.push(inp);
+          v3Wrap.appendChild(inp);
+        });
+        var yInput = inputs[1], zInput = inputs[2];
+        row.appendChild(v3Wrap);
+
+      } else if (ctrl.type === 'float_field') {
+        // Single float input field.
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.className = 'panel-float-input';
+        inp.value = ctrl.value !== undefined ? ctrl.value : 0;
+        inp.step = ctrl.step || '0.01';
+        inp.disabled = !!ctrl.disabled;
+        if (ctrl.tooltip) bindTooltip(inp, ctrl.tooltip, { delayMs: 120 });
+        inp.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        inp.addEventListener('change', () => {
+          if (ctrl.disabled) return;
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id,
+            value: parseFloat(inp.value) || 0 });
+        });
+        row.appendChild(inp);
+
+      } else if (ctrl.type === 'text_input') {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'panel-text-input';
+        inp.value = ctrl.value || '';
+        inp.placeholder = ctrl.placeholder || '';
+        inp.dataset.ctrlId = ctrl.id;
+        inp.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        inp.addEventListener('change', () => {
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: inp.value });
+        });
+        row.appendChild(inp);
+
+      } else if (ctrl.type === 'dropdown') {
+        const sel = document.createElement('select');
+        sel.className = 'panel-dropdown';
+        sel.dataset.ctrlId = ctrl.id;
+        (ctrl.options || []).forEach((opt, idx) => {
+          const o = document.createElement('option');
+          o.value = idx;
+          o.textContent = opt;
+          if (idx === ctrl.value) o.selected = true;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        sel.addEventListener('change', () => {
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: parseInt(sel.value) });
+        });
+        row.appendChild(sel);
+
+      } else if (ctrl.type === 'int2_field') {
+        const wrap = document.createElement('div');
+        wrap.className = 'panel-int2-wrap';
+        const labels = ctrl.labels || ['X', 'Y'];
+        const vals = ctrl.value || [0, 0];
+        labels.forEach((lbl, idx) => {
+          const lblEl = document.createElement('span');
+          lblEl.className = 'panel-v3-label';
+          lblEl.textContent = lbl;
+          wrap.appendChild(lblEl);
+          const inp = document.createElement('input');
+          inp.type = 'number';
+          inp.className = 'panel-int-input';
+          inp.dataset.ctrlId = ctrl.id;
+          inp.dataset.axis = idx;
+          inp.value = vals[idx];
+          inp.min = '0';
+          inp.step = '1';
+          inp.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+          inp.addEventListener('change', () => {
+            sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id,
+              value: [parseInt(inp.value) || 0], axis: idx });
+          });
+          wrap.appendChild(inp);
+        });
+        row.appendChild(wrap);
+
+      } else if (ctrl.type === 'button') {
+        // Standalone button (full width).
+        const btn = document.createElement('button');
+        btn.className = 'panel-action-btn';
+        btn.textContent = ctrl.label || ctrl.id;
+        btn.style.flex = '1';
+        btn.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); });
+        btn.addEventListener('pointerup', (e) => {
+          e.stopPropagation(); e.preventDefault();
+          sendInput({ type: 'panel_change', id: currentPanelId, controlId: ctrl.id, value: true });
+          log('Panel action: ' + ctrl.id, 'info');
+        });
+        row.appendChild(btn);
+      }
+
+      panelEl.appendChild(row);
+    });
+
+    // Position the panel using Unity pixel coordinates.
+    const rawUnityX = Number(data.x || 0);
+    const rawUnityY = Number(data.y || 0);
+    let domPos = unityPixelToDOM(rawUnityX, rawUnityY);
+    let anchorSource = 'unity_xy';
+
+    const anchorRect = data.anchorRect || null;
+    const ax = Number(anchorRect && anchorRect.x);
+    const ay = Number(anchorRect && anchorRect.y);
+    const aw = Number(anchorRect && anchorRect.w);
+    const ah = Number(anchorRect && anchorRect.h);
+    const hasValidAnchorRect =
+      Number.isFinite(ax) && Number.isFinite(ay) &&
+      Number.isFinite(aw) && Number.isFinite(ah) &&
+      aw > 0 && ah > 0;
+    if (hasValidAnchorRect) {
+      domPos = unityPixelToDOM(ax, ay + ah);
+      anchorSource = 'anchor_rect';
+    }
+
+    // Keep panel anchor robust in Windows offscreen mode.
+    // Some PopupWindow-based panels (e.g. SceneView Grid Settings) may carry
+    // hidden-window coordinates (~32000,32000). In that case anchor by pointer.
+    const vw = Math.max(1, Number(remoteVideo.videoWidth || 0));
+    const vh = Math.max(1, Number(remoteVideo.videoHeight || 0));
+    const unityAnchorLooksInvalid =
+      !Number.isFinite(rawUnityX) || !Number.isFinite(rawUnityY) ||
+      rawUnityX < -vw || rawUnityY < -vh ||
+      rawUnityX > vw * 2 || rawUnityY > vh * 2;
+    if (!hasValidAnchorRect && unityAnchorLooksInvalid) {
+      domPos = getFallbackAnchor('panel');
+      anchorSource = 'pointer_fallback';
+      log('Panel anchor fallback: unity=(' + Math.round(rawUnityX) + ',' + Math.round(rawUnityY) +
+          ') pointer=(' + Math.round(domPos.x) + ',' + Math.round(domPos.y) + ')', 'info');
+    }
+
+    panelEl.style.left = domPos.x + 'px';
+    panelEl.style.top = domPos.y + 'px';
+
+    popupOverlay.innerHTML = '';
+    popupOverlay.appendChild(panelEl);
+    popupOverlay.style.display = 'block';
+
+    // Adjust if the panel overflows the container.
+    requestAnimationFrame(() => {
+      const mainRect = mainArea.getBoundingClientRect();
+      const panelRect = panelEl.getBoundingClientRect();
+      let left = parseFloat(panelEl.style.left);
+      let top = parseFloat(panelEl.style.top);
+      if (left + panelRect.width > mainRect.width)
+        left = Math.max(0, mainRect.width - panelRect.width);
+      if (top + panelRect.height > mainRect.height)
+        top = Math.max(0, mainRect.height - panelRect.height);
+      panelEl.style.left = left + 'px';
+      panelEl.style.top = top + 'px';
+    });
+
+    log('Panel shown: ' + currentPanelId + ' (' + controls.length + ' controls) at DOM(' +
+        Math.round(domPos.x) + ',' + Math.round(domPos.y) + ') source=' + anchorSource, 'info');
+  }
+
+  /**
+   * Hide the panel UI and optionally notify the server.
+   */
+  function hidePanelUI() {
+    hideUnityTooltip();
+    if (!currentPanelId) return;
+    popupOverlay.style.display = 'none';
+    popupOverlay.innerHTML = '';
+    currentPanelId = null;
+  }
+
+  // =================== Auto-start offscreen capture for embedded fill mode ===================
+  function resolveCompositeApplyMode(phase) {
+    const currentPhase = phase || 'update';
+    const preset = compositeLayout ? (compositeLayout.layoutPreset || '') : '';
+    const isPresetLayout = preset === 'unity-default-layout' || preset === 'codely-saved-layout';
+    // Preset layouts are explicit full snapshots only on first start.
+    // During in-session updates (close/add tab), keep native auto-tracked views.
+    if (isPresetLayout && currentPhase === 'start') {
+      return 'strict_replace';
+    }
+    // Regular sidebar layout edits should only replace frontend-managed slots
+    // and keep auto-tracked native slots (e.g. FrameDebugger tabs).
+    return 'replace_managed_keep_native';
+  }
+
+  function buildCompositeRequestPayload(size, phase) {
+    var slots = (compositeLayout && Array.isArray(compositeLayout.slots))
+      ? compositeLayout.slots
+      : [];
+    var applyMode = resolveCompositeApplyMode(phase);
+    log('Composite request mode: phase=' + (phase || 'update') +
+        ' preset=' + (compositeLayout ? (compositeLayout.layoutPreset || '') : '') +
+        ' applyMode=' + applyMode, 'info');
+    return {
+      fps: STREAM_FPS,
+      width: size.width,
+      height: size.height,
+      dpr: size.dpr || 1,
+      layoutPreset: compositeLayout ? (compositeLayout.layoutPreset || '') : '',
+      applyMode: applyMode,
+      focusedSlotId: compositeLayout ? (compositeLayout.focusedSlotId || '') : '',
+      slots: slots.map(function(slot) {
+        return {
+          slotId: slot.slotId,
+          windowType: slot.windowType,
+          title: slot.title || '',
+          rect: slot.rect
+        };
+      })
+    };
+  }
+
+  // Guard against duplicate startCompositeLayout calls (e.g. parent sends
+  // update-composite-layout twice before the first call finishes).
+  var _compositeStarting = false;
+
+  async function startCompositeLayout() {
+    if (_compositeStarting) {
+      log('startCompositeLayout already in progress, skipping duplicate call', 'info');
+      return;
+    }
+    if (!compositeLayout || !Array.isArray(compositeLayout.slots) || compositeLayout.slots.length === 0) return;
+    _compositeStarting = true;
+    try {
+    var initialSize = getMainAreaSizeForStream();
+    activeOffscreenWindowType = '__composite__';
+    currentWindowType = '__composite__';
+    activeCompositeSlotId = activeCompositeSlotId || compositeLayout.slots[0].slotId || '';
+    log('Starting composite stream with ' + compositeLayout.slots.length + ' slots', 'info');
+
+    var r = await fetchJson('/stream/start-composite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildCompositeRequestPayload(initialSize, 'start'))
+    });
+    if (!r || r.error) {
+      log('Composite start failed: ' + JSON.stringify(r), 'err');
+      return;
+    }
+
+    capturing = true;
+    placeholder.style.display = 'none';
+    startHeartbeat();
+    try {
+      await startWebRTC();
+      trackWebRTCFps();
+    } catch (e) {
+      log('WebRTC init failed during composite start: ' + e.message, 'err');
+    }
+    } finally { _compositeStarting = false; }
+  }
+
+  async function updateCompositeLayout() {
+    if (!compositeLayout || !Array.isArray(compositeLayout.slots) || compositeLayout.slots.length === 0) {
+      if (capturing) stopCapture();
+      return;
+    }
+    var size = getMainAreaSizeForStream();
+    if (!capturing || activeOffscreenWindowType !== '__composite__') {
+      if (capturing) {
+        cancelReconnect();
+        closeWebRTC();
+        stopHeartbeat();
+        capturing = false;
+      }
+      await startCompositeLayout();
+      return;
+    }
+    await fetchJson('/stream/update-composite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildCompositeRequestPayload(size, 'update'))
+    });
+    log('Composite layout updated: ' + compositeLayout.slots.length + ' slots', 'info');
+  }
+
+  // Starts (or restarts) offscreen capture for the current autoWindowType.
+  // Does NOT stop an existing stream — callers must stop first if needed.
+  async function autoStartOffscreen() {
+    if (!autoWindowType) return;
+    if (capturing && activeOffscreenWindowType === autoWindowType) return;
+    compositeLayout = null;
+    activeCompositeSlotId = '';
+
+    log('Auto-starting offscreen capture for: ' + autoWindowType, 'info');
+    activeOffscreenWindowType = autoWindowType;
+    currentWindowType = autoWindowType;
+    const fps = STREAM_FPS;
+    const initialSize = getMainAreaSizeForStream();
+
+    const r = await fetchJson('/stream/start-offscreen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fps,
+        width: initialSize.width,
+        height: initialSize.height,
+        dpr: initialSize.dpr,
+        windowType: autoWindowType
+      })
+    });
+
+    if (!r || r.error) {
+      log('Auto-start offscreen failed: ' + JSON.stringify(r), 'err');
+      return;
+    }
+
+    capturing = true;
+    placeholder.style.display = 'none';
+    log('Auto-started offscreen capture: ' + autoWindowType, 'ok');
+    startHeartbeat();
+
+    if (initialSize.width > 0 && initialSize.height > 0) {
+      void apiFetch('/stream/resize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ width: initialSize.width, height: initialSize.height, dpr: initialSize.dpr })
+      }).catch(() => {});
+    }
+
+    try {
+      await startWebRTC();
+      trackWebRTCFps();
+    } catch (e) {
+      log('WebRTC init failed during auto-start: ' + e.message, 'err');
+    }
+  }
+
+  // Serialized stream switcher — only ONE switch executes at a time.
+  // If a second switch arrives while one is in flight, the new target is
+  // recorded in autoWindowType and the running switch picks it up when it
+  // finishes, avoiding duplicate HTTP requests and wrong-view bugs.
+  var switchBusy = false;
+
+  async function switchStream(newWindowType) {
+    autoWindowType = newWindowType;
+    if (switchBusy) {
+      log('switchStream: queued → ' + newWindowType + ' (previous switch still running)', 'info');
+      return;
+    }
+    switchBusy = true;
+    try {
+      while (true) {
+        var targetType = autoWindowType;
+        log('switchStream: ' + (activeOffscreenWindowType || '(none)') + ' → ' + targetType, 'info');
+        if (capturing) {
+          cancelReconnect();
+          reconnectAttempt = 0;
+          closeWebRTC();
+          stopHeartbeat();
+          capturing = false;
+        }
+        await autoStartOffscreen();
+        // If autoWindowType was changed by a queued call while we were
+        // awaiting, loop to handle the latest requested type.
+        if (autoWindowType === targetType) break;
+        log('switchStream: target changed during switch, re-executing...', 'info');
+      }
+    } finally {
+      switchBusy = false;
+    }
+  }
+
+  // =================== Parent panel message listener ===================
+  window.addEventListener('message', function(event) {
+    if (event.source !== window.parent || event.origin !== window.location.origin) return;
+    const msg = event.data;
+    if (!msg || msg.source !== 'parentPanel') return;
+    if (msg.messageType === 'unity-window/request-capture') {
+      captureToChat();
+    }
+    if (msg.messageType === 'unity-window/request-stop') {
+      if (capturing) stopCapture();
+    }
+    if (msg.messageType === 'unity-window/set-audio') {
+      var enabled = msg.data && msg.data.enabled;
+      if (typeof enabled === 'boolean') setAudioEnabled(enabled);
+    }
+    if (msg.messageType === 'unity-window/request-composite-layout') {
+      if (typeof sendInput === 'function') {
+        sendInput({ type: 'request_composite_layout' });
+      } else {
+        window.parent.postMessage({
+          source: 'unityWindowBridge',
+          messageType: 'unity-window/composite-layout-snapshot',
+          data: { slots: [] }
+        }, '*');
+      }
+    }
+    // Parent tells us to switch to a different Unity window type
+    // without destroying/recreating the iframe.
+    if (msg.messageType === 'unity-window/switch-stream') {
+      var newType = msg.data && msg.data.windowType;
+      if (newType) {
+        switchStream(newType);
+      }
+    }
+    if (msg.messageType === 'unity-window/update-composite-layout') {
+      if (msg.data && typeof msg.data.serverUrl === 'string') {
+        updateServerApi(msg.data.serverUrl);
+      }
+      compositeLayout = msg.data && msg.data.layout ? msg.data.layout : null;
+      if (!API) {
+        requestParentUrlRefresh();
+        return;
+      }
+      var applyCompositeLayout = function() {
+        if (compositeLayout && Array.isArray(compositeLayout.slots) && compositeLayout.slots.length > 0) {
+          activeCompositeSlotId = compositeLayout.focusedSlotId || activeCompositeSlotId || compositeLayout.slots[0].slotId || '';
+          updateCompositeLayout();
+        } else if (capturing) {
+          stopCapture();
+        }
+      };
+      applyCompositeLayout();
+    }
+  });
+
+  // =================== Init ===================
+  window.addEventListener('pagehide', () => { notifyStopOnPageClose(); });
+  window.addEventListener('beforeunload', () => { notifyStopOnPageClose(); });
+
+  // Track server health so we can auto-reload windows upon reconnection.
+  var wasHealthy = false;
+  // Count consecutive health-check failures. When the Tauri proxy token
+  // expires (2h TTL) or the NWB backend restarts on a new port (502),
+  // the iframe can never recover on its own — ask the parent to
+  // re-resolve the signaling URL. With threshold=2 and 3s interval the
+  // URL refresh triggers within ~5s of backend becoming unreachable.
+  var consecutiveHealthFailures = 0;
+  var urlRefreshRequested = false;
+  // Set when server explicitly sent stream_stop (user clicked Disconnect).
+  // Prevents health-check failures from triggering URL refresh / reconnect.
+  var serverStoppedStream = false;
+  const HEALTH_FAILURES_BEFORE_URL_REFRESH = 2;
+  const HEALTH_CHECK_INTERVAL_MS = 3000;
+
+  if (API) {
+    checkHealth().then(function(ok) {
+      wasHealthy = ok;
+      if (ok) {
+        // In fill mode, do NOT auto-start from URL param. Instead, notify the
+        // parent that we are ready, so it sends the correct window type.
+        notifyParentReady();
+      } else {
+        consecutiveHealthFailures++;
+        log('Server not reachable – will auto-retry every ' +
+            (HEALTH_CHECK_INTERVAL_MS / 1000) + 's', 'err');
+      }
+    });
+  } else {
+    log('Waiting for parent to provide the window bridge server URL', 'info');
+    notifyParentReady();
+  }
+
+  // Notify parent that this iframe is loaded and ready to receive switch-stream.
+  function notifyParentReady() {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ source: 'windowBridge', type: 'ready' }, '*');
+      log('Sent ready signal to parent panel', 'info');
+    }
+  }
+
+  // Ask parent to re-resolve the signaling URL (token may have expired,
+  // or Tauri proxy session is stale). Domain reload no longer triggers
+  // this — server stays alive with the same port.
+  function requestParentUrlRefresh() {
+    if (urlRefreshRequested) return;
+    urlRefreshRequested = true;
+    if (window.parent && window.parent !== window) {
+      var refreshData = {
+        source: 'unityWindowBridge',
+        messageType: 'unity-window/request-url-refresh',
+        data: { reason: 'health_check' }
+      };
+      window.parent.postMessage(refreshData, '*');
+      log('Requested parent to refresh stream URL', 'err');
+    }
+  }
+
+  setInterval(async function() {
+    // Skip health checks entirely after server-initiated stop to prevent
+    // triggering an unwanted URL refresh and reconnection.
+    if (!API || serverStoppedStream) return;
+    var ok = await checkHealth();
+    if (ok) {
+      consecutiveHealthFailures = 0;
+      urlRefreshRequested = false;
+      if (!wasHealthy) {
+        log('Server reconnected, refreshing state...', 'ok');
+        if (!capturing) {
+          notifyParentReady();
+        }
+      }
+    } else {
+      consecutiveHealthFailures++;
+      if (consecutiveHealthFailures >= HEALTH_FAILURES_BEFORE_URL_REFRESH) {
+        requestParentUrlRefresh();
+      }
+    }
+    wasHealthy = ok;
+  }, HEALTH_CHECK_INTERVAL_MS);
+  setupInputForwarding();
+  log('Window Bridge page loaded (WebRTC)');
+})();
+</script>
+</body>
+</html>

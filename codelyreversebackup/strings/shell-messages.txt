@@ -1,0 +1,2 @@
+shell/seI3
+shell/setShowProProjectMenuStateshell/syncProjecmize

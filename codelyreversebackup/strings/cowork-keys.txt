@@ -1,0 +1,110 @@
+        localStorage.setItem('codely-theme', JSON.stringify(''));
+        sessionStorage.setItem('codely-tauri-shell', '1');
+        window.__CODELY_INITIAL_TUNNEL_ENABLED__ = ;
+        window.__CODELY_WINDOW_LABEL__ = '';
+        }x-window-labelworkspaceDirmodewindow.__CODELY_INITIAL_EMBED_MODE__ = true;window.__CODELY_INITIAL_EMBED_MODE__ = false;editorTypewindow.__CODELY_EDITOR_TYPE__ = ;
+  const devBase = window.__CODELY_GUI_DEV_URL__.replace(/\/$/, '');
+ Port already in use! Another instance may be running.   Solution: Stop other instances or use a different port.CODELY_CLI_HOME.codely-clirelativePathnoneextension check: file= server= installed=
+ skipping broadcastsessionUpdateorgUpdatewin32-x64.execodely-binary
+#### runs on codely-air via the Codely OAuth provider, independent of the
+&codely-mobile://session?
+../../../codely-cli/bundle/builtin-agents
+.codely.lock.codely.lock.meta.jsonunknownWorkspace is already opened by another process. lock_path=, error=, pid=, http_port=
+.codely/H
+.codelyCODELY_E2ECODELY_E2E_USER_DATA_DIRCODELY_E2E_WEBVIEW2_PORT--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --autoplay-policy=no-user-gesture-required --remote-debugging-port=
+.codelyDefaultsrc\app\file_watcher.rsFailed to resolve workspace root: 
+.codelyignore.continueignore.gitignore
+/installProgresstjhub/installProide/showNotificaui_button_clickeely_panel_openedcodely_panel_opeely_panel_closedcodely_panel_cloe_button_clickedwelcome_button_cme_window_closedwelcome_window_chown
+/logos/codely.png
+127.0.0.1%USERPROFILE%\.codely\DefaultFailed to create default workspace at 
+C:\b\o\code-search\codely-cowork\extensions\tauri\src-tauri../../../codely-cli/builtin-agents
+CODELY_API_SERVER_ENVCONTROL_PLANE_ENVCODELY_POSTHOG_URL_ENV
+CODELY_BUNDLED_PATH_PREFIXPATH
+CODELY_CLI_HOMEide-settings.jsoncodelyHomeDefaultfile:///local:
+CODELY_DETACHEDCODELY_LOG_TO_STDIOCODELY_DONT_DETACH
+CODELY_FRP_TOKENCHmGcmU2YwrZzHphpkxhJtgVsrc\frp_client.rs
+CODELY_GUI_DEV_URLCODELY_GUI_HOT_RELOADhttp://localhost:5174window.__CODELY_GUI_DEV_URL__ = ;
+CODELY_LOG_TO_STDIO1CodelyShared core registered on AppStateAppState not available 
+CODELY_LOG_TO_STDIOCreated hub window
+CODELY_LOG_TO_STDIOCreated hub windowGlobal app state not initializedApp HTTP server not started yet
+CODELY_TOKEN set, skipping browser / Unity flow (highest priority)No Unity tokens provided, using browser auth flow
+CONTROL_PLANE_ENVhttps://api.continue.dev/https://hub.continue.dev/https://codely.tuanjie.cn/https://codely.tuanjie.cn/dashboard/confighttps://api-test.continue.dev/https://app-test.continue.dev/http://localhost:8000/http://localhost:8000/dashboard/confighttps://api.continue-stage.tools/https://hub.continue-stage.tools/https://codely-stg.tuanjie.cn/https://codely-stg.tuanjie.cn/dashboard/confighttp://localhost:3001/http://localhost:3000/
+Cleared org_state_cachecodely-sleep-inhibitionsleep inhibition thread exited early: 
+Codely
+Codely (Remote)Showing OS notification for remote: id=
+Codely Tunnel -  (port 
+CodelyUnityIpc
+Codelydrill/getProgress
+Codelysource
+Codelysrc\messages\drill.rs
+Codelytauri/windowToggleMaximizetauri/windowToggleMaximize failed: 
+Content-Typecowork-installed-metrics.sentunity-metrics-distinct-idTuanjie Coworkfailed to resolve data dircodely-unity-metrics-v1
+Continue frame but nothing to continueWhile waiting for more fragments received: 
+ContinueAccessTokenContinueRefreshTokenContinueAccountIdContinueAccountLabelError getting user info: , login failed
+ContinueBodyKeepAliveClosed
+ContinueBodyKeepAliveClosedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\url-2.5.8\src\lib.rs
+ContinueBodyKeepAliveClosedLimitSupportDimensionMismatchFailedAlready
+ContinueIdleBusyDisabled
+ContinueSwitching ProtocolsProcessingEarly HintsOKCreatedAcceptedNon Authoritative InformationNo ContentReset ContentPartial ContentMulti-StatusAlready ReportedIM UsedMultiple ChoicesMoved PermanentlyFoundSee OtherNot ModifiedUse ProxyTemporary RedirectPermanent RedirectBad RequestUnauthorizedPayment RequiredForbiddenNot FoundMethod Not AllowedNot AcceptableProxy Authentication RequiredRequest TimeoutConflictGoneLength RequiredPrecondition FailedPayload Too LargeURI Too LongUnsupported Media TypeRange Not SatisfiableExpectation FailedI'm a teapotMisdirected RequestUnprocessable EntityLockedFailed DependencyToo EarlyUpgrade RequiredPrecondition RequiredToo Many RequestsRequest Header Fields Too LargeUnavailable For Legal ReasonsInternal Server ErrorNot ImplementedBad GatewayService UnavailableGateway TimeoutHTTP Version Not SupportedVariant Also NegotiatesInsufficient StorageLoop DetectedNot ExtendedNetwork Authentication Required
+ContinueSwitching ProtocolsProcessingOKCreatedAcceptedNon Authoritative InformationNo ContentReset ContentPartial ContentMulti-StatusAlready ReportedIM UsedMultiple ChoicesMoved PermanentlyFoundSee OtherNot ModifiedUse ProxyTemporary RedirectPermanent RedirectBad RequestUnauthorizedPayment RequiredForbiddenNot FoundMethod Not AllowedNot AcceptableProxy Authentication RequiredRequest TimeoutConflictGoneLength RequiredPrecondition FailedPayload Too LargeURI Too LongUnsupported Media TypeRange Not SatisfiableExpectation FailedI'm a teapotMisdirected RequestUnprocessable EntityLockedFailed DependencyUpgrade RequiredPrecondition RequiredToo Many RequestsRequest Header Fields Too LargeUnavailable For Legal ReasonsInternal Server ErrorNot ImplementedBad GatewayService UnavailableGateway TimeoutHTTP Version Not SupportedVariant Also NegotiatesInsufficient StorageLoop DetectedNot ExtendedNetwork Authentication Required
+ContinueTextBinaryReserved span=
+ContinueTextBinaryReservedClosePingPongPaths must start with a `/`. Use "/" for root routesPaths must start with a `/`/Invalid route: nested routes cannot contain wildcards (*)
+Device authorization request has expiredCODELY_API_SERVER_ENVUsing configured Control Plane URLCONTROL_PLANE_ENVtestUsing Control Plane URL for production environmenthttps://codely.tuanjie.cn/Using Control Plane URL for test environmenthttp://localhost:8000/Using Control Plane URL for staging environmenthttps://codely-stg.tuanjie.cn/Using Control Plane URL for local environmentCODELY_TOKENlocalhoststgCleared cached Unity launch tokenserrorType
+Failed to get .codely directorystreaming_layout.cwltadjust-font-size
+Failed to get user home directorydata.jsondrillStepssrc\app\data.rsdrillCompletedFailed to create .codely directory 
+Failed to register Codely CLI workspace core for 
+Failed to start Codely CLI (acp/initSession) for 
+GUI_MSGcowork_codely_panel_input_submittedsrc\messages\mod.rs
+HOSTNAMECOMPUTERNAMEnpm install -g basedpyrightpythonbasedpyrighthttps://github.com/DetachHead/basedpyrightcsharpcodely-unity-lsp-serverhttps://nodejs.org/en/download (Node.js), https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (dotnet)npm install -g @vtsls/language-servertypescriptvtslshttps://github.com/yioneko/vtslskeepAwaketruesrc\messages\power.rs
+Loading Control Plane session info...CODELY_TOKEN set, applying access token login (highest priority)
+Managed by Codely Cowork (unityInsight.maxTurns)# Managed by Codely Cowork (unityInsight.maxTurns).
+RestartRestart requested; relaunching appcowork-settings.jsoncodely-appsettings.jsonMigrated legacy settings from  to 
+SOFTWARE\Microsoft\CryptographyMachineGuidcowork_ui_button_clickedbutton_namebutton_name_sourceRejected button metrics event without a valid name and sourcecowork_window_openedcowork_window_closedplan_typeeditor_versioncowork_chat_startedcowork_chat_endedplanTypemessagesrolecontentlegacySlashCommandDatainputlogin_startedcowork_embed_mode_changedcowork_webview_closedcowork_webview_openedcowork_codely_panel_input_submittedcowork_codely_panel_closedcowork_codely_panel_openedcowork_welcome_window_closedcowork_welcome_window_showncowork_client_installedhttp://https://file://bearer authorizationaccess_tokenaccess tokenSetThreadExecutionState failedsrc\terminal.rs
+Session info loaded from CODELY_TOKEN
+Session info loaded from CODELY_TOKENAUTH_TYPE
+Starting Codely CLI via ACP session for  (forceRestart=
+TERMxterm-256colorCOLORTERMtruecolorTERM_PROGRAMCodelyFailed to write terminal: 
+ThemeServicelightdark#222222#eeeeeelocalStorage.setItem('ide', JSON.stringify()); localStorage.setItem('codely-theme', JSON.stringify()); document.documentElement.setAttribute('data-theme', ); document.documentElement.style.backgroundColor = ; if (document.body) document.body.style.backgroundColor = 
+This session is currently controlled from another Codely view (stream 
+Unable to resolve ~/.codely-cli/settings.jsonworkspaceDir is required for workspace-scoped settingsFailed to create log directory: 
+Unity Insight serve did not become ready after starting Codely CLI for this workspace.serve lock never appearedserve lock pid is deadUnity Insight serve still missing for  after soft ACP start (); forceRestarting CLI
+Unity Insight serve is not running. Start a Codely CLI session for this project.Invalid project path encoding
+UnityInsight.codely-cliindex.currentindex.dbindexMtimeMsFailed to start Windows Restart Manager session: 
+UnityInsightRecycling Unity Insight serve for  before Codely CLI restart
+Unknown Codely CLI / ACP error
+WORKOS_CLIENT_IDfdc35ff5056810f083cf0138015de8ccf57e880be9374793ad6ac320d690536eCODELY_API_SERVER_ENVDEFAULT_CONTROL_PLANE_PROXY_URLCONTROL_PLANE_URLAUTH_TYPEAPI_URLdashboard/config
+accountCODELY_TOKEN login failed: , falling back to stored session / refresh
+already_open error but http_port is missing or invalidNotified Unity before workspace IPC path change (close Codely window if detach)Could not notify Unity before IPC path change: 
+app.lock.meta.jsonFailed to resolve codely home directoryFailed to create 
+auth = "codely-oauth"
+cannot resolve codely home for user extension pathextensions.codely-cli${extensionPath}${/}${pathSeparator}${workspacePath}
+cliresourcecorebincodely-binary
+closeCodelyEditorOnWorkspaceSwitchFailed to serialize closeCodelyEditorOnWorkspaceSwitch message: 
+codely-desktopinitialize startup was interrupted
+codely-mainFailed to generate taskbar badge icon: 
+codely-sH
+codely-tH
+codely-toast-icon.ico
+codely-toast-icon.png
+codely_auto_upda_input_submittedcodely_panel_inpclient_installedclient_logged_inened
+codely_virtual__0
+default-src 'self' http://127.0.0.1:* http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://127.0.0.1:* http://localhost:*; style-src 'self' 'unsafe-inline' http://127.0.0.1:* http://localhost:*; img-src 'self' data: blob: https: http://127.0.0.1:* http://localhost:*; media-src 'self' data: blob: https:; font-src 'self' data: http://127.0.0.1:* http://localhost:*; connect-src 'self' https: wss: http://127.0.0.1:* http://localhost:* https://codesearch-plugins.cdn.tuanjie.cn;http://localhost:5173/../disticons/128x128.pngicons/128x128@2x.pnghttps://codely.tuanjie.cn/plugins/cowork/latestdW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlFNEU0MTY0M0U1NDAwRTIKUldUaUFGUStaRUZPbmhlN3E5STM1OHRWcWdDMGpJeTl2eUIzcDJiYUkveVc3ZWZLckhxaXVZTjgK
+dev.codelycowork.desktopSOFTWARE\Classes\AppUserModelId\dev.codelycowork.desktopDisplayName
+dev.codelycowork.desktopsrc\core\process.rs
+https://codely.tuanjie.cn/api/plugins/cowork/latesthttps://codely.tuanjie.cn/api/plugins/cowork/latest?beta=truesrc\server.rs
+hub-mainFailed to get .codely directoryupdatesFailed to create updates dir: 
+hub-mainpathsCodelysourcetauri
+idaccess_token=agentsunity-insight.tomlUnable to resolve ~/.codely-cli/agentsworkspaceDir is required for workspace-scoped agent toml
+logsFailed to get .codely directorycommand$env:PATH = '' + ';' + $env:PATH; 
+logsFailed to get .codely directorycommand;$env:PATH = '' + ';' + $env:PATH; 
+model = "codely-air"
+nodeCODELY_WORKSPACECODELY_PREWARMNODE_ENVproductionCODELY_BRIDGE_CANARYCODELY_SIDECHATPKG_EXECPATHcliCODELY_CLI_BASE_DIRhubtuanjie.exe
+pathkind{"type":"filePreviewHide"}{"type":"bubbleShow"}CODELY_GUI_DEV_URLCODELY_GUI_HOT_RELOADhttp://localhost:5174/pet.htmlroutethemePetPositionXPetPositionY{"type":"petMoveEnd"}src\server.rsHTTP 
+readRangeInFileisTelemetryEnabledgetUniqueIdgetHomedirgetDiffgetTerminalContentsgetWorkspaceDirsgetProjectRootshowLinesmkdirwriteFilefileExistsshowVirtualFileopenFileopenContentDiffdeleteFilerunCommandsaveFilereadFileshowDiffgetOpenFilesgetCurrentFilegetCursorPositiongetPinnedFilesgetSearchResultsgetFilesByNamegetSearchResultsWithOptionsgetFileResultsgetProblemsgetBuildContentsgetDebugContentssubprocessgetBranchgetGitBranchesswitchGitBranchgetTagsgetIdeInfogetIdeSettingsgetRepoNamelistDirgetAllPromptFilesgetGitRootPathfindGitRepositoriesapplyGitFileActiongetChangedFilesgetFileAtHeadgetFileAtIndexgetFileStatsinsertAtCursorapplyToFileeditToolshowToastopenUrlopenLogFolderisWorkspaceRemoteshowOpenFilePickercopyTextshowFileeditor/getColorseditor/onLoadtauri/stopTunneltauri/startTunneltauri/getTunnelEnabledtauri/getTunnelStatustauri/setTunnelEnabledtauri/getKeepAwaketauri/setKeepAwaketauri/getUpdateChanneltauri/setUpdateChanneltauri/listRemoteWorkspacestauri/bringToFrontgotoDefinitiongotoTypeDefinitiongetSignatureHelpgetReferencesgetDocumentSymbolsgetDeclarationTextInRangeconfigUpdatesession/selectedModelChangedindexProgressindexing/statusUpdateaddContextItemrefreshSubmenuItemsisContinueInputFocusedcoreReadysetTTSActivegetWebviewHistoryLengthgetCurrentSessionIddidCloseFilesfreeTrialExceededunityStatusUpdateunityPackageUpdateunityNotificationshowPluginUpgradeDialogmcp/updatemcp/statusUpdatedidChangeSelectionToWebviewacp/agentStatusUpdateacp/sessionConflictacp/enabledStatusacp/isCLIValidacp/availableCommandsUpdatedacp/approvalModeUpdatedacp/jobUpdatedacp/systemMessageUpdateacp/requestPermissionacp/contextUsageUpdateacp/toolCallStateUpdateacp/backgroundSubagentsUpdateacp/bgTaskContinuationStartacp/bgTaskContinuationEndacp/currentSessionPlanFilesUpdateacp/currentSessionChangedFilesUpdateacp/compressionStartacp/compressionChunkacp/compressionCompleteacp/requestShellConfirmationacp/permissionGrantedstream/streamErrorhistory/listChangedfeedback/projectUploadUpdatetoolCallPartialOutputeditor/setColorsvisualstudio/setColorsorgUpdatenotification/livePushnotification/ipcPassthroughgetWebviewHistorypinghistory/listcalculateRelativePathhistory/deletehistory/loadhistory/savehistory/getSessionFolderPathhistory/clearhistory/forkhistory/rewindhistory/updateStatehistory/renameTitlehistory/markAsReadhistory/markAsUnreadhistory/saveDraftInputhistory/clearDraftInputhistory/saveSubagentDisplayNameshistory/saveSessionSettingsdevdata/logconfig/addModelconfig/newPromptFileconfig/newAssistantFileconfig/ideSettingsUpdateconfig/addLocalWorkspaceBlockconfig/addMcpServerconfig/deleteMcpServerconfig/getSerializedProfileInfoconfig/getInstalledEditorsconfig/deleteModelconfig/refreshProfilesconfig/refreshMemoryconfig/getShellAllowlistconfig/updateShellAllowlistconfig/getMcpAllowlistconfig/updateMcpAllowlistconfig/checkRemoteConfigconfig/openProfileconfig/updateSharedConfigconfig/syncSharedConfigconfig/updateSelectModeconfig/updateSelectedModelmcp/listmcp/reloadServermcp/getResourcemcp/getPromptmcp/startAuthenticationmcp/removeAuthenticationmcp/setServerEnabledacp/notifyUpdateacp/modelProfilesunity/refreshunity/disconnectunity/getStatusunityInsight/getEnabledunityInsight/setEnabledunityInsight/getIndexStatusunityInsight/ensureIndexunity/getProjectStatusunity/getEngineTypeunity/installMcpPackageunity/openEditorunity/getEditorPidunity/openWindowBridgeunity/windowBridge/listWindowsunity/windowBridge/startStreamServerunity/windowBridge/stopStreamServerunity/windowBridge/getStreamServerStatusunity/checkPackageCompatibilityunity/updatePackageVersionsaveClipboardImagegetClipboardFilePathsaveTempFilecontext/getContextItemscontext/getSymbolsForFilescontext/loadSubmenuItemscontext/repoMaptts/killllm/completetelemetryllm/editCorrectorllm/checkNextSpeakerllm/loopDetectllm/toolcallLoopDetectllm/listModelsdebug/messagellm/compileChatcountTokenPercentagestreamDiffLineschatDescriber/describechatDescriber/describeSubagentconversation/compactllm/countHistoryTokensdidChangeSelectedProfiledidChangeSelectiondidChangeSelectedOrgtools/evaluatePolicycontrolPlane/getFreeTrialStatussamplePrompts/fetchsamplePrompts/clicksamplePrompts/skipproject/getSummarycontrolPlane/openUrlcontrolPlane/openUrlV2controlPlane/openBrowsercontrolPlane/openTerminalcontrolPlane/getModelsAddOnUpgradeUrlcontrolPlane/getUserPlancontrolPlane/getUserUsageSummarycontrolPlane/getUserExhaustioncontrolPlane/getActivityNotificationsisItemTooBigprocess/markAsBackgroundedprocess/isBackgroundedprocess/killlsp/goToDefinitionlsp/findReferenceslsp/hoverlsp/documentSymbollsp/workspaceSymbollsp/goToImplementationlsp/prepareCallHierarchylsp/incomingCallslsp/outgoingCallsacp/initSessionacp/completeSlashCommandacp/loadSubagentActivityacp/getRewindFileDiffacp/withdrawLastUserPromptacp/refreshCommandsacp/enqueueSessionMessageacp/cancelAutoContinueacp/retryCheckIsCLIValidacp/getVersionacp/getSessionModeacp/getSessionModelacp/getBackgroundSubagentsacp/exportSessiontask/listtask/stopide/resolveNotificationstream/getActiveStreamstabs/reportOpenTabstabs/getOpenTabsskills/reloadAcpskills/installskills/updateskills/installUploadskills/listskills/enableskills/disableskills/uninstallskills/listRemoteextensions/installextensions/updateextensions/listextensions/enableextensions/disableextensions/uninstallextensions/listRemotecommands/listcommands/enablecommands/disablecommands/deletesubagents/listsubagents/enablesubagents/disablesubagents/deletegenerator/listTasksgenerator/resolveDownloadUrlgenerator/updateTasksDiscardedmarketplace/listRemotemarketplace/installedListunity/getHubProjectsAndEditorsunity/invokeToolunity/connectunity/getSystemPromptreportLogsfeedback/reportStreamErrorfeedback/submitReportfeedback/getProjectUploadStatefeedback/retryProjectUploadgetCurrentOrgrefreshOrgListconfig/getSharedConfigsettings/getCodelyHomesettings/prepareCodelyHomeChangesettings/applyCodelyHomeChangeorgSyncstream/userMessageBroadcastsrc\core\tcp_ipc_messenger.rsSending message:  (id: 
+route=/drillwindow.__CODELY_WORKSPACE_DIR__ = 
+server returned an invalid canonical machine IDcodely-machine:v2
+settings.json.codely-cli/unityInsight/enabled
+sourcemessageTypeshell/themeChangededitor-backgroundeditor-foregroundprimary-backgroundprimary-foregroundsecondary-backgroundsecondary-foregroundrgba(128, 128, 128, 0.35)command-backgroundrgba(255, 255, 255, 0.05)command-foregroundrgba(204, 204, 204, 0.15)command-border-focusrgba(204, 204, 204, 0.3)rgba(204, 204, 204, 0.7)description-mutedinput-backgroundinput-foregroundinput-placeholderrgba(204, 204, 204, 0.04)badge-backgroundbadge-foregroundsuccesserrorerror-foregrounddisabled-foregroundrgba(204, 204, 204, 0.5)textCodeBlockBackgroundrgba(10, 10, 10, 0.4)find-match-selectedrgba(234, 92, 0, 0.33)list-active-foregroundcodely-sidebar-backgroundrgba(0, 0, 0, 0.05)rgba(139, 148, 158, 0.25)rgba(30, 30, 30, 0.3)rgba(0, 0, 0, 0.02)rgba(59, 59, 59, 0.5)rgba(244, 244, 244, 0.5)startingreadyrecoveringfatalstoppedcoreExecutableMissingcliExecutableMissingpermissionDeniedmissingNodeModuleportInUsestdoutClosedstdinPipeClosedrequestTimeoutunknownCrashreinstall_or_check_install_dircheck_file_permissionsreinstall_dependenciesclose_conflicting_process_or_restart_appwait_or_restart_apprestart_app_or_collect_logscli/bin/win32-x64/codely.exeenoentcore executable not foundeaddrinuseaddress already in useeaccespermission deniedaccess is deniedcannot find modulestdout reader exitedchannel closedfailed to write to stdinfailed to flush stdinstdin is closedpiperequest timeoutclibinwin32-x64codely.exe&amp;&lt;&gt;&quot;&apos;[Core Error] 
+src\tunnel.rsfailed to resolve user .codely directorytunnel-machine-instance-idtunnel-machine-canonical-idfailed to replace invalid 
+target_versionchannelstablecanarycowork_codely_auto_update_applytauri/getUpdateChannelmessageOptionsjoinExistingStreamOnlyunity/trackEvent: failed to parse data string: 
+tray-open-windowOpen Windowtray-restartRestart Coworktray-quitQuitcodely-mainTuanjie CoworkFailed to decode tray icon: 
