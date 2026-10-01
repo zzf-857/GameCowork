@@ -1,3 +1,4 @@
+import { GameCoworkUnityConnector, GameCoworkUnityDiscovery, unityOwner } from "./gamecowork-unity-connectors.js";
 // Local Cowork 2.1.3-canary.1 compatibility fix: supply missing custom-model effort metadata.
 // Keep native selection, persistence, and reasoningEffort request handling.
 function coworkCustomReasoningConfig(config) {
@@ -17635,6 +17636,8 @@ function Z5e({
       s &&
         p.jsx("div", {
           className: "ml-4 flex items-center gap-3",
+          style: a ? { pointerEvents: "none" } : undefined,
+          "aria-busy": a,
           "data-focus-direction": "horizontal",
           onClick: (c) => c.stopPropagation(),
           children: s,
@@ -44851,6 +44854,31 @@ function aet(e, t) {
   const n = T$.get(e);
   n && (n.resolve(t), T$.delete(e));
 }
+const gamecoworkShellApprovalWaiters = new Map();
+function gamecoworkWaitShellApproval(requestId) {
+  const existing = gamecoworkShellApprovalWaiters.get(requestId);
+  if (existing) return existing.promise;
+  let resolve;
+  const promise = new Promise((done) => { resolve = done; });
+  gamecoworkShellApprovalWaiters.set(requestId, { promise, resolve });
+  return promise;
+}
+function gamecoworkResolveShellApproval(requestId, outcome) {
+  const pending = gamecoworkShellApprovalWaiters.get(requestId);
+  if (pending) {
+    pending.resolve(outcome);
+    gamecoworkShellApprovalWaiters.delete(requestId);
+  }
+}
+function gamecoworkCancelSessionApprovals(session) {
+  for (const request of session?.pendingAcpPermissionRequests || []) aet(request.requestId, null);
+  for (const request of session?.pendingAcpShellConfirmationRequests || []) gamecoworkResolveShellApproval(request.requestId, "reject");
+  if (session) {
+    session.pendingAcpPermissionRequests = [];
+    session.pendingAcpShellConfirmationRequests = [];
+  }
+}
+export { gamecoworkWaitShellApproval, gamecoworkResolveShellApproval };
 const iet = 2e4,
   oet = 1e5,
   set = 1e6;
@@ -45659,7 +45687,8 @@ const Wet = {
         const n = $c(e, t.payload.workspaceKey),
           r = n.connectionStatus.status === "connected";
         ((n.sessionStatuses[t.payload.sessionId] = t.payload.status),
-          (n.connectionStatus = Vet(n.sessionStatuses)),
+          (n.connectionStatus = typeof window < "u" && window.GAMECOWORK_SHELL && n.sessionStatuses[`local-editor:${t.payload.workspaceKey || "default"}`]
+            ? n.sessionStatuses[`local-editor:${t.payload.workspaceKey || "default"}`] : Vet(n.sessionStatuses)),
           n.connectionStatus.status === "connected" && (n.isLaunching = !1),
           r && n.connectionStatus.status !== "connected" && (n.editorPid = null));
       },
@@ -45767,6 +45796,7 @@ const ese = (e) => {
     var o, s;
     const t = Im(e),
       n = e.session ? e.session.activeSessionId : void 0;
+    if (typeof window < "u" && window.GAMECOWORK_SHELL) return t.connectionStatus.status === "connected" ? "connected" : t.isLaunching ? "launching" : "disconnected";
     if (n && ((o = t.sessionStatuses[n]) == null ? void 0 : o.status) === "connected") return "connected";
     if (t.isLaunching) return "launching";
     const r = e.session ? e.session.sessionMetadataById : void 0,
@@ -107915,8 +107945,36 @@ function dS(e) {
 function lbn(e, t) {
   return e && t.some((n) => n.workspaceKey === e) ? e : dS(t);
 }
+const gamecoworkWorkspaceLifecycle = { epoch: 0, request: 0, owners: new Map(), closing: new Set(), closed: new Set() };
+function gamecoworkWorkspaceBlocked(key) {
+  return typeof window !== "undefined" && window.GAMECOWORK_SHELL && (gamecoworkWorkspaceLifecycle.closing.has(key) || gamecoworkWorkspaceLifecycle.closed.has(key));
+}
+function gamecoworkWorkspaceTransition(key, kind) {
+  if (typeof window === "undefined" || !window.GAMECOWORK_SHELL || !key) return;
+  const life = gamecoworkWorkspaceLifecycle;
+  life.epoch++; life.owners.set(key, (life.owners.get(key) || 0) + 1);
+  if (kind === "closing") life.closing.add(key);
+  else if (kind === "closed") { life.closing.delete(key); life.closed.add(key); }
+  else if (kind === "opened") { life.closing.delete(key); life.closed.delete(key); }
+  else if (kind === "failed") life.closing.delete(key);
+  return life.owners.get(key);
+}
+function gamecoworkWorkspaceOwnerEpoch(key) { return gamecoworkWorkspaceLifecycle.owners.get(key) || 0; }
+function gamecoworkWorkspaceLive(state, key) {
+  if (typeof window === "undefined" || !window.GAMECOWORK_SHELL) return true;
+  return !!key && !gamecoworkWorkspaceBlocked(key) && state.hub.workspaces.some(workspace => workspace.workspaceKey === key);
+}
+function gamecoworkWorkspaceLease(state, key) {
+  return gamecoworkWorkspaceLive(state, key) ? { key, epoch: gamecoworkWorkspaceLifecycle.owners.get(key) || 0 } : null;
+}
+function gamecoworkWorkspaceLeaseCurrent(state, lease) {
+  if (typeof window === "undefined" || !window.GAMECOWORK_SHELL) return true;
+  return !!lease && gamecoworkWorkspaceLive(state, lease.key) && (gamecoworkWorkspaceLifecycle.owners.get(lease.key) || 0) === lease.epoch;
+}
+export { gamecoworkWorkspaceTransition, gamecoworkWorkspaceLive, gamecoworkWorkspaceLease, gamecoworkWorkspaceLeaseCurrent, gamecoworkWorkspaceOwnerEpoch };
 const zkt = sr("hub/fetchWorkspaces", async (e, { dispatch: t, getState: n }) => {
     var s;
+    const registryEpoch = gamecoworkWorkspaceLifecycle.epoch, registryRequest = ++gamecoworkWorkspaceLifecycle.request;
     if (Og()) {
       const l = Sie(n().hub.workspaces);
       return (t(sxe(l)), l);
@@ -107956,6 +108014,7 @@ const zkt = sr("hub/fetchWorkspaces", async (e, { dispatch: t, getState: n }) =>
         };
       }),
       o = Sie(i);
+    if (window.GAMECOWORK_SHELL && (registryEpoch !== gamecoworkWorkspaceLifecycle.epoch || registryRequest !== gamecoworkWorkspaceLifecycle.request)) return n().hub.workspaces;
     if ((t(sxe(o)), !n().hub.hasDispatchedCliPending)) {
       const l = o.find((c) => c.isCliWorkspace);
       (l && t(Kkt(l.workspaceKey)), t(Qkt()));
@@ -108060,17 +108119,19 @@ const uS = sr("hub/fetchRemoteMachines", async (e, { extra: t, dispatch: n }) =>
         e.isHubMode = t;
       },
       setHubWorkspaces(e, { payload: t }) {
-        const n = Sie(t);
+        const n = Sie(t).filter(workspace => !gamecoworkWorkspaceBlocked(workspace.workspaceKey));
         e.workspaces = n;
         const r = new Set(n.map((a) => a.workspaceKey));
         ((!e.activeWorkspaceKey || !r.has(e.activeWorkspaceKey)) && (e.activeWorkspaceKey = dS(n)),
           (e.hiddenWorkspaceKeys = e.hiddenWorkspaceKeys.filter((a) => r.has(a))));
       },
       setActiveWorkspaceKey(e, { payload: t }) {
+        if (gamecoworkWorkspaceBlocked(t)) return;
         e.activeWorkspaceKey = t;
       },
       addHubWorkspace(e, { payload: t }) {
         var o;
+        if (gamecoworkWorkspaceBlocked(B9e(t))) return;
         const n = B9e(t),
           r = {
             ...t,
@@ -108085,6 +108146,7 @@ const uS = sr("hub/fetchRemoteMachines", async (e, { extra: t, dispatch: n }) =>
           e.activeWorkspaceKey || (e.activeWorkspaceKey = dS(e.workspaces)));
       },
       removeHubWorkspace(e, { payload: t }) {
+        gamecoworkWorkspaceTransition(t, "closed");
         ((e.workspaces = e.workspaces.filter((n) => n.workspaceKey !== t)),
           e.activeWorkspaceKey === t && (e.activeWorkspaceKey = dS(e.workspaces)));
       },
@@ -109243,6 +109305,43 @@ function nwt(e) {
 function rwt(e) {
   return (e.split(/[/\\]/).pop() || e).replace(/\[\d+\]$/, "");
 }
+async function gamecoworkPassiveUnityQuery(messenger, payload, isCurrent = () => true) {
+  const readOnly = (payload?.command === "manage_editor" && ["get_state", "get_project_root", "get_selection"].includes(payload.toolParams?.action)) || (payload?.command === "_internal_asset_listening" && payload.toolParams?.action === "status");
+  if (!window.GAMECOWORK_SHELL || !readOnly) return messenger.request("unity/invokeTool", payload);
+  let capturedRoute = { ...(payload.workspaceKey ? { workspaceKey: payload.workspaceKey } : {}), ...(payload.workspaceRef ? { workspaceRef: payload.workspaceRef } : {}) };
+  if (!capturedRoute.workspaceKey && typeof messenger.resolveHubWorkspaceRoute === "function") {
+    const routeId = "passive-unity:" + Date.now() + ":" + Math.random();
+    try { capturedRoute = messenger.resolveHubWorkspaceRoute(payload, routeId) || capturedRoute; }
+    finally { messenger.routedWorkspaceKeysByMessageId?.delete(routeId); }
+  }
+  const ownedPayload = capturedRoute.workspaceKey && !payload.workspaceKey ? { ...payload, ...capturedRoute } : payload;
+  const { data: response } = await messenger.requestWithMessageId("unity/invokeTool", ownedPayload);
+  if (!isCurrent()) return { status: "unknown", stale: true };
+  const error = response?.status === "error" ? response.error : response?.content?.status === "error" ? response.content.error : null;
+  if (!error) return response;
+  const message = typeof error === "string" ? error : error.message || JSON.stringify(error);
+  const transient = /Editor Bridge is not connected|assembly reload|domain[_ ]reload|ECONNRESET|ECONNREFUSED|broken pipe|forcibly closed|connection (?:reset|refused|lost|closed)|os error 1005[34]|os error 10061/i.test(message);
+  if (transient) {
+    const route = capturedRoute;
+    let projectStatus;
+    try {
+      const { data: metadata } = await messenger.requestWithMessageId("unity/getProjectStatus", route);
+      const inner = metadata?.status === "success" ? metadata.content : undefined;
+      projectStatus = inner?.status === "success" ? inner.content : inner;
+    } catch {}
+    if (!isCurrent()) return { status: "unknown", stale: true };
+    if (!(projectStatus?.isUnityProject === true && projectStatus.hasUnityMcpPackage === false))
+      return { ...response, unknown: true, reason: "editor_disconnected" };
+  }
+  if (isCurrent()) await messenger.handleRequestError("unity/invokeTool", error);
+  return response;
+}
+function gamecoworkPassiveUnityEpoch(epochs, owner, isOwnerCurrent = () => true) {
+  const key = owner.workspaceKey || owner.workspaceRef?.workspaceDir || "default";
+  const epoch = (epochs.get(key) || 0) + 1;
+  epochs.set(key, epoch);
+  return () => epochs.get(key) === epoch && isOwnerCurrent();
+}
 function bne(e) {
   return p.jsx("span", {
     className: "inline-block max-w-[20rem] whitespace-pre-wrap break-all text-left",
@@ -109348,10 +109447,10 @@ const awt = E.forwardRef((e, t) => {
         (async () => {
           var H;
           try {
-            const D = await a.request("unity/invokeTool", {
+            const D = await gamecoworkPassiveUnityQuery(a, {
               command: "manage_editor",
               toolParams: { action: "get_selection" },
-            });
+            }, () => !j);
             if (j || D.status !== "success") return;
             const W = D.content;
             if ((W == null ? void 0 : W.status) !== "success") return;
@@ -118642,7 +118741,7 @@ function f8t() {
       var h, m;
       try {
         const f = await m8t(
-            e.request("unity/invokeTool", {
+            gamecoworkPassiveUnityQuery(e, {
               command: p8t,
               toolParams: d === "set" ? { action: d, paused: u === !0 } : { action: d },
             }),
@@ -118731,6 +118830,31 @@ function f8t() {
     }
   );
 }
+function GameCoworkUnityPanel({ workspaceKey, workspaceRoot, onView, onOpenEditor }) {
+  const state = ze((value) => Oke(value, workspaceKey)), dispatch = Vn(), messenger = E.useContext(Ft);
+  const workspace = ze((value) => value.hub.workspaces.find((item) => item.workspaceKey === workspaceKey));
+  const activeKey = ze(Rke), isRemote = workspace?.isRemote === true;
+  const normalize = value => typeof value === "string" ? value.replaceAll("\\", "/").replace(/\/+$/, "").toLowerCase() : "";
+  const isOpen = activeKey === workspaceKey && !!workspace && !!normalize(workspaceRoot) && normalize(workspace.workspaceDir) === normalize(workspaceRoot);
+  const known = isOpen && !isRemote && state.projectInfo.isUnityProject === true && normalize(state.projectInfo.projectRoot) === normalize(workspaceRoot);
+  if (!known) return p.jsx(GameCoworkUnityDiscovery, {
+    react: E, jsx: p, workspaceKey, workspaceRoot, isOpen, isRemote, messenger,
+    reason: state.connectionStatus.error || state.projectInfo.error,
+    onProjectInfo: info => dispatch(Lyn({ workspaceKey, projectInfo: info })),
+  });
+  return p.jsx(GameCoworkUnityConnector, {
+    react: E, jsx: p, projectInfo: state.projectInfo, workspaceKey, status: state.connectionStatus, isRemote,
+    messenger, connected: state.connectionStatus.status === "connected", launching: state.isLaunching,
+    variant: "panel", onView, onOpenEditor,
+    onProjectInfo: (info) => dispatch(Lyn({ workspaceKey: workspaceKey || void 0, projectInfo: info })),
+    onStatus: (status) => {
+      dispatch(Byn({ workspaceKey: workspaceKey || void 0, sessionId: `local-editor:${workspaceKey || "default"}`, status }));
+      dispatch(Yet({ workspaceKey: workspaceKey || void 0, launching: false }));
+      if (status.status === "connected" && status.editorPid) dispatch(jyn({ workspaceKey: workspaceKey || void 0, pid: status.editorPid }));
+    },
+  });
+}
+export { GameCoworkUnityPanel };
 function g8t({ engineType: e, assetListening: t }) {
   const { t: n } = Rt(),
     r = Vn(),
@@ -118739,6 +118863,9 @@ function g8t({ engineType: e, assetListening: t }) {
     o = ze(ese),
     s = ze(ett),
     l = ze(Rke),
+    projectInfo = ze(Lg),
+    connection = ze(Lke),
+    workspaceRemote = ze((state) => state.hub.workspaces.find((item) => item.workspaceKey === state.hub.activeWorkspaceKey)?.isRemote === true),
     c = o === "connected",
     d = o === "launching",
     u = async () => {
@@ -118751,6 +118878,8 @@ function g8t({ engineType: e, assetListening: t }) {
       }
     },
     h = async () => {
+      const capturedRoute = window.GAMECOWORK_SHELL ? unityOwner(projectInfo, l) : void 0;
+      if (window.GAMECOWORK_SHELL && (!capturedRoute || workspaceRemote)) return;
       if (e === "Tuanjie" && wa() && !(await s8t(a))) {
         l8t(a, r);
         return;
@@ -118763,7 +118892,7 @@ function g8t({ engineType: e, assetListening: t }) {
         },
         __vite__mapDeps([55, 3, 4, 53, 54]),
       );
-      x(a, r, void 0, void 0, s != null ? s : void 0);
+      x(a, r, void 0, void 0, s != null ? s : void 0, { route: capturedRoute });
     },
     m = async () => {
       const x = await u();
@@ -118781,7 +118910,8 @@ function g8t({ engineType: e, assetListening: t }) {
           : "inputToolbar.unitySection.statusUnconnected",
     );
   return p.jsxs("div", {
-    className: "relative flex w-[213px] flex-col overflow-hidden rounded-xl py-2",
+    className: "relative flex flex-col overflow-hidden rounded-xl py-2",
+    style: { width: window.GAMECOWORK_SHELL ? 336 : 213, maxWidth: "calc(100vw - 24px)" },
     children: [
       p.jsx(Sce, {
         "aria-hidden": "true",
@@ -118818,6 +118948,16 @@ function g8t({ engineType: e, assetListening: t }) {
       p.jsx("div", {
         className: "mt-2.5",
         children: p.jsx(u8t, { paused: t.paused, disabled: t.disabled, onToggle: t.onToggle }),
+      }),
+      p.jsx(GameCoworkUnityConnector, {
+        react: E, jsx: p, projectInfo, workspaceKey: l, status: connection, isRemote: workspaceRemote, messenger: a, connected: c, launching: d,
+        closePopover: i,
+        onProjectInfo: (info) => r(Lyn({ workspaceKey: l || void 0, projectInfo: info })),
+        onStatus: (status) => {
+          r(Byn({ workspaceKey: l || void 0, sessionId: `local-editor:${l || "default"}`, status }));
+          r(Yet({ workspaceKey: l || void 0, launching: false }));
+          if (status.status === "connected" && status.editorPid) r(jyn({ workspaceKey: l || void 0, pid: status.editorPid }));
+        },
       }),
     ],
   });
@@ -122302,6 +122442,10 @@ const Eg = sr("session/refreshMetadata", async ({ offset: e, limit: t }, { dispa
     n(Eg({}));
   }),
   $xe = sr("session/update", async (e, { extra: t, dispatch: n, getState: r }) => {
+    const state = r(), owner = state.session.sessions[e.sessionId]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[e.sessionId];
+    if (typeof window !== "undefined" && window.GAMECOWORK_SHELL && state.hub.isHubMode && owner &&
+        !state.hub.workspaces.some(workspace => workspace.workspaceKey === owner))
+      return { skipped: true, reason: "workspaceClosed" };
     const a = e.selectedChatModelTitle === void 0 ? { ...e, selectedChatModelTitle: Koe(r(), e.sessionId) } : e;
     (n(
       hOe({
@@ -122690,8 +122834,8 @@ const Jvn = sr("session/consumeSubmittedDrafts", ({ sessionId: e }, { dispatch: 
           onlyTurn: g.history.length === 0,
         }));
     }
-    (t(mgn()),
-      t(ggn()),
+    (t(mgn(i ? { sessionId: i } : void 0)),
+      t(ggn(i ? { sessionId: i } : void 0)),
       t(pOe(i ? { sessionId: i } : void 0)),
       s && !_Oe(s) && n.ideMessenger.post("abort", void 0, s),
       t($H({ sessionId: i, suppressQueueProcessing: !0 })));
@@ -123575,6 +123719,7 @@ function iMt(e) {
 }
 let q2;
 function oMt() {
+  if (window.GAMECOWORK_SHELL) return undefined;
   return (
     q2 ||
       ((q2 = (async () => {
@@ -123621,6 +123766,7 @@ function sMt() {
 }
 let $2;
 function lMt() {
+  if (window.GAMECOWORK_SHELL) return undefined;
   return (
     $2 ||
       (($2 = (async () => {
@@ -125806,6 +125952,7 @@ function kb({
   const { t: h } = Rt(),
     [m, f] = E.useState([]),
     [g, y] = E.useState(!0),
+    [loadError, setLoadError] = E.useState(null),
     [x, b] = E.useState(a),
     [C, S] = E.useState(e),
     T = E.useRef(!1),
@@ -125817,8 +125964,14 @@ function kb({
     N = async (I) => {
       const F = ++w.current;
       I && y(!0);
-      const O = await Ace(a != null ? a : "default").enqueue(() => r(e));
-      F === w.current && (f(O), o(e, O), y(!1));
+      try {
+        const O = await Ace(a != null ? a : "default").enqueue(() => r(e));
+        if (F === w.current) { f(O); o(e, O); setLoadError(null); }
+      } catch (error) {
+        if (F === w.current) setLoadError(error instanceof Error ? error.message : String(error));
+      } finally {
+        if (F === w.current) y(!1);
+      }
     },
     A = async () => N(!0),
     L = async () => N(!1);
@@ -125904,7 +126057,7 @@ function kb({
             }),
           ],
         }),
-        u(m, g, M, L),
+        loadError ? p.jsxs("div", { role: "alert", className: "p-3 text-sm text-gamecowork-color-text-primary", children: [p.jsx("p", { children: loadError }), p.jsx("button", { onClick: A, "data-telemetry-id": "capability_retry", children: h("common.retry", "重试") })] }) : u(m, g, M, L),
       ],
     })
   );
@@ -126138,25 +126291,12 @@ function tNt({
       }
       (g(!0), x(null));
       try {
-        let L = M();
-        const I = d.trim().toLowerCase().replace(/\s+/g, "-"),
+        const I = gamecoworkCapabilityName(d), P = h === "project" && e ? { workspaceKey: e } : void 0,
           F = eNt.replace(/\{\{NAME\}\}/g, I);
-        if (L.startsWith("~")) {
-          const O = h === "project" && e ? { workspaceKey: e } : void 0,
-            B = await l.request("getHomedir", O);
-          if (B.status === "success" && B.content) L = L.replace("~", B.content);
-          else {
-            (x(s("manageForm.errorHomeDir")), g(!1));
-            return;
-          }
-        }
-        const P = h === "project" && e ? { workspaceKey: e } : void 0;
-        (await l.request("writeFile", { path: L, contents: F, ...(P != null ? P : {}) }),
-          c(c7t({ name: I, description: "", isLegacy: !1, source: "acp-agent", category: "commands" })),
-          l.request("acp/refreshCommands", P != null ? P : void 0),
-          await N(),
-          await l.post("showToast", ["info", s("commands.createdToast", { path: L })]),
-          r(h === "global"));
+        const created = gamecoworkCapabilityResult(await l.request("custom/create", { kind: "commands", name: I, scope: h === "global" ? "user" : "workspace", content: F, ...(P || {}) }));
+        await l.request("acp/refreshCommands", P);
+        gamecoworkCapabilityToast(l, "info", s("commands.createdToast", { path: created.path }));
+        r(h === "global");
       } catch (L) {
         (x(s("commands.failedToast", { error: L instanceof Error ? L.message : "Unknown error" })), g(!1));
       }
@@ -126178,6 +126318,7 @@ function tNt({
               p.jsx(ra, {
                 type: "text",
                 value: d,
+                "data-telemetry-id": "command_name",
                 maxLength: 100,
                 onChange: (L) => u(L),
                 onKeyDown: (L) => {
@@ -126228,6 +126369,7 @@ function tNt({
                         type: "radio",
                         name: "storageLevel",
                         value: "global",
+                        "data-telemetry-id": "command_scope_global",
                         checked: h === "global",
                         onChange: () => m("global"),
                         className: "mcp-radio",
@@ -126281,6 +126423,7 @@ function tNt({
           }),
           p.jsx(Nr, {
             onClick: () => void A(),
+            "data-telemetry-id": "command_submit",
             disabled: !d.trim() || f,
             className:
               "flex h-[2rem] cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
@@ -126451,8 +126594,12 @@ function aNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
     className:
       "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover",
     "data-focus-item": "true",
+    "data-capability-type": "command",
+    "data-capability-name": e.name,
+    "data-capability-sha": e.sha256,
+    "data-capability-scope": e.source,
     "data-focus-group": "rows",
-    onClick: a ? void 0 : t,
+    onClick: a || e.managed === false ? void 0 : t,
     children: [
       p.jsxs("div", {
         className: "flex min-w-0 flex-1 items-center gap-3",
@@ -126477,6 +126624,7 @@ function aNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
             children: [
               p.jsx(gr, {
                 onClick: t,
+                disabled: a || e.managed === false,
                 tooltip: o("common.edit"),
                 "data-focus-item": "true",
                 "data-focus-enter-action": "click",
@@ -126488,6 +126636,7 @@ function aNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
               }),
               p.jsx(gr, {
                 onClick: r,
+                disabled: a || e.managed === false,
                 tooltip: o("common.delete"),
                 "data-focus-item": "true",
                 "data-focus-enter-action": "click",
@@ -126504,7 +126653,7 @@ function aNt({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
             "data-focus-item": "true",
             "data-focus-enter-action": "click",
             "data-focus-group": "actions",
-            children: p.jsx(Id, { value: !e.disabled, onChange: n }),
+            children: p.jsx(Id, { value: !e.disabled, onChange: n, disabled: a || e.managed === false }),
           }),
         ],
       }),
@@ -126540,46 +126689,30 @@ function iNt({
       }
     },
     b = (M) => {
-      (d(ni(!1)), d(Ad("explorer")), d(wc(!0)), Vd());
-      const N =
-          l == null
-            ? void 0
-            : l.find((L) => {
-                var I;
-                return L.workspaceKey === ((I = M.workspaceKey) != null ? I : n);
-              }),
-        A =
-          N != null && N.isRemote ? { runOn: "remote", machineId: N.machineId, workspaceDir: N.workspaceDir } : void 0;
-      c.post("openFile", { path: M.filePath, workspaceRef: A });
+      if (M.managed === false) return;
+      if (window.GAMECOWORK_SHELL) {
+        d(on(!0)); d(ea({ message: p.jsx(GameCoworkDefinitionEditor, { messenger: c, kind: "commands", name: M.name, scope: M.source === "global" ? "user" : "workspace", workspaceKey: M.workspaceKey || n,
+          onClose: async () => { await a(); if (M.source === "global") await i?.(); d(on(!1)); d(Jn(void 0)); } }), containerClassName: "md:max-w-[50rem]", hideClose: !0 })); return;
+      }
+      c.post("openFile", { path: M.filePath });
     },
     C = async (M) => {
-      const N = M.disabled ? "enable" : "disable";
+      const action = M.disabled ? "enable" : "disable";
       await x(`toggle-${M.name}`, async () => {
-        (s == null || s((A) => A.map((L) => (L.name === M.name ? { ...L, disabled: !L.disabled } : L))),
-          n && d(AV({ workspaceKey: n, type: "command", name: M.name, changes: { disabled: !M.disabled } })));
         try {
-          const A = n ? { workspaceKey: n } : void 0,
-            L = { name: M.name, ...(A != null ? A : {}) };
-          (await c.request(`commands/${N}`, L), c.post("acp/refreshCommands", A != null ? A : void 0));
-        } catch (A) {
-          console.error(`Failed to ${N} command:`, A);
-        }
-        (await a(), M.source === "global" && (i == null || i()));
+          gamecoworkCapabilityResult(await c.request("commands/" + action, { name: M.name, scope: M.source === "global" ? "user" : "workspace", ...(M.managed ? { path: M.filePath, expectedSha256: M.sha256 } : {}), ...((M.workspaceKey || n) ? { workspaceKey: M.workspaceKey || n } : {}) }));
+        } catch (error) { gamecoworkCapabilityToast(c, "error", error.message || String(error)); }
+        await a(); M.source === "global" && i?.();
       });
     },
     S = async (M) => {
-      (await x(`delete-${M.name}`, async () => {
+      await x(`delete-${M.name}`, async () => {
         try {
-          const N = n ? { workspaceKey: n } : void 0;
-          (await c.request("commands/delete", { name: M.name, path: M.filePath, ...(N != null ? N : {}) }),
-            c.post("acp/refreshCommands", N != null ? N : void 0));
-        } catch (N) {
-          console.error("Failed to delete command:", N);
-        }
-        (await a(), M.source === "global" && (i == null || i()));
-      }),
-        d(on(!1)),
-        d(Jn(void 0)));
+          gamecoworkCapabilityResult(await c.request("commands/delete", { name: M.name, scope: M.source === "global" ? "user" : "workspace", path: M.filePath, expectedSha256: M.sha256, ...((M.workspaceKey || n) ? { workspaceKey: M.workspaceKey || n } : {}) }));
+        } catch (error) { gamecoworkCapabilityToast(c, "error", error.message || String(error)); }
+        await a(); M.source === "global" && i?.();
+      });
+      d(on(!1)); d(Jn(void 0));
     },
     T = () => {
       (d(on(!1)), d(Jn(void 0)));
@@ -126671,25 +126804,9 @@ function iNt({
   });
 }
 async function oNt(e, t) {
-  var r;
-  let n = [];
-  try {
-    const a = t === wo ? "" : t,
-      i = a ? { workspaceKey: a } : void 0,
-      o = await e.request("commands/list", i);
-    if (o.status === "success" && (r = o.content) != null && r.commands)
-      for (const s of o.content.commands)
-        n.push({
-          name: s.name,
-          filePath: s.path,
-          source: s.source === "project" ? "project" : "global",
-          disabled: s.disabled,
-          workspaceKey: a || t,
-        });
-  } catch (a) {
-    console.error("[CommandManager] commands/list request failed:", a);
-  }
-  return (n.sort((a, i) => a.name.localeCompare(i.name)), n);
+  const workspaceKey = t === wo ? "" : t, content = gamecoworkCapabilityResult(await e.request("commands/list", workspaceKey ? { workspaceKey } : void 0));
+  if (!Array.isArray(content?.commands)) throw new Error("Command list returned invalid data");
+  return content.commands.map(item => ({ name: item.name, filePath: item.path, source: item.source === "project" ? "project" : "global", disabled: item.disabled, managed: item.managed, sha256: item.sha256, workspaceKey: workspaceKey || t })).sort((a, b) => a.name.localeCompare(b.name));
 }
 function sNt({ onLoadingChange: e, isPlugin: t }) {
   const n = E.useContext(Ft),
@@ -126719,7 +126836,7 @@ function sNt({ onLoadingChange: e, isPlugin: t }) {
       x.current && f((M) => M + 1);
     }, [y]));
   const C = async (M) => {
-      (g(), M && (await d(o)));
+      (g(), M && (await d(o, "command")));
     },
     S = Vn(),
     T = E.useCallback(
@@ -126802,7 +126919,7 @@ function sNt({ onLoadingChange: e, isPlugin: t }) {
                         selectedWorkspaceKey: o,
                         onAdd: () => w(o != null ? o : void 0),
                         onRefresh: L,
-                        onGlobalRefresh: () => d(o),
+                        onGlobalRefresh: () => d(o, "command"),
                         hideGlobalTag: i,
                         setItems: A,
                         hubWorkspaces: s,
@@ -126860,6 +126977,7 @@ const cNt = {
     reducers: {
       setRemoteItems(e, t) {
         ((e.items = t.payload.items), (e.timestamp = Date.now()));
+        e.unsupportedReason = t.payload.unsupportedReason || null;
       },
       setLoading(e, t) {
         e.loading = t.payload;
@@ -126911,6 +127029,10 @@ const cNt = {
           if (h.status !== "success") {
             d = !1;
             break;
+          }
+          if (h.content?.supported === false) {
+            t(dNt({ items: [], unsupportedReason: h.content.reason || "A GameCowork marketplace source is not configured" }));
+            return;
           }
           if (
             !((o = (i = h.content) == null ? void 0 : i.items) != null && o.length) ||
@@ -162077,6 +162199,7 @@ function Pce({
     T = ze(mNt),
     w = ze(yNt),
     M = ze(fNt),
+    gamecoworkMarketplaceUnavailable = ze((state) => state.marketplace.unsupportedReason),
     N = ze(gNt),
     A = T || w,
     L = s ? o : y,
@@ -162385,6 +162508,16 @@ function Pce({
                       }),
                     ],
                   })
+                : gamecoworkMarketplaceUnavailable
+                  ? p.jsxs("div", {
+                      "data-testid": "gamecowork-marketplace-pending",
+                      role: "status",
+                      className: "flex w-full flex-col items-center gap-2 px-6 py-8 text-sm text-gamecowork-color-text-secondary",
+                      children: [
+                        p.jsx("strong", { children: l("marketplace.ownSourcePending", { defaultValue: "尚未配置 GameCowork 扩展市场来源" }) }),
+                        p.jsx("span", { children: l("marketplace.localSkillsAvailable", { defaultValue: "本地技能、扩展和 MCP 可在管理页继续使用；市场下载将在接入自有来源后开放。" }) }),
+                      ],
+                    })
                 : O.length === 0
                   ? p.jsx("div", {
                       className:
@@ -162735,6 +162868,87 @@ const Sln = `
   "mcpServers": {}
 }
 `;
+function gamecoworkScheduleChatFocus() {
+  const target = document.querySelector('[contenteditable="true"]'), originalFocus = document.activeElement, route = window.location.href;
+  if (!target) return;
+  let timer;
+  const events = [[document, "pointerdown", cancel], [document, "keydown", cancel], [document, "focusin", focusChanged], [window, "popstate", cancel], [window, "hashchange", cancel], [window, "pagehide", cancel]];
+  function cleanup() { for (const [owner, type, listener] of events) owner.removeEventListener(type, listener, true); }
+  function cancel() { clearTimeout(timer); cleanup(); }
+  function focusChanged(event) { if (event.target !== target && event.target !== originalFocus && event.target !== document.body) cancel(); }
+  for (const [owner, type, listener] of events) owner.addEventListener(type, listener, true);
+  timer = setTimeout(() => {
+    cleanup();
+    if (window.location.href !== route || !target.isConnected || document.querySelector('[contenteditable="true"]') !== target || target.closest('[aria-hidden="true"], [inert]') || !target.getClientRects().length) return;
+    const focused = document.activeElement;
+    if (focused !== document.body && focused !== target && focused !== originalFocus) return;
+    window.postMessage({ messageType: "focusContinueInputWithoutClear" }, "*");
+  }, 100);
+}
+function GameCoworkDefinitionEditor({ messenger, kind, name, scope = "workspace", workspaceKey, onClose }) {
+  const [draft, setDraft] = E.useState(""), [sha256, setSha256] = E.useState(null), [busy, setBusy] = E.useState(false), [error, setError] = E.useState(null), [fileName, setFileName] = E.useState(name), [nameDraft, setNameDraft] = E.useState(name);
+  const route = { kind, scope, ...(workspaceKey ? { workspaceKey } : {}) };
+  const read = async () => {
+    setBusy(true); setError(null);
+    try { const file = gamecoworkCapabilityResult(await messenger.request("custom/read", { ...route, name: fileName })); setDraft(file.content); setSha256(file.sha256); setNameDraft(fileName); }
+    catch (value) { setError(value.message || String(value)); setSha256(null); }
+    finally { setBusy(false); }
+  };
+  E.useEffect(() => { read(); }, [kind, name, workspaceKey]);
+  const save = async () => {
+    setBusy(true); setError(null);
+    try {
+      const newName = gamecoworkCapabilityName(nameDraft), renamed = newName !== fileName;
+      const content = kind === "agents" && renamed ? draft.replace(/^(\s*name\s*=\s*)("[^"\n]*"|'[^'\n]*')/m, "$1" + JSON.stringify(newName)) : draft;
+      const file = gamecoworkCapabilityResult(await messenger.request(renamed ? "custom/rename" : "custom/update", { ...route, name: fileName, ...(renamed ? { newName } : {}), content, expectedSha256: sha256 }));
+      setDraft(file.content); setSha256(file.sha256); setFileName(newName); setNameDraft(newName); gamecoworkCapabilityToast(messenger, "info", "已保存 " + newName);
+    } catch (value) { setError(value.message || String(value)); }
+    finally { setBusy(false); }
+  };
+  return p.jsxs("div", { className: "flex flex-col gap-3 p-4", "data-testid": "gamecowork-definition-editor", children: [
+    p.jsx("h3", { className: "text-sm", children: fileName + (scope === "user" ? " · 全局" : " · 当前工程") }),
+    p.jsx("input", { value: nameDraft, onChange: event => setNameDraft(event.target.value), disabled: busy || !sha256, "aria-label": "能力名称", maxLength: 100, className: "rounded border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary p-2 text-gamecowork-color-text-primary" }),
+    p.jsx("textarea", { value: draft, onChange: event => setDraft(event.target.value), disabled: busy || !sha256, "aria-label": "能力文件源码", spellCheck: false, className: "min-h-[20rem] w-full rounded border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary p-2 font-mono text-sm text-gamecowork-color-text-primary" }),
+    error && p.jsx("div", { role: "alert", children: error }),
+    p.jsxs("div", { className: "flex justify-end gap-3", children: [p.jsx("button", { onClick: read, disabled: busy, children: "重新载入" }), p.jsx("button", { onClick: async () => { setBusy(true); try { await onClose(); } catch (value) { setError(value.message || String(value)); setBusy(false); } }, disabled: busy, children: "关闭" }), p.jsx("button", { onClick: save, disabled: busy || !sha256, "data-testid": "gamecowork-definition-save", children: busy ? "处理中…" : "保存" })] })
+  ] });
+}
+function GameCoworkGlobalCapabilityEditor({ messenger, kind, name, workspaceKey, onClose }) {
+  const [draft, setDraft] = E.useState(""), [sha256, setSha256] = E.useState(null), [busy, setBusy] = E.useState(false), [error, setError] = E.useState(null);
+  const read = async () => {
+    setBusy(true); setError(null);
+    try { const file = gamecoworkCapabilityResult(await messenger.request("custom/read", { kind, name, scope: "user", ...(workspaceKey ? { workspaceKey } : {}) })); setDraft(file.content); setSha256(file.sha256); }
+    catch (value) { setError(value.message || String(value)); }
+    finally { setBusy(false); }
+  };
+  E.useEffect(() => { read(); }, [kind, name, workspaceKey]);
+  const save = async () => {
+    setBusy(true); setError(null);
+    try { const file = gamecoworkCapabilityResult(await messenger.request("custom/update", { kind, name, scope: "user", content: draft, expectedSha256: sha256, ...(workspaceKey ? { workspaceKey } : {}) })); setSha256(file.sha256); gamecoworkCapabilityToast(messenger, "info", "已保存 " + name); }
+    catch (value) { setError(value.message || String(value)); }
+    finally { setBusy(false); }
+  };
+  return p.jsxs("div", { className: "flex flex-col gap-3 p-4", "data-testid": "gamecowork-custom-editor", children: [
+    p.jsx("h3", { className: "text-sm", children: name + " · 全局" }),
+    p.jsx("textarea", { value: draft, onChange: event => setDraft(event.target.value), disabled: busy || !sha256, "aria-label": "能力文件源码", spellCheck: false, className: "min-h-[20rem] w-full rounded border border-solid border-gamecowork-color-border-default bg-gamecowork-color-surface-primary p-2 font-mono text-sm text-gamecowork-color-text-primary" }),
+    error && p.jsx("div", { role: "alert", children: error }),
+    p.jsxs("div", { className: "flex justify-end gap-3", children: [p.jsx("button", { onClick: read, disabled: busy, children: "重新载入" }), p.jsx("button", { onClick: onClose, disabled: busy, children: "关闭" }), p.jsx("button", { onClick: save, disabled: busy || !sha256, "data-testid": "gamecowork-custom-save", children: busy ? "处理中…" : "保存" })] })
+  ] });
+}
+function gamecoworkCapabilityName(value) {
+  const name = value.trim().toLowerCase().replace(/\s+/g, "-");
+  if (!/^[a-z0-9][a-z0-9_-]*$/.test(name) || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/.test(name)) throw new Error("名称仅允许字母、数字、连字符和下划线，且不能是系统保留名称");
+  return name;
+}
+function gamecoworkCapabilityResult(response) {
+  if (response?.status !== "success" || response.content?.status === "error") throw new Error(response?.error || response?.content?.error || "创建失败");
+  return response.content;
+}
+function gamecoworkCapabilityToast(messenger, variant, text) {
+  if (window.GAMECOWORK_SHELL) window.postMessage({ source: "tauriShell", messageType: "shell/showToast", data: { variant, text } }, "*");
+  else messenger.post("showToast", [variant, text]);
+}
+
 function Eln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, forceGlobal: a, hubWorkspaces: i }) {
   const o = Vn(),
     { t: s } = Rt(),
@@ -162767,12 +162981,13 @@ function Eln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
       const L = `${c.trim().toLowerCase().replace(/\s+/g, "-")}/gemini-extension.json`;
       return `${T()}${L}`;
     },
-    M = async () => {
+    M = async (createdPath) => {
+      if (window.GAMECOWORK_SHELL && u === "global") return;
       (o(ni(!1)), o(Ad("explorer")), o(wc(!0)), Vd());
       const A = i == null ? void 0 : i.find((I) => I.workspaceKey === n),
         L =
           A != null && A.isRemote ? { runOn: "remote", machineId: A.machineId, workspaceDir: A.workspaceDir } : void 0;
-      await l.post("openFile", { path: w(), workspaceRef: L });
+      await l.post("openFile", { path: createdPath || w(), workspaceRef: L });
     },
     N = async () => {
       if (!c.trim()) {
@@ -162782,7 +162997,7 @@ function Eln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
       (f(!0), y(null));
       try {
         let A = w();
-        const L = c.trim().toLowerCase().replace(/\s+/g, "-"),
+        const L = gamecoworkCapabilityName(c),
           I = kln.replace(/\{\{NAME\}\}/g, L);
         if (A.startsWith("~")) {
           const P = u === "project" && n ? { workspaceKey: n } : void 0,
@@ -162794,9 +163009,11 @@ function Eln({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           }
         }
         const F = u === "project" && n ? { workspaceKey: n } : void 0;
-        (await l.request("writeFile", { path: A, contents: I, ...(F != null ? F : {}) }),
-          await M(),
-          await l.post("showToast", ["info", s("extensions.createdToast", { path: A })]),
+        const created = gamecoworkCapabilityResult(await l.request(window.GAMECOWORK_SHELL ? "custom/create" : "writeFile", window.GAMECOWORK_SHELL
+          ? { kind: "extensions", name: L, content: I, scope: u === "project" ? "workspace" : "user", ...(n ? { workspaceKey: n } : {}) }
+          : { path: A, contents: I, ...(F != null ? F : {}) }));
+        (await M(created?.path),
+          gamecoworkCapabilityToast(l, "info", s("extensions.createdToast", { path: created?.path || A })),
           e(u === "global"));
       } catch (A) {
         (y(s("extensions.failedToast", { error: A instanceof Error ? A.message : "Unknown error" })), f(!1));
@@ -163022,6 +163239,10 @@ function Mln({
       }
     },
     C = (I) => {
+      if (window.GAMECOWORK_SHELL && I.source === "global") {
+        u(on(!0)); u(ea({ message: p.jsx(GameCoworkGlobalCapabilityEditor, { messenger: d, kind: "extensions", name: I.name, workspaceKey: n, onClose: () => { u(on(!1)); u(Jn(void 0)); i(); } }), containerClassName: "md:max-w-[50rem]", hideClose: !0 }));
+        return;
+      }
       (u(ni(!1)), u(Ad("explorer")), u(wc(!0)), Vd());
       const F = c == null ? void 0 : c.find((O) => O.workspaceKey === I.workspaceKey),
         P =
@@ -163037,16 +163258,17 @@ function Mln({
           n && u(AV({ workspaceKey: n, type: "extension", name: I.name, changes: { disabled: !I.disabled } })));
         try {
           const B = { name: I.name, scope: P, ...(O != null ? O : {}) };
-          await _i(d.request(`extensions/${F}`, B), {
+          gamecoworkCapabilityResult(await _i(d.request(`extensions/${F}`, B), {
             kind: "extension",
             action: F,
             resource_name: I.name,
             is_internal: I.source === "builtin",
-          });
+          }));
         } catch (B) {
           console.error(`Failed to ${F} extension:`, B);
+          gamecoworkCapabilityToast(d, "error", B.message || String(B));
         }
-        (await i(), I.source === "global" && (o == null || o()));
+        (await i(), I.source === "global" && (await (o == null ? void 0 : o())));
       });
     },
     T = async (I) => {
@@ -163055,13 +163277,14 @@ function Mln({
       (await b(`delete-${I.name}`, async () => {
         try {
           const O = { name: I.name, scope: F, ...(P != null ? P : {}) };
-          await _i(d.request("extensions/uninstall", O), {
+          gamecoworkCapabilityResult(await _i(d.request("extensions/uninstall", O), {
             kind: "extension",
             action: "uninstall",
             resource_name: I.name,
-          });
+          }));
         } catch (O) {
           console.error("Failed to delete extension:", O);
+          gamecoworkCapabilityToast(d, "error", O.message || String(O));
         }
         (n && u(hAe({ workspaceKey: n, type: "extension", name: I.name })),
           await i(),
@@ -163100,12 +163323,13 @@ function Mln({
       await b(`update-${I.source}-${I.name}`, async () => {
         try {
           const B = { name: I.name, source: F.download_url, scope: P, ...(O != null ? O : {}) };
-          if ((await d.request("extensions/update", B), I.disabled)) {
+          if ((gamecoworkCapabilityResult(await d.request("extensions/update", B)), I.disabled)) {
             const $ = { name: I.name, scope: P, ...(O != null ? O : {}) };
             await d.request("extensions/disable", $);
           }
         } catch (B) {
           console.error("Failed to update extension:", B);
+          gamecoworkCapabilityToast(d, "error", B.message || String(B));
         }
         (ZAe(n != null ? n : void 0), await i());
       });
@@ -163218,7 +163442,7 @@ function Mln({
                                           "data-focus-item": "true",
                                           "data-focus-enter-action": "click",
                                           "data-telemetry-id": "toggle_extension",
-                                          children: p.jsx(Id, { value: !I.disabled, onChange: () => void S(I) }),
+                                          children: p.jsx(Id, { value: !I.disabled, disabled: m.has(`toggle-${I.name}`) || m.has(`delete-${I.name}`), onChange: () => void S(I) }),
                                         }),
                                       ],
                                     }),
@@ -163261,6 +163485,7 @@ async function Nln(e, t) {
     const r = t === wo ? "" : t,
       a = r ? { workspaceKey: r } : void 0,
       i = await e.request("extensions/list", a);
+    if (i.status !== "success" || i.content?.status === "error") throw new Error(i.error || i.content?.error || "加载extensions失败");
     if (i.status === "success" && i.content) {
       for (const o of i.content.extensions)
         n.push({
@@ -163275,6 +163500,7 @@ async function Nln(e, t) {
     }
   } catch (r) {
     console.error(`[ExtensionManager] extensions/list error for ${t}:`, r);
+    throw r;
   }
   return n;
 }
@@ -164151,11 +164377,11 @@ function ucn({ config: e, onChange: t }) {
                     children: [
                       p.jsx("div", {
                         className: "text-xs text-gamecowork-color-text-tertiary",
-                        children: n("mcp.argumentsHelper"),
+                        children: n("mcp.argumentsFormatHint", { defaultValue: '支持 JSON 字符串数组或带引号的参数；空参数用 ""。' }),
                       }),
                       p.jsxs("div", {
                         className: "text-xs text-gamecowork-color-text-tertiary text-right ml-auto",
-                        children: [e.argsString.length, " / 100"],
+                        children: [e.argsString.length, " / 32768"],
                       }),
                     ],
                   }),
@@ -164195,6 +164421,7 @@ function ucn({ config: e, onChange: t }) {
                       p.jsx(ra, {
                         type: "text",
                         value: c.key,
+                        "data-telemetry-id": "mcp_env_key",
                         onChange: (u) => l(d, "key", u),
                         "data-focusable": "true",
                         placeholder: n("mcp.keyPlaceholder"),
@@ -164204,6 +164431,7 @@ function ucn({ config: e, onChange: t }) {
                       p.jsx(ra, {
                         type: "text",
                         value: c.value,
+                        "data-telemetry-id": "mcp_env_value",
                         onChange: (u) => l(d, "value", u),
                         "data-focusable": "true",
                         placeholder: n("mcp.valuePlaceholder"),
@@ -164225,6 +164453,7 @@ function ucn({ config: e, onChange: t }) {
               ),
               p.jsxs("div", {
                 onClick: o,
+                "data-telemetry-id": "mcp_add_variable",
                 "data-focusable": "true",
                 "data-focus-enter-action": "click",
                 "data-focus-keep": "false",
@@ -164375,6 +164604,37 @@ function pcn({ config: e, onChange: t }) {
     ],
   });
 }
+function gamecoworkParseMcpArgs(value) {
+  if (typeof value !== "string" || value.length > 32768 || value.includes("\0")) throw new Error("Invalid MCP arguments");
+  const source = value.trim();
+  if (!source) return [];
+  if (source.startsWith("[")) {
+    let args;
+    try { args = JSON.parse(source); } catch { throw new Error("MCP arguments JSON must be an array of strings"); }
+    if (!Array.isArray(args) || args.some(arg => typeof arg !== "string" || arg.includes("\0"))) throw new Error("MCP arguments JSON must be an array of strings");
+    return args;
+  }
+  const args = []; let token = "", quote = "", started = false;
+  for (let i = 0; i < source.length; i++) {
+    const char = source[i];
+    if (quote) {
+      if (char === quote) quote = "";
+      else if (quote === '"' && char === "\\" && source[i + 1] === '"') token += source[++i];
+      else token += char;
+    } else if (/\s/.test(char)) {
+      if (started) { args.push(token); token = ""; started = false; }
+    } else if (char === '"' || char === "'") { quote = char; started = true; }
+    else if (char === "\\" && /[\s"']/.test(source[i + 1] || "")) { token += source[++i]; started = true; }
+    else { token += char; started = true; }
+  }
+  if (quote) throw new Error("MCP arguments contain an unclosed quote; use a JSON array for exact paths");
+  if (started) args.push(token);
+  return args;
+}
+function gamecoworkFormatMcpArgs(args) {
+  if (!Array.isArray(args) || args.some(arg => typeof arg !== "string" || arg.includes("\0"))) throw new Error("Invalid saved MCP arguments");
+  return JSON.stringify(args);
+}
 const hcn = E.forwardRef(function (
   {
     onSubmit: t,
@@ -164395,6 +164655,7 @@ const hcn = E.forwardRef(function (
     [g, y] = E.useState("stdio"),
     [x, b] = E.useState(c ? "global" : "project"),
     [C, S] = E.useState({ command: "", argsString: "", env: [], url: "", headers: [] }),
+    [gamecoworkArgsError, gamecoworkSetArgsError] = E.useState(""),
     T = zt.useMemo(
       () => [
         { value: "stdio", label: u("mcp.typeStdio") },
@@ -164417,7 +164678,7 @@ const hcn = E.forwardRef(function (
         b(r.storageLevel || "project"),
         S({
           command: r.command || "",
-          argsString: r.args ? r.args.join(" ") : "",
+          argsString: r.args ? gamecoworkFormatMcpArgs(r.args) : "",
           env: r.env && r.env.length > 0 ? r.env : [],
           url: r.url || "",
           headers: r.headers && r.headers.length > 0 ? r.headers : [],
@@ -164430,15 +164691,12 @@ const hcn = E.forwardRef(function (
       if (!m.trim() || (g === "stdio" && !C.command.trim()) || (g !== "stdio" && !C.url.trim())) return;
       const A = {};
       C.env.forEach((I) => {
-        I.key && I.value && (A[I.key] = I.value);
+        I.key && typeof I.value === "string" && (A[I.key] = I.value);
       });
-      const L =
-        C.argsString.trim().length > 0
-          ? C.argsString
-              .trim()
-              .split(/\s+/)
-              .filter((I) => I.length > 0)
-          : [];
+      let L;
+      try { L = g === "stdio" ? gamecoworkParseMcpArgs(C.argsString) : []; }
+      catch (error) { gamecoworkSetArgsError(error.message); return; }
+      gamecoworkSetArgsError("");
       t({
         name: m.trim(),
         type: g,
@@ -164599,8 +164857,9 @@ const hcn = E.forwardRef(function (
           children: [
             p.jsx("div", {
               className: "mb-4 text-sm text-gamecowork-color-text-secondary",
-              children: u("mcp.configuration"),
+            children: u("mcp.configuration"),
             }),
+            gamecoworkArgsError && p.jsx("div", { role: "alert", className: "text-red-400 text-sm mb-2", children: gamecoworkArgsError }),
             g === "stdio"
               ? p.jsx(ucn, {
                   config: { command: C.command, argsString: C.argsString, env: C.env },
@@ -164659,16 +164918,20 @@ function mcn({
     l = E.useRef(null),
     [c, d] = E.useState(!1),
     [u, h] = E.useState(!1),
+    [submitError, setSubmitError] = E.useState(null),
     m = E.useCallback(() => {
       u || (o(on(!1)), o(Jn(void 0)));
     }, [o, u]),
     f = E.useCallback(
       async (g) => {
-        h(!0);
+        h(!0); setSubmitError(null);
         try {
           await r(g);
+          o(on(!1)); o(Jn(void 0));
+        } catch (error) {
+          setSubmitError(error.message || String(error));
         } finally {
-          (h(!1), o(on(!1)), o(Jn(void 0)));
+          h(!1);
         }
       },
       [o, r],
@@ -164698,9 +164961,9 @@ function mcn({
       "data-focusable": "true",
       children: s("mcp.editMcpFile"),
     }),
-    children: p.jsx("div", {
+    children: p.jsxs("div", {
       className: "px-6 py-4",
-      children: p.jsx(hcn, {
+      children: [submitError && p.jsx("div", { role: "alert", className: "mb-3 text-sm", children: submitError }), p.jsx(hcn, {
         ref: l,
         hideActions: !0,
         onValidityChange: d,
@@ -164711,7 +164974,7 @@ function mcn({
         selectedWorkspaceKey: n,
         isPlugin: a,
         forceGlobal: i,
-      }),
+      })],
     }),
   });
 }
@@ -165448,12 +165711,13 @@ function Ccn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
       const L = `${c.trim().toLowerCase().replace(/\s+/g, "-")}/SKILL.md`;
       return `${T()}${L}`;
     },
-    M = async () => {
+    M = async (createdPath) => {
+      if (window.GAMECOWORK_SHELL && u === "global") return;
       (l(ni(!1)), l(Ad("explorer")), l(wc(!0)), Vd());
       const A = i == null ? void 0 : i.find((I) => I.workspaceKey === n),
         L =
           A != null && A.isRemote ? { runOn: "remote", machineId: A.machineId, workspaceDir: A.workspaceDir } : void 0;
-      await o.post("openFile", { path: w(), workspaceRef: L });
+      await o.post("openFile", { path: createdPath || w(), workspaceRef: L });
     },
     N = async () => {
       if (!c.trim()) {
@@ -165463,7 +165727,7 @@ function Ccn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
       (f(!0), y(null));
       try {
         let A = w();
-        const L = c.trim().toLowerCase().replace(/\s+/g, "-"),
+        const L = gamecoworkCapabilityName(c),
           I = c.trim(),
           F = wcn.replace(/\{\{NAME\}\}/g, L).replace(/\{\{DISPLAY_NAME\}\}/g, I);
         if (A.startsWith("~")) {
@@ -165476,9 +165740,11 @@ function Ccn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r = !1
           }
         }
         const P = u === "project" && n ? { workspaceKey: n } : void 0;
-        (await o.request("writeFile", { path: A, contents: F, ...(P != null ? P : {}) }),
-          await M(),
-          await o.post("showToast", ["info", s("skills.createdToast", { path: A })]),
+        const created = gamecoworkCapabilityResult(await o.request(window.GAMECOWORK_SHELL ? "custom/create" : "writeFile", window.GAMECOWORK_SHELL
+          ? { kind: "skills", name: L, content: F, scope: u === "project" ? "workspace" : "user", ...(n ? { workspaceKey: n } : {}) }
+          : { path: A, contents: F, ...(P != null ? P : {}) }));
+        (await M(created?.path),
+          gamecoworkCapabilityToast(o, "info", s("skills.createdToast", { path: created?.path || A })),
           e(u === "global"));
       } catch (A) {
         (y(s("skills.failedToast", { error: A instanceof Error ? A.message : "Unknown error" })), f(!1));
@@ -165692,6 +165958,10 @@ function Icn({
       }
     },
     C = (I) => {
+      if (window.GAMECOWORK_SHELL && I.source === "global") {
+        u(on(!0)); u(ea({ message: p.jsx(GameCoworkGlobalCapabilityEditor, { messenger: d, kind: "skills", name: I.name, workspaceKey: n, onClose: () => { u(on(!1)); u(Jn(void 0)); i(); } }), containerClassName: "md:max-w-[50rem]", hideClose: !0 }));
+        return;
+      }
       (u(ni(!1)), u(Ad("explorer")), u(wc(!0)), Vd());
       const F = c == null ? void 0 : c.find((O) => O.workspaceKey === I.workspaceKey),
         P =
@@ -165707,16 +165977,17 @@ function Icn({
           n && u(AV({ workspaceKey: n, type: "skill", name: I.name, changes: { disabled: !I.disabled } })));
         try {
           const B = { name: I.name, scope: P, ...O };
-          await _i(d.request(`skills/${F}`, B), {
+          gamecoworkCapabilityResult(await _i(d.request(`skills/${F}`, B), {
             kind: "skill",
             action: F,
             resource_name: I.name,
             is_internal: I.source === "builtin",
-          });
+          }));
         } catch (B) {
           console.error(`Failed to ${F} skill:`, B);
+          gamecoworkCapabilityToast(d, "error", B.message || String(B));
         }
-        (await i(), I.source === "global" && (o == null || o()));
+        (await i(), I.source === "global" && (await (o == null ? void 0 : o())));
       });
     },
     T = async (I) => {
@@ -165725,9 +165996,10 @@ function Icn({
       (await b(`delete-${I.name}`, async () => {
         try {
           const O = { name: I.name, scope: F, ...P };
-          await _i(d.request("skills/uninstall", O), { kind: "skill", action: "uninstall", resource_name: I.name });
+          gamecoworkCapabilityResult(await _i(d.request("skills/uninstall", O), { kind: "skill", action: "uninstall", resource_name: I.name }));
         } catch (O) {
           console.error("Failed to delete skill:", O);
+          gamecoworkCapabilityToast(d, "error", O.message || String(O));
         }
         (n && u(hAe({ workspaceKey: n, type: "skill", name: I.name })),
           await i(),
@@ -165766,12 +166038,13 @@ function Icn({
       await b(`update-${I.source}-${I.name}`, async () => {
         try {
           const B = { url: F.download_url, scope: P, ...(O != null ? O : {}) };
-          if ((await d.request("skills/update", B), I.disabled)) {
+          if ((gamecoworkCapabilityResult(await d.request("skills/update", B)), I.disabled)) {
             const $ = { name: I.name, scope: P, ...(O != null ? O : {}) };
             await d.request("skills/disable", $);
           }
         } catch (B) {
           console.error("Failed to update skill:", B);
+          gamecoworkCapabilityToast(d, "error", B.message || String(B));
         }
         (ZAe(n != null ? n : void 0), await i());
       });
@@ -165887,7 +166160,7 @@ function Icn({
                                           "data-focus-item": "true",
                                           "data-focus-enter-action": "click",
                                           "data-telemetry-id": "toggle_skill",
-                                          children: p.jsx(Id, { value: !I.disabled, onChange: () => void S(I) }),
+                                          children: p.jsx(Id, { value: !I.disabled, disabled: m.has(`toggle-${I.name}`) || m.has(`delete-${I.name}`), onChange: () => void S(I) }),
                                         }),
                                       ],
                                     }),
@@ -166042,7 +166315,7 @@ function Rcn({ selectedWorkspaceKey: e, onDone: t, onCancel: n, forceGlobal: r }
           (f(i("skills.uploadFailed", { error: P || "Unknown error" })), h(!1));
           return;
         }
-        (await a.post("showToast", ["info", i("skills.uploadSuccess")]), t(c === "global"));
+        (gamecoworkCapabilityToast(a, "info", i("skills.uploadSuccess")), t(c === "global"));
       } catch (A) {
         (f(
           i("skills.uploadFailed", {
@@ -166216,6 +166489,7 @@ async function Ocn(e, t) {
     const a = t === wo ? "" : t,
       i = a ? { workspaceKey: a } : void 0,
       o = await e.request("skills/list", i);
+    if (o.status !== "success" || o.content?.status === "error") throw new Error(o.error || o.content?.error || "加载skills失败");
     if (o.status === "success" && (r = o.content) != null && r.skills) {
       for (const s of o.content.skills)
         n.push({
@@ -166230,6 +166504,7 @@ async function Ocn(e, t) {
     }
   } catch (a) {
     console.error(`[SkillManager] skills/list error for ${t}:`, a);
+    throw a;
   }
   return n;
 }
@@ -166472,8 +166747,14 @@ description = "Description of what this subagent does and when to use it"
 # model = "gpt-4.1"
 # temperature = 0.2
 
-# [tools]
-# allowed = ["read_file", "write_file"]
+[prompts]
+system_prompt = """
+You are the {{NAME}} specialist. Complete the requested task and report concrete findings.
+"""
+query = "\${task}"
+
+[run]
+max_turns = 10
 `;
 function Fcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, forceGlobal: a, hubWorkspaces: i }) {
   const { t: o } = Rt(),
@@ -166520,23 +166801,11 @@ function Fcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
       }
       (f(!0), y(null));
       try {
-        let A = w();
-        const L = c.trim().toLowerCase().replace(/\s+/g, "-"),
+        const L = gamecoworkCapabilityName(c), F = u === "project" && n ? { workspaceKey: n } : void 0,
           I = Pcn.replace(/\{\{NAME\}\}/g, L);
-        if (A.startsWith("~")) {
-          const P = u === "project" && n ? { workspaceKey: n } : void 0,
-            O = await l.request("getHomedir", P);
-          if (O.status === "success" && O.content) A = A.replace("~", O.content);
-          else {
-            (y(o("manageForm.errorHomeDir")), f(!1));
-            return;
-          }
-        }
-        const F = u === "project" && n ? { workspaceKey: n } : void 0;
-        (await l.request("writeFile", { path: A, contents: I, ...(F != null ? F : {}) }),
-          await M(),
-          await l.post("showToast", ["info", o("subagents.createdToast", { path: A })]),
-          e(u === "global"));
+        const created = gamecoworkCapabilityResult(await l.request("custom/create", { kind: "agents", name: L, scope: u === "global" ? "user" : "workspace", content: I, ...(F || {}) }));
+        gamecoworkCapabilityToast(l, "info", o("subagents.createdToast", { path: created.path }));
+        e(u === "global");
       } catch (A) {
         (y(o("subagents.failedToast", { error: A instanceof Error ? A.message : "Unknown error" })), f(!1));
       }
@@ -166555,6 +166824,7 @@ function Fcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           p.jsx(ra, {
             type: "text",
             value: c,
+            "data-telemetry-id": "subagent_name",
             onChange: (A) => {
               A.length <= 100 && d(A);
             },
@@ -166606,6 +166876,7 @@ function Fcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
                     type: "radio",
                     name: "storageLevel",
                     value: "global",
+                    "data-telemetry-id": "subagent_scope_global",
                     checked: u === "global",
                     onChange: () => h("global"),
                     className: "mcp-radio",
@@ -166657,6 +166928,7 @@ function Fcn({ onDone: e, onCancel: t, selectedWorkspaceKey: n, isPlugin: r, for
           }),
           p.jsx("button", {
             onClick: () => void N(),
+            "data-telemetry-id": "subagent_submit",
             disabled: !c.trim() || m,
             className:
               "flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-gamecowork-color-accent-default px-4 py-1 text-sm font-normal text-gamecowork-color-text-accent transition-colors hover:bg-gamecowork-color-accent-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gamecowork-color-accent-muted disabled:text-gamecowork-color-text-tertiary",
@@ -166717,7 +166989,7 @@ function Ucn({ item: e, onConfirmDelete: t, onCancel: n, title: r, mainText: a, 
   return p.jsx(Sm, { title: r, mainText: a, subText: i, isLoading: o, onConfirm: l, onCancel: c });
 }
 function Yie(e) {
-  return e.source === "user" || e.source === "project";
+  return e.managed !== false && (e.source === "user" || e.source === "project");
 }
 function jcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideGlobalTag: i }) {
   const { t: o } = Rt(),
@@ -166728,6 +167000,10 @@ function jcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
     className:
       "group flex items-center justify-between px-4 py-3 cursor-pointer transition-colors bg-gamecowork-color-item-surface hover:bg-gamecowork-color-item-surface-hover",
     "data-focus-item": "true",
+    "data-capability-type": "subagent",
+    "data-capability-name": e.name,
+    "data-capability-sha": e.sha256,
+    "data-capability-scope": e.source,
     "data-focus-group": "rows",
     onClick: a || !s ? void 0 : t,
     children: [
@@ -166781,7 +167057,7 @@ function jcn({ item: e, onEdit: t, onToggle: n, onDelete: r, isPending: a, hideG
             "data-focus-item": "true",
             "data-focus-enter-action": "click",
             "data-focus-group": "actions",
-            children: p.jsx(Id, { value: !e.disabled, onChange: n }),
+            children: p.jsx(Id, { value: !e.disabled, onChange: n, disabled: a }),
           }),
         ],
       }),
@@ -166817,50 +167093,30 @@ function qcn({
       }
     },
     b = (M) => {
-      if (!Yie(M)) return;
-      (d(ni(!1)), d(Ad("explorer")), d(wc(!0)), Vd());
-      const N = l == null ? void 0 : l.find((L) => L.workspaceKey === M.workspaceKey),
-        A =
-          N != null && N.isRemote ? { runOn: "remote", machineId: N.machineId, workspaceDir: N.workspaceDir } : void 0;
-      c.post("openFile", { path: M.filePath, workspaceRef: A });
+      if (M.managed === false) return;
+      if (window.GAMECOWORK_SHELL) {
+        d(on(!0)); d(ea({ message: p.jsx(GameCoworkDefinitionEditor, { messenger: c, kind: "agents", name: M.name, scope: M.source === "user" ? "user" : "workspace", workspaceKey: M.workspaceKey || n,
+          onClose: async () => { await a(); if (M.source === "user") await i?.(); d(on(!1)); d(Jn(void 0)); } }), containerClassName: "md:max-w-[50rem]", hideClose: !0 })); return;
+      }
+      c.post("openFile", { path: M.filePath });
     },
     C = async (M) => {
-      const N = M.disabled ? "enable" : "disable";
+      const action = M.disabled ? "enable" : "disable";
       await x(`toggle-${M.name}`, async () => {
-        (s == null || s((A) => A.map((L) => (L.name === M.name ? { ...L, disabled: !L.disabled } : L))),
-          n && d(AV({ workspaceKey: n, type: "subagent", name: M.name, changes: { disabled: !M.disabled } })));
         try {
-          const A = n ? { workspaceKey: n } : void 0,
-            L = M.source === "user" ? "user" : "workspace",
-            I = { name: M.name, scope: L, ...(A != null ? A : {}) };
-          await _i(c.request(`subagents/${N}`, I), {
-            kind: "sub_agent",
-            action: N,
-            resource_name: M.name,
-            is_internal: M.source === "builtin",
-          });
-        } catch (A) {
-          console.error(`Failed to ${N} subagent:`, A);
-        }
-        (await a(), M.source === "user" && (i == null || i()));
+          gamecoworkCapabilityResult(await c.request("subagents/" + action, { name: M.name, scope: M.source === "user" ? "user" : "workspace", ...(M.managed ? { path: M.filePath, expectedSha256: M.sha256 } : {}), ...((M.workspaceKey || n) ? { workspaceKey: M.workspaceKey || n } : {}) }));
+        } catch (error) { gamecoworkCapabilityToast(c, "error", error.message || String(error)); }
+        await a(); M.source === "user" && i?.();
       });
     },
     S = async (M) => {
-      (await x(`delete-${M.name}`, async () => {
+      await x(`delete-${M.name}`, async () => {
         try {
-          const N = n ? { workspaceKey: n } : void 0;
-          await _i(c.request("subagents/delete", { name: M.name, path: M.filePath, ...(N != null ? N : {}) }), {
-            kind: "sub_agent",
-            action: "uninstall",
-            resource_name: M.name,
-          });
-        } catch (N) {
-          console.error("Failed to delete subagent:", N);
-        }
-        (await a(), M.source === "user" && (i == null || i()));
-      }),
-        d(on(!1)),
-        d(Jn(void 0)));
+          gamecoworkCapabilityResult(await c.request("subagents/delete", { name: M.name, scope: M.source === "user" ? "user" : "workspace", path: M.filePath, expectedSha256: M.sha256, ...((M.workspaceKey || n) ? { workspaceKey: M.workspaceKey || n } : {}) }));
+        } catch (error) { gamecoworkCapabilityToast(c, "error", error.message || String(error)); }
+        await a(); M.source === "user" && i?.();
+      });
+      d(on(!1)); d(Jn(void 0));
     },
     T = () => {
       (d(on(!1)), d(Jn(void 0)));
@@ -166955,52 +167211,9 @@ function qcn({
   });
 }
 async function zcn(e, t, n) {
-  var c, d;
-  let r = [];
-  try {
-    const u = n === wo ? "" : n,
-      h = u ? { workspaceKey: u } : void 0,
-      m = await e.request("subagents/list", h);
-    if (m.status === "success" && (c = m.content) != null && c.agents) {
-      for (const f of m.content.agents)
-        r.push({ name: f.name, filePath: f.path, source: f.source, disabled: f.disabled, workspaceKey: n });
-      r.sort((f, g) => f.name.localeCompare(g.name));
-    }
-  } catch {}
-  if (r.length > 0) return r;
-  const a = (d = t.find((u) => u.workspaceKey === n)) == null ? void 0 : d.workspaceDir,
-    i = [];
-  a && i.push({ path: `${a}/.gamecowork-cli/agents`, source: "project" });
-  try {
-    const u = await Fm(e);
-    u && i.push({ path: `${u}/agents`, source: "user" });
-  } catch {}
-  const o = async (u) => {
-      const h = [];
-      try {
-        const m = n === wo ? "" : n,
-          f = m ? { workspaceKey: m } : void 0,
-          g = await e.request("listDir", { dir: u, ...(f != null ? f : {}) }),
-          y = g.status === "success" && Array.isArray(g.content) ? g.content : [];
-        for (const [x, b] of y)
-          if (b === 2) {
-            const C = await o(`${u}/${x}`);
-            h.push(...C.map((S) => `${x}/${S}`));
-          } else b === 1 && h.push(x);
-      } catch {}
-      return h;
-    },
-    s = (u) => u.endsWith(".toml"),
-    l = (u) => {
-      let h = u;
-      return (h.endsWith(".toml") && (h = h.slice(0, -5)), h.replace(/\//g, ":"));
-    };
-  for (const u of i) {
-    const h = await o(u.path);
-    for (const m of h)
-      s(m) && r.push({ name: l(m), filePath: `${u.path}/${m}`, source: u.source, disabled: !1, workspaceKey: n });
-  }
-  return (r.sort((u, h) => u.name.localeCompare(h.name)), r);
+  const workspaceKey = n === wo ? "" : n, content = gamecoworkCapabilityResult(await e.request("subagents/list", workspaceKey ? { workspaceKey } : void 0));
+  if (!Array.isArray(content?.agents)) throw new Error("Subagent list returned invalid data");
+  return content.agents.map(item => ({ name: item.name, filePath: item.path, source: item.source, disabled: item.disabled, managed: item.managed, sha256: item.sha256, workspaceKey: workspaceKey || n })).sort((a, b) => a.name.localeCompare(b.name));
 }
 function $cn({ onLoadingChange: e, isPlugin: t }) {
   const n = E.useContext(Ft),
@@ -167026,7 +167239,7 @@ function $cn({ onLoadingChange: e, isPlugin: t }) {
     })();
   }, []);
   const b = async (T) => {
-      (y(), T && (await u(s)));
+      (y(), T && (await u(s, "subagent")));
     },
     C = E.useCallback(
       (T, w) => {
@@ -167106,7 +167319,7 @@ function $cn({ onLoadingChange: e, isPlugin: t }) {
                         selectedWorkspaceKey: s,
                         onAdd: () => S(s != null ? s : void 0),
                         onRefresh: N,
-                        onGlobalRefresh: () => u(s),
+                        onGlobalRefresh: () => u(s, "subagent"),
                         hideGlobalTag: o,
                         setItems: M,
                         hubWorkspaces: l,
@@ -171614,9 +171827,7 @@ function Lxn() {
     nn = ze((oe) => oe.ui.showSettings),
     ye = () => {
       (nn ? (t(ni(!1)), t(Vre(void 0))) : r(-1),
-        setTimeout(() => {
-          window.postMessage({ messageType: "focusContinueInputWithoutClear" }, "*");
-        }, 100));
+        gamecoworkScheduleChatFocus());
     };
   return p.jsx(RYe, {
     sections: Kt,
@@ -186056,6 +186267,15 @@ const Hfn = qn(),
           delete e.sessionIdToWorkspaceKey[t.sessionId]);
       },
       removeWorkspaceSessions: (e, { payload: t }) => {
+        if (typeof window !== "undefined" && window.GAMECOWORK_SHELL) {
+          for (const session of Object.values(e.sessions)) {
+            if (session.workspaceId === t || e.sessionIdToWorkspaceKey?.[session.id] === t) {
+              gamecoworkCancelSessionApprovals(session);
+              session.streamAborter?.abort();
+              session.isStreaming = !1;
+            }
+          }
+        }
         (Zo(e), delete e.workspaceSessionIds[t]);
       },
       updateSessionTitle: (e, { payload: t }) => {
@@ -186464,7 +186684,11 @@ Repair error: ${u}`);
         var a;
         const n = ((a = t.payload) == null ? void 0 : a.sessionId) || e.activeSessionId,
           r = Pt(e, n);
-        r && (r.pendingAcpShellConfirmationRequests = []);
+        if (r) {
+          for (const request of r.pendingAcpShellConfirmationRequests)
+            gamecoworkResolveShellApproval(request.requestId, "reject");
+          r.pendingAcpShellConfirmationRequests = [];
+        }
       },
       addPendingAcpPermissionRequest: (e, t) => {
         var a;
@@ -186487,7 +186711,7 @@ Repair error: ${u}`);
         a && (a.pendingAcpPermissionRequests = a.pendingAcpPermissionRequests.filter((i) => i.requestId !== n));
       },
       addPendingAcpShellConfirmationRequest: (e, t) => {
-        const n = fo(e);
+        const n = Pt(e, t.payload.sessionId || e.activeSessionId);
         if (n) {
           const r = n.pendingAcpShellConfirmationRequests.findIndex((a) => a.requestId === t.payload.requestId);
           r >= 0
@@ -186496,10 +186720,11 @@ Repair error: ${u}`);
         }
       },
       removePendingAcpShellConfirmationRequest: (e, t) => {
-        const n = fo(e);
+        const requestId = typeof t.payload === "string" ? t.payload : t.payload.requestId;
+        const n = Pt(e, typeof t.payload === "string" ? e.activeSessionId : t.payload.sessionId || e.activeSessionId);
         n &&
           (n.pendingAcpShellConfirmationRequests = n.pendingAcpShellConfirmationRequests.filter(
-            (r) => r.requestId !== t.payload,
+            (r) => r.requestId !== requestId,
           ));
       },
       addPendingInjectedMessage: (e, t) => {
@@ -187181,12 +187406,23 @@ const Yl = class Yl {
   isConnected() {
     return this.connectionReady;
   }
-  waitForConnection() {
-    return this.connectionReady
-      ? Promise.resolve()
-      : new Promise((t) => {
-          this.connectionReadyCallbacks.push(t);
-        });
+  waitForConnection(t) {
+    if (t != null && t.aborted) return Promise.reject(t.reason || new Error("Request cancelled"));
+    if (this.connectionReady) return Promise.resolve();
+    return new Promise((n, r) => {
+      const a = () => {
+          t == null || t.removeEventListener("abort", i);
+          n();
+        },
+        i = () => {
+          const o = this.connectionReadyCallbacks.indexOf(a);
+          o !== -1 && this.connectionReadyCallbacks.splice(o, 1);
+          t == null || t.removeEventListener("abort", i);
+          r(t.reason || new Error("Request cancelled"));
+        };
+      this.connectionReadyCallbacks.push(a);
+      t == null || t.addEventListener("abort", i, { once: !0 });
+    });
   }
   setErrorHandler(t) {
     this.errorHandler = t;
@@ -187219,10 +187455,11 @@ const Yl = class Yl {
       }
     else console.error(`[${t}] Error:`, i || r);
   }
-  async _postToIdeInternal(t, n, r = qn(), a = !1) {
+  async _postToIdeInternal(t, n, r = qn(), a = !1, signal) {
+    if (signal != null && signal.aborted) throw signal.reason || new Error("Request cancelled");
     if (typeof vscode > "u")
       if (nS()) {
-        if ((a || (await this.waitForConnection()), window.postIntellijMessage === void 0)) {
+        if ((a || (await this.waitForConnection(signal)), window.postIntellijMessage === void 0)) {
           if (a) return;
           throw (
             console.error(
@@ -187236,7 +187473,7 @@ const Yl = class Yl {
         window.postIntellijMessage(t, n, r);
         return;
       } else if (Is()) {
-        a || (await this.waitForConnection());
+        a || (await this.waitForConnection(signal));
         let o = {};
         try {
           const s = Tgn.has(t) ? void 0 : this.resolveHubWorkspaceRoute(n, r);
@@ -187251,14 +187488,18 @@ const Yl = class Yl {
     const i = { messageId: r, messageType: t, data: n };
     vscode.postMessage(i);
   }
-  async _postToIde(t, n, r = qn()) {
-    return this._postToIdeInternal(t, n, r, !1);
+  async _postToIde(t, n, r = qn(), signal) {
+    return this._postToIdeInternal(t, n, r, !1, signal);
   }
   post(t, n, r) {
     this._postToIde(t, n, r);
   }
-  respond(t, n, r) {
-    this._postToIde(t, n, r);
+  async respond(t, n, r) {
+    try {
+      return await this._postToIde(t, n, r);
+    } finally {
+      this.routedWorkspaceKeysByMessageId.delete(r);
+    }
   }
   static isNoHandlerError(t) {
     var r, a;
@@ -187274,19 +187515,26 @@ const Yl = class Yl {
           : null;
     return typeof n == "string" && n.startsWith("No handler for message type");
   }
-  request(t, n) {
-    return this._requestWithRetry(t, n, 0);
+  getRequestTimeout(t) {
+    return Cgn[String(t)] || Yl.DEFAULT_REQUEST_TIMEOUT_MS;
   }
-  async _requestWithRetry(t, n, r) {
+  request(t, n) {
+    return this._requestWithRetry(t, n, 0, Date.now() + this.getRequestTimeout(t));
+  }
+  async _requestWithRetry(t, n, r, deadline) {
     var o;
-    const a = await this._requestOnce(t, n);
-    if (Yl.isNoHandlerError(a) && r < Yl.MAX_NO_HANDLER_RETRIES)
+    const a = await this._requestOnce(t, n, Math.max(1, deadline - Date.now()));
+    if (
+      Yl.isNoHandlerError(a) &&
+      r < Yl.MAX_NO_HANDLER_RETRIES &&
+      deadline - Date.now() > Yl.NO_HANDLER_RETRY_INTERVAL_MS
+    )
       return (
         console.log(
           `[IdeMessenger] No handler for "${String(t)}" (attempt ${r + 1}/${Yl.MAX_NO_HANDLER_RETRIES + 1}), retrying in ${Yl.NO_HANDLER_RETRY_INTERVAL_MS}ms...`,
         ),
         await new Promise((s) => setTimeout(s, Yl.NO_HANDLER_RETRY_INTERVAL_MS)),
-        this._requestWithRetry(t, n, r + 1)
+        this._requestWithRetry(t, n, r + 1, deadline)
       );
     const i = String(t);
     return (
@@ -187296,68 +187544,53 @@ const Yl = class Yl {
       a
     );
   }
-  _requestOnce(t, n) {
-    const r = qn(),
-      a = String(t),
-      i = wa() ? Cgn[a] : void 0,
-      o = i !== void 0;
-    return new Promise((s, l) => {
-      const c = o
-        ? setTimeout(() => {
-            const d = this.pendingRequests.get(r);
-            if (!d) return;
-            (this.pendingRequests.delete(r), this.routedWorkspaceKeysByMessageId.delete(r));
-            const u = new Error(`Deferred ${a} request timed out after ${i}ms`);
-            (this.handleRequestError(a, u), d.reject(u));
-          }, i)
-        : void 0;
-      (this.pendingRequests.set(r, {
-        resolve: (d) => {
-          (c && clearTimeout(c), this.routedWorkspaceKeysByMessageId.delete(r), s(d));
+  _requestOnce(t, n, timeoutMs = this.getRequestTimeout(t)) {
+    return this._requestResponse(t, n, qn(), timeoutMs);
+  }
+  _requestResponse(t, n, r, timeoutMs = this.getRequestTimeout(t)) {
+    const a = String(t);
+    return new Promise((resolve, reject) => {
+      const controller = new AbortController();
+      let settled = !1,
+        timer;
+      const cleanup = () => {
+          clearTimeout(timer);
+          this.pendingRequests.delete(r);
+          this.routedWorkspaceKeysByMessageId.delete(r);
+          controller.abort();
         },
-        reject: (d) => {
-          (c && clearTimeout(c), this.routedWorkspaceKeysByMessageId.delete(r), l(d));
+        settle = (callback, value) => {
+          if (settled) return;
+          settled = !0;
+          cleanup();
+          callback(value);
         },
-        messageType: a,
-        timestamp: Date.now(),
-      }),
-        this._postToIde(t, n, r).catch((d) => {
-          (c && clearTimeout(c), this.pendingRequests.delete(r), this.routedWorkspaceKeysByMessageId.delete(r), l(d));
-        }));
+        entry = {
+          resolve: (value) => settle(resolve, value),
+          reject: (error) => settle(reject, error),
+          messageType: a,
+          timestamp: Date.now(),
+        };
+      this.pendingRequests.set(r, entry);
+      timer = setTimeout(() => {
+        const error = new Error(`Request ${a} timed out after ${timeoutMs}ms`);
+        error.code = "REQUEST_TIMEOUT";
+        this.handleRequestError(a, error);
+        entry.reject(error);
+      }, timeoutMs);
+      this._postToIde(t, n, r, controller.signal).catch((error) => {
+        settled || this.handleRequestError(a, error);
+        entry.reject(error);
+      });
     });
   }
   requestWithMessageId(t, n) {
     const r = qn();
-    return new Promise((a, i) => {
-      (this.pendingRequests.set(r, {
-        resolve: (o) => {
-          (this.routedWorkspaceKeysByMessageId.delete(r), a({ messageId: r, data: o }));
-        },
-        reject: (o) => {
-          (this.routedWorkspaceKeysByMessageId.delete(r), i(o));
-        },
-        messageType: String(t),
-        timestamp: Date.now(),
-      }),
-        this.post(t, n, r));
-    });
+    return this._requestResponse(t, n, r).then((data) => ({ messageId: r, data }));
   }
   requestWithMessageIdImmediate(t, n) {
-    const r = qn(),
-      a = new Promise((i, o) => {
-        (this.pendingRequests.set(r, {
-          resolve: (s) => {
-            (this.routedWorkspaceKeysByMessageId.delete(r), i(s));
-          },
-          reject: (s) => {
-            (this.routedWorkspaceKeysByMessageId.delete(r), o(s));
-          },
-          messageType: String(t),
-          timestamp: Date.now(),
-        }),
-          this.post(t, n, r));
-      });
-    return { messageId: r, response: a };
+    const r = qn();
+    return { messageId: r, response: this._requestResponse(t, n, r) };
   }
   async *streamRequest(t, n, r, a) {
     var q;
@@ -187505,7 +187738,9 @@ const Yl = class Yl {
     }
   }
 };
-(Vt(Yl, "MAX_NO_HANDLER_RETRIES", 3), Vt(Yl, "NO_HANDLER_RETRY_INTERVAL_MS", 3e3));
+(Vt(Yl, "DEFAULT_REQUEST_TIMEOUT_MS", 3e4),
+  Vt(Yl, "MAX_NO_HANDLER_RETRIES", 1),
+  Vt(Yl, "NO_HANDLER_RETRY_INTERVAL_MS", 1e3));
 let soe = Yl;
 class Ngn {
   constructor() {
@@ -187575,8 +187810,16 @@ function ma(e, t, n, r) {
         r ||
           ((i = async (o) => {
             if (o.data.messageType === e) {
-              const s = await t(o.data.data);
-              o.data.messageId && Agn(e) && a.respond(e, s, o.data.messageId);
+              const requestId = o.data.messageId;
+              const needsReply = requestId && Agn(e);
+              const owner = typeof o.data._hubWorkspaceKey === "string" ? o.data._hubWorkspaceKey : void 0;
+              if (needsReply && owner) a.routedWorkspaceKeysByMessageId?.set(requestId, owner);
+              try {
+                const s = await t(o.data.data);
+                if (needsReply) await a.respond(e, s, requestId);
+              } finally {
+                if (needsReply) a.routedWorkspaceKeysByMessageId?.delete(requestId);
+              }
             }
           }),
           window.addEventListener("message", i)),

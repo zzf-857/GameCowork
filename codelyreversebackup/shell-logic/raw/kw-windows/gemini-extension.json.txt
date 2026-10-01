@@ -1,0 +1,551 @@
+# gemini-extension.json
+occurrences=3
+
+## hit 1 @ 47211976
+```
+  @ -2032 devops.getRepositories
+  @ -1984 failed to serialize GetRepositoriesParams: 
+  @ -1920 failed to deserialize devops.getRepositories response: 
+  @ -1848 auth.setToken
+  @ -1808 failed to serialize SetTokenParams: 
+  @ -1752 failed to deserialize auth.setToken response: 
+  @ -1688 auth.setCoworkToken
+  @ -1640 failed to serialize SetCoworkTokenParams: 
+  @ -1576 failed to deserialize auth.setCoworkToken response: 
+  @ -1480 failed to serialize hub message: 
+  @ -1424 hub client  is not started
+  @ -1360 failed to write to hub 
+  @ -1304 src\lsp\client.rs
+  @ -1256 LSP server  is already running
+  @ -1192 resolved command: 
+  @ -1136 LSP<none>Spawning Rust LSP server  with command= args= cwd=
+  @  -960 Rust LSP server  spawned successfully
+  @  -888 failed to start LSP server  with command 
+  @  -792  did not expose stdin
+  @  -736  did not expose stdout
+  @  -680  did not expose stderr
+  @  -520 LSP request  timed out after s on 
+  @  -360 LSP client stopped
+  @  -312 failed to serialize  LSP message: 
+  @  -208 failed to write to LSP server 
+  @  -144 src\lsp\config.rs
+  @   -72 failed to read extension directory 
+  @    +0 gemini-extension.jsonfailed to read extension entry in 
+  @   +88 failed to inspect extension entry 
+  @  +184 failed to read extension manifest 
+  @  +256 failed to parse extension manifest 
+  @  +328 src\lsp\hint.rs
+  @  +368 resolve_file_preview_lsp_status: path= language= extension_installed= server_installed= supported=
+  @  +552 src\lsp\manager.rs
+  @  +672 Starting Rust LSP server  for 
+  @  +736 No configured Rust LSP server found for 
+  @  +816  startup timed out after 120s
+  @  +904 Sending  to Rust LSP server 
+  @ +1032 workspace/symbol
+  @ +1072 Opening  in Rust LSP server  as 
+  @ +1176 textDocument/didOpenSkipping didOpen for  (already open in 
+  @ +1288 Skip LSP manager reload after extension mutation: app state unavailablesrc\lsp\reload.rs
+  @ +1400 Skip LSP manager reload after extension mutation: workspace unavailablesrc\lsp\server_instance.rs
+  @ +1528 LSP server '' exceeded max crash recovery attempts (
+  @ +1632  is stopping
+  @ +1680 Initializing Rust LSP server 
+  @ +1728  failed during spawn: 
+  @ +1784 codely-desktopinitialize startup was interrupted
+  @ +1864 /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+  @ +1992 initialized failed to initialize: 
+  -- fragments --
+    · devops.getRepositories
+    · devops
+    · getRepositories
+    · failed to serialize GetRepositoriesParams:
+    · failed
+    · serialize
+    · etRepositoriesParams
+    · failed to deserialize devops.getRepositories response:
+    · deserialize
+    · response
+    · auth.setToken
+    · setToken
+    · failed to serialize SetTokenParams:
+    · etTokenParams
+    · failed to deserialize auth.setToken response:
+    · auth.setCoworkToken
+    · setCoworkToken
+    · failed to serialize SetCoworkTokenParams:
+    · etCoworkTokenParams
+    · failed to deserialize auth.setCoworkToken response:
+    · failed to serialize hub message:
+    · message
+    · hub client  is not started
+    · client
+    · started
+    · failed to write to hub
+    · write
+    · src\lsp\client.rs
+    · lsp\client.rs
+    · LSP server  is already running
+    · server
+    · already
+    · running
+    · resolved command:
+    · resolved
+    · command
+    · LSP<none>Spawning Rust LSP server  with command= args= cwd=
+    · Rust LSP server  spawned successfully
+    · spawned
+    · successfully
+    · failed to start LSP server  with command
+    · start
+    · did not expose stdin
+    · expose
+    · stdin
+    · did not expose stdout
+    · stdout
+    · did not expose stderr
+    · stderr
+    · LSP request  timed out after s on
+    · request
+    · timed
+    · after
+    · LSP client stopped
+    · stopped
+    · failed to serialize  LSP message:
+    · failed to write to LSP server
+    · src\lsp\config.rs
+    · config
+    · lsp\config.rs
+    · failed to read extension directory
+    · extension
+    · directory
+    · gemini-extension.jsonfailed to read extension entry in
+    · gemini
+    · jsonfailed
+    · entry
+    · failed to inspect extension entry
+    · inspect
+    · failed to read extension manifest
+    · manifest
+    · failed to parse extension manifest
+    · parse
+    · src\lsp\hint.rs
+    · lsp\hint.rs
+    · resolve_file_preview_lsp_status
+    · language
+    · extension_installed
+    · server_installed
+    · supported
+    · src\lsp\manager.rs
+    · manager
+    · lsp\manager.rs
+    · Starting Rust LSP server  for
+    · No configured Rust LSP server found for
+    · configured
+    · found
+    · startup timed out after 120s
+    · startup
+    · Sending  to Rust LSP server
+    · workspace/symbol
+    · workspace
+    · symbol
+    · Opening  in Rust LSP server  as
+    · textDocument/didOpenSkipping didOpen for  (already open in
+    · textDocument
+    · didOpenSkipping
+    · didOpen
+    · Skip LSP manager reload after extension mutation: app state unavailable
+    · reload
+    · mutation
+    · state
+    · unavailable
+    · src\lsp\reload.rs
+    · lsp\reload.rs
+    · Skip LSP manager reload after extension mutation: workspace unavailable
+    · src\lsp\server_instance.rs
+    · server_instance
+    · lsp\server_instance.rs
+    · LSP server '' exceeded max crash recovery attempts (
+    · exceeded
+    · crash
+    · recovery
+    · attempts
+    · is stopping
+    · stopping
+    · Initializing Rust LSP server
+    · failed during spawn:
+    · during
+    · spawn
+    · codely-desktopinitialize startup was interrupted
+    · codely
+    · desktopinitialize
+    · interrupted
+    · /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+    · capabilities
+    · definitionProvider
+    · responded
+    · initialize
+    · initialized failed to initialize:
+    · initialized
+```
+
+## hit 2 @ 47508256
+```
+  @ -2048 hub request  timed out on 
+  @ -1960 hub  closed before responding to 
+  @ -1888 auth.setToken
+  @ -1848 failed to serialize SetTokenParams: 
+  @ -1792 failed to deserialize auth.setToken response: 
+  @ -1728 auth.setCoworkToken
+  @ -1680 failed to serialize SetCoworkTokenParams: 
+  @ -1616 failed to deserialize auth.setCoworkToken response: 
+  @ -1520 failed to serialize hub message: 
+  @ -1464 hub client  is not started
+  @ -1400 failed to write to hub 
+  @ -1344 src\lsp\client.rs
+  @ -1296 LSP server  is already running
+  @ -1232 resolved command:  -> 
+  @ -1176 LSP<none>Spawning Rust LSP server  with command= args= cwd=
+  @ -1000 Rust LSP server  spawned successfully
+  @  -928 failed to start LSP server  with command 
+  @  -832  did not expose stdin
+  @  -776  did not expose stdout
+  @  -720  did not expose stderr
+  @  -560 LSP request  timed out after s on 
+  @  -424 shutdown
+  @  -392 exit
+  @  -360 LSP client stopped
+  @  -312 failed to serialize  LSP message: 
+  @  -208 failed to write to LSP server 
+  @  -144 src\lsp\config.rs
+  @   -72 failed to read extension directory 
+  @    +0 gemini-extension.jsonfailed to read extension entry in 
+  @   +88 failed to inspect extension entry 
+  @  +184 failed to read extension manifest 
+  @  +256 failed to parse extension manifest 
+  @  +328 src\lsp\manager.rs
+  @  +448 Starting Rust LSP server  for 
+  @  +512 No configured Rust LSP server found for  
+  @  +616  failed to start
+  @  +664  state channel closed
+  @  +720  startup timed out after 120s
+  @  +808 Sending  to Rust LSP server 
+  @  +936 workspace/symbolh
+  @  +976 Opening  in Rust LSP server  as 
+  @ +1080 textDocument/didOpenSkipping didOpen for  (already open in 
+  @ +1192 Skip LSP manager reload after extension mutation: app state unavailablesrc\lsp\reload.rs
+  @ +1304 Skip LSP manager reload after extension mutation: workspace unavailablesrc\lsp\server_instance.rs
+  @ +1432 LSP server '' exceeded max crash recovery attempts (
+  @ +1536  is stopping
+  @ +1584 Initializing Rust LSP server 
+  @ +1632  failed during spawn: 
+  @ +1688 codely-desktopinitialize startup was interrupted
+  @ +1768 /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+  @ +1896 initialized failed to initialize: 
+  @ +1968  failed during initialized notification: 
+  -- fragments --
+    · hub request  timed out on
+    · request
+    · timed
+    · hub  closed before responding to
+    · closed
+    · before
+    · responding
+    · auth.setToken
+    · setToken
+    · failed to serialize SetTokenParams:
+    · failed
+    · serialize
+    · etTokenParams
+    · failed to deserialize auth.setToken response:
+    · deserialize
+    · response
+    · auth.setCoworkToken
+    · setCoworkToken
+    · failed to serialize SetCoworkTokenParams:
+    · etCoworkTokenParams
+    · failed to deserialize auth.setCoworkToken response:
+    · failed to serialize hub message:
+    · message
+    · hub client  is not started
+    · client
+    · started
+    · failed to write to hub
+    · write
+    · src\lsp\client.rs
+    · lsp\client.rs
+    · LSP server  is already running
+    · server
+    · already
+    · running
+    · resolved command:  ->
+    · resolved
+    · command
+    · LSP<none>Spawning Rust LSP server  with command= args= cwd=
+    · Rust LSP server  spawned successfully
+    · spawned
+    · successfully
+    · failed to start LSP server  with command
+    · start
+    · did not expose stdin
+    · expose
+    · stdin
+    · did not expose stdout
+    · stdout
+    · did not expose stderr
+    · stderr
+    · LSP request  timed out after s on
+    · after
+    · shutdown
+    · LSP client stopped
+    · stopped
+    · failed to serialize  LSP message:
+    · failed to write to LSP server
+    · src\lsp\config.rs
+    · config
+    · lsp\config.rs
+    · failed to read extension directory
+    · extension
+    · directory
+    · gemini-extension.jsonfailed to read extension entry in
+    · gemini
+    · jsonfailed
+    · entry
+    · failed to inspect extension entry
+    · inspect
+    · failed to read extension manifest
+    · manifest
+    · failed to parse extension manifest
+    · parse
+    · src\lsp\manager.rs
+    · manager
+    · lsp\manager.rs
+    · Starting Rust LSP server  for
+    · No configured Rust LSP server found for
+    · configured
+    · found
+    · failed to start
+    · state channel closed
+    · state
+    · channel
+    · startup timed out after 120s
+    · startup
+    · Sending  to Rust LSP server
+    · workspace/symbolh
+    · workspace
+    · symbolh
+    · Opening  in Rust LSP server  as
+    · textDocument/didOpenSkipping didOpen for  (already open in
+    · textDocument
+    · didOpenSkipping
+    · didOpen
+    · Skip LSP manager reload after extension mutation: app state unavailable
+    · reload
+    · mutation
+    · unavailable
+    · src\lsp\reload.rs
+    · lsp\reload.rs
+    · Skip LSP manager reload after extension mutation: workspace unavailable
+    · src\lsp\server_instance.rs
+    · server_instance
+    · lsp\server_instance.rs
+    · LSP server '' exceeded max crash recovery attempts (
+    · exceeded
+    · crash
+    · recovery
+    · attempts
+    · is stopping
+    · stopping
+    · Initializing Rust LSP server
+    · failed during spawn:
+    · during
+    · spawn
+    · codely-desktopinitialize startup was interrupted
+    · codely
+    · desktopinitialize
+    · interrupted
+    · /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+    · capabilities
+    · definitionProvider
+    · responded
+    · initialize
+    · initialized failed to initialize:
+    · initialized
+    · failed during initialized notification:
+    · notification
+```
+
+## hit 3 @ 47710864
+```
+  @ -1944 system.shutdown
+  @ -1904 exitauth.setToken
+  @ -1856 failed to serialize SetTokenParams: 
+  @ -1800 failed to deserialize auth.setToken response: 
+  @ -1736 auth.setCoworkToken
+  @ -1688 failed to serialize SetCoworkTokenParams: 
+  @ -1624 failed to deserialize auth.setCoworkToken response: 
+  @ -1528 hub client stopped
+  @ -1480 failed to serialize hub message: 
+  @ -1424 hub client  is not started
+  @ -1360 failed to write to hub 
+  @ -1304 src\lsp\client.rs
+  @ -1256 LSP server 
+  @ -1208 resolved command: 
+  @ -1152 LSP<none>Spawning Rust LSP server  with command= args= cwd=
+  @  -976 Rust LSP server  spawned successfully
+  @  -904 failed to start LSP server  with command 
+  @  -776  did not expose stdout
+  @  -720  did not expose stderr
+  @  -560 LSP request  timed out after s on 
+  @  -400 LSP client stopped
+  @  -352 failed to serialize  LSP message: 
+  @  -248 failed to write to LSP server 
+  @  -144 src\lsp\config.rs
+  @   -72 failed to read extension directory 
+  @    +0 gemini-extension.jsonfailed to read extension entry in 
+  @   +88 failed to inspect extension entry 
+  @  +184 failed to read extension manifest 
+  @  +256 failed to parse extension manifest 
+  @  +328 src\lsp\manager.rs
+  @  +448 Starting Rust LSP server  for 
+  @  +512 No configured Rust LSP server found for 
+  @  +592  startup timed out after 120s
+  @  +680 Sending  to Rust LSP server 
+  @  +808 workspace/symbol
+  @  +848 Opening  in Rust LSP server  as 
+  @  +928 textDocument/didOpenSkipping didOpen for  (already open in 
+  @ +1040 Skip LSP manager reload after extension mutation: app state unavailablesrc\lsp\reload.rs
+  @ +1152 Skip LSP manager reload after extension mutation: workspace unavailablesrc\lsp\server_instance.rs
+  @ +1280 LSP server '' exceeded max crash recovery attempts (
+  @ +1384  is stopping
+  @ +1432 Initializing Rust LSP server 
+  @ +1480  failed during spawn: 
+  @ +1536 codely-desktopinitialize startup was interrupted
+  @ +1616 /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+  @ +1744 initialized failed to initialize: 
+  @ +1816  failed during initialized notification: 
+  @ +1896  is ready
+  -- fragments --
+    · system.shutdown
+    · system
+    · shutdown
+    · exitauth.setToken
+    · exitauth
+    · setToken
+    · failed to serialize SetTokenParams:
+    · failed
+    · serialize
+    · etTokenParams
+    · failed to deserialize auth.setToken response:
+    · deserialize
+    · response
+    · auth.setCoworkToken
+    · setCoworkToken
+    · failed to serialize SetCoworkTokenParams:
+    · etCoworkTokenParams
+    · failed to deserialize auth.setCoworkToken response:
+    · hub client stopped
+    · client
+    · stopped
+    · failed to serialize hub message:
+    · message
+    · hub client  is not started
+    · started
+    · failed to write to hub
+    · write
+    · src\lsp\client.rs
+    · lsp\client.rs
+    · LSP server
+    · server
+    · resolved command:
+    · resolved
+    · command
+    · LSP<none>Spawning Rust LSP server  with command= args= cwd=
+    · Rust LSP server  spawned successfully
+    · spawned
+    · successfully
+    · failed to start LSP server  with command
+    · start
+    · did not expose stdout
+    · expose
+    · stdout
+    · did not expose stderr
+    · stderr
+    · LSP request  timed out after s on
+    · request
+    · timed
+    · after
+    · LSP client stopped
+    · failed to serialize  LSP message:
+    · failed to write to LSP server
+    · src\lsp\config.rs
+    · config
+    · lsp\config.rs
+    · failed to read extension directory
+    · extension
+    · directory
+    · gemini-extension.jsonfailed to read extension entry in
+    · gemini
+    · jsonfailed
+    · entry
+    · failed to inspect extension entry
+    · inspect
+    · failed to read extension manifest
+    · manifest
+    · failed to parse extension manifest
+    · parse
+    · src\lsp\manager.rs
+    · manager
+    · lsp\manager.rs
+    · Starting Rust LSP server  for
+    · No configured Rust LSP server found for
+    · configured
+    · found
+    · startup timed out after 120s
+    · startup
+    · Sending  to Rust LSP server
+    · workspace/symbol
+    · workspace
+    · symbol
+    · Opening  in Rust LSP server  as
+    · textDocument/didOpenSkipping didOpen for  (already open in
+    · textDocument
+    · didOpenSkipping
+    · didOpen
+    · already
+    · Skip LSP manager reload after extension mutation: app state unavailable
+    · reload
+    · mutation
+    · state
+    · unavailable
+    · src\lsp\reload.rs
+    · lsp\reload.rs
+    · Skip LSP manager reload after extension mutation: workspace unavailable
+    · src\lsp\server_instance.rs
+    · server_instance
+    · lsp\server_instance.rs
+    · LSP server '' exceeded max crash recovery attempts (
+    · exceeded
+    · crash
+    · recovery
+    · attempts
+    · is stopping
+    · stopping
+    · Initializing Rust LSP server
+    · failed during spawn:
+    · during
+    · spawn
+    · codely-desktopinitialize startup was interrupted
+    · codely
+    · desktopinitialize
+    · interrupted
+    · /capabilities/definitionProvider responded to initialize; capabilities.definitionProvider=
+    · capabilities
+    · definitionProvider
+    · responded
+    · initialize
+    · initialized failed to initialize:
+    · initialized
+    · failed during initialized notification:
+    · notification
+    · is ready
+    · ready
+```

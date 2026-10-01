@@ -1683,6 +1683,7 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           e.jsx(de, {
             icon: e.jsx(It, { className: t("text-gamecowork-color-text-secondary") }),
             label: u != null ? u : "",
+            "data-testid": "gamecowork-editor-reveal",
             onClick: () => {
               fetch(`${window.location.origin}/api/tauri/reveal-in-file-explorer`, {
                 method: "POST",
@@ -1695,6 +1696,8 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           e.jsx(de, {
             icon: e.jsx(lt, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.removeFromCowork"),
+            disabled: !!window.GAMECOWORK_SHELL,
+            title: window.GAMECOWORK_SHELL ? "当前仅发现现有安装，尚不支持移除编辑器记录" : void 0,
             onClick: r,
           }),
         ],
@@ -1704,11 +1707,14 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           e.jsx(de, {
             icon: e.jsx(Ps, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.addModules"),
+            disabled: !!window.GAMECOWORK_SHELL || !Array.isArray(s.modules),
+            title: window.GAMECOWORK_SHELL ? "编辑器模块安装尚未接通" : void 0,
             onClick: () => c(s),
           }),
           e.jsx(de, {
             icon: e.jsx(It, { className: t("text-gamecowork-color-text-secondary") }),
             label: u != null ? u : "",
+            "data-testid": "gamecowork-editor-reveal",
             onClick: () => {
               fetch(`${window.location.origin}/api/tauri/reveal-in-file-explorer`, {
                 method: "POST",
@@ -1721,13 +1727,126 @@ function to({ editor: s, uninstalling: o, onUninstall: l, onRemoveFromCowork: r,
           e.jsx(de, {
             icon: e.jsx(lt, { className: t("text-gamecowork-color-text-secondary") }),
             label: a("tjhub.install.uninstall"),
-            disabled: o,
+            disabled: o || !!window.GAMECOWORK_SHELL,
+            title: window.GAMECOWORK_SHELL ? "编辑器卸载尚未接通" : void 0,
             onClick: l,
           }),
         ],
       });
 }
+function gamecoworkEditorProduct(value) {
+  const product = String(value?.product || value?.engine || value?.engineType || "").toLowerCase();
+  if (product === "unity" || product === "tuanjie") return product;
+  const path = String(value?.editorPath || value?.path || "").replace(/\\/g, "/");
+  return /\/Tuanjie\.exe$/i.test(path) ? "tuanjie" : /\/Unity\.exe$/i.test(path) ? "unity" : product;
+}
+function gamecoworkEditorPresentation(value) {
+  const product = gamecoworkEditorProduct(value);
+  const text = item => typeof item === "string" ? item.trim() : "";
+  const technicalVersion = text(value?.technicalVersion) || text(value?.unityVersion) || text(value?.version) || text(value?.editorVersion);
+  const candidate = text(value?.tuanjieVersion) || text(value?.marketingVersion);
+  const tuanjieVersion = product === "tuanjie" && candidate && candidate !== technicalVersion && !/^\d{4}\.\d+\.\d+[abfpt]/i.test(candidate) ? candidate : null;
+  const primaryVersion = product === "tuanjie" ? tuanjieVersion || technicalVersion : product === "unity" ? technicalVersion : text(value?.displayVersion) || text(value?.semver) || technicalVersion;
+  return { product, technicalVersion, tuanjieVersion, primaryVersion,
+    secondaryVersion: product === "tuanjie" && tuanjieVersion && technicalVersion ? "Unity " + technicalVersion : "",
+    versionTitle: product === "tuanjie" && !tuanjieVersion ? "未获取到团结版本信息，显示编辑器技术版本" : "",
+    engineLabel: product === "tuanjie" ? "团结" : product === "unity" ? "Unity" : "编辑器" };
+}
+function gamecoworkEditorIcon(value, className) {
+  const display = gamecoworkEditorPresentation(value);
+  if (display.product !== "unity" && display.product !== "tuanjie") return e.jsx(De, { className: t(className) });
+  const media = typeof window.vscMediaUrl === "string" ? window.vscMediaUrl.replace(/\/$/, "") : "";
+  return e.jsx("img", { src: media + "/icons/" + display.product + ".png", alt: display.engineLabel + " 编辑器",
+    title: display.engineLabel + " 编辑器", className: t(className, "object-contain"),
+    "data-testid": "gamecowork-editor-icon", "data-editor-icon-product": display.product });
+}
+function gamecoworkEditorVersion(value, primaryClass = "text-sm", secondaryClass = "ml-1 text-gamecowork-color-text-secondary") {
+  const display = gamecoworkEditorPresentation(value);
+  return e.jsxs(e.Fragment, { children: [
+    e.jsx("span", { className: t(primaryClass), title: display.versionTitle || void 0,
+      "data-testid": "gamecowork-editor-display-version", children: display.primaryVersion }),
+    display.secondaryVersion ? e.jsx("small", { className: t(secondaryClass), style: { fontSize: "11px", lineHeight: "15px" },
+      "data-testid": "gamecowork-editor-technical-version", children: display.secondaryVersion }) : null,
+  ] });
+}
+function gamecoworkEditorSearchMatches(value, query) {
+  const display = gamecoworkEditorPresentation(value), term = String(query || "").trim().toLowerCase();
+  return !term || [display.primaryVersion, display.technicalVersion, value?.version, value?.semver].some(item => String(item || "").toLowerCase().includes(term));
+}
+function gamecoworkEditorPath(value) {
+  const raw = value?.editorPath || value?.path || (Array.isArray(value?.location) ? value.location.find(item => typeof item === "string" && item) : "") || value?.folderPath || "";
+  return typeof raw === "string" ? raw.replace(/\\/g, "/").replace(/\/$/, "") : "";
+}
+function gamecoworkEditorIdentity(value) {
+  return { product: gamecoworkEditorProduct(value), editorPath: gamecoworkEditorPath(value) };
+}
+function gamecoworkEditorRowKey(value) {
+  const identity = gamecoworkEditorIdentity(value);
+  return identity.product + ":" + (identity.editorPath.toLowerCase() || String(value?.version || "") + ":" + String(value?.architecture || ""));
+}
+function gamecoworkProjectEditorIdentity(project) {
+  const product = String(project?.product || project?.engine || project?.engineType || "").toLowerCase();
+  const path = project?.editorPath || project?.preferredEditorPath;
+  return { product: product === "unity" || product === "tuanjie" ? product : "",
+    editorPath: typeof path === "string" ? path.replace(/\\/g, "/").replace(/\/$/, "") : "" };
+}
+function gamecoworkEditorSelectionKey(editor) {
+  return window.GAMECOWORK_SHELL ? gamecoworkEditorRowKey(editor) : `${editor?.version}-${editor?.architecture}`;
+}
+function gamecoworkInitialEditorSelection(editors, version, architecture, identity) {
+  if (!window.GAMECOWORK_SHELL) return `${version}-${architecture}`;
+  const candidates = editors.filter(editor => editor.version === version && editor.architecture === architecture &&
+    (!identity?.product || gamecoworkEditorProduct(editor) === identity.product) &&
+    (!identity?.editorPath || gamecoworkEditorPath(editor).toLowerCase() === identity.editorPath.replace(/\\/g, "/").toLowerCase()));
+  return candidates.length === 1 ? gamecoworkEditorSelectionKey(candidates[0]) : "";
+}
+function gamecoworkProjectEditorSameIdentity(project, selected) {
+  if (!window.GAMECOWORK_SHELL) return !0;
+  const current = gamecoworkProjectEditorIdentity(project);
+  return !!current.product && current.product === selected?.product &&
+    (!current.editorPath || current.editorPath.toLowerCase() === String(selected?.editorPath || "").replace(/\\/g, "/").toLowerCase());
+}
+function gamecoworkProjectLaunchIdentity(project, selected) {
+  if (!window.GAMECOWORK_SHELL) return {};
+  const identity = selected ? gamecoworkEditorIdentity(selected) : gamecoworkProjectEditorIdentity(project);
+  return { ...(identity.product ? { product: identity.product } : {}), ...(identity.editorPath ? { editorPath: identity.editorPath } : {}) };
+}
+function gamecoworkNormalizeEditor(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("编辑器列表包含无效记录");
+  const path = gamecoworkEditorPath(value), location = Array.isArray(value.location) ? value.location.filter(item => typeof item === "string" && item) : /\.exe$/i.test(path) ? [path] : [];
+  const version = typeof value.version === "string" ? value.version : typeof value.editorVersion === "string" ? value.editorVersion : "";
+  return { ...value, path, product: gamecoworkEditorProduct(value), version,
+    semver: typeof value.semver === "string" && value.semver ? value.semver : version,
+    location, folderPath: typeof value.folderPath === "string" && value.folderPath ? value.folderPath : location.length ? eo(location[0]) : path,
+    manual: typeof value.manual === "boolean" ? value.manual : !!window.GAMECOWORK_SHELL,
+    gamecoworkModuleMetadataMissing: value.moduleInfoAvailable === !1 || !Array.isArray(value.modules) || !Array.isArray(value.buildPlatformShortNames) };
+}
+async function gamecoworkReadEditorRows(messenger) {
+  const response = await messenger.request("tjhub/getEditors", void 0);
+  if (response?.status !== "success") throw new Error(typeof response?.error === "string" ? response.error : response?.error?.message || response?.message || "读取已安装编辑器失败");
+  const content = response.content;
+  if (!content || typeof content !== "object") throw new Error("已安装编辑器列表返回格式无效");
+  return Object.values(content).map(gamecoworkNormalizeEditor);
+}
+function gamecoworkProjectMatchesEditorFilter(project, identity) {
+  if (!window.GAMECOWORK_SHELL || !identity) return !0;
+  const product = String(project?.product || project?.engine || project?.engineType || "").toLowerCase();
+  if (identity.product && product !== identity.product) return !1;
+  const boundPath = project?.editorPath || project?.preferredEditorPath;
+  return !boundPath || !identity.editorPath || String(boundPath).replace(/\\/g, "/").toLowerCase() === identity.editorPath.toLowerCase();
+}
+function gamecoworkProjectMatchesEditor(project, editor, matchArchitecture) {
+  return project.version === editor.version && (!(matchArchitecture || window.GAMECOWORK_SHELL) || !project.architecture || project.architecture === editor.architecture) &&
+    gamecoworkProjectMatchesEditorFilter(project, gamecoworkEditorIdentity(editor));
+}
+function gamecoworkEditorMatchesFilter(editor, identity) {
+  if (!window.GAMECOWORK_SHELL || !identity) return !0;
+  return (!identity.product || gamecoworkEditorProduct(editor) === identity.product) &&
+    (!identity.editorPath || gamecoworkEditorPath(editor).toLowerCase() === identity.editorPath.toLowerCase());
+}
 function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) {
+  s = gamecoworkNormalizeEditor(s);
+  const gamecoworkDisplay = gamecoworkEditorPresentation(s);
   const { t: c } = q(),
     a = n.useContext(ue),
     [u, x] = n.useState(!1);
@@ -1757,13 +1876,20 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
       } catch {}
     };
   return e.jsxs("div", {
+    "data-testid": "gamecowork-editor-row",
+    "data-editor-product": s.product,
+    "data-editor-path": s.path,
+    "data-editor-version": s.version,
+    "data-editor-semver": s.semver,
+    "data-editor-display-version": gamecoworkDisplay.primaryVersion,
+    "data-editor-technical-version": gamecoworkDisplay.technicalVersion,
     className: t(
       "mt-2 min-h-[88px] p-3 bg-gamecowork-color-surface-sunken rounded-2xl border border-solid border-gamecowork-color-border-subtle flex flex-row",
     ),
     children: [
       e.jsx("div", {
         className: t("mr-3 p-[6px] flex flex-col justify-start items-center"),
-        children: e.jsx(De, { className: t("w-6 h-6") }),
+        children: gamecoworkEditorIcon(s, "w-6 h-6"),
       }),
       e.jsxs("div", {
         className: t(
@@ -1773,10 +1899,7 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
           e.jsxs("div", {
             className: t("flex flex-row items-center"),
             children: [
-              e.jsx("div", {
-                className: t("text-sm leading-[15px] mr-1 text-gamecowork-color-text-primary"),
-                children: s.semver,
-              }),
+              gamecoworkEditorVersion(s, "text-sm leading-[15px] mr-1 text-gamecowork-color-text-primary"),
               s.isHmiRecommended &&
                 e.jsx("div", {
                   className: t(
@@ -1803,7 +1926,8 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
                   className: t(
                     "ml-3 px-3 border border-solid border-gamecowork-color-border-subtle whitespace-nowrap text-sm rounded-lg h-7",
                   ),
-                  onClick: () => r(s.version, s.architecture),
+                  "data-testid": "gamecowork-editor-view-projects",
+                  onClick: () => r(s.version, s.architecture, gamecoworkEditorIdentity(s)),
                   children: [
                     e.jsx(Gt, { className: t("!text-base text-gamecowork-color-text-secondary mr-1") }),
                     c("tjhub.install.viewProjects", { count: o }),
@@ -1853,7 +1977,10 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
           }),
           e.jsx("div", {
             className: t("col-span-2 flex flex-row flex-wrap items-center gap-y-1 mt-1 min-h-[22.6px]"),
-            children: s.buildPlatformShortNames.map((N) => e.jsx(Qs, { platform: N })),
+            children: [
+              ...(Array.isArray(s.buildPlatformShortNames) ? s.buildPlatformShortNames.filter(N => typeof N === "string").map((N) => e.jsx(Qs, { platform: N })) : []),
+              (s.gamecoworkModuleMetadataMissing || s.moduleInfoWarning) && e.jsx("span", { "data-testid": "gamecowork-editor-modules-status", role: "status", children: s.moduleInfoWarning || c("tjhub.install.modulesUnavailable", { defaultValue: "模块信息暂不可用" }) }),
+            ],
           }),
         ],
       }),
@@ -1873,6 +2000,9 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     [g, C] = n.useState(""),
     [S, k] = n.useState(Te === null),
     [L, I] = n.useState(Te !== null),
+    [gamecoworkInstalledError, gamecoworkSetInstalledError] = n.useState(null),
+    [gamecoworkInstalledBusy, gamecoworkSetInstalledBusy] = n.useState(!1),
+    gamecoworkInstalledGeneration = n.useRef(0),
     v = n.useRef(0),
     R = 240,
     ee = ve(Wt),
@@ -1881,6 +2011,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     H = ve(ds),
     W = n.useRef(H);
   W.current = H;
+  n.useEffect(() => () => { gamecoworkInstalledGeneration.current++; }, []);
   const se = n.useCallback(() => {
     var M;
     (a(D(!0)),
@@ -1898,13 +2029,14 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
       ));
   }, [a]);
   (n.useEffect(() => {
-    l && !H && se();
+    l && !H && !window.GAMECOWORK_SHELL && se();
   }, [l, se]),
     n.useEffect(() => {
       H && se();
     }, [H]));
   const U = n.useCallback(
       (M) => {
+        if (!Array.isArray(M.modules)) { gamecoworkSetInstalledError("编辑器模块信息暂不可用，无法打开模块管理"); return; }
         (a(D(!0)),
           a(
             ie({
@@ -1930,6 +2062,8 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
           const B = M.content.map(($) => {
             var f, h;
             return {
+              product: String($.product || $.engine || $.engineType || "").toLowerCase(),
+              editorPath: typeof $.editorPath === "string" ? $.editorPath : typeof $.preferredEditorPath === "string" ? $.preferredEditorPath : void 0,
               version: String((f = $.version) != null ? f : ""),
               architecture: String((h = $.architecture) != null ? h : ""),
             };
@@ -1953,14 +2087,16 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     $ && ((K.current = M), Q());
   }, [ee]);
   const Q = n.useCallback(async () => {
+    const generation = ++gamecoworkInstalledGeneration.current;
+    gamecoworkSetInstalledBusy(!0);
     try {
-      const M = await c.request("tjhub/getEditors", void 0);
-      if (M.status === "success" && M.content) {
-        const B = Object.values(M.content);
-        ((Te = B), x(B));
-      } else ((Te = []), x([]));
-    } catch {
-      ((Te = []), x([]));
+      const B = await gamecoworkReadEditorRows(c);
+      if (generation !== gamecoworkInstalledGeneration.current) return;
+      ((Te = B), x(B), gamecoworkSetInstalledError(null));
+    } catch (error) {
+      if (generation === gamecoworkInstalledGeneration.current) gamecoworkSetInstalledError(error instanceof Error ? error.message : String(error));
+    } finally {
+      if (generation === gamecoworkInstalledGeneration.current) gamecoworkSetInstalledBusy(!1);
     }
   }, [c]);
   (n.useEffect(() => {
@@ -2052,6 +2188,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
         e.jsx("div", { className: t("h-4") }),
       ],
     });
+  else if (gamecoworkInstalledError && u === null) V = null;
   else if (i === "prereleases")
     V = e.jsxs("div", {
       className: t("flex flex-col items-center justify-center flex-1 h-full"),
@@ -2066,15 +2203,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
   else {
     const M = g.trim().toLowerCase(),
       B = u != null ? u : [],
-      $ = M
-        ? B.filter((f) => {
-            var h, j;
-            return (
-              ((h = f.version) != null ? h : "").toLowerCase().includes(M) ||
-              ((j = f.semver) != null ? j : "").toLowerCase().includes(M)
-            );
-          })
-        : B;
+      $ = M ? B.filter(f => gamecoworkEditorSearchMatches(f, M)) : B;
     if ($.length === 0) {
       const f = !!M;
       V = e.jsx("div", {
@@ -2098,11 +2227,11 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
       });
     } else
       ((V = $.map((f) => {
-        const h = d.filter((j) => j.version === f.version && (!je() || j.architecture === f.architecture)).length;
+        const h = d.filter((j) => gamecoworkProjectMatchesEditor(j, f, je())).length;
         return e.jsx(
           so,
           { editor: f, projectCount: h, onAddModules: U, onViewProjects: o },
-          `${f.version}-${f.architecture}`,
+          gamecoworkEditorRowKey(f),
         );
       })),
         V.unshift(e.jsx("div", { className: t("h-2") })),
@@ -2150,6 +2279,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
                     size: "md",
                     className: t("ml-2 rounded-lg"),
                     tooltip: r("tjhub.common.search"),
+                    "aria-label": r("tjhub.common.search"),
                     onClick: () => w(!0),
                     children: e.jsx(kt, { className: t("text-gamecowork-color-text-secondary") }),
                   }),
@@ -2167,6 +2297,8 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
                 size: "sm",
                 className: t("ml-2 px-4 whitespace-nowrap text-sm rounded-lg"),
                 onClick: se,
+                disabled: !!window.GAMECOWORK_SHELL,
+                title: window.GAMECOWORK_SHELL ? "编辑器下载安装尚未接通" : void 0,
                 children: r("tjhub.common.installEditor"),
               }),
             ],
@@ -2174,7 +2306,16 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
         ],
       }),
       e.jsx("div", { className: t("mr-8"), children: e.jsx(St, { items: X, activeId: i, onSelect: N }) }),
-      e.jsx(he, { className: t("flex-1 pr-8"), children: V }),
+      window.GAMECOWORK_SHELL && e.jsx("div", { "data-testid": "gamecowork-editors-local-boundary", role: "status", className: t("mr-8 mb-2 text-xs text-gamecowork-color-text-secondary"), children: "显示现有本地安装；下载安装、模块变更和移除暂未接通。" }),
+      gamecoworkInstalledError && e.jsxs("div", {
+        "data-testid": "gamecowork-editors-error", role: "alert",
+        className: t("mr-8 mb-2 flex items-center gap-3 text-sm text-gamecowork-color-status-error-text"),
+        children: [e.jsx("span", { children: gamecoworkInstalledError }), e.jsx(A, {
+          "data-testid": "gamecowork-editors-retry", disabled: gamecoworkInstalledBusy,
+          onClick: () => void Q(), children: r("tjhub.install.retryScan", { defaultValue: "重新扫描" }),
+        })],
+      }),
+      e.jsx(he, { "data-testid": "gamecowork-editors-list", className: t("flex-1 pr-8"), children: V }),
     ],
   });
 }
@@ -2562,11 +2703,19 @@ function Ge({ label: s, value: o }) {
 function ho({ template: s, onClose: o }) {
   const { t: l } = q(),
     [r, c] = n.useState("information"),
+    gamecoworkNotProvided = l("tjhub.templateDetail.notProvided", { defaultValue: "未提供" }),
+    gamecoworkPackages = Array.isArray(s.packages) && s.packages.every((u) =>
+      u && typeof u.name === "string" && typeof u.packageName === "string" && typeof u.version === "string")
+      ? s.packages : null,
+    gamecoworkPlatforms = Array.isArray(s.buildPlatforms) && s.buildPlatforms.every((u) => typeof u === "string")
+      ? s.buildPlatforms : null,
     a = [
       { id: "information", label: l("tjhub.templateDetail.information") },
       { id: "packages", label: l("tjhub.templateDetail.packages") },
     ];
   return e.jsxs("div", {
+    "data-testid": "gamecowork-template-details",
+    "data-template-name": s.name,
     className: t("bg-gamecowork-color-surface-card flex flex-col h-[28rem]"),
     children: [
       e.jsxs("div", {
@@ -2581,18 +2730,20 @@ function ho({ template: s, onClose: o }) {
           }),
           e.jsx(ne, {
             size: "sm",
+            "aria-label": l("tjhub.templateDetail.close", { defaultValue: "关闭模板详情" }),
             onClick: o,
             children: e.jsx(ze, { className: t("size-4 text-gamecowork-color-text-tertiary") }),
           }),
         ],
       }),
       e.jsx(St, { items: a, activeId: r, onSelect: c }),
-      r === "packages" && s.packages.length === 0
+      r === "packages" && (gamecoworkPackages === null || gamecoworkPackages.length === 0)
         ? e.jsx("div", {
+            "data-testid": "gamecowork-template-packages",
             className: t("flex items-center justify-center h-full"),
             children: e.jsx("span", {
               className: t("text-sm text-gamecowork-color-text-secondary"),
-              children: l("tjhub.templateDetail.noPackages"),
+              children: gamecoworkPackages === null ? gamecoworkNotProvided : l("tjhub.templateDetail.noPackages"),
             }),
           })
         : e.jsx(he, {
@@ -2601,14 +2752,15 @@ function ho({ template: s, onClose: o }) {
               children: [
                 r === "information" &&
                   e.jsxs("div", {
+                    "data-testid": "gamecowork-template-information",
                     className: t("flex flex-col gap-4 my-3 px-1"),
                     children: [
-                      e.jsx(Ge, { label: l("tjhub.templateDetail.description"), value: s.description }),
-                      e.jsx(Ge, { label: l("tjhub.templateDetail.renderPipeline"), value: xo(s.renderPipeline, l) }),
-                      e.jsx(Ge, { label: l("tjhub.templateDetail.size"), value: io(s.size) }),
+                      e.jsx(Ge, { label: l("tjhub.templateDetail.description"), value: typeof s.description === "string" && s.description ? s.description : gamecoworkNotProvided }),
+                      e.jsx(Ge, { label: l("tjhub.templateDetail.renderPipeline"), value: typeof s.renderPipeline === "string" && s.renderPipeline ? xo(s.renderPipeline, l) : gamecoworkNotProvided }),
+                      e.jsx(Ge, { label: l("tjhub.templateDetail.size"), value: typeof s.size === "number" && Number.isFinite(s.size) && s.size >= 0 ? io(s.size) : gamecoworkNotProvided }),
                       e.jsx(Ge, {
                         label: l("tjhub.templateDetail.platform"),
-                        value: s.buildPlatforms.map((u) => mo(u, l)).join(", "),
+                        value: gamecoworkPlatforms && gamecoworkPlatforms.length ? gamecoworkPlatforms.map((u) => mo(u, l)).join(", ") : gamecoworkNotProvided,
                       }),
                       e.jsx(Ge, {
                         label: l("tjhub.templateDetail.category"),
@@ -2619,8 +2771,9 @@ function ho({ template: s, onClose: o }) {
                   }),
                 r === "packages" &&
                   e.jsx("div", {
+                    "data-testid": "gamecowork-template-packages",
                     className: t("flex flex-col gap-1 my-3"),
-                    children: s.packages.map((u) =>
+                    children: gamecoworkPackages.map((u) =>
                       e.jsxs(
                         "div",
                         {
@@ -2765,6 +2918,9 @@ function po(s, o) {
     a = r.channel in st ? st[r.channel] : -1;
   return c !== a ? c - a : l.iteration - r.iteration;
 }
+function gamecoworkProjectEditor(editor) {
+  return window.GAMECOWORK_SHELL ? { editorPath: editor.path, product: editor.product } : {};
+}
 function jo({ onBack: s }) {
   var et;
   const { t: o } = q(),
@@ -2789,7 +2945,13 @@ function jo({ onBack: s }) {
     [M, B] = n.useState(!1),
     [$, f] = n.useState("All"),
     [h, j] = n.useState(!1),
-    [T, Y] = n.useState("");
+    [T, Y] = n.useState(""),
+    creationRef = n.useRef(null);
+  n.useEffect(() => () => {
+    const id = creationRef.current;
+    creationRef.current = null;
+    if (window.GAMECOWORK_SHELL && id) l.request("tjhub/cancelCreateProject", { creationId: id }).catch(() => {});
+  }, [l]);
   (n.useEffect(() => {
     l.request("tjhub/getUniqueProjectName", void 0)
       .then((P) => {
@@ -2840,26 +3002,31 @@ function jo({ onBack: s }) {
     }, [l]),
     n.useEffect(() => {
       if (!d) return;
+      let active = true;
       (async () => {
         var z;
         (se(!0), w(null));
         try {
-          const Z = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture });
+          const Z = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture, ...gamecoworkProjectEditor(d) });
+          if (!active) return;
           if (Z.status === "success" && Z.content) {
             const oe = Z.content;
             (N(oe.templates), w((z = oe.templates[0]) != null ? z : null));
-          }
-        } catch {
+          } else throw new Error(Z.error || "无法读取所选编辑器的本地模板");
+        } catch (error) {
+          if (!active) return;
           N([]);
+          Ze(error instanceof Error ? error.message : String(error));
         } finally {
-          se(!1);
+          if (active) se(!1);
         }
       })();
+      return () => { active = false; };
     }, [l, d]));
   const ae = async () => {
       if (d)
         try {
-          const P = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture });
+          const P = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture, ...gamecoworkProjectEditor(d) });
           if (P.status === "success" && P.content) {
             const z = P.content;
             (N(z.templates),
@@ -2932,6 +3099,8 @@ function jo({ onBack: s }) {
     Qe = async () => {
       var P, z;
       if (!(!Se || _ || !d || !p) && (await r())) {
+        const creationId = crypto.randomUUID();
+        creationRef.current = creationId;
         xe(!0);
         try {
           const Z = await l.request("tjhub/createProject", {
@@ -2940,9 +3109,13 @@ function jo({ onBack: s }) {
             templateName: p.name,
             editorVersion: d.version,
             architecture: d.architecture,
+            ...gamecoworkProjectEditor(d),
+            ...(window.GAMECOWORK_SHELL && { creationId, archiveSha256: p.archiveSha256 }),
             ...(L && { uosEnabled: !0 }),
             ...(v && X && { organizationId: X.id }),
           });
+          if (window.GAMECOWORK_SHELL && creationRef.current !== creationId) return;
+          creationRef.current = null;
           if (Z.status === "success") {
             ft(o("tjhub.newProject.projectCreatedToast"));
             const oe = `${S}/${g.trim()}`;
@@ -2952,6 +3125,8 @@ function jo({ onBack: s }) {
             (Ze((z = mt[oe]) != null ? z : o("tjhub.newProject.errCreateFailedWithError", { error: oe })), xe(!1));
           }
         } catch (Z) {
+          if (window.GAMECOWORK_SHELL && creationRef.current !== creationId) return;
+          creationRef.current = null;
           (Ze(Z instanceof Error ? Z.message : String(Z)), xe(!1));
         }
       }
@@ -3042,10 +3217,10 @@ function jo({ onBack: s }) {
                                 "flex flex-row px-4 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle",
                               ),
                               children: [
-                                e.jsx(De, { className: t("w-[12.8px] h-[14.824px] p-[1.6px] mr-1") }),
+                                gamecoworkEditorIcon(d, "w-[12.8px] h-[14.824px] p-[1.6px] mr-1"),
                                 e.jsx("div", {
                                   className: t("mr-1"),
-                                  children: (et = d == null ? void 0 : d.semver) != null ? et : "",
+                                  children: e.jsxs(e.Fragment, { children: [(window.GAMECOWORK_SHELL && d ? gamecoworkEditorPresentation(d).engineLabel + " " : ""), gamecoworkEditorVersion(d, "mr-1")] }),
                                 }),
                                 e.jsx(pe, {
                                   className: t(
@@ -3062,16 +3237,17 @@ function jo({ onBack: s }) {
                             return e.jsx(
                               de,
                               {
-                                icon: e.jsx(De, { className: t("w-[12.8px] h-[14.824px] p-[1.6px]") }),
-                                label: (z = P.semver) != null ? z : P.version,
+                                icon: gamecoworkEditorIcon(P, "w-[12.8px] h-[14.824px] p-[1.6px]"),
+                                label: (window.GAMECOWORK_SHELL ? gamecoworkEditorPresentation(P).engineLabel + " " : "") + gamecoworkEditorPresentation(P).primaryVersion,
                                 selected:
                                   (d == null ? void 0 : d.version) === P.version &&
-                                  (d == null ? void 0 : d.architecture) === P.architecture,
+                                  (d == null ? void 0 : d.architecture) === P.architecture &&
+                                  (!window.GAMECOWORK_SHELL || (d == null ? void 0 : d.path) === P.path),
                                 onClick: () => {
                                   (b(P), j(!1));
                                 },
                               },
-                              P.version,
+                              window.GAMECOWORK_SHELL ? P.product + ":" + P.path : P.version,
                             );
                           }),
                         }),
@@ -3366,7 +3542,7 @@ function bo({
                   }),
                 ],
               }),
-              e.jsxs("div", {
+              !window.GAMECOWORK_SHELL && e.jsxs("div", {
                 className: t("flex flex-row gap-2 items-center"),
                 children: [
                   e.jsx(Re, { checked: b, onChange: () => i(!b) }),
@@ -3387,7 +3563,7 @@ function bo({
                   }),
                 ],
               }),
-              e.jsxs("div", {
+              !window.GAMECOWORK_SHELL && e.jsxs("div", {
                 className: t("flex flex-row gap-2"),
                 children: [
                   e.jsx(Re, { checked: C, onChange: () => S(!C) }),
@@ -3409,7 +3585,7 @@ function bo({
                   }),
                 ],
               }),
-              C &&
+              !window.GAMECOWORK_SHELL && C &&
                 e.jsxs("div", {
                   className: t("flex flex-col gap-1"),
                   children: [
@@ -4611,12 +4787,8 @@ function Lo({ editor: s, value: o, selected: l, onClick: r }) {
       e.jsxs("div", {
         className: t("flex flex-row items-center h-6"),
         children: [
-          e.jsx(De, { className: t("w-4") }),
-          e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: (a = s.semver) != null ? a : s.version }),
-          e.jsxs("div", {
-            className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
-            children: ["(", s.version, ")"],
-          }),
+          gamecoworkEditorIcon(s, "w-4 h-4"),
+          gamecoworkEditorVersion(s, "text-sm ml-2 mr-1"),
           s.isHmiRecommended &&
             e.jsx("div", {
               className: t(
@@ -4687,14 +4859,15 @@ function qt({
   editors: o,
   currentVersion: l,
   currentArchitecture: r,
+  currentEditorIdentity: gamecoworkCurrentEditorIdentity,
   onSelect: c,
   onClose: a,
   onInstallEditor: u,
 }) {
   var N;
   const { t: x } = q(),
-    [d, b] = n.useState(`${l}-${r}`),
-    i = o.find((p) => `${p.version}-${p.architecture}` === d);
+    [d, b] = n.useState(() => gamecoworkInitialEditorSelection(o, l, r, gamecoworkCurrentEditorIdentity)),
+    i = o.find((p) => gamecoworkEditorSelectionKey(p) === d);
   return e.jsxs("div", {
     className: t("bg-gamecowork-color-surface-card h-[90vh] max-h-[652px] flex flex-col"),
     children: [
@@ -4734,7 +4907,7 @@ function qt({
                   children: e.jsx("div", {
                     className: "flex flex-col",
                     children: o.map((p) => {
-                      const w = `${p.version}-${p.architecture}`;
+                      const w = gamecoworkEditorSelectionKey(p);
                       return e.jsx(Io, { editor: p, value: w, selected: d === w, onClick: () => b(w) }, w);
                     }),
                   }),
@@ -4746,11 +4919,11 @@ function qt({
       e.jsx(Ao, {
         hasSelection: !!i,
         buttonLabel: i
-          ? x("tjhub.projects.openWithVersion", { version: (N = i.semver) != null ? N : i.version })
+          ? x("tjhub.projects.openWithVersion", { version: gamecoworkEditorPresentation(i).primaryVersion })
           : x("tjhub.common.open"),
         onCancel: a,
         onConfirm: () => {
-          i && c(i.version, i.architecture);
+          i && (window.GAMECOWORK_SHELL ? c(i.version, i.architecture, gamecoworkEditorIdentity(i)) : c(i.version, i.architecture));
         },
         onInstallEditor: u,
       }),
@@ -4793,6 +4966,9 @@ function Io({ editor: s, value: o, selected: l, onClick: r }) {
   var a;
   const { t: c } = q();
   return e.jsxs("div", {
+    "data-testid": "gamecowork-editor-choice", "data-editor-choice-key": o,
+    "data-editor-product": gamecoworkEditorProduct(s), "data-editor-path": gamecoworkEditorPath(s),
+    "data-editor-version": s.version, "data-editor-architecture": s.architecture,
     className: t(
       "flex flex-row items-center gap-3 p-4 rounded-xl bg-gamecowork-color-surface-sidebar mb-2 mr-5 last:mb-0 cursor-pointer border-[2px] border-solid",
       l ? "border-gamecowork-color-accent-default" : "border-transparent",
@@ -4803,12 +4979,8 @@ function Io({ editor: s, value: o, selected: l, onClick: r }) {
       e.jsxs("div", {
         className: t("flex flex-row items-center h-6"),
         children: [
-          e.jsx(De, { className: t("w-4") }),
-          e.jsx("div", { className: t("text-sm ml-2 mr-1"), children: (a = s.semver) != null ? a : s.version }),
-          e.jsxs("div", {
-            className: t("text-sm mr-1 text-gamecowork-color-text-secondary"),
-            children: ["(", s.version, ")"],
-          }),
+          gamecoworkEditorIcon(s, "w-4 h-4"),
+          gamecoworkEditorVersion(s, "text-sm ml-2 mr-1"),
           s.isHmiRecommended &&
             e.jsx("div", {
               className: t(
@@ -4941,6 +5113,8 @@ function zo({
             size: "md",
             className: t("ml-2 w-8 flex-shrink-0 rounded-lg"),
             tooltip: g("tjhub.install.title"),
+            "aria-label": g("tjhub.install.title"),
+            "data-testid": "gamecowork-editor-installations-entry",
             onClick: a,
             children: e.jsx(yt, { className: t("text-gamecowork-color-text-secondary") }),
           }),
@@ -5748,6 +5922,7 @@ function _o({
   onOpenAddLicenseDialog: c,
   versionFilter: a,
   architectureFilter: u,
+  editorIdentityFilter: gamecoworkEditorFilter,
   onClearVersionFilter: x,
 }) {
   var Mt, Tt;
@@ -5803,6 +5978,10 @@ function _o({
               Pe = Ls(te, ce);
             return {
               localProjectId: String((He = F.localProjectId) != null ? He : ""),
+              product: String(F.product || F.engineType || F.engine || "").toLowerCase(),
+              engineType: typeof F.engineType === "string" ? F.engineType : void 0,
+              editorPath: typeof F.editorPath === "string" ? F.editorPath : void 0,
+              preferredEditorPath: typeof F.preferredEditorPath === "string" ? F.preferredEditorPath : void 0,
               title: String((Ve = F.title) != null ? Ve : ""),
               path: te,
               version: String(($e = F.version) != null ? $e : ""),
@@ -5883,10 +6062,10 @@ function _o({
       let F = y;
       return (
         G && (F = F.filter((te) => te.title.toLowerCase().includes(G))),
-        a && (F = F.filter((te) => te.version === a && (!u || te.architecture === u))),
+        a && (F = F.filter((te) => te.version === a && (!u || te.architecture === u) && gamecoworkProjectMatchesEditorFilter(te, gamecoworkEditorFilter))),
         F
       );
-    }, [p, U, Q, f, Y, a, u]),
+    }, [p, U, Q, f, Y, a, u, gamecoworkEditorFilter]),
     Se = (m) => {
       m === "favorite"
         ? U === "favorite"
@@ -5944,8 +6123,9 @@ function _o({
               editors: j,
               currentVersion: m.version,
               currentArchitecture: m.architecture,
-              onSelect: (y, G) => {
-                (i(D(!1)), i(J(void 0)), P(m, y, G));
+              currentEditorIdentity: gamecoworkProjectEditorIdentity(m),
+              onSelect: (y, G, identity) => {
+                (i(D(!1)), i(J(void 0)), P(m, y, G, identity));
               },
               onClose: () => {
                 (i(D(!1)), i(J(void 0)));
@@ -5980,8 +6160,9 @@ function _o({
                         editors: j,
                         currentVersion: m.version,
                         currentArchitecture: m.architecture,
-                        onSelect: (y, G) => {
-                          (i(D(!1)), i(J(void 0)), P(m, y, G));
+              currentEditorIdentity: gamecoworkProjectEditorIdentity(m),
+                        onSelect: (y, G, identity) => {
+                          (i(D(!1)), i(J(void 0)), P(m, y, G, identity));
                         },
                         onClose: () => {
                           (i(D(!1)), i(J(void 0)));
@@ -6000,7 +6181,7 @@ function _o({
           }),
         ));
     },
-    Qe = async (m) => {
+    Qe = async (m, selectedIdentity) => {
       if (!(await Ee())) {
         Fe();
         return;
@@ -6009,7 +6190,7 @@ function _o({
         i(pt(m.path));
         try {
           const [y] = await Promise.all([
-            b.request("tjhub/openProject", { path: m.path, version: m.version, architecture: m.architecture }),
+            b.request("tjhub/openProject", { path: m.path, version: m.version, architecture: m.architecture, ...gamecoworkProjectLaunchIdentity(m, selectedIdentity) }),
             wt(m.path).catch(() => {}),
           ]);
           y.status === "error" && (i(Ae(m.path)), R(y.error));
@@ -6054,9 +6235,9 @@ function _o({
         R(y instanceof Error ? y.message : String(y));
       }
     },
-    P = async (m, y, G) => {
-      if (y === m.version && G === m.architecture) {
-        await Qe(m);
+    P = async (m, y, G, selectedIdentity) => {
+      if (y === m.version && G === m.architecture && gamecoworkProjectEditorSameIdentity(m, selectedIdentity)) {
+        await Qe(m, selectedIdentity);
         return;
       }
       if (!(await Ee())) {
@@ -6077,7 +6258,7 @@ function _o({
                     (await N()) &&
                     (i(pt(m.path)),
                     b
-                      .request("tjhub/openProject", { path: m.path, version: y, architecture: G })
+                      .request("tjhub/openProject", { path: m.path, version: y, architecture: G, ...gamecoworkProjectLaunchIdentity(m, selectedIdentity) })
                       .then((F) => {
                         F.status === "error" && (i(Ae(m.path)), R(F.error));
                       })
@@ -6284,7 +6465,7 @@ function _o({
         showSearch: !0,
         newProjectLoading: X,
         versionFilterLabel: a
-          ? (Tt = (Mt = j.find((m) => m.version === a && (!u || m.architecture === u))) == null ? void 0 : Mt.semver) !=
+          ? (Tt = (Mt = j.find((m) => m.version === a && (!u || m.architecture === u) && gamecoworkEditorMatchesFilter(m, gamecoworkEditorFilter))) == null ? void 0 : Mt.semver) !=
             null
             ? Tt
             : a
@@ -6387,6 +6568,7 @@ function or() {
   }, [l, r]);
   const [u, x] = n.useState(null),
     [d, b] = n.useState(null),
+    [gamecoworkInstallationFilter, gamecoworkSetInstallationFilter] = n.useState(null),
     { logout: i } = ks(),
     N = n.useCallback(async () => {
       (r(D(!0)),
@@ -6457,8 +6639,8 @@ function or() {
               c === "install" || c === "install-auto"
                 ? e.jsx(oo, {
                     onBack: () => a("projects"),
-                    onViewProjects: (w, g) => {
-                      (x(w), b(je() ? g : null), a("projects"));
+                    onViewProjects: (w, g, identity) => {
+                      (x(w), b(je() ? g : null), gamecoworkSetInstallationFilter(identity || null), a("projects"));
                     },
                     autoOpenInstallDialog: c === "install-auto",
                   })
@@ -6470,14 +6652,15 @@ function or() {
                         onNewProject: () => a("newProject"),
                         onLicenses: () => a("licenses"),
                         onInstall: () => {
-                          (x(null), b(null), a("install"));
+                          (x(null), b(null), gamecoworkSetInstallationFilter(null), a("install"));
                         },
                         onInstallEditor: () => a("install-auto"),
                         onOpenAddLicenseDialog: p,
                         versionFilter: u,
                         architectureFilter: d,
+                        editorIdentityFilter: gamecoworkInstallationFilter,
                         onClearVersionFilter: () => {
-                          (x(null), b(null));
+                          (x(null), b(null), gamecoworkSetInstallationFilter(null));
                         },
                       }),
           });

@@ -1,0 +1,3153 @@
+                    </binding></visual></toast>
+  *gGRy-
+  notifying task 
+ )cxGk4
+ +rDPp<
+ - not server initiated;H'
+ - not server initiated;hE
+ /assets/AddLicenseDialog-BYsLblOG.js
+ 8>iYfd
+ ;KuFQi"
+ FvtNi,,9
+ IDE  type= data=<
+ K]OsypM
+ KduSL
+ YNWeg
+ aCtF%
+ broadcasting synthetic device-flow-cancelled so GUIs unwindmessageTypedevice-flow-cancelledCore is stopped
+ dCOR~
+ failed to start
+ gbVK;
+ hDQU,kX
+ message while id unpair: bridged remote sessionUpdate remote_account= != local_account=
+ no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized`
+ pIfh"
+ surfaceH
+ tmAP,
+ uvKeg
+ was already restarted by auto-restart; skippingP
+ {yRdq-L
+!.YWFIk
+!3MbtO}8#
+!4_08MdYh
+!<zNtv
+!NhCuy
+!SdMbhQ
+!YWuE4
+!YufGg
+!baSl0
+!gEgr)\
+!gNoRmX
+!kLqx"
+!sJPix
+" must be valid unicode, error: `=
+"/assets/chunk-SVP7TREG-DGhFaF3h.js
+"9MBInO9_
+">UCJb
+"C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-0.2.12\src\header\value.rs1
+"CemBb
+"F7YGFB!
+"HKQZ's
+"JqLkp
+"RKZdj
+"WzVoK
+"XzTL2
+"[qSmz
+"hoqgX\
+"m{tugO
+"pNYKpZ
+"ubrom
+"zClHMby
+"~bJIix
+#"BhtIN
+#,SZKQ!
+#9JYDod
+#: urls=, has_username=, has_credential=, max_rate_kbps=
+#<ueqb
+#G)QsmB!
+#HyZfp h
+#KLyR@]
+#REtc)
+#Sscn{
+#XTfB&
+#Yqtobj
+#ZqZyZ4d
+#[&Trky
+#ayFE9$
+#d7OxqB8
+#mauGt
+#oD^hUoV
+#trKYL
+#uftNfb6
+#ynEl|#dC
+$/assets/quadrantDiagram-AXDQQJYC-C-GzuSVn.js
+$/icons/build_output_context.png
+$B}sAQv*
+$D;vbmt
+$FGnpP0
+$K8SGRtE
+$MK%uWBE(
+$SlYXSI\
+$TOgi(=A
+$[]AozHz%[
+$^epyvr
+$cJzL*
+$f}zQem
+$hYOK:
+$htzc 
+$nJcLWE
+$ohrZKk
+$serde_json::private::RawValue
+$tqTvg
+$tqVr>WM
+$uHTr}
+$xgnKw
+%!YKPjOP
+%*qzSo
+%+l0Pimi
+%/assets/css.contribution-DCnrcimm.js
+%@/mzDo
+%@3Xjcia@%
+%OXRcyZb
+%TTGQSP
+%Yzug)
+%\wxHTa
+%bEdGu)
+%ch_fubHb
+%dNhw*
+%i#fYqw
+%nJKWy
+%pdFID
+%qpDR?
+%qsSou
+%wELvoG
+%y]XQBe
+&"UdJa+rM
+&/assets/classDiagram-3BZAVTQC-DsKZWj9Z.js
+&9$9LsHsx9
+&9djfoa+K7
+&CFoCkW
+&GcoH++\
+&Kgyu7]&
+&OqDsw
+&PqQHL
+&RgiJ6
+&UVUVqN#r
+&]VVXpQ
+&^FxmIi&C
+&eCrX~
+&fSzqt.
+&m:uulT5
+&yhai,
+'!AcxMlKb
+'"IwvKlrI:
+',wqWp{5
+'.PwFX
+'/assets/KaTeX_SansSerif-Italic-YYjJ1zSn.ttf
+'0*DnfA
+'1YDwe
+'BamE0
+'KdYMR
+'RPcI1
+'ZKVj@
+'[)uVhe~U
+'ajIy(?
+'h#pDrs1
+'hysJE
+'nonce-'p
+'sLDT 
+'yB$ER$dRNHZ#
+'yHBJN/
+'|:MgHf
+(/assets/KaTeX_AMS-Regular-DMm9YOAa.woff
+(?m)^\s*max_turns\s*=\s*(-?\d+)\s*$max_turns value regexl*
+(FBJHd
+(HDFSp
+(MYhF6
+(NA3c4zkPX:
+(NWvha
+(OjIQ5!
+(Op2VcXe
+(RNHS=&
+(TkzwE^
+(WriteState::Body (offset ) (buffer-len h
+([4J%YexQ
+(]lteAr
+(aVlMY
+(bxswJ7
+(pjgO 
+(wfuRY
+(yTdKb
+(ywjPl
+(}>XcZJi
+) to workspace  failed: p
+)#NxpK
+)'.OKvm
+)*oA/cJsa
+), ignoring DATA0
+), ignoring DATAh8
+), ignoring PUSH_PROMISE0
+), ignoring PUSH_PROMISEh8
+)/IoKF.>T
+)HVQg9S
+)KuLf:
+)MoiG&
+)Obugip
+)QdMO'X
+)Rjuw&
+)S0OsuK
+)\XGDs
+)cuZrl
+)mjkoH
+)pUWR$*
+*&c#yOkz
+*.KEqI
+*5:VMLN
+*BWaCld
+*IHBh\
+*JQdLr
+*NfrI{
+*QjTOQ8
+*UOoQX
+*XhiLV
+*mBnl~
+*o8KXGM
+*oqdjC
+*pYwyE
+*qunE+
+*tLxw_
+*|Qnnj_h
++$jvrQ
++'Bpfy
++*uMml
+++/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs
++/assets/channel-DXqelUy0.js
++/icons/fork.png
++2MsDt
++=CFDF!
++>WAqvS
++BOCpQ
++Bstream/liveUpdate
++C]aKtu
++Llyci
++M#qFMB
++RaWe,
++STQP3
++TBVR,
++dJVS!
++gaFt)
++l)oiAT
++oW[/bsgW
++riJGE
++wpcp/W
++~Qmva
+, returning None?7
+, using defaults<3
+,?BMVR
+,AtPN6
+,AvOVG
+,KOaVb
+,KszSl
+,Mgui{
+,O9QZew
+,Q;tHnqE
+,TAXQfJ
+,byJsH
+,eaCXp
+,fkPbx
+,jMaTP
+,nGCL5
+,qOSIn
+,wuBpD
+,{LzKW
+-"MDWq
+-'GJMB7{
+--staged0
+--stagedH
+-/assets/KaTeX_Math-BoldItalic-CZnvNsCZ.woff2
+-4"TvOo
+-5zwPDr
+-IKXem3
+-InswJ
+-LnCgQA
+-LwMnd
+-OOCuGV
+-Q"TNQD
+-TNnc}
+-U8sEik
+-Zqml7
+-iEFEh_
+-nPvDC
+-p9tvYb
+-vVbdi
+-|zMEhx
+.(}pFeZ
+.Fbri(P
+.JPomx
+.MlqAmL
+.OGiV(
+.SJNKBf
+.WUnA=
+.WfMj5
+.YWsCV
+.l.pDuN
+.lHFi(
+.q7Eieq
+.vhKuD
+/#KUlj-
+/'Idtb
+/+2rYdjs
+//assets/KaTeX_Caligraphic-Regular-CTRA-rTL.woff
+//icons/unity-file-icons/dark/UnityEditor/LightmapParameters@32.png
+//logos/nvidia.png
+/1MaFgt
+/4uGOjD
+/5(nhIP
+/8Obyz
+/@0AHbw
+/@GWbd>9
+/@hjRG
+/C=mCETQ
+/DvwZ^
+/XpTa(>
+/[GLgn
+/\eDoG%r3d
+/api/tauri/file-explorerXG
+/api/tauri/remote/browse-foldersXG
+/api/tauri/unity-insight/vfs-path-searchXG
+/api/tauri/update-traffic-lightsXG
+/api/tauri/workspace-dirXG
+/assets/GLTFLoader-D_VqbMdM.js[X
+/assets/GenerationDetailDialog-DyH9yIKu.js
+/assets/GenerationModelViewer-DgHJ_Htv.js
+/assets/GenerationSkyboxViewer-CVN8756K.js
+/assets/InsightIndexPage-B7corD1V.js
+/assets/KaTeX_Main-BoldItalic-SpSLRI95.woff
+/assets/KaTeX_Main-Italic-BMLOBm91.woff
+/assets/KaTeX_Main-Regular-ypZvNtVU.ttf
+/assets/KaTeX_Math-BoldItalic-B3XSjfu4.ttf
+/assets/KaTeX_Math-Italic-flOr_0UB.ttf
+/assets/KaTeX_SansSerif-Regular-DDBCnlJ7.woff2
+/assets/NoLicenseDialog-CH7pJW61.js
+/assets/RightSideBarPanel-JSPvAs5c.js[#
+/assets/TJHubRoute-DN1YDDd-.js[0A2
+/assets/TerminalPanel-DaIbEA-8.js[
+/assets/VscTheme-BExNMG_K.js
+/assets/_.contribution-BEPi9Fwm.js
+/assets/_basePickBy-Cjj3jB3s.js
+/assets/_baseUniq-C9v6YMLn.js
+/assets/abnfDiagram-VCTEODGH-B-4satlP.js
+/assets/abnfDiagram-VCTEODGH-B_LG13hk.js
+/assets/arc-BYb06-Ge.js
+/assets/arc-CXZzReB1.js
+/assets/arc-DXqqVeYx.js
+/assets/architectureDiagram-5GKGNRK7-Ck1Xn_kh.js[
+/assets/architectureDiagram-5GKGNRK7-Cl4v_3Kp.js[
+/assets/architectureDiagram-KFL7JDKH-D3D-d1bG.js[
+/assets/blockDiagram-I7D4REHJ-D_Lvh6Ha.js
+/assets/blockDiagram-I7D4REHJ-e0mYZ_zm.js
+/assets/blockDiagram-ZYB65J3Q-BeQmS5bq.js[
+/assets/c4Diagram-7LVT6UL2-BgQnqYmU.js[
+/assets/c4Diagram-AAMF2YG6-DRAY15D4.js[%
+/assets/cardAudioPlayer-ZgGHHuYi.js
+/assets/channel-0rJEtiuR.js
+/assets/chunk-2Q5K7J3B-Bw3toqm2.js
+/assets/chunk-2Q5K7J3B-rsPRkHm0.js
+/assets/chunk-5VM5RSS4-CN_AVaYI.js
+/assets/chunk-ANTBXLJU-DpvJzaT6.js
+/assets/chunk-F27PBJKO-iDQskvIx.js
+/assets/chunk-F27PBJKO-pEEKsc9i.js
+/assets/chunk-FHKO5MBM-DNOn8GE3.js
+/assets/chunk-GLLZNHP4-CFc8j2Qt.js
+/assets/chunk-IMKFNOWR-BFdrd12E.js
+/assets/chunk-IMKFNOWR-DlDvO2yo.js
+/assets/chunk-JBRWN2VN-C73ltaHL.js
+/assets/chunk-JWPE2WC7-T25dSmDk.js
+/assets/chunk-JWPE2WC7-mi7oxMEc.js
+/assets/chunk-LXBSTHXV-u8t2AoyC.js
+/assets/chunk-NRVI72HA-Dc8s2S3s.js
+/assets/chunk-OMD6QJNC-cM1unzly.js
+/assets/chunk-POPQ4Y6H-BzHSvZYn.js
+/assets/chunk-POPQ4Y6H-C8aRCy1M.js
+/assets/chunk-SVP7TREG-DfEOQl8W.js
+/assets/chunk-TICWLB2K-BPVyOWUJ.js
+/assets/chunk-WVR4S24B-e1hq11hy.js
+/assets/chunk-XXDRQBXY-2Z0xbgBy.js
+/assets/chunk-XXDRQBXY-BIM2G3fn.js
+/assets/classDiagram-ZZMXUADV-CWG3CHoW.js
+/assets/classDiagram-ZZMXUADV-JiN_KtOG.js
+/assets/classDiagram-v2-QTMF73CY-C-kW4ndZ.js
+/assets/classDiagram-v2-VYDZK3BY-BiJfnDEz.js
+/assets/classDiagram-v2-VYDZK3BY-JiN_KtOG.js/icons/unity-file-icons/light/Assembly@32.png
+/assets/clone-DJH302tV.js
+/assets/core-BtpCLyE5.js
+/assets/cose-bilkent-JH36ORCC-CeD3ypZT.js[W?A
+/assets/cowork-mobile-qr-download-CXrg4itf.png
+/assets/csharp.contribution-CkQhkLFp.js
+/assets/css-BKLDLCFk.js
+/assets/cynefin-OW5HDTMX-Cm6ltTqe.js[8
+/assets/cynefin-OW5HDTMX-FwiEsyvy.js[
+/assets/cynefinDiagram-5FMLGOSQ-C7KKAX1f.js
+/assets/cynefinDiagram-5FMLGOSQ-DfYj2uoa.js
+/assets/cytoscape.esm-Bq8ucWvb.js[
+/assets/cytoscape.esm-CXRtQ6d5.js[
+/assets/dagre-2BBEFEWP-BUAeCJBu.js
+/assets/dagre-GXQ25YYZ-BpQVB2wD.js
+/assets/dagre-GXQ25YYZ-DgZqBYl6.js
+/assets/defaultLocale-BSOMlZd9.js
+/assets/defaultLocale-BrTjF7G7.js
+/assets/diagram-4IRLE6MV-CKs6PvDz.js
+/assets/diagram-RP2FKANI-DF2Y3ECw.js
+/assets/diagram-S7CK7UJ4-DWbjrckY.js
+/assets/diagram-UQ7AKVKN-CYlbzKKx.js
+/assets/diagram-UQ7AKVKN-GlDyUZrD.js
+/assets/diagram-VSXAHHWV-C35GDpna.js
+/assets/diagram-VX7I27RA-DR5X8Jli.js
+/assets/diagram-VX7I27RA-DbKsJs_z.js
+/assets/diagram-Z3DM3KII-DnqJmNZ1.js
+/assets/diagram-Z3DM3KII-olKpkXOx.js
+/assets/ebnfDiagram-PWID7BFC-DOmjzR0H.js
+/assets/ebnfDiagram-PWID7BFC-DdmnCtql.js
+/assets/editor.worker-OA_lMRfw.js[
+/assets/erDiagram-RLTQ6QDP-BROGqc6K.js
+/assets/erDiagram-RLTQ6QDP-DJSqYpTO.js
+/assets/event-CswyesJe.js
+/assets/flowDiagram-HODETNUW-BO4Ik9Rr.js
+/assets/flowDiagram-HODETNUW-Fg0fSwnn.js
+/assets/flowDiagram-THRYKUMA-U8RJH1_6.js
+/assets/ganttDiagram-EL5Y4UJY-CuTYoHcT.js[d
+/assets/ganttDiagram-EL5Y4UJY-z8ztzteF.js[r
+/assets/ganttDiagram-WV7ZQ7D5-COCgNKj1.js
+/assets/gitGraphDiagram-OJR772UL-BtTVOxGg.js
+/assets/gitGraphDiagram-WWUBYQGX-C7BvzOeU.js
+/assets/gitGraphDiagram-WWUBYQGX-om34Zzrs.js
+/assets/go.contribution-vgXgAqYQ.js
+/assets/graph-DsbZwrj8.js
+/assets/html-DHeuDzeg.js
+/assets/html.contribution-2uj6E4Vb.js
+/assets/index-ALCObGGK.css[0
+/assets/index-BRxZ4eG7.js
+/assets/indexProgress-BEklGZ-4.js
+/assets/indexWalkthrough-C1eDPcA7.js
+/assets/infoDiagram-6WOFNB3A-BLZ2w8Ie.js
+/assets/init-BaHtlhPg.js/assets/csharp-BbQLP7Cn.js
+/assets/ishikawaDiagram-5VMMS53U-BLlWKOmK.js
+/assets/ishikawaDiagram-5VMMS53U-C-5wQvAn.js
+/assets/java-DfK-42Lq.js
+/assets/java.contribution-DIiJEwRY.js
+/assets/javascript-DZN94MNg.js
+/assets/javascript.contribution-BZ2yzoDT.js
+/assets/journeyDiagram-3NMN7TZE-CjlrY6Nm.js
+/assets/journeyDiagram-3NMN7TZE-VW8A_-MT.js
+/assets/journeyDiagram-FFXJYRFH-BMcyGSiN.js
+/assets/jsonMode-BIDmVmw8.js
+/assets/kanban-definition-KOZQBZVT-C9pZTzgK.js
+/assets/kanban-definition-UXKFOSKX-0RjIWnhB.js
+/assets/kanban-definition-UXKFOSKX-BxryqYS6.js
+/assets/katex-C5jXJg4s.js[
+/assets/layout-B1LyNC2s.js
+/assets/layout-Bxldjh8R.js
+/assets/layout-DnjO4kuL.js
+/assets/less-DmIuAYTg.js
+/assets/linear-BpFq1Q0T.js
+/assets/linear-DFLOwjzV.js
+/assets/markdown-DCmFEgGL.js
+/assets/markdown.contribution-Y9mXsM1P.js
+/assets/mindmap-definition-LNHGMQRG-KeXFp3B6.js[J
+/assets/mindmap-definition-YA3MSWOX-COow2esG.js
+/assets/mindmap-definition-YA3MSWOX-DNKb4AUF.js
+/assets/monaco-diff-language-BN0s5kUq.js
+/assets/monaco.contribution-C_-RECKx.js
+/assets/openTjhubTab-qOsuwIY5.js
+/assets/ordinal-BnMzuN5p.js
+/assets/ordinal-DcU6rL3G.js
+/assets/pegDiagram-XKGWAZYB-CbCmsAMI.js
+/assets/pegDiagram-XKGWAZYB-lvkTNNna.js
+/assets/pet-CZjlzXYQ.js[d
+/assets/pieDiagram-DBDJKBY4-CAc7MpQh.js
+/assets/pieDiagram-E7YTZNPT-BQXY1Ew8.js
+/assets/pieDiagram-E7YTZNPT-tuPcf4z4.js
+/assets/projectMenuFlows-B5bpQmCU.js
+/assets/python-CCnKQRdB.js
+/assets/python.contribution-ZEQvygbo.js
+/assets/quadrantDiagram-AXDQQJYC-CcPRZ2jY.js
+/assets/quadrantDiagram-YPSRARAO-BpT26Ivh.js
+/assets/railroadDiagram-O6MQD6OU-D-B_NokW.js
+/assets/registry-BL-NPVNy.js
+/assets/requirementDiagram-BXWQKSXE-DKe5hwoR.js
+/assets/requirementDiagram-BXWQKSXE-rVRbE9T2.js
+/assets/requirementDiagram-EGVEC5DT-NSdYiP3y.js
+/assets/rust.contribution-DA1X-BYL.js
+/assets/sankeyDiagram-HRAUVNP4-BWPHjyYp.js
+/assets/sankeyDiagram-P5KCCOFB-BYwvAN5c.js
+/assets/sankeyDiagram-P5KCCOFB-z5VSF6oa.js
+/assets/scss-DgYyMhnv.js
+/assets/scss.contribution-BU9Vl2xp.js
+/assets/sequenceDiagram-WJ2MYXX4-DJ2q6IUR.js[8
+/assets/sequenceDiagram-WJ2MYXX4-GRsf-aWD.js[P
+/assets/shallowEqual-C2yO7zFp.js
+/assets/shell-ClWJPgEH.js
+/assets/shell.contribution-DG2MiAPc.js
+/assets/sizeCapture-INFHLROL-C0cTwGPn.js
+/assets/sizeCapture-INFHLROL-DB2FKoOD.js
+/assets/stateDiagram-D77RDMKH-CNrbVFKA.js
+/assets/stateDiagram-D77RDMKH-D2gEImmA.js
+/assets/stateDiagram-UUKSUZ4H-DeA74S6i.js
+/assets/stateDiagram-v2-EYPG3UTE-BQMYummx.js
+/assets/stateDiagram-v2-MP3YSRHH-BI6YMuGB.js
+/assets/store-c6kNGz30.js[
+/assets/swimlanes-42K2YHIH-ArYvAOSN.js[
+/assets/swimlanes-42K2YHIH-CRPJaz5o.js[n
+/assets/swimlanesDiagram-VR7AAH4N-0oxC4IUp.js
+/assets/swimlanesDiagram-VR7AAH4N-CQ_rW60d.js
+/assets/three.module-C8hHHSST.js[
+/assets/timeline-definition-24CTP7MA-By1yrOn6.js
+/assets/timeline-definition-24CTP7MA-DN4NtctC.js
+/assets/timeline-definition-3HZDQTIS-jTeLSMlw.js
+/assets/treemap-75Q7IDZK-Bp3sVUNO.js[S
+/assets/typescript-T8RhZlkJ.js
+/assets/typescript.contribution-sO7Mgt2B.js
+/assets/unityInsightIndex-BuKbJPJQ.js
+/assets/vennDiagram-4TSXK5OY-CzPkyAvg.js
+/assets/vennDiagram-4TSXK5OY-Dg1NaE8a.js
+/assets/wardleyDiagram-VM6X3IG4-Crt9DE2G.js
+/assets/wardleyDiagram-VM6X3IG4-nq-PkP9D.js
+/assets/webview-Bmc8EURe.js
+/assets/xml-50HFwriY.js
+/assets/xychartDiagram-FDP5SA34-YQoSgKWD.js
+/assets/xychartDiagram-S5SC5T6Z-DrzDdcU2.js
+/assets/xychartDiagram-S5SC5T6Z-IVcLoQvP.js
+/assets/yaml-F8Bq-L5n.js
+/assets/yaml.contribution-Cyc3N716.js
+/bPLtp
+/branding/logo_dark.png/assets/diagram-S7CK7UJ4-BD_yq1ja.js
+/icons/arrow_upward_black.png
+/icons/file.png
+/icons/fork_hover.png
+/icons/install.png
+/icons/tuanjie_disable_normal.png
+/icons/tuanjie_enable_hover.png
+/icons/tuanjie_enable_normal.png
+/icons/unity-file-icons/dark/UnityEditor/Animations/AnimatorController@32.png
+/icons/unity-file-icons/dark/UnityEditor/SceneAsset@32.png
+/icons/unity-file-icons/dark/UnityEditor/VFX/VisualEffectSubgraphBlock@32.png
+/icons/unity-file-icons/dark/UnityEngine/AudioClip@32.png
+/icons/unity-file-icons/dark/UnityEngine/AvatarMask@32.png
+/icons/unity-file-icons/dark/UnityEngine/Experimental/Rendering/RayTracingShader@32.png
+/icons/unity-file-icons/dark/UnityEngine/UIElements/StyleSheet@32.png/assets/infoDiagram-27XIBGKW-DmAeHtpf.js
+/icons/unity-file-icons/light/Prefab@32.png
+/icons/unity-file-icons/light/UnityEditor/Animations/AnimatorState@32.png
+/icons/unity-file-icons/light/UnityEditor/Animations/BlendTree@32.png
+/icons/unity-file-icons/light/UnityEditor/EditorSettings@32.png/assets/less.contribution-CBc_QiV_.js
+/icons/unity-file-icons/light/UnityEditor/SceneAsset@32.png
+/icons/unity-file-icons/light/UnityEditor/VFX/VisualEffectSubgraphOperator@32.png
+/icons/unity-file-icons/light/UnityEngine/Material@32.png
+/icons/unity-file-icons/light/UnityEngine/TextAsset@32.png
+/icons/unity-file-icons/light/UnityEngine/Timeline/SignalAsset@32.png
+/icons/unity-file-icons/light/UnityEngine/UIElements/ThemeStyleSheet@32.png/icons/unity-file-icons/dark/FolderEmpty@32.png
+/icons/unity-file-icons/light/cs Script@32.png
+/index-DG7m4Xaq.js
+/installProgresstjhub/installProide/showNotificaui_button_clickeely_panel_openedcodely_panel_opeely_panel_closedcodely_panel_cloe_button_clickedwelcome_button_cme_window_closedwelcome_window_chown
+/logos/codely.png
+/logos/function-network.png
+/logos/gemini.png
+/nsLRN
+/openHubH3O
+/owHVD
+/passive@
+/qntYPH]
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\collections\btree\map\entry.rs0e
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\collections\btree\map\entry.rs@
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs(!
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs0,
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs0w
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs0|
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs8I
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsHn
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsHo
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsHs
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsP
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsPu
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs`
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsp
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rsx
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\string.rs/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\vec\spec_from_iter_nested.rs
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\vec\mod.rsTA
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\char\methods.rsh
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rs J
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rs(
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rs@D
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsP
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsP{
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsX
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsXM
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rshc
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rspZ
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rspy
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsx
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsx0
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\ops\function.rsX
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\slice\sort\stable\quicksort.rsmid > len'
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\slice\sort\stable\quicksort.rsmid > lenO
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\slice\sort\stable\quicksort.rsmid > lenW`
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\str\mod.rsempty string, expected a semver versionunexpected end of input while parsing B
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\str\pattern.rsError/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\vec\mod.rs
+/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\std\src\sync\mpmc\mod.rs
+/select,
+0/icons/unity-file-icons/dark/UnityEngine/RenderTexture@32.png
+00010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsx3
+0123456789abcdef/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs
+03Wcab
+0CA$hNII-
+0LStbPq
+0QM~~GDIF2
+0UvToy
+0W{/logos/hunyuan.png
+0XKhNO
+0ZkDl8
+0\efPO%
+0b0x00010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899assertion failed: *curr > 19
+0bYKKB'G
+0dblsGR
+0eMjM9i
+0gtKI]
+0h:AqOk
+0lCyHI{
+0tqNt>W
+1(PVMo
+1)JsqKy
+1)PeMF
+12RYLpy
+12sIeD
+16Njnlf[
+1;}SuLd
+1HNeDLf
+1K7g,}*7IaKH
+1V#%QEyB
+1duGBZ
+1fdWr(
+1ffjfk~B
+1fuSv}f
+1lVLB1qN
+1qrgG0
+1{pkdW
+2*ZrGL
+2+yuur.A
+2,VjSs
+2,uceh
+2.1.3-canary.2
+2.1.3-canary.2UpdateChannelUnknown UpdateChannel setting: "", falling back to version-based channel
+2.ERGv
+2.SUDL;
+234aLZf
+23gVwb2
+2713ddMJA
+27du<rhHb
+2?H)SvtJ
+2OrETdc
+2UtSLv
+2]DkoW
+2aBuy[M_
+2hinSL
+2lHeP\a55C/
+2m fxTS
+2ogTI7
+2tpqJr
+2zvCuGY
+2{~3KOyU7z
+3%gQEczJ
+3-XyKO
+3/assets/MoveUpRightIcon-FDLB66AF.js
+3:kIwz
+3>OoST
+3JQEW}1taF
+3TBVD?
+3TRYSZ
+3cNfs>
+3jUBzs
+3jqoT7#
+3jwGD Q
+3lOSMf
+3rFAPV
+3wWJvE
+3yOvWB1-
+3zdWGE
+4.qzQt
+43/icons/build_output_context_selected.png
+47nfCC#d
+47tjKf
+4@shuO
+4AMuS@fH
+4IpuN,
+4PBNQ[
+4RMmbBti
+4VIeuP-
+4bxqi[
+4k?%buqub
+4pGcCrb5
+4plVof
+4uoEw,
+4xIyM(
+4{DuHh
+5#qrjk
+5.GLhUV
+5/assets/c4Diagram-7LVT6UL2-C4XIP1Ld.js[
+5/assets/railroadDiagram-O6MQD6OU-CrDu73TI.js
+5C<skko
+5I96Labu
+5Ly3ZDfU$
+5NoGsXq
+5OZmBD
+5UxrG\
+5WWvxo1"
+5ljMq1
+5qZRvM
+5rgSj2
+5tUKgnTVG
+5uteAi
+5zjQw,
+5zkMjI
+5{Ioaz
+5|hREY?
+6 jyCX
+6-IdBFs
+6.Sebg
+60mkDK
+6>3Veve
+6BXAO?
+6BrUc#
+6EUoOp
+6FQxA:
+6Gasux
+6J7MxND
+6JRrj<-
+6Jdiy&
+6Nqdtv
+6RrZlYh
+6T@,QYVx
+6Vwgz~
+6WTln\
+6XWkK;]q3z
+6\oFmr
+6]%Y%QcmA
+6_.CdEAL
+6dIjAPb
+6hMibi}m:k
+6hadLFue
+6krIo#
+6pKAM@
+6sjDXb
+6uNex<
+6wBEA\
+6~Abhl
+7"GTdb
+7,Iflj
+74$EUDH9$F
+7>ryvf
+7K(phKk
+7MTzvUf{
+7N_ymwu
+7TeoxTRj
+7]}\WLzv
+7ehDXLr
+7fJFF4((
+7ioOFL
+7ml;vqmYk
+7mpFo<
+7pLIYQ
+7pQJc5sE
+7sbhl(
+7wbWJu{)c
+7xWoC)
+8$JLgt
+8(0PGsB1
+8*_cFsh
+8*|DmqK
+8/assets/stateDiagram-v2-MP3YSRHH-B7aODqc6.js
+84Cairj
+85OQHG
+8>Qhmo'
+8IfXO=
+8TFYV1
+8\S5+^iCVN#
+8]2nNIb#
+8]Xmgf:( 
+8ehKtY6
+8fETvD
+8lRHJ)
+8{INtLMT
+9/assets/diagram-VSXAHHWV-BRTF-loK.js
+9>9wEpp6YL
+9?(.@KCLJ
+9FTLl|
+9HbUX7
+9IOeVK
+9MkyDm
+9UfNB,
+9XdFWnP]
+9[cPod\]
+9b+cyca4
+9gnOqR
+9htmlt}
+9hxkL"
+9jsont\
+9kROYl
+9nFgU>Df
+9nQiv|]n
+9ozGyw
+9uaUw{
+9w;CcsE
+9wcyiQ
+:$kq"YGjkz,
+:/assets/infoDiagram-27XIBGKW-BgprT845.js
+:@NyFi0h
+:Cxiy1
+:GVQH<]l
+:GwLILk
+:Hecx>K{$+
+:JmUe\
+:NMsdv
+:PamRN
+:TJIz?
+:T^1ncSoj
+:YBDVz
+:Z{uclc
+:dYvhz
+:eobch'
+:hZNa3
+:nameur
+:nz+dI5IkCY
+:rkOAYB
+:yiBAK
+;'bovE
+;*YjBe
+;,ADKG
+;// Copyright 2019-2024 Tauri Programme within The Commons Conservancy
+;/7U~6wpds2
+;4sJlxm
+;HDeQE]
+;NGRBkqd
+;QAOi$^
+;R6GjBi
+;VqawyQ
+;WaSQr;
+;i6'18Qxum
+;qScf4f
+;w8_nxdu
+;xxsS6#
+<$dark
+<$darku:L
+<&}fZqq
+<ARuhTL
+<HpvbM
+<JRSyp
+<KiFqf
+<VHJoA
+<X(SikS/<+:L
+<mJBw'Y
+<mfMS)
+<rdCan
+<sfAF[
+<wxJtj
+=!fBrp
+="FpxHt
+=(NnhC@r
+=6NJYp
+=@afvI/
+=ICHCF-6
+=LxnY,s
+=PxRQc0
+=VMtml
+=ZQMR4
+=dGcB>
+=zJmA*
+>.C>p]hRJd\]C@@
+>?{FrOc
+>D?WUeK
+>HYxkr
+>Luzyz0'
+>UpZT]}X
+>Urcm|
+>VmGbJ\
+>XsueP
+>_1lTtU
+>doneu
+>f'/assets/sequenceDiagram-WFGC7UMF-CtejXbtM.js[W\1
+>lPwnSyq
+>lineul
+>nMcQ5{_S
+>u_PxcH
+>wnIC$
+>|XrNM
+?'DLIO5\
+?-IHpP
+?/assets/erDiagram-HZWUO2LU-C47Stsrl.js
+?/icons/current_context_exclude.png
+?/icons/unity_game_object_context_selected.png
+?1MMAU]S
+?>Dlla^
+?@1fTjj
+?HcLi^2{1
+?HmYd8A
+?I$rUDa
+?OKfq"2!dK
+?RSgBt
+?TLMo~TX
+?ZXsU;+
+?[IvJdh
+?]dKZMP@
+?dIPFD1
+?dZQoDf
+?description() is deprecated; use DisplayP
+?j/DYaq
+?memr<+t&
+?mpxlz
+?qiwF"
+?teDmtH
+@ iredA
+@%iGjCu
+@/assets/KaTeX_SansSerif-Bold-CFMepnvq.ttf
+@1XUqOB
+@8wXeK
+@?dahg
+@F7pThS%h'
+@IkDw~nKB0i)
+@I|LGYN
+@LOWoc
+@aKqBc
+@e'euaZ
+@e-flow-cancelleddevice-flow-cancdevice-flow-failice-flow-starteddevice-flow-star
+@fGTQlF
+@gQymX
+@htrfM+^9wP
+@n0HIHJ
+@nMgC=
+@s5evxi
+A Tokio 1.x context was found, but it is being shutdown.X?
+A$0:-qnYl
+A*qsaFP
+A0OUnh
+A4Fhqm
+A9LZEr>
+A:QHuvE
+A<BaOX.
+A=nHQP
+ACYKd5
+ACdteq
+AGbS)TR
+AGsZVK
+ARKNM1
+ASCIIAssignedAnyhV
+ASyF\"h
+ATRQRQRQrqrqrqrqJIJI
+ATnV4,
+AWAVATVWSL
+AWAVAUATVWUSPH
+A\zEza*.|
+A^hCxU
+A_aLXO$
+Aaqcbl
+Active session: 
+AddContext ignored (workspace mismatch): editor= active_session=P
+AddContextdebugUnityConsolefocusContinueInputWithNewSessionevent_typetimestampuser_idUnityIpcHandlertrackEvent: failed to parse messagetrackEvent: unsupported event_typetrackEventUnknown messageType: 
+AllocErrlayoutC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\smallvec-1.15.1\src\lib.rsF
+Antd|{
+App HTTP server started on port X
+App HTTP server started on port h3
+App state is not availableunavailablesrc\messages\lsp.rs%
+Asset `` not found; fallback to index.html
+AsuD_#}
+AuthorizationHTTP client error: U
+AuthorizationHTTP client error: u"
+Auto-restart: backing off s (attempt ) before restarting
+B#twwhi
+B5asDJ
+B9jLJkx
+B=ImVsI
+B@Tftq$UG
+BCNG/~
+BDoYx&/
+BELJV#BO
+BGipgA
+BHRq\v
+BKmp3^2
+BQHlc?
+BQMT47^\&ZT^{
+BXDe@])
+BYfF7Q
+BZpol>
+B\p(dAJA
+B^atxb
+Bad gamma value.C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\png-0.18.1\src\decoder\stream.rs8
+BcXDZ'
+BdjDkzr
+BfEPZ1
+BjiAUPYk,
+BmYs$f+4
+BnqEh?gfU
+Bsdw{('HS.] 
+BtaH=Es
+BuildPlatformdirNamenamebuildTargetbuildTargetGroup
+BunPVO
+BxIEA?.
+BzHQ&p
+BzUQW~
+C47FSzf
+C7fYOd
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\aho-corasick-1.1.4\src\nfa\contiguous.rsHi
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\aho-corasick-1.1.4\src\nfa\contiguous.rsP<
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\aho-corasick-1.1.4\src\packed\pattern.rsxc
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\axum-core-0.4.5\src\body.rsWindowUpdatestream_idsize_incrementC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-updater-2.10.0\src\config.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\chrono-0.4.42\src\format\scan.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\fdeflate-0.3.7\src\decompress.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\form_urlencoded-1.2.2\src\lib.rs`
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\futures-util-0.3.31\src\stream\futures_unordered\iter.rsH
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-0.2.12\src\header\map.rs/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\str\pattern.rsErrorC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\bytes-1.11.0\src\bytes.rsrange start must not be greater than end:  <= b
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-1.4.0\src\header\map.rsd
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-body-util-0.1.3\src\util.rs`
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-0.14.32\src\client\connect\http.rsX
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-0.14.32\src\client\dispatch.rsenvelope not dropped
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-0.14.32\src\client\pool.rsp
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\body\incoming.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\error.rsh2::Error::is_ioPW
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\proto\h1\role.rs8:
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\rt\io.rsH 
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\rt\io.rsP
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\rt\io.rs`
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\rt\io.rsxb
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\parking_lot_core-0.9.12\src\thread_parker\windows\mod.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\regex-automata-0.4.13\src\util\search.rs`
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\ring-0.17.14\src\hmac.rsX
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\ring-0.17.14\src\limb.rsh,
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\ring-0.17.14\src\polyfill\slice\as_chunks_mut.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\rustls-0.23.37\src\client\client_conn.rsx
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\rustls-webpki-0.103.9\src\verify_cert.rs8
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\serialize-to-javascript-0.1.2\src\lib.rs(
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\socket2-0.6.1\src\sys\windows.rs0
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-runtime-wry-2.10.1\src\util.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\util\take.rs
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\runtime\scheduler\current_thread\mod.rs0
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\runtime\scheduler\current_thread\mod.rsp
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\runtime\scheduler\multi_thread\queue.rsP
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\runtime\scheduler\multi_thread\queue.rs`*
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\sync\batch_semaphore.rs n
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\sync\oneshot.rs(&
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\sync\rwlock.rsI
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-tungstenite-0.24.0\src\compat.rs:126 AllowStd.with_context`
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-tungstenite-0.24.0\src\lib.rs:288 Stream.poll_next@
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-tungstenite-0.24.0\src\lib.rstokio_tungstenitewebsocket start_send error: 
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tracing-core-0.1.36\src\field.rs(b
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tungstenite-0.24.0\src\protocol\frame\mod.rs<f
+C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\windows-0.61.3\src\Windows\Win32\UI\Shell\mod.rs0
+C;mPyH
+CARGO_MANIFEST_DIRbinaryy
+CBvz+|
+CJkSnFCZ5
+CMRGPg
+CPpA)<L
+CRIHK4
+CZPd?IF
+C[StYLU
+CaLvl|G
+CallbackErrorTaskCanceledSendError
+Cancelledtext/event-stream
+CertificateDercertificate expired: verification time  (UNIX), but certificate is not valid after  ( seconds ago)
+CertifiedKeycertkeyocspNoKeyLogFailResolveClientCertK
+CiMQXw
+CjHNF3
+CloGO(
+CmJK/H
+CmuPRz^
+Command P
+ContinueBodyKeepAliveClosedLimitSupportDimensionMismatchFailedAlready
+ContinueTextBinaryReserved span=
+ContinueTextBinaryReservedClosePingPongPaths must start with a `/`. Use "/" for root routesPaths must start with a `/`/Invalid route: nested routes cannot contain wildcards (*)
+Core process for workspace  is fatal (); triggering auto-restartP
+CoreComm0
+CoreCommy
+CorePoolpY
+CorePoolsrc\lsp\types.rs
+CoreProcessChild process assigned to Job Object (KILL_ON_JOB_CLOSE)Failed to create Job Object: c
+CowBytes0
+Created duplicate window: label=0
+Ctej/R
+CwWC{eB
+CxGF2Q
+C{ZWVC4
+D-@quFV+
+D1OIYimze8z2(
+D>7DpxO-
+DAarV]p_
+DCnj2+
+DE;YMSy
+DIQco1
+DLNc(tZ
+DUVd5]
+DUmN1*R
+DVaT]"d
+DX.:RPZe
+DX.:VPZU
+Ddoe0C
+DdzEoQ
+DeepLink 
+DeepLinkX0
+DeepLinkpB
+DgoAX.'
+DimensionsVsPixelCountwidth_x_heightpixel_count
+DirectoryNameIpAddress()e~
+DleCGZl
+Dlib:3r
+DoSJqU\
+Doxq B;
+DpPn}^
+DsYKf=
+DyQrL<ax
+DzfST1
+Dzkn/q
+E!atCw
+E"[Acie(
+E-}WCFG
+E10RvLn
+E8MfPf1
+ECbJCy6
+EDkFgCC
+EITdOkq
+EIoz=4h
+EJCQMp
+EMNS\3
+EOCD64 extends beyond EOCD64 locatorLow EOCD64 record size/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs
+EOtee{&
+ERQRQRQRQrqrqrqJIJIJI
+ES+JehL
+ESRnYQ^da"
+EYAk{G
+EaXVE<8^a:
+EfZHYU
+El~tJgq
+EmXOD5-
+Embed mode requires a workspace directoryFailed to register headless workspace: 
+Embed mode requires a workspace directoryFailed to register headless workspace: q
+EmptyHostIdnaErrorInvalidPortInvalidIpv4AddressInvalidIpv6AddressInvalidDomainCharacterRelativeUrlWithoutBaseRelativeUrlWithCannotBeABaseBaseSetHostOnCannotBeABaseUrlOverflow/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\slice.rs>
+EmptyHostIdnaErrorInvalidPortInvalidIpv4AddressInvalidIpv6AddressInvalidDomainCharacterRelativeUrlWithoutBaseRelativeUrlWithCannotBeABaseBaseSetHostOnCannotBeABaseUrlOverflowBaseUrlRequiredBaseUrlWithInit
+EoBU0,
+EobG[j7
+Errinvalid initial remote window sizeC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.3.27\src\proto\streams\recv.rs5\
+Error deserializing 'plugins.' within your Tauri configuration: 
+Errorinnerrejecting request
+Errorkindinvalid header nameinvalid header valueinvalid new lineinvalid response statusinvalid tokentoo many headersinvalid HTTP versionP
+ExpectedTokenDuplicateNameA8L1La1Rgb1Rgba1L2La2Rgb2Rgba2L4La4Rgb4Rgba4Rgb5x1L8La8Rgb8Rgba8L16La16Rgb16Rgba16Bgr8Bgra8Rgb32FRgba32FCmyk8Cmyk16
+EyVf5h
+Eyrik9
+E~D:ugFI
+F hIGQ
+F!)jjYZ
+F#G#spVC
+F4 $fanW
+F4UuSK
+F9psqN 
+F9vwEc
+F=kqjWY,h
+F?chyDqI@
+FAT has  entries, but sector  points to `
+FC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\generic-array-0.14.7\src\hex.rs
+FHgPJj
+FOAM.+
+FPfzMIN
+FQjTFNl
+FRGP^{
+FTbN'J
+FVItHa/
+FVmD,x
+FZwj^I1'K
+Failed to acquire lock: 8N
+Failed to capture ripgrep outputtypedatapathtextline_numberlines./.\
+Failed to configure native ICE servers: x
+Failed to create log directory: 0
+Failed to create log directory: P
+Failed to create toast asset directory: 0@
+Failed to finish metadata write 
+Failed to forward CLI workspace to running app: 
+Failed to initialize tray icon: 
+Failed to lock workspace, falling back to temp: `
+Failed to open \Device\Afd\Mio: H
+Failed to read directory entry: 8
+Failed to read file: s
+Failed to read streaming layout @f
+Failed to remove lock meta file 
+Failed to rename settings file: 
+Failed to schedule badge update on main thread: 
+Failed to send request: 8e
+Failed to send request: @;
+Failed to send request: `1
+Failed to write H*
+Failed to write h
+Failed to write recent projects backup: x
+Fb$Fb$Fb$Fb$Fb$Fb$Fb&(FtDGtDGtDGt
+FbwY?7?
+FeWR[X5
+FfVi'/
+File not found: 
+FlowControlwindow_sizeavailableEvent name must include only alphanumeric characters, `-`, `/`, `:` and `_`.internal error: entered unreachable code: invalid Once state
+FocusWindowsrc\server.rsK0
+Folder picker cancelled*.*statusdatastateturn:turn://@
+Formatting argument out of range
+Found empty token while parsing hotkey: @.
+Frame(Header   (len ) (flags ))
+FtK8ekFW
+FtjI97
+Furl::form_urlencoded::Serializer finishedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\form_urlencoded-1.2.2\src\lib.rs
+FwXCbT
+F~pLaO
+G/icons/unity-file-icons/light/UnityEngine/ComputeShader@32.png
+G3\$@cY~t$.3~,w"Vezt6
+G5TdZf
+G7VrXykB
+G99XCzd|
+GAaO63
+GESX_*"T^J_ 
+GET,HEADFailed to read file
+GJYWz:j
+GNrbJ#
+G[LEzi
+GcLfoe
+Gj+aBHS}
+GkQI>37\
+GnYRoV6I
+GqUNci
+GuJz=[
+GxKL57
+Gymm)T=
+GzZgna
+G{o@qJoN
+G|HKgh
+H'nbYX
+H+FNWk
+H/eSYc'
+H6hlWJ
+H7iOje
+H9MptCJ
+H9]PuJH
+H;EPqB
+H;EPqQH
+H;EXqQH
+H;EhqIH
+H;EhqNH
+H;EhqTH
+H;EhqaH
+H;EhqfH
+H;EpqBH
+H;EpqTH
+H;EpqXH
+H;ExqMH
+H;ExqQH
+H;ExqWH
+H;GhqQ
+HCRE&^
+HDwQ=R
+HEPck6&KD;
+HFoE}!3
+HGp(kqaz
+HGuWz7q
+HKoe;p
+HLqRGP^=T2
+HNdEQC8A
+HOSTNAMECOMPUTERNAMEnpm install -g basedpyrightpythonbasedpyrighthttps://github.com/DetachHead/basedpyrightcsharpcodely-unity-lsp-serverhttps://nodejs.org/en/download (Node.js), https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (dotnet)npm install -g @vtsls/language-servertypescriptvtslshttps://github.com/yioneko/vtslskeepAwaketruesrc\messages\power.rs
+HQWgd>S
+HQotA0
+HTITi{/
+HTzW^k
+HUB_PIPE_HANDLEHUB_COWORK_TOKENHUB_LOG_PATHSpawning hub process c
+HUjbcaj
+HWXPu7]PI
+HZLXm]
+Hash table capacity overflowl
+HcRXW.
+Hhfe"C
+HiRV\KV"
+Hiqs~$C
+HotKeymodskeyidVersionStreamIdSeqindexMapEnumvariantUnknown
+HsWg!Ob1
+HttparseErrorSendAfterClosingReceivedAfterClosingNonZeroReservedBitsUnmaskedFrameFromClientMaskedFrameFromServerFragmentedControlFrameControlFrameTooBigUnknownControlFrameTypeUnknownDataFrameTypeUnexpectedContinueFrame
+Hub request missing workspaceRef0
+HxDaZ*(/
+I,HKCj
+I-hocv
+I8PaZsDc3
+I;LiXU--]-"
+I;VZCI0
+I>aNgn
+IDVKR/v
+IGqc$O
+IJRc>/
+IKHllgFP
+IKRHm&dA1hKBI
+IKYD(d9\
+IL6Hgyw
+IRDYKG+lz
+ISmni4
+IV<nAVuU
+IVHNWb
+IYLuRn
+IZJbYc
+I\nWyo
+I]@OKeR
+IdeNotificationsessionId0
+InactiveStreamIdUnexpectedFrameTypePayloadTooBigRejectedReleaseCapacityTooBigOverflowedStreamIdMalformedHeadersMissingUriSchemeAndAuthorityPollResetAfterSendResponseSendPingWhilePendingSendSettingsWhilePendingPeerDisabledServerPushInvalidInformationalStatusCodeUserLibraryRemoteNone
+InappropriateMessageexpect_typesgot_typep
+Incorrect mini sector shift (expected "
+Invalid CFB file (length of  < sector length of 
+Invalid ICE configuration unknown field; /remoting.apis.v1.NetworkTraversal/GetIceConfiga
+Invalid ICE server username fieldInvalid ICE server credential fieldInvalid ICE server unknown fieldInvalid ICE configuration field keyInvalid ICE servers field(
+Invalid checksum0
+Invalid local file headerInvalid Central Directory header
+Invalid method: 
+Invalid terminal input:  
+InvalidCrlNumberInvalidRevokedCertSerialNumberIssuerInvalidForCrlParseErrorUnsupportedCrlVersionUnsupportedCriticalExtensionUnsupportedDeltaCrlUnsupportedIndirectCrlUnsupportedRevocationReasono-
+InvalidDnsNameError
+InvalidEncodingVersionNotSupportedInconsistentComponentsInvalidComponentPrivateModulusLenNotMultipleOf512Bits
+InvalidMethodEventLoopClosedInvalidProxyUrlWindowNotFoundWebviewRuntimeNotInstalled/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\collections\binary_heap\mod.rs
+IoC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\sync\mpsc\list.rs
+IoGDNrj
+IsvGl,
+J sAcf
+J"keXS
+J"zkAb
+J%mHCE
+J)NZrG
+J.fubBF
+J7rYbM
+J@dOCI
+JCPBVY
+JGEUHR
+JHVR"\
+JIzr#|
+JLFuS>
+JNeRa5
+JQ$-Z*JENA
+JRvD(d
+JThtM"-P!sCbA(A"
+JUltU@bE
+JVUd'vv
+JWJS_@M#
+JWNcUDE
+JXCPBQ
+J_9ShKH
+Jgqi-<
+JhgNQTq
+JiLV}\G
+JnVfXS
+JoQfQ9Q$
+JoinErrorInvalidWebviewUrl
+JsonIoInvalidIconInvalidArgs
+JulfUd
+JyVB+)|b
+K2fbhi
+K2pCWz
+KBwu97
+KETti:
+KIcBgy
+KLyRBS
+KRwq3]
+KSGwB\
+KZokva
+Kabh81
+KdpS/D
+KiopZDIq
+KjVHYX
+KknFE[ 
+KnuPzV
+KsCg{b
+KtZdoDM
+Ku=YrVV
+Kwnk*r!~
+KztF/%
+L,UsLpr
+L.ojcY=
+L/fohXl
+L/gmjG
+LEmTTKB]
+LGVy7Wf
+LHjge0
+LIqTZ\
+LOEycu
+LOMdO4!?Y
+LPQa *
+LUExi#=
+L_+bqXW
+Launched external editor for showLinesFailed to launch external editor: f
+LengthDelimitedCodecErrorframe size too bigC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\bytes-1.11.0\src\bytes_mut.rs
+Live Unity Insight serve for  speaks a stale protocol; recycling
+LrqI[;0
+Lsqe;>
+LtKgxzO
+LvlP^y
+M!;rxab
+M!eiSl
+M%CHxR/[9
+M=ZADaN
+MDSTi$
+MGzJU=
+MHLk"-
+MHROj4
+MICO!!h
+MLtvu{
+MMMMMMMMMMMMMMMM/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\iter\traits\iterator.rsP2
+MOeNq]R3tWt
+MSOohy
+MXKJ?[
+MXLf'LS)
+MXxYS\cV
+MYJNRu
+MZHIa?%
+M[uZkA
+M]sRPO
+Magby27ww
+MakUXd_
+Masked: 8i
+MeRp^?Q
+Message (F
+Message ID  Type  already exists`
+Mi&cknK
+MjuX^]E
+MlJTNi
+Modifiers(Connection  (streams ))
+MwoaHb
+My}AeCq
+M}nxnBY
+N$LfpLpT
+N,MLbaq
+N7PWBx
+N=jXFc
+N?XmOJ
+NDHx8:
+NDRrFq
+NFtb?(
+NHwKxv
+NO_PROXYno_proxy
+N^}ybJp
+NaMovc>
+NbAe@(2L
+NcuudxA
+NfMAL0II
+Nhps7RB-h-
+Nicp-:
+Nj=f(eWnE
+NmPEs@ev
+No changes were made to the fileh
+No configured Rust LSP server found for  
+No handler for: 
+No healthy Core accepted the shared config updateShared config writer returned no responseWriter workspace  returned no response
+No messageType field foundFailed to parse JSON: 2K
+NoneSome0
+NormalAwayProtocolStatusAbnormalInvalidPolicySizeExtensionRestartAgainTlsReservedIanaLibraryBad
+Not logged inexcludeSelf`
+NotEofCloseRegexpNameCharEscapedCharOtherModifierAsteriskEndInvalidCharfatal runtime error: thread result panicked on drop, aborting
+Notifying core about session info change@0
+NqYDu1K 
+NryYUNt
+O uHps
+O!mrnh
+O.>w9iNwd
+O/logos/inception.png
+O1Cmhaa
+O;HiNo
+O;wYUH
+OA(2hIDY
+ODfi0<
+OJzn)w
+OPZbHU3
+ORrhP[i
+OSyl:+1
+OTme=4:
+OVUC"]
+OWMoR,
+O[GPSv2J
+Object has been over-released.z
+OeQKr*i
+OfFX@St
+OgkrCaKn
+OiHQg_
+OjvCi'g1
+Omej|M
+OnBottomH3K
+OpenacknowledgedSendClosedRecvClosed
+OsErrorNotMainThread-- ;D
+OtHKmA
+OverflowH3K
+OwnedHandlehandlehandle_typeinternal error: entered unreachable code: invalid Once statedg
+OyjuoZ
+P%ceco+$l
+P&lvWp
+P/ClBhm
+P5TCgM
+P92/assets/KaTeX_Caligraphic-Bold-BEiXGLvX.woff
+P9wjLww=|g
+PAdxCr
+PApP.Tb
+PBWY%<
+PFQUD:l
+PF[AUXM
+PGRk~6
+PIQAM@A
+POWomUs
+PPPPPPPPPPPPPPPP::::::::::::::::]]]]]]]]]]]]]]]]$$$$$$$$$$$$$$$$oken
+PVrp} 
+PYUQ0C
+PZFKw3
+PbKu.<
+PclLa>
+Ph)ELoR
+PingPongH
+Pingackpayloadassertion failed: buf.len() <= u32::MAX as usize/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\std\src\sys\io\io_slice\windows.rs
+PnFb'{
+Poll API returned error H@
+PostMessage failed ; is the messages queue full?P
+PpbVC%
+PrefixLenError
+Prioritize::queue_framestream.idw
+Proxy-Authorization: C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-util-0.1.19\src\client\legacy\connect\proxy\tunnel.rs]/
+PvjOTm&S
+P~dfEp
+Q!ORHy
+Q%qadw
+Q32bFFL4
+Q;JoPWY?
+QClMfU
+QHQc.59G
+QIxApvyS/c
+QRnh<7R
+QS_CgHR>
+Q\EgvgLU2dd
+QbJe\l
+QcHvK/
+QcXZD6
+QdpPt^G
+QgUYJ!
+QhtH[N
+QiBh*p>6U
+QimfZ1
+QnGs[ 
+Qnqf~Y;K
+Queue::push_back
+R"SJZE
+R-syve
+R/ltKbH
+R18SoXj
+R2HshCzS
+R:pYjH
+RAUi^9
+RByAwCb
+RDWx2]e^Tp2
+RDdT!++
+RKSnW)g
+RORk]-\9N6
+RQwFJQ#2
+RSAG2C
+RUST_LIB_BACKTRACERUST_BACKTRACE0w
+RUST_MIN_STACK()0
+RYnJ>q
+R\TfOX
+R^tMPs
+RdCyg.
+Re>fRuw:
+Read chunk start@N
+Rectxywidthheight/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\collections\btree\navigate.rs)C
+RecvError
+RecvErrorLibraryRemoteReservedName
+Refresh token found, refreshing before loadToken refresh successful before loadToken refresh failed: , using cached session if available?n
+Refresh token found, refreshing before loadToken refresh successful before loadToken refresh failed: , using cached session if availableGD
+Refresh token found, refreshing before loadToken refresh successful before loadToken refresh failed: , using cached session if availableg:
+Remote app does not support terminal sessionsRemote terminal connection failed: }K
+Remote machine not foundfailed to serialize browse responsepath does not exist: {
+Remote workspace is offline or unreachableRemote submit failedterminal/startterminal/closesrc\messages\tunnel.rsB
+Request failed: (
+Request failed: (<
+Requesting tunnel: POST xT
+Resetstream_iderror_codeConnectionClosedAlreadyClosed
+RestartRestart requested; relaunching appcowork-settings.jsoncodely-appsettings.jsonMigrated legacy settings from  to 
+RestartsH1
+RiWhKA
+RibwV\
+RingAlgorithmpublic_key_alg_idsignature_alg_idverification_alg/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\slice.rs
+Rjga &]
+RlTco,
+Rugqm &
+RumdI149
+RwLock reader count overflowC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\parking_lot-0.12.5\src\raw_rwlock.rsl
+RyPy5e0}
+RyklqV
+RzEc J
+R~BNKZ-
+S(LreX
+S4?NHTi
+S8lVwWt
+S9okFu6a
+S9qIkp
+S@QrUQ!
+SCUULOJ
+SMnUJ_
+ST4iYBHHd[
+SZUf^4
+SbhCJ3:
+Server returned (/
+ServerExtensions
+ServerSentSubProtocolNoneRequestedInvalidSubProtocolNoSubProtocolpoisoned window resources table0
+SetInformationJobObject failed: (
+SetupErrorRecvError
+SingleCertAndKey@oe@
+SingleInstancehttp://127.0.0.1:/api/tauri/status.
+SkTO#l/N
+Skipping check: another instance is already downloadingFailed to build updater: o|
+Skipping informational response in poll_response - should be consumed via poll_informational; stream_id=0
+Slgo=j%
+SmaQ<V
+Smft6+R5
+SnaI9X6'hF
+Software\Microsoft\Windows\CurrentVersion\Internet SettingsProxyEnableProxyServerProxyOverride,*.failed to write whole buffer
+StaticServerFocusWindowdo_focus_window: AppState not initializedXG
+StaticServerSSE global receiver lagged; skipped 
+StpU!Nn
+StreamId.
+StreamId0
+StreamId:Yv
+StreamIdC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\matchit-0.7.3\src\tree.rs
+StreamIdNotSupportedUnavailableSunMonTueWedThuFriSat
+StreamIdPngJpegGifWebPPnmTiffTgaDdsBmpIcoHdrOpenExrFarbfeldAvifQoiPcxC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\read_buf.rs
+Sx2GiRO
+SxaQ}R
+S|zKEZ
+S~]uROB
+T.VIPh
+T/icons/unity-file-icons/dark/UnityEngine/Texture2D@32.png
+T4aZEg
+T9~hkMC
+T;Uscn|
+T==|tIzr
+TBEzv[
+TDzC([
+TERMxterm-256colorCOLORTERMtruecolorTERM_PROGRAMCodelyFailed to write terminal: 
+THje&'
+TKIgvz
+TNfp7r
+TODZ<'
+TPBFp<
+TPuh%~:
+TW[2FtrN
+Tauri-Channel-Id
+Tb/windowBridge.html[
+TcCJ=}
+TcpIpcMessengerDisposing TCP connectionCurrent directory path contains invalid UTF-8Using current directory: 
+Td0wLpn
+TeJw&o
+TextBinaryPong
+TgNo;]cx^
+The decoder does not support the format feature P
+ThemeModeTheme changed to  from 
+ThreadId0
+Timed out waiting for Core messenger initializationCore startup failed: 
+TlsFeatureNotEnabledNoHostNameUnableToConnectUnsupportedUrlSchemeEmptyHostNameNoPathOrQueryC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\winreg-0.52.0\src\reg_key.rs
+Tm.xhPe
+TmMP'<
+TokioOneshotRecv/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\vec\mod.rs
+TryFromIntErrorC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\regex-automata-0.4.13\src\util\look.rsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\regex-automata-0.4.13\src\util\prefilter\byteset.rs5_
+Tunnel rebuilt for port @V
+Tunnel stopped:  
+Tunnel stopped: 0.
+Tunnel stopped: @I
+U"HXRtY
+U*lZcS
+U.KewTj
+U6}=$:zpgmW
+U8MSqa6
+U8gUmlzJ;3.
+U9FnecG
+UB3FhvY
+UDrV/$
+UDtPh{
+UDyJlN3}
+UEnhxS
+UJfRnZ
+UKpZEx#
+UKyd9wR
+UNQPpBaW
+UOow\OnE
+URDP NetworkTraversal.GetIceConfig HTTP response: status=, content_type=@
+URDP NetworkTraversal.GetIceConfig HTTP response: status=, content_type=`
+UTCC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\chrono-0.4.42\src\offset\local\mod.rs
+UYLOp/
+U^TIVC
+UaGU2'FD
+UadGx56
+UcHxl1
+UeqSD*
+UgYV1C
+UiKitAppKitOrbitalXlibXCBWaylandDRMGBMWin32WinRtWebAndroidNdkHaikuUnknown Name
+UiKitAppKitOrbitalXlibXCBWaylandDRMGBMWin32WinRtWebAndroidNdkHaikuUnknown NameDevice Context is nullP
+UjiY9u*
+UnableToConnectUnsupportedUrlSchemeEmptyHostNameNoPathOrQueryinvalid utf-8: corrupt contents
+Unexpected GetWindowRect failure; please report this error to tauri-apps/tao on GitHubC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tao-0.34.5\src\platform_impl\windows\event_loop.rs
+Unexpected GetWindowRect failure; please report this error to tauri-apps/tao on GitHubC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tao-0.34.5\src\platform_impl\windows\event_loop.rsf
+Unity IPC server not availabledeleteFile error: ~G
+Unity token exchange completed successfullyFailed to update refresh token after Unity exchange: sk
+Unity token exchange completed successfullyFailed to update refresh token after Unity exchange: {A
+Unknown update channel message: 
+UnknownLayoutError
+UnspecifiedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\ring-0.17.14\src\arithmetic\bigint.rsK
+UnspecifiedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\ring-0.17.14\src\arithmetic\bigint\modulus.rs
+Update download failed: 
+Update download failed: `
+UqpZeT|P=]
+UrUfyn~
+UsJh?OZD
+UvqxP1NOr
+U}slNa
+V"fLPfC
+V&woqG
+V&yPhTx
+V82WBuw
+V?2ehDiZ
+VEshi9
+VH?Iort
+VKQNHb
+VMKSHY
+VMwnAiA
+VNQT+f
+VPbPC0.
+VSfjEu
+VWym<8
+V\;iZRI,
+V]sgmu
+VaJf]P
+VemhRl-P
+VgcOE!H
+Vkmql+
+VvsS^6
+Vxga',
+W&|$Zf" gWfu
+W)yYhC
+W/assets/init-BSqZKE-v.js
+W0emOc
+W1YN9IYdH
+W9MDXk^7
+W;3T8hQfbXio
+WADS&(+
+WBSKRO
+WI~UbWV
+WNzb5wc
+WO1LLVo
+WQHx/<
+WQmI}@
+WRQCRq$'
+WU&riJx
+W[dgxk
+W^aoOu
+WaHD!X3
+WeGcQ<4%
+WebView2 error: 
+WebView2messageTypeeditor/getSidechatdatastatuscontentApp state not initializedApp handle not availableWindow  not found
+WekcS22
+WfsY-G
+Window bridge route not foundWindow bridge route expired(
+Wioq[*
+WlwNg+
+WmwQ~!g
+Wo*KAgO
+Workspace  fully destroyed (last window  closed)
+Workspace  fully destroyed (last window  closed)(
+Workspace already registered, focusing:  
+Workspace already registered, focusing: @2
+Workspace already registered, focusing: xD
+Wpaq"N
+Wq>ZQTi
+WrbKlvv
+WzdoQL4
+WzhH'P
+W|cqSg
+X%apUftT
+X3FqYp
+X7*MaByjJ
+X7_jiAz
+X9mPXO-
+X9wQirn
+X=8/mmvTg
+X?jGYn-i
+X@6fGvx
+XDJfl,5
+XQUyBt
+XQpY@!
+XQtP /
+XdsCin
+XevA3d
+Xitb",
+XmDI1V
+Xo+jwAe##
+Xqmo2Y
+XrHi^*
+XwYf*v
+XxxI>/dRx:T
+Y!zuGo[
+Y(dpFH>
+Y+SWEa*zW0+tT
+Y.FtVw
+Y1R3PEah
+Y2hZlEKN
+Y4]-iSGAW,
+Y@Xowrr
+YKSC{_u
+YLGSc7
+YNVpHS
+YSPGD^
+YUsnkF3
+YWnyqR
+YZjmnl
+YaPbz4
+YbJx"#
+Ybgk=)
+Ycryj0.k
+YesY??3Y$
+YiJxA{
+YiWN|5
+YkWu][
+YmLy[/
+Ymsv#5
+YoUF6k^3V
+You must supply a timer.p/
+YqtElK
+YuRR6* 
+YyrQF]q
+Z))NHeJ
+Z,sSlvAr
+Z2qVEr
+ZChdu6-
+ZEJq|v3M
+ZFcXSPM
+ZGVi(|
+ZIP64 footer indicates more files on this disk than in the whole archiveInvalid central directory size or offsetC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\zip-4.6.1\src\read.rs
+ZKzIvJd
+ZPMC!d+~
+ZRxq ]jv
+ZScf(R
+Zc3mMWY
+ZeaSIB
+Zj]SNyH
+ZkNl~D
+ZlXuOzC
+ZsGNaS
+ZwoO7{
+ZzTvIq
+[#Ormp
+[3IMFEJ[
+[8czlY
+[>ezBU
+[B.oDZFZAz
+[C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\rustls-0.23.37\src\crypto\mod.rs
+[JkWBFV
+[VFyS*
+[Y pSys$
+[YXtc?
+[\FdRH
+[]HotKeyParseErrorUnrecognizedHotKeyCodeEmptyHotKeyTokenUnexpectedHotKeyFormatFailedToRegister
+[b*UKdsVL~D
+[d/wqPi
+[dEZX}
+[ixrG2
+[nzSL>
+[txMXb\^
+[wdrfge
+[wqHsRHJ
+\"fPqJN>,
+\$lxbE
+\)LERap
+\.gZsT
+\=ptSz
+\AelTI
+\AzEAyQ
+\DFIdN
+\Djve&
+\FByWp
+\MRqU=
+\PLhbR
+\RJJI)j
+\RvZWw>
+\VbLR@o
+\eWNhS
+\fkBlZb
+\ghFAx
+\lRvPz
+\rKcS,
+\vgoG/8
+] Stream error: p
+]"yiov?k
+],,ZAGv
+]-CxXs
+]1hEft
+]BZDXWB4
+]OWsef
+]nFBlS
+]odwj.g
+]tmaeX
+]yWdo*
+]{GaFjy
+]~rcMx
+^5daMvl0%
+^HGKp-,]
+^JsFI?Z
+^MvfHIB
+^PSqJB
+^QRdB!q7
+^RfJSY8!
+^VTZI_
+^YoaB1o
+^cjrG%
+^dKIqZ/
+^dtdCj(t
+^lNGM!fp
+^rgRj]Y
+^xHTa]
+^xhZe-S
+^{GMEC~
+^|HCxb
+_#pNCO
+_&g/assets/channel-CuOp09P9.js
+_&wkmP
+_/icons/unity_game_object_context.png
+_;kGdmh
+_LQjwT;Nkwc
+_NEeMk^5
+_Yojgq
+_YqWb(#f
+_\FqVMag'=yL*
+_\yKQz
+__TEMPLATE_windows__valid pluginC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\plugin.rs^
+_moiX9
+_surface
+_surfaceL1
+_surfaceM1
+_version
+_versionH1
+_versionL1
+_yzjG#r
+_|HoaG
+` not found; fallback to /index.html
+a$"lOYs
+a.cYPS
+a3vsWp
+a5OAon
+a:HFtE
+aBnHgL9
+aDUU!~X)a
+aLZH+3
+aNvx=d
+aQqAO.wS
+aTYl"K
+aazU}+ 
+acBr4N
+actionpathsUnsupported Git file action: 
+afmafpapplication/vnd.ibm.modcapV
+afyi(Fq
+aheadapplication/vnd.ahead.space
+aleStartH3O
+alizationOptionsinitializationOpensionToLanguageextensionToLanguextensions/enabltall
+andj~>
+apZWk/
+appimagedebrpmappmsinsisinternal error: entered unreachable code0
+arscj\
+artI+wG
+aryt,7D
+asmxasoapplication/vnd.accpac.simply.aso?
+assertion failed: !frame.is_ack()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\proto\settings.rs
+assertion failed: !header.is_sensitive()[
+assertion failed: DEFAULT_MAX_FRAME_SIZE as usize <= val && val <= MAX_MAX_FRAME_SIZE as usizeC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.3.27\src\codec\framed_read.rs6
+assertion failed: DEFAULT_MAX_FRAME_SIZE as usize <= val && val <= MAX_MAX_FRAME_SIZE as usizeC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\codec\framed_read.rsn
+assertion failed: buf.is_empty()7I
+assertion failed: buf.is_empty()i
+assertion failed: buf.len() <= u32::MAX as usize
+assertion failed: cnt <= self.limitC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\bytes-1.11.0\src\buf\limit.rs
+assertion failed: cnt <= self.limitC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\bytes-1.11.0\src\buf\limit.rs3U
+assertion failed: i < self.len()T}
+assertion failed: i < self.len()tx
+assertion failed: idx < CAPACITY9
+assertion failed: idx < CAPACITYassertion failed: edge.height == self.height - 1il
+assertion failed: inner.last_write_err.is_none()7I
+assertion failed: input.is_ascii()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\urlpattern-0.3.0\src\parser.rs" 
+assertion failed: j < self.len()T}
+assertion failed: j < self.len()tx
+assertion failed: len >= size_of::<c::sockaddr_in>()library\std\src\sys\net\connection\socket.rs
+assertion failed: new_cap >= lenF
+assertion failed: root_bits as isize <= BROTLI_REVERSE_BITS_MAX as isize8
+assertion failed: self.has_capacity()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.3.27\src\codec\framed_write.rsE$
+assertion failed: self.has_capacity()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\codec\framed_write.rs}
+assertion failed: self.refused.is_none()5\
+assertion failed: sharded_size.is_power_of_two()
+assertion failed: size <= proto::MAX_WINDOW_SIZE6
+assertion failed: src.len() == dst.len()9
+assertion failed: src.len() == dst.len()il
+assertion failed: stream.state.is_closed()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.3.27\src\proto\streams\streams.rsj
+assertion failed: stream.state.is_closed()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\proto\streams\streams.rs:z
+assertion failed: sz <= MAX_WINDOW_SIZE as usize5\
+assertion failed: validate_scale_factor(scale_factor)
+ateDownloadErrortjhub/templateDownloaded
+ation_msL1
+auUEj;D]
+authority implies hostC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-0.14.32\src\client\client.rs^c
+authority_form with relative urip
+auto-release closed stream () capacity: `a
+avhN3j
+awXZTDC
+awoq@T
+axum::extract::request_parts::OriginalUriaxum::extract::nested_path::NestedPath
+axum_core::extract::default_body_limit::DefaultBodyLimitKindhyper::ext::Protocol0
+axvvideo/annodexC
+azfapplication/vnd.airzip.filesecure.azfc
+b+oyiN
+b3NjYM
+b:-kDdm
+b<WAmbj
+bBEa6>
+bC%Osbd
+bDzOJZ
+bEsCle
+bFPmE/
+bKMosQ
+bKiIuf
+bLCH$T
+bNHR^oo
+bQfd7~
+bRlhvRk;
+bS-UZkV9
+bWZP:>P
+bZML~^p
+background task failedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\util\copy.rsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\read_buf.rs
+backgroundThrottt-accessory-viewdisable-input-ac
+batch file arguments are invalid 
+bayy9UP
+bcpioapplication/x-bcpio5
+bhvp$G
+bjZDl/
+bj[gbdBD3
+blikt~
+bpVtx;
+browserExtensiontensions-enabledbrowser-extensioascript-disabledjavascript-disabling
+bucketshash_lenhash_2pow0
+bucketshash_lenhash_2powT
+bytes -/X
+c!grWl
+c-LGcj/
+c/assets/KaTeX_Size3-Regular-CTq5MqoE.woff
+c4dapplication/vnd.clonk.c4groupK
+c<@fsVapLJ
+cBdHs)
+cEur\7
+cExCS>
+cFmk~v
+cIMB9q.
+cKlhZj
+cVYh>^
+cWCv1p![
+cXxfaH
+c],kMxZ/f
+caHmhU
+called `Option::unwrap()` on a `None` valuelibrary\core\src\panicking.rs
+called `Result::unwrap()` on an `Err` valueC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\crossbeam-channel-0.5.15\src\waker.rs
+called `Result::unwrap()` on an `Err` valueC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\crossbeam-channel-0.5.15\src\waker.rs+
+called `Result::unwrap()` on an `Err` valueC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-0.2.12\src\header\map.rsS]
+called `Result::unwrap()` on an `Err` valueError/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\raw_vec\mod.rs@
+called `Result::unwrap()` on an `Err` valueLayoutError/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\slice.rsv
+called `Result::unwrap()` on an `Err` valueUnspecified/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\slice.rsVC
+called `Result::unwrap()` on an `Err` valueassertion failed: validate_scale_factor(scale_factor)C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\dpi-0.1.2\src\lib.rs
+called `Result::unwrap()` on an `Err` valueattempt to join into collection with len > usize::MAX/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\str.rs`{
+called `Result::unwrap()` on an `Err` valuefailed to write whole buffer
+canary.2H
+canary.2L
+canarystableUpdate channel selected:  (version: d(
+cancel_rL1
+cannot resolve codely home for user extension pathextensions.codely-cli${extensionPath}${/}${pathSeparator}${workspacePath}
+capture(pid=, group=, slot=) => p
+card3K
+catapplication/vnd.ms-pki.seccatC
+cbaPt^dz
+cbvWgup
+cddacdfapplication/x-cdfo
+ce/installedListmarketplace/instty/getEngineTypeunity/getEngineTgetPendingUpdatetauri/getPendingtauri/applyUpdateditor/recompileeditor/getSidechat
+cfXWVid
+cfbd{a
+chanD1
+channelUpdateChannelsrc\messages\update_channel_msg.rstauri/setUpdateChannelUser set update channel to: 
+charD1
+characteI3
+charsetC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\reqwest-0.13.2\src\async_impl\response.rsO
+charsetC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\reqwest-0.13.2\src\async_impl\response.rso
+charsetutf-8C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\mime-0.3.17\src\lib.rs
+chatD1
+checkout0L
+checkouth
+chunk trailers count overflowInvalid trailer end LFInvalid chunk size line: Invalid Sizelogswindow_labelC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\protocol\tauri.rsAccess-Control-Allow-Origin
+ci!TdYf
+clean-fdHL
+client tx closed
+cm+hPMp
+codely_auto_upda_input_submittedcodely_panel_inpclient_installedclient_logged_inened
+codely_virtual__0
+commandargsenvextensionToLanguageinitializationOptionsmaxRestartsextensionNamestruct LspServerConfigstruct LspServerConfig with 8 elements
+completeI3
+config/refreshMealWorkspaceBlockconfig/addLocalWdateSharedConfigconfig/updateShatjhub/statusUpdate
+connection closed before reading preface6
+connection error PROTOCOL_ERROR -- failed to load PRIORITY frame; err=;;0
+connection error PROTOCOL_ERROR -- failed to load PRIORITY frame; err=;;`
+connection was not ready
+cowork_embed_mode_changededitor/setEmbedModedarkH
+cowork_login_staaccess_token_argunity_access_tokaccess_token_envruntime_cancelleange
+cowork_window_clbed_mode_changedcowork_embed_modton_element_typebutton_element_tbutton_name_source
+cppcptapplication/mac-compactpro^
+csIL'eH\
+ctNw'}
+ctmn|p
+d'Dyde&q$@
+d)DBUl$_
+d)rCaOn
+d1fCWc5\
+d6yRoq
+d@IMNC
+dAhPwG
+dB-wVPW
+dBHj 8
+dB_0Ccih
+dCyL4T-
+dETi2%
+dEuh4}4
+dFaD/;
+dMuG.~E
+dNIF%6~b:%
+dPCb+N
+dPYIJ.
+dRTYs{
+dSVwH)
+dSubagentsUpdateacp/backgroundSulCallStateUpdateacp/toolCallStatm/streamFinishedstream/streamFinMessageBroadcaststream/userMessaunityNotification
+dTAE[l
+dU_vIEA
+dWwmr~59
+dX\yZPDN
+d\ggvQNb
+d^aAuk
+dangerous-insecure-transport-protocoldangerousInsecureTransportProtocoldangerous-accept-invalid-certsdangerousAcceptInvalidCertsdangerous-accept-invalid-hostnamesdangerousAcceptInvalidHostnamesendpointspubkeywindowsSizePositionPixelUnitassertion failed: validate_scale_factor(scale_factor)C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\dpi-0.1.2\src\lib.rs
+dataUrl is not a base64 data URLpet-pasteapplication/pdfpdftxtsvgbmpwebp
+deBubbleH3O
+dec_num_streams; stream=pd
+describeSubagentchatDescriber/describer/describet/getIndexStatusunityInsight/getgetProjectStatusunity/getProjectgetActiveStreamsstream/getActivesight/getEnabledsight/setEnabledunityInsight/setCLIValid
+description() is deprecated; use Display0
+description() is deprecated; use Display@v^A
+description() is deprecated; use DisplayBadDerBadDerTimeCaUsedAsEndEntity
+description() is deprecated; use DisplayP
+description() is deprecated; use Display`=aA
+description() is deprecated; use Display`[)@
+disabledGL
+distinct_idversion2.1.3-canary.2account_idunity_user_id%Y-%m-%d %H:%M:%S%.3fCaptured []
+dlYU%^
+dlZU6q
+doVk.:
+donestreamFinished: session_id=, body_len=, from_mobile=
+downloadridonEventdownload_and_installinstallupdateRidbytesRidwindowsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-updater-2.10.0\src\updater.rs
+dowsD3B
+draaudio/vnd.dra3
+drag-drop-enabled
+drop_stream_ref; stream=(G
+drop_stream_ref; stream=P
+dropping 
+dropping@(
+dvkN'[
+dwfdrawing/x-dwf
+e#Ikql#
+e*zHfR<)
+e.ZJoz
+e6 QUfj
+e6YZaNxn
+e>ZPVgJ
+e>kQmT
+e>pGKM
+eACMzHKB
+eCJLd^
+eFgs9>
+eGes:='
+eH^tqvz
+eIgB<j9
+eJm,IJYu
+eKEA&_
+eMvmf|X
+eSubmenuH3O
+eUAF<V
+eULyv+
+eVppR~h
+eWaUug
+eZ VGwJ
+e^RXiX6
+early eofC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\blocking.rsi
+edgeKindL9
+editor.availablePZ
+editor/recompile@(
+editor/recompilex
+editor/setEmbedMode: hid  Tauri window(s) for workspace p%
+eggaOih$
+ehdl,n
+ei*KY3oNjl
+eiPau!
+ejCX>Da6+
+ekUTn"
+ellecnacH9
+em(JNZN
+emit_topayloademitlistenhandler
+emmaapplication/emma+xmlD
+enabledsrc\unity\insight_user_settings.rssettings objectGL
+encoded settings@
+encoding PING; ack= len=H
+encoding PING; ack= len=X'
+encoding PING; ack= len=h
+encrypted client hello failure: 
+eo,UxYB
+epbY;gO
+event C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\codec\framed_write.rs:267remek
+event C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\h2-0.4.13\src\server.rs:433messageY
+ewWQGY
+exbU;7
+explorerSuccessfully opened log folder: `X
+expose_pL1
+eyEzZq
+ez3application/vnd.ezpix-packageC
+ezDZ&d
+ezNm!~"
+f%IjEH
+f(QSTs
+f4-sgEaLe
+f4vGAVdW]n
+f6sgAGG
+fAhS+(
+fDnY|s
+fE-keMl
+fIpvs7
+fJZp'{
+fKbtxC
+fLAkc^
+fLVwP@
+fP/*k/icons/unity-file-icons/dark/UnityEngine/Mesh@32.png
+fWNIlwNY
+fWdAD-5v}
+f_BCDcrR
+f_F{]AQtxu]
+failed reading from hub 0
+failed to deserialize devops.getOrganizations response: 
+failed to deserialize install.enqueue response: `c
+failed to deserialize license.generateRequest response:  s
+failed to deserialize license.getServerConfig response: Pt
+failed to exit: 
+failed to read LSP header line: 
+failed to resize console to x: HRESULT: p]
+failed to serialize ConnectCloudParams: 8_
+failed to serialize GetTemplatesParams: @h
+failed to set webview background color: h
+failed to set webview position: p
+failed to write 0
+failed to write frp frame body: h
+failed to write frp frame body: p
+failure_M1
+fbdISO
+fdbWov
+fdoaw~
+feedbackH
+feod.V!
+ffy\,NzEw
+fg*xUKa
+fhAr('
+field identifierstruct RequestOptionsstruct Messagepatternbrownfield__TEMPLATE_pattern__struct variant JsImage::Rgba
+file:///
+fileC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\url-2.5.8\src\lib.rsL4
+filePathI9
+filedirectoryimagemodelvideoaudiobinaryutf8base64kindsizemodifiedAtentriesExplorerSearchResultlineNumberlineTextExplorerSearchOptionsmatchCasematchWholeWorduseRegularExpressionUz
+filled overflowC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\net\windows\named_pipe.rs
+firstSeenAtfirst_seen_at
+flltH4m
+fnPR5-
+foLNi^$q
+focw";
+followsWindowAct
+fqFpDn0
+from_ui_M1
+frp_servL1
+frp_server_addrfrp_server_portexpose_portheartbeat_intervalproxy_urlplugin_authstruct TunnelDataP
+fsquL0
+future polled after completionC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-tungstenite-0.24.0\src\handshake.rs
+future still here when droppingC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\io\read_buf.rs
+future still here when droppingassertion failed: (*tail).value.is_none()C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\futures-channel-0.3.31\src\mpsc\queue.rs@
+fvtvideo/vnd.fvtK
+g!txNs
+g&hUBV
+g-IkaJ
+g19pvAj
+g1rmYq!81
+g@,cHIX
+gENPrSw]
+gEswa,
+gMeV}4
+gOHhsZ
+gOdH$)
+gQyfD0
+gUbxGJ
+gVTrIs
+gWrT$G"
+gZcn=sS!
+gdocapplication/vnd.google-apps.document4
+geGP>p
+gecs2B8
+gefbsYP$
+generatiI3
+get_by_idremove_by_idset_menuset_tooltipset_titleset_visibleset_temp_dir_pathset_icon_as_templateset_show_menu_on_left_clickasTemplateonLeftEventTargetinternally tagged enum EventTargetfrom_bytesfrom_pathsizebytes
+gfHQcr
+gfgq~-}@
+ggbapplication/vnd.geogebra.file3
+ggtapplication/vnd.geogebra.toolc
+gin_authM1
+gsUBH/
+gspm|2
+guVSKN
+gu{]}l%aWwf
+gvdT1o
+gwHi3\F
+gwZbG(
+h"DScN-
+h+OTRle
+h.pTrZ
+h/assets/indexWalkthrough-CoZgQvzT.css[
+h0nZRN
+h0wIJLQ
+h1X]SLeX2
+h2Rtqi
+h4XtUG<
+hPeT.'
+hQxmv@
+hTfr(zM
+hWyx*,
+haKYv@
+hakO?U
+haystack too small, should be at least  but got `
+hcqnE~=
+hdfikGw
+headless-src\core\tcp_ipc_messenger.rs
+headlessRegistered headless workspace: id=, dir=(
+heicsimage/heic-sequence5
+heifsimage/heif-sequence}
+hets!Z
+hjfKC:?hV
+hoAiX$
+httphttps/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\core\src\str\pattern.rs!
+https://codely.tuanjie.cn/api/plugins/cowork/latesthttps://codely.tuanjie.cn/api/plugins/cowork/latest?beta=truesrc\server.rs
+huQU2"
+hub-mainsessionIdsrc\core\communication.rsfocusContinueSessionIdCoreCommunicationAuth flow guard dropped without normal completion 
+hub-mainsrc\app\setup.rs8t
+hub/switchWorkspacefocus-window: is calledfocus-window: workspaceId= (not local: prefix)z
+hub/workspaceClo/deleteMcpServerconfig/deleteMcpfig/addMcpServerconfig/addMcpSertor/themeChangededitor/themeChanupdateSelectModeconfig/updateSelateSelectedModellizedProfileInfoconfig/getSerialshell/themeChanged
+hub/workspaceRemovedworkspaceDir(
+hwBZV!M
+i!ROoV
+i$lzQn
+i3XaLB
+i5'Qbml=F
+iBejyD
+iCdJ^P
+iDcfcTE+
+iDlb0p
+iMeMXGoY
+iNAXI:)~
+iObs5/
+iOeG's
+iQLcEs
+iQMqop
+iQPHF(
+iTVF$5
+iVXP[L
+iXfn7zg}
+i^RzEq
+iaxS-%
+ible3K
+ibyI80
+icstext/calendar;
+idaccess_token=agentsunity-insight.tomlUnable to resolve ~/.codely-cli/agentsworkspaceDir is required for workspace-scoped agent toml
+ide-settings.jsonexternalScriptEditorexternalScriptEditorNamerundll32.exeshell32.dll,OpenAs_RunDLL/CstartSystem default open exited with status  for , showing Open Witha
+igcG5C
+igpYx*
+ikQxboLFc
+ikjO )GPX%
+ikzQLH
+iljL +
+ilwHV2
+in_endedH3P
+inconsistent in dropinvalid unlocked stateC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\futures-util-0.3.31\src\lock\bilock.rs
+inkmlinlinsapplication/x-internet-signup
+installerArgsinstallMode
+internal error: entered unreachable code g
+internal error: entered unreachable code#
+internal error: entered unreachable code#^
+internal error: entered unreachable code(
+internal error: entered unreachable code/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\std\src\sync\mpmc\mod.rsPV
+internal error: entered unreachable code0a
+internal error: entered unreachable code: Initiator::User should not error sending reset0
+internal error: entered unreachable code: ReverseSuffix always has a DFAp
+internal error: entered unreachable code: expected expr or concat, got alt branch marker8
+internal error: entered unreachable code: expected literal, got `
+internal error: entered unreachable code: poll_read_body invalid state: (
+internal error: entered unreachable code: str::from_utf8() =  was expected to have 1 char, but  chars were found0
+internal error: entered unreachable code: we check for this state earlier in this method @
+internal error: entered unreachable code@
+internal error: entered unreachable code@0
+internal error: entered unreachable codeP
+internal error: entered unreachable code\
+internal error: entered unreachable code`P
+internal error: entered unreachable code{
+internal error: entered unreachable code{k
+interval assumes timeoutp
+interval assumes timeout{
+intervalH9
+invalid initial send window size6)
+invalid leading zero in (
+ioEL@O
+ionalBrowserArgsadditionalBrowsenal-browser-argsadditional-browsbled
+ip,Nstlv
+iqytext/x-ms-iqy3
+irHaR8
+irmapplication/vnd.ibm.rights-managementS
+is not valid for any names (according to its subjectAltName extension)is only valid for N
+isCliWorI
+isRemote(
+isUnityPI
+isYb'?P%
+is_always_on_topmonitor_from_poiavailable_monitors
+is_maximizablelabel
+is_permission_grantednotifyoptionsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-notification-2.3.3\src\commands.rs
+itRp'h
+j0EvWh
+j4guro
+j9-fBKYF
+j;DVCv
+jA[I)gZRd
+jGKlA4
+jMGk{;
+jN)/assets/katex-DICcj6P6.js[
+jQ:JQaz
+jSatd$
+jSl$hLSo
+jTFE|q
+jTlDLA
+jXnD4f<Z
+jZFR,*
+jibyH6
+jispapplication/vnd.jisp|
+jj5ZzdV
+jlgJn$ggYGF
+jlxY!7
+joinedInProgress0
+jqRztX
+jsjz:p"Nv
+jwQm0|
+jwlXTz
+jywoLVt
+j|MCuzN
+j}AxuL
+k#/icons/tuanjie.png
+k&amuw
+k*cSQv/
+k,/icons/unity-file-icons/light/UnityEditorInternal/AssemblyDefinitionReferenceAsset@32.png
+k/assets/diagram-GUPCWM2R-DlilKCwv.js
+k/assets/linear-Ddt926SD.js
+k/assets/rust-ReXxHPYh.js
+k0?GaSn
+k7HSupt
+kDIcuL
+kEdq~n<
+kS#BQbfEJ
+kTjuGW
+kX(Ufaf
+kXmF^tY
+k_EFJR
+k_webview_openedcowork_webview_ok_webview_closedcowork_webview_crted
+kadsSX
+karbonapplication/vnd.kde.karbon6
+kcBaeS
+khdGVw@
+kl'JSrxDD
+kneapplication/vnd.kinar[
+kplS|8
+ktBjnv[-
+ktKZ?7r
+kxmQCcjxcR
+kzyMCg
+l gZiL
+l,4wIPI
+l,IsNH
+l/assets/go-CDNSJfIU.js
+l/images/DTT-dark.png
+l:ECfr
+l;Estn
+l<>qYkt
+lAtW]a
+lDEo68&
+lEtb:}
+lQCTBwf
+lQmV\2
+lWTjM!
+lXAg"1\}aC
+lXbIdwE
+l]ZUGk
+l_reasonM1
+lazy state wrongh
+lbKZ8- 
+library\alloc\src\raw_vec\mod.rs
+library\core\src\char\methods.rsP
+library\core\src\fmt\builders.rs
+library\std\src\alloc.rsp
+library\std\src\sys\fs\windows\remove_dir_all.rs
+library\std\src\sys\net\connection\socket\windows.rs4
+library\std\src\sys\pal\windows\mod.rs2
+library\std\src\sys\sync\rwlock\futex.rs
+library\std\src\thread\scoped.rsxr
+license.activatePZ
+license.activatePersonalPZ
+lifecyclM1
+lineTextL9
+lingA3N
+ljGI7JA1
+lkvx04
+lmMxuq0
+login rejected:  
+login_meM1
+logoutOfControlPPlaneSessionInfogetControlPlaneSrefreshAcpOrgLisapplyGitFileAction
+longest pattern length: @U
+longest pattern length: h:
+lsmm|'#
+lsp/findReferences
+lsp/prepareCallH/workspaceSymbollsp/workspaceSymToImplementationlsp/goToImplemenlsp/goToDefinitilsp/documentSymbol
+lwJG\<@ZPMC
+lzBY2QK
+m,TqyK?
+m.OTyh6
+m1qfKM
+m9UquY
+mADku#s
+mCDSW27
+mCeL<O4
+mM7^tfyB
+mNbI|^f
+mPVB[X
+mUcCh;<
+mVfc/l
+mXvlZt
+mYAde%
+mYvf5zws
+mZBu'z
+m^Uabs
+maKzfU
+maxRestaH1
+maxTurns(
+max_buf_size () reached, closingh
+max_image_widthmax_image_heightmax_alloc
+max_image_widthmax_image_heightmax_allocDataWindowUpdatePingGoAwayC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\serde_json-1.0.149\src\value\mod.rs
+menutooltiptempDirPathiconAsTemplatemenuOnLeftClickshowMenuOnLeftClickstruct IconMenuItemPayload with 6 elements>
+messageIL
+messageTL
+messageTypemessageIdworkspaceIdrun_idserver_udp_portproxy_nameremote_addrsrc_addrdst_addrsrc_portdst_portstruct Position with 2 elements)
+messageTypetjhub/statusUpdatesessionUpdatebroadcast  receiver(s)
+metsapplication/mets+xml$
+mfpapplication/x-shockwave-flashs
+mhyeTUQ
+midimieapplication/x-miew
+min-heigH3
+min-widtH3
+minimizaH
+missing or invalid 'extensionName' field%
+missing or invalid 'extensionName' fieldW*
+moGvwB
+moLE.g
+moUIVqK
+mr@iIcP"K
+mrOUxE
+msAW[U
+mseqapplication/vnd.mseq$
+myTb*x
+mynk{s
+n.*jMyu
+n6jZyfm
+n=CYTw
+nBYPc#
+nERx1/
+nJSFE"
+nKaF{A_
+nLCM/4
+nRKhUiIQf
+nSIrk]H
+nSessionH3O
+nSkDfH5C
+nTYae6v
+nWtwEq
+namerepositorylspServerscontinueSessionIdstruct PositionRequeststruct PositionRequest with 4 elements
+naoTekU]g
+ncBubbleH3O
+ndetqP
+nemYV(O
+nhZYT;9y
+nitfapplication/vnd.nitfL
+njhu&5
+njieA3M
+nkCj(KN
+no-cacheconn.ping_pongC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\hyper-1.8.1\src\proto\h2\server.rs
+non-empty stream child: 
+notFound@
+notFoundH
+notificationrequest_permissionC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-notification-2.3.3\src\lib.rsv
+npKNTTb
+nvNR>[
+nwdN{a
+o&rPUwG
+o/assets/KaTeX_Math-Italic-t53AETM-.woff2
+o/branding/logo_white.png
+oDuUcq
+oFtlqP-
+oOWtKPr
+oQuwr[
+oR{MDxL
+oUsK%,<
+oVUspj
+oeXB3Y|Z
+ojsDj,;
+okpvJ-
+olHcbI5,
+onlineofflineunreachablesrc\app\state.rs
+oprcapplication/vnd.palmt
+orPYnfi
+oredA3N
+ork_access_tokenget_cowork_accesstreaming_layoutsave_unity_strearead_unity_streahandle_gui_message
+orkspace
+os_errorP
+ose_portM1
+ouApjRu
+overflowP
+owBubbleH3O
+p Wrfx
+p fuVD
+p#RNCJ
+p$sAHS
+p'%mdzf.
+p(@pBio
+p/assets/cose-bilkent-JH36ORCC-Djdyg6tJ.js[
+p/logos/openai.png
+p/logos/qwen.png
+p;zkPs
+pDnmI(v
+pEnabledH3K
+pOtWX_
+pQVykQuW
+pYVRrP:*/R
+pZjOXM
+pZzQw8u>
+path_not_found: 01
+path_not_found: H
+pattern length: p1
+pcil|I6e
+pending.json missing at 
+pending.jsonpending.json.applyingstablecanaryFailed to write installer: mA
+persistthemeguiFailed to persist theme: _
+persistthemeguiFailed to persist theme: _-
+pet/readypet/getGreetpet/showInputpet/hideInputpet/toggleInputpet/showFilePreviewpet/hideFilePreviewpet/savePasteFilepet/getPendingQueuecontrolPlane/openBrowsercontrolPlane/getUserPlancontrolPlane/getUserUsageSummarycontrolPlane/getActivityNotificationsgetCurrentOrgconfig/getSharedConfig(
+pgYX#:{Z
+pingpong(
+plan_typL1
+plugin_aL1
+poisoned plugin storeC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\manager\window.rs
+poisonedP
+positionsizestruct LogicalSize with 2 elements
+potapplication/vnd.ms-powerpoint
+pqaprcpreapplication/vnd.lotus-freelance
+prevent-overfloweOnAllWorkspacesvisibleOnAllWorkn-all-workspacesvisible-on-all-wtion
+private, no-cachesize overflows MAX_SIZEP
+project.downloadTemplatePZ
+project.getSizesPZ
+promD1
+protocol error: h5
+protocol error: p
+proxy-connection
+pvkbUigQ
+p~kByC
+q xemK
+q'HDdp)
+q'OCYN#w!
+q'WkQg
+q)endR8
+q+8]uSuj
+q/assets/chunk-TICWLB2K-BLuzT32u.js
+q0Dhrz
+q3cKHB
+q8BEcL,
+qAJZyC
+qIRo0K,.
+qQbH F
+qZtJ<6
+q\jlpCw
+qbVr>xe
+qran}[
+qrcN,'
+qu&hIoj
+qzhZAY(
+q|>cdmg
+q|fLeI
+r&ytNP}
+r(4jMoUd
+r/logos/wizardlm.png+d
+r;JfaR$
+r>lAjm
+rFFJ]Q6f1
+rG}uCbM
+rHiqeS
+rJTv)b
+rMDAC0
+rOUV8$pi
+rPAjDd
+rPhHBY
+rRHT+e
+rRYc3T
+rTCxm]B6
+rVUJ<]
+rVqa>!
+rWELk@
+rYwuvs
+r[b^gFEm
+r\uUao
+rbFgD~
+reQX9&
+re_stageM1
+read eof 
+received settings ACK; applying  [
+received settings ACK; applying P
+receivedH
+receivedX
+recv_eof; state=
+redeliver_pending_acp_requests: failed to re-dispatch messageId=0
+redgreenbluealphaan ISO 8601-formatted `OffsetDateTime`field index 0 <= i < 2
+removing expired connection for P
+request canceled
+request_to_gui: GUI response channel closed messageType=8
+reset_on_recv_stream_err; locally-reset streams reached limit ()8=
+restart triggered from a separate thread8
+retry in scope: 
+rgbawidthheightlabelstruct variant EventTarget::WebviewWindow with 1 element
+ri/openWorkspacetauri/openWorkspRemoteWorkspacestauri/listRemotesetTunnelEnabledtauri/setTunnelEgetTunnelEnabledtauri/getTunnelEtauri/stopTunneltauri/startTunnel
+ridcurrentVersionversiondatebodyrawJsonchunkLengthcontentLengthC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-global-shortcut-2.3.2\src\lib.rs
+ring::signature::ED25519
+ripaudio/vnd.rips
+rivate::RawValue$serde_json::prision
+rqmGUC<M
+rsetA1
+runtime dropped the dispatch taskuser code panickedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\http-1.4.0\src\header\map.rs
+rxAQT{Hg
+r|PwFTxH
+s#rjQC(
+s-on-topH3K
+s67zdub
+s9BOSyg2Z
+s;(AJfa"
+sBcvIk
+sBiTH=
+sIWu8|
+sKbnUv
+sTyJ]K/
+sWYwUnJ
+s]EAcL
+saKCd.t
+saveTempFile failed for 
+save_unity_streaming_layoutzoom_inappHandlezoom_outzoom_resetset_zoom_levellevel
+scurltext/vnd.curl.scurlE
+secondweekmonthweekdayHeaderNameHeaderValueNewLineStatusTokenTooManyHeadersVersionErrorinvalid header nameinvalid header valueinvalid new lineinvalid response statusinvalid tokentoo many headersinvalid HTTP versionassertion failed: len > 0/rustc/6b00bc3880198600130e1cf62b8f8a93494488cc\library\alloc\src\collections\btree\node.rs
+sector  pointed to twice(
+semdapplication/vnd.semd|
+sent focusWindow to Unity via IPCfocused or recreated Hub windowfailed to focus or recreate Hub window: (K
+server returned h
+set_app_themethemeremove_data_storeuuidfetch_data_store_identifiersC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\ipc\mod.rs
+set_webview_size
+sgimbapplication/x-sgimb5
+si?#TBgu
+sigsilaudio/silk
+since unicode-word-boundary, syntax and unicode-perl are all enabled, it is expected that try_is_word_character succeeds8
+sizeByteL3
+smeLI~
+smpIc&
+smsslibrary\core\src\time.rs0
+snbal!
+socks4socks4asocks5socks5hhttp://
+src\app\state.rs`
+src\auth\auth.rs@0
+src\core\os_notification.rs
+src\lsp\types.rsp
+src\tunnel.rsfailed to resolve user .codely directorytunnel-machine-instance-idtunnel-machine-canonical-idfailed to replace invalid 
+src\unity\ipc.rsP+
+src\unity\ipc.rsX,
+src\unity\ipc.rsp:
+ssmlapplication/ssml+xmlt
+stack backtrace:0
+stale_redownload8
+start work connection rejected:  
+state must have zero transitionsXN
+state saver does not have saved state ID@
+stdapplication/vnd.sun.xml.draw.templateC
+stdout read error after  lines: p
+stream_iderror_code-- ;
+stride: P2
+struct ArchiveReleaseGetArchiveResultstruct GetArchiveResultEnqueueArchiveParamsqP
+struct ConnectCloudParamsConnectCloudResultstruct ConnectCloudResultEditorReleaseForInstallreleaseTypeltsisRecommendedisAlreadyInstalledqP
+struct FileRequeststruct FileRequest with 2 elements
+struct GenerateLicenseRequestParamsGenerateLicenseRequestResultstruct GenerateLicenseRequestResultImportLicenseFileParamsstruct ImportLicenseFileParamsImportLicenseFileResultstruct ImportLicenseFileResultGetServerConfigResultlicensingServiceBaseUrl
+struct GetOrganizationsResultGetRepositoriesParamssearch2V
+struct GetTemplatesResult with 1 element
+struct InstallGetReleasesResultGetModulesParamsinstalledqP
+struct LocalFileContentRequestDownloadUrlRequest
+struct NotificationData with 20 elements
+struct OpenProjectParams with 3 elements
+struct ProjectGetSizesParamsprojectPaths|S
+struct RecentProjectEntry with 7 elements
+struct ServeLockMetadata with 8 elements@
+struct WatermarkStatusResult
+struct WindowEffectsConfig with 4 elements
+struct WindowSizeConstraintsvariant identifierfailed to create webview: >F
+struct WorkspaceSymbolRequeststruct WorkspaceSymbolRequest with 2 elements
+struct variant EventTarget::Window with 1 element
+submitPrompt: core send failed: 
+subset is out of bounds: self = (, ), subset = (
+sultsWithOptionsgetSearchResultsationTextInRangegetDeclarationTeierarchy
+supersedL3
+suspsv4cpioapplication/x-sv4cpiok
+swaRzr
+t$GRVuMuV
+t'Wbwi
+t)TScu
+t/assets/chunk-5VM5RSS4-C8njHi2S.js
+t=mtGNY;
+tClEs,
+tEvGDl'
+tJ[LCNc5b
+tOdVUv
+tPVq1Q
+tSmiRL
+tTAp +
+tVaUVcu
+tXyWl6
+tage3K
+tao::platform_impl::platform::drop_handlerC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tao-0.34.5\src\platform_impl\windows\window.rs:
+tao::platform_impl::platform::event_loop::runner8
+tao::platform_impl::platform::event_loop::runner`
+targetVfL3
+target_versionchannelstablecanarycowork_codely_auto_update_applytauri/getUpdateChannelmessageOptionsjoinExistingStreamOnlyunity/trackEvent: failed to parse data string: 
+tauri/getKeepAwakemessageIdstatusApp state not initialized
+tauri/getTunnelEnabledtauri/listRemoteWorkspacesNot logged inexcludeSelfX
+tauri/newWindow failed: 
+tauri/setKeepAwametrics/trackEvent
+tauri/startTunnelmachineNamestartTunnel failed: 
+tauri/stopTunnelX
+tauri/update-failederror
+tauri/windowMini/getSeenFeaturesversionUpdate/ge/markFeatureSeenversionUpdate/ma/getTunnelStatustauri/getTunnelStActiveSessionIdide/setActiveSesgetWorkspaceDirsgetUpdateChanneltauri/getUpdateCsetUpdateChanneltauri/setUpdateCtauri/getKeepAwake
+tauri2.1.3-canary.2AuthServiceOpening device auth URLrundll32url.dll,FileProtocolHandlerDevice auth URL opened in browserFailed to open device auth URL: 
+tauri://resizetauri://movetauri://close-requestedtauri://destroyedtauri://blurtauri://focustauri://scale-changetauri://drag-entertauri://drag-overtauri://drag-droptauri://drag-leavetauri://theme-changedpathspoisoned window managerC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\manager\window.rs
+tauri::ipc::channel::ChannelDataIpcQueuetauri::path::desktop::PathResolver<tauri_runtime_wry::Wry<tauri::EventLoopMessage>>tauri_utils::Envtauri_plugin_updater::UpdaterStatetauri::scope::Scopestauri_plugin_global_shortcut::GlobalShortcut<tauri_runtime_wry::Wry<tauri::EventLoopMessage>>C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\manager\mod.rs
+tauri::menu::plugin::MenuChannelsstate() called before manage() for 
+tauri_plugin_updater::commands::DownloadedBytes
+tcp open errortcp set_nonblocking errortcp set_keepalive error: W
+tedqnz
+text/plain; charset=utf-8size overflows MAX_SIZE
+tfMz+7k
+tgRbL@
+tgkpsP
+thbxSeS
+this pair has already been serializedthis pair has not yet been serializedC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\serde_json-1.0.149\src\ser.rs
+thntifimage/tiffn#
+timeout `` set, but no timer set@0
+tinuu A
+tjhub/local/getDiskSpaceavailable_space failed: 
+tmUt=n5#
+tnLPZ-
+tokio_tungstenite::handshake
+ton_nameL1
+too many running threads in thread scope@r
+too_many_internal_resetsP
+too_many_resetsassertion failed: self.max_stream_id >= last_processed_id5\
+tracing::span::active-> E
+tracing::span::active-> M
+tracing::span::active-> u
+tracing::spanC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\serde_json-1.0.149\src\value\mod.rsMm
+trafficLightPosiaccept-first-mouse
+trailersinternal error: entered unreachable code: write_trailers invalid state: 
+trailersinternal error: entered unreachable code: write_trailers invalid state: H
+ttribute
+tuanA3E
+tunnel_iI1
+twUJ-7
+typename
+tzi.6YEINER
+u)/icons/unity-file-icons/dark/Prefab@32.png
+u1YAQd
+u9BlgF7
+uI6LVtq
+uI@fytr
+uJWg5D
+uJtI{K
+uKhRjs0P
+uPmpOv
+uQiMoY:
+uQkZ>?
+uTFB*9
+uWUvRNv
+uZoQ8d
+uaaQ}+U
+ub/assets/pet-CLVbAL2A.css[
+ucUW|8
+udAbg)
+ueGm.N%6
+ufRFdS
+uiaZCr
+ujNQX!
+unexpected EOF during chunk size lineInvalid chunk size line: missing size digitinvalid chunk size: overflowInvalid chunk end LFInvalid chunk body CRInvalid chunk body LFChunk size is *O
+unityInsH
+unity_token_exchify_access_tokenverify_access_tocowork_chat_endeork_chat_startedcowork_chat_star
+unitymachine_cpumachine_gpumachine_memorydescriptionmachine_idmachine_instance_idmachine_namemachine_osstruct PluginAuthstruct PluginAuth with 3 elements
+unknown pathwindow not foundThe resource id  is invalid.T
+unknown-gui-view0
+unlisteneventeventId
+updatercheckheaderstimeoutproxytargetallowDowngradesC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-updater-2.10.0\src\lib.rs
+updaterheaderstimeouttargetC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-updater-2.10.0\src\lib.rs
+upgrade expected but not completedfatal runtime error: thread local panicked on drop, aborting
+uuUuDW;s
+uwMAgUa=
+uzrr|L(
+u~XLGB
+v#'wrph//
+v-XPSj
+v7DSTRrp:
+vCWTwn
+vHwm63
+vIye;Z;$
+vP_jira
+vSRA@l
+vV.wIeXCWc
+vVpF>]v
+vVvIK0q
+v]JDvf-
+v]eOdh
+v^INjp
+value is missing
+variant index 0 <= i < 6H"
+vckx{b
+veGVIL
+ver_portL1
+verificationUriCompleteauthFlowAttemptId@0
+versiondatechannelstruct IpcResponse with 4 elements
+vfs_refsdirectioncowork.vfs_refs
+vfs_superseded____cowork_vfs_supdOsNotificationsforwardOsNotific
+vfxs.U
+viewSurfaceReadyacp/webviewSurfaeviceFlowExpirednotifyDeviceFlowlane
+vmZIbbY
+vnjtr}
+voAYTIM
+voIGuK6*C/
+vpHF+7
+vtDfO'
+vyhfPR
+v|HPVD
+w$dXQD
+w&tOCgm
+w*aqVA
+w/NXHCx
+w/assets/KaTeX_Main-Bold-Cx986IdX.woff2
+w/assets/KaTeX_SansSerif-Regular-BNo7hRIc.ttf
+w/icons/unity-file-icons/dark/UnityEngine/Shader@32.png
+w2jgJfl
+w3dwadapplication/x-doomn0
+w@vDaUS
+wBtMNR
+wC?mhDt
+wEGeTn
+wIeM>?
+wL[DiuX
+wPlFvI
+wSEojt
+wSZD/2t
+wSubmenuH3O
+wUkeO?~
+wY_xeWz
+w_closedH3P
+w_openedH3P
+wbsapplication/vnd.criticaltools.wbs+xmlc1
+wdiVB!
+websiteLabelhandlersend_reset(..., reason=, initiator=, stream=, ..., is_reset=; is_closed=; pending_send.is_empty=; state= 
+webview_hidewebview_showclear_all_browsing_datatauri::tray::TrayIcontauri_plugin_updater::updater::UpdateC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\fs\open_options.rs
+webview_showset_webview_auto_resizewebview_sizecreate_webview_windowinternal_toggle_devtoolsreparentprintset_webview_positionwebview_positionset_webview_focusclear_all_browsing_dataset_webview_background_colorset_webview_zoomwebview_hidewebview_closeget_all_webviewsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\fs\try_exists.rs
+weoh%6
+wgDAQ3
+wicM7X+
+window not found(
+windowBackgrounderPageBackgroundunderPageBackgroWindowBackgroundunderWindowBackgcontentBackgrouniveState
+windowBridgeProxyTokenRemote startStreamServer response did not include a windowBridgeProxyToken(
+windowBridgeProxyTokenRemote startStreamServer response did not include a windowBridgeProxyToken`
+windowpoisoned menu mutexC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-2.10.3\src\manager\menu.rs
+windowsC:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tauri-plugin-updater-2.10.0\src\updater.rstauri-plugin-updater/2.10.0application/json
+wjDcj@}
+wmqK1m33
+wngF"%
+workspac1
+workspace/symbolh
+workspaceIdinitWorkspace0
+workspace_not_registered(
+workspacu
+wpZEKG#
+wuob?;
+wxJm9PA
+wync\8
+x/icons/unity-file-icons/dark/cs Script@32.png
+x?SQuFgZ
+x@[internal exception] blocking task ran twice.C:\Users\bokken\.cargo\registry\src\rsproxy.cn-e3de039b2554c837\tokio-1.49.0\src\runtime\blocking\task.rs
+xDXVqoj
+xIkimw
+xMBy*!F
+xNBb8uB
+xOcVWpWg
+xcGtyZ
+xfNbeA
+xfdlapplication/vnd.xfdl,;
+xgUX#&{:L
+xhtapplication/xhtml+xmlS;
+xkjJV!rZ
+xltxapplication/vnd.openxmlformats-officedocument.spreadsheetml.templated=
+xmZEnM
+xnhPw#
+xnptjN
+xnqBem8(
+xoWmKoWBL
+xpNR8VX
+xpUK*mQ
+xplapplication/xproc+xmls>
+xsIE|R:
+xwPRDl
+xyitemspathpet/showFilePreviewPath is requiredpet/hideFilePreviewactionstatepet/submenuActionpet/menuBlurpet/resizeBubblepet/openSettingssessionIdMissing sessionIdcontentvisiblepet/visibleChanged
+yBid[O
+yFui9n^
+yGHSDuX
+yLHX,Z}%P
+yLy\Nphc5Z
+yM_ORwlB
+yN Lesa
+yOEgiN"f
+yProjectI
+yT!qaaZ
+yXqZ9w
+yZDbgS
+y\L^WCMQPv
+yamux::connection::rttreceived pong , estimated round-trip-time F
+yamux::frame::header::Datayamux::frame::header::WindowUpdate
+yamux::frame::header::PingPhantomData<>
+ybUXpq
+yf$kQlo
+yfMQKYWa
+yiXAP>Y
+yjBgyO-
+yjYZUmI
+ylPF)!
+ylhG[,
+ylkEqY
+ytisK'
+yxcO;=
+yzID}4
+y{Rqdf
+y}jhgC
+z1application/x-zmachineRA
+z1frNH
+z29igsf=
+z6MZmU
+z8$fXGNU
+z;yOfsW
+z=eCDx
+zAbg4]dd$.
+zExE{=#Ua
+zGiW4M
+zLPyPZXA>
+zLlmVk
+zONgZ|5
+zQ,neIR
+zSlr9O
+zUDu*.x
+zUIrXx
+zUild>z
+zWtN?E
+zXun,zU
+zatV6l
+zbcxI>
+zhJc<'
+zlGVJ)
+zluU8/
+zohfyBP
+zoom-hotkeys-enasEnabled
+zp88Vkln
+zsAB(Y:Ez
+zuNJ\H
+z~{wvrv:C}
+{/assets/xml.contribution-CRSwlxgm.js
+{3JH_YqhDn
+{<qYja'0
+{?CEqJ
+{ANQXB
+{AjLQy
+{Gxqj@x
+{JorzI-
+{KJnC:
+{ZbGK,
+{aNALg
+{iSmp}
+{jUdZ+n
+{mVgv=,MG{
+{mphZu,Dt
+{pZQU)N
+{tlOZ+
+{vukB'_/e
+|7bVkiN
+|;iZVC^_
+|A+e$HMsh
+|AeLMl\
+|CHxOv
+|CmlnJ
+|GwpbH
+|I!eKVe
+|fkjOmWN
+|j9YahE
+|jIRHPTv
+|kiqH;
+|oKXHE
+|ofSQh>
+}"falsetruenull[{,:]
+}+; uFOc
+}7K0PSgp
+}:WRhY
+}AIxbC
+}EeuV[Vvl
+}GPcZ3
+}QOoM4
+}]/AhEA
+}buWrx
+}cVeVZz/&!
+}dRQaM
+}lrYbT
+}string or map
+}tDamo{
+}tTME0g:U
+}x(,vFIF"
+}{: write: 
+}|pxzJ/&
+~.PlYM
+~1l1KBzN
+~27AuyY
+~7iGgf
+~<gJGU
+~QTDAH
+~SCsXT
+~T$zIDl
+~_AdOK
+~hTmSZ8
+~qiSJ5

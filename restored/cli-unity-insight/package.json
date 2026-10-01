@@ -1,0 +1,7 @@
+{
+  "name": "@gamecowork/restored-unity-insight",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Recovered local Unity Insight SQLite/C# and asset-reference workers with isolated state and public parser resources"
+}

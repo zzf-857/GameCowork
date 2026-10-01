@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { insightHome as __gcuInsightHome, indexDirectory as __gcuInsightIndexDirectory } from "./gamecowork-worker-paths.js";
 import { createRequire as __unityInsightCreateRequire } from "node:module";
 import { fileURLToPath as __unityInsightFileURLToPath } from "node:url";
 import { dirname as __unityInsightDirname } from "node:path";
@@ -6038,7 +6039,7 @@ var uv = Mn.join(".gamecowork-cli", "UnityInsight"),
   Zc = ".index.write.lock.db",
   pv = ".serve.lock";
 function Be(e) {
-  let t = Mn.join(e, uv);
+  let t = __gcuInsightIndexDirectory(e, Mn.join(e, uv));
   return {
     projectPath: e,
     indexDirectoryPath: t,
@@ -9010,7 +9011,7 @@ function pg(e) {
   return e instanceof Error ? e.message : String(e);
 }
 import { createRequire as ET } from "node:module";
-import Ig from "web-tree-sitter";
+import Ig from "../resources/web-tree-sitter/tree-sitter.cjs";
 var gg = ET(import.meta.url),
   Td = null,
   hg = Ig;
@@ -9020,10 +9021,10 @@ async function bg() {
       (Td = (async () => {
         await Ig.init({
           locateFile(n) {
-            return gg.resolve(`web-tree-sitter/${n}`);
+            return __unityInsightFileURLToPath(new URL(`../resources/web-tree-sitter/${n}`, import.meta.url));
           },
         });
-        let e = await hg.Language.load(gg.resolve("tree-sitter-wasms/out/tree-sitter-c_sharp.wasm")),
+        let e = await hg.Language.load(__unityInsightFileURLToPath(new URL("../resources/tree-sitter-c_sharp.wasm", import.meta.url))),
           t = new hg();
         return (t.setLanguage(e), t);
       })()),
@@ -21173,14 +21174,7 @@ async function lj() {
   return (await Vl.mkdir(lo.dirname(t), { recursive: !0 }), await Vl.writeFile(t, n, "utf8"), n);
 }
 function cj() {
-  let e =
-    process.env.XDG_DATA_HOME ||
-    (process.platform === "darwin"
-      ? lo.join(ht.homedir(), "Library", "Application Support")
-      : process.platform === "win32"
-        ? process.env.LOCALAPPDATA || lo.join(ht.homedir(), "AppData", "Local")
-        : lo.join(ht.homedir(), ".local", "share"));
-  return lo.join(e, "Tuanjie Cowork", XD);
+  return lo.join(Ci(), "metrics", XD);
 }
 async function dj() {
   return process.platform === "darwin"
@@ -21320,9 +21314,8 @@ import { DatabaseSync as Mj } from "node:sqlite";
 import { promisify as Fj } from "node:util";
 import vj from "node:os";
 import NE from "node:path";
-function Ci(e = process.env, t = vj.homedir()) {
-  let n = e.UNITY_INSIGHT_HOME?.trim();
-  return n ? NE.resolve(n) : NE.join(t, ".unity-insight");
+function Ci(e = process.env, t) {
+  return __gcuInsightHome(e, () => NE.join(t || vj.homedir(), ".unity-insight"));
 }
 var Dj = 5,
   UE = 3,
@@ -21627,7 +21620,7 @@ function HE() {
 }
 var e1 = 3e4;
 function Dm() {
-  return Pt.join(Cj.homedir(), ".unity-insight");
+  return Ci();
 }
 function jm() {
   return Pt.join(Dm(), ".serve.lock");

@@ -1,0 +1,364 @@
+# /api/v1/frp/remote-workspaces
+occurrences=3
+
+## hit 1 @ 47226736
+```
+  @ -1144 input
+  @ -1112 Invalid terminal input: 
+  @ -1072 Missing terminal input
+  @ -1024 started
+  @  -864 idle
+  @  -816 notFound@
+  @  -792 src\messages\tunnel.rs
+  @  -744 Not logged in 
+  @  -727  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized
+  @  -600 logout: stopped  remote SSE bridge(s): 
+  @  -528 SSE-Bridgelogout: no remote SSE bridges to stop
+  @  -432 tauri/startTunnelmachineNamestartTunnel failed: 
+  @  -368 tauri/stopTunnelX
+  @  -328 tauri/getTunnelStatus
+  @  -256 enableTunneltauri/setTunnelEnabled
+  @  -192 setTunnelEnabled start failed: 
+  @   -96 tauri/getTunnelEnabledtauri/listRemoteWorkspacesNot logged inexcludeSelfX
+  @    +0 /api/v1/frp/remote-workspaces
+  @   +64 exclude_tunnel_id=
+  @  +128 exclude_machine_id=
+  @  +192 Bearer 
+  @  +216 AuthorizationHTTP client error: U
+  @  +264 listRemoteWorkspaces failed: 
+  @  +312 remote_discovery_failedServer returned 
+  @  +408 tunnelsmachinesworkspaceAliasesMigratedMachine inventory unavailable; using remote-workspaces compatibility response: 
+  @  +568 JSON parse error: 
+  @  +608 Request failed: 
+  @  +664 /api/v1/frp/machines?limit=100&offset=0
+  @  +760 server returned h
+  @  +808 request failed: 
+  @  +840 tunnel_idproxy_urlmachine_id
+  @  +904 machine_osmachineOs
+  @  +960 workspaces
+  @ +1024 Stopped bridge for workspace 
+  @ +1096 Started bridge for workspace 
+  -- fragments --
+    · input
+    · Invalid terminal input:
+    · terminal
+    · Missing terminal input
+    · started
+    · notFound@
+    · notFound
+    · src\messages\tunnel.rs
+    · messages
+    · tunnel
+    · messages\tunnel.rs
+    · Not logged in
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · state
+    · initialized
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · tauri/startTunnelmachineNamestartTunnel failed:
+    · tauri
+    · startTunnelmachineNamestartTunnel
+    · failed
+    · startTunnelmachineNamestartTunnel failed:
+    · tauri/stopTunnelX
+    · stopTunnel
+    · stopTunnelX
+    · tauri/getTunnelStatus
+    · getTunnelStatus
+    · enableTunnel
+    · tauri/setTunnelEnabled
+    · setTunnelEnabled
+    · setTunnelEnabled start failed:
+    · start
+    · tauri/getTunnelEnabled
+    · getTunnelEnabled
+    · tauri/listRemoteWorkspacesNot logged inexcludeSelfX
+    · listRemoteWorkspacesNot
+    · inexcludeSelf
+    · listRemoteWorkspacesNot logged inexcludeSelfX
+    · /api/v1/frp/remote-workspaces
+    · workspaces
+    · v1/frp/remote-workspaces
+    · exclude_tunnel_id=
+    · exclude_tunnel_id
+    · exclude_machine_id=
+    · exclude_machine_id
+    · Bearer
+    · AuthorizationHTTP client error: U
+    · client
+    · error
+    · listRemoteWorkspaces failed:
+    · listRemoteWorkspaces
+    · remote_discovery_failedServer returned
+    · failedServer
+    · returned
+    · tunnelsmachinesworkspaceAliasesMigratedMachine
+    · inventory
+    · unavailable
+    · using
+    · compatibility
+    · response
+    · JSON parse error:
+    · parse
+    · Request failed:
+    · /api/v1/frp/machines?limit=100&offset=0
+    · machines
+    · limit
+    · offset
+    · v1/frp/machines?limit=100&offset=0
+    · server returned h
+    · request failed:
+    · request
+    · tunnel_idproxy_urlmachine_id
+    · machine_osmachineOs
+    · osmachineOs
+    · Stopped bridge for workspace
+    · workspace
+    · Started bridge for workspace
+```
+
+## hit 2 @ 47516072
+```
+  @ -1160 Invalid terminal input:  
+  @ -1120 Missing terminal input
+  @ -1072 started
+  @  -912 idle
+  @  -864 notFoundH
+  @  -840 src\messages\tunnel.rs
+  @  -792 App state not initializedNot logged in 
+  @  -750  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized`
+  @  -624 logout: stopped  remote SSE bridge(s): 
+  @  -552 SSE-Bridgelogout: no remote SSE bridges to stop
+  @  -416 startTunnel failed: 
+  @  -248 enableTunnel
+  @  -168 setTunnelEnabled start failed: 
+  @   -48 Not logged inexcludeSelf`
+  @    +0 /api/v1/frp/remote-workspaces
+  @   +64 exclude_tunnel_id=
+  @  +128 exclude_machine_id=
+  @  +192 AuthorizationHTTP client error: u"
+  @  +240 listRemoteWorkspaces failed: 
+  @  +288 remote_discovery_failedServer returned 
+  @  +384 tunnelsmachinesworkspaceAliasesMigratedMachine inventory unavailable; using remote-workspaces compatibility response: 
+  @  +544 JSON parse error: 
+  @  +584 Request failed: 
+  @  +640 /api/v1/frp/machines?limit=100&offset=0
+  @  +736 server returned 
+  @  +784 request failed: 
+  @  +816 tunnel_idproxy_urlmachine_id
+  @  +880 machine_osmachineOs
+  @  +936 workspaces
+  @ +1000 Stopped bridge for workspace 
+  @ +1072 Started bridge for workspace 
+  @ +1168 src\messages\update.rs
+  -- fragments --
+    · Invalid terminal input:
+    · terminal
+    · input
+    · Missing terminal input
+    · started
+    · notFoundH
+    · notFound
+    · src\messages\tunnel.rs
+    · messages
+    · tunnel
+    · messages\tunnel.rs
+    · App state not initializedNot logged in
+    · state
+    · initializedNot
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · initialized
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · startTunnel failed:
+    · startTunnel
+    · failed
+    · enableTunnel
+    · setTunnelEnabled start failed:
+    · setTunnelEnabled
+    · start
+    · Not logged inexcludeSelf`
+    · inexcludeSelf
+    · /api/v1/frp/remote-workspaces
+    · workspaces
+    · v1/frp/remote-workspaces
+    · exclude_tunnel_id=
+    · exclude_tunnel_id
+    · exclude_machine_id=
+    · exclude_machine_id
+    · AuthorizationHTTP client error: u"
+    · client
+    · error
+    · listRemoteWorkspaces failed:
+    · listRemoteWorkspaces
+    · remote_discovery_failedServer returned
+    · failedServer
+    · returned
+    · tunnelsmachinesworkspaceAliasesMigratedMachine
+    · inventory
+    · unavailable
+    · using
+    · compatibility
+    · response
+    · JSON parse error:
+    · parse
+    · Request failed:
+    · /api/v1/frp/machines?limit=100&offset=0
+    · machines
+    · limit
+    · offset
+    · v1/frp/machines?limit=100&offset=0
+    · server returned
+    · request failed:
+    · request
+    · tunnel_idproxy_urlmachine_id
+    · machine_osmachineOs
+    · osmachineOs
+    · Stopped bridge for workspace
+    · workspace
+    · Started bridge for workspace
+    · src\messages\update.rs
+    · update
+    · messages\update.rs
+```
+
+## hit 3 @ 47718856
+```
+  @ -1128 output
+  @ -1048 idle
+  @ -1000 notFound
+  @  -976 src\messages\tunnel.rs
+  @  -928 App state not initializedNot logged in 
+  @  -886  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized
+  @  -760 logout: stopped  remote SSE bridge(s): 
+  @  -688 SSE-Bridgelogout: no remote SSE bridges to stop
+  @  -568 tauri/startTunnel
+  @  -528 startTunnel failed: 
+  @  -488 tauri/stopTunnel
+  @  -408 tauri/getTunnelStatus
+  @  -320 enableTunneltauri/setTunnelEnabled
+  @  -216 setTunnelEnabled start failed: 
+  @   -96 tauri/getTunnelEnabledtauri/listRemoteWorkspacesNot logged inexcludeSelf
+  @    +0 /api/v1/frp/remote-workspaces
+  @   +64 exclude_tunnel_id=
+  @  +128 exclude_machine_id=
+  @  +192 Bearer 
+  @  +216 AuthorizationHTTP client error: 
+  @  +264 listRemoteWorkspaces failed: 
+  @  +312 remote_discovery_failedServer returned 
+  @  +408 tunnelsmachinesworkspaceAliasesMigratedMachine inventory unavailable; using remote-workspaces compatibility response: 
+  @  +568 JSON parse error: 
+  @  +608 Request failed: (<
+  @  +664 /api/v1/frp/machines?limit=100&offset=0
+  @  +760 server returned 
+  @  +808 request failed: 
+  @  +840 tunnel_idproxy_urlmachine_id
+  @  +904 machine_osmachineOs
+  @  +960 workspaces
+  @ +1024 Stopped bridge for workspace 
+  @ +1096 Started bridge for workspace 
+  -- fragments --
+    · output
+    · notFound
+    · src\messages\tunnel.rs
+    · messages
+    · tunnel
+    · messages\tunnel.rs
+    · App state not initializedNot logged in
+    · state
+    · initializedNot
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · initialized
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · tauri/startTunnel
+    · tauri
+    · startTunnel
+    · startTunnel failed:
+    · failed
+    · tauri/stopTunnel
+    · stopTunnel
+    · tauri/getTunnelStatus
+    · getTunnelStatus
+    · enableTunnel
+    · tauri/setTunnelEnabled
+    · setTunnelEnabled
+    · setTunnelEnabled start failed:
+    · start
+    · tauri/getTunnelEnabled
+    · getTunnelEnabled
+    · tauri/listRemoteWorkspacesNot logged inexcludeSelf
+    · listRemoteWorkspacesNot
+    · inexcludeSelf
+    · listRemoteWorkspacesNot logged inexcludeSelf
+    · /api/v1/frp/remote-workspaces
+    · workspaces
+    · v1/frp/remote-workspaces
+    · exclude_tunnel_id=
+    · exclude_tunnel_id
+    · exclude_machine_id=
+    · exclude_machine_id
+    · Bearer
+    · AuthorizationHTTP client error:
+    · client
+    · error
+    · listRemoteWorkspaces failed:
+    · listRemoteWorkspaces
+    · remote_discovery_failedServer returned
+    · failedServer
+    · returned
+    · tunnelsmachinesworkspaceAliasesMigratedMachine
+    · inventory
+    · unavailable
+    · using
+    · compatibility
+    · response
+    · JSON parse error:
+    · parse
+    · Request failed: (<
+    · /api/v1/frp/machines?limit=100&offset=0
+    · machines
+    · limit
+    · offset
+    · v1/frp/machines?limit=100&offset=0
+    · server returned
+    · request failed:
+    · request
+    · tunnel_idproxy_urlmachine_id
+    · machine_osmachineOs
+    · osmachineOs
+    · Stopped bridge for workspace
+    · workspace
+    · Started bridge for workspace
+```

@@ -1,3 +1,5 @@
+import { gamecoworkWorkspaceTransition, gamecoworkWorkspaceLive, gamecoworkWorkspaceLease, gamecoworkWorkspaceLeaseCurrent, gamecoworkWorkspaceOwnerEpoch } from "./VscTheme-B-CSeuv5.js";
+import { gamecoworkWaitShellApproval, gamecoworkResolveShellApproval } from "./VscTheme-B-CSeuv5.js";
 const __vite__mapDeps = (
   i,
   m = __vite__mapDeps,
@@ -8712,6 +8714,12 @@ function oL() {
     r = (l = t == null ? void 0 : t.collaborationMode) != null ? l : "default",
     o = (u = t == null ? void 0 : t.approvalMode) != null ? u : "autoEdit",
     i = [
+      ...(window.GAMECOWORK_SHELL ? [{
+        key: "default",
+        label: e("approvalSelect.default", { defaultValue: "每次确认" }),
+        description: e("approvalSelect.defaultDescription", { defaultValue: "文件修改和命令执行前请求批准" }),
+        icon: a.jsx(aw, { className: "size-3.5 text-semantic-color-text-secondary" }),
+      }] : []),
       {
         key: "autoEdit",
         label: e("approvalSelect.autoEdit"),
@@ -8725,7 +8733,9 @@ function oL() {
         icon: a.jsx(cw, { className: "size-3.5 text-semantic-color-status-danger-text" }),
       },
     ],
-    A = e(o === "yolo" ? "approvalSelect.yolo" : "approvalSelect.autoEdit"),
+    A = window.GAMECOWORK_SHELL && o === "default"
+      ? e("approvalSelect.default", { defaultValue: "每次确认" })
+      : e(o === "yolo" ? "approvalSelect.yolo" : "approvalSelect.autoEdit"),
     c = (f) => {
       const h = f;
       h !== o && n(r, h);
@@ -8776,6 +8786,7 @@ function oL() {
                   onClick: () => {
                     (c(h.key), f());
                   },
+                  "data-approval-mode": h.key,
                   children: [
                     a.jsx("span", { className: "flex shrink-0 items-center justify-center", children: h.icon }),
                     a.jsxs("span", {
@@ -11166,14 +11177,15 @@ function VL() {
   return t.isOpen ? a.jsx(KL, { type: t.type, onClose: () => e(l_()) }) : null;
 }
 const sp = new Map();
+function gamecoworkIsPermissionCancellation(selection, options) {
+  if (selection?.gamecoworkCancelled === true) return true;
+  return selection === "cancel" && (!window.GAMECOWORK_SHELL || !options.some((option) => option.optionId === "cancel"));
+}
 function $L(e) {
-  return new Promise((t) => {
-    sp.set(e, { resolve: t });
-  });
+  return gamecoworkWaitShellApproval(e);
 }
 function Ru(e, t) {
-  const n = sp.get(e);
-  n && (n.resolve(t), sp.delete(e));
+  gamecoworkResolveShellApproval(e, t);
 }
 const dw = new Map();
 function Yi(e, t) {
@@ -11478,7 +11490,7 @@ function XL({ request: e }) {
               variant: "ghost",
               size: "lg",
               className: "h-8 px-3 font-medium",
-              onClick: () => Es(e.requestId, "cancel"),
+              onClick: () => Es(e.requestId, window.GAMECOWORK_SHELL ? { gamecoworkCancelled: true } : "cancel"),
               children: a.jsx("span", { children: t("common.cancel") }),
             }),
           ],
@@ -11657,7 +11669,7 @@ function wC(e, t) {
   const n = e.toolCall.rawInput,
     s = n && typeof n == "object" && !Array.isArray(n) ? n.autoContinueAtMs : void 0,
     r = n && typeof n == "object" && !Array.isArray(n) ? n.autoContinueMessage : void 0,
-    o = typeof s == "number" && Number.isFinite(s) ? s : void 0,
+    o = !window.GAMECOWORK_SHELL && typeof s == "number" && Number.isFinite(s) ? s : void 0,
     i = typeof r == "string" && r.trim().length > 0 ? r : void 0,
     [A, c] = d.useState(o !== void 0 ? Math.max(0, o - Date.now()) : null),
     l = d.useRef(!1);
@@ -11718,7 +11730,7 @@ function YL({ request: e }) {
       [e.requestId],
     ),
     c = d.useCallback(() => {
-      Es(e.requestId, "cancel");
+      Es(e.requestId, window.GAMECOWORK_SHELL ? { gamecoworkCancelled: true } : "cancel");
     }, [e.requestId]);
   return (
     d.useEffect(() => {
@@ -11858,6 +11870,10 @@ function eN({ request: e }) {
     n = d.useRef(null),
     s = vi(),
     r = wC(e, "proceed_once");
+  const gamecoworkPermissionRequests = M(x_),
+    gamecoworkPermissionReject = e.options.find(option => option.kind === "reject_once" && !option.disabled),
+    gamecoworkPermissionMeta = typeof navigator < "u" && /Mac|iPod|iPhone|iPad/i.test(navigator.platform),
+    gamecoworkPermissionJetbrains = _o();
   d.useEffect(() => {
     var p;
     return (
@@ -11875,7 +11891,7 @@ function eN({ request: e }) {
       [e.requestId],
     ),
     i = d.useCallback(() => {
-      Es(e.requestId, "cancel");
+      Es(e.requestId, window.GAMECOWORK_SHELL ? { gamecoworkCancelled: true } : "cancel");
     }, [e.requestId]),
     [A, c] = d.useState(),
     [l, u] = d.useState(""),
@@ -11916,6 +11932,14 @@ function eN({ request: e }) {
         case "replace":
           (u("Make this edit to:"), h(`${(p = e.toolCall.rawInput) == null ? void 0 : p.file_path}`));
           break;
+        case "write_file": {
+          const input = e.toolCall.rawInput || {};
+          const content = typeof input.content === "string" ? input.content : "";
+          const preview = content.length > 600 ? content.slice(0, 600) + "\n…" : content;
+          u(t("toolPermission.writeFile", { defaultValue: "Write this file:" }));
+          h(String(input.file_path || "") + (preview ? "\n\n" + preview : ""));
+          break;
+        }
         case "enter_plan_mode":
           (u("Enter Plan Mode"),
             h(
@@ -11932,6 +11956,26 @@ function eN({ request: e }) {
           break;
       }
     }, [e]),
+    At("Backspace", (event) => {
+      const toolbar = n.current, focusedToolbar = document.activeElement?.closest?.(".tool-permission-toolbar"),
+        focusedDialog = document.activeElement?.closest?.('[data-focus-scope="dialog"]'),
+        request = focusedToolbar === toolbar ? gamecoworkPermissionRequests.find(item => item.requestId === e.requestId && item.sessionId === e.sessionId) : gamecoworkPermissionRequests[0];
+      if (event.repeat || !window.GAMECOWORK_SHELL || !gamecoworkPermissionReject || !toolbar?.isConnected ||
+          (focusedToolbar && focusedToolbar !== toolbar) || (focusedDialog && focusedDialog !== toolbar && !toolbar.contains(focusedDialog)) ||
+          toolbar.getClientRects().length === 0 || toolbar.closest('[hidden],[inert],[aria-hidden="true"]') ||
+          ["hidden", "collapse"].includes(getComputedStyle(toolbar).visibility) || request?.requestId !== e.requestId || request?.sessionId !== e.sessionId) return !1;
+      o(gamecoworkPermissionReject);
+      return !0;
+    }, {
+      ctrl: !gamecoworkPermissionJetbrains && !gamecoworkPermissionMeta,
+      meta: !gamecoworkPermissionJetbrains && gamecoworkPermissionMeta,
+      alt: gamecoworkPermissionJetbrains,
+      shift: !1,
+      priority: ot.CRITICAL,
+      capture: !0,
+      enabled: !!window.GAMECOWORK_SHELL && !!gamecoworkPermissionReject && gamecoworkPermissionRequests.some(item => item.requestId === e.requestId && item.sessionId === e.sessionId),
+      description: "Reject current Agent permission",
+    }),
     At(
       "Escape",
       () => {
@@ -12016,6 +12060,8 @@ function eN({ request: e }) {
                   children: a.jsxs("div", {
                     className: "group tool-permission-toolbar-content-option",
                     "data-option-index": m,
+                    "data-permission-option-id": p.optionId,
+                    "data-permission-option-kind": p.kind,
                     tabIndex: -1,
                     onClick: () => o(p),
                     onKeyDown: (g) => {
@@ -12197,7 +12243,7 @@ function nN() {
                 children: (w = _.get("allow_once")) != null ? w : e("shellCommand.allowOnce"),
               }),
             }),
-            a.jsx(Cs, {
+            _.has("allow_always") && a.jsx(Cs, {
               variant: "primary",
               size: "sm",
               className: "my-1 min-h-[1.75rem] font-medium",
@@ -12310,6 +12356,7 @@ function nN() {
 }
 function sN() {
   const e = ze();
+  const gamecoworkApprovalMeta = typeof navigator < "u" && /Mac|iPod|iPhone|iPad/i.test(navigator.platform);
   d.useContext(st);
   const t = M(Ct);
   t == null || t.conversationId;
@@ -12322,8 +12369,8 @@ function sN() {
     c = M(Ng);
   return (
     At("Backspace", () => (s && !c ? (e(Sh({ toolCallId: s.toolCallId })), !0) : !1), {
-      meta: !n,
-      ctrl: !n,
+      meta: !n && gamecoworkApprovalMeta,
+      ctrl: !n && !gamecoworkApprovalMeta,
       alt: n,
       priority: ot.CRITICAL,
       enabled: !!s && !c,
@@ -12336,8 +12383,8 @@ function sN() {
       description: "Approve shell command",
     }),
     At("Backspace", () => (r ? (e(Eh(r.id)), Yi(r.id, !1), !0) : !1), {
-      meta: !n,
-      ctrl: !n,
+      meta: !n && gamecoworkApprovalMeta,
+      ctrl: !n && !gamecoworkApprovalMeta,
       alt: n,
       priority: ot.CRITICAL,
       enabled: !!r,
@@ -12350,8 +12397,8 @@ function sN() {
       description: "Allow shell confirmation",
     }),
     At("Backspace", () => (o ? (Ru(o.requestId, "reject"), !0) : !1), {
-      meta: !n,
-      ctrl: !n,
+      meta: !n && gamecoworkApprovalMeta,
+      ctrl: !n && !gamecoworkApprovalMeta,
       alt: n,
       priority: ot.CRITICAL,
       enabled: !!o,
@@ -22278,6 +22325,11 @@ function tj(e) {
     r = e.options,
     o = d.useMemo(
       function () {
+        if (window.GAMECOWORK_SHELL) {
+          const client = n || lA;
+          client.opt_out_capturing?.();
+          return client;
+        }
         return (
           n &&
             s &&
@@ -22314,7 +22366,7 @@ const rj = ({ children: e }) => {
         return (c = (A = i == null ? void 0 : i.config) == null ? void 0 : A.config) == null
           ? void 0
           : c.allowAnonymousTelemetry;
-      }),
+      }) && !window.GAMECOWORK_SHELL,
       { session: n } = yn(),
       s = sj((o = n == null ? void 0 : n.account) == null ? void 0 : o.id);
     d.useEffect(() => {
@@ -22323,6 +22375,7 @@ const rj = ({ children: e }) => {
       if (t) {
         U7({
           dsn: i,
+          enabled: !window.GAMECOWORK_SHELL,
           environment: "production",
           integrations: [E7(), qB({ onunhandledrejection: !0, onerror: !0 })],
           sampleRate: 1,
@@ -22590,6 +22643,49 @@ function dj() {
     null
   );
 }
+function gamecoworkScheduleDialogFocus(ref, selectInput) {
+  const owner = ref.current;
+  if (!owner) return () => {};
+  const target = owner.querySelector('input:not([disabled]):not([type="hidden"]), textarea:not([disabled])') || owner,
+    originalFocus = document.activeElement,
+    href = window.location.href,
+    readSelection = element => element && typeof element.selectionStart === "number"
+      ? [element.selectionStart, element.selectionEnd, element.selectionDirection, element.value] : null,
+    originalSelection = readSelection(originalFocus);
+  let finished = !1, timer;
+  const cleanup = () => {
+    if (finished) return;
+    finished = !0;
+    timer !== void 0 && window.clearTimeout(timer);
+    for (const type of ["pointerdown", "keydown", "beforeinput", "input"]) document.removeEventListener(type, cleanup, !0);
+    document.removeEventListener("focusin", changedFocus, !0);
+    document.removeEventListener("selectionchange", changedSelection, !0);
+    for (const type of ["pagehide", "popstate", "hashchange"]) window.removeEventListener(type, cleanup, !0);
+  }, changedFocus = event => {
+    event.target !== originalFocus && event.target !== document.body && cleanup();
+  }, changedSelection = () => {
+    const current = readSelection(originalFocus);
+    originalSelection && document.activeElement === originalFocus &&
+      (!current || current.some((value, index) => value !== originalSelection[index])) && cleanup();
+  };
+  for (const type of ["pointerdown", "keydown", "beforeinput", "input"]) document.addEventListener(type, cleanup, !0);
+  document.addEventListener("focusin", changedFocus, !0);
+  document.addEventListener("selectionchange", changedSelection, !0);
+  for (const type of ["pagehide", "popstate", "hashchange"]) window.addEventListener(type, cleanup, !0);
+  timer = window.setTimeout(() => {
+    if (finished) return;
+    const active = document.activeElement,
+      visible = target.isConnected && !target.disabled && !target.closest('[hidden], [inert], [aria-hidden="true"]') && target.getClientRects().length > 0,
+      style = visible ? window.getComputedStyle(target) : null,
+      valid = ref.current === owner && owner.isConnected && owner.contains(target) && window.location.href === href &&
+        (active === originalFocus || active === document.body) && visible && style.display !== "none" && style.visibility !== "hidden" && style.visibility !== "collapse";
+    cleanup();
+    if (!valid) return;
+    target.focus({ preventScroll: !0 });
+    selectInput && document.activeElement === target && target instanceof HTMLInputElement && target.type !== "checkbox" && target.type !== "radio" && target.select();
+  }, 50);
+  return cleanup;
+}
 const Lm = (e) => {
     var o, i;
     const t = d.useRef(null),
@@ -22600,19 +22696,10 @@ const Lm = (e) => {
       d.useEffect(() => {
         if (e.showDialog) {
           n.requestFocus("dialog", "high");
-          const A = window.setTimeout(() => {
-            const c = t.current;
-            if (!c) return;
-            const l = c.querySelector('input:not([disabled]):not([type="hidden"]), textarea:not([disabled])');
-            l
-              ? (l.focus({ preventScroll: !0 }),
-                r && l instanceof HTMLInputElement && l.type !== "checkbox" && l.type !== "radio" && l.select())
-              : c.focus();
-          }, 50);
-          return () => window.clearTimeout(A);
+          return gamecoworkScheduleDialogFocus(t, r);
         }
         n.releaseFocus("dialog");
-      }, [e.showDialog, r]),
+      }, [e.showDialog, r, e.message]),
       At("Escape", () => (e.onClose(), !0), {
         priority: ot.DIALOG,
         enabled: e.showDialog,
@@ -24350,13 +24437,14 @@ function Oj() {
       e(U0({ ...v, requestId: N, sessionId: v.sessionId }));
       try {
         const F = await $E(N);
-        if (F === null) return (e(Sh({ toolCallId: v.toolCall.toolCallId })), { outcome: { outcome: "cancelled" } });
-        if (F === "cancel") return (e(N0({ message: jj() })), { outcome: { outcome: "cancelled" } });
+        if (F === null) return (e(Sh({ toolCallId: v.toolCall.toolCallId, sessionId: v.sessionId })), { outcome: { outcome: "cancelled" } });
+        if (gamecoworkIsPermissionCancellation(F, v.options)) return (e(N0({ message: jj(), sessionId: v.sessionId })), { outcome: { outcome: "cancelled" } });
         const G = typeof F == "string" ? F : F.optionId,
           Z = typeof F == "object" && F && "_meta" in F ? F._meta : void 0,
           ie = v.options.find((re) => re.optionId === G);
+        if (!ie) return { outcome: { outcome: "cancelled" } };
         return (
-          ie != null && ie.kind.startsWith("reject") && e(Sh({ toolCallId: v.toolCall.toolCallId })),
+          ie != null && ie.kind.startsWith("reject") && e(Sh({ toolCallId: v.toolCall.toolCallId, sessionId: v.sessionId })),
           { outcome: { outcome: "selected", optionId: G }, ...(Z != null ? { _meta: Z } : {}) }
         );
       } finally {
@@ -24376,7 +24464,7 @@ function Oj() {
         const N = await $L(v.requestId);
         return { outcome: N != null ? N : "reject" };
       } finally {
-        e(GE(v.requestId));
+        e(GE({ requestId: v.requestId, sessionId: v.sessionId }));
       }
     }),
     je("updateApplyState", async (v) => {}, []),
@@ -24392,13 +24480,24 @@ function Oj() {
         var G, Z, ie, re;
         const F = N.data;
         if ((F == null ? void 0 : F.messageType) === "hub/workspaceAdded" && F.data)
-          (e(Qh(F.data)), F.data.workspaceKey && F.data.isCliWorkspace && e(j0(F.data.workspaceKey)));
+          (gamecoworkWorkspaceTransition(F.data.workspaceKey, "opened"), e(Qh(F.data)), F.data.workspaceKey && F.data.isCliWorkspace && e(j0(F.data.workspaceKey)));
         else if (
           (F == null ? void 0 : F.messageType) === "hub/workspaceRemoved" &&
           (G = F.data) != null &&
           G.workspaceKey
         )
-          (e(Jx(F.data.workspaceKey)), e(Yx(F.data.workspaceKey)));
+        {
+          e(Jx(F.data.workspaceKey));
+          e(Yx(F.data.workspaceKey));
+          if (window.GAMECOWORK_SHELL) {
+            const state = it.getState(), key = state.hub.activeWorkspaceKey;
+            const currentId = state.session.activeSessionId;
+            const currentOwner = state.session.sessions[currentId]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[currentId];
+            const remembered = key && gamecoworkRememberedSession(state, key);
+            if (currentOwner === F.data.workspaceKey)
+              e(remembered ? Ss(remembered) : _a({ ...(key ? { workspaceKey: key } : {}), skipProjectDraftRestore: true }));
+          }
+        }
         else if (
           (F == null ? void 0 : F.messageType) === "hub/switchWorkspace" &&
           (Z = F.data) != null &&
@@ -25499,7 +25598,142 @@ function _2() {
     null
   );
 }
-const bR = { python: "basedpyright", typescript: "vtsls", csharp: "gamecowork-unity-lsp-server" };
+const gamecoworkLspVersions = new Map();
+function gamecoworkLspRoute(route) {
+  return typeof route === "string" ? { runOn: "local", workspaceDir: route } : { ...(route || {}) };
+}
+function gamecoworkLspMessage(error) {
+  const messages = {
+    lsp_project_missing: "未找到 C# 项目文件。请在所选 Unity/团结编辑器中生成 .sln/.csproj。",
+    lsp_restore_required: "C# 项目的依赖尚未准备，请先在自己的开发工具中恢复依赖。",
+    lsp_disabled: "此工作区的 C# 语言支持尚未启用。",
+    lsp_runtime_missing: "本地 C# 语言服务不可用。",
+    lsp_runtime_integrity: "本地 C# 语言服务资源校验失败。",
+    lsp_project_ambiguous: "存在多个 C# 解决方案，请先明确使用的解决方案。",
+  };
+  return Un.language?.startsWith("zh") && messages[error?.code] ? messages[error.code] : error?.message || String(error);
+}
+export async function gamecoworkLspRequest(kind, data, route, signal) {
+  const captured = gamecoworkLspRoute(route), routing = St(captured);
+  if (captured.workspaceKey) routing.body.workspaceKey = captured.workspaceKey;
+  const payload = { ...data, ...(captured.generation != null ? { generation: captured.generation } : {}) };
+  const response = await fetch(`${window.location.origin}/api/tauri/invoke`, {
+    method: "POST", headers: { "Content-Type": "application/json", ...routing.headers },
+    body: JSON.stringify({ messageType: kind, data: payload, ...routing.body }), signal,
+  });
+  const envelope = await response.json();
+  if (!response.ok || envelope?.data?.status === "error") {
+    const error = new Error(envelope?.data?.error || `C# request failed (${response.status})`);
+    error.code = envelope?.data?.details?.code;
+    error.message = gamecoworkLspMessage(error);
+    throw error;
+  }
+  return ws(envelope);
+}
+export async function gamecoworkFetchLspStatus(route, signal) {
+  return gamecoworkLspRequest("lsp/status", {}, { ...gamecoworkLspRoute(route), generation: undefined }, signal);
+}
+function gamecoworkLspState(status, route) {
+  window.dispatchEvent(new CustomEvent("gamecowork:lsp-state", { detail: { ...status, workspaceDir: gamecoworkLspRoute(route).workspaceDir } }));
+}
+export function gamecoworkCreateLspClient(route, onError) {
+  const owner = gamecoworkLspRoute(route), records = new Map();
+  let disposed = false, context = null, status = null, connecting = null, stateEpoch = 0;
+  const sameRoot = (root) => String(root || "").replaceAll("\\", "/").replace(/\/+$/, "").toLowerCase()
+    === String(owner.workspaceDir || "").replaceAll("\\", "/").replace(/\/+$/, "").toLowerCase();
+  const cancelled = () => new DOMException("C# request cancelled", "AbortError");
+  async function connection() {
+    if (disposed) throw cancelled();
+    if (context) return context;
+    const attempt = stateEpoch;
+    if (!connecting) connecting = gamecoworkFetchLspStatus(owner).then((value) => {
+      if (disposed) throw cancelled();
+      if (context && (attempt !== stateEpoch || value.generation < context.generation)) return context;
+      status = value; context = { ...owner, workspaceKey: value.workspaceKey, generation: value.generation };
+      gamecoworkLspState(value, owner); return context;
+    }).finally(() => { connecting = null; });
+    return connecting;
+  }
+  function report(error) {
+    if (!disposed && error?.name !== "AbortError" && !["lsp_request_cancelled", "lsp_result_stale", "lsp_workspace_closed"].includes(error?.code))
+      onError?.(gamecoworkLspMessage(error));
+  }
+  function invalidate(record) { for (const controller of record.requests) controller.abort(); record.requests.clear(); }
+  function track(model, path) {
+    if (!model || model.isDisposed() || !/\.cs$/i.test(path || "")) return null;
+    const uri = model.uri.toString(); let record = records.get(uri);
+    if (record) return record;
+    record = { model, path, uri, tail: Promise.resolve(), requests: new Set(), remoteVersion: 0, remoteGeneration: null, text: null, timer: null, dead: false, submitted: false, submittedVersion: 0 };
+    records.set(uri, record);
+    record.change = model.onDidChangeContent(() => {
+      invalidate(record); clearTimeout(record.timer);
+      record.timer = setTimeout(() => sync(record).catch(report), 120);
+    });
+    record.dispose = model.onWillDispose(() => close(record));
+    sync(record).catch(report); return record;
+  }
+  async function sync(record) {
+    const run = async () => {
+      const captured = await connection();
+      if (disposed || record.dead || record.model.isDisposed()) throw cancelled();
+      if (!status?.enabled || status.supported === false) return null;
+      const text = record.model.getValue();
+      if (record.remoteGeneration === captured.generation && record.text === text && record.remoteVersion) return record.remoteVersion;
+      const key = `${captured.workspaceKey}:${captured.generation}:${record.uri}`, version = (gamecoworkLspVersions.get(key) || 0) + 1;
+      gamecoworkLspVersions.set(key, version);
+      record.submitted = true;
+      record.submittedVersion = version;
+      const result = await gamecoworkLspRequest("lsp/syncDocument", { filePath: record.path, text, version }, captured);
+      if (disposed || record.dead || context?.generation !== captured.generation) throw cancelled();
+      record.remoteVersion = result.version; record.remoteGeneration = captured.generation; record.text = text;
+      const epoch = stateEpoch, fresh = await gamecoworkFetchLspStatus(captured);
+      if (!disposed && epoch === stateEpoch && context?.generation === captured.generation && fresh.generation >= context.generation) { status = fresh; gamecoworkLspState(fresh, owner); }
+      return result.version;
+    };
+    record.tail = record.tail.catch(() => {}).then(run); return record.tail;
+  }
+  function close(record) {
+    if (record.dead) return; record.dead = true; clearTimeout(record.timer); invalidate(record);
+    record.change?.dispose(); record.dispose?.dispose(); records.delete(record.uri);
+    const captured = context;
+    record.tail.finally(() => {
+      if (captured && record.submitted) gamecoworkLspRequest("lsp/closeDocument", { filePath: record.path, version: record.submittedVersion }, captured).catch(() => {});
+    }).catch(() => {});
+  }
+  const stateChanged = (event) => {
+    if (!sameRoot(event.detail?.workspaceDir)) return;
+    const value = event.detail;
+    if (context && (value.workspaceKey !== context.workspaceKey || value.generation < context.generation)) return;
+    stateEpoch++;
+    if (context && value.generation !== context.generation) for (const record of records.values()) { invalidate(record); record.remoteVersion = 0; record.text = null; }
+    context = { ...owner, workspaceKey: value.workspaceKey, generation: value.generation }; status = value;
+    if (value.enabled && value.supported !== false) for (const record of records.values()) sync(record).catch(report);
+  };
+  window.addEventListener("gamecowork:lsp-state", stateChanged);
+  return {
+    track,
+    async query(kind, model, position, token, includeDeclaration = true) {
+      const record = track(model, model?.uri?.fsPath || model?.uri?.path);
+      if (!record || disposed) return null;
+      const modelVersion = model.getVersionId(), version = await sync(record);
+      if (!version || disposed || record.dead || model.isDisposed() || model.getVersionId() !== modelVersion || token?.isCancellationRequested) return null;
+      const captured = { ...context }, requestId = crypto.randomUUID(), controller = new AbortController();
+      record.requests.add(controller);
+      const cancellation = token?.onCancellationRequested(() => controller.abort());
+      controller.signal.addEventListener("abort", () => {
+        gamecoworkLspRequest("lsp/cancelRequest", { requestId }, captured).catch(() => {});
+      }, { once: true });
+      try {
+        const result = await gamecoworkLspRequest(kind, { filePath: record.path, line: position.lineNumber - 1, character: position.column - 1, version, requestId, includeDeclaration }, captured, controller.signal);
+        if (disposed || record.dead || model.isDisposed() || model.getVersionId() !== modelVersion || context?.generation !== captured.generation || result.version !== version) return null;
+        return kind === "lsp/hover" ? result.hover : result.locations;
+      } catch (error) { report(error); return null; }
+      finally { cancellation?.dispose(); record.requests.delete(controller); }
+    },
+    dispose() { if (disposed) return; for (const record of [...records.values()]) close(record); disposed = true; window.removeEventListener("gamecowork:lsp-state", stateChanged); },
+  };
+}
+const bR = { python: "basedpyright", typescript: "vtsls", csharp: "csharp-ls" };
 function By(e) {
   var t;
   try {
@@ -25573,6 +25807,7 @@ function IR(e) {
       ? {
           language: t.language,
           supported: t.supported,
+          connected: t.connected,
           installSuggestion: t.installSuggestion
             ? t.installSuggestion
             : t.install_suggestion
@@ -25590,6 +25825,7 @@ function IR(e) {
     encoding: ER(e.encoding),
     content: e.content,
     mimeType: (r = e.mimeType) != null ? r : e.mime_type,
+    sha256: e.sha256,
     size: e.size,
     modifiedAt: (i = (o = e.modifiedAt) != null ? o : e.modified_at) != null ? i : "",
     readOnly: (c = (A = e.readOnly) != null ? A : e.read_only) != null ? c : !1,
@@ -25604,20 +25840,27 @@ function Cy(e) {
     lineText: (r = (s = e.lineText) != null ? s : e.line_text) != null ? r : "",
   };
 }
+function gamecoworkFileFailureMessage(result) {
+  if (window.GAMECOWORK_SHELL && result.code === "file_changed")
+    return Un.t("filePreview.changedBeforeSave", {
+      defaultValue: String(Un.language || "").startsWith("zh")
+        ? "文件已在磁盘上改变，保存失败。当前编辑内容已保留。"
+        : "The file changed on disk. Your unsaved edits have been kept.",
+    });
+  return result.error || "File explorer request failed";
+}
 async function E2(e, t, n, s) {
   var l;
   const r = St(s),
     o = Pm(e);
-  console.log("[api] postFileExplorer route:", JSON.stringify(s), "routing.body:", JSON.stringify(r.body));
   const i = JSON.stringify({ path: o, mode: t, ...n, ...r.body });
-  console.log("[api] postFileExplorer requestBody:", i);
   const A = await fetch(`${window.location.origin}/api/tauri/file-explorer`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...r.headers },
       body: i,
     }),
     c = await A.json();
-  if (!A.ok || c.error) throw new Error((l = c.error) != null ? l : "File explorer request failed");
+  if (!A.ok || c.error) throw new Error(gamecoworkFileFailureMessage(c));
   return c;
 }
 async function SR(e, t) {
@@ -25625,10 +25868,26 @@ async function SR(e, t) {
   if (!n.directory) throw new Error("File explorer directory payload missing");
   return _R(n.directory);
 }
-async function kR(e, t, n) {
-  const s = await E2(e, "save", { content: t }, n);
+async function kR(e, t, n, expectedSha256) {
+  const s = await E2(e, "save", { content: t, ...(expectedSha256 ? { expectedSha256 } : {}) }, n);
   if (s.error) throw new Error(s.error);
+  return s;
 }
+async function gamecoworkUndoFileChange(changeId, workspaceRoute) {
+  if (!window.GAMECOWORK_SHELL || typeof changeId !== "string" || !changeId)
+    throw new Error("A local saved change is required to undo");
+  const routing = St(workspaceRoute);
+  const response = await fetch(`${window.location.origin}/api/tauri/file-changes/undo`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...routing.headers },
+    body: JSON.stringify({ changeId, ...routing.body }),
+  });
+  const result = await response.json();
+  if (!response.ok || result.error) throw new Error(result.error || "Could not undo the saved change");
+  if (result.ok !== true || result.applied !== true) throw new Error("The saved change was not restored");
+  return result;
+}
+export { gamecoworkUndoFileChange };
 async function FR(e, t) {
   var A;
   const n = St(t),
@@ -25645,7 +25904,7 @@ async function FR(e, t) {
 function UR(e, t) {
   const n = St(t),
     s = Pm(e),
-    r = new URL(`${window.location.origin}/api/tauri/file-preview-media`);
+    r = new URL(`${window.location.origin}${window.GAMECOWORK_SHELL ? "/api/tauri/file-explorer/media" : "/api/tauri/file-preview-media"}`);
   r.searchParams.set("path", s);
   for (const [o, i] of Object.entries(n.body)) r.searchParams.set(o, typeof i == "string" ? i : JSON.stringify(i));
   return r.toString();
@@ -25720,6 +25979,11 @@ function MR(e, t, n) {
     (o.onmessage = (i) => {
       try {
         const A = JSON.parse(i.data);
+        if (A.watcherFailed) {
+          o.close();
+          e({ ...A, changes: Array.isArray(A.changes) ? A.changes : [] });
+          return;
+        }
         Array.isArray(A.changes) && e(A);
       } catch (A) {
         console.warn("[FilePreview] Failed to parse file explorer event", A);
@@ -25767,7 +26031,21 @@ function oi(e) {
   return e.replace(/\\/g, "/").replace(/^\.\//, "");
 }
 async function S2(e, t) {
-  const n = await ms("findGitRepositories", { dir: e }, t ? St(t) : void 0),
+  const queryRoute = t ? St(t) : void 0;
+  if (typeof window !== "undefined" && window.GAMECOWORK_SHELL) {
+    const state = vh().getState();
+    if (state.hub.isHubMode) {
+      const normalize = value => String(value || "").replace(/\\/g, "/").replace(/^file:\/\/\//, "").replace(/\/+$/, "").toLowerCase();
+      const root = normalize(queryRoute?.body?.workspaceRef?.workspaceDir || queryRoute?.body?.workspaceDir || e);
+      const owner = state.hub.workspaces.find(workspace => normalize(workspace.workspaceDir) === root);
+      if (!owner || !gamecoworkWorkspaceLive(state, owner.workspaceKey)) {
+        const cancelled = new Error("Git query cancelled because its workspace is closing or closed");
+        cancelled.code = "WorkspaceQueryCancelled";
+        throw cancelled;
+      }
+    }
+  }
+  const n = await ms("findGitRepositories", { dir: e }, queryRoute),
     s = ws(n);
   return Array.isArray(s)
     ? s
@@ -25821,12 +26099,15 @@ async function $R(e, t, n) {
 }
 async function WR(e, t, n, s) {
   const r = await ms("applyGitFileAction", { dir: e, action: t, paths: n }, s ? St(s) : void 0);
-  ws(r);
+  const result = ws(r);
+  if (window.GAMECOWORK_SHELL && result?.ok !== true) throw new Error("Git did not confirm the file action");
+  return result;
 }
 async function Dm(e, t) {
   try {
     return await F2(e, t);
   } catch (n) {
+    if (window.GAMECOWORK_SHELL) throw n;
     return (console.warn("[GIT_CHANGED_FILES] fetch failed:", n), []);
   }
 }
@@ -25859,25 +26140,21 @@ async function U2(e, t) {
 }
 async function GR(e, t, n) {
   const s = await ms("switchGitBranch", { dir: e, branch: t }, n ? St(n) : void 0);
-  ws(s);
+  const result = ws(s);
+  if (window.GAMECOWORK_SHELL && (result?.ok !== true || result.branch !== t)) throw new Error("Git did not confirm the selected branch");
+  return result;
 }
 async function zR(e, t, n) {
-  try {
-    const s = await ms("getFileAtHead", { dir: e, filePath: t }, n ? St(n) : void 0),
-      r = ws(s);
-    return typeof r == "string" ? r : "";
-  } catch (s) {
-    return (console.warn("[GIT_FILE_AT_HEAD] fetch failed:", s), "");
-  }
+  const s = await ms("getFileAtHead", { dir: e, filePath: t }, n ? St(n) : void 0),
+    r = ws(s);
+  if (typeof r !== "string") throw new Error("Git did not return the file content at HEAD");
+  return r;
 }
 async function qR(e, t, n) {
-  try {
-    const s = await ms("getFileAtIndex", { dir: e, filePath: t }, n ? St(n) : void 0),
-      r = ws(s);
-    return typeof r == "string" ? r : "";
-  } catch (s) {
-    return (console.warn("[GIT_FILE_AT_INDEX] fetch failed:", s), "");
-  }
+  const s = await ms("getFileAtIndex", { dir: e, filePath: t }, n ? St(n) : void 0),
+    r = ws(s);
+  if (typeof r !== "string") throw new Error("Git did not return the file content at INDEX");
+  return r;
 }
 async function Q2(e, t) {
   var n;
@@ -25925,6 +26202,11 @@ async function T2(e, t) {
   ws(c);
 }
 async function XR(e, t) {
+  if (window.GAMECOWORK_SHELL) {
+    const status = await gamecoworkFetchLspStatus(t), captured = { ...gamecoworkLspRoute(t), workspaceKey: status.workspaceKey, generation: status.generation };
+    const result = await gamecoworkLspRequest("lsp/setEnabled", { enabled: e }, captured);
+    gamecoworkLspState(result, captured); return result;
+  }
   const n = await ms("lsp/setEnabled", { enabled: e, workspace_dir: t });
   ws(n);
 }
@@ -25946,7 +26228,7 @@ async function Om(e, t, n) {
     i = (c = o == null ? void 0 : o.data) != null ? c : null,
     A = i == null ? void 0 : i.error;
   if (A) throw (console.debug(`${n} ← LSP error: ${A.message}`), new Error(A.message));
-  return (console.debug(`${n} ← response ok`), i);
+  return (console.debug(`${n} ← response ok`), ws(o));
 }
 async function ms(e, t, n) {
   const s = n != null ? n : St(),
@@ -26869,6 +27151,10 @@ async function kH(e, t, n) {
   });
   await Promise.all(r);
 }
+async function gamecoworkReadOptionalGenerationNotifications(ide, filePath) {
+  if (!(await ide.fileExists(filePath))) return "";
+  return ide.readFile(filePath, !0, "utf8");
+}
 function $2(e, t) {
   const n = d.useContext(st),
     [s, r] = d.useState(gl);
@@ -26877,7 +27163,7 @@ function $2(e, t) {
       let o = !1,
         i = !1,
         A;
-      if (!t || !(e != null && e.trim()))
+      if (!t || !(e != null && e.trim()) || gamecoworkUsesLocalAssetPage())
         return (
           r(gl),
           () => {
@@ -26892,7 +27178,7 @@ function $2(e, t) {
         };
       const l = async () => {
         try {
-          const u = await n.ide.readFile(c, !0, "utf8"),
+          const u = await gamecoworkReadOptionalGenerationNotifications(n.ide, c),
             f = IH(u),
             h = Array.from(new Set(f.values())),
             p = new Set();
@@ -27245,6 +27531,62 @@ function DH(e, t) {
       ? { type: "file", path: Dp(t, n) }
       : { type: "virtual", name: n.split(/[\\/]/).filter(Boolean).pop() || n || "plan.md", content: e.content };
 }
+async function gamecoworkPassiveUnityQuery(messenger, payload, isCurrent = () => true) {
+  const readOnly = (payload?.command === "manage_editor" && ["get_state", "get_project_root", "get_selection"].includes(payload.toolParams?.action)) || (payload?.command === "_internal_asset_listening" && payload.toolParams?.action === "status");
+  if (!window.GAMECOWORK_SHELL || !readOnly) return messenger.request("unity/invokeTool", payload);
+  let capturedRoute = { ...(payload.workspaceKey ? { workspaceKey: payload.workspaceKey } : {}), ...(payload.workspaceRef ? { workspaceRef: payload.workspaceRef } : {}) };
+  if (!capturedRoute.workspaceKey && typeof messenger.resolveHubWorkspaceRoute === "function") {
+    const routeId = "passive-unity:" + Date.now() + ":" + Math.random();
+    try { capturedRoute = messenger.resolveHubWorkspaceRoute(payload, routeId) || capturedRoute; }
+    finally { messenger.routedWorkspaceKeysByMessageId?.delete(routeId); }
+  }
+  const ownedPayload = capturedRoute.workspaceKey && !payload.workspaceKey ? { ...payload, ...capturedRoute } : payload;
+  const { data: response } = await messenger.requestWithMessageId("unity/invokeTool", ownedPayload);
+  if (!isCurrent()) return { status: "unknown", stale: true };
+  const error = response?.status === "error" ? response.error : response?.content?.status === "error" ? response.content.error : null;
+  if (!error) return response;
+  const message = typeof error === "string" ? error : error.message || JSON.stringify(error);
+  const transient = /Editor Bridge is not connected|assembly reload|domain[_ ]reload|ECONNRESET|ECONNREFUSED|broken pipe|forcibly closed|connection (?:reset|refused|lost|closed)|os error 1005[34]|os error 10061/i.test(message);
+  if (transient) {
+    const route = capturedRoute;
+    let projectStatus;
+    try {
+      const { data: metadata } = await messenger.requestWithMessageId("unity/getProjectStatus", route);
+      const inner = metadata?.status === "success" ? metadata.content : undefined;
+      projectStatus = inner?.status === "success" ? inner.content : inner;
+    } catch {}
+    if (!isCurrent()) return { status: "unknown", stale: true };
+    if (!(projectStatus?.isUnityProject === true && projectStatus.hasUnityMcpPackage === false))
+      return { ...response, unknown: true, reason: "editor_disconnected" };
+  }
+  if (isCurrent()) await messenger.handleRequestError("unity/invokeTool", error);
+  return response;
+}
+function gamecoworkUnityViewsRequest(event, owner) {
+  if (!window.GAMECOWORK_SHELL || event?.source !== window || event.origin !== window.location.origin ||
+      event.data?.source !== "tauriShell" || event.data.messageType !== "shell/openUnityViews") return null;
+  const payload = event.data.data;
+  const normalize = value => typeof value === "string" ? value.replace(/\\/g, "/").replace(/\/+$/, "").toLowerCase() : "";
+  if (!owner.workspaceKey || !normalize(owner.workspaceRoot) || payload?.workspaceKey !== owner.workspaceKey ||
+      normalize(payload?.workspaceRoot) !== normalize(owner.workspaceRoot)) return null;
+  const windowTypes = ["UnityEditor.SceneView", "UnityEditor.GameView", "UnityEditor.InspectorWindow", "UnityEditor.SceneHierarchyWindow", "UnityEditor.ConsoleWindow", "UnityEditor.ProjectBrowser"];
+  if (payload.windowType !== undefined && !windowTypes.includes(payload.windowType)) return null;
+  return { type: "unityViews", workspaceKey: owner.workspaceKey, workspaceRoot: owner.workspaceRoot,
+    ...(payload.windowType !== undefined ? { windowType: payload.windowType } : {}) };
+}
+function gamecoworkUnityViewsEntry(workspace) {
+  if (!window.GAMECOWORK_SHELL || !workspace?.workspaceKey || typeof workspace.workspaceDir !== "string" ||
+      !workspace.workspaceDir.trim() || workspace.isRemote) return false;
+  window.postMessage({ source: "tauriShell", messageType: "shell/openUnityViews",
+    data: { workspaceKey: workspace.workspaceKey, workspaceRoot: workspace.workspaceDir } }, window.location.origin);
+  return true;
+}
+function gamecoworkPassiveUnityEpoch(epochs, owner, isOwnerCurrent = () => true) {
+  const key = owner.workspaceKey || owner.workspaceRef?.workspaceDir || "default";
+  const epoch = (epochs.get(key) || 0) + 1;
+  epochs.set(key, epoch);
+  return () => epochs.get(key) === epoch && isOwnerCurrent();
+}
 function Op({
   rightSidebarPanelRef: e,
   onToggle: t,
@@ -27380,6 +27722,7 @@ function Op({
     _t = M(nb).status === "connected",
     Ne = d.useRef(Ie);
   Ne.current = Ie;
+  const passiveUnityEpochs = d.useRef(new Map());
   const Rt = d.useRef(k);
   Rt.current = k;
   const qn = (Lo = C == null ? void 0 : C.workspaceDir) != null ? Lo : "",
@@ -27439,12 +27782,11 @@ function Op({
     let $ = !1;
     if ((he(null), !(!_t || !Ie || !Re || (C != null && C.isRemote))))
       return (
-        f
-          .request("unity/invokeTool", {
+        gamecoworkPassiveUnityQuery(f, {
             command: "manage_editor",
             toolParams: { action: "get_project_root" },
             ...vn(),
-          })
+          }, () => !$)
           .then((xe) => {
             if ($ || uA(xe)) return;
             const He = z2(Yu(xe));
@@ -27520,8 +27862,11 @@ function Op({
       const $ = E.current;
       $ && (Ti({ messageType: "clearFilePreviewContext", data: { filepath: $ } }), (E.current = void 0));
     }, []),
-    Uc = d.useCallback(async () => {
+    previewRequestEpochs = d.useRef(new Map()),
+    Uc = d.useCallback(async (scope) => {
       var Lt, Pt, pn, tn;
+      if (!scope || scope.workspaceKey !== Rt.current || !U || Su(scope.workspaceRoot || "") !== Su(U))
+        throw new Error("Workspace changed, aborting stale stream request");
       if (!Ne.current)
         throw new Error(
           "This workspace is not a Unity project. Streaming requires a Unity project with the GameCowork Bridge package installed.",
@@ -27535,11 +27880,11 @@ function Op({
         Tt = He,
         vt = null;
       for (let kn = 1; kn <= Et; kn++) {
-        if (Rt.current !== $) throw new Error("Workspace changed, aborting stale stream request");
+        if (Rt.current !== $ || previewRequestEpochs.current.get($) !== scope.requestGeneration) throw new Error("Workspace changed, aborting stale stream request");
         try {
           const us = vn(),
             or = await f.request("unity/windowBridge/startStreamServer", us);
-          if (Rt.current !== $) throw new Error("Workspace changed, aborting stale stream request");
+          if (Rt.current !== $ || previewRequestEpochs.current.get($) !== scope.requestGeneration) throw new Error("Workspace changed, aborting stale stream request");
           if (or.status !== "success") {
             const Ot = (Lt = or.error) != null ? Lt : "Failed to start Unity window stream server";
             throw /unknown.*(command|method)|not.*(support|found|implement)|manage_window_bridge/i.test(Ot)
@@ -27580,7 +27925,7 @@ function Op({
         }
       }
       throw vt != null ? vt : new Error("Failed to resolve Unity window URL");
-    }, [vn, f]),
+    }, [vn, f, U]),
     Yn = d.useCallback(
       ($) => {
         const xe = O.find((He) => He.workspaceKey === $);
@@ -27617,6 +27962,8 @@ function Op({
             ? xe.openDiff($.path, $.original, $.modified)
             : $.type === "unityWindow"
               ? xe.openUnityWindow($.url)
+              : $.type === "unityViews"
+                ? xe.openUnityViews($)
               : $.type === "unityInsight"
                 ? xe.openUnityInsight($.vfsPath)
                 : $.type === "terminal"
@@ -27696,6 +28043,24 @@ function Op({
         var yt, Et;
         const He = xe.data;
         if ((He == null ? void 0 : He.source) !== "tauriShell") return;
+        if (He.messageType === "shell/openUnityViews") {
+          const request = gamecoworkUnityViewsRequest(xe, { workspaceKey: Rt.current, workspaceRoot: U });
+          if (!request) return;
+          u(Jr(!0));
+          window.setTimeout(() => {
+            if (request.workspaceKey === Rt.current) Sn(request);
+          }, 0);
+          return;
+        }
+        const streamScoped = ["shell/openUnityWindowInPreview", "shell/unityWindowStatusRequest", "shell/unityWindowStop"].includes(He.messageType);
+        if (streamScoped) {
+          const scope = He.data;
+          if (xe.source !== window || xe.origin !== window.location.origin || !scope ||
+              scope.workspaceKey !== Rt.current || !U || Su(scope.workspaceRoot || "") !== Su(U) ||
+              !Number.isSafeInteger(scope.requestGeneration) || scope.requestGeneration < 0 ||
+              scope.requestGeneration < (previewRequestEpochs.current.get(scope.workspaceKey) ?? -1)) return;
+          previewRequestEpochs.current.set(scope.workspaceKey, scope.requestGeneration);
+        }
         const ft = M2(He);
         if (ft) {
           Sn(ft);
@@ -27705,26 +28070,37 @@ function Op({
           ((yt = He.data) == null ? void 0 : yt.resolveIfMissing) === !0 &&
             (async () => {
               try {
-                const vt = await Uc();
-                Sn({ type: "unityWindow", url: vt });
+                const vt = await Uc(He.data);
+                if (He.data.workspaceKey !== Rt.current || previewRequestEpochs.current.get(He.data.workspaceKey) !== He.data.requestGeneration) return;
+                Sn({ type: "unityWindow", url: vt, workspaceKey: He.data.workspaceKey, workspaceRoot: He.data.workspaceRoot });
               } catch (vt) {
                 window.postMessage(
                   {
                     source: "tauriShell",
                     messageType: "shell/openUnityWindowInPreviewError",
-                    data: { error: vt instanceof Error ? vt.message : "Failed to open Unity window in preview" },
+                    data: { ...He.data, error: vt instanceof Error ? vt.message : "Failed to open Unity window in preview" },
                   },
                   "*",
                 );
               }
             })();
         else if (He.messageType === "shell/unityGameControl") {
+          const fixedRoute = window.GAMECOWORK_SHELL && typeof He.data?.workspaceKey === "string" && He.data.workspaceKey
+            ? { workspaceKey: He.data.workspaceKey, workspaceRef: { runOn: "local", workspaceDir: He.data.workspaceRoot } }
+            : vn();
+          const owner = { ...fixedRoute, action: He.data?.action, requestId: He.data?.requestId, ...(typeof He.data?.workspaceRoot === "string" ? { workspaceRoot: He.data.workspaceRoot } : {}), ...(Number.isInteger(He.data?.requestGeneration) ? { requestGeneration: He.data.requestGeneration } : {}) };
+          const passive = window.GAMECOWORK_SHELL && He.data?.action === "get_state";
+          if (window.GAMECOWORK_SHELL && !passive) {
+            const passiveKey = owner.workspaceKey || owner.workspaceRef?.workspaceDir || "default";
+            passiveUnityEpochs.current.set(passiveKey, (passiveUnityEpochs.current.get(passiveKey) || 0) + 1);
+          }
+          const isCurrent = passive ? gamecoworkPassiveUnityEpoch(passiveUnityEpochs.current, owner, () => !owner.workspaceKey || owner.workspaceKey === Rt.current) : () => true;
           if (!Ne.current) {
             window.postMessage(
               {
                 source: "tauriShell",
                 messageType: "shell/unityGameControlResult",
-                data: { success: !1, error: "Unity Editor is not connected" },
+                data: { ...owner, success: !1, unknown: passive, error: "Unity Editor is not connected" },
               },
               "*",
             );
@@ -27734,18 +28110,20 @@ function Op({
             (async () => {
               var vt, Lt, Pt, pn, tn;
               try {
-                const kn = await f.request("unity/invokeTool", {
+                const kn = await gamecoworkPassiveUnityQuery(f, {
                   command: "manage_editor",
                   toolParams: He.data,
-                  ...vn(),
-                });
+                  ...fixedRoute,
+                }, isCurrent);
+                if (passive && !isCurrent()) return;
                 let us,
-                  or = !1,
-                  Pn = 0;
+                  or,
+                  Pn, controlState;
                 if (kn.status === "success") {
                   const Fr = kn.content,
                     Ot = (vt = Fr == null ? void 0 : Fr.response) != null ? vt : Fr,
                     Dn = (Lt = Ot == null ? void 0 : Ot.data) != null ? Lt : Ot;
+                  controlState = Dn;
                   if (
                     ((us =
                       (pn =
@@ -27771,16 +28149,17 @@ function Op({
                   {
                     source: "tauriShell",
                     messageType: "shell/unityGameControlResult",
-                    data: { success: kn.status === "success", playMode: us, hasErrors: or, errors: Pn },
+                    data: { ...owner, success: kn.status === "success", unknown: passive && kn.status !== "success", playMode: us, hasErrors: or, errors: Pn, pending: controlState?.pending === true, operationId: controlState?.operationId, ...(kn.error ? { error: kn.error } : {}) },
                   },
                   "*",
                 );
               } catch (kn) {
+                if (passive && !isCurrent()) return;
                 window.postMessage(
                   {
                     source: "tauriShell",
                     messageType: "shell/unityGameControlResult",
-                    data: { success: !1, error: kn instanceof Error ? kn.message : String(kn) },
+                    data: { ...owner, success: !1, unknown: passive, error: kn instanceof Error ? kn.message : String(kn) },
                   },
                   "*",
                 );
@@ -27792,7 +28171,7 @@ function Op({
               {
                 source: "tauriShell",
                 messageType: "shell/unityWindowStatusResult",
-                data: { status: "error", running: !1 },
+                data: { ...He.data, status: "error", running: !1 },
               },
               "*",
             );
@@ -27817,7 +28196,7 @@ function Op({
                 {
                   source: "tauriShell",
                   messageType: "shell/unityWindowStatusResult",
-                  data: { status: pn.status, running: kn },
+                  data: { ...He.data, status: pn.status, running: kn },
                 },
                 "*",
               );
@@ -27826,7 +28205,7 @@ function Op({
                 {
                   source: "tauriShell",
                   messageType: "shell/unityWindowStatusResult",
-                  data: { status: "error", error: Pt instanceof Error ? Pt.message : String(Pt) },
+                  data: { ...He.data, status: "error", error: Pt instanceof Error ? Pt.message : String(Pt) },
                 },
                 "*",
               );
@@ -27843,7 +28222,7 @@ function Op({
               .catch(() => {});
       };
       return (window.addEventListener("message", $), () => window.removeEventListener("message", $));
-    }, [vn, Uc, Sn, X]),
+    }, [vn, Uc, Sn, X, U]),
     d.useEffect(() => {
       if (V) {
         if (!I) {
@@ -28515,6 +28894,35 @@ function WH(e) {
   var n;
   return e.startsWith("http://") || e.startsWith("https://") ? e : `${(n = window.vscMediaUrl) != null ? n : ""}${e}`;
 }
+function gamecoworkCapabilityStatus(capabilities, chinese) {
+  if (!capabilities || typeof capabilities !== "object") return "";
+  const labels = [
+    ["localWorkspaces", chinese ? "本地多工作区" : "Local workspaces"],
+    ["remoteWorkspaces", chinese ? "远程访问" : "Remote access"],
+    ["editorStreaming", chinese ? "编辑器串流" : "Editor streaming"],
+  ];
+  return labels
+    .filter(([key]) => typeof capabilities[key] === "boolean")
+    .map(([key, label]) => key === "editorStreaming" && capabilities.editorRenderedViews === true && capabilities.editorStreaming === false
+      ? chinese ? "Scene/Game 实时预览已接通；完整编辑器串流正在接入" : "Scene/Game preview connected; Full Editor streaming integration pending"
+      : `${label}${chinese
+      ? capabilities[key] ? "已接通" : "正在接入"
+      : capabilities[key] ? " connected" : " integration pending"}`)
+    .join(chinese ? "；" : "; ");
+}
+function gamecoworkIntroductionImage(image, index, capabilities, chinese) {
+  if (!window.GAMECOWORK_SHELL) return image;
+  const key = ["localWorkspaces", "remoteWorkspaces", "editorStreaming"][index];
+  const title = (chinese ? ["多工作区", "远程访问", "编辑器串流"] : ["Local workspaces", "Remote access", "Editor streaming"])[index] || "GameCowork";
+  const available = capabilities?.[key];
+  const rendered = index === 2 && capabilities?.editorRenderedViews === true;
+  const status = rendered ? (chinese ? "Scene/Game 已接通" : "Scene/Game connected") : available === true ? (chinese ? "已接通" : "Connected")
+    : available === false ? (chinese ? "正在接入" : "In progress") : (chinese ? "正在检测状态" : "Checking status");
+  const caption = rendered ? (chinese ? "其它编辑器窗口正在接入" : "Other Editor windows are in progress") : chinese ? "能力状态来自本地宿主" : "Capability status from the local host";
+  const color = available === true || rendered ? "#2bc59e" : "#a3aab4";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360"><rect width="720" height="360" rx="20" fill="#1d2228"/><rect x="1" y="1" width="718" height="358" rx="20" fill="none" stroke="#363e46"/><g fill="none" stroke="#2bc59e" stroke-width="2"><rect x="48" y="80" width="200" height="145" rx="12"/><rect x="470" y="80" width="200" height="145" rx="12"/><path stroke-dasharray="6 6" d="M248 150H470"/><circle cx="360" cy="150" r="25" fill="#1d2228"/></g><g font-family="Microsoft YaHei,Segoe UI,sans-serif" text-anchor="middle"><text x="148" y="144" fill="#d9e3ec" font-size="22">GameCowork</text><text x="148" y="179" fill="#9ca9b6" font-size="14">LOCAL</text><text x="570" y="147" fill="#d9e3ec" font-size="22">${title}</text><text x="570" y="183" fill="${color}" font-size="16">${status}</text><text x="360" y="157" fill="#2bc59e" font-size="20">+</text><text x="360" y="282" fill="#d9e3ec" font-size="18">${caption}</text><text x="360" y="312" fill="#9ca9b6" font-size="14">GameCowork</text></g></svg>`;
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
 function X2({ slides: e, currentIndex: t, onIndexChange: n, onSkip: s, onComplete: r, compact: o = !1 }) {
   var h;
   const { t: i, i18n: A } = ke(),
@@ -28524,13 +28932,31 @@ function X2({ slides: e, currentIndex: t, onIndexChange: n, onSkip: s, onComplet
     f = d.useCallback(() => {
       c ? r() : n(t + 1);
     }, [c, r, t, n]);
+  const [capabilities, setCapabilities] = d.useState(null);
+  d.useEffect(() => {
+    if (!window.GAMECOWORK_SHELL) return;
+    let active = !0;
+    const controller = new AbortController(),
+      timer = setTimeout(() => controller.abort(), 5e3);
+    fetch(`${window.location.origin}/api/tauri/capabilities`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((value) => active && setCapabilities(value))
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+    return () => {
+      active = !1;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, []);
+  const capabilityStatus = gamecoworkCapabilityStatus(capabilities, u);
   return a.jsxs("div", {
     className: "flex flex-col items-center",
     children: [
       a.jsx("div", {
         className: `w-full overflow-hidden ${o ? "max-h-[11.25rem]" : "h-[22.5rem]"}`,
         children: a.jsx("img", {
-          src: WH(l.image),
+          src: window.GAMECOWORK_SHELL ? gamecoworkIntroductionImage(l.image, t, capabilities, u) : WH(l.image),
           alt: i((h = l.title) != null ? h : l.description),
           className: `w-full ${o ? "h-full object-cover" : "object-contain rounded-2xl"}`,
           draggable: !1,
@@ -28545,6 +28971,13 @@ function X2({ slides: e, currentIndex: t, onIndexChange: n, onSkip: s, onComplet
         className: `m-0 text-gamecowork-color-text-secondary px-8 ${o ? `mt-1.5 text-xs leading-4 ${u ? "min-h-[2rem]" : "min-h-[3rem]"}` : `mt-2 text-sm leading-5 text-center ${u ? "min-h-[2.5rem]" : "min-h-[3.75rem]"}`}`,
         children: i(l.description),
       }),
+      capabilityStatus &&
+        a.jsx("p", {
+          role: "status",
+          "data-testid": "gamecowork-capability-status",
+          className: "m-0 mt-2 px-8 text-center text-xs leading-5 text-gamecowork-color-text-secondary",
+          children: capabilityStatus,
+        }),
       o &&
         a.jsx("div", {
           className: "mt-5 flex items-center gap-1.5",
@@ -38312,6 +38745,7 @@ function EG({ iframeRef: e, iframeRefs: t, onReady: n }) {
     ),
     u = d.useCallback(
       (p) => {
+        if (gamecoworkUsesLocalAssetPage()) return;
         l().forEach(({ key: m, frame: g }) => {
           g.contentWindow && p(g.contentWindow, m);
         });
@@ -38320,7 +38754,7 @@ function EG({ iframeRef: e, iframeRefs: t, onReady: n }) {
     ),
     f = d.useCallback(
       (p) => {
-        if (!p) return;
+        if (gamecoworkUsesLocalAssetPage() || !p) return;
         const m = r && !wo(r) ? r.accessToken : null;
         p.postMessage({ type: "gamecowork:auth", token: m }, c);
         const g = Ad();
@@ -38378,6 +38812,11 @@ const qm = "https://aicanvas.tuanjie.cn",
   IG = `${qm}/home`,
   SG = new URL(qm).origin;
 function kG({ src: e, title: t, testId: n = "canvas-frame" }) {
+  return gamecoworkUsesLocalAssetPage()
+    ? a.jsx(gamecoworkAssetPending, {})
+    : a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });
+}
+function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-frame" }) {
   const { t: s } = ke(),
     { session: r } = yn(),
     o = M(ls),
@@ -38543,7 +38982,48 @@ const Jv = { key: "creator", labelKey: "generation.tabCreator", defaultLabel: "Q
   NG = { key: "canvas", labelKey: "generation.tabCanvas", defaultLabel: "Canvas" },
   Yv = { key: "history", labelKey: "generation.tabHistory", defaultLabel: "Generation History" },
   MG = { creator: hc, canvas: d3, history: u3 };
+function gamecoworkUsesLocalAssetPage() {
+  if (window.GAMECOWORK_SHELL) return !0;
+  try {
+    return window.parent !== window && window.parent.GAMECOWORK_SHELL === !0;
+  } catch {
+    return !1;
+  }
+}
+function gamecoworkAssetPending({ headerExtra: extra } = {}) {
+  const chinese = (ke().i18n.language || "").startsWith("zh");
+  return a.jsxs("section", {
+    "data-testid": "gamecowork-assets-pending",
+    className: "box-border flex h-full min-h-0 w-full flex-col gap-6 bg-gamecowork-color-surface-primary p-8",
+    children: [
+      a.jsxs("div", {
+        className: "flex items-center justify-between gap-4",
+        children: [
+          a.jsx("h1", { className: "m-0 text-xl font-medium text-gamecowork-color-text-primary", children: chinese ? "AI 资产生成" : "AI Asset Generation" }),
+          extra,
+        ],
+      }),
+      a.jsxs("div", {
+        className: "max-w-3xl rounded-xl border border-solid border-gamecowork-color-border-subtle bg-gamecowork-color-surface-card p-6",
+        children: [
+          a.jsx("p", { role: "status", className: "m-0 text-base text-gamecowork-color-text-primary", children: chinese ? "生成 Provider 尚未配置" : "Generation provider is not configured" }),
+          a.jsx("p", { className: "m-0 mt-3 text-sm leading-6 text-gamecowork-color-text-secondary", children: chinese
+            ? "此页面保留图片、视频和 3D 生成入口。自有 Provider 将在后续接入，生成、Canvas 与历史记录功能正在准备。"
+            : "Image, video and 3D generation remain planned here. Own providers, Canvas and generation history will be connected in a later phase." }),
+          a.jsx("p", { className: "m-0 mt-3 text-sm leading-6 text-gamecowork-color-text-secondary", children: chinese
+            ? "当前无需登录原服务。配置自己的生成服务后，任务状态、预览和保存将在本地页面提供。"
+            : "No original-service login is needed. A local page will provide task status, previews and saving after an own generation service is configured." }),
+        ],
+      }),
+    ],
+  });
+}
 function jG({ headerExtra: e }) {
+  return gamecoworkUsesLocalAssetPage()
+    ? a.jsx(gamecoworkAssetPending, { headerExtra: e })
+    : a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });
+}
+function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
   var Ie, Re, Xe, de, Ve, Fe, Be, Oe;
   const { t, i18n: n } = ke(),
     s = d.useContext(st),
@@ -38704,8 +39184,7 @@ function jG({ headerExtra: e }) {
     let pe = !1;
     if ((H(null), !(F.status !== "connected" || !Z || !G)))
       return (
-        s
-          .request("unity/invokeTool", { command: "manage_editor", toolParams: { action: "get_project_root" }, ...Ae })
+        gamecoworkPassiveUnityQuery(s, { command: "manage_editor", toolParams: { action: "get_project_root" }, ...Ae }, () => !ue)
           .then((ue) => {
             if (pe || uA(ue)) return;
             const me = z2(Yu(ue));
@@ -39176,6 +39655,7 @@ async function RG(e, t) {
     const s = t === Zg ? "" : t,
       r = s ? { workspaceKey: s } : void 0,
       o = await e.request("extensions/list", r);
+    if (o.status !== "success" || o.content?.status === "error") throw new Error(o.error || o.content?.error || "加载extensions失败");
     if (o.status === "success" && o.content) {
       for (const i of o.content.extensions)
         n.push({
@@ -39190,6 +39670,7 @@ async function RG(e, t) {
     }
   } catch (s) {
     console.error(`[InstalledCapabilityManager] extensions/list error for ${t}:`, s);
+    throw s;
   }
   return n;
 }
@@ -39200,6 +39681,7 @@ async function HG(e, t) {
     const r = t === Zg ? "" : t,
       o = r ? { workspaceKey: r } : void 0,
       i = await e.request("skills/list", o);
+    if (i.status !== "success" || i.content?.status === "error") throw new Error(i.error || i.content?.error || "加载skills失败");
     if (i.status === "success" && (s = i.content) != null && s.skills) {
       for (const A of i.content.skills)
         n.push({
@@ -39214,6 +39696,7 @@ async function HG(e, t) {
     }
   } catch (r) {
     console.error(`[InstalledCapabilityManager] skills/list error for ${t}:`, r);
+    throw r;
   }
   return n;
 }
@@ -39223,6 +39706,7 @@ async function PG(e, t) {
     const s = t === Zg ? "" : t,
       r = s ? { workspaceKey: s } : void 0,
       o = await e.request("mcp/list", r);
+    if (o.status !== "success" || o.content?.status === "error") throw new Error(o.error || o.content?.error || "加载mcp失败");
     if (o.status === "success" && o.content) {
       const i = (n = o.content.servers) != null ? n : [];
       return (
@@ -39235,6 +39719,7 @@ async function PG(e, t) {
     }
   } catch (s) {
     console.error(`[InstalledCapabilityManager] mcp/list error for ${t}:`, s);
+    throw s;
   }
   return [];
 }
@@ -39408,6 +39893,7 @@ function OG({
                   });
                 const T = c.request("config/addMcpServer", {
                   name: I.name,
+                  ...(x && x.name !== I.name ? { previousName: x.name, overwrite: true } : {}),
                   type: I.type,
                   command: I.command,
                   args: I.args,
@@ -39417,7 +39903,8 @@ function OG({
                   scope: I.storageLevel,
                   ...(b ? { workspaceKey: b } : {}),
                 });
-                await (x ? T : Nr(T, { kind: "mcp", action: "install", resource_name: I.name }));
+                const saved = await (x ? T : Nr(T, { kind: "mcp", action: "install", resource_name: I.name }));
+                if (saved?.status !== "success" || saved.content?.status === "error") throw new Error(saved?.error || saved?.content?.error || "MCP配置保存失败");
                 const K = I.storageLevel === "global";
                 (A(eS({ workspaceKey: b, clearGlobal: K })), l(K, "mcp"));
               },
@@ -40278,16 +40765,38 @@ function rz({ onDelete: e }) {
     ],
   });
 }
+function gamecoworkRequireHistorySuccess(response) {
+  const envelope = response?.data ?? response;
+  if (envelope?.status === "error") throw new Error(envelope.error || "Session operation failed");
+  if (envelope?.content?.status === "error") throw new Error(envelope.content.error || "Session operation failed");
+  return response;
+}
 function oz({ showDialog: e, currentTitle: t, onRename: n, onClose: s }) {
   const [r, o] = d.useState(t),
+    [gamecoworkRenamePending, gamecoworkSetRenamePending] = d.useState(!1),
+    [gamecoworkRenameError, gamecoworkSetRenameError] = d.useState(""),
+    gamecoworkRenameLock = d.useRef(!1),
     { t: i } = ke();
   d.useEffect(() => {
     o(t);
+    gamecoworkSetRenameError("");
   }, [e, t]);
   const A = r.trim(),
     c = A && A !== t,
-    l = () => {
-      c && (n(A), s());
+    l = async () => {
+      if (!c || gamecoworkRenameLock.current) return;
+      gamecoworkRenameLock.current = !0;
+      gamecoworkSetRenamePending(!0);
+      gamecoworkSetRenameError("");
+      try {
+        await n(A);
+        s();
+      } catch (error) {
+        gamecoworkSetRenameError(error instanceof Error ? error.message : String(error));
+      } finally {
+        gamecoworkRenameLock.current = !1;
+        gamecoworkSetRenamePending(!1);
+      }
     };
   return a.jsx(Lm, {
     hideClose: !0,
@@ -40313,11 +40822,18 @@ function oz({ showDialog: e, currentTitle: t, onRename: n, onClose: s }) {
             a.jsx(Bd, {
               size: "lg",
               placeholder: i("renameSession.placeholder"),
+              disabled: gamecoworkRenamePending,
               value: r,
               onChange: (u) => o(u),
               onKeyDown: (u) => {
                 u.key === "Enter" && c && l();
               },
+            }),
+            gamecoworkRenameError && a.jsx("div", {
+              role: "alert",
+              "data-testid": "gamecowork-session-rename-error",
+              className: "text-gamecowork-color-text-error text-sm mt-2",
+              children: gamecoworkRenameError,
             }),
           ],
         }),
@@ -40330,7 +40846,9 @@ function oz({ showDialog: e, currentTitle: t, onRename: n, onClose: s }) {
               className: "w-[5rem]",
               variant: "primary",
               size: "sm",
-              disabled: !c,
+              disabled: !c || gamecoworkRenamePending,
+              "aria-busy": gamecoworkRenamePending,
+              "data-testid": "gamecowork-session-rename-save",
               onClick: l,
               children: i("common.save"),
             }),
@@ -40782,12 +41300,13 @@ function yu({
             await o(e, W);
             return;
           }
-          (await p.request("history/renameTitle", { sessionId: e.sessionId, title: W }),
+          (gamecoworkRequireHistorySuccess(await p.request("history/renameTitle", { sessionId: e.sessionId, title: W })),
             u($g({ title: W, sessionId: e.sessionId })),
             u(ub({ sessionId: e.sessionId, updates: { title: W } })),
             u($s({})));
         } catch (ne) {
           console.error("Rename session failed:", ne);
+          throw ne;
         }
       },
       onClose: () => te(!1),
@@ -41561,6 +42080,7 @@ function ex({ sidebarPanelRef: e, isEmbedMode: t, isSidechat: n, fullscreenView:
     A = M(er),
     c = M(Yr),
     l = M(go).isUnityProject,
+    unityViewsOwner = M(state => ls(state).find(workspace => workspace.workspaceKey === Ps(state))),
     u = M((S) => S.tabs.tabs.find((C) => C.isActive)),
     f = M((S) => S.tabs.tabs),
     h = M(Ct),
@@ -41614,6 +42134,7 @@ function ex({ sidebarPanelRef: e, isEmbedMode: t, isSidechat: n, fullscreenView:
         ));
     },
     T = async () => {
+      if (window.GAMECOWORK_SHELL) { gamecoworkUnityViewsEntry(unityViewsOwner); return; }
       var S, C, U, D;
       try {
         const V = await o.request("unity/windowBridge/startStreamServer", void 0);
@@ -43689,6 +44210,11 @@ function ix() {
   return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
 }
 function eq({ headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n }) {
+  return gamecoworkUsesLocalAssetPage()
+    ? a.jsx(gamecoworkAssetPending, { headerExtra: e })
+    : a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });
+}
+function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n }) {
   var O, k;
   const s = ze(),
     r = M(ls),
@@ -44386,6 +44912,7 @@ function T3({
     { t: c } = ke(),
     l = M(ls),
     u = M(Ps),
+    unityViewsOwner = l.find(workspace => workspace.workspaceKey === u),
     f = M(Ct),
     h = M((v) => v.tabs.tabs.find((N) => N.isActive)),
     p = M((v) => v.tabs.tabs),
@@ -44657,6 +45184,12 @@ function T3({
               "data-telemetry-context": "hub_chat_header",
               children: [
                 _ && !B && a.jsx(Q3, {}),
+                window.GAMECOWORK_SHELL && unityViewsOwner?.workspaceKey && !unityViewsOwner.isRemote &&
+                  a.jsx("button", {
+                    type: "button", "aria-label": "编辑器视图", "data-telemetry-id": "open_unity_window",
+                    className: "text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover inline-flex h-7 cursor-pointer items-center rounded-md border-0 bg-transparent px-2 text-xs",
+                    onClick: () => gamecoworkUnityViewsEntry(unityViewsOwner), children: "编辑器视图",
+                  }),
                 T &&
                   a.jsx(Kr, {
                     anchor: "bottom end",
@@ -46366,6 +46899,24 @@ function Xq({ children: e, openWorkspaceTrigger: t }) {
     ],
   });
 }
+const gamecoworkWorkspaceSessionMemory = new Map();
+function gamecoworkDetachClosedOwner(dispatch, state, closedKey) {
+  if (!window.GAMECOWORK_SHELL) return;
+  const id = state.session.activeSessionId;
+  const owner = state.session.sessions[id]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[id];
+  if (owner !== closedKey) return;
+  const key = state.hub.activeWorkspaceKey;
+  const remembered = key && gamecoworkWorkspaceLive(state, key) && gamecoworkRememberedSession(state, key);
+  dispatch(remembered ? Ss(remembered) : _a({
+    ...(key && gamecoworkWorkspaceLive(state, key) ? { workspaceKey: key } : {}),
+    skipProjectDraftRestore: true,
+  }));
+}
+function gamecoworkRememberedSession(state, workspaceKey) {
+  const id = gamecoworkWorkspaceSessionMemory.get(workspaceKey);
+  const owner = state.session.sessions[id]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[id];
+  return owner === workspaceKey ? id : void 0;
+}
 function px({
   workspace: e,
   sessions: t,
@@ -46473,10 +47024,37 @@ function px({
     }, [B, K, t, F]),
     be = t.length > F + (ve ? 1 : 0),
     Ce = di(T != null ? T : gs(e), k);
+  d.useEffect(() => {
+    const state = it.getState(),
+      id = state.session.activeSessionId,
+      owner = state.session.sessions[id]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[id];
+    owner === e.workspaceKey && gamecoworkWorkspaceSessionMemory.set(e.workspaceKey, id);
+  }, [B, e.workspaceKey]);
   if (Q && t.length === 0 && !x) return null;
-  const _e = () => {
-    (C && (v(null), I == null || I()), U(!C));
-  };
+  const toggleWorkspaceExpanded = () => {
+      (C && (v(null), I == null || I()), U(!C));
+    },
+    _e = async () => {
+      if (Q) return toggleWorkspaceExpanded();
+      if (n) {
+        const state = it.getState(), id = state.session.activeSessionId;
+        const owner = state.session.sessions[id]?.workspaceId || state.session.sessionIdToWorkspaceKey?.[id];
+        if (!window.GAMECOWORK_SHELL || owner === e.workspaceKey) return U(!0);
+      }
+      try {
+        const sessionId = gamecoworkRememberedSession(it.getState(), e.workspaceKey),
+          response = await fetch(`${window.location.origin}/api/tauri/hub/switch-workspace`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ workspaceKey: e.workspaceKey, ...(sessionId ? { sessionId } : {}) }),
+          }),
+          result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.error || "Failed to switch workspace");
+        U(!0);
+      } catch (error) {
+        qs(error instanceof Error ? error.message : String(error));
+      }
+    };
   return a.jsxs("div", {
     className: J(
       Q
@@ -46524,6 +47102,7 @@ function px({
             children: [
               a.jsxs("button", {
                 type: "button",
+                "aria-current": n ? "page" : void 0,
                 className: J(
                   "flex h-[1.875rem] min-w-0 flex-1 items-center gap-1 rounded border-0 bg-transparent p-0 cursor-pointer",
                   (O == null ? void 0 : O.isDragging) && "cursor-grabbing",
@@ -46547,15 +47126,17 @@ function px({
                     }),
                   }),
                   a.jsx("span", { className: J("truncate text-sm text-gamecowork-color-text-secondary"), children: Ce }),
-                  a.jsx(xu, {
-                    className: J(
-                      Gi,
-                      "size-3.5",
-                      Z ? "!inline" : "!hidden group-hover/workspace-section:!inline",
-                      C ? "rotate-0" : "-rotate-90",
-                    ),
-                  }),
                 ],
+              }),
+              a.jsx("button", {
+                type: "button",
+                "aria-label": `${k(C ? "tjhub.projects.fold" : "tjhub.projects.expand")} ${Ce}`,
+                className: "size-5 flex-shrink-0 cursor-pointer rounded border-0 bg-transparent p-0",
+                onClick: (event) => {
+                  event.stopPropagation();
+                  toggleWorkspaceExpanded();
+                },
+                children: a.jsx(xu, { className: J("size-3.5", C ? "rotate-0" : "-rotate-90") }),
               }),
               !Q &&
                 a.jsx(Kr, {
@@ -46851,6 +47432,10 @@ function K3({
     Ne = d.useCallback((L) => {
       var Ue, Me;
       if (!L) return;
+      if (window.GAMECOWORK_SHELL) {
+        const state = vh().getState();
+        return gamecoworkWorkspaceLive(state, L) ? state.hub.workspaces.find(workspace => workspace.workspaceKey === L) : undefined;
+      }
       const j = (Ue = Je.current.find((rt) => rt.workspaceKey === L)) != null ? Ue : _t.current[L];
       if (j) return j;
       const oe = Mq(L);
@@ -46906,13 +47491,16 @@ function K3({
     Qt = d.useCallback(
       async (L, j) => {
         var rt;
+        const ownerLease = gamecoworkWorkspaceLease(vh().getState(), L);
+        const ownerCurrent = () => gamecoworkWorkspaceLeaseCurrent(vh().getState(), ownerLease);
+        if (!ownerCurrent()) return [];
         const oe = (tt) => {
             if ((console.warn("[HubSidebar] Failed to fetch sessions for", L, tt), j != null && j.throwOnError))
               throw tt;
             return [];
           },
           fe = Ei.current[L];
-        if (fe && !(j != null && j.force)) return fe.catch(oe);
+        if (fe && !(j != null && j.force) && gamecoworkWorkspaceLeaseCurrent(vh().getState(), fe.gamecoworkOwnerLease)) return fe.catch(oe);
         const ye = Ne(L);
         if (!ye) return [];
         if (ye.isRemote && (ye.workspaceStatus === "offline" || ye.workspaceStatus === "unreachable")) return [];
@@ -46924,6 +47512,7 @@ function K3({
           (Me = mn(ye, "history/list")
             .then((tt) => {
               var ir;
+              if (!ownerCurrent()) return [];
               const Ft = Array.isArray(tt) ? tt.filter(Os) : [],
                 Jt = (ir = dt.current[L]) != null ? ir : {};
               for (const Yt of Ft) Jt[Yt.sessionId] && delete Jt[Yt.sessionId];
@@ -46931,13 +47520,15 @@ function K3({
               return (OA.current[L] === Ue && u(Fi({ workspaceKey: L, sessions: On })), On);
             })
             .finally(() => {
-              (Ei.current[L] === Me && delete Ei.current[L],
+              if (Ei.current[L] !== Me) return;
+              delete Ei.current[L];
                 Z((tt) => {
                   if (!tt[L]) return tt;
                   const Ft = { ...tt };
                   return (delete Ft[L], Ft);
-                }));
+                });
             })),
+          (Me.gamecoworkOwnerLease = ownerLease),
           (Ei.current[L] = Me),
           Me.catch(oe)
         );
@@ -47084,6 +47675,8 @@ function K3({
     ),
     xs = d.useCallback(
       async (L) => {
+        const ownerLease = gamecoworkWorkspaceLease(vh().getState(), L);
+        if (!gamecoworkWorkspaceLeaseCurrent(vh().getState(), ownerLease)) return;
         const j = mc(),
           oe = nr(L),
           fe = { sessionId: j, title: An, workspaceDirectory: oe, history: [] };
@@ -47158,6 +47751,9 @@ function K3({
   const rr = d.useCallback(
       async (L, j) => {
         var Ur, On, ir, Yt, Vc;
+        const ownerLease = gamecoworkWorkspaceLease(vh().getState(), L);
+        const ownerCurrent = () => gamecoworkWorkspaceLeaseCurrent(vh().getState(), ownerLease);
+        if (!ownerCurrent()) return false;
         if (
           ((X == null ? void 0 : X.viewType) === "marketplace" || (X == null ? void 0 : X.viewType) === "tjhub"
             ? _()
@@ -47194,7 +47790,8 @@ function K3({
             const Ar = await mn(gn, "stream/getActiveStreams", {}),
               Mo = (ir = Ar == null ? void 0 : Ar.activeStreams) == null ? void 0 : ir.find((Wc) => Wc.sessionId === j),
               $c = Vl(void 0, Me);
-            if ((ye() || u(Vo({ currentSessionId: j, currentSessionTitle: $c })), Mo && fe === De.current))
+            if (!ownerCurrent()) return false;
+            if ((ye() || u(Vo({ currentSessionId: j, currentSessionTitle: $c })), Mo && (fe === De.current && ownerCurrent())))
               return (
                 Gx({
                   dispatch: u,
@@ -47214,13 +47811,15 @@ function K3({
           console.warn("[HubSidebar] active-stream resume check failed, falling back to history/load", gn);
         }
         try {
+          if (fe !== De.current || !ownerCurrent()) return !1;
           const gn = Fc(L, j);
-          if (fe !== De.current) return !1;
+          if ((fe !== De.current || !ownerCurrent())) return !1;
           if (!gn) {
             const Ar = Ne(L);
             if (!Ar || !Jt) return !1;
             const Mo = await Jt;
-            if ((ct.current.add(j), fe !== De.current)) return (u(Ca(Mo)), !1);
+            if (!ownerCurrent()) return false;
+            if ((ct.current.add(j), (fe !== De.current || !ownerCurrent()))) return (u(Ca(Mo)), !1);
             const $c = Vl(Mo.title, Me),
               Wc = ye();
             if (
@@ -47241,18 +47840,18 @@ function K3({
             }
           }
           return (
-            fe === De.current && u(zc(null)),
+            (fe === De.current && ownerCurrent()) && u(zc(null)),
             await Uo(L),
-            fe !== De.current ? !1 : (of({ workspaceKey: L, sessionId: j }), ge && !ye() && b(pt.CHAT), !0)
+            (fe !== De.current || !ownerCurrent()) ? !1 : (of({ workspaceKey: L, sessionId: j }), ge && !ye() && b(pt.CHAT), !0)
           );
         } catch (gn) {
-          if (fe !== De.current) return !1;
+          if ((fe !== De.current || !ownerCurrent())) return !1;
           (console.warn("[HubSidebar] Failed to load session", j, gn),
             qs(c("history.loadFailed", { error: gn instanceof Error ? gn.message : String(gn) })),
             u(zc(null)));
           try {
             const Ar = await xs(L);
-            return fe !== De.current ? !1 : (t({ workspaceKey: L, sessionId: Ar, title: An }), !0);
+            return (fe !== De.current || !ownerCurrent()) ? !1 : (t({ workspaceKey: L, sessionId: Ar, title: An }), !0);
           } catch (Ar) {
             console.warn("[HubSidebar] Failed to create fallback session for workspace", L, Ar);
           }
@@ -47263,6 +47862,9 @@ function K3({
     ),
     Wt = d.useCallback(
       async (L) => {
+        const ownerLease = gamecoworkWorkspaceLease(vh().getState(), L);
+        const ownerCurrent = () => gamecoworkWorkspaceLeaseCurrent(vh().getState(), ownerLease);
+        if (!ownerCurrent()) return false;
         var Ue, Me, rt;
         const j = Ie(),
           oe = Ne(L);
@@ -47283,11 +47885,14 @@ function K3({
               }),
             u(lr(L)));
           const tt = await xs(L);
+          if (!ownerCurrent()) return false;
           return (t({ workspaceKey: L, sessionId: tt, title: An }), ge && b(pt.CHAT), tt);
         }
         if ((X == null ? void 0 : X.viewType) === "marketplace") {
-          u(lr(L));
+          if (!ownerCurrent()) return false;
+        u(lr(L));
           const tt = await xs(L);
+          if (!ownerCurrent()) return false;
           return (t({ workspaceKey: L, sessionId: tt, title: An }), tt);
         }
         if ((rt = j == null ? void 0 : j.history) != null && rt.length)
@@ -47296,8 +47901,10 @@ function K3({
           } catch (tt) {
             console.warn("[HubSidebar] Failed to save current session before new session", j.id, tt);
           }
+        if (!ownerCurrent()) return false;
         u(lr(L));
         const ye = await xs(L);
+          if (!ownerCurrent()) return false;
         return (t({ workspaceKey: L, sessionId: ye, title: An }), ge && b(pt.CHAT), ye);
       },
       [X == null ? void 0 : X.viewType, T, xs, u, Ie, Ne, Hn, ge, b, t, Qt, Ir],
@@ -47441,6 +48048,7 @@ function K3({
     }, []);
   (d.useEffect(() => kr, [kr]),
     d.useEffect(() => {
+      let startupDisposed = false;
       const L = Yn;
       ne.current ||
         se.current ||
@@ -47453,6 +48061,7 @@ function K3({
         (async () => {
           let j = !1;
           const oe = async (fe = L) => {
+            if (startupDisposed) return false;
             try {
               return !!(await Wt(fe));
             } catch (ye) {
@@ -47470,7 +48079,7 @@ function K3({
                   try {
                     if (
                       (await Qt(Me, { throwOnError: !0 })).some((Jt) => Jt.sessionId === tt) &&
-                      ((j = await rr(Me, tt)), j)
+                      !startupDisposed && ((j = await rr(Me, tt)), j)
                     )
                       return;
                   } catch (Ft) {
@@ -47492,21 +48101,25 @@ function K3({
               return;
             }
             try {
-              if ((await Qt(ye, { throwOnError: !0 })).some((rt) => rt.sessionId === Ue) && ((j = await rr(ye, Ue)), j))
+              if ((await Qt(ye, { throwOnError: !0 })).some((rt) => rt.sessionId === Ue) && !startupDisposed && ((j = await rr(ye, Ue)), j))
                 return;
             } catch (Me) {
               console.warn("[HubSidebar] Failed to load sessions for workspace", ye, Me);
             }
             j = await oe(ye);
           } finally {
-            ((se.current = !1), j ? ((ne.current = !0), kr()) : jc());
+            ((se.current = !1), !startupDisposed && (j ? ((ne.current = !0), kr()) : jc()));
           }
         })());
+      return () => { startupDisposed = true; };
     }, [kr, U.hasSession, u, Wt, H, Ae, rr, _e, S, ge, Qt, jc, Yn, e, Ne]));
   const Rc = d.useCallback(
       async (L) => {
         var oe, fe;
         const j = Ne(L);
+        if (window.GAMECOWORK_SHELL && !j) return;
+        const closeEpoch = gamecoworkWorkspaceTransition(L, "closing");
+        const closeCurrent = () => !window.GAMECOWORK_SHELL || gamecoworkWorkspaceOwnerEpoch(L) === closeEpoch;
         try {
           const ye = await fetch(`${window.location.origin}/api/tauri/hub/close-workspace`, {
             method: "POST",
@@ -47526,12 +48139,16 @@ function K3({
                 ),
               )
             )) {
+              if (closeCurrent()) gamecoworkWorkspaceTransition(L, "failed");
               console.warn("[HubSidebar] Failed to close workspace:", Ue);
               return;
             }
           }
+          if (!closeCurrent()) return;
           (u(Jx(L)), u(Yx(L)));
+          gamecoworkDetachClosedOwner(u, vh().getState(), L);
         } catch (ye) {
+          if (closeCurrent()) gamecoworkWorkspaceTransition(L, "failed");
           console.warn("[HubSidebar] Failed to close workspace", ye);
         }
       },
@@ -47655,7 +48272,8 @@ function K3({
           }
           await Qt(Ue, { force: !0 });
         } catch (Yt) {
-          (console.warn("[HubSidebar] Failed to update session", fe, Yt), u(Fi({ workspaceKey: Ue, sessions: Me })));
+          (Ba(Yt instanceof Error ? Yt.message : String(Yt)),
+            console.warn("[HubSidebar] Failed to update session", fe, Yt), u(Fi({ workspaceKey: Ue, sessions: Me })));
         }
       },
       [U.id, U.title, xs, u, t, Qt, f, C, e, Ne],
@@ -49107,6 +49725,12 @@ function hX(e, t) {
   return n != null && n.workspaceDir ? hd(n.workspaceDir) : fX(e);
 }
 function pX(e, t) {
+  if (typeof window !== "undefined" && window.GAMECOWORK_SHELL && e.hub.isHubMode) {
+    const id = t ?? e.session.activeSessionId;
+    const key = e.session.sessions[id]?.workspaceId || e.session.sessionIdToWorkspaceKey?.[id] || e.hub.activeWorkspaceKey;
+    const workspace = e.hub.workspaces.find(value => value.workspaceKey === key);
+    return workspace?.workspaceDir ? hd(workspace.workspaceDir) : undefined;
+  }
   var c, l, u, f, h, p;
   const n = t != null ? t : e.session.activeSessionId,
     s =

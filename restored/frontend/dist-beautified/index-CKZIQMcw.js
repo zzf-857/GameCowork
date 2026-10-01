@@ -257101,6 +257101,35 @@ function E8e() {
       ? n
       : "";
 }
+function gamecoworkNativeTitlebarMessage(kind) {
+  if (!window.GAMECOWORK_SHELL) return false;
+  const routes = {
+    "shell/startDragging": "/api/tauri/start-dragging",
+    "shell/titlebarDoubleClick": "/api/tauri/toggle-maximize-window",
+    "shell/macOSTitlebarDoubleClick": "/api/tauri/toggle-maximize-window",
+    "shell/minimizeWindow": "/api/tauri/minimize-window",
+    "shell/toggleMaximizeWindow": "/api/tauri/toggle-maximize-window",
+    "shell/closeWindow": "/api/tauri/close-window",
+  };
+  if (!Object.hasOwn(routes, kind)) return false;
+  L8e(routes[kind], E8e());
+  return true;
+}
+function gamecoworkSyncNativeMaximize(setMaximized) {
+  let active = true, sequence = 0, request;
+  const refresh = () => {
+    const issued = ++sequence;
+    request?.abort(); request = new AbortController();
+    return fetch(window.location.origin + "/api/tauri/window-state", { signal: AbortSignal.any([request.signal, AbortSignal.timeout(2500)]) })
+    .then(response => response.json()).then(state => {
+      if (active && issued === sequence && state.ok === true && typeof state.maximized === "boolean") setMaximized(state.maximized);
+    }).catch(() => {});
+  };
+  window.addEventListener("resize", refresh);
+  window.addEventListener("focus", refresh);
+  refresh();
+  return () => { active = false; sequence++; request?.abort(); window.removeEventListener("resize", refresh); window.removeEventListener("focus", refresh); };
+}
 function L8e(n, e) {
   fetch(`${window.location.origin}${n}`, {
     method: "POST",
@@ -257111,11 +257140,13 @@ function L8e(n, e) {
 function fbi() {
   const [n, e] = Cn.useState(!1);
   (Cn.useEffect(() => {
+    if (window.GAMECOWORK_SHELL) return gamecoworkSyncNativeMaximize(e);
     $N(async (s) => {
       e(await s.isMaximized());
     });
   }, []),
     Cn.useEffect(() => {
+      if (window.GAMECOWORK_SHELL) return;
       let s;
       return (
         $N(async (o) => {
@@ -257129,16 +257160,21 @@ function fbi() {
       );
     }, []));
   const t = Cn.useCallback(() => {
+      if (window.GAMECOWORK_SHELL) return L8e("/api/tauri/minimize-window", E8e());
       $N((s) => s.minimize()).catch(() => {
         L8e("/api/tauri/minimize-window", E8e());
       });
     }, []),
     i = Cn.useCallback(() => {
+      if (window.GAMECOWORK_SHELL) return L8e("/api/tauri/toggle-maximize-window", E8e());
       $N(async (s) => {
         (await s.toggleMaximize(), e(await s.isMaximized()));
+      }).catch(() => {
+        L8e("/api/tauri/toggle-maximize-window", E8e());
       });
     }, []),
     r = Cn.useCallback(() => {
+      if (window.GAMECOWORK_SHELL) return L8e("/api/tauri/close-window", E8e());
       $N((s) => s.close()).catch(() => {
         L8e("/api/tauri/close-window", E8e());
       });
@@ -259438,6 +259474,7 @@ function evi() {
           Le.key === "0" ? j({ reset: !0 }) : Le.key === "-" ? j({ delta: -1 }) : j({ delta: 1 })));
     },
     Me = async (Le) => {
+      if (window.GAMECOWORK_SHELL) return;
       if (Le.key === "F12" && navigator.userAgent.includes("Windows")) {
         (Le.preventDefault(), Le.stopPropagation());
         try {
@@ -259943,6 +259980,7 @@ function evi() {
               c(!1);
               return;
             }
+            if (gamecoworkNativeTitlebarMessage(ye.data?.messageType)) return;
             if (((Pn = ye.data) == null ? void 0 : Pn.messageType) === "shell/startDragging") {
               (async () => {
                 try {

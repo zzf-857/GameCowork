@@ -1,0 +1,800 @@
+# isServerInstalled
+occurrences=4
+
+## hit 1 @ 47224948
+```
+  @ -2012 tjhub/getRepositories
+  @ -1940 tjhub/getRepositories failed: 
+  @ -1892 tjhub/checkRosetta2
+  @ -1844 tjhub/installRosetta2
+  @ -1796 livePush/markRead
+  @ -1748 livePush.markRead
+  @ -1700 livePush/markRead failed: 
+  @ -1652 App state is not availableunavailablesrc\messages\lsp.rs%
+  @ -1572 Rust LSP manager is not available
+  @ -1508 lsp_errorRust LSP manager does not support 
+  @ -1428 unsupported_file raw response for 
+  @ -1340  error for 
+  @ -1252 Skipping didOpen sync for 
+  @ -1188 Failed to sync document with Rust LSP manager for 
+  @ -1076 Cannot resolve relative  path without initialized workspace: 
+  @  -980  filePath= line= char= session=
+  @  -844 locationslsp/hover
+  @  -772 textDocument/hoverhover
+  @  -700 lsp/documentSymbol
+  @  -580 textDocument/documentSymbolsymbolslsp/workspaceSymbol query=
+  @  -444 LSP manager does not have any available serverslsp/prepareCallHierarchy
+  @  -348 textDocument/prepareCallHierarchyitems
+  @  -260 callslsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+  @  -132 Failed to shutdown LSP manager during toggle: 
+  @    -4 lsp/isServerInstalledextensionName
+  @   +60 missing or invalid 'extensionName' field%
+  @  +124 lsp/goToDefinitionlsp/findReferenceslsp/goToImplementationlsp/incomingCallslsp/outgoingCallsUnsupported LSP message type: 
+  @  +268 callHierarchy/outgoingCallscallHierarchy/incomingCallstextDocument/implementationtextDocument/referencestextDocument/definition
+  @  +420 terminal/resizeUnknown terminal requestsrc\messages\terminal.rs
+  @  +508 closed
+  @  +532 Missing terminal session IDcolsrowsTerminal session not found
+  @  +644 input
+  @  +676 Invalid terminal input: 
+  @  +716 Missing terminal input
+  @  +764 started
+  @  +924 idle
+  @  +972 notFound@
+  @  +996 src\messages\tunnel.rs
+  @ +1044 Not logged in 
+  @ +1061  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized
+  @ +1188 logout: stopped  remote SSE bridge(s): 
+  @ +1260 SSE-Bridgelogout: no remote SSE bridges to stop
+  @ +1356 tauri/startTunnelmachineNamestartTunnel failed: 
+  @ +1420 tauri/stopTunnelX
+  @ +1460 tauri/getTunnelStatus
+  @ +1532 enableTunneltauri/setTunnelEnabled
+  @ +1596 setTunnelEnabled start failed: 
+  @ +1692 tauri/getTunnelEnabledtauri/listRemoteWorkspacesNot logged inexcludeSelfX
+  @ +1788 /api/v1/frp/remote-workspaces
+  @ +1852 exclude_tunnel_id=
+  @ +1916 exclude_machine_id=
+  @ +1980 Bearer 
+  @ +2004 AuthorizationHTTP client error: U
+  -- fragments --
+    · tjhub/getRepositories
+    · tjhub
+    · getRepositories
+    · tjhub/getRepositories failed:
+    · failed
+    · getRepositories failed:
+    · tjhub/checkRosetta2
+    · checkRosetta2
+    · tjhub/installRosetta2
+    · installRosetta2
+    · livePush/markRead
+    · livePush
+    · markRead
+    · livePush.markRead
+    · livePush/markRead failed:
+    · App state is not availableunavailable
+    · state
+    · availableunavailable
+    · src\messages\lsp.rs%
+    · messages
+    · messages\lsp.rs%
+    · Rust LSP manager is not available
+    · manager
+    · available
+    · lsp_errorRust LSP manager does not support
+    · errorRust
+    · support
+    · unsupported_file raw response for
+    · unsupported_file
+    · response
+    · error for
+    · error
+    · Skipping didOpen sync for
+    · didOpen
+    · Failed to sync document with Rust LSP manager for
+    · document
+    · Cannot resolve relative  path without initialized workspace:
+    · resolve
+    · relative
+    · without
+    · initialized
+    · workspace
+    · filePath= line= char= session=
+    · filePath
+    · session
+    · locations
+    · lsp/hover
+    · hover
+    · textDocument/hoverhover
+    · textDocument
+    · hoverhover
+    · lsp/documentSymbol
+    · documentSymbol
+    · textDocument/documentSymbolsymbols
+    · documentSymbolsymbols
+    · lsp/workspaceSymbol query=
+    · workspaceSymbol
+    · query
+    · workspaceSymbol query=
+    · LSP manager does not have any available servers
+    · servers
+    · lsp/prepareCallHierarchy
+    · prepareCallHierarchy
+    · textDocument/prepareCallHierarchyitems
+    · prepareCallHierarchyitems
+    · calls
+    · lsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabl
+    · setEnabledapp
+    · initializedenabledworkspace_dirmissing
+    · invalid
+    · enabl
+    · setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+    · enabled
+    · field
+    · Failed to shutdown LSP manager during toggle:
+    · shutdown
+    · during
+    · toggle
+    · lsp/isServerInstalledextensionName
+    · isServerInstalledextensionName
+    · missing or invalid 'extensionName' field%
+    · missing
+    · extensionName
+    · lsp/goToDefinition
+    · goToDefinition
+    · lsp/findReferences
+    · findReferences
+    · lsp/goToImplementation
+    · goToImplementation
+    · lsp/incomingCalls
+    · incomingCalls
+    · lsp/outgoingCallsUnsupported LSP message type:
+    · outgoingCallsUnsupported
+    · message
+    · outgoingCallsUnsupported LSP message type:
+    · callHierarchy
+    · outgoingCallscallHierarchy
+    · incomingCallstextDocument
+    · implementationtextDocument
+    · referencestextDocument
+    · definition
+    · terminal/resizeUnknown terminal request
+    · terminal
+    · resizeUnknown
+    · request
+    · src\messages\terminal.rs
+    · messages\terminal.rs
+    · closed
+    · Missing terminal session IDcolsrowsTerminal session not found
+    · IDcolsrowsTerminal
+    · found
+    · input
+    · Invalid terminal input:
+    · Missing terminal input
+    · started
+    · notFound@
+    · notFound
+    · src\messages\tunnel.rs
+    · tunnel
+    · messages\tunnel.rs
+    · Not logged in
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · tauri/startTunnelmachineNamestartTunnel failed:
+    · tauri
+    · startTunnelmachineNamestartTunnel
+    · startTunnelmachineNamestartTunnel failed:
+    · tauri/stopTunnelX
+    · stopTunnel
+    · stopTunnelX
+    · tauri/getTunnelStatus
+    · getTunnelStatus
+    · enableTunnel
+    · tauri/setTunnelEnabled
+    · setTunnelEnabled
+    · setTunnelEnabled start failed:
+    · start
+    · tauri/getTunnelEnabled
+    · getTunnelEnabled
+```
+
+## hit 2 @ 47422152
+```
+  @ -2008 Failed to watch workspace: 
+  @ -1960 File watch error: 
+  @ -1920 FileWatcher
+  @ -1832 RestartRestart requested; relaunching appcowork-settings.jsoncodely-appsettings.jsonMigrated legacy settings from  to 
+  @ -1680 src\app\settings.rs
+  @ -1632 cowork::app::settingsjson.lockjson.tmpFailed to create settings directory: 
+  @ -1536 Failed to serialize settings: 
+  @ -1488 Failed to open lock file: 
+  @ -1440 Failed to acquire file lock: 
+  @ -1392 Failed to write temp settings file: 
+  @ -1336 Failed to rename settings file: 
+  @ -1216 src\app\window_manager.rs
+  @ -1072 WindowManagerApp state not initialized for open_workspaceApp handle not available for open_workspaceCreateJobObjectW failed: 
+  @  -928 SetInformationJobObject failed: (
+  @  -880 OpenProcess() failed: 
+  @  -824 AssignProcessToJobObject failed: 
+  @  -768 EADDRINUSEEACCESpermission deniedENOENTCannot find moduleCoreProcess
+  @  -694  Missing Node.js module!   Solution: Reinstall dependencies.
+  @  -628  File or directory not found!   Solution: Verify that all required files are present.
+  @  -537  Permission denied!   Solution: Check file permissions.
+  @  -476  Port already in use! Another instance may be running.   Solution: Stop other instances or use a different port.CODELY_CLI_HOME.codely-clirelativePathnoneextension check: file= server= installed=
+  @  -232 src\lsp\manager.rs
+  @  -184 server check: file= binary=
+  @  -104  binary=none installed=false
+  @   -40 invalid binary name: 
+  @    +0 isServerInstalled  
+  @   +22  found= path=
+  @   +88 LSPmissing LSP config for server 
+  @  +144 failed to convert  to file URI
+  @  +208 where.exeAPPDATAnpmLOCALAPPDATAProgramsnodejsProgramFilesProgramFiles(x86)USERPROFILE.dotnettools.cargobin.omnisharpMicrosoftWinGetPackagesexecmdbatps1
+  @  +424 HOMEsrc\lsp\path.rs
+  @  +472 src\lsp\server_instance.rsserver state lock poisoned
+  @  +552 server error lock poisoned
+  @  +632 LSP server  is not started
+  @  +696  is starting
+  @  +744  is stopping
+  @  +792  is not running
+  @  +888 server ""
+  @  +936 extension "
+  @  +984 Upstream / source (from extension manifest): 
+  @ +1048 Install the language server for this stack and ensure its executable is on your PATH.[LSP] Cannot start : command not found: "" (ENOENT). . Cause: 
+  @ +1264 enoentos error 2no such file or directorycannot find the file
+  @ +1352 workspaceFoldersinitializationOptionsdynamicRegistrationworkspace folder should convert to file URI
+  @ +1480 src\messages\tunnel.rs
+  @ +1528 src\pet\queue.rs
+  @ +1616 idaccess_token=agentsunity-insight.tomlUnable to resolve ~/.codely-cli/agentsworkspaceDir is required for workspace-scoped agent toml
+  @ +1776 full matchsrc\unity\insight_agent_toml.rs
+  @ +1872 ${1}${2}
+  @ +1936 [run]
+  @ +2016 max_turns = 
+  -- fragments --
+    · Failed to watch workspace:
+    · watch
+    · workspace
+    · File watch error:
+    · error
+    · FileWatcher
+    · ileWatcher
+    · estartRestart
+    · requested
+    · relaunching
+    · appcowork
+    · settings
+    · jsoncodely
+    · appsettings
+    · jsonMigrated
+    · legacy
+    · src\app\settings.rs
+    · app\settings.rs
+    · cowork::app::settingsjson.lockjson.tmpFailed to create settings directory:
+    · cowork
+    · settingsjson
+    · lockjson
+    · tmpFailed
+    · create
+    · directory
+    · Failed to serialize settings:
+    · serialize
+    · Failed to open lock file:
+    · Failed to acquire file lock:
+    · acquire
+    · Failed to write temp settings file:
+    · write
+    · Failed to rename settings file:
+    · rename
+    · src\app\window_manager.rs
+    · window_manager
+    · app\window_manager.rs
+    · indowManagerApp
+    · state
+    · initialized
+    · workspaceApp
+    · handle
+    · available
+    · workspaceCreateJobObject
+    · failed
+    · SetInformationJobObject failed: (
+    · etInformationJobObject
+    · OpenProcess() failed:
+    · penProcess
+    · AssignProcessToJobObject failed:
+    · ssignProcessToJobObject
+    · EADDRINUSEEACCESpermission deniedENOENTCannot find moduleCoreProcess
+    · EADDRINUSEEACCESpermission
+    · ENOENTCannot
+    · moduleCoreProcess
+    · Missing Node.js module!   Solution: Reinstall dependencies.
+    · module
+    · dependencies
+    · File or directory not found!   Solution: Verify that all required files are present.
+    · found
+    · required
+    · files
+    · present
+    · Permission denied!   Solution: Check file permissions.
+    · denied
+    · permissions
+    · already
+    · instance
+    · running
+    · other
+    · instances
+    · different
+    · codely
+    · clirelativePathnoneextension
+    · check
+    · server
+    · installed
+    · src\lsp\manager.rs
+    · manager
+    · lsp\manager.rs
+    · server check: file= binary=
+    · binary
+    · binary=none installed=false
+    · false
+    · invalid binary name:
+    · invalid
+    · isServerInstalled
+    · found= path=
+    · LSPmissing LSP config for server
+    · LSPmissing
+    · config
+    · failed to convert  to file URI
+    · convert
+    · where
+    · APPDATAnpmLOCALAPPDATAProgramsnodejsProgramFilesProgramFiles
+    · dotnettools
+    · cargobin
+    · omnisharpMicrosoftWinGetPackagesexecmdbatps1
+    · src\lsp\path.rs
+    · lsp\path.rs
+    · src\lsp\server_instance.rsserver state lock poisoned
+    · server_instance
+    · rsserver
+    · poisoned
+    · lsp\server_instance.rsserver state lock poisoned
+    · server error lock poisoned
+    · LSP server  is not started
+    · started
+    · is starting
+    · starting
+    · is stopping
+    · stopping
+    · is not running
+    · server ""
+    · extension "
+    · extension
+    · Upstream / source (from extension manifest):
+    · source
+    · manifest
+    · language
+    · stack
+    · ensure
+    · executable
+    · start
+    · command
+    · enoentos error 2no such file or directorycannot find the file
+    · enoentos
+    · directorycannot
+    · workspaceFoldersinitializationOptionsdynamicRegistrationworkspace
+    · folder
+    · should
+    · src\messages\tunnel.rs
+    · messages
+    · tunnel
+    · messages\tunnel.rs
+    · src\pet\queue.rs
+    · queue
+    · pet\queue.rs
+    · idaccess_token
+    · agentsunity
+    · insight
+    · tomlUnable
+    · resolve
+    · agentsworkspaceDir
+    · scoped
+    · agent
+    · full match
+    · match
+    · src\unity\insight_agent_toml.rs
+    · unity
+```
+
+## hit 3 @ 47514012
+```
+  @ -1980 editor/selectAsset: forwarding to Unity (filepath=
+  @ -1892 editor/selectAsset called with empty filepath
+  @ -1820 Empty filepath
+  @ -1764 editor/selectAsset: sent to Unity OK
+  @ -1700 editor/selectAsset failed: 
+  @ -1604 editor/selectAssetApp state is not availableunavailablesrc\messages\lsp.rs
+  @ -1500 Rust LSP manager is not available
+  @ -1436 lsp_errorRust LSP manager does not support 
+  @ -1356 unsupported_file raw response for 
+  @ -1268  error for 
+  @ -1180 Skipping didOpen sync for 
+  @ -1116 Failed to sync document with Rust LSP manager for 
+  @ -1004 Cannot resolve relative  path without initialized workspace: 
+  @  -908  filePath= line= char= session=
+  @  -772 locations
+  @  -708 textDocument/hoverhover
+  @  -540 textDocument/documentSymbolsymbols query=
+  @  -420 LSP manager does not have any available servers
+  @  -348 textDocument/prepareCallHierarchyitems
+  @  -260 callslsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+  @  -132 Failed to shutdown LSP manager during toggle: 
+  @    -4 lsp/isServerInstalledextensionName
+  @   +60 missing or invalid 'extensionName' field
+  @  +124 Unsupported LSP message type: 
+  @  +172 callHierarchy/outgoingCallscallHierarchy/incomingCallstextDocument/implementationtextDocument/referencestextDocument/definition
+  @  +324 terminal/resizeUnknown terminal requestsrc\messages\terminal.rs
+  @  +412 closed
+  @  +436 Missing terminal session IDcolsrowsTerminal session not found
+  @  +548 input
+  @  +556 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+  @  +667 ?456789:;<=
+  @  +723  !"#$%&'()*+,-./0123
+  @  +900 Invalid terminal input:  
+  @  +940 Missing terminal input
+  @  +988 started
+  @ +1148 idle
+  @ +1196 notFoundH
+  @ +1220 src\messages\tunnel.rs
+  @ +1268 App state not initializedNot logged in 
+  @ +1310  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized`
+  @ +1436 logout: stopped  remote SSE bridge(s): 
+  @ +1508 SSE-Bridgelogout: no remote SSE bridges to stop
+  @ +1644 startTunnel failed: 
+  @ +1812 enableTunnel
+  @ +1892 setTunnelEnabled start failed: 
+  @ +2012 Not logged inexcludeSelf`
+  -- fragments --
+    · editor/selectAsset: forwarding to Unity (filepath=
+    · editor
+    · selectAsset
+    · forwarding
+    · filepath
+    · selectAsset: forwarding to Unity (filepath=
+    · editor/selectAsset called with empty filepath
+    · called
+    · empty
+    · selectAsset called with empty filepath
+    · Empty filepath
+    · editor/selectAsset: sent to Unity OK
+    · selectAsset: sent to Unity OK
+    · editor/selectAsset failed:
+    · failed
+    · selectAsset failed:
+    · editor/selectAssetApp state is not availableunavailable
+    · selectAssetApp
+    · state
+    · availableunavailable
+    · src\messages\lsp.rs
+    · messages
+    · messages\lsp.rs
+    · selectAssetApp state is not availableunavailable
+    · Rust LSP manager is not available
+    · manager
+    · available
+    · lsp_errorRust LSP manager does not support
+    · errorRust
+    · support
+    · unsupported_file raw response for
+    · unsupported_file
+    · response
+    · error for
+    · error
+    · Skipping didOpen sync for
+    · didOpen
+    · Failed to sync document with Rust LSP manager for
+    · document
+    · Cannot resolve relative  path without initialized workspace:
+    · resolve
+    · relative
+    · without
+    · initialized
+    · workspace
+    · filePath= line= char= session=
+    · filePath
+    · session
+    · locations
+    · textDocument/hoverhover
+    · textDocument
+    · hoverhover
+    · textDocument/documentSymbolsymbols query=
+    · documentSymbolsymbols
+    · query
+    · LSP manager does not have any available servers
+    · servers
+    · textDocument/prepareCallHierarchyitems
+    · prepareCallHierarchyitems
+    · calls
+    · lsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabl
+    · setEnabledapp
+    · initializedenabledworkspace_dirmissing
+    · invalid
+    · enabl
+    · setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+    · enabled
+    · field
+    · Failed to shutdown LSP manager during toggle:
+    · shutdown
+    · during
+    · toggle
+    · lsp/isServerInstalledextensionName
+    · isServerInstalledextensionName
+    · missing or invalid 'extensionName' field
+    · missing
+    · extensionName
+    · Unsupported LSP message type:
+    · message
+    · callHierarchy
+    · outgoingCallscallHierarchy
+    · incomingCallstextDocument
+    · implementationtextDocument
+    · referencestextDocument
+    · definition
+    · terminal/resizeUnknown terminal request
+    · terminal
+    · resizeUnknown
+    · request
+    · src\messages\terminal.rs
+    · messages\terminal.rs
+    · closed
+    · Missing terminal session IDcolsrowsTerminal session not found
+    · IDcolsrowsTerminal
+    · found
+    · input
+    · ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+    · ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+    · ?456789:;<=
+    · !"#$%&'()*+,-./0123
+    · Invalid terminal input:
+    · Missing terminal input
+    · started
+    · notFoundH
+    · notFound
+    · src\messages\tunnel.rs
+    · tunnel
+    · messages\tunnel.rs
+    · App state not initializedNot logged in
+    · initializedNot
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · startTunnel failed:
+    · startTunnel
+    · enableTunnel
+    · setTunnelEnabled start failed:
+    · setTunnelEnabled
+    · start
+    · Not logged inexcludeSelf`
+    · inexcludeSelf
+```
+
+## hit 4 @ 47716524
+```
+  @ -1964 editor/selectAsset called with empty filepath
+  @ -1892 Empty filepath
+  @ -1836 editor/selectAsset: sent to Unity OK
+  @ -1772 editor/selectAsset failed: 
+  @ -1676 editor/selectAssetApp state is not availableunavailablesrc\messages\lsp.rs
+  @ -1572 Rust LSP manager is not available
+  @ -1508 lsp_errorRust LSP manager does not support 
+  @ -1428 unsupported_file raw response for 
+  @ -1340  error for 
+  @ -1252 Skipping didOpen sync for 
+  @ -1188 Failed to sync document with Rust LSP manager for 
+  @ -1076 Cannot resolve relative  path without initialized workspace: 
+  @  -980  filePath= line= char= session=
+  @  -844 locationslsp/hover
+  @  -772 textDocument/hoverhover
+  @  -700 lsp/documentSymbol
+  @  -580 textDocument/documentSymbolsymbolslsp/workspaceSymbol query=
+  @  -444 LSP manager does not have any available serverslsp/prepareCallHierarchy
+  @  -348 textDocument/prepareCallHierarchyitems
+  @  -260 callslsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+  @  -132 Failed to shutdown LSP manager during toggle: 
+  @    -4 lsp/isServerInstalledextensionName
+  @   +60 missing or invalid 'extensionName' fieldW*
+  @  +124 lsp/goToDefinitionlsp/findReferenceslsp/goToImplementationlsp/incomingCallslsp/outgoingCallsUnsupported LSP message type: 
+  @  +268 callHierarchy/outgoingCallscallHierarchy/incomingCallstextDocument/implementationtextDocument/referencestextDocument/definition
+  @  +420 terminal/writeterminal/resizeterminal/readUnknown terminal requestsrc\messages\terminal.rs
+  @  +540 closed
+  @  +564 Missing terminal session IDcolsrowsTerminal session not found
+  @  +676 input
+  @  +684 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+  @  +795 ?456789:;<=
+  @  +851  !"#$%&'()*+,-./0123
+  @ +1028 Invalid terminal input: 
+  @ +1068 Missing terminal input
+  @ +1116 started
+  @ +1204 output
+  @ +1284 idle
+  @ +1332 notFound
+  @ +1356 src\messages\tunnel.rs
+  @ +1404 App state not initializedNot logged in 
+  @ +1446  no access tokenHTTP server port not setTunnellogout tunnel cleanup skipped: app state not initialized
+  @ +1572 logout: stopped  remote SSE bridge(s): 
+  @ +1644 SSE-Bridgelogout: no remote SSE bridges to stop
+  @ +1764 tauri/startTunnel
+  @ +1804 startTunnel failed: 
+  @ +1844 tauri/stopTunnel
+  @ +1924 tauri/getTunnelStatus
+  @ +2012 enableTunneltauri/setTunnelEnabled
+  -- fragments --
+    · editor/selectAsset called with empty filepath
+    · editor
+    · selectAsset
+    · called
+    · empty
+    · filepath
+    · selectAsset called with empty filepath
+    · Empty filepath
+    · editor/selectAsset: sent to Unity OK
+    · selectAsset: sent to Unity OK
+    · editor/selectAsset failed:
+    · failed
+    · selectAsset failed:
+    · editor/selectAssetApp state is not availableunavailable
+    · selectAssetApp
+    · state
+    · availableunavailable
+    · src\messages\lsp.rs
+    · messages
+    · messages\lsp.rs
+    · selectAssetApp state is not availableunavailable
+    · Rust LSP manager is not available
+    · manager
+    · available
+    · lsp_errorRust LSP manager does not support
+    · errorRust
+    · support
+    · unsupported_file raw response for
+    · unsupported_file
+    · response
+    · error for
+    · error
+    · Skipping didOpen sync for
+    · didOpen
+    · Failed to sync document with Rust LSP manager for
+    · document
+    · Cannot resolve relative  path without initialized workspace:
+    · resolve
+    · relative
+    · without
+    · initialized
+    · workspace
+    · filePath= line= char= session=
+    · filePath
+    · session
+    · locations
+    · lsp/hover
+    · hover
+    · textDocument/hoverhover
+    · textDocument
+    · hoverhover
+    · lsp/documentSymbol
+    · documentSymbol
+    · textDocument/documentSymbolsymbols
+    · documentSymbolsymbols
+    · lsp/workspaceSymbol query=
+    · workspaceSymbol
+    · query
+    · workspaceSymbol query=
+    · LSP manager does not have any available servers
+    · servers
+    · lsp/prepareCallHierarchy
+    · prepareCallHierarchy
+    · textDocument/prepareCallHierarchyitems
+    · prepareCallHierarchyitems
+    · calls
+    · lsp/setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabl
+    · setEnabledapp
+    · initializedenabledworkspace_dirmissing
+    · invalid
+    · enabl
+    · setEnabledapp state not initializedenabledworkspace_dirmissing or invalid 'enabled' field
+    · enabled
+    · field
+    · Failed to shutdown LSP manager during toggle:
+    · shutdown
+    · during
+    · toggle
+    · lsp/isServerInstalledextensionName
+    · isServerInstalledextensionName
+    · missing or invalid 'extensionName' fieldW*
+    · missing
+    · extensionName
+    · lsp/goToDefinition
+    · goToDefinition
+    · lsp/findReferences
+    · findReferences
+    · lsp/goToImplementation
+    · goToImplementation
+    · lsp/incomingCalls
+    · incomingCalls
+    · lsp/outgoingCallsUnsupported LSP message type:
+    · outgoingCallsUnsupported
+    · message
+    · outgoingCallsUnsupported LSP message type:
+    · callHierarchy
+    · outgoingCallscallHierarchy
+    · incomingCallstextDocument
+    · implementationtextDocument
+    · referencestextDocument
+    · definition
+    · terminal/writeterminal/resizeterminal/readUnknown terminal request
+    · terminal
+    · writeterminal
+    · resizeterminal
+    · readUnknown
+    · request
+    · src\messages\terminal.rs
+    · messages\terminal.rs
+    · closed
+    · Missing terminal session IDcolsrowsTerminal session not found
+    · IDcolsrowsTerminal
+    · found
+    · input
+    · ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+    · ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+    · ?456789:;<=
+    · !"#$%&'()*+,-./0123
+    · Invalid terminal input:
+    · Missing terminal input
+    · started
+    · output
+    · notFound
+    · src\messages\tunnel.rs
+    · tunnel
+    · messages\tunnel.rs
+    · App state not initializedNot logged in
+    · initializedNot
+    · logged
+    · access
+    · server
+    · setTunnellogout
+    · cleanup
+    · skipped
+    · logout: stopped  remote SSE bridge(s):
+    · logout
+    · stopped
+    · remote
+    · bridge
+    · SSE-Bridgelogout: no remote SSE bridges to stop
+    · bridges
+    · tauri/startTunnel
+    · tauri
+    · startTunnel
+    · startTunnel failed:
+    · tauri/stopTunnel
+    · stopTunnel
+    · tauri/getTunnelStatus
+    · getTunnelStatus
+    · enableTunnel
+```

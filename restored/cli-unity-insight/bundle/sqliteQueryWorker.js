@@ -1,4 +1,5 @@
 import { createRequire as __unityInsightCreateRequire } from "node:module";
+import { indexDirectory as __gcuInsightIndexDirectory } from "./gamecowork-worker-paths.js";
 import { fileURLToPath as __unityInsightFileURLToPath } from "node:url";
 import { dirname as __unityInsightDirname } from "node:path";
 const __filename = __unityInsightFileURLToPath(import.meta.url);
@@ -6495,7 +6496,7 @@ var Ql = pe.join(".gamecowork-cli", "UnityInsight"),
   Xl = ".index.write.lock.db",
   Zl = ".serve.lock";
 function rt(t) {
-  let e = pe.join(t, Ql);
+  let e = __gcuInsightIndexDirectory(t, pe.join(t, Ql));
   return {
     projectPath: t,
     indexDirectoryPath: e,

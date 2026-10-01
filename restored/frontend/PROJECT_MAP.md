@@ -1,5 +1,7 @@
 # 前端产物图谱（dist → 工程结构还原索引）
 
+> 2026-10-01 交接说明：本文是初次提取时的结构索引；下文“仅格式化、未改逻辑”不再适用于当前维护版本。当前两代前端已补宿主协议、本地身份、工作区、文件、自定义与预览适配，真实入口仍是 dist-beautified/；运行结论见 [RESTORE_STATUS.md](../../RESTORE_STATUS.md)，接手见 [HANDOFF.md](../../HANDOFF.md)。
+
 > 原件: `original/Tuanjie Cowork/app/resource/dist/`（87MB, 461 JS + 9 CSS + 字体/图标）
 > 美化版: `restored/frontend/dist-beautified/`（479 个 JS/CSS/HTML 全量 prettier 化，零失败）
 > 构建工具: Vite（产物命名 `name-HASH.js`）；双入口共享同一 `assets/` 目录（两次构建的 chunk 并存，如 `GLTFLoader-8WqSWalt` 与 `GLTFLoader-D_VqbMdM`）

@@ -1,0 +1,1772 @@
+{
+  "name": "csharp-ls",
+  "version": "0.21.0",
+  "source": "https://api.nuget.org/v3/index.json",
+  "sourceDocumentation": "https://github.com/razzmatazz/csharp-language-server/tree/0.21.0",
+  "purpose": "Frozen GameCowork C# LSP maintenance input; product acceptance is recorded separately in RESTORE_STATUS.md",
+  "sdk": "10.0.103",
+  "runtimeRequirement": {
+    "framework": "Microsoft.NETCore.App",
+    "majorVersion": 10,
+    "sdkRequired": true,
+    "bundled": false,
+    "validatedSdk": "10.0.103"
+  },
+  "entry": {
+    "executable": "runtime/csharp-ls.exe",
+    "managedAssembly": "runtime/.store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/CSharpLanguageServer.dll",
+    "shimUsesRelativeAssemblyPath": true,
+    "renamed": false
+  },
+  "preparationLedgerSha256": "B9AB61F38084A89ED45B45EFDAC97A9553707DD337A45A02C782790E7BF2D234",
+  "package": {
+    "id": "csharp-ls",
+    "version": "0.21.0",
+    "registry": "https://api.nuget.org/v3/index.json",
+    "url": "https://api.nuget.org/v3-flatcontainer/csharp-ls/0.21.0/csharp-ls.0.21.0.nupkg",
+    "repository": "https://github.com/razzmatazz/csharp-language-server",
+    "repositoryCommit": "e1f0534a843db516024dc0b2a74df27b9e24adc6",
+    "path": "runtime/.store/csharp-ls/0.21.0/csharp-ls/0.21.0/csharp-ls.0.21.0.nupkg",
+    "sha256": "5C5CD327B51668540498599D63FCD8E338CA65A28AF5A52AE196EDDE1FB5F5B8",
+    "licenseExpression": "MIT",
+    "rawArchiveSha512": "/UakxdLfRYNAmkDG1ruYIRa9uz4lfM6udnjaGqKr/ZH76+FP6mEVz78IKIkT0cPryZEJhQdLZ5htGY5sbpIurw==",
+    "cachedArchiveSha512": "TDj8+wr5P9e6dZZOb12+AatfOTfsGwZEgCiCGBO7aAIUxdWHzW9EA2RkcPkc6mm29oJLTQdlksIEjiT37woNSg==",
+    "nugetContentHash": "/QRWKu1swiQ3nv4fJ1DKscqm/Ef73M5Ih/boEwizEjV+52IKzpKVn0bTIqwqCj+W576o8znM5rHy6bbl5JwIcA==",
+    "hashSemantics": {
+      "documentation": "https://github.com/NuGet/Home/wiki/Nupkg-Metadata-File",
+      "note": "rawArchiveSha512 hashes the full frozen signed archive; cachedArchiveSha512 preserves the original installer-generated .nupkg.sha512 value, which differs from these bytes; nugetContentHash preserves the signature-independent .nupkg.metadata contentHash. Integrity uses each frozen file SHA256 and the compiler-pinned ledger, not the cachedArchiveSha512 value."
+    },
+    "officialArchiveRechecked": {
+      "url": "https://api.nuget.org/v3-flatcontainer/csharp-ls/0.21.0/csharp-ls.0.21.0.nupkg",
+      "sha256": "5C5CD327B51668540498599D63FCD8E338CA65A28AF5A52AE196EDDE1FB5F5B8",
+      "bytesEqual": true,
+      "date": "2026-10-01"
+    }
+  },
+  "license": {
+    "expression": "MIT",
+    "path": "LICENSE",
+    "source": "https://raw.githubusercontent.com/razzmatazz/csharp-language-server/0.21.0/LICENSE",
+    "commitSource": "https://raw.githubusercontent.com/razzmatazz/csharp-language-server/e1f0534a843db516024dc0b2a74df27b9e24adc6/LICENSE",
+    "copyright": "Copyright (c) 2020-2021 Saulius Menkevičius",
+    "sha256": "2077A187C02688A6E2E816EA81F846667C50D09C2EE5C7F0F82594B452E63118",
+    "bytesPreserved": true
+  },
+  "bundledDependencies": {
+    "source": "CSharpLanguageServer.deps.json from the frozen csharp-ls NuGet package; these assemblies are bundled by that upstream package, not separately restored by GameCowork",
+    "packages": [
+      {
+        "idAndVersion": "Argu/6.2.5",
+        "sha512": "sha512-68vfXYZCcyTFtC11Z26+S4cSyEPiUJ8PL+iGuYpIbCsH+TN27bIxV/QczHXus/+iSCOfjMJsBffBC90mlzKXrw=="
+      },
+      {
+        "idAndVersion": "Castle.Core/5.2.1",
+        "sha512": "sha512-wHARzQA695jwwKreOzNsq54KiGqKP38tv8hi8e2FXDEC/sA6BtrX90tVPDkOfVu13PbEzr00TCV8coikl+D1Iw=="
+      },
+      {
+        "idAndVersion": "FSharp.Control.AsyncSeq/3.2.1",
+        "sha512": "sha512-bkCq5ZOVeyvyS7sjv95tsyMNLQJ+F0Sj8E3wJQLwvCqd18XQVCV7BxclgUg72m2Z12rL2bLd09Vg69Ifcb365Q=="
+      },
+      {
+        "idAndVersion": "FSharp.Core/6.0.0",
+        "sha512": "sha512-fbv1UwJ2LXVcFCt+GGDPu0sIYA5C6gdDvAupDj3iLQF3clRkua/6J33f+FiGQa8P1tEa+zmz3wrjoTnXZ1UiYg=="
+      },
+      {
+        "idAndVersion": "Humanizer.Core/2.14.1",
+        "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw=="
+      },
+      {
+        "idAndVersion": "ICSharpCode.Decompiler/9.1.0.7988",
+        "sha512": "sha512-N5HEh7n/9GpnkH6ojwPbzWbO1Ma+SFZCKafz69uRLnkt/bWzPON7wf7NLxTdU/fGWPnG2TEXRsu5DnRyvIQSaQ=="
+      },
+      {
+        "idAndVersion": "Ionide.LanguageServerProtocol/0.7.0",
+        "sha512": "sha512-MPpWEs3tMXgYET7vY6kqZTMFT0U4avft1Kl0YRmiXp+mXQrXUWZchHelmOQFVszJvX6Vb/yHTPYsMqD+6ZlLoQ=="
+      },
+      {
+        "idAndVersion": "MessagePack/2.5.108",
+        "sha512": "sha512-kcVRbdWP3xNWLZmmpm4DFO+kuXf6mUR2mHZ27WoZIEFIv9hazuUd80injXhNrZnlq/FklAdCsLOil5M76I4Ndg=="
+      },
+      {
+        "idAndVersion": "MessagePack.Annotations/2.5.108",
+        "sha512": "sha512-28aNCvfJClgwaKr26gf2S6LT+C1PNyPxiG+ihYpy8uCJsRLJEDoCt2I0Uk5hqOPQ8P8hI0ESy520oMkZkPmsOQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.Bcl.AsyncInterfaces/9.0.0",
+        "sha512": "sha512-owmu2Cr3IQ8yQiBleBHlGk8dSQ12oaF2e7TpzwJKEl4m84kkZJjEY1n33L67Y3zM5jPOjmmbdHjbfiL0RqcMRQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.Build.Locator/1.9.1",
+        "sha512": "sha512-UTO1acAAxYkpI8lU9ff5D9kn4p85bFwph28Y3QPVM9qy5HKQy3kpB6gWcuVGtlSPtvfzfC67CMDHO/JDys2gNQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis/5.0.0",
+        "sha512": "sha512-X7vItpZDkGm4NS2wp4P1S07Z1e61LaBWDW5tPXE1c6z5/x9KbF2RymhAPoYg7Qoiyk7odEZ6EjBEJ47p3dBpYQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Common/5.0.0",
+        "sha512": "sha512-ZXRAdvH6GiDeHRyd3q/km8Z44RoM6FBWHd+gen/la81mVnAdHTEsEkO5J0TCNXBymAcx5UYKt5TvgKBhaLJEow=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.CSharp/5.0.0",
+        "sha512": "sha512-5DSyJ9bk+ATuDy7fp2Zt0mJStDVKbBoiz1DyfAwSa+k4H4IwykAUcV3URelw5b8/iVbfSaOwkwmPUZH6opZKCw=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.CSharp.Features/5.0.0",
+        "sha512": "sha512-Hbf3tvBghC+7S9+LuJXajgPVhjwdZO9+U4FPSTFuKbeLAunwpcbxZdJ+GXf7XJQ9bBJvBlzIDupHjMAgE5i1uQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.CSharp.Workspaces/5.0.0",
+        "sha512": "sha512-Al/Q8B+yO8odSqGVpSvrShMFDvlQdIBU//F3E6Rb0YdiLSALE9wh/pvozPNnfmh5HDnvU+mkmSjpz4hQO++jaA=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Elfie/1.0.0",
+        "sha512": "sha512-r12elUp4MRjdnRfxEP+xqVSUUfG3yIJTBEJGwbfvF5oU4m0jb9HC0gFG28V/dAkYGMkRmHVi3qvrnBLQSw9X3Q=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Features/5.0.0",
+        "sha512": "sha512-2SFKBDQFHiqwUS4JncpuXyNDhlo8x4EHLCE6IIb22ZfPxFRd1baLP9PA9WY4xJVdmxgHOok7XngDdIY2MZ69JQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Scripting.Common/5.0.0",
+        "sha512": "sha512-XTulByMNxqXGCgMeODUoG2h4oK4/nLv1BcawRVcjv+UZHMpoaymtdaq3cJqlNrEvYEcbU48g5swJ3RhY1m3fBg=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.VisualBasic/5.0.0",
+        "sha512": "sha512-sUBWvHs2HgHGA+b716dgjS7JiXGen5ntyohAurPLR1ZiZzFp3FlnVA7GrMTqVGdVJTVqiC3c4K8k1bk0gj6IPg=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.VisualBasic.Workspaces/5.0.0",
+        "sha512": "sha512-Nom4UuZVEZGaV6Qa+joJR/BawXZMtflvQJFKc0SaUc3LrZr/8LmRY5cn8mbvLOWIVfwWkQz+cVE6eQKu9qa65g=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Workspaces.Common/5.0.0",
+        "sha512": "sha512-ZbUmIvT6lqTNKiv06Jl5wf0MTMi1vQ1oH7ou4CLcs2C/no/L7EhP3T8y3XXvn9VbqMcJaJnEsNA1jwYUMgc5jg=="
+      },
+      {
+        "idAndVersion": "Microsoft.CodeAnalysis.Workspaces.MSBuild/5.0.0",
+        "sha512": "sha512-/G+LVoAGMz6Ae8nm+PGLxSw+F5RjYx/J7irbTO5uKAPw1bxHyQJLc/YOnpDxt+EpPtYxvC9wvBsg/kETZp1F9Q=="
+      },
+      {
+        "idAndVersion": "Microsoft.DiaSymReader/2.0.0",
+        "sha512": "sha512-QcZrCETsBJqy/vQpFtJc+jSXQ0K5sucQ6NUFbTNVHD4vfZZOwjZ/3sBzczkC4DityhD3AVO/+K/+9ioLs1AgRA=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Caching.Abstractions/9.0.9",
+        "sha512": "sha512-NgtRHOdPrAEacfjXLSrH/SRrSqGf6Vaa6d16mW2yoyJdg7AJr0BnBvxkv7PkCm/CHVyzojTK7Y+oUDEulqY1Qw=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Caching.Memory/9.0.9",
+        "sha512": "sha512-ln31BtsDsBQxykJgxuCtiUXWRET9FmqeEq0BpPIghkYtGpDDVs8ZcLHAjCCzbw6aGoLek4Z7JaDjSO/CjOD0iw=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Configuration/9.0.9",
+        "sha512": "sha512-w87wF/90/VI0ZQBhf4rbMEeyEy0vi2WKjFmACsNAKNaorY+ZlVz7ddyXkbADvaWouMKffNmR0yQOGcrvSSvKGg=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Configuration.Abstractions/9.0.9",
+        "sha512": "sha512-p5RKAY9POvs3axwA/AQRuJeM8AHuE8h4qbP1NxQeGm0ep46aXz1oCLAp/oOYxX1GsjStgdhHrN3XXLLXr0+b3w=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Configuration.Binder/9.0.9",
+        "sha512": "sha512-6SIp/6Bngk4jm2W36JekZbiIbFPdE/eMUtrJEqIqHGpd1zar3jvgnwxnpWQfzUiGrkyY8q8s6V82zkkEZozghA=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.DependencyInjection/9.0.9",
+        "sha512": "sha512-zQV2WOSP+3z1EuK91ULxfGgo2Y75bTRnmJHp08+w/YXAyekZutX/qCd88/HOMNh35MDW9mJJJxPpMPS+1Rww8A=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.9",
+        "sha512": "sha512-/hymojfWbE9AlDOa0mczR44m00Jj+T3+HZO0ZnVTI032fVycI0ZbNOVFP6kqZMcXiLSYXzR2ilcwaRi6dzeGyA=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Logging/9.0.9",
+        "sha512": "sha512-MaCB0Y9hNDs4YLu3HCJbo199WnJT8xSgajG1JYGANz9FkseQ5f3v/llu3HxLI6mjDlu7pa7ps9BLPWjKzsAAzQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Logging.Abstractions/9.0.9",
+        "sha512": "sha512-FEgpSF+Z9StMvrsSViaybOBwR0f0ZZxDm8xV5cSOFiXN/t+ys+rwAlTd/6yG7Ld1gfppgvLcMasZry3GsI9lGA=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Logging.Configuration/9.0.9",
+        "sha512": "sha512-Abuo+S0Sg+Ke6vzSh5Ell+lwJJM+CEIqg1ImtWnnqF6a/ibJkQnmFJi4/ekEw/0uAcdFKJXtGV7w6cFN0nyXeg=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Logging.Console/9.0.9",
+        "sha512": "sha512-x3+W7IfW9Tg3sV+sU9N1039M4CqklaAecwhz9qNtjOCBdmg7h96JaL+NAvhYgZgweVJTJaxAvuO8I+ZZehE7Pg=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Options/9.0.9",
+        "sha512": "sha512-loxGGHE1FC2AefwPHzrjPq7X92LQm64qnU/whKfo6oWaceewPUVYQJBJs3S3E2qlWwnCpeZ+dGCPTX+5dgVAuQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.9",
+        "sha512": "sha512-n4DCdnn2qs6V5U06Sx62FySEAZsJiJJgOzrPHDh9hPK7c2W8hEabC76F3Re3tGPjpiKa02RvB6FxZyxo8iICzg=="
+      },
+      {
+        "idAndVersion": "Microsoft.Extensions.Primitives/9.0.9",
+        "sha512": "sha512-z4pyMePOrl733ltTowbN565PxBw1oAr8IHmIXNDiDqd22nFpYltX9KhrNC/qBWAG1/Zx5MHX+cOYhWJQYCO/iw=="
+      },
+      {
+        "idAndVersion": "Microsoft.NET.StringTools/18.0.2",
+        "sha512": "sha512-cTZw3GHkAlqZACYGeQT3niS3UfVQ8CH0O5+zUdhxstrg1Z8Q2ViXYFKjSxHmEXTX85mrOT/QnHZOeQhhSsIrkQ=="
+      },
+      {
+        "idAndVersion": "Microsoft.VisualStudio.SolutionPersistence/1.0.52",
+        "sha512": "sha512-oNv2JtYXhpdJrX63nibx1JT3uCESOBQ1LAk7Dtz/sr0+laW0KRM6eKp4CZ3MHDR2siIkKsY8MmUkeP5DKkQQ5w=="
+      },
+      {
+        "idAndVersion": "Microsoft.VisualStudio.Threading/17.6.40",
+        "sha512": "sha512-hLa/0xargG7p3bF7aeq2/lRYn/bVnfZXurUWVHx+MNqxxAUjIDMKi4OIOWbYQ/DTkbn9gv8TLvgso+6EtHVQQg=="
+      },
+      {
+        "idAndVersion": "Microsoft.VisualStudio.Validation/17.6.11",
+        "sha512": "sha512-J+9L/iac6c8cwcgVSCMuoIYOlD1Jw4mbZ8XMe1IZVj8p8+3dJ46LnnkIkTRMjK7xs9UtU9MoUp1JGhWoN6fAEw=="
+      },
+      {
+        "idAndVersion": "Nerdbank.Streams/2.10.66",
+        "sha512": "sha512-EGobw+A+npVNAnPbrpJAuPsKkdA9a9UPG0RPDmlpZSi4m1mJZVzZJFuNtNB+CcaeOKfZuEr5Dd05/FQIELDqiA=="
+      },
+      {
+        "idAndVersion": "Newtonsoft.Json/13.0.4",
+        "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
+      },
+      {
+        "idAndVersion": "NuGet.Frameworks/6.14.0",
+        "sha512": "sha512-xZ37J58DQAkVUX29qoMwla26iBYRScdcfSGNe1FIZjCX1tpafN9n7TinrkRxaJqYzW0D8Ob8a3eRSYhwEUauCA=="
+      },
+      {
+        "idAndVersion": "StreamJsonRpc/2.16.36",
+        "sha512": "sha512-MJMuMV+BKaM+WouDHBiN5mZv3E6GtpQPXMWWnSwGmv5YnJmNqycnS5QwzGgY+IZd6Y7kyXdhsVPtOb8c5L4Nvg=="
+      },
+      {
+        "idAndVersion": "System.Composition/9.0.0",
+        "sha512": "sha512-3Djj70fFTraOarSKmRnmRy/zm4YurICm+kiCtI0dYRqGJnLX6nJ+G3WYuFJ173cAPax/gh96REcbNiVqcrypFQ=="
+      },
+      {
+        "idAndVersion": "System.Composition.AttributedModel/9.0.0",
+        "sha512": "sha512-iri00l/zIX9g4lHMY+Nz0qV1n40+jFYAmgsaiNn16xvt2RDwlqByNG4wgblagnDYxm3YSQQ0jLlC/7Xlk9CzyA=="
+      },
+      {
+        "idAndVersion": "System.Composition.Convention/9.0.0",
+        "sha512": "sha512-+vuqVP6xpi582XIjJi6OCsIxuoTZfR0M7WWufk3uGDeCl3wGW6KnpylUJ3iiXdPByPE0vR5TjJgR6hDLez4FQg=="
+      },
+      {
+        "idAndVersion": "System.Composition.Hosting/9.0.0",
+        "sha512": "sha512-OFqSeFeJYr7kHxDfaViGM1ymk7d4JxK//VSoNF9Ux0gpqkLsauDZpu89kTHHNdCWfSljbFcvAafGyBoY094btQ=="
+      },
+      {
+        "idAndVersion": "System.Composition.Runtime/9.0.0",
+        "sha512": "sha512-w1HOlQY1zsOWYussjFGZCEYF2UZXgvoYnS94NIu2CBnAGMbXFAX8PY8c92KwUItPmowal68jnVLBCzdrWLeEKA=="
+      },
+      {
+        "idAndVersion": "System.Composition.TypedParts/9.0.0",
+        "sha512": "sha512-aRZlojCCGEHDKqh43jaDgaVpYETsgd7Nx4g1zwLKMtv4iTo0627715ajEFNpEEBTgLmvZuv8K0EVxc3sM4NWJA=="
+      },
+      {
+        "idAndVersion": "System.Configuration.ConfigurationManager/9.0.0",
+        "sha512": "sha512-PdkuMrwDhXoKFo/JxISIi9E8L+QGn9Iquj2OKDWHB6Y/HnUOuBouF7uS3R4Hw3FoNmwwMo6hWgazQdyHIIs27A=="
+      },
+      {
+        "idAndVersion": "System.Diagnostics.EventLog/9.0.0",
+        "sha512": "sha512-qd01+AqPhbAG14KtdtIqFk+cxHQFZ/oqRSCoxU1F+Q6Kv0cl726sl7RzU9yLFGd4BUOKdN4XojXF0pQf/R6YeA=="
+      },
+      {
+        "idAndVersion": "System.Security.Cryptography.ProtectedData/9.0.6",
+        "sha512": "sha512-yErfw/3pZkJE/VKza/Cm5idTpIKOy/vsmVi59Ta5SruPVtubzxb8CtnE8tyUpzs5pr0Y28GUFfSVzAhCLN3F/Q=="
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "csharp-ls.exe",
+      "sha256": "4AEB7BD88296A10886FA91010841DE2E02B235A1879D285962CECB5B3F5F42ED",
+      "size": 162304
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/project.assets.json",
+      "sha256": "2909D73B880E328934CFA146456AC6B3F801862F87898A315F74C7F6ADDD5560",
+      "size": 24308
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/.nupkg.metadata",
+      "sha256": "DE009D706AE314A74D425AD41792B48538061BA446508239011F029F1C6F69EB",
+      "size": 130
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/.signature.p7s",
+      "sha256": "665FBDAA943FECD7858F031C38B6C3ADF2AF877B24161A4CCC8837B22E4B750D",
+      "size": 12984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/CHANGELOG.md",
+      "sha256": "6C5A2E1035FFB7DCCC6DA38A6BB9EFE4B9A9635AE81F6DD2AAAA846AD265685D",
+      "size": 24641
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/csharp-ls.0.21.0.nupkg",
+      "sha256": "5C5CD327B51668540498599D63FCD8E338CA65A28AF5A52AE196EDDE1FB5F5B8",
+      "size": 23431327
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/csharp-ls.0.21.0.nupkg.sha512",
+      "sha256": "718534BA485B5D147E906B40E431894F1C48067FF491CC6EC0C42426171E8FA4",
+      "size": 88
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/csharp-ls.nupkg",
+      "sha256": "5C5CD327B51668540498599D63FCD8E338CA65A28AF5A52AE196EDDE1FB5F5B8",
+      "size": 23431327
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/csharp-ls.nuspec",
+      "sha256": "600B4CD82AD537CB484E0C6646E5ADE72AAFFB61C1C140D167875EF67D2D2036",
+      "size": 831
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/README.md",
+      "sha256": "6C85079BB09F9A6EA0530D9096AF566EAC42FA87FE549EB03E1755F17A3AF7B3",
+      "size": 3484
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Argu.dll",
+      "sha256": "BF1A2127EC9036849AA5B134161E822FA988E723475C5243D22C90256CBB6727",
+      "size": 382976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Castle.Core.dll",
+      "sha256": "7BC5DCD9BC87A516BFB98BD24B3D51E594D051DE520D608B12F9DAA73C85431B",
+      "size": 388608
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/CSharpLanguageServer.deps.json",
+      "sha256": "B19773ABFC1201E947D77FB2F535011D06AFECCDCDA7E28DA2C6B4F47D918817",
+      "size": 64050
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/CSharpLanguageServer.dll",
+      "sha256": "8E9502E16FF7C859F2198F19E3FACA60DA1BDB9F29C5B46F5FDA4B4BFB95E34A",
+      "size": 756736
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/CSharpLanguageServer.dll.config",
+      "sha256": "5AD39FB462472F0550911AD3F8AA06C5256B284324631E120EDAD35C139EC5F5",
+      "size": 36483
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/CSharpLanguageServer.runtimeconfig.json",
+      "sha256": "9950D4583CFC9A106857C0D5B8A75B53E8774852B57B80BC3823A74D44A4D87F",
+      "size": 330
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/DotnetToolSettings.xml",
+      "sha256": "9E1783AF5C4E535134C5C71248AB8C476E99AC65AAA3E161ECAD79B90BADC233",
+      "size": 200
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/FSharp.Control.AsyncSeq.dll",
+      "sha256": "A030AB4CC13707B4EF1B4B832A97C69391F091A7406B6910732C7C00AEBD17E6",
+      "size": 329216
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/FSharp.Core.dll",
+      "sha256": "83C122C5F3D6C98E9F6FCD5FD8F1068909DA103FCC434BF446F4B17ED495646A",
+      "size": 3087472
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Humanizer.dll",
+      "sha256": "D6853075547D7E303EFD60354D911A2FF18EDBA582CDA2FA59D91A2E5DCF9E98",
+      "size": 355944
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ICSharpCode.Decompiler.dll",
+      "sha256": "2E47C9B7557D071935F4730D5CD692162BD0F6266CE7D29F1D13FFEB6B2DAE75",
+      "size": 2558464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Ionide.LanguageServerProtocol.dll",
+      "sha256": "F81256E2A6956E7FFFC8C04A286EBE02A9BAC4B1E8FEF3A47C8540C93C99491E",
+      "size": 1111040
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/MessagePack.Annotations.dll",
+      "sha256": "3C11D559B96554FF3389725412531CAE07FF9C8FCB39BF4C400A1695FFA53DB9",
+      "size": 11776
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/MessagePack.dll",
+      "sha256": "9E8FB6AB0A656079D9E597D4C668BA76CD5799C5458EA50E628CFE8B5BF8628F",
+      "size": 326144
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Bcl.AsyncInterfaces.dll",
+      "sha256": "D263B9CB7553C9F750AC51F3011DEEB644E47BD6DEFFC027AA1F9A6492F75C54",
+      "size": 18696
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Build.Locator.dll",
+      "sha256": "FCE7CF90FB4F26FE5A84ADB24285D92BE9A4285FDB314F775A258BA9DE08BDCC",
+      "size": 45640
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.CSharp.dll",
+      "sha256": "36F5AC8DA30A6107F53A2CA6509B61E284C08EB59AA1B22956D4E200E4514AA5",
+      "size": 6839608
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.CSharp.Features.dll",
+      "sha256": "B340C45E4F886F2FD2557A1DC689E0510F4A3482D643AB3CA4104CE906ABCCF5",
+      "size": 2216720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+      "sha256": "BF30FB9AAFCD99C4A74B9D6733774ABCBF82C4A836C5A94FAE6D91C45523F085",
+      "size": 944904
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.dll",
+      "sha256": "10F489DB67B8AC7489E58D392166C928302BA5698506DD652311DA5D89F0A0F8",
+      "size": 3059000
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.Elfie.dll",
+      "sha256": "8EC0E18AC570157B3863F70035B644925D89996AD901F31EF918D2B0F7428941",
+      "size": 145840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll",
+      "sha256": "5092CC2CEE3F241A2BF3ABEC35096B0669CB181720A3CF463CDDF7F6A45C1A0B",
+      "size": 21256
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.Features.dll",
+      "sha256": "60B89D338DD395560E1B51484AAAD9636AAF4D3B31491EF7A50A960D1AD73470",
+      "size": 5565704
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.Scripting.dll",
+      "sha256": "ABE6F2DCF2D1D2E0B9094DDA38342AEA2D3307D032054B35645D112117C40766",
+      "size": 138000
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.VisualBasic.dll",
+      "sha256": "F26301298A2D119AB2FEA63BCA5CEDD914FF37AEE5DC401915B9AA4F2BD5B17A",
+      "size": 4856112
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll",
+      "sha256": "153454345E395455D13380130CE76403B8144AE719D259E0C7A1F7341A1F5183",
+      "size": 810256
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.Workspaces.dll",
+      "sha256": "79498055635572590009A4781A6E3EE1E2E70E3085B2EA3CE161820F809B0B2B",
+      "size": 4230448
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+      "sha256": "746A9474ED7F0F6A5102B88379C3312EDC41ECA664A8B3B7717BA31B1CEDE73F",
+      "size": 141576
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.DiaSymReader.dll",
+      "sha256": "7F3E7543321FF4C2675B94E56A4A32C935C11C82FCC60D4F6CB611CB0A8DAADC",
+      "size": 87168
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Caching.Abstractions.dll",
+      "sha256": "1D9834AEFDFF783B6817023F97A57204E2B1573750F4E1E7D46790BCC073B04B",
+      "size": 36632
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Caching.Memory.dll",
+      "sha256": "FEA9FBB36234A84093D422CAA184CB4FEA5F64C43297A74EABF8E469C2FE5DF4",
+      "size": 48912
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Configuration.Abstractions.dll",
+      "sha256": "D36225749CF87A4171DB39FF28A0DA9216575C54912DAA14B6D5935B821B7F82",
+      "size": 29480
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Configuration.Binder.dll",
+      "sha256": "C6BD760F32A759033F24C9961D80C60DCE57BD3696A1F0DAFA1C0445A520E036",
+      "size": 44816
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Configuration.dll",
+      "sha256": "B870B57AF097BD531766500A9E4EFD4C67510EEAA01346CD42472E48BDC8B2DC",
+      "size": 45344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+      "sha256": "3F733FA41C8B735CF3F7A1A49B43CD41A291BCED3953BEE46E2B8018BE67F44C",
+      "size": 65824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.DependencyInjection.dll",
+      "sha256": "407137262AEE12B0DD588258F9C2BF8C91129F119896F60BD1BCD3B67F4D5916",
+      "size": 93472
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Logging.Abstractions.dll",
+      "sha256": "622CF6CAFD1D5A402C12574515DFAAB8CE99018A8B1D324045487ED7A5DFBB62",
+      "size": 67344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Logging.Configuration.dll",
+      "sha256": "E2B7CB59FD63BDA10115CC3B917F3A34E6B843BE68D30C553878C72773CCF46C",
+      "size": 29472
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Logging.Console.dll",
+      "sha256": "DCF79840CD4F5AB215BE2B9DD10F983226B0BC6BE2F84291029DC360666F2BD3",
+      "size": 75560
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Logging.dll",
+      "sha256": "A273665141E349776FCFFCDB33BF55FF7BAEBF1885B0DC5C858F272F8B338524",
+      "size": 52488
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Options.ConfigurationExtensions.dll",
+      "sha256": "4322B5E1CE31A1194142A3FAB482509B91AC859F780AD84FB83264E71A9871AD",
+      "size": 22792
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Options.dll",
+      "sha256": "022E30AE3CE6DD2D5B4526F01EFFAE5FC34F642A1A639AA9605590986C751560",
+      "size": 66320
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.Extensions.Primitives.dll",
+      "sha256": "6BF0052E4045D89390960B32741A3F4F47050056C870AD5FE189D3DEA70182CA",
+      "size": 45344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.NET.StringTools.dll",
+      "sha256": "5D0784E9BC4756906FE69E51BBEFEF7A1348C3717510C1D365A31099D25EA44A",
+      "size": 33544
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.VisualStudio.SolutionPersistence.dll",
+      "sha256": "A1150F4A162D9C9992B6E99B2949E2DE092017182264218B7B5666CEEBBC16D4",
+      "size": 172072
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.VisualStudio.Threading.dll",
+      "sha256": "9DF500B0D09390BF2272BC780B4CFF3711CD72BAC5313D0B03CB409F5AEEEC1D",
+      "size": 419744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Microsoft.VisualStudio.Validation.dll",
+      "sha256": "ED82E313F30FE4F317E17ACBAE37BEA406448DEC6791ABDEB871933D53F0FD39",
+      "size": 32688
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Nerdbank.Streams.dll",
+      "sha256": "88F0DF7936429A5F85145CFEA1DAB450B189C676E4408BF8F42B0FE3505C99A6",
+      "size": 217784
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/Newtonsoft.Json.dll",
+      "sha256": "A28C251DFE36D881E9E2462E171441B8B0EC156FE3F452602C9149B1B9EFE05B",
+      "size": 723368
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/NuGet.Frameworks.dll",
+      "sha256": "E147F91FB67B0D6B434168104666B8D170A9D8A994B825389DE1AFF1839776D6",
+      "size": 125496
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/StreamJsonRpc.dll",
+      "sha256": "769395D21B73F90B754BBB00F6E7DCB8DA629A1599AF5CAAC54CFE1FE97C2CAA",
+      "size": 341880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Composition.AttributedModel.dll",
+      "sha256": "D4F1EC85E742B77CDA48F709210DAAF34D8B4A7E1E540F353EFF741DCC058128",
+      "size": 20248
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Composition.Convention.dll",
+      "sha256": "BE95F480449AB3236315BEB321CE598A61382D64479DDF500E7434637345F474",
+      "size": 54040
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Composition.Hosting.dll",
+      "sha256": "2C8F10923C3B60FD1B16D89F2661712A9BE112E697990BEDBD6FAB9DBAABB1B6",
+      "size": 56072
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Composition.Runtime.dll",
+      "sha256": "148012DB7DDAFC76D28BBEAA0BAEA3E2351E7BC195E9031D57F107989C2E0EAA",
+      "size": 27424
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Composition.TypedParts.dll",
+      "sha256": "EBC942C358D997E41635C9A365DB542A3FD2A05F301F602D5D6A8B0D5DD42071",
+      "size": 65816
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Configuration.ConfigurationManager.dll",
+      "sha256": "DF795025F207B4940EC9A48DEDDAEDAB3333B031B15303FDA4F148B09C456D6D",
+      "size": 443168
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Diagnostics.EventLog.dll",
+      "sha256": "803BA4A0BD41B63B64248FEE8C96CCFCECDE72A16DC538D00FE1FD1DB7517295",
+      "size": 53528
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/System.Security.Cryptography.ProtectedData.dll",
+      "sha256": "E82875C8FDC739B3636FC1926012FA335BB706A7EEFE05621B848F997A9B49E9",
+      "size": 38696
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/Microsoft.Build.Locator.dll",
+      "sha256": "286DB396B2B8500AAD8BC188E41A11CBBBCB3BFFC5598B464C683C1C04C9BF60",
+      "size": 34848
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe",
+      "sha256": "290C7A60C566CAD597C04711E73166E52108DC81FE8A1EE250B8BCBBF4BD5800",
+      "size": 458088
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config",
+      "sha256": "A35B103E28015DEDBB1FF5B3EB552A4F351881D69D64FED3F68AEB5643C52CDA",
+      "size": 3572
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/Microsoft.IO.Redist.dll",
+      "sha256": "2ABBA74A23E680BA613BAAD9D510428EDD913E09F90509D248B85665A03F5014",
+      "size": 131880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/Newtonsoft.Json.dll",
+      "sha256": "404844DA53DAB572BD8FCF085FDD7BFCF9653523F168BE31086A499EF1D203D9",
+      "size": 722304
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Buffers.dll",
+      "sha256": "3AF1E07305BED0ABE0CF32D9854E0A7F5F470216ADEE1B87D02350BE09D31B35",
+      "size": 23856
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Collections.Immutable.dll",
+      "sha256": "77D705FE51F224D77B25FC06EDE39E2921F08B46A961A027D6EE49A4BB19C127",
+      "size": 259360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.CommandLine.dll",
+      "sha256": "9BB860C2CBB3B4AE768E87F0AE6DD0FE75676DA1242EFD7C772F50454723E39D",
+      "size": 155680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Memory.dll",
+      "sha256": "B8FE216AFF0F6D162F8EEFE7BE1712162B7D8199E20CE2E70FFAC36C7CE20A4C",
+      "size": 145192
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Numerics.Vectors.dll",
+      "sha256": "22C84BE385FE8BA6D0E0138952748F28D781FCE36078B5A7AED91A6104BCD99B",
+      "size": 110344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Runtime.CompilerServices.Unsafe.dll",
+      "sha256": "2D6F419D641682D8EFC4A40E850D2E85DE519D6823B93DAF2AEEE63206D4E32D",
+      "size": 19224
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/System.Threading.Tasks.Extensions.dll",
+      "sha256": "692C324C02A922F890AAF5948C54EC9758F5AB7019B8E8AB169C106DDD3231F4",
+      "size": 27944
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/cs/System.CommandLine.resources.dll",
+      "sha256": "4398D7A61CDB21F347658EA6C359FCC6C60A93271416DA122FC049A561E1A5B8",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/de/System.CommandLine.resources.dll",
+      "sha256": "E92E0C99FBF961DE8EEF358FD7500F48101B88FDA41C8FA16CFF9328F92E66DD",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/es/System.CommandLine.resources.dll",
+      "sha256": "2881A3E89C45F73E43316F95E6EE50820E24B6C4F0DFA747905B309BBE6315AC",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/fr/System.CommandLine.resources.dll",
+      "sha256": "C7AD731706AE14460D9D73743484AA1CF99C24916F7913167F1EAB476537A2EF",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/it/System.CommandLine.resources.dll",
+      "sha256": "69E61040A5C78F0CA6A8CC14262E43B537ED38E2FA79F45BD549F97EB706006D",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/ja/System.CommandLine.resources.dll",
+      "sha256": "FD715C26E69D38025988C824C82775492DA66712C5D50D0F6A390AE47CDFB881",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/ko/System.CommandLine.resources.dll",
+      "sha256": "FB4BCE92DE4CFC69AA787656E46AEAAD6A07C7927BDA802583191418EA9BCE68",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/pl/System.CommandLine.resources.dll",
+      "sha256": "6B919BB42E933607D0BE4E25EA87133D27030B248A527F89D3CC5E44B4D47921",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/pt-BR/System.CommandLine.resources.dll",
+      "sha256": "C42621DF554CA60D6D2B906629A2D4542CEEC138E70AFC3D54E3003597550803",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/ru/System.CommandLine.resources.dll",
+      "sha256": "B259E4629BEE7F045A1AAA3798AE743E7798EEC168618F72F95B2507448DB16B",
+      "size": 19488
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/tr/System.CommandLine.resources.dll",
+      "sha256": "0115F660C410B79DF176772C8159F47BA8B0E316BE7DBB8D8F355E0F728614F6",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/zh-Hans/System.CommandLine.resources.dll",
+      "sha256": "F4F951E177B0F6423372EE873F64366CEA81C2F2C4F75F0A769FB668E64BE483",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-net472/zh-Hant/System.CommandLine.resources.dll",
+      "sha256": "BE202E67817D8828EA77661C91E67DC5708CB979A3CE298E5364FF407CAB2692",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/Microsoft.Build.Locator.dll",
+      "sha256": "FCC85336217BE226F90A5DDFA55151DC84FCB2A76FE242F5274535C6B878AA30",
+      "size": 50720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json",
+      "sha256": "B9393E7AA080DAC70E46E26EE03250CEB1A38B7DB378513BC52FF361E0FD9145",
+      "size": 6240
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll",
+      "sha256": "0759822B08AD9B94CE0976E08A16E9B9D26082F23981DFFE81C0A6DE8A6EA3B2",
+      "size": 450320
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json",
+      "sha256": "7F19D83A3F514EEBE09A06EC35E45613715B2430B1EB3C35F904740A9C6086B3",
+      "size": 369
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/Newtonsoft.Json.dll",
+      "sha256": "22DD598354AF159A0FC171197D161D2C698C24D82DC594FBAB332A254622E479",
+      "size": 722776
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/System.Collections.Immutable.dll",
+      "sha256": "33D310036FEC4D1A78F75C885EA091C0E054AD08D50C424CC8DB8042544AAB3C",
+      "size": 251160
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/System.CommandLine.dll",
+      "sha256": "A25AFFC775BCD2748AFE731EA1375276FAB76BC5791F642FF5052D73766404A4",
+      "size": 151584
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/cs/System.CommandLine.resources.dll",
+      "sha256": "B8C186AE3578DF09DAC1EC5C22858C878715C4414941C78E37702826E668B3B0",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/de/System.CommandLine.resources.dll",
+      "sha256": "BFF326512A54D81C47EA7096E54EC405655664EDEBB6F58D77E3EB53A01F5F8D",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/es/System.CommandLine.resources.dll",
+      "sha256": "1D2955BDB812D4BCC76C5BA46F70662B965B748C37CB9717877CFE99E8350BBD",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/fr/System.CommandLine.resources.dll",
+      "sha256": "FE53ADDE742442E1085A647B63B407DECA78E6EC44AAB224B7E6E953A65E937A",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/it/System.CommandLine.resources.dll",
+      "sha256": "0A4B913DF4E43A18CE48B55FF1E2DCE5F4371FD9889B7C563B3605F4922DA6E6",
+      "size": 18992
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/ja/System.CommandLine.resources.dll",
+      "sha256": "85C768F66CA5C4FC1AD07CBD8B69F43E6C43D49418F235756B159345AF668C0F",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/ko/System.CommandLine.resources.dll",
+      "sha256": "363CDC4FE9A35E9A4F933E173AA1A1DE374938B9DD9CCDACDD1FD6EA2C305738",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/pl/System.CommandLine.resources.dll",
+      "sha256": "383A9174A103136BB603E434DC79FF1FA58B61427F708C5D796018EC49692BE3",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/pt-BR/System.CommandLine.resources.dll",
+      "sha256": "010FFD4355B5D1C5A18385684545B65F48F0912371BD65515505D326BD5DB602",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/ru/System.CommandLine.resources.dll",
+      "sha256": "15E8A9DA46D636E4E7BA8F7E7DB6954C7A81A9E21CFB07933446AF861717AEF3",
+      "size": 19488
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/tr/System.CommandLine.resources.dll",
+      "sha256": "62C19AFE4EDD861333916C9578A769F5C02C8F9C27A1194247422BD6077DB534",
+      "size": 18984
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/zh-Hans/System.CommandLine.resources.dll",
+      "sha256": "75090410C555765A0CF27FEB29D5A6F6ACC8A51B0DE19611D1326A65EB25A7DD",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/BuildHost-netcore/zh-Hant/System.CommandLine.resources.dll",
+      "sha256": "C386BCAB9894FC6664BAD9DCDCE19DB7FC720249883D276AF545E981816341FC",
+      "size": 18976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/FSharp.Core.resources.dll",
+      "sha256": "225DD0FBE676C91F44F6C5DD5A9683B69F618F90363025DE3371B638C5505563",
+      "size": 33392
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "C0C4FEF76C6EE700D21DBC2D6670114991DDFD4E603C2C852E5FFEF6A990609A",
+      "size": 46856
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "1B7A95334E0457ED334646CB62E1287B88E908E50A5CCDCE60891613FFF7295C",
+      "size": 444168
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "BE261586E5F90C7EBDC8B5E12D41F2F493BB18F6B5A76FE1FAB4A14A3D80314F",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "47E203F61DD86AE2F370B373EEF41C2425E37C9BBBA23063AE527561E2FD5995",
+      "size": 194824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "B6F9770C7C83160B27D96E41486DA99ED43DEB71BBFB8D15BD70F25DC452C1AB",
+      "size": 40200
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "D754498B3BACB97E1A53E9B86DDAFAE5CAE772B23DB97C4922A9C1475695B0C9",
+      "size": 18184
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "6DFC0736B4263D9FC2955BA3E558F81C98C3D3D56A9E297EC80ECCF143CBB5A1",
+      "size": 302904
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "AE32B8FB6291C4E6F87E8197F95740660633D0A56FE332F8F654C16CDF2BAFFB",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "5F5E0C469C1127FF80E4811E4C2E44727791EBFF1ABDD097F2BB36B9A7F350EE",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "C5E242FC938DB3EFDDE8FF4457EB1C03F50ABC63DFB3E6EDD60188A0151849D8",
+      "size": 41224
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "1959B57893E6222BB80D14D981FA32076D7A4DD1A6851C40E09F548CA756838E",
+      "size": 17312
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "7BB90A76E40C1ED78EF9DB5EF74A64C89A7E6E6A9FBC720A0617348351E7C655",
+      "size": 14256
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/cs/StreamJsonRpc.resources.dll",
+      "sha256": "CF9D2C257C935185AE0F91FDB6F34EC2764AFA741403D1688CB4A45842680369",
+      "size": 24440
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/FSharp.Core.resources.dll",
+      "sha256": "DE9BF5D75373C0118CC48F94F12E630CE13453E7DB74A31611A4699E0F0CBDFC",
+      "size": 34416
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "534E6F52DEECED9E3E4A63610EB51FAC6EF4968F598D666E51FC163E0B9272E2",
+      "size": 47416
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "74EE2D88897BE211E89AD4CD11A145A973BD4AF0E74877B5A64F8D227E0BA409",
+      "size": 474376
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "6EB4C209143A8B977C61D9F30A1EB92D39A7B6A741102C221663F0E60FBC4427",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "07976510EFFBE63B1F4F20B5C924530F7CBDD95F4A2129B5B31CC7600221A247",
+      "size": 205576
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "CD62A1BFE99811C971BEC1328A548DBC5F24E3BC9CD27F9715373C1E52ABF32F",
+      "size": 41736
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "0B0726AB0F7547A4E09DBE4039771D4446396C8A959657381F50FBA611CAF153",
+      "size": 18744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "926029244A4C9956215CA3DC8EF1B4DA13DC243F11ED19F0A30551ADF18B7F19",
+      "size": 319280
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "84E0C36202836005D2BC94B3ECCEBF6239FDC9754DA55D1E6983E68208294E3F",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "212CFA8A51D5708B54DE0F21ACBA6D3F8EC767C01AB6D985A950729CFD355EE9",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "96D639A66C6C8A182DC532B47F7ABD7216BCD1D3AD2C3618777ED8890BFC7FEB",
+      "size": 42760
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "696236E46F5C0167E5FF9AFDDF173F4B520940F27CA9966E8285480A99A23E0B",
+      "size": 17840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "74E7B701FF0823753AD25084043AB0119DB248B098CDAACDC544237F76CB511E",
+      "size": 14264
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/de/StreamJsonRpc.resources.dll",
+      "sha256": "A7ADC7BA3C9EC5734780BEA71796922F237A05C85F3DD1D8C3CA9B50CA669F83",
+      "size": 25464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/FSharp.Core.resources.dll",
+      "sha256": "02086BF20FA47D5230DDA7589DB5C49045A96C3323B22468268513EF8A803981",
+      "size": 33384
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "95C3CA7DD1C8F47260AA9EC47F223CF20F53D982434AB490167F07B3597D039D",
+      "size": 47880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "719BC0F799E12704498649267E473166F91015B629F4116474091F8EE9253E4D",
+      "size": 463120
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "A8DB27C5EAB7825E5D6B967D8E214F0136C12C3C8A91D344CEFD2B3485AB3EAD",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "D8C1F60FB24101FBD8390B4A5627A021AC6E2E8BF1FC1118D91DE74EAD7CAD20",
+      "size": 202552
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "4C741B47FA2BECF2F1283E96EC6F76D958F1DEFC2868D93C2C011CAFCBC9F9F4",
+      "size": 41272
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "F5BB10E2BB7384FBB23748A74C57C5EA2BA98965F59F0394CF66C92E1C62A29E",
+      "size": 18184
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "45A017EEAE1246F837301ABF91F1927B8DA3FF198FC706339DC19B831E883110",
+      "size": 313616
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "5CF8770DB7FFC565375C8420F2D699E4B1D2A1261A35A05DD58C264E2247F4DC",
+      "size": 25352
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "7DA0BD6A7D84A44C3F61E5AC9C51F1445FAC66163A8CFCB156CFC0BA695DD21B",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "C5C863FA842C5DC4462DCD54E9A6B8C2531AE1CC1F1A5E8016F64126F77CB766",
+      "size": 42248
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "08A8C69FDF271F6CBB3A735C204C1942465E316AA990528AD5D933E732B98219",
+      "size": 17840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "96DE4A44DBDA8579E9319C1D5299415443E3AB3D28B8E8AEA68D87093E6DA282",
+      "size": 14712
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/es/StreamJsonRpc.resources.dll",
+      "sha256": "DD7DE729C3EDBA3A879920CB1D7CE1E14A6C9E823F42FAC8289FAFBFA5E5A55F",
+      "size": 24952
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/FSharp.Core.resources.dll",
+      "sha256": "8852BFAE4B34713B1B8014CDF35A52B6AB5897BA3AF18882370DD1965C7BC3E3",
+      "size": 33896
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "48E57244E81DEEFCC4E38683861CBD3FA5B41C8EE22D7BA193138C9F9EDCA337",
+      "size": 47920
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "463E22BA0FDFEE0025D6FB00314A0A7CF8A47D6B6689D88E0429686025A8F53C",
+      "size": 475920
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "A70609F91AD5C1D223F2F9DBFF6E4AE7221A03A7CA59F9AE3BD894F1015C5344",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "91F1E74C7CB4A9D58AD2196055589E281FF6CC1C65A679DAE264FE4AFABDFD63",
+      "size": 209200
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "80F5A07838B046388FDA788223279C1C6638ECCF9610FE80A598BB17F3B20F22",
+      "size": 41736
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "C968F1F414DB68A7150A650A4640658D76A7477B69D96D908F288F661603996A",
+      "size": 18696
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "6EDDC1B61F1922BEFC327BA2DE5AC521D03F0639A2FDBA00BDA24C0BBB878610",
+      "size": 320824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "1F1D0BDE16CB50786E3C0BD66C07D5527BD3121E258588E2F0E30C0F2CD9F46C",
+      "size": 25400
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "5330E886183987A386636F26F7902F0AA0551FCAADB3D4ADF5ED83311A0D3C68",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "FF1EE1395F15D8F13E9FD3113C3FACDA1E321C665D30765890034EE5BBBBC093",
+      "size": 43320
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "91B3AB571C5F69A57DB1F0E095E1A97E82F8C5A545DE9AAB6EA140279250B831",
+      "size": 17824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "FBECDF10DF2D211041E9F2830FB7BB749B172E9C119C6EF8B8A54C856B145C4B",
+      "size": 14712
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/fr/StreamJsonRpc.resources.dll",
+      "sha256": "C594AAC8C27E53F42604C2627E307FA2838F40466BE06442AE943A8F0EC04316",
+      "size": 25464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/FSharp.Core.resources.dll",
+      "sha256": "F99D6D9D0CF3589456CF4B67C1F7BC9FDE63B36B0EEA7648C47F0DCC44276469",
+      "size": 33392
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "52DC4AADC4FCD5680427A7C01B876E2E406634C8B0D354691394D53D3227F305",
+      "size": 47368
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "A853F3E433C9892150C47AD5BBEDD46D3ACB755BBC20ED58796B9E3E75AA9250",
+      "size": 469768
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "29791CBA2BD4ADEE27FC945DBD7BC26D6A2DB45D38CDA68E5BFC39693A624D43",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "602146892CBB40ABEA9C385E820786EB1EEB146AB58CFD4BC0EBBA0841B10949",
+      "size": 205104
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "321A24F5AC605314380585F4991DB0D99BCAC59EC976BE896A589FE842FEF7A0",
+      "size": 41784
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "938C84D34E3CB07C6E207AF62578D34994E39DCCB155EE7BEF440765D6870E18",
+      "size": 18744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "20B0F59AC78043D6ADEAC93AE9E2E8F8182E1458490B9A36FC87EC1727911BAF",
+      "size": 318264
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "7834789C35EF4D500118AFF8C48AAA6E89BF13E2F17BF3EBEC7D8FEB39DB396B",
+      "size": 25392
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "D1967347CBC0E243D711F32F3444EACCF3C22682E44B4E052FCB89F7376297D2",
+      "size": 17720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "6C4759807AEB547437ADC3E77A4E24852753D07876F0056F65C7B6E3D3F6506D",
+      "size": 42808
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "33F7E0612B9BEC75F755D191426C5192783CF1725750DE7D5F23EEDCA2110449",
+      "size": 17848
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "BD8922C7A2555D6F2A0ECF6A5982D11631EC49E74E6C5CC972D67173FC8482C2",
+      "size": 14728
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/it/StreamJsonRpc.resources.dll",
+      "sha256": "A37E505CA9925871DECC3A567118763146B48BF4DB94B1B3B12E7F6127C21DBC",
+      "size": 25464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/FSharp.Core.resources.dll",
+      "sha256": "AE29F4CE4B8061F91B4357283A786837870AA75A5FB3072ED6048C9FD58C2088",
+      "size": 35952
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "CD19699EB4DF7EDB1469716C6876D1FF6C6AC6498BF5D624CF94A509B769AB0D",
+      "size": 49424
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "4D2BAAD888D7DA2F20D528D27F6B56286961A6CAA294A3D3927F834A3459F71D",
+      "size": 515848
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "EAB73A963BB4603272ED17D2FFECF701A64876E2E86B9E93960CB30495B67636",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "B4FD772430304E89514C05CA01D8162778FC317BCF718AEEE666658FB6B6F451",
+      "size": 215344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "F66432A517A834CA169317C170D32A610094C3EBC0C2B1F59D0087B33E2D36AD",
+      "size": 44304
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "893ED89976F42468AC4347B015AB44188B0C8EB887F05B0858B4C98CB673D07A",
+      "size": 18696
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "CB6E2A70751EEC748513090556D87A6253646897809D0676128410C37BA6D80F",
+      "size": 353032
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "63CD2380CDF1BBBF6FF7CDDDD400987DC9C6AEA084434B5198D0746A7EF8CB7E",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "4CFBAA8CEBDE81D60F626B5CC0545D9081226460DC20DC2BEA6A969B9414571F",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "021A4A339D89D06E2B300480416597A61D97CF1C787FD3C7024C849220387E43",
+      "size": 45320
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "473CA0EB75144D254E51BCF733BEA11B9EC68516DA31905AC80390E166B80311",
+      "size": 17840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "193423659F7DC2B5F0DC2ED778C535A69B6E19BEA9A0CB5A4429C64550CF5C0A",
+      "size": 14752
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ja/StreamJsonRpc.resources.dll",
+      "sha256": "FB526C43A5184B60B23EE3871D70C498CD737DFAA392205529B139BEE268FAAA",
+      "size": 27000
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/FSharp.Core.resources.dll",
+      "sha256": "7D84C721616679127B81FE22852E5ED1C3273AFE36D627F8401270C382948722",
+      "size": 34928
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "D5966257786D228844F0E560D1440D4642077FB649F5F01CCCFC6A72B21579CC",
+      "size": 46344
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "6A2E477C2A8604157F2C9F8E3756A98AB07995C0E6FCFE22F2E7BF6679F30389",
+      "size": 475920
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "08814208264064105ABCCC96957C1E2AE073D4E7DD97ED745998F04B777273CB",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "EF360EFF5B3A8642593D468130F407F9F9A783DF79A4F2283858B8B518F80AC4",
+      "size": 200504
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "1033D3D5D10557F7070430BE5643DC89620D84CBEAC2112CFB8C4A1D1580845F",
+      "size": 41744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "C5B760269217A01B068584673E71F544B350A4E466EFD5D50F7F67B824CC5782",
+      "size": 18744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "BFFD05B4584DEB7C5DF429488BC46120A26F934E71E40EB55488327763E868C1",
+      "size": 323848
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "651F5577B3D7438B54A9D54E18D2D46ACAD81653B7FAAD688DC5EA6438CF1812",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "D7054C0BF6BDCA4013CCD75FACE70958B5DC0709F3A577E61F8C0E560BEF6EB5",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "6F28E1CD4C7CE5311DDFB4DE3B42966A555EE42AA41603332F88154F6A9B21C4",
+      "size": 43280
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "935935BBDBB3280160A458192DCA09172039B7927F3D0377528481CA19722C21",
+      "size": 17328
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "B18160DAC316F8E90763E5022DF8D9F2BF56DB3AEAC09EF8E2FF8227A60201D2",
+      "size": 14776
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ko/StreamJsonRpc.resources.dll",
+      "sha256": "8FFFB2B611A20AB1D214B4471FD439CDC455C65C9ADD6901C6C58A5EEC243BAF",
+      "size": 25504
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/FSharp.Core.resources.dll",
+      "sha256": "9634192D3D231F97A7F98B9321179A29ACD13D998142902850F49DF2641EDB1E",
+      "size": 34408
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "E555B5FC6851EE7FD04D8E914A0B6E3D31D559FA08272D8BFC1E3EF4E77FE170",
+      "size": 47368
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "39B5E1471817790A31EC4038639188F7B89FD6713EA19C88472BDCF4FA56F795",
+      "size": 476432
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "49292BF397E478694F68D7CB186AEFA8E6565FAA7668E70D486C53CADB4ABC9E",
+      "size": 17712
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "BB00D7ADB4F0A22A509BDDA31B36695E42DD7E0DC4EB48B15F7A16807AF3C6ED",
+      "size": 201992
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "F8779E45B1F699FE722898B1865377BEDAF5A433C1AAB6298AF5B3EDF067E88F",
+      "size": 41736
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "CD446CB821C78667A07F202391C279FE63B296B6237DED39E28D65F00FFED33B",
+      "size": 18696
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "385A6DBA6E8B255A235880911E11017AA2FA9BA0FE04F5FAF1F0E5D3C240CD53",
+      "size": 328464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "A8B5512804DFBC8C93D11E5A5B3FAD3E6D3340C248EB2758AE3216B17E737B39",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "DD022150AD075152F44C90E75ABCC6E4CC045B0B6B57EEC997213A2FFE25E493",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "E2EE84F74B48DBB730809341B5279E521DBFD6844C013400777E0E1D02160C0F",
+      "size": 42760
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "7F06DD572860D514ED289CAFDF8105521B7E2F9B63D489C4B8CD311D451D4F03",
+      "size": 17832
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "64655F62D25251FE46C255EB6CAE5462C44AB8BA4AC9D000E18CC7EF2CA4D08A",
+      "size": 14768
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pl/StreamJsonRpc.resources.dll",
+      "sha256": "7961A02217175DCD71AEC291AAAADBF82784910E670475FFDC7FC587E73055AC",
+      "size": 24952
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/FSharp.Core.resources.dll",
+      "sha256": "32A34B71E58E60733B1120AA8031C973AEC5DAF56F9457F4E56E5D768EA06639",
+      "size": 32880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "33B277B409FE9BEB6304F37AC7F644F91D0EB4727D92D64CCD741EE5BDF88EA5",
+      "size": 47416
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "0188246FA239EADAD25885093F21C20DF4A775F794FC34468430729974A8C1EC",
+      "size": 456456
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "BA6B4079D560AF3176E48E8F46AA7F3305B43717B051FC7CD27A913BA93730A9",
+      "size": 17712
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "0ADB78672E5057869C4660E5D849C6A73C95D4A593154655D358F0894698322E",
+      "size": 200976
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "8FFDB0EFF7C2DE635A38F0093DA5E95F52CA905EC2080CAB4EFAC42585DD0143",
+      "size": 40720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "DA73EB0ED24E010F54A3AE3480B022B5FFC325F07A67399DC7B86A67DAE7B1F1",
+      "size": 18184
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "4B31CD1B578D895C13AC4F185BEEB71F13D9C46D7B32C73ABB96D3CA2AA6EEC1",
+      "size": 308016
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "3CF3989E24E8A41536994FF431965FDEDCC9DD2F3EDF383B8CB26C3888338B6D",
+      "size": 25360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "3B38428FEC1990FEFDE9DEA01A913BC2709F81DAD2C4B7A72C8CAB8C8BCAE1F6",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "53FA339D0151215CFDEC187B2EAA73215F809B95CA86A8C882B0DE82F6D48550",
+      "size": 42296
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "C310909D89A002BD70A452858949EA643AFD27835A97535A040DC6FD2B6691B0",
+      "size": 17328
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "77BAE0AA22FEA4E3ABB50320753AE5FA8D172A56907F22A16DC48A3E0EB519A4",
+      "size": 14768
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/pt-BR/StreamJsonRpc.resources.dll",
+      "sha256": "04EE14F74C07A8E51A219836278B51D34DBF661218CB4640910911B6DC2FFF3D",
+      "size": 24952
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/FSharp.Core.resources.dll",
+      "sha256": "B81BA71A04AE1F07A2B87B33AA41EDE7B4AB2F8C07178CCFEAC1E99C173CE72F",
+      "size": 40560
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "2576ED70FBB5A74B314958E5A0A1693DF81D4D0C2626936427AFCBFE73F11162",
+      "size": 55096
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "D0B7B57BB90A4AED649F10C30FCDAE5C9EFB8280447287A76A3D64EB0DB13E41",
+      "size": 617744
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "3862E9990EA7D92EEC34066E8730E5C84D454BF3A1ABFD35623AE75D05CEBF1D",
+      "size": 18192
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "5FC7303B3325738F303319FD32C98349094889025EB2649CABCE709C109120BB",
+      "size": 264968
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "5153D18368224E120D2415262C49302100BB76EF7AFF8AA686300D4225766C67",
+      "size": 49464
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "AE78674F83EC972BF3F5EEF6D7AAE7C637D22D9AB97394D554B888ECA252967F",
+      "size": 19728
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "232CA127F2530EC6633D28E3A7EAD83A21F633E8A9C46EB439D67472D1C21FC4",
+      "size": 407312
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "F85A6628C424622EB9A60DB06BFC95015340F732FED197BDF1B4C20B73F67B23",
+      "size": 27400
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "6F83219312C32E3E6303FE58957E4350A4AFD63EFDEE875F2277593BDA6FCBB1",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "C248867E873C629A2214EED85A4FD9BD426B21404723468981DAAB77BEEF3C2F",
+      "size": 47888
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "8A70E962AC797E4CB45E9A25F122367F268E96A1858E4F9AB1291B60B6BAE02F",
+      "size": 18856
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "34848FE20B59DED6E9C5885713C6D80248D6C0EFC693C4BEFF88FC2EFB6D128B",
+      "size": 14712
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/ru/StreamJsonRpc.resources.dll",
+      "sha256": "E7384A6500257DE21935B56FAD731211976DFE94896578EA718421FAFF0E5A4B",
+      "size": 28536
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll",
+      "sha256": "2B887C2DF82EA96BDC1A48B15AD448F7FD4D384732C6BF7050397598C078C412",
+      "size": 174896
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/runtimes/win/lib/net9.0/System.Diagnostics.EventLog.Messages.dll",
+      "sha256": "AA8CB35D10093FE4BDA643ACD30EFB70AB539B7D079249414340F03AA8D641E3",
+      "size": 801064
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/FSharp.Core.resources.dll",
+      "sha256": "C74D169A21AFB4490D69F79E0C7417C8D74551D07871EEB84CA7E95F4ED38A86",
+      "size": 32880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "4F23BE5C87B6CDA3812F87A660DC760443E3252C6E3D1DEE23010648DE983AA1",
+      "size": 46352
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "09FF456D47D79B6F1A7EE5512662A490AFDAA05C60EB8190A7DCD76AE050DC0E",
+      "size": 452360
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "F4D005D18148227A171A5689C122ECDE11C22442644E698C5DBA6810D26FE7DC",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "9B051057DF91E936C7AC8C9D92767EFBFD093DB815F99F97305117104980D539",
+      "size": 196368
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "5FDE98451BE8B9D11EFA9AA0783C64DCFBA6C552F405D03B82A575CEFF631027",
+      "size": 40240
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "C08236E233EC24D0B838C8B9AB0153B91579EF786E3537B536914C575AB2160A",
+      "size": 18224
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "B6581D9DED2AD46380794C57A08EEE33EF932F7651D7C0858A086CB3D5229AFD",
+      "size": 304440
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "BB151528076C62E0514EC512FC716B961E08D7E1F0DDEE718978122F3621D2B5",
+      "size": 25392
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "BF1D4A66DAEEB639AAACD54543DC67F9036452186444C9A34129C337B91A9123",
+      "size": 17720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "B9023CB23FE7B1960B01C5C68BB34D2F258DC4F7463CEC0868A0084C6E7DFA76",
+      "size": 41784
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "B5D55B9AB89C4155ED1BA89CAF2D360FFD841AD09B92F95CF79742EBFD7831FA",
+      "size": 17320
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "EE98CC027BBCE339E7DFE0B7757BE233E38FB8BC95226F3992B376858F3CFF80",
+      "size": 14200
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/tr/StreamJsonRpc.resources.dll",
+      "sha256": "A3CC22484F118549FE6137FE32445B073986A70F7208F55AA5DE581F2315808F",
+      "size": 24440
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/FSharp.Core.resources.dll",
+      "sha256": "0A9204CD61F1D3C8CE30BE27B0E80EB2853FF586F9A8B1D504E1BE6DAE99BC61",
+      "size": 31336
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "23DF0EA031BBD5A92D23D1C64E6156C9AEC27FF10255A8B0356BE27396A25F46",
+      "size": 44808
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "FE526A7CDFB9A06E2C679A67BC07F1F4F4F1AFCB4AC2D176F38EA2FC4B11BFBE",
+      "size": 405776
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "F091E36CD829445AE557248EF8EF7CA766428FE0F654BDCAF159BE354EABC8F9",
+      "size": 17680
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "D34EEF8A1944799267E12C7C8D03598314E0513D8271833A4A8258C32151B056",
+      "size": 175880
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "2B8460E62D86C91CCE2182C31B59DC3CEF9CF8AC7FACE19AE0592516C3227897",
+      "size": 37640
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "77266D3D86C0FFAD5EE69207DB7DB364E4B6D494C653C76371B88C5E72C8B44B",
+      "size": 18192
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "391E9BAC75293B18B73CD97AC204DE04CD4A44F9BB7F49DAF614DF7E4D8A3FF3",
+      "size": 279824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "3C1051F19727BF6EA73CBFE178C3A17DFA5BFBDDC6320F84B72A50C6E772819F",
+      "size": 24840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "6CCABBEFC428B2198ED03F54AC550CDECA22D53F5973C584CADCE49ACB19766E",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "61D2B8938866A2835FCAE414BCC209CFC7EFC3676563062D80DEB865385E400B",
+      "size": 40200
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "9F2E12FD18B7D04E3BD3E2AB8FC8D602E88B9DD7166EE2E69F29708EF80CB3D6",
+      "size": 16312
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "A90EE2B4FCE6CAB8CA3FD2E5E310AD709287BC77091285A3F4AA525A9CA3606A",
+      "size": 14264
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hans/StreamJsonRpc.resources.dll",
+      "sha256": "79D0C1D2D3557E273B332155569CA2F4DA1200AE7ABF46C8CAF6BADF3AE710B4",
+      "size": 23416
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/FSharp.Core.resources.dll",
+      "sha256": "3FBD5D5FA2C8DD8ABB26468AB348E0E8EE101B0BB7B5EA2605236B28A1266E2A",
+      "size": 30832
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.CSharp.Features.resources.dll",
+      "sha256": "AF46C25166B13F5B3843FDD206EAAFF73BE5B9D4ADB3E8EAD8B9F4242FC48A6C",
+      "size": 44856
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll",
+      "sha256": "515E77DDEBD633C7F79DFAE31C8D5B343ED278832119357BDC3228C726C3E48D",
+      "size": 405304
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll",
+      "sha256": "5D822240421B9ABB5F853EEB15ABE745048DB7723E9DFF116D968950D0BEBF80",
+      "size": 17720
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.Features.resources.dll",
+      "sha256": "B6637E4DFF385FD061EBE0008CF092F0F6EA78307714AD50FB5C02B2AF559AAB",
+      "size": 177928
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.resources.dll",
+      "sha256": "E1B882A624FC2FEF8FC63A2DD0A61E19543F6C2974B0AE5F1A8E580C0A490AED",
+      "size": 38152
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.Scripting.resources.dll",
+      "sha256": "59B16E771EB1C0B7A5EFA0BC1ACC43220DF72D1E580AA342084AF2510073D45B",
+      "size": 18184
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.VisualBasic.resources.dll",
+      "sha256": "261A1C1266C356DC8124AA12EEB42CDAD33FE705843C088D91BB5678B58B5823",
+      "size": 278840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll",
+      "sha256": "F992D1B51B44D199A5E9D2421663868C9936A61093AA2F4AD7C6C0103CBC75AE",
+      "size": 24840
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll",
+      "sha256": "0613EC2F04506E99AFF95608AD8C531E3FDFFDEA41CE24432EDF05DB8EF6A322",
+      "size": 17672
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll",
+      "sha256": "2F99D0BC2EBBD1F6B838EF450B6F744B955BA99675F7980B5E11631274A366C9",
+      "size": 40248
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll",
+      "sha256": "06AB976997F906E152122C0B37B2CDA816817888540E2DCE40E546D1D246E3BF",
+      "size": 16824
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll",
+      "sha256": "70A96D0F704757D7CF6DF1716DC7ED3B65CF53503FF3C17CD8072704FD484532",
+      "size": 14264
+    },
+    {
+      "path": ".store/csharp-ls/0.21.0/csharp-ls/0.21.0/tools/net10.0/any/zh-Hant/StreamJsonRpc.resources.dll",
+      "sha256": "6E86389C1B4A6F8CA208BF2975C772DD54C95973E7C601662AE50372C824380B",
+      "size": 23416
+    }
+  ]
+}

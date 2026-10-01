@@ -1,0 +1,67 @@
+{
+  "_EXTRACT-MANIFEST": "api 目录第二批 core 域深挖产出（T6-T10）；本目录更早的 MESSAGE-LAYERS/frontend-inventory/core-rpc-registry/git-tools/domains-surface 属第一批，未在此列",
+  "generated": "2026-10-01",
+  "redlines": "全程只读原版与维护副本；未运行原版 EXE/CLI；未触碰凭据；未修改 restored/ 或 app/ 现有代码",
+  "files": [
+    {
+      "path": "session-checkpoints.md",
+      "sha256": "4278197BCA866E4AB8D22B9458F65134357E4E161485D2DB2E001B72C0C733DF",
+      "bytes": 8871,
+      "extracted": "2026-10-01",
+      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+      "sources": [
+        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+      ]
+    },
+    {
+      "path": "mcp-oauth-elicitation.md",
+      "sha256": "D493433ABC8E8D975974D4E5E8AD027E491037AE1B78C862F79DB0024830CA29",
+      "bytes": 6363,
+      "extracted": "2026-10-01",
+      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+      "sources": [
+        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+      ]
+    },
+    {
+      "path": "config-memory-allowlist.md",
+      "sha256": "35FE1C141E3E3966D89A459FEA91FE7C2867799A21F3FD103B97417282AC6E75",
+      "bytes": 7696,
+      "extracted": "2026-10-01",
+      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+      "sources": [
+        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+      ]
+    },
+    {
+      "path": "context-engine-and-unity-tools.md",
+      "sha256": "D2F3883775FF771C8CB5AC283B60053D8647638E0B1EFAF95E112DBD6098587C",
+      "bytes": 7561,
+      "extracted": "2026-10-01",
+      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+      "sources": [
+        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+      ]
+    },
+    {
+      "path": "marketplace-feedback-walkthrough.md",
+      "sha256": "67EA5EEE7F63B60C4D45E28F7A7EA1E1C90EB0931DC739FFF7AD4C2B54E3CFDD",
+      "bytes": 7156,
+      "extracted": "2026-10-01",
+      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+      "sources": [
+        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+      ]
+    }
+  ]
+}

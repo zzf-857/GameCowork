@@ -1,0 +1,90 @@
+{
+ "extract": "T2 hub-licensing: LicensingClient .NET decompilation",
+ "date": "2026-10-01",
+ "source_dir": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\hub\\LicensingClient",
+ "analyzed_sources": [
+  {
+   "file": "Tuanjie.Licensing.Client.dll",
+   "sha256": "1DEA016D2D30F103BCE6C3410C30B308A4E044520828766DEF240914A69AA4A5",
+   "size": 418304
+  },
+  {
+   "file": "Tuanjie.Licensing.Ipc.dll",
+   "sha256": "D5366B9022F3F2BEEE50F1827800D4CC91EB344E3D21699A57B92F88B8F39873",
+   "size": 50688
+  },
+  {
+   "file": "Tuanjie.Licensing.Analytics.dll",
+   "sha256": "AC93856CA66C2F7AD578BF3692F37F685FDC24F8EA43B964939D01B89F82D9CA",
+   "size": 24064
+  },
+  {
+   "file": "Tuanjie.Licensing.EntitlementContext.dll",
+   "sha256": "F4719ADD7DB52F3B848D5D97BA3CC112991E15C7EAA69AF126CECB6AED60C933",
+   "size": 24576
+  },
+  {
+   "file": "Tuanjie.Licensing.EntitlementResolver.dll",
+   "sha256": "E2A2682224FE0006B4135A2BBA7540B1711CB539DE08EC292C0CC11C220033F0",
+   "size": 207872
+  },
+  {
+   "file": "Tuanjie.Licensing.Genesis.dll",
+   "sha256": "9C4D4EC67818884CC7BD0674645E5C59E543BB5ED8910B824927BEEAA42B1532",
+   "size": 47616
+  },
+  {
+   "file": "Tuanjie.Licensing.Infrastructure.dll",
+   "sha256": "BDAB912FB01103443BFDC69DECB5F508C61A53DD10DDCE1C0979F5CBB518DCC6",
+   "size": 23040
+  },
+  {
+   "file": "Tuanjie.Licensing.Platform.dll",
+   "sha256": "0445389A72ACC65E6AE4182D5DB66390EED39259A973D7C21F82E337A809FA6E",
+   "size": 55296
+  },
+  {
+   "file": "Tuanjie.Licensing.Server.Shared.dll",
+   "sha256": "0D07877591192E755095157BA239B830F5E3CD049BA1A17560E7239D83DEFAA3",
+   "size": 20992
+  },
+  {
+   "file": "Tuanjie.ProxyHelper.dll",
+   "sha256": "BD42EEAD4382DE3E9E2390969D36F99F764292CD0B6AEFD00ADC8175C0EC719E",
+   "size": 7680
+  },
+  {
+   "file": "bindings.dll",
+   "sha256": "CA5CDCEE62B75A4372A08BD82F0541F011FABA289E34C1863D03792458A64107",
+   "size": 15648592
+  }
+ ],
+ "decompiled_cs_kept_at": "F:\\AI\\AgentMake\\temp\\GameCowork\\licensing-decomp (temp only, not committed)",
+ "method": "ilspycmd 9.x (dotnet tool), .NET 8 SDK 10.0.103 present; decompiled to C# then manually analyzed",
+ "key_facts": {
+  "ipc_protocol_version": "1.13 (assembly 1.14.0)",
+  "pipe_main": "Tuanjie-LicenseClient-{username}",
+  "pipe_notifications_suffix": "-notifications",
+  "framing": "0x0C (form feed) delimiter, UTF-8, camelCase JSON",
+  "message_types": 42,
+  "controllers": 19,
+  "cli_options": 41
+ },
+ "files": [
+  {
+   "path": "CLIENT-SURFACE.md",
+   "sha256": "77775cb711f5fd8342369ab5b80d6ac44edb3d1071495d870c959eb0e5a8df6a",
+   "size": 6926
+  },
+  {
+   "path": "IPC-PROTOCOL.md",
+   "sha256": "1d14e47b07379bc31450d4ea00b905ab142802a977d32b1c03855cbbdda98880",
+   "size": 7300
+  },
+  {
+   "path": "TYPES.md",
+   "sha256": "6fc8d81bfe51f650294d1b785e01ec78e988c50bd99ae84d1198aeecddd7b323",
+   "size": 100390
+  }
+ ]
+}

@@ -1,4 +1,5 @@
 import { bj as k, j as s, c as b, C as ye, r as F, bk as Q } from "./registry-CHHSpXp3.js";
+import { unityConnectionEpochs } from "./gamecowork-unity-connectors.js";
 import {
   b5 as _,
   s as L,
@@ -99,7 +100,220 @@ function T(e, t) {
 function z(e, t) {
   return t ? R({ workspaceKey: t, loading: e }) : R(e);
 }
+// The local Editor belongs to an opened workspace, independently of a chat session.
+const gamecoworkUnityQueryEpochs = unityConnectionEpochs,
+  gamecoworkUnityLaunches = new Map();
+function gamecoworkUnityOwner(state, payload) {
+  const supplied = payload && typeof payload === "object" ? payload : {};
+  if (!state.hub?.isHubMode) return { workspaceKey: void 0, route: { workspaceKey: "default" } };
+  const key = supplied.workspaceKey || state.hub.activeWorkspaceKey,
+    workspace = state.hub.workspaces.find((item) => item.workspaceKey === key);
+  if (!workspace || workspace.isRemote) return null;
+  return {
+    workspaceKey: workspace.workspaceKey,
+    route: { workspaceKey: workspace.workspaceKey, workspaceRef: { runOn: "local", workspaceDir: workspace.workspaceDir } },
+  };
+}
+function gamecoworkUnityOwnerCurrent(getState, owner) {
+  if (!owner) return false;
+  const state = getState();
+  if (!owner.workspaceKey) return !state.hub?.isHubMode;
+  return state.hub?.isHubMode && state.hub.workspaces.some((item) =>
+    item.workspaceKey === owner.workspaceKey && !item.isRemote &&
+    item.workspaceDir === owner.route.workspaceRef.workspaceDir);
+}
+function gamecoworkUnityStatusKey(owner) {
+  return "local-editor:" + (owner.workspaceKey || "default");
+}
+function gamecoworkUnityEpoch(owner, channel) {
+  const key = gamecoworkUnityStatusKey(owner) + ":" + channel,
+    epoch = (gamecoworkUnityQueryEpochs.get(key) || 0) + 1;
+  gamecoworkUnityQueryEpochs.set(key, epoch);
+  return () => gamecoworkUnityQueryEpochs.get(key) === epoch;
+}
+function gamecoworkUnityContent(reply) {
+  let value = reply;
+  for (let i = 0; i < 4 && value && typeof value === "object"; i++) {
+    if (value.status === "error") throw new Error(value.error || "Editor request failed");
+    if (value.status !== "success" || !("content" in value)) break;
+    value = value.content;
+  }
+  return value;
+}
+async function gamecoworkUnityDeadline(promise, milliseconds, message) {
+  let timer;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((resolve, reject) => { timer = setTimeout(() => reject(new Error(message)), milliseconds); }),
+    ]);
+  } finally { clearTimeout(timer); }
+}
+function gamecoworkUnityPublish(dispatch, owner, status) {
+  dispatch(C({ workspaceKey: owner.workspaceKey, sessionId: gamecoworkUnityStatusKey(owner), status }));
+  if (status.status === "connected") {
+    dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+    if (status.editorPid) dispatch(g({ workspaceKey: owner.workspaceKey, pid: status.editorPid }));
+  } else if (status.processStatus === "dead") {
+    dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+    dispatch(g({ workspaceKey: owner.workspaceKey, pid: null }));
+  }
+}
+async function gamecoworkUnityReadProject(messenger, owner) {
+  const info = gamecoworkUnityContent(await gamecoworkUnityDeadline(
+    messenger.request("unity/getProjectStatus", owner.route), 8000, "读取 Unity 工程信息超时，请重试。"));
+  if (!info || typeof info.isUnityProject !== "boolean") throw new Error("Unity 工程信息不完整，请重试。");
+  const normalize = (value) => String(value || "").replaceAll("\\", "/").replace(/\/$/, "").toLowerCase();
+  if (info.isUnityProject && owner.route.workspaceRef &&
+      normalize(info.projectRoot) !== normalize(owner.route.workspaceRef.workspaceDir))
+    throw new Error("Unity 工程信息与所选工作区不匹配，请重新检测。");
+  return info;
+}
+async function gamecoworkUnityCheckProject(payload, { dispatch, extra, getState }) {
+  const owner = gamecoworkUnityOwner(getState(), payload), messenger = extra.ideMessenger;
+  if (!owner || !messenger) return;
+  const current = gamecoworkUnityEpoch(owner, "project");
+  dispatch(z(true, owner.workspaceKey));
+  try {
+    const info = await gamecoworkUnityReadProject(messenger, owner);
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner)) dispatch(T(info, owner.workspaceKey));
+    return info;
+  } catch (error) {
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner))
+      gamecoworkUnityPublish(dispatch, owner, { status: "not-connected", userStatus: "should-not-reconnected", error: error.message });
+    return null;
+  } finally {
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner)) dispatch(z(false, owner.workspaceKey));
+  }
+}
+async function gamecoworkUnityInstall(payload, { dispatch, extra, getState }) {
+  const owner = gamecoworkUnityOwner(getState(), payload), messenger = extra.ideMessenger;
+  if (!owner || !messenger) throw new Error("请先选择已打开的本地 Unity 工程。");
+  const current = gamecoworkUnityEpoch(owner, "project");
+  try {
+    const receipt = gamecoworkUnityContent(await gamecoworkUnityDeadline(
+      messenger.request("unity/installMcpPackage", owner.route), 30000, "安装 GameCowork Bridge 超时，请重试。"));
+    if (!current() || !gamecoworkUnityOwnerCurrent(getState, owner)) return receipt;
+    if (receipt?.requiresEditorImport !== true) throw new Error("GameCowork Bridge 安装回执不完整，请重新检测。");
+    // A manifest mutation receipt is not project metadata or proof of a live Editor.
+    const info = await gamecoworkUnityReadProject(messenger, owner);
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner)) {
+      dispatch(T(info, owner.workspaceKey));
+      dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+      gamecoworkUnityPublish(dispatch, owner, {
+        status: "not-connected", userStatus: "should-not-reconnected",
+        error: "本地桥依赖已配置；请在 Unity 完成包导入与脚本编译后连接。",
+      });
+    }
+    return receipt;
+  } catch (error) {
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner)) {
+      dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+      E(error.message);
+    }
+    throw error;
+  } finally {
+    // Invalidating an older metadata read also releases its loading indicator.
+    if (current() && gamecoworkUnityOwnerCurrent(getState, owner)) dispatch(z(false, owner.workspaceKey));
+  }
+}
+async function gamecoworkUnityReadStatus(messenger, dispatch, getState, owner, kind, options = {}) {
+  const current = gamecoworkUnityEpoch(owner, "status");
+  let status;
+  try {
+    const value = gamecoworkUnityContent(await gamecoworkUnityDeadline(
+      messenger.request(kind, { ...options, ...owner.route }), 6000, "Unity 编辑器连接检查超时，请重试。"));
+    if (!value || typeof value.status !== "string") throw new Error("Unity 编辑器连接状态不完整，请重试。");
+    status = { ...value, userStatus: value.userStatus || "should-not-reconnected" };
+  } catch (error) {
+    status = { status: "not-connected", userStatus: "should-not-reconnected", error: error.message };
+  }
+  if (!current() || !gamecoworkUnityOwnerCurrent(getState, owner)) return null;
+  gamecoworkUnityPublish(dispatch, owner, status);
+  return status;
+}
+async function gamecoworkUnityRefresh(payload, { dispatch, extra, getState }, kind) {
+  const state = getState(), owner = gamecoworkUnityOwner(state, payload), messenger = extra.ideMessenger;
+  if (!owner || !messenger) return;
+  const options = payload && typeof payload === "object" ? payload : {},
+    unity = owner.workspaceKey ? state.unity.workspaces[owner.workspaceKey] : state.unity,
+    status = await gamecoworkUnityReadStatus(messenger, dispatch, getState, owner, kind, {
+      manual: options.manual === true,
+      ...(unity?.editorPid ? { editorPid: unity.editorPid } : {}),
+    });
+  if (status && options.manual === true) dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+  return status;
+}
+async function gamecoworkUnityWaitForEditor(messenger, dispatch, getState, owner, launch) {
+  const deadline = Date.now() + 60000, key = gamecoworkUnityStatusKey(owner),
+    current = () => gamecoworkUnityLaunches.get(key) === launch && gamecoworkUnityOwnerCurrent(getState, owner);
+  while (current() && Date.now() < deadline) {
+    const state = getState(), unity = owner.workspaceKey ? state.unity.workspaces[owner.workspaceKey] : state.unity;
+    if (unity?.projectInfo?.hasUnityMcpPackage === false) {
+      gamecoworkUnityPublish(dispatch, owner, {
+        status: "not-connected", userStatus: "should-not-reconnected",
+        error: "请先安装本地 GameCowork Bridge；Unity 完成包导入与脚本编译后再连接。",
+      });
+      return;
+    }
+    const status = await gamecoworkUnityReadStatus(messenger, dispatch, getState, owner, "unity/getStatus");
+    if (!current() || status?.status === "connected" || status?.processStatus === "dead") return;
+    await new Promise((resolve) => setTimeout(resolve, Math.min(2000, Math.max(0, deadline - Date.now()))));
+  }
+  if (current()) gamecoworkUnityPublish(dispatch, owner, {
+    status: "not-connected", userStatus: "should-not-reconnected",
+    error: "编辑器已启动，但 60 秒内未连接。请检查 GameCowork Bridge 包导入和 Unity Console 编译错误，然后重试。",
+  });
+}
+async function gamecoworkUnityOpenEditor(messenger, dispatch, version, customOpen, pid, supplied) {
+  const getState = () => Z.getState(), owner = supplied?.owner || gamecoworkUnityOwner(getState(), supplied?.route || supplied),
+    key = owner && gamecoworkUnityStatusKey(owner);
+  if (!owner || !gamecoworkUnityOwnerCurrent(getState, owner)) return;
+  if (gamecoworkUnityLaunches.has(key)) { I(k.t("sidebar.editorOpening")); return; }
+  const launch = {};
+  gamecoworkUnityLaunches.set(key, launch);
+  dispatch(me({ workspaceKey: owner.workspaceKey, launching: true }));
+  try {
+    const selected = supplied?.editor, payload = {
+      ...owner.route, ...(version ? { version } : {}), ...(pid ? { editorPid: pid } : {}),
+      ...(selected?.path ? { editorPath: selected.path } : {}),
+      ...(selected?.product ? { product: selected.product } : {}),
+    };
+    const result = customOpen
+      ? await gamecoworkUnityDeadline(customOpen(version, owner.route), 30000, "打开 Unity 编辑器超时，请重试。")
+      : gamecoworkUnityContent(await gamecoworkUnityDeadline(
+        messenger.request("unity/openEditor", payload), 30000, "打开 Unity 编辑器超时，请重试。"));
+    if (!gamecoworkUnityOwnerCurrent(getState, owner)) return;
+    if (result?.needsSelection && Array.isArray(result.availableEditors)) {
+      if (!result.availableEditors.length) throw new Error(result.message || "没有可用的 Unity 编辑器。");
+      dispatch(re({
+        message: s.jsx(De, {
+          editors: result.availableEditors, requestedVersion: result.requestedVersion,
+          onSelect: (editor) => gamecoworkUnityOpenEditor(messenger, dispatch, editor.version, customOpen, void 0, { owner, editor }),
+          onClose: () => { dispatch(j(false)); dispatch(w(void 0)); },
+        }), size: "lg",
+      }));
+      dispatch(j(true));
+      return;
+    }
+    if (!result?.success && !result?.alreadyOpen) throw new Error(result?.message || "无法打开 Unity 编辑器，请重试。");
+    if (result.pid) dispatch(g({ workspaceKey: owner.workspaceKey, pid: result.pid }));
+    await gamecoworkUnityWaitForEditor(messenger, dispatch, getState, owner, launch);
+  } catch (error) {
+    if (gamecoworkUnityOwnerCurrent(getState, owner)) {
+      gamecoworkUnityPublish(dispatch, owner, { status: "not-connected", userStatus: "should-not-reconnected", error: error.message });
+      E(error.message);
+    }
+  } finally {
+    if (gamecoworkUnityLaunches.get(key) === launch) {
+      gamecoworkUnityLaunches.delete(key);
+      if (gamecoworkUnityOwnerCurrent(getState, owner)) dispatch(me({ workspaceKey: owner.workspaceKey, launching: false }));
+    }
+  }
+}
+
 const Oe = _("unity/checkProjectStatus", async (e, { dispatch: t, extra: d, getState: a }) => {
+  if (window.GAMECOWORK_SHELL) return gamecoworkUnityCheckProject(e, { dispatch: t, extra: d, getState: a });
   var y, m, x;
   const { ideMessenger: o } = d,
     n = a(),
@@ -149,6 +363,7 @@ const Oe = _("unity/checkProjectStatus", async (e, { dispatch: t, extra: d, getS
   }
 });
 _("unity/installMcpPackage", async (e, { dispatch: t, extra: d, getState: a }) => {
+  if (window.GAMECOWORK_SHELL) return gamecoworkUnityInstall(e, { dispatch: t, extra: d, getState: a });
   const { ideMessenger: o } = d,
     n = a(),
     r = N(n),
@@ -175,6 +390,7 @@ _("unity/installMcpPackage", async (e, { dispatch: t, extra: d, getState: a }) =
   }
 });
 const Te = _("unity/refresh", async (e, { dispatch: t, extra: d, getState: a }) => {
+    if (window.GAMECOWORK_SHELL) return gamecoworkUnityRefresh(e, { dispatch: t, extra: d, getState: a }, "unity/refresh");
     var m, x, i, p, u, h;
     const { ideMessenger: o } = d,
       n = a(),
@@ -225,6 +441,7 @@ const Te = _("unity/refresh", async (e, { dispatch: t, extra: d, getState: a }) 
     }
   }),
   Be = _("unity/getStatus", async (e, { dispatch: t, extra: d, getState: a }) => {
+    if (window.GAMECOWORK_SHELL) return gamecoworkUnityRefresh(e, { dispatch: t, extra: d, getState: a }, "unity/getStatus");
     var y, m, x;
     const { ideMessenger: o } = d,
       n = a(),
@@ -268,6 +485,11 @@ const Te = _("unity/refresh", async (e, { dispatch: t, extra: d, getState: a }) 
     }
   }),
   Re = _("unity/handleStatusUpdate", async (e, { dispatch: t, getState: d }) => {
+    if (window.GAMECOWORK_SHELL) {
+      const owner = gamecoworkUnityOwner(d(), e);
+      if (e.workspaceKey && owner) return t(Te({ ...owner.route, manual: false }));
+      return;
+    }
     var x, i, p, u, h;
     const { sessionId: a, workspaceKey: o, ...n } = e,
       r = d();
@@ -819,7 +1041,8 @@ async function X(e) {
   } catch {}
   return null;
 }
-async function le(e, t, d, a, o) {
+async function le(e, t, d, a, o, supplied) {
+  if (window.GAMECOWORK_SHELL) return gamecoworkUnityOpenEditor(e, t, d, a, o, supplied);
   if (A) {
     I(k.t("sidebar.editorOpening"));
     return;

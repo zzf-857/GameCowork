@@ -1,0 +1,394 @@
+# codely-mobile://session
+occurrences=4
+
+## hit 1 @ 47193481
+```
+  @ -1137  returning it instead of joiningAuth flow already in progress, rebroadcasting device flow info so this window joins the in-progress login UI
+  @  -969 device-flow-started
+  @  -929 joinedInProgress
+  @  -865 Auth flow failed: 
+  @  -825 accessToken
+  @  -785 didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+  @  -673 device-flow-failedDevice authorization request has expiredexpired
+  @  -529 stream/liveUpdate
+  @  -481 sessionIddefaultcompletion
+  @  -417 role
+  @  -385 messageId
+  @  -345 send_to_gui_internal: 
+  @  -273 streamMessageIddonestreamFinished: session_id=, title=, body_len=, from_mobile=
+  @  -129 Push...
+  @   -65 machineId
+  @    -1 &codely-mobile://session?
+  @   +47 task_completedtask_confirmationFailed to send push: 
+  @  +119 continueSessionIdmessageOptions
+  @  +175 This session is currently controlled from another Codely view (stream 
+  @  +279 No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+  @  +655 redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+  @  +759 redeliver_pending_acp_requests: failed to re-dispatch messageId=
+  @  +903   -> Routed to workspace  via SSE
+  @  +975   -> workspaceId  not found, falling back to local SSE
+  @ +1063   -> Sent via SSE to  receivers
+  @ +1127   -> SSE broadcast failed: no active receivers 
+  -- fragments --
+    · returning
+    · instead
+    · joiningAuth
+    · already
+    · progress
+    · rebroadcasting
+    · device
+    · window
+    · joins
+    · login
+    · device-flow-started
+    · started
+    · joinedInProgress
+    · Auth flow failed:
+    · failed
+    · accessToken
+    · didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+    · didChangeControlPlaneSessionInfoNo
+    · canceldevice
+    · cancelled
+    · device-flow-failedDevice authorization request has expiredexpired
+    · failedDevice
+    · authorization
+    · request
+    · expiredexpired
+    · stream/liveUpdate
+    · stream
+    · liveUpdate
+    · sessionIddefaultcompletion
+    · messageId
+    · send_to_gui_internal:
+    · send_to_gui_internal
+    · streamMessageIddonestreamFinished: session_id=, title=, body_len=, from_mobile=
+    · streamMessageIddonestreamFinished
+    · session_id
+    · title
+    · body_len
+    · from_mobile
+    · Push...
+    · machineId
+    · &codely-mobile://session?
+    · codely
+    · mobile
+    · session
+    · task_completedtask_confirmationFailed to send push:
+    · confirmationFailed
+    · continueSessionIdmessageOptions
+    · This session is currently controlled from another Codely view (stream
+    · currently
+    · controlled
+    · another
+    · No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+    · active
+    · joinjoinExistingStreamOnlylastAppliedSeq
+    · redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+    · redeliver_pending_acp_requests
+    · dispatching
+    · pending
+    · redeliver_pending_acp_requests: failed to re-dispatch messageId=
+    · dispatch
+    · -> Routed to workspace  via SSE
+    · workspace
+    · -> workspaceId  not found, falling back to local SSE
+    · workspaceId
+    · found
+    · falling
+    · local
+    · -> Sent via SSE to  receivers
+    · receivers
+    · -> SSE broadcast failed: no active receivers
+    · broadcast
+```
+
+## hit 2 @ 47491249
+```
+  @ -1161  returning it instead of joiningAuth flow already in progress, rebroadcasting device flow info so this window joins the in-progress login UI
+  @  -993 device-flow-started
+  @  -953 joinedInProgress
+  @  -889 Auth flow failed: 
+  @  -849 accessToken
+  @  -809 didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+  @  -697 device-flow-failedDevice authorization request has expiredexpired
+  @  -553 stream/liveUpdate
+  @  -505 sessionIddefaultcompletion
+  @  -441 role
+  @  -409 messageId
+  @  -369 send_to_gui_internal: 
+  @  -297 stream/streamFinishedstreamMessageIddonestreamFinished: session_id=, title=, body_len=, from_mobile=
+  @  -129 Push...
+  @   -65 machineId
+  @    -1 &codely-mobile://session?
+  @   +47 task_completedtask_confirmationFailed to send push: 
+  @  +119 continueSessionIdmessageOptions
+  @  +175 This session is currently controlled from another Codely view (stream 
+  @  +279 No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+  @  +655 redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+  @  +759 redeliver_pending_acp_requests: failed to re-dispatch messageId=
+  @  +903   -> Routed to workspace  via SSE
+  @  +975   -> workspaceId  not found, falling back to local SSE
+  @ +1063   -> Sent via SSE to  receivers
+  @ +1127   -> SSE broadcast failed: no active receivers 
+  -- fragments --
+    · returning
+    · instead
+    · joiningAuth
+    · already
+    · progress
+    · rebroadcasting
+    · device
+    · window
+    · joins
+    · login
+    · device-flow-started
+    · started
+    · joinedInProgress
+    · Auth flow failed:
+    · failed
+    · accessToken
+    · didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+    · didChangeControlPlaneSessionInfoNo
+    · canceldevice
+    · cancelled
+    · device-flow-failedDevice authorization request has expiredexpired
+    · failedDevice
+    · authorization
+    · request
+    · expiredexpired
+    · stream/liveUpdate
+    · stream
+    · liveUpdate
+    · sessionIddefaultcompletion
+    · messageId
+    · send_to_gui_internal:
+    · send_to_gui_internal
+    · streamFinishedstreamMessageIddonestreamFinished
+    · session_id
+    · title
+    · body_len
+    · from_mobile
+    · Push...
+    · machineId
+    · &codely-mobile://session?
+    · codely
+    · mobile
+    · session
+    · task_completedtask_confirmationFailed to send push:
+    · confirmationFailed
+    · continueSessionIdmessageOptions
+    · This session is currently controlled from another Codely view (stream
+    · currently
+    · controlled
+    · another
+    · No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+    · active
+    · joinjoinExistingStreamOnlylastAppliedSeq
+    · redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+    · redeliver_pending_acp_requests
+    · dispatching
+    · pending
+    · redeliver_pending_acp_requests: failed to re-dispatch messageId=
+    · dispatch
+    · -> Routed to workspace  via SSE
+    · workspace
+    · -> workspaceId  not found, falling back to local SSE
+    · workspaceId
+    · found
+    · falling
+    · local
+    · -> Sent via SSE to  receivers
+    · receivers
+    · -> SSE broadcast failed: no active receivers
+    · broadcast
+```
+
+## hit 3 @ 47618065
+```
+  @ -1065 device-flow-started
+  @ -1025 joinedInProgress0
+  @  -961 Auth flow failed: 
+  @  -921 accessToken
+  @  -881 didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+  @  -769 device-flow-failedDevice authorization request has expiredexpired
+  @  -553 defaultcompletion
+  @  -497 role
+  @  -441 send_to_gui_internal: 
+  @  -369 streamMessageIddonestreamFinished: session_id=, body_len=, from_mobile=
+  @  -233 Push...
+  @  -181 toolCall
+  @   -97 name
+  @   -65 machineId
+  @    -1 &codely-mobile://session?
+  @   +47 task_completedtask_confirmationFailed to send push: 
+  @  +143 continueSessionIdmessageOptions
+  @  +199 This session is currently controlled from another Codely view (stream 
+  @  +303 No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+  @  +703 request_to_gui: start messageType=
+  @  +847 Message ID  Type  already exists`
+  @  +927 request_to_gui: registered pending messageId=, total_pending=
+  @ +1023 request_to_gui: waiting for GUI response messageType=
+  @ +1111 request_to_gui: dispatch failed messageId=, error=
+  -- fragments --
+    · device-flow-started
+    · device
+    · started
+    · joinedInProgress0
+    · Auth flow failed:
+    · failed
+    · accessToken
+    · didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+    · didChangeControlPlaneSessionInfoNo
+    · progress
+    · canceldevice
+    · cancelled
+    · device-flow-failedDevice authorization request has expiredexpired
+    · failedDevice
+    · authorization
+    · request
+    · expiredexpired
+    · defaultcompletion
+    · send_to_gui_internal:
+    · send_to_gui_internal
+    · streamMessageIddonestreamFinished: session_id=, body_len=, from_mobile=
+    · streamMessageIddonestreamFinished
+    · session_id
+    · body_len
+    · from_mobile
+    · Push...
+    · toolCall
+    · machineId
+    · &codely-mobile://session?
+    · codely
+    · mobile
+    · session
+    · task_completedtask_confirmationFailed to send push:
+    · confirmationFailed
+    · continueSessionIdmessageOptions
+    · This session is currently controlled from another Codely view (stream
+    · currently
+    · controlled
+    · another
+    · stream
+    · No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+    · active
+    · joinjoinExistingStreamOnlylastAppliedSeq
+    · request_to_gui: start messageType=
+    · request_to_gui
+    · start
+    · messageType
+    · Message ID  Type  already exists`
+    · already
+    · exists
+    · request_to_gui: registered pending messageId=, total_pending=
+    · registered
+    · pending
+    · messageId
+    · total_pending
+    · request_to_gui: waiting for GUI response messageType=
+    · waiting
+    · response
+    · request_to_gui: dispatch failed messageId=, error=
+    · dispatch
+    · error
+```
+
+## hit 4 @ 47699113
+```
+  @ -1137 Auth flow in progress but a valid session is already present 
+  @ -1073  returning it instead of joiningAuth flow already in progress, rebroadcasting device flow info so this window joins the in-progress login UI
+  @  -905 device-flow-started
+  @  -865 joinedInProgress
+  @  -801 Auth flow failed: 
+  @  -761 accessToken
+  @  -721 didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+  @  -609 device-flow-failedDevice authorization request has expiredexpired
+  @  -441 defaultcompletion
+  @  -385 role
+  @  -329 send_to_gui_internal: 
+  @  -257 donestreamFinished: session_id=, body_len=, from_mobile=
+  @  -137 Push...
+  @   -97 name
+  @   -65 machineId
+  @    -1 &codely-mobile://session?
+  @   +47 task_completedtask_confirmationFailed to send push: 
+  @  +119 continueSessionIdmessageOptions
+  @  +175 This session is currently controlled from another Codely view (stream 
+  @  +279 No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+  @  +655 redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+  @  +759 redeliver_pending_acp_requests: failed to re-dispatch messageId=
+  @  +903   -> Routed to workspace  via SSE
+  @  +975   -> workspaceId  not found, falling back to local SSE
+  @ +1063   -> Sent via SSE to  receivers
+  -- fragments --
+    · Auth flow in progress but a valid session is already present
+    · progress
+    · valid
+    · session
+    · already
+    · present
+    · returning
+    · instead
+    · joiningAuth
+    · rebroadcasting
+    · device
+    · window
+    · joins
+    · login
+    · device-flow-started
+    · started
+    · joinedInProgress
+    · Auth flow failed:
+    · failed
+    · accessToken
+    · didChangeControlPlaneSessionInfoNo auth flow in progress to canceldevice-flow-cancelled
+    · didChangeControlPlaneSessionInfoNo
+    · canceldevice
+    · cancelled
+    · device-flow-failedDevice authorization request has expiredexpired
+    · failedDevice
+    · authorization
+    · request
+    · expiredexpired
+    · defaultcompletion
+    · send_to_gui_internal:
+    · send_to_gui_internal
+    · donestreamFinished: session_id=, body_len=, from_mobile=
+    · donestreamFinished
+    · session_id
+    · body_len
+    · from_mobile
+    · Push...
+    · machineId
+    · &codely-mobile://session?
+    · codely
+    · mobile
+    · task_completedtask_confirmationFailed to send push:
+    · confirmationFailed
+    · continueSessionIdmessageOptions
+    · This session is currently controlled from another Codely view (stream
+    · currently
+    · controlled
+    · another
+    · stream
+    · No active stream to joinjoinExistingStreamOnlylastAppliedSeq
+    · active
+    · joinjoinExistingStreamOnlylastAppliedSeq
+    · redeliver_pending_acp_requests: re-dispatching  pending ACP request(s)
+    · redeliver_pending_acp_requests
+    · dispatching
+    · pending
+    · redeliver_pending_acp_requests: failed to re-dispatch messageId=
+    · dispatch
+    · messageId
+    · -> Routed to workspace  via SSE
+    · workspace
+    · -> workspaceId  not found, falling back to local SSE
+    · workspaceId
+    · found
+    · falling
+    · local
+    · -> Sent via SSE to  receivers
+    · receivers
+```

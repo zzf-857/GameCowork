@@ -4,6 +4,11 @@
 > 目标：① GameCowork 满载支持同时打开 Unity 与 Tuanjie 项目；
 >      ② 在当前编辑器内部直接查看**不同工程**的视图。
 
+> **2026-10-01 复核修正**：这是历史研究稿，旧文中的“90%”“协议全部就绪”“天然持有 N 个工程连接”均不能作为当前运行事实。
+> 实际 CLI 的 Unity TCP 客户端是单例，只有一个 socket 与静态 projectRoot（`cli-main.beautified.js` 的 `ks` / `setProjectRoot`）。带 PROJECT_ROOT 的握手只能证明工程身份，不能证明并行连接能力。
+> 真实握手解析为 `WELCOME UNITY-TCP ... FRAMING=1`，带 SERVER_VERSION 和 URL 编码 PROJECT_ROOT；下文 `GAMECOWORK_BRIDGE=1` 的旧推测不准确。
+> 当前第四阶段正式包已验收多工作区、自有 Agent、自有桥、Unity 程序集重载与单 GUI 双工程四槽预览。恢复任务后新增实际 Tuanjie 单工程 18 项与同 GUI Unity＋Tuanjie 双引擎 14 项运行验收。预览使用按打开工作区验证的原生桥路由，每槽保留固定工程身份；没有依靠原 CLI 单例去证明多工程连接。下文 G1–G4、桥缺位与旧百分比是历史发现，当前状态与本次报告见 [RESTORE_STATUS.md](../RESTORE_STATUS.md)，接手见 [HANDOFF.md](../HANDOFF.md)。
+
 ## 一、现状结论（三层证据）
 
 ### 1. 双引擎"打开项目"——已具备 90%，属验证级缺口 ✅

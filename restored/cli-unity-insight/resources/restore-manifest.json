@@ -1,0 +1,87 @@
+{
+  "purpose": "Local C# syntax extraction for restored Unity Insight workers; no network or model inference.",
+  "workerVersion": "0.0.1",
+  "workerGitCommit": "6e92ad2ce0a2918d63e1faeb5e76d6660fdf8143",
+  "versions": [
+    {
+      "name": "web-tree-sitter",
+      "version": "0.20.8",
+      "license": "MIT"
+    },
+    {
+      "name": "tree-sitter-wasms",
+      "version": "0.1.13",
+      "license": "Unlicense"
+    }
+  ],
+  "assets": [
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules/web-tree-sitter/tree-sitter.js",
+      "path": "web-tree-sitter/tree-sitter.cjs",
+      "bytes": 72564,
+      "sha256": "0d94b84976dc199f7cdfecf2ed4489758bf62dc4633169081fa500932a56c244"
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules/web-tree-sitter/tree-sitter.wasm",
+      "path": "web-tree-sitter/tree-sitter.wasm",
+      "bytes": 186526,
+      "sha256": "17382e1a69bd628107e8dfe37d31d57f7ba948e5f2da77e56a8aa010488dc5ae"
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules/web-tree-sitter/LICENSE",
+      "path": "web-tree-sitter/LICENSE",
+      "bytes": 1085,
+      "sha256": "5eb1860bedd3a6eca8652ac3c8f0c8dbfb6878b6363628832d2fc05675b76a4f"
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules/tree-sitter-wasms/out/tree-sitter-c_sharp.wasm",
+      "path": "tree-sitter-c_sharp.wasm",
+      "bytes": 3978594,
+      "sha256": "6266a7e32d68a3459104d994dc848df15d5672b0ea8e86d327274b694f8e6991"
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/node_modules/tree-sitter-wasms/LICENSE",
+      "path": "c-sharp-grammar-LICENSE",
+      "bytes": 1211,
+      "sha256": "6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e"
+    }
+  ],
+  "workers": [
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/unity-insight-cli.js",
+      "bytes": 683715,
+      "sha256": "476eabdd3624d871cd9871c797f295227255366425d0f70fe592d2f7c640fe58",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/indexBuildWorker.js",
+      "bytes": 416472,
+      "sha256": "9324c6c72000e1a090b1addbfbd82e6616576239d75d00749f7866d85770b176",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/indexSyncWorker.js",
+      "bytes": 457181,
+      "sha256": "2aba42a3534b3b8f35c11c16f5dcb818fb36b58afc287045adcc409e42edef31",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/sqliteQueryWorker.js",
+      "bytes": 226671,
+      "sha256": "68c2d4300998b67afe5481b49e2b309dc00959027b16f00d021295b32571ca82",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/yamlExtractWorker.js",
+      "bytes": 124273,
+      "sha256": "30c1e99540ca53dc7d725501a707064141baebb66ecce24255888c489b7bdd76",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    },
+    {
+      "source": "original/Tuanjie Cowork/cli/bin/win32-x64/lib/bundle/shimmer-worker.js",
+      "bytes": 3967,
+      "sha256": "62bf6be580abbd93d7a1e934e9adccbe54d29f944dfe2142abd8d9b4ef1d3e5d",
+      "purpose": "Read-only original worker reference; maintained restoration includes explicit parser paths, isolated cache/home and scope guard."
+    }
+  ]
+}

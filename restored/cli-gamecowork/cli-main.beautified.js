@@ -1,5 +1,38 @@
 // @bun @bytecode @bun-cjs
 (function (exports, require, module, __filename, __dirname) {
+  // Keep configuration compatibility and memory discovery inside the explicit CLI state root.
+  function gcuCliProfileRoot(fallback) {
+    let root = process.env.GAMECOWORK_CLI_HOME?.trim() || process.env.GAMECOWORK_USER_DATA_DIR?.trim();
+    return root ? require("node:path").resolve(root) : fallback();
+  }
+  function gcuCliResourceRoot() {
+    return process.env.GAMECOWORK_CLI_RESOURCE_DIR?.trim() || require("node:path").join(__dirname, "resources");
+  }
+  function gcuCliOwnProvider(authType) {
+    return process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1"
+      && ["openai", "anthropic", "gemini-api-key", "vertex-ai"].includes(authType);
+  }
+  function gcuCliLocalAuth(settings) {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return;
+    let candidate = settings?.contentGenerator?.overrides?.model?.authType
+      || settings?.contentGenerator?.authType || settings?.selectedAuthType;
+    return gcuCliOwnProvider(candidate) ? candidate : void 0;
+  }
+  function gcuCliUnavailableCloudMcp(server) {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return !1;
+    let endpoint = server?.httpUrl || server?.url;
+    if (typeof endpoint !== "string") return !1;
+    try {
+      let { URL } = require("node:url");
+      return new URL(endpoint).hostname.toLowerCase() === "ai-generator.tuanjie.cn";
+    } catch {
+      return !1;
+    }
+  }
+  function gcuCliLocalMcpServers(servers) {
+    return Object.fromEntries(Object.entries(servers || {}).map(([name, server]) =>
+      [name, gcuCliUnavailableCloudMcp(server) ? { ...server, enabled: !1 } : server]));
+  }
   var A$u = Object.create;
   var { getPrototypeOf: m$u, defineProperty: vun, getOwnPropertyNames: g$u } = Object;
   var E$u = Object.prototype.hasOwnProperty;
@@ -47394,7 +47427,7 @@ tell application "System Events" to get value of property list item "CFBundleNam
       return _0.default.join(cs(), Sz);
     }
     function ULr() {
-      return _0.default.join(LLr.default.homedir(), cme, Sz);
+      return _0.default.join(gcuCliProfileRoot(() => LLr.default.homedir()), cme, Sz);
     }
     function jLr(e) {
       return _0.default.join(e, Yn(), Sz);
@@ -47641,7 +47674,7 @@ Please try running again with NO_BROWSER=true set.`,
       await hq.promises.writeFile(t, r, { mode: 384 });
     }
     function YLr() {
-      return qLr.default.join(bQn.homedir(), IQn, NQn);
+      return qLr.default.join(gcuCliProfileRoot(() => bQn.homedir()), IQn, NQn);
     }
     async function zLr() {
       try {
@@ -52997,6 +53030,7 @@ Opening browser for GameCowork authentication...`),
             claimsCacheToken = null;
             constructor(t = {}) {}
             static async getInstance() {
+              if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") throw Error("GameCowork cloud authentication is unavailable in local Provider mode.");
               return (e.instance || ((e.instance = new e()), await e.instance.initialize()), e.instance);
             }
             static getInitializedInstance() {
@@ -53021,6 +53055,7 @@ Opening browser for GameCowork authentication...`),
               }
             }
             async performInitialization() {
+              if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") throw Error("GameCowork cloud authentication is unavailable in local Provider mode.");
               let t = process.env.GAMECOWORK_TOKEN;
               if (t && t.trim() !== "") {
                 let n = t.trim(),
@@ -53732,7 +53767,7 @@ Opening browser for GameCowork authentication...`),
                 }
             }
             shouldSkipEmission() {
-              return !!process.env[Opn]?.trim();
+              return process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" || !!process.env[Opn]?.trim();
             }
             getReportBaseUrl() {
               return process.env[Ipn]?.trim() || Fpn;
@@ -190980,6 +191015,7 @@ ${n}`);
       }
     }
     async function kru(e, t, r, n) {
+      if (gcuCliUnavailableCloudMcp(t)) throw Error("Official cloud asset MCP is unavailable in local Provider mode. Configure your own MCP service instead.");
       let s = new Age({ name: "gamecowork-cli-mcp-client", version: "0.0.1" });
       if (
         (s.registerCapabilities({ roots: {} }),
@@ -191931,7 +191967,7 @@ Signal: Signal number or \`(none)\` if no signal was received.
           }));
       });
     function Xw(e) {
-      return e.getSentryConfig?.()?.enabled === !0;
+      return process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1" && e.getSentryConfig?.()?.enabled === !0;
     }
     function Tge(e) {
       return e
@@ -192606,8 +192642,10 @@ Signal: Signal number or \`(none)\` if no signal was received.
       return dK.createHash("sha256").update(e.trim()).update(Dnu).digest("hex");
     }
     function iFa() {
+      let root = process.env.GAMECOWORK_CLI_HOME?.trim() || process.env.GAMECOWORK_USER_DATA_DIR?.trim();
+      if (root) return Bk.join(root, "metrics", vnu);
       let e = process.env.XDG_DATA_HOME || process.env.LOCALAPPDATA || Bk.join(Hh.homedir(), "AppData", "Local");
-      return Bk.join(e, "Tuanjie Cowork", vnu);
+      return Bk.join(e, "GameCowork", vnu);
     }
     async function sFa() {
       return process.env.COMPUTERNAME || Hh.hostname();
@@ -192667,6 +192705,7 @@ Signal: Signal number or \`(none)\` if no signal was received.
       };
     }
     function _nu() {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") return !0;
       let e = process.env.GAMECOWORK_UOS_METRICS_NO_EMIT;
       return e === "1" || e?.toLowerCase() === "true";
     }
@@ -227391,11 +227430,13 @@ ${u}`
       );
     }
     function c4a() {
+      let root = process.env.GAMECOWORK_CLI_HOME?.trim() || process.env.GAMECOWORK_USER_DATA_DIR?.trim();
+      if (root) return upe.default.join(root, "metrics", Wau);
       let e =
         process.env.XDG_DATA_HOME ||
         process.env.LOCALAPPDATA ||
         upe.default.join(C_.default.homedir(), "AppData", "Local");
-      return upe.default.join(e, "Tuanjie Cowork", Wau);
+      return upe.default.join(e, "GameCowork", Wau);
     }
     async function d4a() {
       return process.env.COMPUTERNAME || C_.default.hostname();
@@ -227513,6 +227554,7 @@ ${u}`
                 (this.events.length = 0));
             }
             shouldSkipEmission() {
+              if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") return !0;
               let t = process.env.GAMECOWORK_UNITY_METRICS_NO_EMIT ?? process.env.GAMECOWORK_UNITY_METRICS_DISABLED;
               return t === "1" || t?.toLowerCase() === "true";
             }
@@ -239457,7 +239499,7 @@ ${n}
     }
     async function aF(e, t, r, n, s = [], o = "tree", u, a = 0, l = !1, c = "none") {
       r && ZA.debug(`Loading server hierarchical memory for CWD: ${e} (importFormat: ${o})`);
-      let f = acu.homedir(),
+      let f = gcuCliProfileRoot(() => acu.homedir()),
         A = await b3a(e, t, f, r, n, s, u || PJ, a, l, c);
       if (A.length === 0)
         return (
@@ -274844,10 +274886,18 @@ Return the summary string which should first contain an overall summarization of
           }));
       });
     function xPa(e) {
-      hQ.spawn("taskkill", ["/pid", e.toString(), "/f", "/t"])?.unref?.();
+      try {
+        let child = hQ.spawn("taskkill", ["/pid", e.toString(), "/f", "/t"]);
+        child?.on?.("error", () => {});
+        child?.unref?.();
+      } catch {}
     }
     function avn(e, t) {
-      if (t) return (xPa(e), null);
+      // Both callers run after their shell has reported exit. On Windows a raw
+      // PID tree-kill at this point can target a reused PID and cannot reliably
+      // reclaim descendants. Abort/timeout still kills the live owned shell in
+      // the execution branch; the desktop host owns the overall process Job.
+      if (t) return null;
       try {
         return (
           process.kill(-e, 0),
@@ -277923,7 +277973,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
     }
     function FLa() {
       let e = process.env[rAu]?.trim();
-      return e ? w8.default.resolve(e) : w8.default.join(Jfu.default.homedir(), ".unity-insight");
+      return e ? w8.default.resolve(e) : w8.default.join(gcuCliProfileRoot(() => Jfu.default.homedir()), ".unity-insight");
     }
     function BLa() {
       return w8.default.join(FLa(), tJr);
@@ -279347,7 +279397,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
     }
     async function tC(e, t, r = {}) {
       let n = r.maxConnectRetries ?? O1.CONNECT_MAX_RETRIES,
-        { signal: s, onBeforeWrite: o } = r,
+        { signal: s, onBeforeWrite: o, controlIdentity: gcwControlIdentity } = r,
         u = 0,
         a = ks.getInstance(),
         l = e === "ping" ? "" : a.generateRequestId(),
@@ -279355,7 +279405,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
       for (; u < n;) {
         r_(s);
         try {
-          return await a.sendCommand(e, t, { signal: s, requestId: l, onBeforeWrite: o });
+          return await a.sendCommand(e, t, { signal: s, requestId: l, onBeforeWrite: o, controlIdentity: gcwControlIdentity });
         } catch (f) {
           if (p5(f) || s?.aborted) throw p5(f) ? f : zg();
           let A = f instanceof Error ? f.message : String(f);
@@ -279433,6 +279483,8 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                 (this.debugMode = !1),
                 (this.lastConnectFailureHintAtMs = 0),
                 (this.serverVersion = 1),
+                (this.editorControlCancellation = false),
+                (this.editorControlDomain = null),
                 (this.CLIENT_VERSION = 2),
                 (this.frameDispatcherOnData = null),
                 (this.dispatcherBuffer = Buffer.alloc(0)),
@@ -279753,6 +279805,8 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                         this.useFraming = !0;
                         let _ = m.match(/SERVER_VERSION=(\d+)/);
                         this.serverVersion = _ ? Number.parseInt(_[1], 10) : 1;
+                        this.editorControlCancellation = /(?:^|\s)EDITOR_CONTROL_CANCEL=1(?:\s|$)/.test(m);
+                        this.editorControlDomain = m.match(/(?:^|\s)EDITOR_DOMAIN=([a-f0-9]{32})(?:\s|$)/)?.[1] || null;
                         let C = m.match(/PROJECT_ROOT=(\S+)/),
                           y;
                         try {
@@ -279864,7 +279918,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                 a = n.requestId,
                 l = u
                   ? Buffer.from("ping", "utf8")
-                  : Buffer.from(JSON.stringify({ type: t, params: r || {}, request_id: a }), "utf8"),
+                  : Buffer.from(JSON.stringify({ type: t, params: r || {}, request_id: a, ...(n.controlIdentity ? { gamecowork_control: n.controlIdentity } : {}) }), "utf8"),
                 c = Buffer.allocUnsafe(8);
               c.writeBigUInt64BE(BigInt(l.length), 0);
               let f = Buffer.concat([c, l]);
@@ -280286,6 +280340,142 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
         clearTimeout(s);
       }
     }
+    var gcwEditorControlClientId;
+    function gcwIsEditorControl(command, params) {
+      return command === "manage_editor" && ["play", "pause", "resume", "stop", "refresh"].includes(params?.action);
+    }
+    function gcwEditorControlContext(params, client, signal) {
+      const crypto = require("node:crypto"), seconds = params.timeoutSeconds ?? (params.action === "refresh" ? 180 : 60);
+      if (!Number.isInteger(seconds) || seconds < 1 || seconds > 180) throw Error("Editor control timeoutSeconds must be an integer in 1..180");
+      gcwEditorControlClientId ||= crypto.randomBytes(24).toString("hex");
+      const controller = new AbortController(), root = ks.getProjectRoot(), context = {
+        root, canonicalRoot: client.normalizeProjectRootPath(root), client, action: params.action,
+        singleFrame: params.singleFrame === true, seconds, deadline: Date.now() + seconds * 1000,
+        signal: controller.signal, originalSignal: signal,
+        identity: { clientId: gcwEditorControlClientId, cancelToken: crypto.randomBytes(32).toString("hex"), projectRoot: root },
+      };
+      const aborted = () => controller.abort(signal?.reason), timer = setTimeout(() => { context.expired = true; controller.abort(); }, seconds * 1000);
+      if (signal?.aborted) aborted(); else signal?.addEventListener("abort", aborted, { once: true });
+      context.dispose = () => { clearTimeout(timer); signal?.removeEventListener("abort", aborted); };
+      return context;
+    }
+    function gcwEditorControlGuard(context) {
+      if (context.expired || Date.now() >= context.deadline) throw Error("Editor control budget expired; the submitted Editor operation may already be applied");
+      r_(context.signal);
+      if (context.client.normalizeProjectRootPath(ks.getProjectRoot()) !== context.canonicalRoot)
+        throw Error("Originating Editor project changed while awaiting control");
+    }
+    function gcwEditorTransient(error) {
+      return /No valid Unity config found|Editor bridge is (?:reloading|shutting down)|ENOENT|ECONNREFUSED|ECONNRESET|connection (?:closed|lost|reset)|TCP connection (?:failed|lost)|socket.*(?:closed|not.*open)|No socket|os error 1005[34]|response timeout|handshake.*(?:timeout|closed)/i.test(error instanceof Error ? error.message : String(error));
+    }
+    async function gcwEditorControlConnect(context) {
+      for (;;) {
+        gcwEditorControlGuard(context);
+        try {
+          if (!context.client.isConnected()) await context.client.connect(context.signal);
+          gcwEditorControlGuard(context);
+          if (context.client.normalizeProjectRootPath(context.client.handshakeProjectRoot || "") !== context.canonicalRoot)
+            throw Error("Editor handshake no longer identifies the originating project");
+          if (context.client.editorControlCancellation !== true) throw Error("This Editor bridge lacks secure control cancellation; update the own cn.gamecowork.bridge package");
+          if (!/^[a-f0-9]{32}$/.test(context.client.editorControlDomain || "")) throw Error("Editor control handshake lacks its domain identity");
+          context.identity.projectRoot = context.client.handshakeProjectRoot;
+          context.identity.domainId ||= context.client.editorControlDomain;
+          return;
+        } catch (error) {
+          gcwEditorControlGuard(context);
+          if (!gcwEditorTransient(error)) throw error;
+          await eUa(Math.min(100, Math.max(1, context.deadline - Date.now())), context.signal);
+        }
+      }
+    }
+    async function gcwEditorControlWire(context, command, budget = 2000) {
+      // Independent TCP connection: the original connection may be blocked on
+      // main-thread OnMain. Only BCL cancellation/status executes on the server.
+      const fs = require("node:fs"), path = require("node:path"), net = require("node:net"), crypto = require("node:crypto");
+      const config = JSON.parse(fs.readFileSync(path.join(context.root, "Temp", ".com-unity-gamecowork.json"), "utf8"));
+      if (!["127.0.0.1", "localhost", "::1"].includes(config.unity_host) || !Number.isInteger(config.unity_port) || config.unity_port < 1 || config.unity_port > 65535 || config.reason !== "GameCowork local editor bridge" ||
+          context.client.normalizeProjectRootPath(path.dirname(config.project_path || "")) !== context.canonicalRoot)
+        throw Error("Cancellation endpoint does not identify the originating local project");
+      const id = "control-" + crypto.randomBytes(16).toString("hex"), socket = net.createConnection({ host: config.unity_host, port: config.unity_port });
+      const signal = command === "_gamecowork_cancel_editor_control" ? null : context.signal;
+      const params = { ...context.identity, requestId: context.requestId, ...(context.operationId ? { operationId: context.operationId } : {}) };
+      return new Promise((resolve, reject) => {
+        let bytes = Buffer.alloc(0), welcome = false, settled = false;
+        const aborted = () => finish(zg());
+        const finish = (error, value) => { if (settled) return; settled = true; clearTimeout(timer); signal?.removeEventListener("abort", aborted); socket.destroy(); error ? reject(error) : resolve(value); };
+        const timer = setTimeout(() => finish(Error("Own Editor cancellation/status connection timeout")), Math.max(1, budget));
+        if (signal?.aborted) { finish(zg()); return; } signal?.addEventListener("abort", aborted, { once: true });
+        socket.on("error", error => finish(error)); socket.on("close", () => finish(Error("Own Editor control connection closed")));
+        socket.on("data", chunk => {
+          try {
+            bytes = Buffer.concat([bytes, chunk]);
+            if (!welcome) {
+              const newline = bytes.indexOf(10); if (newline < 0) { if (bytes.length > 4096) throw Error("Editor control handshake exceeds limit"); return; }
+              const banner = bytes.subarray(0, newline).toString("ascii"), reported = banner.match(/PROJECT_ROOT=(\S+)/)?.[1];
+              if (!banner.startsWith("WELCOME UNITY-TCP ") || !banner.includes("FRAMING=1") || !banner.includes("EDITOR_CONTROL_CANCEL=1") || !reported || context.client.normalizeProjectRootPath(decodeURIComponent(reported)) !== context.canonicalRoot)
+                throw Error("Editor cancellation handshake has the wrong project or capability");
+              welcome = true; bytes = bytes.subarray(newline + 1);
+              const payload = Buffer.from(JSON.stringify({ type: command, params, request_id: id }), "utf8"), header = Buffer.alloc(8); header.writeBigUInt64BE(BigInt(payload.length)); socket.write(Buffer.concat([header, payload]));
+            }
+            if (bytes.length < 8) return; const size = Number(bytes.readBigUInt64BE()); if (size < 1 || size > 1048576) throw Error("Editor control response exceeds limit"); if (bytes.length < size + 8) return;
+            const reply = JSON.parse(bytes.subarray(8, size + 8).toString("utf8")); if (reply.request_id !== id) throw Error("Editor control response request identity changed");
+            if (reply.result?.success !== true) throw Error(reply.result?.error || "Editor rejected control identity"); finish(null, reply.result.data);
+          } catch (error) { finish(error); }
+        });
+      });
+    }
+    async function gcwCancelEditorControl(context) {
+      if (context.cancelPromise) return context.cancelPromise;
+      context.cancelPromise = (async () => {
+        if (!context.requestId) return { cancelled: true, applied: false, state: "not_submitted" };
+        const deadline = Date.now() + 3000;
+        while (Date.now() < deadline) {
+          try {
+            const outcome = await gcwEditorControlWire(context, "_gamecowork_cancel_editor_control", Math.min(1000, deadline - Date.now()));
+            if (outcome?.state !== "unknown") return outcome;
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+          catch (error) {
+            if (!gcwEditorTransient(error) && !/Own Editor.*(?:timeout|closed)/i.test(error.message)) return { cancelled: false, applied: null, state: "unknown", error: error.message };
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+        }
+        return { cancelled: false, applied: null, state: "unknown", operationId: context.operationId, reason: "The owning Editor did not confirm cancellation" };
+      })(); return context.cancelPromise;
+    }
+    function gcwEditorCancelDescription(outcome) {
+      return outcome?.cancelled === true && outcome.applied === false ? "Editor request cancelled before its effect was applied" :
+        outcome?.applied === true ? "Editor effect was already submitted/applied; stopped waiting without rollback" : "Editor effect state is unknown; cancellation was not confirmed";
+    }
+    async function gcwAwaitEditorControl(context, state) {
+      if (!context.operationId && state?.operationId) context.operationId = state.operationId;
+      for (;;) {
+        gcwEditorControlGuard(context);
+        if (!context.operationId) {
+          const submission = await gcwEditorControlWire(context, "_gamecowork_editor_control_status", Math.min(1000, context.deadline - Date.now()));
+          if (submission.cancelled === true) throw Error("Own Editor control was cancelled before execution");
+          if (submission.state === "unknown") throw Error("Editor submission outcome is unknown; control was not replayed");
+          context.operationId = submission.operationId;
+        }
+        if (state && context.operationId) {
+          if (state.operationId !== context.operationId || state.controlAction !== context.action || context.client.normalizeProjectRootPath(state.projectRoot || "") !== context.canonicalRoot)
+            throw Error("Editor control operation/root identity changed while awaiting completion");
+          if (["error", "cancelled"].includes(state.controlStatus)) throw Error(state.controlError || "Editor control did not complete");
+          if (state.controlStatus === "completed" && state.pending === false) {
+            const target = context.action === "pause" || (context.action === "resume" && context.singleFrame) ? "paused" : ["stop", "refresh"].includes(context.action) ? "stopped" : "playing";
+            if (state.playMode !== target || state.isCompiling !== false || state.isUpdating !== false || (context.singleFrame && !(state.runtimeFrame > state.startFrame))) throw Error("Editor reported completion without the requested actual state");
+            return state;
+          }
+        }
+        await eUa(Math.min(100, Math.max(1, context.deadline - Date.now())), context.signal);
+        try {
+          await gcwEditorControlConnect(context);
+          const reply = await tC("manage_editor", { action: "get_state" }, { signal: context.signal, maxConnectRetries: 1,
+            controlIdentity: { ...context.identity, requestId: context.requestId, ...(context.operationId ? { operationId: context.operationId } : {}) } });
+          if (reply?.success === false) throw Error(reply.error || "Editor state query failed"); state = reply?.data ?? reply;
+        } catch (error) { gcwEditorControlGuard(context); if (!gcwEditorTransient(error)) throw error; state = null; }
+      }
+    }
     var mQ,
       Lvn,
       zu,
@@ -280312,7 +280502,8 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                   message: `Unity ${this.command} aborted before start`,
                   error: { message: "aborted" },
                 };
-              let r = ks.getInstance();
+              let r = ks.getInstance(), gcwControl = gcwIsEditorControl(this.command, this.params) ? gcwEditorControlContext(this.params, r, e) : null;
+              try {
               if (e?.aborted)
                 return {
                   llmContent: `Unity ${this.command} aborted`,
@@ -280330,11 +280521,11 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                   let A;
                   try {
                     (await Promise.race([
-                      r.ping(e),
+                      r.ping(gcwControl?.signal ?? e),
                       new Promise((d, p) => {
                         A = setTimeout(() => p(Error("Unity ping timeout")), 1e4);
                       }),
-                      Mvn(e),
+                      Mvn(gcwControl?.signal ?? e),
                     ])) || console.log("\u26A0\uFE0F Unity ping failed, will attempt reconnection...");
                   } finally {
                     A !== void 0 && clearTimeout(A);
@@ -280359,6 +280550,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                 u = AJr(this.command, o) ? 3 : 1,
                 a = 1000,
                 l = null;
+              if (gcwControl) { n.timeoutSeconds = gcwControl.seconds; await gcwEditorControlConnect(gcwControl); }
               for (let A = 1; A <= u; A++) {
                 if (e?.aborted) {
                   l = Object.assign(Error("Unity tool aborted"), { name: "AbortError" });
@@ -280368,18 +280560,22 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                 try {
                   let p = await Promise.race([
                       tC(this.command, n, {
-                        signal: e,
+                        signal: gcwControl?.signal ?? e,
+                        ...(gcwControl ? { maxConnectRetries: 1, controlIdentity: gcwControl.identity } : {}),
                         onBeforeWrite: (y) => {
                           this.pendingRequestId = y;
+                          if (gcwControl) gcwControl.requestId = y;
                         },
                       }),
                       new Promise((y, S) => {
                         d = setTimeout(() => S(Error(`Unity operation timeout after ${s / 1000}s`)), s);
                       }),
-                      Mvn(e),
+                      Mvn(gcwControl?.signal ?? e),
                     ]),
                     h = p?.data ?? p,
                     m = this.command === "manage_shader" && o === "compile";
+                  if (gcwControl && p?.success !== false && h?.success !== false)
+                    h = await gcwAwaitEditorControl(gcwControl, h);
                   if (h && typeof h == "object" && h.success === !1 && !(m && (xvn(h) || xvn(p)))) {
                     let y = h.error || h.message || "Unity command failed",
                       S = typeof h.code == "string" ? h.code : void 0,
@@ -280497,17 +280693,26 @@ ${_}
                   }
                   return C;
                 } catch (p) {
-                  if (((l = p), kvn(p) || e?.aborted))
-                    return (
-                      Pvn(this.command, this.pendingRequestId),
-                      {
-                        llmContent: `Unity ${this.command} aborted`,
-                        returnDisplay: `\u274C Unity ${this.displayName} aborted`,
+                  if (gcwControl?.expired) {
+                    const cancellation = await gcwCancelEditorControl(gcwControl);
+                    const message = "Editor control budget expired: " + gcwEditorCancelDescription(cancellation);
+                    return { success: false, message, llmContent: message, returnDisplay: message, data: cancellation, error: { message, code: "editor_timeout" } };
+                  }
+                  if (((l = p), kvn(p) || e?.aborted)) {
+                    const cancellation = gcwControl ? await gcwCancelEditorControl(gcwControl) : (Pvn(this.command, this.pendingRequestId), undefined);
+                    return {
+                        llmContent: `Unity ${this.command} aborted${gcwControl ? ": " + gcwEditorCancelDescription(cancellation) : ""}`,
+                        returnDisplay: `\u274C Unity ${this.displayName} aborted${gcwControl ? ": " + gcwEditorCancelDescription(cancellation) : ""}`,
                         success: !1,
                         message: `Unity ${this.command} aborted`,
                         error: { message: "aborted" },
-                      }
-                    );
+                        ...(cancellation ? { data: cancellation } : {}),
+                      };
+                  }
+                  if (gcwControl && gcwControl.requestId && !gcwControl.operationId && !gcwControl.expired && gcwEditorTransient(p)) {
+                    try { const completed = await gcwAwaitEditorControl(gcwControl, null); return { success: true, data: completed, llmContent: "Unity manage_editor completed successfully\n" + JSON.stringify(completed, null, 2), returnDisplay: "Unity Editor reached " + completed.playMode }; }
+                    catch (outcome) { l = outcome; }
+                  }
                   let h = p instanceof Error ? p.message : String(p),
                     m = !1;
                   try {
@@ -280527,20 +280732,21 @@ ${_}
                   clearTimeout(d);
                 }
               }
-              if (kvn(l) || e?.aborted)
-                return (
-                  Pvn(this.command, this.pendingRequestId),
-                  {
-                    llmContent: `Unity ${this.command} aborted`,
-                    returnDisplay: `\u274C Unity ${this.displayName} aborted`,
+              if (kvn(l) || e?.aborted) {
+                const cancellation = gcwControl ? await gcwCancelEditorControl(gcwControl) : (Pvn(this.command, this.pendingRequestId), undefined);
+                return {
+                    llmContent: `Unity ${this.command} aborted${gcwControl ? ": " + gcwEditorCancelDescription(cancellation) : ""}`,
+                    returnDisplay: `\u274C Unity ${this.displayName} aborted${gcwControl ? ": " + gcwEditorCancelDescription(cancellation) : ""}`,
                     success: !1,
                     message: `Unity ${this.command} aborted`,
                     error: { message: "aborted" },
-                  }
-                );
+                    ...(cancellation ? { data: cancellation } : {}),
+                  };
+              }
               let c = l instanceof Error ? l.message : String(l ?? "Unknown error"),
                 f = `Unity ${this.command} failed: ${c}`;
               return { llmContent: f, returnDisplay: `\u274C ${f}`, success: !1, message: f, error: { message: f } };
+              } finally { gcwControl?.dispose(); }
             }
           }),
           (Lvn = class extends mQ {
@@ -282605,6 +282811,13 @@ Log: Player spawned at position (0, 0, 0)`,
         throw Error("Invalid wiki categories response");
       return t;
     }
+    function gcwLocalWikiUnsupported() {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return null;
+      const message = "Unity Wiki is unsupported in local mode: no local Wiki source is configured in this build";
+      return { success: false, supported: false, code: "local_wiki_not_configured", message,
+        llmContent: JSON.stringify({ success: false, supported: false, code: "local_wiki_not_configured", message }),
+        returnDisplay: message, error: { code: "local_wiki_not_configured", message } };
+    }
     var UI,
       XAu,
       ZAu,
@@ -282636,6 +282849,8 @@ Log: Player spawned at position (0, 0, 0)`,
               return `Unity Wiki ${this.params.action}`;
             }
             async execute(e, t) {
+              const unavailable = gcwLocalWikiUnsupported();
+              if (unavailable) return unavailable;
               try {
                 switch (this.params.action) {
                   case "list_categories":
@@ -282819,15 +283034,18 @@ Log: Player spawned at position (0, 0, 0)`,
           }),
           (i6 = class e extends l_e {
             static startCategoryLoad() {
+              if (gcwLocalWikiUnsupported()) return;
               this.loadPromise || (this.loadPromise = this.fetchAndCacheCategories());
             }
             static async ensureCategoriesReady() {
+              if (gcwLocalWikiUnsupported()) return;
               this.loadPromise && (await this.loadPromise);
             }
             static resetCategoryLoadForTests() {
               ((this.categories = []), (this.loadPromise = null), (this.loadGeneration += 1));
             }
             static async fetchAndCacheCategories() {
+              if (gcwLocalWikiUnsupported()) return;
               let t = this.loadGeneration,
                 r = new AbortController().signal;
               try {
@@ -282844,7 +283062,7 @@ Log: Player spawned at position (0, 0, 0)`,
               super(
                 e.Name,
                 "Unity Wiki",
-                "Access the Unity developer experience wiki. Discover categories, list their articles, and read articles by ID.",
+                gcwLocalWikiUnsupported()?.message || "Access the Unity developer experience wiki. Discover categories, list their articles, and read articles by ID.",
                 qk.Other,
                 EUa(),
               );
@@ -325550,7 +325768,7 @@ ${e.details}`),
           sJ(),
           (sBn = ZSu.fileURLToPath("file:///C:/b/o/code-search/gamecowork/gamecowork-cli/bundle/gemini.js")),
           (oBn = JA.dirname(sBn)),
-          (uCe = JA.join(oBn, "policies")),
+          (uCe = JA.join(gcuCliResourceRoot(), "policies")),
           (eY = 1),
           (een = 2),
           (ten = 3),
@@ -331864,7 +332082,9 @@ ${d.comment}`
             async getBuiltinAgentsDir() {
               if (LP() && aP("builtin-agents/").length > 0) {
                 if (!Mre) {
-                  let e = Oc.join(R1u.tmpdir(), "gamecowork-builtin-agents");
+                  let e = process.env.GAMECOWORK_CLI_HOME?.trim()
+                    ? Oc.join(cs(), "cache", "builtin-agents")
+                    : Oc.join(R1u.tmpdir(), "gamecowork-builtin-agents");
                   await O0.mkdir(e, { recursive: !0 });
                   let t = Oc.join(e, w1u.randomBytes(8).toString("hex"));
                   (await Lge({ prefix: "builtin-agents/", outDir: t }), (Mre = t));
@@ -332792,7 +333012,9 @@ ${Array.from(this.agents.entries()).map(([e, t]) => `- **${e}**: ${t.description
               let e;
               if (LP() && aP("builtin/").length > 0) {
                 if (!Pre) {
-                  let r = Iy.join(yCe.tmpdir(), "gamecowork-builtin-skills");
+                  let r = process.env.GAMECOWORK_CLI_HOME?.trim()
+                    ? Iy.join(cs(), "cache", "builtin-skills")
+                    : Iy.join(yCe.tmpdir(), "gamecowork-builtin-skills");
                   await mF.mkdir(r, { recursive: !0 });
                   let n = Iy.join(r, V1u.randomBytes(8).toString("hex"));
                   (await Lge({ prefix: "builtin/", outDir: n }), (Pre = n));
@@ -373078,6 +373300,7 @@ ${f}`;
       shutdownTelemetry: () => Dq,
     });
     function ptl(e) {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") return;
       if (Pc() || !e.getTelemetryEnabled()) return;
       let t = new QDu.Resource({
           [IIr.SemanticResourceAttributes.SERVICE_NAME]: Mc,
@@ -385100,7 +385323,7 @@ Reason: ${d}`
         if (s === t || !s) {
           let o = E0.join(cs(), ".env");
           if (Za.existsSync(o)) return { path: o, source: "gamecowork" };
-          let u = E0.join(iM.homedir(), ".env");
+          let u = E0.join(gcuCliProfileRoot(() => iM.homedir()), ".env");
           return Za.existsSync(u) ? { path: u, source: "project" } : null;
         }
         t = s;
@@ -385186,7 +385409,7 @@ Reason: ${d}`
         s = [],
         o = Dnl(),
         u = E0.resolve(e),
-        a = E0.resolve(iM.homedir()),
+        a = E0.resolve(gcuCliProfileRoot(() => iM.homedir())),
         l = u;
       try {
         l = Za.realpathSync(u);
@@ -385369,6 +385592,18 @@ Reason: ${d}`
                     ]),
                   ),
                 },
+                agents: {
+                  ...(t.agents || {}),
+                  ...(r.agents || {}),
+                  ...(o.agents || {}),
+                  disabled: Array.from(
+                    new Set([
+                      ...(t.agents?.disabled || []),
+                      ...(r.agents?.disabled || []),
+                      ...(o.agents?.disabled || []),
+                    ]),
+                  ),
+                },
                 includeDirectories: [
                   ...(t.includeDirectories || []),
                   ...(r.includeDirectories || []),
@@ -385501,7 +385736,7 @@ Reason: ${d}`
             if ((h2u(), !Object.values(wt).includes(e))) return "Invalid auth method selected.";
             if (!process.env.CUSTOM_AUTH && e !== wt.GAMECOWORK_OAUTH && e !== wt.LOGIN_WITH_GOOGLE && e !== wt.CLOUD_SHELL)
               return "CUSTOM_AUTH is required for non-default authentication providers.";
-            if (e !== wt.GAMECOWORK_OAUTH && !(await Onl(t)))
+            if (e !== wt.GAMECOWORK_OAUTH && !gcuCliOwnProvider(e) && !(await Onl(t)))
               return 'GameCowork authentication is required to use this authentication method.\nPlease run `/auth` and select "GameCowork OAuth" first to authenticate with GameCowork, then try again with your preferred auth method.';
             if (e === wt.USE_GEMINI)
               return process.env.GEMINI_API_KEY
@@ -390766,7 +391001,7 @@ ${Qr.join(`
             require: Te,
             requireDirectory: Vnl(),
             stringWidth: Wnl(),
-            y18n: fn({ directory: Zr(__dirname, "../locales"), updateFiles: !1 }),
+            y18n: fn({ directory: Zr(gcuCliResourceRoot(), "locales"), updateFiles: !1 }),
           },
           ds =
             !((jn = process == null ? void 0 : process.env) === null || jn === void 0) && jn.YARGS_MIN_NODE_VERSION
@@ -424945,7 +425180,7 @@ Received ${n}, shutting down...`),
       return fu.join(cs(), QJ);
     }
     function aFu() {
-      return fu.join(Xx.homedir(), Arn, QJ);
+      return fu.join(gcuCliProfileRoot(() => Xx.homedir()), Arn, QJ);
     }
     function hrn(e) {
       return fu.join(e, Yn(), QJ);
@@ -448538,7 +448773,7 @@ ${Li}\uD83D\uDCA1 Tip: Built-in agents are pre-configured and cannot be modified
     }
     async function Tnn() {
       try {
-        if (process.env.DEV === "true" || nX()) return null;
+        if (process.env.GAMECOWORK_DISABLE_AUTO_UPDATE === "1" || process.env.DEV === "true" || nX()) return null;
         let e = await sL();
         if (!e || e === "unknown") return null;
         let t = (await tX())?.name;
@@ -459423,6 +459658,7 @@ ${wb}Use "/model use <model_name>" to switch to a different model${il}`;
                 if (n || !d) return;
                 if (
                   ![wt.GAMECOWORK_OAUTH, wt.LOGIN_WITH_GOOGLE, wt.CLOUD_SHELL, wt.QWEN_OAUTH].includes(d) &&
+                  !gcuCliOwnProvider(d) &&
                   !(await Iz())
                 ) {
                   (t(
@@ -488008,7 +488244,7 @@ ${t}`
     }
     async function tUn(e, t = [], r, n, s, o = [], u = "tree", a, l = !1, c = "none") {
       let f = bw.realpathSync(xMr.resolve(e)),
-        A = bw.realpathSync(xMr.resolve(Vku.homedir())),
+        A = bw.realpathSync(xMr.resolve(gcuCliProfileRoot(() => Vku.homedir()))),
         d = f === A ? "" : e;
       return (
         r && CSe.debug(`CLI: Delegating hierarchical memory load to server for CWD: ${e} (memoryImportFormat: ${u})`),
@@ -488079,7 +488315,7 @@ ${t}`
         );
         ((w = ue.memoryContent), (I = ue.fileCount));
       }
-      let O = HDl(e, C),
+      let O = gcuCliLocalMcpServers(HDl(e, C)),
         B = n.experimentalLsp ? QDl(C) : {},
         x = n.promptInteractive || n.prompt || "";
       if (n.examplePrompt && !x)
@@ -511029,7 +511265,7 @@ ${r}`
     async function nBr(e, t, r) {
       let n = R7l(e);
       if (!n) throw new rBr(`Please set an Auth method in your ${Zue()} (or pass --auth-type).`);
-      if ((n === wt.USE_OPENAI || n === wt.USE_ANTHROPIC) && !(await Iz())) {
+      if ((n === wt.USE_OPENAI || n === wt.USE_ANTHROPIC) && !gcuCliOwnProvider(n) && !(await Iz())) {
         let o = n === wt.USE_ANTHROPIC ? "Anthropic" : "OpenAI";
         throw new rBr(`GameCowork authentication is required to use ${o} authentication.
 Please run \`/auth\` and select "GameCowork OAuth" first to authenticate with GameCowork, then try again with ${o}.`);
@@ -511931,6 +512167,14 @@ Please run \`/auth\` and select "GameCowork OAuth" first to authenticate with Ga
     D();
     Ht();
     function rRl() {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+        return [
+          { id: wt.USE_OPENAI, name: "OpenAI compatible provider", description: "Uses your configured provider endpoint and API key" },
+          { id: wt.USE_ANTHROPIC, name: "Anthropic", description: "Uses your configured provider credentials" },
+          { id: wt.USE_GEMINI, name: "Gemini API", description: "Requires your GEMINI_API_KEY" },
+          { id: wt.USE_VERTEX_AI, name: "Vertex AI", description: "Requires your Google Cloud credentials" },
+        ];
+      }
       return process.env.CUSTOM_AUTH
         ? [
             { id: wt.GAMECOWORK_OAUTH, name: "GameCowork OAuth", description: null },
@@ -511952,6 +512196,9 @@ Please run \`/auth\` and select "GameCowork OAuth" first to authenticate with Ga
         : [{ id: wt.GAMECOWORK_OAUTH, name: "GameCowork OAuth", description: null }];
     }
     function sBr(e) {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+        return gcuCliOwnProvider(e.selectedAuthType) ? e.selectedAuthType : void 0;
+      }
       if (e.selectedAuthType) return e.selectedAuthType;
       if (e.envGameCoworkToken && e.envGameCoworkToken.trim() !== "") return wt.GAMECOWORK_OAUTH;
     }
@@ -513960,7 +514207,8 @@ ${s.join(`
       JRl = me.object({ sessionId: me.string(), approvalMode: Vju }),
       PMl = me.object({ approvalMode: Vju, timestamp: me.string().optional() }),
       Hju = me.enum(["default", "plan", "ask"]),
-      Qju = me.enum(["autoEdit", "yolo"]),
+      Qju = me.enum(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1"
+        ? ["default", "autoEdit", "yolo"] : ["autoEdit", "yolo"]),
       XRl = me.object({ sessionId: me.string(), collaborationMode: Hju, approvalMode: Qju }),
       LMl = me.object({ sessionId: me.string(), message: me.string(), inject: me.boolean().optional() }),
       UMl = me.object({
@@ -514337,6 +514585,9 @@ ${s.join(`
     Zf();
     var Lwl = me.object({ orgId: me.string().min(1) });
     async function Uwl(e, t, r) {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && (e === "gamecowork/org/list" || e === "gamecowork/org/switch")) {
+        return { success: !1, orgs: [], currentOrgId: null, multiOrgEnabled: !1, mode: "local", error: "Cloud organizations are unavailable in local Provider mode." };
+      }
       if (e === "gamecowork/org/list")
         try {
           let n = await (await fl.getInstance()).listOrgs();
@@ -514407,7 +514658,7 @@ ${s.join(`
       return e === "plan" ? "plan" : e === "ask" ? "ask" : "default";
     }
     function Qwl(e) {
-      return e === "yolo" ? "yolo" : "autoEdit";
+      return e === "yolo" ? "yolo" : e === Zn.DEFAULT && process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" ? "default" : "autoEdit";
     }
     function qwl(e, t, r, n = new Date()) {
       return { sessionId: e, collaborationMode: Hwl(t), approvalMode: Qwl(r), timestamp: n.toISOString() };
@@ -518195,10 +518446,15 @@ ${Ye}`
       r && ks.setProjectRoot(r);
     }
     async function Yse(e, t, r, n = {}) {
-      TH(e, t);
       try {
-        let s = await tC("manage_window_bridge", { action: r, ...n });
-        return { success: !0, payload: Z4l(s) };
+        TH(e, t);
+        let s = await tC("manage_window_bridge", { action: r, ...n }),
+          payload = Z4l(s),
+          failure = [s, s?.data, payload].find(value => value && typeof value === "object"
+            && (value.success === !1 || value.status === "error"));
+        if (failure) return { success: !1, error: qt(failure.error || failure.message || "Window bridge operation failed") };
+        if (payload === null || payload === void 0) return { success: !1, error: "Window bridge returned no response payload" };
+        return { success: !0, payload };
       } catch (s) {
         return { success: !1, error: qt(s) };
       }
@@ -518493,6 +518749,7 @@ ${Ye}`
             };
         }
         async handleOrgChanged() {
+          if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") { await $wl(this.client, null, null); return; }
           try {
             let e = await (await fl.getInstance()).getCurrentUserId(),
               t = await FH(e);
@@ -518556,6 +518813,9 @@ ${Ye}`
         async authenticate({ methodId: e }) {
           let t = me.nativeEnum(wt).parse(e),
             r = this.settings.merged.selectedAuthType;
+          if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && !gcuCliOwnProvider(t)) {
+            throw Error("Configure a custom provider; GameCowork cloud authentication is unavailable in local mode.");
+          }
           (r && r !== t && (await zLr()),
             await this.config.refreshAuth(t),
             this.settings.setValue("User", "selectedAuthType", t));
@@ -518566,9 +518826,15 @@ ${Ye}`
             o = s.length > 0 ? s : void 0,
             u = typeof n?.overwriteConfirmed == "boolean" ? n.overwriteConfirmed : void 0,
             a = o ?? MPr.randomUUID();
+          // A prewarmed process may have started in the managed default folder.
+          // Resolve this session's own provider from its actual cwd before auth,
+          // including a newly assigned resume UUID with no transcript yet.
+          let localAuth = process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1"
+            ? gcuCliLocalAuth(fc(e).merged)
+            : void 0;
           if ((this.rememberLazySubagentActivityCapability(a, r), o)) {
             let A = sBr({
-              selectedAuthType: this.settings.merged.selectedAuthType,
+              selectedAuthType: localAuth || this.settings.merged.selectedAuthType,
               envGameCoworkToken: process.env.GAMECOWORK_TOKEN,
             });
             if (!A) throw Un.authRequired();
@@ -518661,7 +518927,7 @@ ${Ye}`
           let l = this.argv.resume;
           if (l) {
             let A = sBr({
-              selectedAuthType: this.settings.merged.selectedAuthType,
+              selectedAuthType: localAuth || this.settings.merged.selectedAuthType,
               envGameCoworkToken: process.env.GAMECOWORK_TOKEN,
             });
             if (!A) throw Un.authRequired();
@@ -518952,7 +519218,8 @@ ${Ye}`
         }
         async initializeSessionConfig(e, t, r) {
           let n = sBr({
-            selectedAuthType: this.settings.merged.selectedAuthType,
+            selectedAuthType: (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && gcuCliLocalAuth(fc(t).merged))
+              || this.settings.merged.selectedAuthType,
             envGameCoworkToken: process.env.GAMECOWORK_TOKEN,
           });
           if (!n) throw Un.authRequired();
@@ -518977,7 +519244,10 @@ ${Ye}`
           );
         }
         async newSessionConfig(e, t, r) {
-          let n = { ...(this.settings.merged.mcpServers ?? {}) };
+          let sessionSettings = process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" ? fc(t) : this.settings;
+          let sessionAuth = gcuCliLocalAuth(sessionSettings.merged);
+          if (sessionAuth) sessionSettings.setRuntimeValue("selectedAuthType", sessionAuth);
+          let n = { ...(sessionSettings.merged.mcpServers ?? {}) };
           for (let u of r)
             if ("type" in u && (u.type === "sse" || u.type === "http")) {
               let a = Object.fromEntries(u.headers.map(({ name: l, value: c }) => [l, c]));
@@ -518995,9 +519265,9 @@ ${Ye}`
               for (let { name: l, value: c } of u.env) a[l] = c;
               n[u.name] = new Hhe(u.command, u.args, a, t);
             }
-          let s = { ...this.settings.merged, mcpServers: n },
+          let s = { ...sessionSettings.merged, mcpServers: n },
             o =
-              typeof this.settings.forScope == "function" ? this.settings.forScope("Workspace").settings.hooks : void 0;
+              typeof sessionSettings.forScope == "function" ? sessionSettings.forScope("Workspace").settings.hooks : void 0;
           return MMr(s, this.extensions, e, this.argv, t, o);
         }
         async cancel(e) {
@@ -519051,7 +519321,7 @@ ${Ye}`
               await this.waitForSessionInit(o),
               await l.setMode2D(
                 u === "plan" ? an.PLAN : u === "ask" ? an.ASK : an.DEFAULT,
-                a === "yolo" ? Zn.YOLO : Zn.AUTO_EDIT,
+                a === "yolo" ? Zn.YOLO : a === "default" ? Zn.DEFAULT : Zn.AUTO_EDIT,
                 { prePlanApprovalFromRequest: !0 },
               ),
               {}
@@ -519999,7 +520269,7 @@ ${LA}\uD83D\uDCA1 Unity TCP Connection Tips:${qu}`),
         r.experimentalAcp && (Ii.default.env.GAMECOWORK_CLIENT_TYPE ||= "acp"),
         C3l(r, e));
       let n = URu(),
-        s = r.authType || r.auth;
+        s = r.authType || r.auth || gcuCliLocalAuth(t.merged);
       s
         ? t.setRuntimeValue("selectedAuthType", s)
         : t.merged.selectedAuthType || t.setRuntimeValue("selectedAuthType", wt.GAMECOWORK_OAUTH);
@@ -520508,6 +520778,9 @@ gamecowork --resume-session ${x}
     "web-ui/dist/public/index.html": tan,
   };
   globalThis.__GAMECOWORK_EMBEDDED_ASSETS = b3l;
+  if (process.env.GAMECOWORK_CLI_RESOURCE_DIR?.trim()) {
+    for (const key of Object.keys(b3l)) b3l[key] = require("node:path").join(gcuCliResourceRoot(), key);
+  }
   (async () => {
     await Promise.resolve().then(() => Ne(l$u(), 1));
   })().catch((e) => {

@@ -1,0 +1,7 @@
+{
+  "name": "GameCowork.EditorBridge",
+  "rootNamespace": "GameCowork.EditorBridge",
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true,
+  "allowUnsafeCode": false
+}

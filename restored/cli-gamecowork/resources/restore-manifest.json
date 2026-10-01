@@ -1,0 +1,202 @@
+{
+  "method": "declared Bun virtual-path NUL records; sequential boundary validation",
+  "binarySha256": "b54cf062537300ca71d459fdede81aa03ecc08449730bfb1cf5e1dcadad3e44d",
+  "assets": [
+    {
+      "path": "builtin-agents/explore.toml",
+      "offset": 201908931,
+      "originalBytes": 3004,
+      "originalSha256": "c16f39887c84fb2602393e972079a56a1eda576e0cbc19dc660fc50a8378503e",
+      "restoredSha256": "52feddf511954137c3751b19b9f983adae6ececf97a7cae71389a2961e63edf0"
+    },
+    {
+      "path": "builtin-agents/general-purpose.toml",
+      "offset": 201911979,
+      "originalBytes": 1809,
+      "originalSha256": "8a25995aaefa747d1b316ce6aa273291e96251c7ef6afaef8b5c17f018dbc2f5",
+      "restoredSha256": "011b71d8c55ea38fc82976245d109b98e9c37b8c9424495ab2b722a50904032c"
+    },
+    {
+      "path": "builtin-agents/plan.toml",
+      "offset": 201913821,
+      "originalBytes": 2681,
+      "originalSha256": "554d36695a66931d0120642e05d4d0330230b37b18f5f9d2b82759b058c5e9c4",
+      "restoredSha256": "554d36695a66931d0120642e05d4d0330230b37b18f5f9d2b82759b058c5e9c4"
+    },
+    {
+      "path": "builtin-agents/unity-insight.toml",
+      "offset": 201916544,
+      "originalBytes": 12620,
+      "originalSha256": "ba69875b72e046a6d073a15a12da7f9dbfa64bc4dc67ff6a09286d8dd8acc567",
+      "restoredSha256": "d7480e163846ac3bf137809b1d0b77d9f15ab27eb198a150a8915640e80f3a98"
+    },
+    {
+      "path": "builtin/gamecowork-guide/references/app.md",
+      "offset": 201929194,
+      "originalBytes": 5052,
+      "originalSha256": "acb64b777f66835d44ef67b3e26df23bf0b4aa806b8d90101e2b8d35cb753042",
+      "restoredSha256": "2b6490988ffc9a581b8b28e70452c0e97fe550024f12b454625e92dee0358028"
+    },
+    {
+      "path": "builtin/gamecowork-guide/SKILL.md",
+      "offset": 201934278,
+      "originalBytes": 3463,
+      "originalSha256": "7b01f447461b75a475e093272590fcf374bae6bb9229568cd609dd9354c513ed",
+      "restoredSha256": "a16671f07ce634748e2dca94ad05d89f9431ee14d20c526f9c8a3802e8192a6a"
+    },
+    {
+      "path": "builtin/skill-creator/scripts/init_skill.cjs",
+      "offset": 201937779,
+      "originalBytes": 7943,
+      "originalSha256": "f61ca0d55a859b93046038793fca90d2e6067dfaa5963dd982ce733d2e94b226",
+      "restoredSha256": "f61ca0d55a859b93046038793fca90d2e6067dfaa5963dd982ce733d2e94b226"
+    },
+    {
+      "path": "builtin/skill-creator/scripts/package_skill.cjs",
+      "offset": 201945763,
+      "originalBytes": 4163,
+      "originalSha256": "1005cd539417b76d1dda0988355e8a06198439e52a525ffbd05ea8877a6617fa",
+      "restoredSha256": "c263b20ed307025bd3dc729a5fa3ca21ab12f2e22bacab307eaa98bd07264bd6"
+    },
+    {
+      "path": "builtin/skill-creator/scripts/validate_skill.cjs",
+      "offset": 201949968,
+      "originalBytes": 3686,
+      "originalSha256": "902b186d197322d6f9c7b288b31121d59b727fdc1ab186954cef4f15c95e683b",
+      "restoredSha256": "902b186d197322d6f9c7b288b31121d59b727fdc1ab186954cef4f15c95e683b"
+    },
+    {
+      "path": "builtin/skill-creator/SKILL.md",
+      "offset": 201953686,
+      "originalBytes": 20511,
+      "originalSha256": "26bdd717a5098ea8231bd465834d30640bed109ad24513cf8dbc8284403ce41d",
+      "restoredSha256": "d5062895afe268cd9d3be66680d3088f4988fbb5b6bbc7849eb4987fb7bb4e21"
+    },
+    {
+      "path": "builtin/tuanjie-cli/references/commands.md",
+      "offset": 201974232,
+      "originalBytes": 4630,
+      "originalSha256": "5719270b8df21d58636200d89f1ba2b2137442c1dd6edddf3ea6349a6bbfb347",
+      "restoredSha256": "5719270b8df21d58636200d89f1ba2b2137442c1dd6edddf3ea6349a6bbfb347"
+    },
+    {
+      "path": "builtin/tuanjie-cli/SKILL.md",
+      "offset": 201978894,
+      "originalBytes": 5035,
+      "originalSha256": "b1953e73b85c822530a3e617818ef104b79b6942655cd9010f9523645c9fe883",
+      "restoredSha256": "b1953e73b85c822530a3e617818ef104b79b6942655cd9010f9523645c9fe883"
+    },
+    {
+      "path": "example-prompts/analyze.toml",
+      "offset": 201983965,
+      "originalBytes": 3330,
+      "originalSha256": "202517fbe9cd8f5a11e2dddf9e5d2d3b86047faa90412c9eb8ae6cad6584c8d5",
+      "restoredSha256": "202517fbe9cd8f5a11e2dddf9e5d2d3b86047faa90412c9eb8ae6cad6584c8d5"
+    },
+    {
+      "path": "example-prompts/explain-code.toml",
+      "offset": 201987336,
+      "originalBytes": 7215,
+      "originalSha256": "c7c9aca77b2c9f269c8fb48a4f2b83b7e00936bcaa889c99a909e6b875302cb1",
+      "restoredSha256": "c7c9aca77b2c9f269c8fb48a4f2b83b7e00936bcaa889c99a909e6b875302cb1"
+    },
+    {
+      "path": "example-prompts/git-commit.toml",
+      "offset": 201994590,
+      "originalBytes": 3109,
+      "originalSha256": "add5b2afcb9272049e46600d9a26589e72e0c444c2fa4e4b827930a74b70210a",
+      "restoredSha256": "09dcb5a2b1a8fed532d702e46e6e6512d44e3ecf4011931a7f670e47771456f8"
+    },
+    {
+      "path": "example-prompts/README.md",
+      "offset": 201997732,
+      "originalBytes": 1534,
+      "originalSha256": "a1d98f87f4c96f7b003520a1c9b6f6ffe79621e46cfad79fa60489446f769a1d",
+      "restoredSha256": "76377a265feb57006dc99844649fc932397bee48d065f4d026ff6ab7508ace88"
+    },
+    {
+      "path": "loop-detection-policies/default.toml",
+      "offset": 201999302,
+      "originalBytes": 6226,
+      "originalSha256": "37525b3de8ac346d7860a5087172310e2bc1a20d574b84bebdd79d71ef27a536",
+      "restoredSha256": "dcd1b3793ab975119d0cf1d94b429541ac86e24d3d20f63d9a0d2df9d0f282d6"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-permissive-closed.sb",
+      "offset": 202005586,
+      "originalBytes": 1009,
+      "originalSha256": "15033571302138423d45f6c4ceff02fd40ace456cc5206dca5c9f036a20b610a",
+      "restoredSha256": "1194b48135b550a69a45a7e67c75eaab68ea1662a2243524396d778958355146"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-permissive-open.sb",
+      "offset": 202006651,
+      "originalBytes": 811,
+      "originalSha256": "f6b692d26b192a70d69b5401a6cf95a5a557bdaa74816e99a7bcacc9503c4713",
+      "restoredSha256": "9f6004ddd968cf92a2f7bfb3adcf996a8de9ad909c5680378a177f51d3a2115a"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-permissive-proxied.sb",
+      "offset": 202007521,
+      "originalBytes": 1289,
+      "originalSha256": "b9d59020254c23017e2dee5aa71bc2f5ec690b93455f4aa527c66edda6e22adf",
+      "restoredSha256": "ff7d48e07eb752fac6f7a2cc70f34c6b3fc7a3c2a65c9c768663422c0cd58554"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-restrictive-closed.sb",
+      "offset": 202008869,
+      "originalBytes": 3276,
+      "originalSha256": "9e2af9aaa85af610beaeacd8be4e2e3f823714e3600227e55f8e081783da169b",
+      "restoredSha256": "dce18065493e7f6ec8bddebe6f3f7141de988e027058183744af35e495260025"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-restrictive-open.sb",
+      "offset": 202012202,
+      "originalBytes": 3340,
+      "originalSha256": "94f81b74066872bf5d8b7f8a94e10afb46ee5194ed680200509af19408a6801d",
+      "restoredSha256": "3bfcff87169e21fb8fc46875bde0c646460d5cc50f59c040b36731ad74f2eb91"
+    },
+    {
+      "path": "seatbelt/sandbox-macos-restrictive-proxied.sb",
+      "offset": 202015602,
+      "originalBytes": 3545,
+      "originalSha256": "6eb4194201acf609172b32680934199342f2e457c0b99e86d5d63522985407b7",
+      "restoredSha256": "34359f90427aa53731123a7df7daa7572f92469bce30216de59806d8e03023f1"
+    },
+    {
+      "path": "wasm/tree-sitter-bash/tree-sitter-bash.wasm",
+      "offset": 202019192,
+      "originalBytes": 1380769,
+      "originalSha256": "364f0a2cd385c792239423026ef442dbd073d34c396b7bc9e5932426b8e4aa5d",
+      "restoredSha256": "364f0a2cd385c792239423026ef442dbd073d34c396b7bc9e5932426b8e4aa5d"
+    },
+    {
+      "path": "wasm/web-tree-sitter/tree-sitter.wasm",
+      "offset": 203400001,
+      "originalBytes": 205488,
+      "originalSha256": "f38dcc4b43b818f9a0785bc1c6d5611a75ac4cdd428ff3f02757c34ca4e46d7f",
+      "restoredSha256": "f38dcc4b43b818f9a0785bc1c6d5611a75ac4cdd428ff3f02757c34ca4e46d7f"
+    },
+    {
+      "path": "web-ui/dist/public/app.css",
+      "offset": 203605520,
+      "originalBytes": 53000,
+      "originalSha256": "6658567617b0761b9ec0a21d3ef66b416eb9021be8b12a74e1f5414c946b691b",
+      "restoredSha256": "6658567617b0761b9ec0a21d3ef66b416eb9021be8b12a74e1f5414c946b691b"
+    },
+    {
+      "path": "web-ui/dist/public/app.js",
+      "offset": 203658550,
+      "originalBytes": 462812,
+      "originalSha256": "acd91e5e19bc5f5d999a507385caba44d0f79ec0e788dd6bd87f7820981e2eda",
+      "restoredSha256": "986937b4540acc18af2b214489ee0ee7714a05e330d53f66a09a80b269f4994b"
+    },
+    {
+      "path": "web-ui/dist/public/index.html",
+      "offset": 204121396,
+      "originalBytes": 459,
+      "originalSha256": "a7d67b5813627c6acc921447dd4866df356eb513f56b9081351452159a5e2b6e",
+      "restoredSha256": "4d1c4f0092cb5b9770d7ea82395a5d2b942ed9c519120b8357bfdef7a3b480aa"
+    }
+  ]
+}

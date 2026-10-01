@@ -1,0 +1,172 @@
+# vtsls
+occurrences=1
+
+## hit 1 @ 29365217
+```
+  @ -1449 CoreProcessError reading stderr: 
+  @ -1393 CODELY_FRP_TOKENCHmGcmU2YwrZzHphpkxhJtgVsrc\frp_client.rs
+  @ -1297 frp client status lock poisoned
+  @ -1241 start work connection read failedearly eofunexpected end of fileconnection resetempty frp transport streamdecryptor initialized
+  @ -1089 failed to read frp crypto iv
+  @ -1033 failed to write frp crypto framefailed to encode frp message: 
+  @  -953 timestampprivilege_keyproxy_namefailed to decode frp message:  - body: 
+  @  -721 QZ^&
+  @  -257 HOSTNAMECOMPUTERNAMEnpm install -g basedpyrightpythonbasedpyrighthttps://github.com/DetachHead/basedpyrightcsharpcodely-unity-lsp-serverhttps://nodejs.org/en/download (Node.js), https://dotnet.microsoft.com/en-us/downloa...(+139)
+  @  +127 tauri/getKeepAwakemessageIdstatusApp state not initialized
+  @  +215 enabledtauri/setKeepAwake
+  @  +271 falseFailed to persist keep awake setting: 
+  @  +335 Powertauri/keepAwakeChanged
+  @  +383 src\messages\tunnel.rs
+  @  +455 tunnelIdmachineIdmachineNamecontrolPathStalenoneenableTunnelUSERNAME_
+  @  +559 USERtunnel_id
+  @  +607 machine_id
+  @  +655 workspaceDirworkspacesproxy_url
+  @  +743 machine_namename
+  @  +807 machine_osmachineOs
+  @  +943 active_tunnel
+  @ +1023 machineCpumachine_cpu
+  @ +1079 machineGpumachine_gpu
+  @ +1135 machineMemorymachine_memory
+  @ +1199 firstSeenAtfirst_seen_at
+  @ +1255 lastSeenAtlast_seen_at
+  @ +1359 activeTunnel
+  @ +1487 machine_id_aliasesmachineIdAliasesremote::
+  @ +1567 data:data: tauri
+  @ +1615 reasonworkspaceRefhubWorkspaceKeyinner"shell/themeChanged""editor/themeChanged""tauri/update-"config/sessionInfoaccount<no-id><none>drop  message when logout: bridged remote sessionUpdate (remote_account=) while local se...(+14)
+  @ +1903 SSE-Bridge
+  -- fragments --
+    · CoreProcessError reading stderr:
+    · oreProcessError
+    · reading
+    · stderr
+    · CODELY_FRP_TOKENCHmGcmU2YwrZzHphpkxhJtgV
+    · TOKENCHmGcmU
+    · wrZzHphpkxhJtg
+    · src\frp_client.rs
+    · frp_client
+    · frp_client.rs
+    · frp client status lock poisoned
+    · client
+    · status
+    · poisoned
+    · start
+    · connection
+    · failedearly
+    · eofunexpected
+    · fileconnection
+    · resetempty
+    · transport
+    · streamdecryptor
+    · initialized
+    · failed to read frp crypto iv
+    · failed
+    · crypto
+    · failed to write frp crypto framefailed to encode frp message:
+    · write
+    · framefailed
+    · encode
+    · message
+    · timestampprivilege_keyproxy_namefailed to decode frp message:  - body:
+    · timestampprivilege_keyproxy_namefailed
+    · decode
+    · HOSTNAMECOMPUTERNAMEnpm install -g basedpyrightpythonbasedpyright
+    · HOSTNAMECOMPUTERNAMEnpm
+    · install
+    · basedpyrightpythonbasedpyright
+    · https://github.com/DetachHead/basedpyrightcsharpcodely-unity-lsp-server
+    · https
+    · github
+    · etachHead
+    · basedpyrightcsharpcodely
+    · unity
+    · server
+    · github.com/DetachHead/basedpyrightcsharpcodely-unity-lsp-server
+    · https://nodejs.org/en/download (Node.js),
+    · nodejs
+    · download
+    · nodejs.org/en/download (Node.js),
+    · https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (dotnet)npm install -g @vtsls/lan
+    · dotnet
+    · microsoft
+    · vtsls
+    · language
+    · servertypescriptvtsls
+    · https://github.com/yioneko/vtslskeepAwaketrue
+    · yioneko
+    · vtslskeepAwaketrue
+    · github.com/yioneko/vtslskeepAwaketrue
+    · src\messages\power.rs
+    · messages
+    · power
+    · messages\power.rs
+    · tauri/getKeepAwakemessageIdstatusApp state not initialized
+    · tauri
+    · getKeepAwakemessageIdstatusApp
+    · state
+    · getKeepAwakemessageIdstatusApp state not initialized
+    · enabled
+    · tauri/setKeepAwake
+    · setKeepAwake
+    · falseFailed to persist keep awake setting:
+    · falseFailed
+    · persist
+    · awake
+    · setting
+    · Power
+    · tauri/keepAwakeChanged
+    · keepAwakeChanged
+    · src\messages\tunnel.rs
+    · tunnel
+    · messages\tunnel.rs
+    · tunnelIdmachineIdmachineNamecontrolPathStalenoneenableTunnelUSERNAME_
+    · tunnelIdmachineIdmachineNamecontrolPathStalenoneenableTunnel
+    · USERtunnel_id
+    · USERtunnel
+    · machine_id
+    · workspaceDirworkspacesproxy_url
+    · workspaceDirworkspacesproxy
+    · machine_namename
+    · machine_osmachineOs
+    · osmachineOs
+    · active_tunnel
+    · machineCpumachine_cpu
+    · machineCpumachine
+    · machineGpumachine_gpu
+    · machineGpumachine
+    · machineMemorymachine_memory
+    · machineMemorymachine
+    · firstSeenAtfirst_seen_at
+    · firstSeenAtfirst
+    · lastSeenAtlast_seen_at
+    · lastSeenAtlast
+    · activeTunnel
+    · machine_id_aliasesmachineIdAliasesremote::
+    · aliasesmachineIdAliasesremote
+    · data:data: tauri
+    · reasonworkspaceRefhubWorkspaceKeyinner"
+    · reasonworkspaceRefhubWorkspaceKeyinner
+    · shell/themeChanged""
+    · shell
+    · themeChanged
+    · editor/themeChanged""
+    · editor
+    · themeChanged""
+    · tauri/update-"
+    · update
+    · config/sessionInfoaccount<no-id><none>drop  message when logout: bridged
+    · config
+    · sessionInfoaccount
+    · logout
+    · bridged
+    · sessionInfoaccount<no-id><none>drop  message when logout: bridged
+    · update-"
+    · config/sessionInfoaccount<no-id><none>drop  message when logout: bridged remote session
+    · remote
+    · session
+    · sessionUpdate
+    · remote_account
+    · while
+    · local
+    · empty
+    · SSE-Bridge
+```

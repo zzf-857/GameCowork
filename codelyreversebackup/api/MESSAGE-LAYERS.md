@@ -4,6 +4,12 @@
 core=index.beautified.js | cli=cli-main.beautified.js | shell_exe=原版 cowork.exe 字节串命中
 「??无持有」= 前端会调用但三处都没有字符串 → 原版壳动态构造或需新实现
 
+> **⚠ 2026-10-01 T1/T2/T3 后续结论（以 [../shell-logic/commands.md](../shell-logic/commands.md) 为准，覆盖下表的旧判断）:**
+> 1. `??无持有(需壳新实现)` 各条（shell/*、unity-window/*、jetbrains/*、visualstudio/* 等）已在 cowork.exe 中逐一 grep 验证为**字符串级不存在** → 原版壳对它们是通用转发，不是"需新实现"的缺口；
+> 2. `shell_exe` 持有的 tjhub/* 命令，真实对端是 Hub 子进程（tuanjie.exe，Bun）的 **52 个 JSON-RPC 方法**（全表见 [../hub-installer/tuanjie-exe-cli.md](../hub-installer/tuanjie-exe-cli.md) §2），许可域由 Hub 转 LicensingClient（协议见 [../hub-licensing/IPC-PROTOCOL.md](../hub-licensing/IPC-PROTOCOL.md)）；
+> 3. `lsp/isServerInstalled` 等 lsp/* 的参数级契约在 [../shell-logic/lsp-subsystem.md](../shell-logic/lsp-subsystem.md) §6；
+> 4. `tauri/listRemoteWorkspaces` 等隧道域参数见 [../shell-logic/tunnel-remote.md](../shell-logic/tunnel-remote.md)。
+
 | 消息 | 前端调用数 | 持有层 | 使用位置(前3) |
 |---|---|---|---|
 | openUrl | 72 | core+shell_exe | AddLicenseDialog-B8RD22TG.js,AddLicenseDialog-BYsLblOG.js,TJHubRoute-D42CgVct.js |

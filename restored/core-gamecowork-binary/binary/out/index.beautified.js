@@ -285008,36 +285008,51 @@ var mbe = class {
     let r = this.registry.get(e);
     r && (this.registry.delete(e), await r.manager.shutdown());
   }
-  async shutdownAll() {
+  async shutdownAll(options = {}) {
     this.stopIdleReaper();
+    const strict = options?.strict === true, failures = [];
     let e = Array.from(this.registry.keys()),
       n = Array.from(this.initializingMap.entries()),
       r = new Set(e);
     this.initializingMap.clear();
-    for (let a of e)
-      if (this.registry.get(a))
-        try {
-          await this.retireSession(a);
-        } catch (l) {
-          console.warn(`[SessionLifecycle] Failed to shutdown session ${a}:`, l);
-        } finally {
-          this.registry.delete(a);
-        }
+    for (let a of e) {
+      const captured = this.registry.get(a);
+      if (!captured) continue;
+      let cleanupFailed = false;
+      try {
+        await this.retireSession(a, options);
+      } catch (l) {
+        console.warn(`[SessionLifecycle] Failed to shutdown session ${a}:`, l);
+        failures.push({ sessionId: a, error: l });
+        cleanupFailed = strict && l?.historyClearCleanupFailed !== false;
+        if (cleanupFailed) this.registry.set(a, captured);
+      } finally {
+        if (!cleanupFailed) this.registry.delete(a);
+      }
+    }
     for (let [a, s] of n)
-      if (!r.has(a))
+      if (!r.has(a)) {
+        let captured;
         try {
-          let l = await s;
-          (this.registry.delete(a), await l.manager.shutdown());
-        } catch {
-          this.registry.delete(a);
+          captured = await s;
+          (this.registry.delete(a), await captured.manager.shutdown());
+        } catch (error) {
+          if (strict && captured) this.registry.set(a, captured);
+          else this.registry.delete(a);
+          failures.push({ sessionId: a, error });
         }
+      }
+    if (strict && failures.length)
+      throw new AggregateError(failures.map(failure => failure.error),
+        "Failed to shut down ACP sessions before clearing history: " +
+        failures.map(failure => `${failure.sessionId}: ${String(failure.error?.message || failure.error)}`).join("; "));
   }
   get activeSessionCount() {
     return this.registry.size;
   }
-  async retireSession(e) {
+  async retireSession(e, options = {}) {
     if (this.options.retireSession) {
-      (await this.options.retireSession(e), this.registry.delete(e));
+      (await this.options.retireSession(e, options), this.registry.delete(e));
       return;
     }
     await this.shutdownSession(e);
@@ -323960,7 +323975,7 @@ function yua(t) {
 function m9e(t) {
   return t && "account" in t ? t.account.id : null;
 }
-function COt(t) {
+function COt(t) {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return null;
   try {
     let e = yua(t);
     return lg.existsSync(e) ? lg.readFileSync(e, "utf-8") : null;
@@ -324003,7 +324018,7 @@ function wua() {
 function vua(t, e) {
   return t.trim() === e.trim();
 }
-function Yua(t, e) {
+function Yua(t, e) {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return;
   let n = fua(t);
   if (FOt.has(n)) return;
   let r = (async () => {
@@ -324019,7 +324034,7 @@ function Yua(t, e) {
   })();
   FOt.set(n, r);
 }
-async function Vua(t) {
+async function Vua(t) {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return {changed:false,supported:false};
   let e = COt(t);
   try {
     let n = await HI.getInstance().getConfig();
@@ -324073,7 +324088,7 @@ async function eRi(t) {
       }),
     p = [],
     G;
-  if (o) {
+  if(o&&process.env.GAMECOWORK_LOCAL_PROVIDER_MODE!=="1"){
     let b = "";
     if (process.env.GAMECOWORK_CONFIG_PATH) b = Cua.readFileSync(process.env.GAMECOWORK_CONFIG_PATH, "utf-8");
     else {
@@ -324311,7 +324326,7 @@ async function Lua(t) {
     });
   if (!G.config || G.configLoadInterrupted) return { errors: G.errors, config: void 0, configLoadInterrupted: !0 };
   let b = HI.getInstance().getAccessToken(),
-    h = b && d ? d() : void 0,
+    h = (b || process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") && d ? d() : void 0,
     { config: Z, errors: N } = await tRi({
       config: G.config,
       ide: e,
@@ -324323,7 +324338,7 @@ async function Lua(t) {
       remoteConfig: p,
       accessToken: b,
     });
-  if (b) {
+  if (b || process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
     let f;
     try {
       f = await h;
@@ -324392,6 +324407,10 @@ async function Xx(t) {
   } else {
     let j = await cua(e, h, G, b, a, Z, s);
     ((f = j.config), (y = j.errors), (w = j.configLoadInterrupted));
+    if (f && !w && d && process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+      y = y ?? [];
+      await Nua({ config: f, ide: e, ideSettings: h, llmLogger: a, errors: y, getGameCoworkModelProfilesList: d, uniqueId: b });
+    }
   }
   if (w || !f) return { errors: y, config: f, configLoadInterrupted: !0 };
   y = [...(y ?? [])];
@@ -325134,12 +325153,16 @@ function spe(t) {
   return t === "messages" ? "anthropic" : "openai";
 }
 var JOt = ["flashModel", "multimodalModel"];
-function _ua() {
+function gcuDataOverride() {
+  let t = process.env.GAMECOWORK_USER_DATA_DIR?.trim();
+  if (t) return t;
   if (process.env.GAMECOWORK_E2E === "1") {
-    let t = process.env.GAMECOWORK_E2E_USER_DATA_DIR?.trim();
-    if (t) return t;
+    let e = process.env.GAMECOWORK_E2E_USER_DATA_DIR?.trim();
+    if (e) return e;
   }
-  return ape.join(Sua.homedir(), aRi);
+}
+function _ua() {
+  return gcuDataOverride() || ape.join(Sua.homedir(), aRi);
 }
 function xua() {
   return ape.join(_ua(), XOt);
@@ -327518,7 +327541,31 @@ async function Bma(t, e) {
     currentSelectModel: "",
   };
 }
+function gcuPersistedSessionModel(t, selected, title) {
+  let local = oV();
+  let requested = selected?.extras?.customModelId;
+  let record = title ? local.find(model => model.id === title || model.displayName === title || model.model === title) : void 0;
+  if (title && !record && selected?.title !== title && selected?.model !== title && selected?.extras?.customModelId !== title)
+    throw new Error(`Saved local model is no longer configured: ${title}`);
+  if (!record && requested) record = local.find(model => model.id === requested);
+  if (!record && !selected && !title) record = local.find(model => !model.roles || model.roles.includes("model"));
+  if (!record) return selected;
+  return selected?.extras?.customModelId === record.id ? selected : {
+    title: record.displayName || record.model,
+    model: record.model,
+    extras: { customModelId: record.id, providerId: record.providerId, wireApi: record.wireApi || "chat" },
+    capabilities: { uploadImage: !!record.supportsMultimodal }
+  };
+}
 async function Tma(t, e, n) {
+  if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+    if (!n?.currentSelectedModel) {
+      let { config: gcuConfig } = await t.configHandler.loadConfig();
+      let gcuSelected = gcuPersistedSessionModel(t, pV(gcuConfig, n?.modelTitle), n?.modelTitle);
+      if (gcuSelected) n = { ...n, currentSelectedModel: gcuSelected };
+    }
+    if (n?.currentSelectedModel) await Iya(t, n.currentSelectedModel);
+  }
   let r = Cfi(n?.currentSelectedModel, t.activeCustomModel?.wireApi),
     a,
     s = wUt(t, n?.currentSelectedModel);
@@ -327538,12 +327585,18 @@ async function Tma(t, e, n) {
   }
   let o = t.acpInitializing.get(e);
   if (o) {
-    let I = await o;
-    return (
-      console.debug("[Core] initializing: entry model is ", I.model, " current model is ", n?.currentSelectedModel),
-      (I.lastUsedAt = Date.now()),
-      I
-    );
+    let I;
+    try { I = await o; } catch (gcuError) {
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && n?.currentSelectedModel && !n._gcuInitRetried) {
+        if (t.acpInitializing.get(e) === o) t.acpInitializing.delete(e);
+        return Tma(t, e, { ...n, _gcuInitRetried: true });
+      }
+      throw gcuError;
+    }
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && n?.currentSelectedModel && !Afi(I, n, t.defaultMemoryRWMode, s))
+      return t.restartAcpProcessForSession(e, I, n);
+    I.lastUsedAt = Date.now();
+    return I;
   }
   let c = (async () => {
     (await t.sessionLifecycle.evictLruIfNeeded(), t.sessionLifecycle.startIdleReaper());
@@ -327973,6 +328026,7 @@ async function Tma(t, e, n) {
           }
         },
       });
+    try {
     await y.initialize();
     let w = !n?.resume && fUt(e),
       Y = w ? { resumeSessionId: e } : void 0,
@@ -328020,6 +328074,10 @@ async function Tma(t, e, n) {
           .catch((A) => En.error(A, { context: "orgFetchOnSessionInit" })),
       v
     );
+    } catch (gcuError) {
+      try { await y.shutdown(); } catch {}
+      throw gcuError;
+    }
   })();
   t.acpInitializing.set(e, c);
   try {
@@ -328306,8 +328364,8 @@ async function sGa(t, e) {
 async function lGa(t, e) {
   await t.sessionLifecycle.shutdownSession(e);
 }
-async function iGa(t) {
-  (t.stopStreamingStateCleanup(), await t.sessionLifecycle.shutdownAll());
+async function iGa(t, options) {
+  (t.stopStreamingStateCleanup(), await t.sessionLifecycle.shutdownAll(options));
 }
 function oGa(t, e, n) {
   return !e && !n
@@ -329526,7 +329584,9 @@ function Fyi(t) {
 }
 function Ayi() {
   let t = Yyi(),
+    owned = process.env.GAMECOWORK_CLI_RESOURCE_DIR?.trim(),
     e = [
+      ...(owned ? [aL.join(owned, "builtin-agents", QP)] : []),
       aL.join(t, "..", "..", "gamecowork-cli", "builtin-agents", QP),
       aL.join(t, "..", "..", "gamecowork-cli", "bundle", "builtin-agents", QP),
       aL.join(t, "templates", QP),
@@ -330122,16 +330182,21 @@ function u2i(t) {
   return null;
 }
 function jba(t) {
-  try {
-    let e = hs.readFileSync(Ca.join(t, "versionMapping.json"), "utf8"),
-      n = JSON.parse(e),
-      r = {};
-    for (let [a, s] of Object.entries(n))
-      a === "hmiRecommended" || a === "beta" || (typeof s == "string" && (r[a] = s));
-    return Object.keys(r).length ? r : null;
-  } catch {
-    return null;
+  // Public Hub metadata may have a duplicated extension. Keep the original
+  // scanner and prefer its canonical map, then the existing local fallback.
+  for (const name of ["versionMapping.json", "versionMapping.json.json"]) {
+    try {
+      const path = Ca.join(t, name);
+      if (hs.statSync(path).size > 1024 * 1024) continue;
+      const n = JSON.parse(hs.readFileSync(path, "utf8"));
+      if (!n || typeof n !== "object" || Array.isArray(n)) continue;
+      const r = Object.create(null);
+      for (const [a, s] of Object.entries(n))
+        if (typeof s === "string" && /^\d{4}\.\d+\.\d+[a-z]\d+(?:[a-z]\d+)?$/i.test(a)) r[a] = s;
+      if (Object.keys(r).length) return r;
+    } catch {}
   }
+  return null;
 }
 function Pba(t) {
   try {
@@ -330520,7 +330585,7 @@ function A2i() {
 }
 function C2i() {
   let t = [];
-  for (let e of ["tuanjie", "unity"]) t.push(...qba(e));
+  for (let product of ["tuanjie", "unity"]) t.push(...qba(product).map(editor => ({ ...editor, product })));
   return t;
 }
 function Q2i(t, e) {
@@ -330540,7 +330605,7 @@ function Q2i(t, e) {
     return c.message;
   }
 }
-async function $ba(t, e, n) {
+async function $ba(t, e, n, nativeLauncher, selection) {
   let r = Vpe(t);
   if (await w2i(r, n)) {
     let p = (await F2i(r, n))
@@ -330555,8 +330620,18 @@ async function $ba(t, e, n) {
     return (console.warn(`[openProjectWithEditor] ${d}`), { success: !1, message: d });
   }
   let s = e && e.trim().length > 0 ? e.trim() : a.editor,
-    l = C2i(),
-    o = l.find((d) => d.version === s) ?? null;
+    l = C2i();
+  const explicitProduct = selection?.product;
+  if (explicitProduct != null && !["unity", "tuanjie"].includes(explicitProduct))
+    return { success: false, message: "The selected Editor engine is invalid." };
+  const requestedProduct = explicitProduct || (a.tuanjie ? "tuanjie" : "unity");
+  const requestedPath = selection?.editorPath;
+  if (requestedPath != null && (typeof requestedPath !== "string" || !requestedPath.trim()))
+    return { success: false, message: "The selected Editor path is invalid." };
+  const normalizePath = value => String(value || "").replace(/\\/g, "/").replace(/\/$/, "").toLowerCase();
+  const engineOf = editor => editor.product || (/Tuanjie\.exe$/i.test(editor.path) ? "tuanjie" : "unity");
+  let o = l.find(editor => editor.version === s && engineOf(editor) === requestedProduct &&
+    (!requestedPath || normalizePath(editor.path) === normalizePath(requestedPath))) ?? null;
   if (!o) {
     let d = `No installed editor matches version "${s}".`;
     return (
@@ -330587,12 +330662,23 @@ async function $ba(t, e, n) {
       let p = await kP(r);
       return { success: !0, message: I, requestedVersion: s, pid: p?.pid };
     }
-    return (
-      console.warn(
-        `[openProjectWithEditor] WMI launch failed (${d}); falling back to direct spawn (editor may close with the app).`,
-      ),
-      u(c, ["-projectPath", r])
-    );
+    if (typeof nativeLauncher === "function") {
+      console.warn(`[openProjectWithEditor] WMI launch failed (${d}); using the native host launcher.`);
+      try {
+        const launched = await nativeLauncher({ editorPath: c, projectPath: r });
+        if (launched && launched.success === true)
+          return { ...launched, message: launched.message || I, requestedVersion: s, launchMethod: "native" };
+        const message = launched && typeof launched.message === "string"
+          ? launched.message : "The native host could not launch the editor.";
+        return { success: !1, message };
+      } catch (error) {
+        return { success: !1, message: `The native editor launcher failed: ${error instanceof Error ? error.message : String(error)}` };
+      }
+    }
+    if (process.env.GAMECOWORK_CORE_JOB === "1")
+      return { success: !1, message: "Cannot safely launch the editor: the native host launcher is unavailable." };
+    console.warn(`[openProjectWithEditor] WMI launch failed (${d}); falling back to direct spawn.`);
+    return u(c, ["-projectPath", r]);
   }
   return u(c, ["-projectPath", r]);
 }
@@ -331859,6 +331945,9 @@ osascript -e 'clipboard info' 2>/dev/null | grep -qE "\xABclass PNGf\xBB|TIFF pi
     n === null ? !1 : (await cMt(n.shell, n.args)).trim() === "true"
   );
 }
+function gcuClipboardDir(workspaceRoot) {
+  return workspaceRoot ? Dx.join(workspaceRoot, ".gamecowork", "clipboard") : Dx.join(_ua(), "clipboard");
+}
 async function gha(t, e) {
   let n = await t.getWorkspaceDirs(),
     r;
@@ -331869,7 +331958,7 @@ async function gha(t, e) {
     } catch {
       r = iMt.default.tmpdir();
     }
-  let a = Dx.join(r, ".gamecowork", "clipboard"),
+  let a = gcuClipboardDir(n.length > 0 ? r : void 0),
     s = await RZe(a, t);
   if (!s) return null;
   let l = await yZe(s, t);
@@ -331936,7 +332025,7 @@ async function Hha(t) {
       } catch {
         n = iMt.default.tmpdir();
       }
-    let r = Dx.join(n, ".gamecowork", "clipboard"),
+    let r = gcuClipboardDir(e.length > 0 ? n : void 0),
       a = await RZe(r, t);
     if (!a) return;
     let s = await yZe(a, t);
@@ -332174,6 +332263,8 @@ async function uMt() {
   );
 }
 function CEi() {
+  let n = gcuDataOverride();
+  if (n) return OP.default.join(n, "metrics", FEi);
   let t =
     process.env.XDG_DATA_HOME ||
     (process.platform === "darwin"
@@ -332181,7 +332272,7 @@ function CEi() {
       : process.platform === "win32"
         ? process.env.LOCALAPPDATA || OP.default.join(uOe.default.homedir(), "AppData", "Local")
         : OP.default.join(uOe.default.homedir(), ".local", "share"));
-  return OP.default.join(t, "Tuanjie Cowork", FEi);
+  return OP.default.join(t, "GameCowork", FEi);
 }
 async function QEi() {
   return process.platform === "darwin" ? await XEi() : process.platform === "win32" ? await LEi() : await JEi();
@@ -332354,6 +332445,7 @@ async function OEi(t) {
 async function yl() {
   let t = Bha(),
     e = pMt.get(t);
+  if (e?.clearPromise) throw new Error("Session history is being cleared; retry after it completes");
   return (
     e || ((e = { db: null, initPromise: null }), pMt.set(t, e)),
     e.db
@@ -332379,9 +332471,29 @@ async function yl() {
         e.initPromise)
   );
 }
-function Tha() {
-  let t = Bha();
-  pMt.delete(t);
+async function Tha(remove) {
+  const key = Bha();
+  let entry = pMt.get(key);
+  if (!entry) {
+    entry = { db: null, initPromise: null };
+    pMt.set(key, entry);
+  }
+  if (entry.clearPromise) return entry.clearPromise;
+  const clearing = (async () => {
+    if (entry.initPromise) await entry.initPromise;
+    if (entry.db) {
+      await entry.db.close();
+      entry.db = null;
+    }
+    await remove();
+    if (pMt.get(key) === entry) pMt.delete(key);
+  })();
+  entry.clearPromise = clearing;
+  try {
+    await clearing;
+  } finally {
+    if (entry.clearPromise === clearing) entry.clearPromise = null;
+  }
 }
 var mOe = class {
     async list(e) {
@@ -332433,7 +332545,8 @@ var mOe = class {
       await (await yl()).run("DELETE FROM session_metadata WHERE sessionId = ?", e);
     }
     async clearAll() {
-      (CR.rmSync(_w(), { recursive: !0, force: !0 }), Tha());
+      const directory = _w();
+      await Tha(() => CR.rmSync(directory, { recursive: !0, force: !0 }));
     }
     async load(e) {
       try {
@@ -333738,11 +333851,11 @@ function RZa(t, e) {
     }),
     n("history/delete", async (G) => {
       let { id: b } = G.data;
-      try {
+      gcuHistorySessionId(b);try {
         (await t.getHolder(b).dispose({
           deleteCheckpoint: (Z) => men({ acpManager: Z.manager, acpSessionId: Z.acpSessionId, sessionId: b }),
-          deleteHistory: () => {
-            (GOe.delete(b), t.acpContextUsageBySessionId.delete(b), t.pushHistoryListChanged());
+          deleteHistory:async()=>{
+            (await GOe.delete(b), t.acpContextUsageBySessionId.delete(b), t.pushHistoryListChanged());
           },
         }),
           console.debug(`[Core] ACP process shut down for deleted session: ${b}`));
@@ -333750,7 +333863,7 @@ function RZa(t, e) {
         throw (console.error(`[Core] Failed to delete ACP session ${b}:`, h), h);
       }
     }),
-    n("history/load", async (G) => {
+    n("history/load", async (G) => {gcuHistorySessionId(G.data?.id);
       let { id: b } = G.data,
         h = (re) => {
           let j = t.acpContextUsageBySessionId.get(b);
@@ -333807,7 +333920,7 @@ function RZa(t, e) {
           draftInput: f.draftInput,
         });
       if (Z) {
-        if (((y = await t.getOrCreateAcpEntry(b, { resume: !0, cwdOverride: Q })), !y))
+        if (((y = await t.getOrCreateAcpEntry(b, { resume: !0, cwdOverride: Q, modelTitle: f?.selectedChatModelTitle })), !y))
           throw new Error("ACP Entry Not Found");
         if (r6e({ isStreaming: y.isStreaming, hasStreamingState: !!y.streamingState }) && y.streamingState) {
           let Ze = {
@@ -333872,7 +333985,7 @@ function RZa(t, e) {
         let re = new Promise((ye, Ke) => {
           t.pendingHistoryLoadResolvers.set(b, { resolve: ye, reject: Ke });
         });
-        y = await t.getOrCreateAcpEntry(b, { cwdOverride: Q });
+        y = await t.getOrCreateAcpEntry(b, { cwdOverride: Q, modelTitle: f?.selectedChatModelTitle });
         let j,
           Ze = new Promise((ye, Ke) => {
             j = setTimeout(() => {
@@ -334052,7 +334165,7 @@ function RZa(t, e) {
           t.pushHistoryListChanged(G.data.workspaceDirectory));
       } catch (b) {
         console.error(`[history/save] FAILED: sessionId=${G.data?.sessionId}`, b);
-      }
+      ;throw b;}
     }),
     n("history/updateState", async (G) => {
       let { sessionId: b, state: h } = G.data;
@@ -334068,7 +334181,7 @@ function RZa(t, e) {
         (await t.acpHistoryManager.renameTitle(b, h), t.pushHistoryListChanged());
       } catch (Z) {
         console.error(`[Core] Failed to rename title for session ${b}:`, Z);
-      }
+      ;throw Z;}
     }),
     n("history/markAsRead", async (G) => {
       let { sessionId: b } = G.data;
@@ -334119,13 +334232,12 @@ function RZa(t, e) {
       }
     }),
     n("history/getSessionFolderPath", () => _w()),
-    n("history/clear", (G) => {
-      (GOe.clearAll(),
-        t.acpContextUsageBySessionId.clear(),
-        t.pushHistoryListChanged(),
-        t.shutdownACP().catch((b) => {
-          console.warn("[Core] Failed to shutdown ACP sessions:", b);
-        }));
+    n("history/clear", async (G) => {
+      await t.shutdownACP({ strict: true });
+      await GOe.clearAll();
+      t.acpContextUsageBySessionId.clear();
+      t.pushHistoryListChanged();
+      return { cleared: true };
     }),
     n("tabs/reportOpenTabs", (G) => {
       t.guiOpenTabsSnapshot = G.data.tabs.map((b) => ({
@@ -334161,8 +334273,10 @@ function RZa(t, e) {
           Z = await t.getWorkspaceCwd(),
           N = ["mcp", "remove", b];
         (G.data.configLevel === "User" && N.push("--scope", "user"),
-          await t.runGameCoworkCliCommand(h, N, Z),
-          await t.refreshMcpAcpSession());
+          await t.runGameCoworkCliCommand(h, N, Z));
+        const deferred = await gcuOfflineMcpDiscovery(t);
+        if (deferred) { t.messenger.send("mcp/statusUpdate", { servers: deferred.servers }); return { status: "success", discoveryState: "deferred" }; }
+        await t.refreshMcpAcpSession();
         let g = await t.getOrCreateAcpEntry(og, { forceRestart: !0 });
         return (await t.reloadAcpMcpConfig(g, !1, og), await t.restartAllAcpSessions(), { status: "success" });
       } catch (h) {
@@ -334209,10 +334323,6 @@ function RZa(t, e) {
       try {
         let F = t.resolveCliPath(),
           v = await t.getWorkspaceCwd();
-        if (w && Y) {
-          let X = ["mcp", "remove", Y];
-          (f === "global" && X.push("--scope", "user"), await t.runGameCoworkCliCommand(F, X, v));
-        }
         let A = ["mcp", "add", b];
         if (h === "stdio") {
           if (!Z) throw new Error("Command is required for stdio type");
@@ -334241,8 +334351,14 @@ function RZa(t, e) {
               }));
         }
         (f === "global" ? A.push("--scope", "user") : A.push("--scope", "project"),
-          await t.runGameCoworkCliCommand(F, A, v),
-          await t.refreshMcpAcpSession());
+          await t.runGameCoworkCliCommand(F, A, v));
+        if (w && Y && Y !== b) {
+          const remove = ["mcp", "remove", Y, "--scope", f === "global" ? "user" : "project"];
+          await t.runGameCoworkCliCommand(F, remove, v);
+        }
+        const deferred = await gcuOfflineMcpDiscovery(t);
+        if (deferred) { t.messenger.send("mcp/statusUpdate", { servers: deferred.servers }); return { status: "success", discoveryState: "deferred" }; }
+        await t.refreshMcpAcpSession();
         let Q = await t.getOrCreateAcpEntry(og, { forceRestart: !0 });
         return (await t.reloadAcpMcpConfig(Q, !1, og), await t.restartAllAcpSessions(), { status: "success" });
       } catch (F) {
@@ -334373,7 +334489,7 @@ function RZa(t, e) {
         console.warn("[Core] config/updateSelectMode: no usable mode in payload, skipping");
         return;
       }
-      let N = t.getHolder(b).current,
+      if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1"&&!t.getHolder(b).current){gcuHistorySessionId(b);await t.acpHistoryManager.saveSessionMode(b,h,Z);return {deferred:true};}let N=t.getHolder(b).current,
         g = N?.collaborationMode !== void 0 && N.collaborationMode !== h,
         R = async (f) => {
           (await f.manager.modeRequest(f.acpSessionId, h, Z), (f.collaborationMode = h), (f.approvalMode = Z));
@@ -334564,7 +334680,7 @@ function RZa(t, e) {
       for (let f of g.contents) R = `${R} ${f.type === "blob" ? f.blob : f.text}`;
       return R;
     }),
-    n("mcp/list", async (G) => {
+    n("mcp/list", async (G) => {const gcuOffline=await gcuOfflineMcpDiscovery(t);if(gcuOffline)return gcuOffline;
       let b = og;
       try {
         let Z = await t.getOrCreateAcpEntry(b);
@@ -334629,7 +334745,10 @@ function RZa(t, e) {
           R = t.resolveCliPath(),
           f = await t.getWorkspaceCwd(),
           y = Z ? ["mcp", "enable", h, "--scope", g] : ["mcp", "disable", h, "--scope", g];
-        if ((await t.runGameCoworkCliCommand(R, y, f), await t.refreshMcpAcpSession(), Z)) {
+        await t.runGameCoworkCliCommand(R, y, f);
+        const deferred = await gcuOfflineMcpDiscovery(t);
+        if (deferred) { t.messenger.send("mcp/statusUpdate", { servers: deferred.servers }); return { status: "success", discoveryState: "deferred" }; }
+        if ((await t.refreshMcpAcpSession(), Z)) {
           let w = await t.getOrCreateAcpEntry(b, { forceRestart: !0 });
           await t.reloadAcpMcpConfig(w, !1, og);
         }
@@ -334640,6 +334759,8 @@ function RZa(t, e) {
     }),
     n("acp/notifyUpdate", async (G) => {
       let b = G.data?.type;
+      if (b === "command") { await t.refreshCommandsForAllSessions(); return { status: "success" }; }
+      if (b === "subagent") { await t.refreshAgentsForAllSessions(); return { status: "success" }; }
       b === "mcp" && (await t.refreshMcpAcpSession());
       let h = Sx(G.data?.memoryRWMode);
       return (
@@ -334654,7 +334775,7 @@ function RZa(t, e) {
       h = new Set(),
       Z = new Set(),
       N = new Set(),
-      g = async (w) => {
+      g = async (w) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return;
         if (!(!w || Z.has(w))) {
           Z.add(w);
           try {
@@ -334747,7 +334868,7 @@ function RZa(t, e) {
           return (N.delete(w), En.error(`Failed to ensure ${b} extension installed:`, { error: F }), !1);
         }
       },
-      y = async (w, Y) => {
+      y = async (w, Y) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return;
         let F = await R(w, Y),
           v = await f(w, Y);
         if (F || v)
@@ -334902,11 +335023,14 @@ function RZa(t, e) {
         return { type: (Y ? f9e(Y) : t.emptyUnityProjectStatus()).engineType };
       }),
       n("unity/getProjectStatus", async (w) => {
-        let Y = t.getAnyAcpEntry();
-        if (!Y) return { status: "error", error: "not valid acp" };
         try {
+          let Y = t.getAnyAcpEntry();
+          if (!Y) {
+            let F = await t.resolveUnityProjectRoot(w.data);
+            return { status: "success", content: F ? f9e(F) : t.emptyUnityProjectStatus() };
+          }
           let { projectRoot: F, projectStatus: v } = await t.fetchUnityProjectStatusForMessage(w.data, Y);
-          return (v.isUnityProject && y(F, v.isUnityProject), g(F), { status: "success", content: v });
+          return (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE!=="1"&&(v.isUnityProject&&y(F,v.isUnityProject),g(F)), { status: "success", content: v });
         } catch (F) {
           return (
             console.error("Failed to get Unity project status:", { error: F }),
@@ -334976,7 +335100,9 @@ function RZa(t, e) {
       n("unity/disconnect", async () => ({ status: "error", error: "Unity/disconnect is not supported." })),
       n("unity/openEditor", async (w) => {
         let Y = await t.ide.getProjectRoot();
-        return Y ? $ba(Y, w.data?.version, w.data?.editorPid) : { success: !1, message: "No project root found." };
+        return Y ? $ba(Y, w.data?.version, w.data?.editorPid,
+          (data) => t.messenger.request("launchDetachedEditor", data), w.data)
+          : { success: !1, message: "No project root found." };
       }),
       n("unity/getEditorPid", async (w) => {
         try {
@@ -335738,6 +335864,11 @@ function RZa(t, e) {
         let { config: Z } = await t.configHandler.loadConfig();
         h = pV(Z, G.data?.currentModel);
       }
+      if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+        let { config: gcuConfig } = await t.configHandler.loadConfig();
+        h = gcuPersistedSessionModel(t, h ?? gcuConfig?.selectedModelByRole?.chat, G.data?.currentModel);
+        if (!h) return { initialized: false, reason: "model_not_configured" };
+      }
       if (
         (await t.getOrCreateAcpEntry(b, {
           currentSelectedModel: h,
@@ -335857,6 +335988,7 @@ function RZa(t, e) {
           N = ["skills", "install", G, "--consent", "--scope", b],
           g = await t.runGameCoworkCliCommand(h, N, Z, 6e5, 3e5),
           R = l(g);
+        if (!R.length) throw new Error("The CLI did not confirm an installed skill");
         return (
           t.refreshSkillsForAllSessions({
             action: "install",
@@ -335870,6 +336002,59 @@ function RZa(t, e) {
         return (console.error(`[Core] Skill install failed: ${h.message}`), { status: "error", error: h.message });
       }
     };
+  const gamecoworkCustomOptions = async (data) => {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") throw new Error("Local custom management is unavailable");
+    return { ...data, scope: data.scope || "workspace", workspace: await t.getWorkspaceCwd(), home: process.env.GAMECOWORK_CLI_HOME, parseToml: Htr.parse };
+  };
+  const gamecoworkRefreshCustom = async (kind) => {
+    if (kind === "commands") await t.refreshCommandsForAllSessions();
+    else if (kind === "agents") await t.refreshAgentsForAllSessions();
+    else await t.refreshSkillsForAllSessions();
+  };
+  n("custom/read", async (G) => require("./gamecowork-custom.js").readCapability(await gamecoworkCustomOptions(G.data)));
+  n("custom/update", async (G) => {
+    const options = await gamecoworkCustomOptions(G.data), helper = require("./gamecowork-custom.js");
+    helper.validateDefinition(options);
+    const result = await helper.updateCapability(options);
+    await gamecoworkRefreshCustom(options.kind); return result;
+  });
+  n("custom/create", async (G) => {
+    const options = await gamecoworkCustomOptions(G.data), helper = require("./gamecowork-custom.js");
+    helper.validateDefinition(options);
+    const result = await helper.createCapability({ ...options, contents: options.content });
+    await gamecoworkRefreshCustom(options.kind); return result;
+  });
+  n("custom/rename", async (G) => {
+    const options = await gamecoworkCustomOptions(G.data), result = await require("./gamecowork-custom.js").renameDefinition(options);
+    await gamecoworkRefreshCustom(options.kind); return result;
+  });
+  const gamecoworkDefinitionItems = async (kind, items) => Promise.all(items.map(async (item) => {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return item;
+    try {
+      const options = await gamecoworkCustomOptions({ kind, name: item.name, scope: item.source === "user" ? "user" : "workspace", path: item.path });
+      const file = await require("./gamecowork-custom.js").readCapability(options);
+      return { ...item, managed: true, sha256: file.sha256 };
+    } catch { return { ...item, managed: false }; }
+  }));
+  const gamecoworkDefinitionAction = async (kind, action, data) => {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
+      const helper = require("./gamecowork-custom.js"); helper.capabilityName(data.name); helper.scope(data.scope || "workspace");
+      // Builtin/extension agents may be enabled, but cannot be written/deleted.
+      if (data.path || data.expectedSha256) await helper.assertCapabilityVersion(await gamecoworkCustomOptions({ ...data, kind }));
+      else {
+        const list = t.parseCliListOutput(await t.runGameCoworkCliCommand(t.resolveCliPath(), [kind, "list"], await t.getWorkspaceCwd()));
+        if (kind !== "agents" || !list.some(item => item.name === data.name && ["builtin", "extension"].includes(item.source))) throw new Error("Reload the capability list before changing this file");
+      }
+    }
+    const result = await t.runCliManageAction(kind, action, data.name, void 0, data.scope || "workspace");
+    if (result.status === "error") throw new Error(result.error);
+    await gamecoworkRefreshCustom(kind); return result;
+  };
+  const gamecoworkDeleteDefinition = async (kind, data) => {
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return kind === "agents" ? t.deleteCustomSubagent(data.name, data.path) : t.runCliManageAction(kind, "delete", data.name, data.path);
+    const options = await gamecoworkCustomOptions({ ...data, kind }), result = await require("./gamecowork-custom.js").deleteDefinition(options);
+    await gamecoworkRefreshCustom(kind); return result;
+  };
   (n("skills/reloadAcp", async (G) => {
     await t.refreshSkillsForAllSessions();
   }),
@@ -335885,9 +336070,11 @@ function RZa(t, e) {
       let { content: b, fileName: h, scope: Z = "workspace" } = G.data,
         N = null;
       try {
-        let g = UP.default.tmpdir();
-        N = ZV.join(g, `gamecowork-skill-upload-${Date.now()}-${h}`);
-        let R = Buffer.from(b, "base64");
+        const helper = require("./gamecowork-custom.js");
+        helper.scope(Z);
+        const R = helper.validateSkillUpload(b, h);
+        const directory = await kp.promises.mkdtemp(ZV.join(helper.runtimeTemp(), "skill-upload-"));
+        N = ZV.join(directory, "bundle.zip");
         return (await kp.promises.writeFile(N, new Uint8Array(R)), await c(N, Z));
       } catch (g) {
         return (
@@ -335898,6 +336085,7 @@ function RZa(t, e) {
         if (N)
           try {
             await kp.promises.unlink(N);
+            await kp.promises.rmdir(ZV.dirname(N));
           } catch {}
       }
     }),
@@ -335931,7 +336119,7 @@ function RZa(t, e) {
         }
         return { skills: Z };
       } catch (G) {
-        return (console.error(`[Core] Skill list failed: ${G.message}`), { skills: [] });
+        throw new Error(`Skill list failed: ${G.message}`);
       }
     }),
     n("skills/enable", async (G) => {
@@ -336020,7 +336208,7 @@ function RZa(t, e) {
           ? G
           : `${dfe().replace(/\/$/, "")}${G.startsWith("/") ? "" : "/"}${G}`
         : "",
-    p = async (G, b) => {
+    p = async (G, b) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return {items:[],total:0,supported:false,reason:"A GameCowork marketplace source is not configured"};
       let { search_query: h, skip: Z = 0, limit: N = 50, category: g, sortBy: R, sortOrder: f, isRecommended: y } = b,
         Y = (
           await I.get(
@@ -336102,7 +336290,7 @@ function RZa(t, e) {
       try {
         return { extensions: await t.getExtensionList() };
       } catch (G) {
-        return (console.error(`[Core] Extension list failed: ${G.message}`), { extensions: [] });
+        throw new Error(`Extension list failed: ${G.message}`);
       }
     }),
     n("extensions/enable", async (G) => {
@@ -336162,7 +336350,7 @@ function RZa(t, e) {
         );
       }
     }),
-    n("generator/listTasks", async (G) => {
+    n("generator/listTasks", async (G) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return {tasks:[],total:0,page:1,size:0,supported:false,reason:"An asset generation Provider is not configured"};
       let b = await t.configHandler.controlPlaneClient.getAccessToken();
       if (!b) throw new Error("Not logged in");
       let {
@@ -336268,56 +336456,22 @@ function RZa(t, e) {
       );
     }),
     n("commands/list", async () => {
-      try {
-        let G = t.resolveCliPath(),
-          b = await t.getWorkspaceCwd(),
-          h = await t.runGameCoworkCliCommand(G, ["commands", "list"], b);
-        return { commands: t.parseCliListOutput(h) };
-      } catch (G) {
-        return (console.error(`[Core] Commands list failed: ${G.message}`), { commands: [] });
-      }
+      const output = await t.runGameCoworkCliCommand(t.resolveCliPath(), ["commands", "list"], await t.getWorkspaceCwd());
+      return { commands: await gamecoworkDefinitionItems("commands", t.parseCliListOutput(output)) };
     }),
-    n("commands/enable", async (G) => {
-      let b = await t.runCliManageAction("commands", "enable", G.data.name);
-      return (t.refreshCommandsForAllSessions(), b);
-    }),
-    n("commands/disable", async (G) => {
-      let b = await t.runCliManageAction("commands", "disable", G.data.name);
-      return (t.refreshCommandsForAllSessions(), b);
-    }),
-    n("commands/delete", async (G) => {
-      let { name: b, path: h } = G.data,
-        Z = await t.runCliManageAction("commands", "delete", b, h);
-      return (t.refreshCommandsForAllSessions(), Z);
-    }),
+    n("commands/enable", async (G) => gamecoworkDefinitionAction("commands", "enable", G.data)),
+    n("commands/disable", async (G) => gamecoworkDefinitionAction("commands", "disable", G.data)),
+    n("commands/delete", async (G) => gamecoworkDeleteDefinition("commands", G.data)),
     n("subagents/list", async () => {
-      try {
-        let G = t.resolveCliPath(),
-          b = await t.getWorkspaceCwd(),
-          [h, Z] = await Promise.all([
-            t.runGameCoworkCliCommand(G, ["agents", "list"], b),
-            t.runGameCoworkCliCommand(G, ["agents", "list", "--in-agents-dir"], b),
-          ]),
-          N = t.parseCliListOutput(Z),
-          g = t.parseCliListOutput(h).filter((f) => f.source === "builtin" || f.source === "extension");
-        return { agents: [...N, ...g] };
-      } catch (G) {
-        return (console.error(`[Core] Subagents list failed: ${G.message}`), { agents: [] });
-      }
+      const cli = t.resolveCliPath(), cwd = await t.getWorkspaceCwd(), [all, custom] = await Promise.all([
+        t.runGameCoworkCliCommand(cli, ["agents", "list"], cwd), t.runGameCoworkCliCommand(cli, ["agents", "list", "--in-agents-dir"], cwd)
+      ]);
+      const items = [...t.parseCliListOutput(custom), ...t.parseCliListOutput(all).filter(item => ["builtin", "extension"].includes(item.source))];
+      return { agents: await gamecoworkDefinitionItems("agents", items) };
     }),
-    n("subagents/enable", async (G) => {
-      let b = await t.runCliManageAction("agents", "enable", G.data.name, void 0, G.data.scope);
-      return (t.refreshAgentsForAllSessions(), b);
-    }),
-    n("subagents/disable", async (G) => {
-      let b = await t.runCliManageAction("agents", "disable", G.data.name, void 0, G.data.scope);
-      return (t.refreshAgentsForAllSessions(), b);
-    }),
-    n("subagents/delete", async (G) => {
-      let { name: b, path: h } = G.data,
-        Z = await t.deleteCustomSubagent(b, h);
-      return (t.refreshAgentsForAllSessions(), Z);
-    }),
+    n("subagents/enable", async (G) => gamecoworkDefinitionAction("agents", "enable", G.data)),
+    n("subagents/disable", async (G) => gamecoworkDefinitionAction("agents", "disable", G.data)),
+    n("subagents/delete", async (G) => gamecoworkDeleteDefinition("agents", G.data)),
     n("acp/refreshCommands", async () => {
       await t.refreshCommandsForAllSessions();
     }),
@@ -338679,6 +338833,24 @@ function hki(t) {
     return null;
   }
 }
+async function gcuOfflineMcpDiscovery(core){
+ if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE!=="1"||core.getAnyAcpEntry())return null;
+ const {config}=await core.configHandler.loadConfig();
+ if(gcuPersistedSessionModel(core,config?.selectedModelByRole?.chat))return null;
+ const levels=bMt(mc(),await core.getWorkspaceCwd(),".gamecowork-cli");
+ const merged=new Map();for(const [level,servers]of[["User",levels.userMcpServers],["Workspace",levels.workspaceMcpServers]])for(const [name,config]of Object.entries(servers||{}))merged.set(name,{name,config,configLevel:level,status:"disconnected"});
+ return {discoveryState:"deferred",reason:"model_not_configured",servers:core.acpMcpServerToMcpServerStatus([...merged.values()])};
+}
+async function gcuStoredSessionMode(core,message,id){
+ if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE!=="1"||message.data.collaborationMode!==undefined||message.data.approvalMode!==undefined||message.data.mode!==undefined)return message;
+ const saved=await core.acpHistoryManager.loadSessionMode(id);
+ if(!saved?.collaborationMode||!saved?.approvalMode)return message;
+ return {...message,data:{...message.data,collaborationMode:saved.collaborationMode,approvalMode:saved.approvalMode}};
+}
+function gcuHistorySessionId(value){
+ if(typeof value!=="string"||!value.length||value.length>128||!/^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(value)||/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(value))throw new Error("Invalid session ID");
+ return value;
+}
 var Fje = class {
   reader;
   projectRoot;
@@ -338847,11 +339019,11 @@ var Fje = class {
       );
     }
   }
-  async updateState(e, n) {
-    let r = await yl(),
-      a = String(Date.now());
-    await r.run("UPDATE session_metadata SET state = ?, stateChangedAt = ? WHERE sessionId = ?", n, a, e);
-  }
+  async updateState(e,n){
+ gcuHistorySessionId(e);if(!["active","pinned","archived"].includes(n))throw new Error("Invalid session state");
+ let r=await yl(),a=String(Date.now());let result=await r.run("UPDATE session_metadata SET state = ?, stateChangedAt = ? WHERE sessionId = ?",n,a,e);
+ if(!result?.changes)throw new Error("Session was not found in the current workspace");
+ }
   async markAsUnread(e) {
     return (
       ((await (await yl()).run("UPDATE session_metadata SET unread = 1 WHERE sessionId = ? AND unread = 0", e))
@@ -338881,9 +339053,11 @@ var Fje = class {
       n,
     );
   }
-  async renameTitle(e, n) {
-    await (await yl()).run("UPDATE session_metadata SET title = ? WHERE sessionId = ?", n, e);
-  }
+  async renameTitle(e,n){
+ gcuHistorySessionId(e);if(typeof n!=="string"||!n.trim()||n.length>256)throw new Error("A session title of 1 to 256 characters is required");
+ let result=await (await yl()).run("UPDATE session_metadata SET title = ? WHERE sessionId = ?",n.trim(),e);
+ if(!result?.changes)throw new Error("Session was not found in the current workspace");
+ }
   async saveSessionSettings(e, n) {
     let r = await yl(),
       a = ["sessionId"],
@@ -339232,19 +339406,34 @@ var Cje = class {
     pendingIdeNotificationResolutions = new Map();
     ideNotificationsEnabled = !0;
     sessionLifecycle = new mbe(this.acpSessionRegistry, this.acpInitializing, {
-      retireSession: async (e) => {
+      retireSession: async (e, options = {}) => {
         let n = this.getHolder(e);
         await n.queue.runExclusive(async () => {
           n.sideQueue.pause();
           try {
+            const failures = [];
+            let shutdownFailed = false;
             let r = n.current;
             if (r)
               try {
                 await this.saveCheckpointForEntry(e, r);
               } catch (a) {
                 console.warn(`[SessionLifecycle] Checkpoint before park failed for ${e}:`, a);
+                if (options?.strict === true) failures.push(a);
               }
-            await this.shutdownACPForSession(e);
+            try {
+              await this.shutdownACPForSession(e);
+            } catch (error) {
+              if (options?.strict !== true) throw error;
+              failures.push(error);
+              shutdownFailed = true;
+            }
+            if (failures.length) {
+              const error = new AggregateError(failures,
+                `Failed to retire ACP session ${e}: ` + failures.map(error => String(error?.message || error)).join("; "));
+              error.historyClearCleanupFailed = shutdownFailed;
+              throw error;
+            }
           } finally {
             n.sideQueue.resume();
           }
@@ -339370,7 +339559,7 @@ var Cje = class {
     async saveCheckpointThenApplyDeferredRestart(e) {
       return sGa(this, e);
     }
-    async *streamChatViaACPHandler(e, n, r, a) {
+    async *streamChatViaACPHandler(e, n, r, a) {e=await gcuStoredSessionMode(this,e,e.data.continueSessionId??e.messageId);
       let s = e.data.continueSessionId ?? e.messageId,
         l = (G) => (a?.length ? Sw(a, G) : G()),
         { config: o } = await this.configHandler.loadConfig(),
@@ -339594,8 +339783,8 @@ var Cje = class {
     async shutdownACPForSession(e) {
       return lGa(this, e);
     }
-    async shutdownACP() {
-      return iGa(this);
+    async shutdownACP(options) {
+      return iGa(this, options);
     }
     shouldResetAcpSessionsOnControlPlaneSessionChange(e, n) {
       return oGa(this, e, n);
@@ -340105,10 +340294,11 @@ var Cje = class {
     }
     runGameCoworkCliCommand(e, n, r, a = 3e4, s = 1e3, l) {
       return new Promise((o, c) => {
-        console.debug(`[Core] Running gamecowork-cli: ${e} ${n.join(" ")} (cwd: ${r || "inherited"})`);
+        console.debug(`[Core] Running capability CLI: ${n[0]} ${n[1] || ""}`);
+        const ownTemp = process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" ? require("./gamecowork-custom.js").runtimeTemp() : null;
         let I = (0, dya.spawn)(e, n, {
             stdio: ["ignore", "pipe", "pipe"],
-            env: { ...process.env, ...l },
+            env: { ...process.env, ...(ownTemp ? { TEMP: ownTemp, TMP: ownTemp } : {}), ...l },
             ...(r ? { cwd: r } : {}),
           }),
           u = "",
@@ -340121,13 +340311,13 @@ var Cje = class {
           h = () => {
             (G && clearTimeout(G),
               (G = setTimeout(() => {
-                !p && u.trim() && (I.kill(), b(() => o(u)));
+                !p && (I.kill(), b(() => c(new Error(`Capability command stopped responding after ${s}ms`))));
               }, s)));
           },
           Z = setTimeout(() => {
-            (console.error(`[Core] gamecowork-cli TIMEOUT after ${a}ms: ${e} ${n.join(" ")}`),
+            (console.error(`[Core] capability CLI timed out after ${a}ms: ${n[0]} ${n[1] || ""}`),
               I.kill(),
-              u.trim() ? b(() => o(u)) : b(() => c(new Error(d || `gamecowork-cli timed out after ${a}ms`))));
+              b(() => c(new Error(`gamecowork-cli timed out after ${a}ms`))));
           }, a),
           N = new Gqt.StringDecoder("utf8"),
           g = new Gqt.StringDecoder("utf8");
@@ -340141,7 +340331,7 @@ var Cje = class {
             ((u += N.end()),
               (d += g.end()),
               b(() => {
-                R === 0 || (R === null && u.trim()) ? o(u) : c(new Error(d || u || `Process exited with code ${R}`));
+                R === 0 ? o(u) : c(new Error(d || u || `Process exited with code ${R}`));
               }));
           }),
           I.on("error", (R) => b(() => c(R))));
@@ -340895,9 +341085,15 @@ var Nqt = class {
     }
     request(e, n, r) {
       let a = _V();
-      return new Promise((s) => {
+      return new Promise((s, reject) => {
         let l = (o) => {
-          (s(o.data), this.idListeners.delete(a));
+          this.idListeners.delete(a);
+          let hostError = o.data?.__gamecoworkHostError;
+          if (hostError) {
+            let error = new Error(hostError.message || String(hostError));
+            error.code = hostError.code || "HOST_ERROR";
+            reject(error);
+          } else s(o.data);
         };
         (this.idListeners.set(a, l), this.send(e, n, a, r));
       });
@@ -341107,9 +341303,15 @@ var Bje = class {
   }
   request(e, n, r) {
     let a = _V();
-    return new Promise((s) => {
+    return new Promise((s, reject) => {
       let l = (o) => {
-        (s(o.data), this.idListeners.delete(a));
+        this.idListeners.delete(a);
+        let hostError = o.data?.__gamecoworkHostError;
+        if (hostError) {
+          let error = new Error(hostError.message || String(hostError));
+          error.code = hostError.code || "HOST_ERROR";
+          reject(error);
+        } else s(o.data);
       };
       (this.idListeners.set(a, l), this.send(e, n, a, r));
     });

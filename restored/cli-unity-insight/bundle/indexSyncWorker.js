@@ -1,4 +1,5 @@
 import { createRequire as __unityInsightCreateRequire } from "node:module";
+import { insightHome as __gcuInsightHome, indexDirectory as __gcuInsightIndexDirectory } from "./gamecowork-worker-paths.js";
 import { fileURLToPath as __unityInsightFileURLToPath } from "node:url";
 import { dirname as __unityInsightDirname } from "node:path";
 const __filename = __unityInsightFileURLToPath(import.meta.url);
@@ -6130,7 +6131,7 @@ var MI = wt.join(".gamecowork-cli", "UnityInsight"),
   FI = ".index.write.lock.db",
   NI = ".serve.lock";
 function fr(e) {
-  let t = wt.join(e, MI);
+  let t = __gcuInsightIndexDirectory(e, wt.join(e, MI));
   return {
     projectPath: e,
     indexDirectoryPath: t,
@@ -14018,7 +14019,7 @@ import { createHash as U0 } from "node:crypto";
 import { createReadStream as A0 } from "node:fs";
 import { readFile as gc } from "node:fs/promises";
 import { createRequire as MR } from "node:module";
-import zf from "web-tree-sitter";
+import zf from "../resources/web-tree-sitter/tree-sitter.cjs";
 var Wf = MR(import.meta.url),
   Ta = null,
   qf = zf;
@@ -14028,10 +14029,10 @@ async function Hf() {
       (Ta = (async () => {
         await zf.init({
           locateFile(n) {
-            return Wf.resolve(`web-tree-sitter/${n}`);
+            return __unityInsightFileURLToPath(new URL(`../resources/web-tree-sitter/${n}`, import.meta.url));
           },
         });
-        let e = await qf.Language.load(Wf.resolve("tree-sitter-wasms/out/tree-sitter-c_sharp.wasm")),
+        let e = await qf.Language.load(__unityInsightFileURLToPath(new URL("../resources/tree-sitter-c_sharp.wasm", import.meta.url))),
           t = new qf();
         return (t.setLanguage(e), t);
       })()),
@@ -20768,14 +20769,7 @@ async function CU() {
   return (await fo.mkdir(rr.dirname(t), { recursive: !0 }), await fo.writeFile(t, n, "utf8"), n);
 }
 function jU() {
-  let e =
-    process.env.XDG_DATA_HOME ||
-    (process.platform === "darwin"
-      ? rr.join(Ve.homedir(), "Library", "Application Support")
-      : process.platform === "win32"
-        ? process.env.LOCALAPPDATA || rr.join(Ve.homedir(), "AppData", "Local")
-        : rr.join(Ve.homedir(), ".local", "share"));
-  return rr.join(e, "Tuanjie Cowork", MU);
+  return rr.join(__gcuInsightHome(), "metrics", MU);
 }
 async function BU() {
   return process.platform === "darwin"

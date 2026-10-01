@@ -1,0 +1,477 @@
+{
+ "extract": "T1 shell-logic: cowork.exe Rust shell logic reconstruction",
+ "date": "2026-10-01",
+ "source": {
+  "file": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\cowork.exe",
+  "size": 58555736,
+  "sha256": "55EA13A9707774DF61A707AC55179E94ABB9690583DE986C528DA056A69B8C3B",
+  "version": "2.1.3-canary.2"
+ },
+ "method": "offset-window string analysis (tools/extract-reverse-shell.py + tools/analyze-shell.py); original binary never executed",
+ "counts": {
+  "docs": 7,
+  "module_dumps": 68
+ },
+ "files": [
+  {
+   "path": "README.md",
+   "sha256": "17a22f62f58457a2c3d87aa657d90c1788cc043b003383b0fa96bc4065bdba4b",
+   "size": 2842
+  },
+  {
+   "path": "_EXTRACT-MANIFEST.json",
+   "sha256": "b1bb5c6f9d1f33cef2c8266231ba305ab4910fb86f0978e06ea8c8a203ba7135",
+   "size": 14703
+  },
+  {
+   "path": "commands.md",
+   "sha256": "0f3b90f39bb047686210aac72eb0314a5121991f95203bec8b158ced36d97686",
+   "size": 8723
+  },
+  {
+   "path": "desktop-shell.md",
+   "sha256": "93a8afd211e32948a7f68e8db10d20ba811f20b13b6f6773e2969aa0f6d4fd82",
+   "size": 7894
+  },
+  {
+   "path": "lsp-subsystem.md",
+   "sha256": "bd2603c850a47382df6ef5e09bc03571050460c95bd22a007c58d1434bd15df5",
+   "size": 7246
+  },
+  {
+   "path": "modules/src_app_config.rs.md",
+   "sha256": "17af083cb27d949e2bb4ea40de8de59b67b40fe5802d66d1aec60a8d01ce02c4",
+   "size": 6847
+  },
+  {
+   "path": "modules/src_app_data.rs.md",
+   "sha256": "11e8befb953c7cd82926bfa943054b82fec5d15f15678dbb65552d270b153ff6",
+   "size": 3302
+  },
+  {
+   "path": "modules/src_app_file_preview.rs.md",
+   "sha256": "229db94058f001d21c44d184e3169a51b1041fd0f59c98e44f95201ec1bfad0f",
+   "size": 9650
+  },
+  {
+   "path": "modules/src_app_file_watcher.rs.md",
+   "sha256": "1a08b52a641f3ec3a033b05e75ebf86db00a9a492d28c235eaf63e515e06dbb0",
+   "size": 12837
+  },
+  {
+   "path": "modules/src_app_plugin.rs.md",
+   "sha256": "f9e0b0954205355ea2ff1df946ebffb61334d0df9c8c4cfbdae1af43bac60a40",
+   "size": 4860
+  },
+  {
+   "path": "modules/src_app_restart.rs.md",
+   "sha256": "86d65539d5c0d5c432fe54cc422fb760c87e9275aeff13f2f22419cdf26680f0",
+   "size": 6827
+  },
+  {
+   "path": "modules/src_app_settings.rs.md",
+   "sha256": "6f91be8fa3521a3c7be74b3854683dfba685b2afd0bd9bbf0442eeebb32b62c2",
+   "size": 7056
+  },
+  {
+   "path": "modules/src_app_setup.rs.md",
+   "sha256": "cfca5ea504eafd5b9057f166021978ab89370d5e852170a0d06c67aa0a7207d2",
+   "size": 13806
+  },
+  {
+   "path": "modules/src_app_single_instance.rs.md",
+   "sha256": "b64d7065a51d77731fd9d0f54283f41bc0989a196f9fcd3f3eaf4b32098ce779",
+   "size": 6379
+  },
+  {
+   "path": "modules/src_app_state.rs.md",
+   "sha256": "ff5902c3f97548d276db27ece992d2ab73254fd7173d41d34035e87a44f8fe54",
+   "size": 26974
+  },
+  {
+   "path": "modules/src_app_theme.rs.md",
+   "sha256": "3f1f1b2f4aea70455f9e6dd343ca8188491272b1a01dc0cf36f0602c733b2bca",
+   "size": 6545
+  },
+  {
+   "path": "modules/src_app_tray.rs.md",
+   "sha256": "643f2657335d959f215f02823f164e3c0b350fd50e91d0d7c8803cbe7948dcb7",
+   "size": 10160
+  },
+  {
+   "path": "modules/src_app_update.rs.md",
+   "sha256": "62d9872acc21f9c726845304d4c1842ca63e38542ccd4bd6c3514b695d7d6819",
+   "size": 26007
+  },
+  {
+   "path": "modules/src_app_win_keyboard_hook.rs.md",
+   "sha256": "beffa53139231a96711795b736c6f67432cdb3c1b0c956beb56435a7ca382b28",
+   "size": 5749
+  },
+  {
+   "path": "modules/src_app_window_manager.rs.md",
+   "sha256": "0bdde68fe461870a7d94df89b666ef630800cd1c2517b8cd043f6ed8ce2a40ed",
+   "size": 45978
+  },
+  {
+   "path": "modules/src_app_window_state.rs.md",
+   "sha256": "2ef8fbd8f46541ce55c9d809c5ecd339be2fc5135d8e432cdff47082e4e6f226",
+   "size": 5534
+  },
+  {
+   "path": "modules/src_app_workspace_state.rs.md",
+   "sha256": "6b71aff1a994077c992946198f77f2f6cc543913db63e55569411d19e82bbbd3",
+   "size": 35816
+  },
+  {
+   "path": "modules/src_auth_auth.rs.md",
+   "sha256": "37c5048a450ccc1a3e3a093c7013b8da8292ff64eccab2653049bf7d42cd65a4",
+   "size": 32146
+  },
+  {
+   "path": "modules/src_core_communication.rs.md",
+   "sha256": "2f69ff5b41ff9d8ed92a777283cb57e3c93f06ba5b0f9cb23d3a56b16afd5404",
+   "size": 40367
+  },
+  {
+   "path": "modules/src_core_ipc_messenger.rs.md",
+   "sha256": "efb3d1cb53f2b5f2047669ddd66238accdecd60b8f11a55fd570e0bd3f957c4b",
+   "size": 26260
+  },
+  {
+   "path": "modules/src_core_os_notification.rs.md",
+   "sha256": "601f029685e439208e02def6135ff4b34cc5f7679403b99ba15cf37949bdb873",
+   "size": 11290
+  },
+  {
+   "path": "modules/src_core_process.rs.md",
+   "sha256": "f82bd0b2a5113ccbcfe2060140e75323adf9511a2e0c4ed4c9f0418e4f3bfc9f",
+   "size": 29159
+  },
+  {
+   "path": "modules/src_core_tcp_ipc_messenger.rs.md",
+   "sha256": "cb98e3fe01689462a2d1fc7a8d08bf668724ef3ea783a6653098dd451825ef0d",
+   "size": 32374
+  },
+  {
+   "path": "modules/src_frp_client.rs.md",
+   "sha256": "ee5cd0fa736a30bc6174b5cc3ee82f3cbcb0f5e038542508f38605f74618244e",
+   "size": 39127
+  },
+  {
+   "path": "modules/src_ide_file_service.rs.md",
+   "sha256": "c9223a724148009ec7e11d1be0dcace396549b99358eab0bf4cfe07d332f03f2",
+   "size": 5606
+  },
+  {
+   "path": "modules/src_ide_ide_protocol_client.rs.md",
+   "sha256": "6a5b60edd4dcc7b4dc7aba23555246b6c80c7a15a81b19b3fb448217d9fbed8d",
+   "size": 25341
+  },
+  {
+   "path": "modules/src_lib.rs.md",
+   "sha256": "d2a25e7365a57e51c6e25791a1b6aec664e065cc2ebd3e3e5c1fa3c838b65a9d",
+   "size": 209135
+  },
+  {
+   "path": "modules/src_logger.rs.md",
+   "sha256": "b603dfd87590222f154f742e05840398fb2e7a1c1a4851c55bda5cdf2ca1868f",
+   "size": 8012
+  },
+  {
+   "path": "modules/src_lsp_client.rs.md",
+   "sha256": "0f4dead031126705549ed37007d839292ed610566367cf7672f91febcf515a31",
+   "size": 29945
+  },
+  {
+   "path": "modules/src_lsp_config.rs.md",
+   "sha256": "23653dc6cd7dde4ca2658533a37ccc45e056815edb33dcc6b51eff0edaf0c3bd",
+   "size": 17760
+  },
+  {
+   "path": "modules/src_lsp_hint.rs.md",
+   "sha256": "f9de018f1df33db87514427201b37423a3bee9f0a6fb1445861198c593481f4c",
+   "size": 5702
+  },
+  {
+   "path": "modules/src_lsp_manager.rs.md",
+   "sha256": "e9f3fdd048294a3b703c9b26e9029455e13ee61b744084044f3c432afff7f33a",
+   "size": 29315
+  },
+  {
+   "path": "modules/src_lsp_path.rs.md",
+   "sha256": "b48c2d0db6e0400c254e9b970d5a804da0c4fe17698b72fe16f61ba5c70c1382",
+   "size": 6410
+  },
+  {
+   "path": "modules/src_lsp_reload.rs.md",
+   "sha256": "0b174537e991463cd12c4479ef515f3f129d98cb15a526f3b0018a3ab5d22b26",
+   "size": 18615
+  },
+  {
+   "path": "modules/src_lsp_server_instance.rs.md",
+   "sha256": "e7628bede74ec140d4a640f1043d7ad864aeb15c6d4ea44c5a8f82ed04703cb3",
+   "size": 31251
+  },
+  {
+   "path": "modules/src_lsp_transport.rs.md",
+   "sha256": "7522fe8bf9ebcf4071e0bac81947d13f8fc3fca76bf2a4ce562e1985d1ff7f13",
+   "size": 41440
+  },
+  {
+   "path": "modules/src_lsp_types.rs.md",
+   "sha256": "7c00c0e72f97091d02004bde5ef9076848c649b5278f5852f25d16f18cf8783e",
+   "size": 13294
+  },
+  {
+   "path": "modules/src_messages_drill.rs.md",
+   "sha256": "0bea546f1b74ec4d7e413ac4f4690a8ecbd88b5bf4cef5aa1c4df679ca8ed15d",
+   "size": 27055
+  },
+  {
+   "path": "modules/src_messages_editor.rs.md",
+   "sha256": "02ae6ccf7f8e040b781b5a07555e044c8784901ff91eaecaafd19941551a5831",
+   "size": 21763
+  },
+  {
+   "path": "modules/src_messages_lsp.rs.md",
+   "sha256": "be1beb96baf87778d6daaaceb73801b3af14995923429feaf0f737f11adadc69",
+   "size": 26581
+  },
+  {
+   "path": "modules/src_messages_mod.rs.md",
+   "sha256": "fe41379e2514832896aadfa2963eaa8204233817cfbb140d961228519b8bc7a2",
+   "size": 19745
+  },
+  {
+   "path": "modules/src_messages_pet.rs.md",
+   "sha256": "6e6ff967fab5d02b8772a4ff01e8f990e26a83a20291ccc4d224b73fedc0830b",
+   "size": 25337
+  },
+  {
+   "path": "modules/src_messages_power.rs.md",
+   "sha256": "2464ff05329ac1be96d1535daa5a341330c470ec05dbdaa7619e79b346705f9b",
+   "size": 6018
+  },
+  {
+   "path": "modules/src_messages_terminal.rs.md",
+   "sha256": "5275e34fc67af38bb139e2af208fa725fb594f20273233b474cb101055f217ed",
+   "size": 24345
+  },
+  {
+   "path": "modules/src_messages_tjhub.rs.md",
+   "sha256": "af93b8a3b2349b8c719d01980a0fe29603f3abe844c358b1b69e2094da14ff05",
+   "size": 7242
+  },
+  {
+   "path": "modules/src_messages_tunnel.rs.md",
+   "sha256": "fd98a38124763541109cff99737d42a51e1b8af0573639891b08de2b79fc8834",
+   "size": 52008
+  },
+  {
+   "path": "modules/src_messages_update.rs.md",
+   "sha256": "c2d76f43db2cde0b44275e2f50b327e562e1efe1136b10640a7f3ffd60628995",
+   "size": 26254
+  },
+  {
+   "path": "modules/src_messages_update_channel_msg.rs.md",
+   "sha256": "b1e9113b61b60013d35207bf749512444be4127e60efef5de16bcd00f95cb30e",
+   "size": 19626
+  },
+  {
+   "path": "modules/src_messages_window.rs.md",
+   "sha256": "bbbb79b3d1156780918587750efc7536641adc8ab0ec18f673cdac6b2582a8fe",
+   "size": 6590
+  },
+  {
+   "path": "modules/src_messages_workspace.rs.md",
+   "sha256": "40adb2139a231c3a29ee0688de47bab7af0c4e6c9633242d8a4d1b452349c755",
+   "size": 19583
+  },
+  {
+   "path": "modules/src_metrics.rs.md",
+   "sha256": "1c55bbfe6305028320229fec9adbc92543ca60f48724aa550cae2074b9108e26",
+   "size": 25875
+  },
+  {
+   "path": "modules/src_pet_events.rs.md",
+   "sha256": "d41fcab0287a6528598a0de7b4f5f31d715f04f96a04f08670cc53f4f2b8456a",
+   "size": 12901
+  },
+  {
+   "path": "modules/src_pet_queue.rs.md",
+   "sha256": "fa03690ac19c9a221ac3a4f1c63ccf5c2d0a1e94c87d31b346e39588c9ebeddc",
+   "size": 19630
+  },
+  {
+   "path": "modules/src_pet_window.rs.md",
+   "sha256": "df63320d57aebc6266ff06ef59cfe8ab1e39ebd6497d5aacd58a2228e244b5c1",
+   "size": 6939
+  },
+  {
+   "path": "modules/src_push.rs.md",
+   "sha256": "52bad27f16005e3d88a9ecc0c9070fe2ca54db1d455f7d912be1ec45dbcfd509",
+   "size": 26736
+  },
+  {
+   "path": "modules/src_server.rs.md",
+   "sha256": "a802a30bebb2391054309f563d5d8ebf2448c14519906368edf91b37e0502a4e",
+   "size": 177638
+  },
+  {
+   "path": "modules/src_server_mobile_archive.rs.md",
+   "sha256": "7e112f5bba60db175925c2ca7b6a3adbf5e16f7192e5c2ab998460c2ed6f930e",
+   "size": 13465
+  },
+  {
+   "path": "modules/src_server_mobile_home.rs.md",
+   "sha256": "3830ed50dfe0c5cbf3d5d8f5d08f21fe7e413881dd9a3f9790d0c6afce0d170b",
+   "size": 20390
+  },
+  {
+   "path": "modules/src_system_info.rs.md",
+   "sha256": "9efa0af74dd10538c55f6cad014106ad873dfcf3fb4b90dfb57941bd73febd95",
+   "size": 24253
+  },
+  {
+   "path": "modules/src_terminal.rs.md",
+   "sha256": "8153230cbd3dd0672b3cff01e312ffa3ff381600bb9bcf23460cedb28323413b",
+   "size": 34614
+  },
+  {
+   "path": "modules/src_tjhub_client.rs.md",
+   "sha256": "4180ab9dd92db47404a217563fe059b5dbe9619dc20f7e6658b5fb0ac34f52c0",
+   "size": 42412
+  },
+  {
+   "path": "modules/src_tunnel.rs.md",
+   "sha256": "1d3ae8cc3aac0c5f9b4be8e4e01fec23c4bfcd4e26fd4be45ec4cbe5210fbfdd",
+   "size": 45017
+  },
+  {
+   "path": "modules/src_unity_handler.rs.md",
+   "sha256": "82d8bc7773bd5450eefb4210ad5e1a97f12d71eef49bad93dc7a74ed4ad76caf",
+   "size": 13316
+  },
+  {
+   "path": "modules/src_unity_insight_agent_toml.rs.md",
+   "sha256": "fe9caf0b66088e35fd502e0b677bd68626bcf6a965e0973f889a8418825434df",
+   "size": 13020
+  },
+  {
+   "path": "modules/src_unity_insight_serve_client.rs.md",
+   "sha256": "f21e61c9326dca897657f737c6d00597a0afc01d384649b966758c4e50fe9e08",
+   "size": 18429
+  },
+  {
+   "path": "modules/src_unity_insight_user_settings.rs.md",
+   "sha256": "19ad6066e05f5e8812eaf198ab2a921eade660259f67a75b7a58db48a7d4a31a",
+   "size": 7606
+  },
+  {
+   "path": "modules/src_unity_ipc.rs.md",
+   "sha256": "38df8c81d3093a57b7ed98c8e1a9d878c201a2a0973f0da76195d2f5c70e3d72",
+   "size": 45022
+  },
+  {
+   "path": "modules/src_utils.rs.md",
+   "sha256": "14a599339531432ac387cfff58ab09ed7a93f9a501bae1975b03accff9249ac3",
+   "size": 6450
+  },
+  {
+   "path": "raw/commands-distilled.tsv",
+   "sha256": "eb5611c73f0499bad432c6dc4fa9630e876816c6f4679b62ca16207d70d3e4ed",
+   "size": 24254
+  },
+  {
+   "path": "raw/commands-raw.json",
+   "sha256": "3509fa86565facb00bc9bfe409fa55a6567955c53c95e958e87c4b5c0880653e",
+   "size": 834834
+  },
+  {
+   "path": "raw/kw-windows/C__Program_Files_Git_api_v1_frp_remote-workspaces.txt",
+   "sha256": "47cae9c158491d41d00f478ccd3580b02638b01e89e9ade62c6fbdc5763b13a6",
+   "size": 68
+  },
+  {
+   "path": "raw/kw-windows/_api_v1_frp_remote-workspaces.txt",
+   "sha256": "1b852f751d6aeeb91647aaccf091d68a517b1fe1d9bde80bfc9d2a30c43894ec",
+   "size": 10611
+  },
+  {
+   "path": "raw/kw-windows/basedpyright.txt",
+   "sha256": "badab6a06f806cf7ec9047482cf07d897711161054d987209690f06756a61cdf",
+   "size": 4757
+  },
+  {
+   "path": "raw/kw-windows/codely-mobile___session.txt",
+   "sha256": "77c2b7173e65eae1f6142895b8d27cbb54fe752202760a11f310c7f2923f6c8c",
+   "size": 13306
+  },
+  {
+   "path": "raw/kw-windows/codely-mobile__session.txt",
+   "sha256": "60089f0a751e5ce181e8036cf4b85f2a54fe0c9251aa2eb7b15a2f864796c7ff",
+   "size": 41
+  },
+  {
+   "path": "raw/kw-windows/codely-unity-lsp-server.txt",
+   "sha256": "1a1bae7b1c6835fc32d712b47a6f59d18220f07d98d1d3a455d9c961b50a8780",
+   "size": 5732
+  },
+  {
+   "path": "raw/kw-windows/gemini-extension.json.txt",
+   "sha256": "be2619b7fa086033bf4b28c19116936f9e53118bf3b84abb3c7f56a840ec4883",
+   "size": 17836
+  },
+  {
+   "path": "raw/kw-windows/isServerInstalled.txt",
+   "sha256": "ad00b7f4fa5a249c1f3dda0f3b1ea6a8617072369c6140c1c91b9bb6e428840d",
+   "size": 26302
+  },
+  {
+   "path": "raw/kw-windows/lsp_checkHealth.txt",
+   "sha256": "fb79d56b88adad6537fd9eb0d09feb313ff1a0ae7c8e969c34e56113972daab1",
+   "size": 34
+  },
+  {
+   "path": "raw/kw-windows/lsp_installServer.txt",
+   "sha256": "95c156215e869f64283b5d1597bd08f4d26cc97872dba8f15201daae8a939e1b",
+   "size": 36
+  },
+  {
+   "path": "raw/kw-windows/omnisharp.txt",
+   "sha256": "5129d323a6e1dc6d27c38aac5ccd097de0f92e90ff0747f905a45a2b26a41724",
+   "size": 6474
+  },
+  {
+   "path": "raw/kw-windows/vtsls.txt",
+   "sha256": "63db6fa6c8607eae767dde3751f6de25c073ea2965ef4e20633d2bd0cf37f9dd",
+   "size": 5755
+  },
+  {
+   "path": "raw/seeds-modules.txt",
+   "sha256": "a76f3e8be04c338b1095b0b2be7c1c420ba796eb73c0f6d06a024c55c012c03c",
+   "size": 1446
+  },
+  {
+   "path": "raw/urls.txt",
+   "sha256": "1e9b09cce8164fa096c09d42ec446777d6f62c1fb0800d5fe744cf3fbe9fe48f",
+   "size": 7350
+  },
+  {
+   "path": "tjhub-api.md",
+   "sha256": "b2ec598a60782dba84b98ea0cafb604b92bd34c69be7c77acb9c27aaca29f551",
+   "size": 7917
+  },
+  {
+   "path": "tunnel-remote.md",
+   "sha256": "55806849d8f3082c72e3f0b7932612f6651297ca73501a278a9f4f2d55033f5e",
+   "size": 7968
+  },
+  {
+   "path": "unity-shell-side.md",
+   "sha256": "0a8e2f64d47a330dbc2ccfa202f099d1da929ba726483c9a46fe851c963490e3",
+   "size": 8699
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{
+ "extract": "index-and-templates: insight index persistence + project template pipeline (Unity Hub reverse + Tuanjie实证)",
+ "date": "2026-10-01",
+ "analyzed_sources": [
+  {
+   "file": "Unity Hub.exe resources/app.asar",
+   "sha256": "D1561FFB566FCBD38479FEC8B15198F38DB25F22795CBEB6013F1D68D81349C1",
+   "size": 28895412
+  },
+  {
+   "file": "Tuanjie 2022.3.62t16 ProjectTemplates dir",
+   "type": "directory",
+   "note": "read-only analysis, per-file hashes not enumerated"
+  },
+  {
+   "file": "restored/cli-unity-insight/bundle",
+   "type": "directory",
+   "note": "read-only analysis, per-file hashes not enumerated"
+  },
+  {
+   "file": "restored/shell/src/insight.rs + editor_installations.rs",
+   "type": "directory",
+   "note": "read-only analysis, per-file hashes not enumerated"
+  }
+ ],
+ "decompiled_evidence": {
+  "unity_hub_asar_extracted": "F:\\AI\\AgentMake\\temp\\GameCowork\\unity-hub-asar (3196 files, temp only)",
+  "key_source_regions": [
+   "asar: build/main/DiskValidatorStrategy-Baf6OtjU.js #region src/main/services/unityTemplate/* (scanTemplates, Templates class, manifest, ProjectData~)",
+   "asar: build/main/app-CM4KuvRm.js createTemplateFromProject + ProjectService.createProject",
+   "asar: build/main/cloudConfig-DHML8x8A.js live-platform-api endpoints"
+  ]
+ },
+ "method": "asar full unpack (read-only), JS source region reading, tar listing of editor template tgz, shell/worker source reading, disk state inspection; no binaries executed, no GameCowork code modified",
+ "key_facts": {
+  "core_templates": "Editor-bundled tgz at {Editor}/Data/Resources/PackageManager/ProjectTemplates; content under package/ProjectData~ (prebuilt project incl. warm Library)",
+  "template_merge": "local(READY) + downloaded(%APPDATA% Templates + manifest.json) + remote(LivePlatformAPI graphql, DOWNLOADABLE), semver merge",
+  "creation": "Hub delegates to Editor (editorApp.createProject); reverse createTemplateFromProject copies 6 dirs and strips ProjectVersion.txt",
+  "insight_persistence": "generations index.{uuid}.db + index.current pointer + atomic swap + GC; warm start = index.sync not rebuild",
+  "local_machine_finding": "%LOCALAPPDATA%/GameCowork/insight EMPTY -> insight never persisted in production; editor list rescanned every launch (no cache, unlike Hub installedEditorList + editors.changed)"
+ },
+ "files": [
+  {
+   "path": "GAPS-AUDIT.md",
+   "sha256": "63c27d8a3813e91e5bff54b48ad7c088b4664ef757363afddbe03b17abeebe7e",
+   "size": 5732
+  },
+  {
+   "path": "insight-index-persistence.md",
+   "sha256": "1fd9db409e04997fe96c361f1b7e8b6c3847b31cdf3a5c823d0c329b46f34265",
+   "size": 5579
+  },
+  {
+   "path": "template-pipeline.md",
+   "sha256": "b2195ca71cf076e15123a23b035eaa5b15d51cffb7d872e3c70eae994c4dd61e",
+   "size": 6692
+  }
+ ]
+}

@@ -13472,6 +13472,7 @@ function ph(e, t, i, s) {
 }
 function wh({ workspaceRoot: e, workspaceRoute: t, isActive: i }) {
   const { t: s } = jr(),
+    [gamecoworkConnectionState, gamecoworkSetConnectionState] = Ye.useState("connecting"),
     r = Ye.useRef(null),
     n = Ye.useRef(null),
     o = Ye.useRef(null),
@@ -13493,8 +13494,10 @@ function wh({ workspaceRoot: e, workspaceRoute: t, isActive: i }) {
     Ye.useEffect(() => {
       const a = r.current;
       if (!a || !e) return;
+      gamecoworkSetConnectionState("connecting");
       const c = new uh({
           allowProposedApi: !1,
+          disableStdin: !0,
           convertEol: !1,
           cursorBlink: !0,
           fontFamily: '"SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Noto Sans Mono CJK SC", monospace',
@@ -13533,9 +13536,12 @@ function wh({ workspaceRoot: e, workspaceRoute: t, isActive: i }) {
 `);
       };
       (_.addEventListener("open", () => {
-        u ||
-          _.readyState !== WebSocket.OPEN ||
-          (f(), _.send(JSON.stringify({ type: "resize", cols: c.cols, rows: c.rows })), h.current && c.focus());
+        if (u || _.readyState !== WebSocket.OPEN) return;
+        c.options.disableStdin = !1;
+        gamecoworkSetConnectionState("connected");
+        f();
+        _.send(JSON.stringify({ type: "resize", cols: c.cols, rows: c.rows }));
+        h.current && c.focus();
       }),
         _.addEventListener("message", (B) => {
           if (typeof B.data == "string") {
@@ -13555,9 +13561,13 @@ function wh({ workspaceRoot: e, workspaceRoute: t, isActive: i }) {
               });
         }),
         _.addEventListener("error", () => {
+          c.options.disableStdin = !0;
+          if (!u) gamecoworkSetConnectionState("disconnected");
           !u && !p && ((p = !0), S(l.current.connectionFailed));
         }),
         _.addEventListener("close", (B) => {
+          c.options.disableStdin = !0;
+          if (!u) gamecoworkSetConnectionState("disconnected");
           !u && B.code !== 1e3 && !p && S(l.current.disconnected);
         }));
       const k = c.onData((B) => {
@@ -13602,16 +13612,23 @@ function wh({ workspaceRoot: e, workspaceRoute: t, isActive: i }) {
       });
       return () => cancelAnimationFrame(a);
     }, [i]),
-    ns.jsx("div", {
+    ns.jsxs("div", {
       className: "tauri-terminal-panel",
       "data-testid": "terminal-panel",
       "aria-hidden": !i,
       style: { display: i ? "block" : "none" },
-      children: ns.jsx("div", {
+      children: [gamecoworkConnectionState !== "connected" && ns.jsx("div", {
+        role: "status",
+        "data-testid": "terminal-connection-status",
+        style: { position: "absolute", top: 4, right: 8, zIndex: 2, fontSize: 12, background: "var(--gamecowork-color-surface-primary)" },
+        children: gamecoworkConnectionState === "connecting"
+          ? s("rightSidebar.terminalConnecting", { defaultValue: "正在连接终端…" })
+          : s("rightSidebar.terminalDisconnected", { defaultValue: "终端已断开" }),
+      }), ns.jsx("div", {
         ref: r,
         className: "tauri-terminal-panel__viewport",
         "data-testid": "terminal-viewport",
-      }),
+      })],
     })
   );
 }

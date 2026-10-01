@@ -1,0 +1,9 @@
+{
+  "name": "cn.gamecowork.bridge",
+  "version": "0.1.0",
+  "displayName": "GameCowork Editor Bridge",
+  "description": "Local project-scoped GameCowork TCP bridge and real editor render-texture preview.",
+  "unity": "2022.3",
+  "author": { "name": "GameCowork" },
+  "dependencies": {}
+}

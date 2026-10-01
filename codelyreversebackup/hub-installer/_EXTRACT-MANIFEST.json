@@ -1,0 +1,71 @@
+{
+ "extract": "T3 hub-installer: tuanjie.exe (Bun Hub) + auxiliary tools static analysis",
+ "date": "2026-10-01",
+ "analyzed_sources": [
+  {
+   "file": "tuanjie.exe",
+   "sha256": "13D7E240EBFDBC8E7ABFAA07529FBD73DF6A775818CB983996D9EB9682D51486",
+   "size": 102125568
+  },
+  {
+   "file": "process_killer.exe",
+   "sha256": "F9A5A327AEF72E4676D4F19F66372B0448751F7A1BFDDBB40CC231FF941DAB9C",
+   "size": 164184
+  },
+  {
+   "file": "VisualStudioInstallChecker.exe",
+   "sha256": "12BE6604FDC9D5306FEEFA4D92D1382DCE21DDF24E232CBD192C4816D990516B",
+   "size": 150016
+  },
+  {
+   "file": "hasp_update.exe",
+   "sha256": "C7C956789371AA0358D35C9A33547A9E10C791396A67D6A05E49A1EEC05FB7AA",
+   "size": 4871168
+  },
+  {
+   "file": "NativeProxyHelper.dll",
+   "sha256": "24F24316A155B183E46C96641FBD59123B412FAED7B5395BE826F43C3ED5E9C4",
+   "size": 76800
+  },
+  {
+   "file": "tuanjie-sl.v2c",
+   "sha256": "E5BAA0258F68E8E531AE2884AEA8BEE3172CFDEE8827D9D6CE1CDC424A73C5A7",
+   "size": 2243
+  },
+  {
+   "file": ".tuanjie-cowork-install",
+   "sha256": "61822E3753614CDF3C4D76B2B6054D76BC2E132EAC37586FA523F672BA2346C4",
+   "size": 24
+  }
+ ],
+ "method": "ASCII+UTF-16 string extraction with offsets (tools/extract-reverse-shell.py); register()/env/URL mining; no execution",
+ "key_facts": {
+  "hub_runtime": "Bun single-file EXE, JSON-RPC 2.0 over inherited pipe (HUB_PIPE_HANDLE/HUB_PIPE_FD), XState inside",
+  "registered_methods": 52,
+  "release_manifest_format": "editors-v2/releases.json/modules.json (Unity Hub fork lineage)",
+  "process_killer": "kills by FileDescription (5 product names), requires CODELY_INSTALL_DIR",
+  "vs_checker": "expects exactly 2 args, detects VS Community/Professional/Enterprise"
+ },
+ "files": [
+  {
+   "path": "strings-tuanjie-exe.txt",
+   "sha256": "b4243d29ec66c0b6c772d5baf683519b8f0421197f9e913ddfc13facac447195",
+   "size": 96954
+  },
+  {
+   "path": "tools-analysis.md",
+   "sha256": "bff6694d0dd163e5e3b2d39e9ebd76bf00d1e52f849b6d92314fcf2b4416e9e6",
+   "size": 2940
+  },
+  {
+   "path": "tuanjie-exe-cli.md",
+   "sha256": "bda930fd02bd42882fddf5cf3e364d7849853d4f8056969d014bcebd1d2f8a39",
+   "size": 7085
+  },
+  {
+   "path": "v2c-and-install-marker.md",
+   "sha256": "281a628e69a648862a74d71334b964da1b2cb1bdc52cf88a0dc26dd1863a8df2",
+   "size": 2361
+  }
+ ]
+}

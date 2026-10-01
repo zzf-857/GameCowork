@@ -1,0 +1,199 @@
+# omnisharp
+occurrences=1
+
+## hit 1 @ 47422467
+```
+  @ -1995 src\app\settings.rs
+  @ -1947 cowork::app::settingsjson.lockjson.tmpFailed to create settings directory: 
+  @ -1851 Failed to serialize settings: 
+  @ -1803 Failed to open lock file: 
+  @ -1755 Failed to acquire file lock: 
+  @ -1707 Failed to write temp settings file: 
+  @ -1651 Failed to rename settings file: 
+  @ -1531 src\app\window_manager.rs
+  @ -1387 WindowManagerApp state not initialized for open_workspaceApp handle not available for open_workspaceCreateJobObjectW failed: 
+  @ -1243 SetInformationJobObject failed: (
+  @ -1195 OpenProcess() failed: 
+  @ -1139 AssignProcessToJobObject failed: 
+  @ -1083 EADDRINUSEEACCESpermission deniedENOENTCannot find moduleCoreProcess
+  @ -1009  Missing Node.js module!   Solution: Reinstall dependencies.
+  @  -943  File or directory not found!   Solution: Verify that all required files are present.
+  @  -852  Permission denied!   Solution: Check file permissions.
+  @  -791  Port already in use! Another instance may be running.   Solution: Stop other instances or use a different port.CODELY_CLI_HOME.codely-clirelativePathnoneextension check: file= server= installed=
+  @  -547 src\lsp\manager.rs
+  @  -499 server check: file= binary=
+  @  -419  binary=none installed=false
+  @  -355 invalid binary name: 
+  @  -315 isServerInstalled  
+  @  -293  found= path=
+  @  -227 LSPmissing LSP config for server 
+  @  -171 failed to convert  to file URI
+  @  -107 where.exeAPPDATAnpmLOCALAPPDATAProgramsnodejsProgramFilesProgramFiles(x86)USERPROFILE.dotnettools.cargobin.omnisharpMicrosoftWinGetPackagesexecmdbatps1
+  @  +109 HOMEsrc\lsp\path.rs
+  @  +157 src\lsp\server_instance.rsserver state lock poisoned
+  @  +237 server error lock poisoned
+  @  +317 LSP server  is not started
+  @  +381  is starting
+  @  +429  is stopping
+  @  +477  is not running
+  @  +573 server ""
+  @  +621 extension "
+  @  +669 Upstream / source (from extension manifest): 
+  @  +733 Install the language server for this stack and ensure its executable is on your PATH.[LSP] Cannot start : command not found: "" (ENOENT). . Cause: 
+  @  +949 enoentos error 2no such file or directorycannot find the file
+  @ +1037 workspaceFoldersinitializationOptionsdynamicRegistrationworkspace folder should convert to file URI
+  @ +1165 src\messages\tunnel.rs
+  @ +1213 src\pet\queue.rs
+  @ +1301 idaccess_token=agentsunity-insight.tomlUnable to resolve ~/.codely-cli/agentsworkspaceDir is required for workspace-scoped agent toml
+  @ +1461 full matchsrc\unity\insight_agent_toml.rs
+  @ +1557 ${1}${2}
+  @ +1621 [run]
+  @ +1701 max_turns = 
+  @ +1901 Managed by Codely Cowork (unityInsight.maxTurns)# Managed by Codely Cowork (unityInsight.maxTurns).
+  -- fragments --
+    · src\app\settings.rs
+    · settings
+    · app\settings.rs
+    · cowork::app::settingsjson.lockjson.tmpFailed to create settings directory:
+    · cowork
+    · settingsjson
+    · lockjson
+    · tmpFailed
+    · create
+    · directory
+    · Failed to serialize settings:
+    · serialize
+    · Failed to open lock file:
+    · Failed to acquire file lock:
+    · acquire
+    · Failed to write temp settings file:
+    · write
+    · Failed to rename settings file:
+    · rename
+    · src\app\window_manager.rs
+    · window_manager
+    · app\window_manager.rs
+    · indowManagerApp
+    · state
+    · initialized
+    · workspaceApp
+    · handle
+    · available
+    · workspaceCreateJobObject
+    · failed
+    · SetInformationJobObject failed: (
+    · etInformationJobObject
+    · OpenProcess() failed:
+    · penProcess
+    · AssignProcessToJobObject failed:
+    · ssignProcessToJobObject
+    · EADDRINUSEEACCESpermission deniedENOENTCannot find moduleCoreProcess
+    · EADDRINUSEEACCESpermission
+    · ENOENTCannot
+    · moduleCoreProcess
+    · Missing Node.js module!   Solution: Reinstall dependencies.
+    · module
+    · dependencies
+    · File or directory not found!   Solution: Verify that all required files are present.
+    · found
+    · required
+    · files
+    · present
+    · Permission denied!   Solution: Check file permissions.
+    · denied
+    · permissions
+    · already
+    · instance
+    · running
+    · other
+    · instances
+    · different
+    · codely
+    · clirelativePathnoneextension
+    · check
+    · server
+    · installed
+    · src\lsp\manager.rs
+    · manager
+    · lsp\manager.rs
+    · server check: file= binary=
+    · binary
+    · binary=none installed=false
+    · false
+    · invalid binary name:
+    · invalid
+    · isServerInstalled
+    · found= path=
+    · LSPmissing LSP config for server
+    · LSPmissing
+    · config
+    · failed to convert  to file URI
+    · convert
+    · where
+    · APPDATAnpmLOCALAPPDATAProgramsnodejsProgramFilesProgramFiles
+    · dotnettools
+    · cargobin
+    · omnisharpMicrosoftWinGetPackagesexecmdbatps1
+    · src\lsp\path.rs
+    · lsp\path.rs
+    · src\lsp\server_instance.rsserver state lock poisoned
+    · server_instance
+    · rsserver
+    · poisoned
+    · lsp\server_instance.rsserver state lock poisoned
+    · server error lock poisoned
+    · error
+    · LSP server  is not started
+    · started
+    · is starting
+    · starting
+    · is stopping
+    · stopping
+    · is not running
+    · server ""
+    · extension "
+    · extension
+    · Upstream / source (from extension manifest):
+    · source
+    · manifest
+    · language
+    · stack
+    · ensure
+    · executable
+    · start
+    · command
+    · enoentos error 2no such file or directorycannot find the file
+    · enoentos
+    · directorycannot
+    · workspaceFoldersinitializationOptionsdynamicRegistrationworkspace
+    · folder
+    · should
+    · src\messages\tunnel.rs
+    · messages
+    · tunnel
+    · messages\tunnel.rs
+    · src\pet\queue.rs
+    · queue
+    · pet\queue.rs
+    · idaccess_token
+    · agentsunity
+    · insight
+    · tomlUnable
+    · resolve
+    · agentsworkspaceDir
+    · workspace
+    · scoped
+    · agent
+    · full match
+    · match
+    · src\unity\insight_agent_toml.rs
+    · unity
+    · insight_agent_toml
+    · unity\insight_agent_toml.rs
+    · ${1}${2}
+    · [run]
+    · max_turns =
+    · max_turns
+    · unityInsight
+    · maxTurns
+```

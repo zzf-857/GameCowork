@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -814,6 +814,7 @@
       <div id="cursorOverlay"></div>
     </div>
 
+    <script src="assets/gamecowork-image-frames.js"></script>
     <script>
       (function () {
         const urlParams = new URLSearchParams(window.location.search);
@@ -873,6 +874,7 @@
         // The page is always embedded in the right sidebar and receives stream targets
         // from parentPanel via `unity-window/switch-stream`.
         let autoWindowType = "";
+        let autoWindowOptions = {};
         let compositeLayout = null;
         let activeCompositeSlotId = "";
 
@@ -899,27 +901,45 @@
         let pendingResizeH = 0;
         let lastSentResizeW = 0;
         let lastSentResizeH = 0;
+        let lastSentResizeDpr = 0;
         function flushPendingResize() {
+          if (imageMultiProjectFrames?.layout && capturing) {
+            const size = getMainAreaSizeForStream();
+            if (size.width <= 0 || size.height <= 0 || (size.width === lastSentResizeW && size.height === lastSentResizeH && size.dpr === lastSentResizeDpr)) return;
+            lastSentResizeW = size.width; lastSentResizeH = size.height; lastSentResizeDpr = size.dpr;
+            imageMultiProjectFrames.start(compositeLayout, size).catch(error => showImageStatus(error.message));
+            return;
+          }
+          if (!capturing) return;
           if (pendingResizeW <= 0 || pendingResizeH <= 0) return;
-          if (pendingResizeW === lastSentResizeW && pendingResizeH === lastSentResizeH) return;
-          const sendW = pendingResizeW;
-          const sendH = pendingResizeH;
+          const outputSize = imageFrameTransport
+            ? window.GameCoworkCaptureSize({ width: pendingResizeW, height: pendingResizeH, dpr: window.devicePixelRatio || 1 })
+            : { width: pendingResizeW, height: pendingResizeH, dpr: window.devicePixelRatio || 1 };
+          const sendW = outputSize.width;
+          const sendH = outputSize.height;
+          if (sendW === lastSentResizeW && sendH === lastSentResizeH && outputSize.dpr === lastSentResizeDpr) return;
           lastSentResizeW = sendW;
           lastSentResizeH = sendH;
+          lastSentResizeDpr = outputSize.dpr;
           apiFetch("/stream/resize", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ width: sendW, height: sendH, dpr: window.devicePixelRatio || 1 }),
-          }).catch(() => {});
+            body: JSON.stringify({ width: sendW, height: sendH, dpr: outputSize.dpr, ...(imageFrameTransport && activeOffscreenWindowType === "__composite__" ? { compositeId: imageCompositeId } : {}) }),
+          }).then(async (response) => {
+            if (imageFrameTransport && !response.ok) {
+              const body = await response.json().catch(() => ({}));
+              showImageStatus(body.error || "编辑器预览尺寸调整失败");
+            }
+          }).catch((error) => { if (imageFrameTransport) showImageStatus(error.message); });
           if (activeOffscreenWindowType === "__composite__" && compositeLayout) {
             updateCompositeLayout().catch(() => {});
           }
         }
         const resizeObserver = new ResizeObserver((entries) => {
           for (const entry of entries) {
-            // CSS pixel size is sent to Unity along with devicePixelRatio.
-            // C# uses max(clientDPR, localPP) for capture scaling — not pre-multiplying here
-            // avoids Unity GameView "Scale 1/2" black bars.
+            // Keep CSS dimensions and browser DPR separate. Native transports
+            // keep that contract; the JPEG path fits its backing allocation in
+            // flushPendingResize, without resizing the visible DOM container.
             const w = Math.round(entry.contentRect.width);
             const h = Math.round(entry.contentRect.height);
             if (w <= 0 || h <= 0) continue;
@@ -1022,6 +1042,50 @@
         let inputChannel = null;
         let icePollingTimer = null;
         let heartbeatTimer = null;
+        let imageFrameTransport = false;
+        let imageFrames = null;
+        let imageCompositeFrames = null;
+        let imageMultiProjectFrames = null;
+        let imageCompositeModel = null;
+        const imageCompositeId = crypto.randomUUID();
+        let imageStreamGeneration = 0;
+        const imageStatus = document.createElement("div");
+        imageStatus.setAttribute("role", "status");
+        imageStatus.setAttribute("data-testid", "unity-image-frame-status");
+        imageStatus.style.cssText = "position:absolute;left:8px;bottom:8px;z-index:20;padding:6px 10px;background:#202020;color:#eee;font-size:12px;display:none;pointer-events:none";
+        $("mainArea").appendChild(imageStatus);
+        function showImageStatus(text) {
+          imageStatus.textContent = text || "";
+          imageStatus.style.display = text ? "block" : "none";
+        }
+        function startImageFrames() {
+          stopHeartbeat();
+          remoteVideo.style.display = "none";
+          if (!imageFrames) imageFrames = new window.GameCoworkImageFrames({
+            canvas,
+            request: apiFetch,
+            status: (state, reason) => {
+              notifyParentStreamStatus(state, reason);
+              if (state === "streaming") { if (activeOffscreenWindowType !== "__composite__") canvas.dataset.windowType = activeOffscreenWindowType; placeholder.style.display = "none"; showImageStatus(reason || ""); }
+              else showImageStatus(reason || (state === "connecting" ? "正在等待编辑器真实画面…" : "编辑器画面已断开"));
+            },
+            error: (message) => { showImageStatus(message); log("Editor preview: " + message, "err"); },
+            refresh: requestParentUrlRefresh,
+          });
+          imageFrames.start();
+        }
+        function startCompositeImageFrames(model) {
+          stopHeartbeat();
+          if (imageFrames) imageFrames.stop();
+          remoteVideo.style.display = "none";
+          if (!imageCompositeFrames) imageCompositeFrames = new window.GameCoworkCompositeFrames({
+            canvas, request: apiFetch,
+            status: (state, reason) => { notifyParentStreamStatus(state, reason); if (state === "streaming") placeholder.style.display = "none"; showImageStatus(reason || (state === "streaming" ? "" : "正在等待复合视口真实画面…")); },
+            error: (message) => { showImageStatus(message); log("Editor preview: " + message, "err"); },
+            refresh: requestParentUrlRefresh,
+          });
+          imageCompositeFrames.start(model);
+        }
 
         // WebRTC auto-reconnect state (survives domain reload in Unity)
         let reconnectTimer = null;
@@ -1412,6 +1476,7 @@
         async function checkHealth() {
           const h = await fetchJson("/health");
           if (h && h.status === "ok") {
+            imageFrameTransport = h.transport === "image-frames";
             return true;
           }
           return false;
@@ -1420,6 +1485,12 @@
         // =================== WebRTC ===================
 
         async function startWebRTC() {
+          await checkHealth();
+          if (imageFrameTransport) {
+            if (activeOffscreenWindowType === "__composite__" && imageCompositeModel) startCompositeImageFrames(imageCompositeModel);
+            else startImageFrames();
+            return;
+          }
           log("Starting WebRTC connection (server-offer model)...", "info");
           notifyParentStreamStatus("connecting");
 
@@ -1760,6 +1831,13 @@
         }
 
         function closeWebRTC() {
+          // A delayed release from the old view must never target a new capture.
+          for (const [, timer] of pendingKeyupTimers) clearTimeout(timer);
+          pendingKeyupTimers.clear();
+          frontendHeldKeys.clear();
+          if (imageFrames) imageFrames.stop();
+          if (imageCompositeFrames) imageCompositeFrames.stop();
+          showImageStatus("");
           stopIcePolling();
           if (inputChannel) {
             try {
@@ -1845,6 +1923,7 @@
                     height: sz.height,
                     dpr: sz.dpr,
                     windowType: activeOffscreenWindowType,
+                    ...autoWindowOptions,
                   };
             await fetchJson(resumeEndpoint, {
               method: "POST",
@@ -2031,6 +2110,7 @@
                     height: sz.height,
                     dpr: sz.dpr,
                     windowType: activeOffscreenWindowType,
+                    ...autoWindowOptions,
                   };
             await fetchJson(resumeEndpoint, {
               method: "POST",
@@ -2045,6 +2125,7 @@
         }
 
         function startHeartbeat() {
+          if (imageFrameTransport) return;
           if (heartbeatTimer) return;
           startStallDetection();
           void collectStreamMetrics();
@@ -2066,7 +2147,7 @@
 
         // Video element FPS tracking for WebRTC mode.
         function trackWebRTCFps() {
-          if (!capturing) return;
+          if (!capturing || imageFrameTransport) return;
           const v = remoteVideo;
           if (v.videoWidth > 0 && lastReportedStreamStatus !== "streaming" && !domainReloading) {
             notifyParentStreamStatus("streaming");
@@ -2080,14 +2161,20 @@
           const area = $("mainArea");
           if (!area) return { width: 0, height: 0, dpr: 1 };
           const rect = area.getBoundingClientRect();
-          return {
+          const size = {
             width: Math.max(0, Math.round(rect.width)),
             height: Math.max(0, Math.round(rect.height)),
             dpr: window.devicePixelRatio || 1,
           };
+          return imageFrameTransport && size.width > 0 && size.height > 0 ? window.GameCoworkCaptureSize(size) : size;
         }
 
         async function stopCapture() {
+          const multiStop = imageMultiProjectFrames ? imageMultiProjectFrames.stop() : Promise.resolve();
+          const stoppingApi = API;
+          const stoppingComposite = imageFrameTransport && (!!imageCompositeModel || activeOffscreenWindowType === "__composite__");
+          imageStreamGeneration++;
+          const stoppingGeneration = imageStreamGeneration;
           capturing = false;
           activeOffscreenWindowType = "";
           compositeLayout = null;
@@ -2119,7 +2206,10 @@
           serverTooltipText = "";
           hideUnityTooltip();
           closeWebRTC();
-          await fetchJson("/stream/stop", { method: "POST" });
+          await multiStop;
+          if (stoppingApi) { try { await fetch(stoppingApi + "/stream/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(imageFrameTransport ? { compositeId: stoppingComposite ? imageCompositeId : undefined, streamId: stoppingComposite ? undefined : "default" } : {}), signal:AbortSignal.timeout(3000) }); } catch (_) {} }
+          if (stoppingGeneration !== imageStreamGeneration) return;
+          imageCompositeModel = null;
           canvas.style.display = "none";
           remoteVideo.style.display = "none";
           placeholder.style.display = "flex";
@@ -2128,14 +2218,16 @@
         }
 
         function notifyStopOnPageClose() {
-          if (!capturing) return;
+          if (imageMultiProjectFrames) imageMultiProjectFrames.stop();
+          if (!capturing && !_compositeStarting) return;
+          imageStreamGeneration++;
           // Same-origin fetch to the stream server — no CORS issues here.
           try {
             apiFetch("/stream/stop", {
               method: "POST",
               keepalive: true,
               headers: { "Content-Type": "application/json" },
-              body: "{}",
+              body: JSON.stringify(imageFrameTransport ? { compositeId: imageCompositeModel || _compositeStarting ? imageCompositeId : undefined, streamId: imageCompositeModel || _compositeStarting ? undefined : "default" } : {}),
             }).catch(() => {});
           } catch (_) {}
         }
@@ -2313,6 +2405,16 @@
           let inputLogCount = 0;
           let clickLogCount = 0;
           sendInput = function (data) {
+            if (imageFrameTransport) {
+              if (data.type === "heartbeat" || data.type === "connection_info") return;
+              if (data.type === "request_composite_layout") {
+                window.parent.postMessage({ source: "unityWindowBridge", messageType: "unity-window/composite-layout-snapshot", data: { slots: imageCompositeFrames ? imageCompositeFrames.snapshot() : [] } }, "*");
+                return;
+              }
+              if (activeOffscreenWindowType === "__composite__" && imageCompositeFrames) imageCompositeFrames.sendInput(data);
+              else if (imageFrames) imageFrames.sendInput(data);
+              return;
+            }
             inputLogCount++;
             // Always log click/key events; throttle mousemove logs.
             const isAction = data.type !== "mousemove" && data.type !== "mousedrag";
@@ -2709,10 +2811,11 @@
               ctSnap = e.ctrlKey,
               alSnap = e.altKey,
               meSnap = e.metaKey;
-            pendingKeyupTimers.set(
-              e.key,
-              setTimeout(() => {
+            const generationSnap = imageStreamGeneration;
+            const timer = setTimeout(() => {
+                if (pendingKeyupTimers.get(keySnap) !== timer) return;
                 pendingKeyupTimers.delete(keySnap);
+                if (!capturing || imageStreamGeneration !== generationSnap) return;
                 sendInput({
                   type: "keyup",
                   key: keySnap,
@@ -2723,8 +2826,8 @@
                   alt: alSnap,
                   meta: meSnap,
                 });
-              }, KEYUP_DEBOUNCE_MS),
-            );
+              }, KEYUP_DEBOUNCE_MS);
+            pendingKeyupTimers.set(e.key, timer);
           });
           // Flush held keys when the page loses focus — the browser will
           // swallow keyup events that arrive while unfocused.
@@ -4543,6 +4646,7 @@
         }
 
         function buildCompositeRequestPayload(size, phase) {
+          if (imageFrameTransport) size = window.GameCoworkCaptureSize(size);
           var slots = compositeLayout && Array.isArray(compositeLayout.slots) ? compositeLayout.slots : [];
           var applyMode = resolveCompositeApplyMode(phase);
           log(
@@ -4555,6 +4659,7 @@
             "info",
           );
           return {
+            ...(imageFrameTransport ? { compositeId: imageCompositeId } : {}),
             fps: STREAM_FPS,
             width: size.width,
             height: size.height,
@@ -4566,6 +4671,8 @@
               return {
                 slotId: slot.slotId,
                 windowType: slot.windowType,
+                captureMode: slot.captureMode,
+                instanceId: slot.instanceId,
                 title: slot.title || "",
                 rect: slot.rect,
               };
@@ -4577,7 +4684,23 @@
         // update-composite-layout twice before the first call finishes).
         var _compositeStarting = false;
 
+        // An old bridge request may finish after stop, reload or workspace
+        // switch. Release only its captured endpoint/receiver, never the new API.
+        async function discardStaleComposite(requestApi, requestGeneration) {
+          if (requestGeneration === imageStreamGeneration && requestApi === API && !serverStoppedStream) return false;
+          if (imageFrameTransport && requestApi) {
+            try {
+              await fetch(requestApi + "/stream/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ compositeId: imageCompositeId }), signal: AbortSignal.timeout(3000) });
+            } catch (_) {}
+          }
+          return true;
+        }
+
         async function startCompositeLayout() {
+          const requestGeneration = imageStreamGeneration;
+          const requestApi = API;
+          await checkHealth();
+          if (requestGeneration !== imageStreamGeneration || requestApi !== API || serverStoppedStream) return;
           if (_compositeStarting) {
             log("startCompositeLayout already in progress, skipping duplicate call", "info");
             return;
@@ -4596,10 +4719,14 @@
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(buildCompositeRequestPayload(initialSize, "start")),
             });
+            if (await discardStaleComposite(requestApi, requestGeneration)) return;
             if (!r || r.error) {
               log("Composite start failed: " + JSON.stringify(r), "err");
+              if (imageFrameTransport) { showImageStatus(r?.error || "复合预览启动失败"); notifyParentStreamStatus("disconnected", r?.error); }
               return;
             }
+
+            if (imageFrameTransport) imageCompositeModel = r;
 
             capturing = true;
             placeholder.style.display = "none";
@@ -4631,11 +4758,18 @@
             await startCompositeLayout();
             return;
           }
-          await fetchJson("/stream/update-composite", {
+          const requestGeneration = imageStreamGeneration;
+          const requestApi = API;
+          const result = await fetchJson("/stream/update-composite", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(buildCompositeRequestPayload(size, "update")),
           });
+          if (await discardStaleComposite(requestApi, requestGeneration)) return;
+          if (imageFrameTransport) {
+            if (!result || result.error) { showImageStatus(result?.error || "复合预览更新失败"); notifyParentStreamStatus("disconnected", result?.error); }
+            else { imageCompositeModel = result; startCompositeImageFrames(result); }
+          }
           log("Composite layout updated: " + compositeLayout.slots.length + " slots", "info");
         }
 
@@ -4645,6 +4779,7 @@
           if (!autoWindowType) return;
           if (capturing && activeOffscreenWindowType === autoWindowType) return;
           compositeLayout = null;
+          imageCompositeModel = null;
           activeCompositeSlotId = "";
 
           log("Auto-starting offscreen capture for: " + autoWindowType, "info");
@@ -4652,6 +4787,7 @@
           currentWindowType = autoWindowType;
           const fps = STREAM_FPS;
           const initialSize = getMainAreaSizeForStream();
+          const requestGeneration = imageStreamGeneration;
 
           const r = await fetchJson("/stream/start-offscreen", {
             method: "POST",
@@ -4662,8 +4798,14 @@
               height: initialSize.height,
               dpr: initialSize.dpr,
               windowType: autoWindowType,
+              ...autoWindowOptions,
             }),
           });
+
+          if (imageFrameTransport && requestGeneration !== imageStreamGeneration) {
+            await fetchJson("/stream/stop", { method: "POST" });
+            return;
+          }
 
           if (!r || r.error) {
             log("Auto-start offscreen failed: " + JSON.stringify(r), "err");
@@ -4697,8 +4839,20 @@
         // finishes, avoiding duplicate HTTP requests and wrong-view bugs.
         var switchBusy = false;
 
-        async function switchStream(newWindowType) {
+        async function switchStream(newWindowType, options = {}) {
+          const nextOptions = {};
+          if (options.captureMode !== undefined) {
+            if (!["render-content", "editor-window"].includes(options.captureMode)) { showImageStatus("无效的编辑器捕获模式"); return; }
+            nextOptions.captureMode = options.captureMode;
+          }
+          if (options.instanceId !== undefined) {
+            if (!Number.isInteger(options.instanceId) || options.instanceId < -2147483648 || options.instanceId > 2147483647) { showImageStatus("无效的编辑器窗口身份"); return; }
+            nextOptions.instanceId = options.instanceId;
+          }
+          imageStreamGeneration++;
+          serverStoppedStream = false;
           autoWindowType = newWindowType;
+          autoWindowOptions = nextOptions;
           if (switchBusy) {
             log("switchStream: queued → " + newWindowType + " (previous switch still running)", "info");
             return;
@@ -4707,6 +4861,8 @@
           try {
             while (true) {
               var targetType = autoWindowType;
+              var targetOptions = autoWindowOptions;
+              if (!targetType) break;
               log("switchStream: " + (activeOffscreenWindowType || "(none)") + " → " + targetType, "info");
               if (capturing) {
                 cancelReconnect();
@@ -4718,7 +4874,7 @@
               await autoStartOffscreen();
               // If autoWindowType was changed by a queued call while we were
               // awaiting, loop to handle the latest requested type.
-              if (autoWindowType === targetType) break;
+              if (autoWindowType === targetType && autoWindowOptions === targetOptions) break;
               log("switchStream: target changed during switch, re-executing...", "info");
             }
           } finally {
@@ -4735,7 +4891,11 @@
             captureToChat();
           }
           if (msg.messageType === "unity-window/request-stop") {
-            if (capturing) stopCapture();
+            if (imageFrameTransport) {
+              autoWindowType = "";
+              serverStoppedStream = true;
+              stopCapture();
+            } else if (capturing) stopCapture();
           }
           if (msg.messageType === "unity-window/set-audio") {
             var enabled = msg.data && msg.data.enabled;
@@ -4760,7 +4920,7 @@
           if (msg.messageType === "unity-window/switch-stream") {
             var newType = msg.data && msg.data.windowType;
             if (newType) {
-              switchStream(newType);
+              switchStream(newType, msg.data);
             }
           }
           if (msg.messageType === "unity-window/update-composite-layout") {
@@ -4768,6 +4928,25 @@
               updateServerApi(msg.data.serverUrl);
             }
             compositeLayout = msg.data && msg.data.layout ? msg.data.layout : null;
+            if (compositeLayout?.slots?.length) serverStoppedStream = false;
+            if (compositeLayout?.slots?.some(slot => slot.workspaceKey)) {
+              imageStreamGeneration++;
+              if (imageFrames) imageFrames.stop();
+              if (!imageMultiProjectFrames) {
+                if (imageCompositeFrames) imageCompositeFrames.stop();
+                imageMultiProjectFrames = new window.GameCoworkMultiProjectFrames({canvas,request:apiFetch,compositeId:imageCompositeId,
+                  status:(state,reason)=>{notifyParentStreamStatus(state,reason);placeholder.style.display="none";showImageStatus(reason||"");},
+                  error:message=>showImageStatus(message)});
+              }
+              imageCompositeFrames = imageMultiProjectFrames;
+              imageFrameTransport = true; capturing = true; activeOffscreenWindowType = "__composite__"; currentWindowType = "__composite__";
+              remoteVideo.style.display="none"; placeholder.style.display="none"; stopHeartbeat();
+              const captureSize = getMainAreaSizeForStream();
+              lastSentResizeW = captureSize.width; lastSentResizeH = captureSize.height; lastSentResizeDpr = captureSize.dpr;
+              imageMultiProjectFrames.start(compositeLayout,captureSize).catch(error=>{showImageStatus(error.message);notifyParentStreamStatus("disconnected",error.message);});
+              return;
+            }
+            if (imageMultiProjectFrames) { imageMultiProjectFrames.stop(); imageMultiProjectFrames = null; imageCompositeFrames = null; }
             if (!API) {
               requestParentUrlRefresh();
               return;
@@ -4851,6 +5030,7 @@
         }
 
         setInterval(async function () {
+          if (imageMultiProjectFrames?.layout) return;
           // Skip health checks entirely after server-initiated stop to prevent
           // triggering an unwanted URL refresh and reconnection.
           if (!API || serverStoppedStream) return;

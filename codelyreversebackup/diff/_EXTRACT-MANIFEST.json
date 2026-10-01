@@ -1,0 +1,69 @@
+{
+ "extract": "T4 diff: shell canary.1 vs canary.2 + core payload size regression",
+ "date": "2026-10-01",
+ "analyzed_sources": [
+  {
+   "file": "cowork.exe (new shell 2.1.3-canary.2)",
+   "sha256": "55EA13A9707774DF61A707AC55179E94ABB9690583DE986C528DA056A69B8C3B",
+   "size": 58555736
+  },
+  {
+   "file": "cowork-old-1790684865080.exe (old shell 2.1.3-canary.1)",
+   "sha256": "D5E12847E848844644FFC22BA66F450BD1D4BA991FED0728C222BD9E61370348",
+   "size": 57709912
+  },
+  {
+   "file": "codely-binary.exe (new core)",
+   "sha256": "C7A998C9992EFC0201D3AA1A895D6A47B719F1F6A0C2B858A954F7F69BA6CA64",
+   "size": 70158576
+  },
+  {
+   "file": "codely-binary-old-1790684865080.exe (old core)",
+   "sha256": "2FEA76FD1FFDBBAC7C16D35CC9913EDBAB2DD6C00DEFEE291A5DDEDA9C802E05",
+   "size": 53349336
+  }
+ ],
+ "method": "string-set difference with text-likeness filter; pkg PAYLOAD_SIZE headers compared; original binaries never executed",
+ "key_facts": {
+  "shell_versions": "2.1.3-canary.1 -> 2.1.3-canary.2",
+  "shell_new_only": 3153,
+  "shell_removed_only": 3129,
+  "core_payload_bytes": "15787839 -> 32586083 (doubled)",
+  "shell_new_features": [
+   "lsp frontend message family completion",
+   "editor/recompile+setEmbedMode+getSidechat",
+   "pet file-preview family",
+   "shell http /api/tauri/file-explorer",
+   "/api/tauri/unity-insight/vfs-path-search",
+   "/api/tauri/update-traffic-lights",
+   "remote account bridging check"
+  ]
+ },
+ "files": [
+  {
+   "path": "VERSION-DIFF.md",
+   "sha256": "c9a6cc1133628b28b485579c211fa91dfbc028e9a5c74533b7a233badd475e77",
+   "size": 4666
+  },
+  {
+   "path": "core-new-only.txt",
+   "sha256": "2ab60b19d3e9e1dd67239dd1dafd1547e730666e5afe7961cc9c520f82778581",
+   "size": 49731
+  },
+  {
+   "path": "core-removed-only.txt",
+   "sha256": "b80cefccbfd8aa3fe6bd3a0867590a4b30b0fd2d934ca2d780b08dc63dd33430",
+   "size": 12676
+  },
+  {
+   "path": "shell-new-only.txt",
+   "sha256": "166836be310ef5ba3340efbc3fab3242ba0580b9a35730aa80e5ceb1c44e89c6",
+   "size": 82478
+  },
+  {
+   "path": "shell-removed-only.txt",
+   "sha256": "802620283606d5da4752e06e6f2580fb361c5adfc9fbb0a9c1661e4827c195a2",
+   "size": 83246
+  }
+ ]
+}

@@ -1,3 +1,6 @@
+import { gamecoworkUndoFileChange, gamecoworkCreateLspClient, gamecoworkFetchLspStatus } from "./index-DvRYaIVa.js";
+import { GameCoworkUnityPanel, gamecoworkWorkspaceLease, gamecoworkWorkspaceLeaseCurrent } from "./VscTheme-B-CSeuv5.js";
+import { s as gamecoworkSidebarStore } from "./store-0rGrUshb.js";
 const __vite__mapDeps = (
   i,
   m = __vite__mapDeps,
@@ -1763,6 +1766,8 @@ function Ip({
   onContentChange: v,
   onSave: m,
   delegateFindShortcut: g = !1,
+  workspaceRoute: gamecoworkWorkspaceRoute,
+  onLspError: gamecoworkOnLspError,
 }) {
   var W, $;
   const y = (W = t == null ? void 0 : t.path) != null ? W : "",
@@ -1818,6 +1823,26 @@ function Ip({
     enabled: !c && !!t,
     delegateFindShortcut: g,
   });
+  const gamecoworkLspClient = T.useRef(null);
+  const gamecoworkModelRoot = T.useRef(r);
+  const gamecoworkGoDefinition = T.useRef(async () => {});
+  const gamecoworkFindReferences = T.useRef(async () => {});
+  const [gamecoworkReferences, gamecoworkSetReferences] = T.useState(null);
+  const gamecoworkLspFailure = T.useRef(gamecoworkOnLspError);
+  gamecoworkLspFailure.current = gamecoworkOnLspError;
+  T.useEffect(() => {
+    if (!window.GAMECOWORK_SHELL) return;
+    if (gamecoworkModelRoot.current !== r) {
+      E.current?.setModel(null);
+      for (const model of S.current.values()) if (!model.isDisposed()) model.dispose();
+      S.current.clear(); A.current.clear(); D.current = null; Y.current = null;
+      gamecoworkModelRoot.current = r; gamecoworkSetReferences(null);
+    }
+    const client = gamecoworkCreateLspClient(gamecoworkWorkspaceRoute || r, (error) => gamecoworkLspFailure.current?.(error));
+    gamecoworkLspClient.current = client;
+    for (const model of S.current.values()) client.track(model, model.uri.fsPath || model.uri.path);
+    return () => { client.dispose(); if (gamecoworkLspClient.current === client) gamecoworkLspClient.current = null; };
+  }, [r, JSON.stringify(gamecoworkWorkspaceRoute || null)]);
   function xe(N) {
     return {
       uri: Hs.parse(N.uri),
@@ -2002,8 +2027,9 @@ function Ip({
           };
           ((_.current = Z), window.addEventListener("filePreview:resyncSelection", Z));
           const te = B.current;
-          (te && (await Ve(z, te.path, te.content)),
-            z.onDidChangeModel((fe) => {
+          if (te) await Ve(z, te.path, te.content);
+          if (V || E.current !== z) return;
+          (z.onDidChangeModel((fe) => {
               if (me.current || !fe.newModelUrl) return;
               const Te = fe.newModelUrl,
                 Be = (Te.fsPath || Te.path).replace(/^\/([A-Za-z]:)/, "$1").replace(/\\/g, "/"),
@@ -2021,14 +2047,16 @@ function Ip({
                 }, 0);
             }),
             (R.current = $l.registerHoverProvider("*", {
-              provideHover: async (fe, Te) => {
+              provideHover: async (fe, Te, token) => {
+                if (window.GAMECOWORK_SHELL && fe !== z.getModel()) return null;
                 const Ne = H.current;
                 if (!Ne) return null;
                 console.debug(
                   `[LSP:hover] provideHover triggered: filePath=${Ne} line=${Te.lineNumber} col=${Te.column}`,
                 );
-                const Be = await ke.current
-                  .fetchLspHover(Ne, Te.lineNumber, Te.column)
+                const Be = await (window.GAMECOWORK_SHELL
+                  ? (gamecoworkLspClient.current?.query("lsp/hover", fe, Te, token) ?? Promise.resolve(null))
+                  : ke.current.fetchLspHover(Ne, Te.lineNumber, Te.column))
                   .catch(
                     (et) => (
                       console.debug(
@@ -2064,15 +2092,17 @@ function Ip({
               },
             })));
           const ae = {
-            provideDefinition: async (fe, Te) => {
+            provideDefinition: async (fe, Te, token) => {
+              if (window.GAMECOWORK_SHELL && fe !== z.getModel()) return null;
               var et;
               const Ne = H.current;
               if (!Ne) return null;
               console.info(
                 `[LSP:provideDefinition] called modelUri="${fe.uri.toString()}" at ${Ne}:${Te.lineNumber}:${Te.column}`,
               );
-              const Be = await ke.current
-                .fetchLspDefinition(Ne, Te.lineNumber, Te.column)
+              const Be = await (window.GAMECOWORK_SHELL
+                ? (gamecoworkLspClient.current?.query("lsp/goToDefinition", fe, Te, token) ?? Promise.resolve(null))
+                : ke.current.fetchLspDefinition(Ne, Te.lineNumber, Te.column))
                 .catch((Ye) => (console.info("[LSP:provideDefinition] fetch error:", Ye), null));
               if (!Be || Be.length === 0)
                 return (console.info("[LSP:provideDefinition] no locations returned by LSP"), null);
@@ -2112,14 +2142,16 @@ function Ip({
           };
           q.current = $l.registerDefinitionProvider("*", ae);
           const de = {
-            provideReferences: async (fe, Te, Ne) => {
+            provideReferences: async (fe, Te, Ne, token) => {
+              if (window.GAMECOWORK_SHELL && fe !== z.getModel()) return null;
               const Be = H.current;
               if (!Be) return null;
               console.info(
                 `[LSP:provideReferences] called modelUri="${fe.uri.toString()}" at ${Be}:${Te.lineNumber}:${Te.column} includeDeclaration=${Ne.includeDeclaration}`,
               );
-              const Ce = await ke.current
-                .fetchLspReferences(Be, Te.lineNumber, Te.column)
+              const Ce = await (window.GAMECOWORK_SHELL
+                ? (gamecoworkLspClient.current?.query("lsp/findReferences", fe, Te, token, Ne.includeDeclaration) ?? Promise.resolve(null))
+                : ke.current.fetchLspReferences(Be, Te.lineNumber, Te.column))
                 .catch((Ie) => (console.info("[LSP:provideReferences] fetch error:", Ie), null));
               if (!Ce || Ce.length === 0)
                 return (console.info("[LSP:provideReferences] no locations returned by LSP"), null);
@@ -2135,6 +2167,29 @@ function Ip({
             },
           };
           L.current = $l.registerReferenceProvider("*", de);
+          gamecoworkGoDefinition.current = async (editor) => {
+            const model = editor.getModel(), position = editor.getPosition();
+            if (!model || !position) return;
+            const locations = await ae.provideDefinition(model, position);
+            if (!locations?.length || editor.getModel() !== model) return;
+            if (locations.length === 1) Q.current?.(locations[0].uri.fsPath || locations[0].uri.path, locations[0].range.startLineNumber);
+            else gamecoworkSetReferences({ kind: "定义", locations });
+          };
+          gamecoworkFindReferences.current = async (editor) => {
+            const model = editor.getModel(), position = editor.getPosition();
+            if (!model || !position) return;
+            const locations = await de.provideReferences(model, position, { includeDeclaration: true });
+            if (editor.getModel() === model) gamecoworkSetReferences({ kind: "引用", locations: locations || [] });
+          };
+          if (window.GAMECOWORK_SHELL) {
+            z.onKeyDown((event) => {
+              if (event.keyCode !== Aa.F12 || event.ctrlKey || event.metaKey || event.altKey) return;
+              event.preventDefault();event.stopPropagation();
+              if (event.shiftKey) gamecoworkFindReferences.current(z);else gamecoworkGoDefinition.current(z);
+            });
+            z.addAction({ id: "gamecowork.csharp.definition", label: "转到 C# 定义", contextMenuGroupId: "navigation", contextMenuOrder: 1.1, run: () => gamecoworkGoDefinition.current(z) });
+            z.addAction({ id: "gamecowork.csharp.references", label: "查找 C# 引用", contextMenuGroupId: "navigation", contextMenuOrder: 1.2, run: () => gamecoworkFindReferences.current(z) });
+          }
           const we = {
             openCodeEditor: (fe, Te, Ne) => {
               var Ie;
@@ -2206,7 +2261,7 @@ function Ip({
         ? ((F.current = !0), de.setValue(z), (F.current = !1), S.current.delete(V), S.current.set(V, de))
         : (S.current.delete(V), S.current.set(V, de));
     else {
-      const Be = Hs.parse(`file:///${V.replace(/^\/+/, "")}`);
+      const Be = R2(V, G.current);
       ((de = (Te = an.getModel(Be)) != null ? Te : an.createModel(z, ae, Be)), S.current.set(V, de));
     }
     const we = 8;
@@ -2217,6 +2272,7 @@ function Ip({
       (Ce && !Ce.isDisposed() && Ce.dispose(), S.current.delete(Be), A.current.delete(Be));
     }
     (an.setModelLanguage(de, ae),
+      gamecoworkLspClient.current?.track(de, de.uri.fsPath || de.uri.path),
       (me.current = !0),
       (F.current = !0),
       N.setModel(de),
@@ -2264,7 +2320,7 @@ function Ip({
     T.useEffect(() => {
       const N = E.current;
       !N || !t || wo(t.content, t.size) || Ve(N, t.path, t.content);
-    }, [t == null ? void 0 : t.path]),
+    }, [r, t == null ? void 0 : t.path]),
     T.useEffect(() => {
       const N = E.current;
       !N || !t || wo(t.content, t.size) || (D.current === t.path && Le(N, t.path, t.content));
@@ -2341,10 +2397,22 @@ function Ip({
                 onClose: ue.close,
                 inputRef: ue.inputRef,
               }),
+            window.GAMECOWORK_SHELL && /\.cs$/i.test(y) && f.jsxs("div", { className: "shrink-0 flex gap-3 px-3 py-1 text-xs border-b border-gamecowork-color-border-subtle", children: [
+              f.jsx("button", { type: "button", "data-testid": "gamecowork-csharp-definition", onMouseDown: (event) => event.preventDefault(), onClick: () => E.current && gamecoworkGoDefinition.current(E.current), children: "定义" }),
+              f.jsx("button", { type: "button", "data-testid": "gamecowork-csharp-references", onMouseDown: (event) => event.preventDefault(), onClick: () => E.current && gamecoworkFindReferences.current(E.current), children: "引用" }),
+            ] }),
             f.jsx("div", {
               ref: k,
               className: `file-preview-monaco${b ? "" : " file-preview-monaco--editable"}`,
               "aria-label": "Code Preview",
+            }),
+            gamecoworkReferences && f.jsxs("section", {
+              "data-testid": "gamecowork-lsp-references", "aria-label": "C# References",
+              className: "shrink-0 max-h-48 overflow-auto border-t border-gamecowork-color-border-subtle bg-gamecowork-color-surface-sidebar px-3 py-2 text-xs",
+              children: [
+                f.jsxs("div", { className: "flex items-center justify-between mb-1", children: [f.jsx("span", { children: `${gamecoworkReferences.kind} (${gamecoworkReferences.locations.length})` }), f.jsx("button", { type: "button", "aria-label": "关闭 C# 引用", onClick: () => gamecoworkSetReferences(null), children: "关闭" })] }),
+                ...gamecoworkReferences.locations.map((location, index) => f.jsx("button", { type: "button", className: "block text-left w-full py-1 hover:bg-gamecowork-color-interactive-hover", onClick: () => Q.current?.(location.uri.fsPath || location.uri.path, location.range.startLineNumber), children: `${(location.uri.fsPath || location.uri.path).split(/[\\/]/).pop()}:${location.range.startLineNumber}:${location.range.startColumn}` }, index)),
+              ],
             }),
           ],
         })
@@ -22299,6 +22367,7 @@ function n8({ url: e, title: t }) {
         src: e,
         "aria-label": t,
         playsInline: !0,
+        style: window.GAMECOWORK_SHELL ? { width: "100%", maxHeight: "65vh" } : void 0,
         className: Lt("max-h-full max-w-full cursor-pointer object-contain", (m || !y) && "opacity-0"),
         onClick: k,
         onPlay: () => a(!0),
@@ -36858,7 +36927,7 @@ async function L9(e, t) {
   const r = V9(e.path);
   if (r === "obj") return P9(e, t);
   if (r === "gltf" || r === "glb") {
-    const p = r === "gltf" ? Ys((n = e.content) != null ? n : "") : "",
+    const p = r === "gltf" ? Xm(e) : "",
       h = r === "gltf" ? await Zm(e.path, O9(p), t) : new Ku(),
       b = new z4(h),
       v = r === "gltf" ? p : aa((i = e.content) != null ? i : "");
@@ -37087,6 +37156,27 @@ function aa(e) {
 function Ys(e) {
   return new TextDecoder().decode(aa(e));
 }
+function gamecoworkPreviewReadOnly(tab, textEditable, saving) {
+  return !!saving || !textEditable || !tab || tab.id.startsWith("virtual:") || tab.file?.readOnly === true;
+}
+function gamecoworkCSharpRoute(tab, root, fallback) {
+  if (!tab || tab.isLoading || tab.error || tab.diff || tab.id?.startsWith("virtual:") || tab.file?.kind !== "text" || !/\.cs$/i.test(tab.path || "")) return null;
+  const route = tab.workspaceRoute ?? fallback ?? root;
+  const normalize = (value) => String(value || "").replaceAll("\\", "/").replace(/^\/([A-Za-z]:)/, "$1").replace(/\/+$/, "").toLowerCase();
+  if (route?.runOn === "remote" || normalize(typeof route === "string" ? route : route?.workspaceDir || root) !== normalize(root)) return null;
+  const file = normalize(tab.file.path || tab.path);
+  if (/^[a-z]:/.test(file) && !file.startsWith(normalize(root) + "/")) return null;
+  return route;
+}
+function gamecoworkLspReady(file, enabled) {
+  if (!window.GAMECOWORK_SHELL) return !!enabled;
+  return !!enabled && file?.lspStatus?.supported === true && file.lspStatus.connected === true;
+}
+function gamecoworkCanUndoSave(tab, saved, saving, workspaceRoute) {
+  return !!window.GAMECOWORK_SHELL && !saving && !!tab && !tab.isDirty && !tab.file?.readOnly &&
+    !!saved?.changeId && tab.id === saved.id && tab.path === saved.path &&
+    JSON.stringify(workspaceRoute) === JSON.stringify(saved.workspaceRoute);
+}
 function q9({
   activeTab: e,
   openPaths: t,
@@ -37102,6 +37192,12 @@ function q9({
   onPendingLineRevealed: d,
   onContentChange: p,
   onSave: h,
+  isSaving: gamecoworkSaving,
+  saveError: gamecoworkSaveError,
+  watchError: gamecoworkWatchError,
+  workspaceRoute: gamecoworkWorkspaceRoute,
+  lspError: gamecoworkLspError,
+  onLspError: gamecoworkOnLspError,
 }) {
   var R, q, L, O;
   const { t: b } = Sr(),
@@ -37115,13 +37211,13 @@ function q9({
     }, [s, e == null ? void 0 : e.id]),
     k = T.useMemo(
       () => ({
-        fetchFilePreview: _a,
+        fetchFilePreview: (path) => _a(path, e?.workspaceRoute ?? gamecoworkWorkspaceRoute ?? r),
         fetchLspDefinition: Bg,
         fetchLspHover: zg,
         fetchLspReferences: Fg,
         openExternalUrl: mp,
       }),
-      [],
+      [r, gamecoworkWorkspaceRoute, e?.workspaceRoute],
     ),
     E = T.useMemo(
       () => ({
@@ -37144,8 +37240,23 @@ function q9({
   return f.jsxs("div", {
     className: "file-preview-content",
     children: [
+      gamecoworkWatchError && f.jsx("div", {
+        role: "status",
+        "data-testid": "gamecowork-file-watch-error",
+        className: "shrink-0 px-3 py-2 text-sm text-gamecowork-color-text-secondary",
+        children: gamecoworkWatchError,
+      }),
+      gamecoworkSaveError && f.jsx("div", {
+        role: "alert",
+        "data-testid": "gamecowork-file-save-error",
+        className: "text-gamecowork-color-text-error shrink-0 px-3 py-2 text-sm",
+        children: gamecoworkSaveError,
+      }),
+      gamecoworkLspError && f.jsx("div", { role: "status", "data-testid": "gamecowork-lsp-error", className: "shrink-0 px-3 py-2 text-sm text-gamecowork-color-text-secondary", children: gamecoworkLspError }),
       f.jsx(Ip, {
         services: k,
+        workspaceRoute: e?.workspaceRoute ?? gamecoworkWorkspaceRoute ?? r,
+        onLspError: gamecoworkOnLspError,
         labels: E,
         activeFile: A,
         workspaceRoot: r,
@@ -37159,7 +37270,7 @@ function q9({
         showLineNumbers: o,
         wordWrap: l,
         onPendingLineRevealed: d,
-        readOnly: !(m && (!g || y) && !(e != null && e.id.startsWith("virtual:"))),
+        readOnly: gamecoworkPreviewReadOnly(e, m && (!g || y), gamecoworkSaving),
         onContentChange: p,
         onSave: h,
         delegateFindShortcut: !0,
@@ -37386,6 +37497,26 @@ function sw(e, t, r, n) {
   const i = (a = e.find((s) => s.repoDir === t)) == null ? void 0 : a.files.find((s) => Di(s.path) === Di(r));
   return n === "unstage" ? !(i != null && i.staged) : !(i != null && i.unstaged) && !(i != null && i.untracked);
 }
+async function gamecoworkGitDiffContents(change, mode, readHead, readIndex, readWorking) {
+  const path = change.repoPath ?? change.path;
+  const originalPath = change.oldRepoPath ?? change.oldPath ?? path;
+  if (change.conflicted) throw new Error("This file has unresolved Git conflicts. Resolve them before opening its diff.");
+  if (mode === "staged") return Promise.all([readHead(originalPath), readIndex(path)]);
+  const indexPath = (change.oldRepoPath || change.oldPath) && !change.staged ? originalPath : path;
+  const original = mode === "untracked" ? Promise.resolve("") : mode === "unstaged" ? readIndex(indexPath) : readHead(originalPath);
+  const modified = (async () => {
+    let file;
+    try { file = await readWorking(); }
+    catch (error) {
+      if (change.status?.includes("D") && /not found|不存在|cannot find|no such file/i.test(error?.message ?? String(error))) return "";
+      throw error;
+    }
+    if (file?.kind !== "text" || typeof file.content !== "string")
+      throw new Error("This file cannot be displayed as a text diff. Open it in file preview instead.");
+    return file.content;
+  })();
+  return Promise.all([original, modified]);
+}
 const rg = new Set(),
   ow = T.forwardRef(function (
     {
@@ -37450,7 +37581,10 @@ const rg = new Set(),
       [$, N] = T.useState(!1),
       [V, z] = T.useState(void 0),
       [Z, te] = T.useState(!1),
-      [ae, de] = T.useState(!0),
+      [ae, de] = T.useState(!window.GAMECOWORK_SHELL),
+      [gamecoworkLspStatus, gamecoworkSetLspStatus] = T.useState(null),
+      [gamecoworkLspError, gamecoworkSetLspError] = T.useState(""),
+      [gamecoworkLspBusy, gamecoworkSetLspBusy] = T.useState(false),
       we = T.useRef(!1),
       [fe, Te] = T.useState(!1),
       [Ne, Be] = T.useState([]),
@@ -37462,6 +37596,7 @@ const rg = new Set(),
       [Wt, kt] = T.useState(!1),
       [nt, ut] = T.useState(null),
       [tt, st] = T.useState(!1),
+      [gamecoworkGitError, gamecoworkSetGitError] = T.useState(""),
       [it, Dt] = T.useState(null),
       [Ct, Kt] = T.useState(null),
       cn = T.useRef(!1);
@@ -37497,19 +37632,54 @@ const rg = new Set(),
       } = b,
       cr = T.useMemo(() => r.replace(/\\/g, "/").replace(/^\/([A-Za-z]:)/, "$1"), [r]),
       en = T.useCallback(async () => {
-        if (we.current) return;
+        if (we.current || (window.GAMECOWORK_SHELL && !gamecoworkLspDocumentRoute)) return;
         we.current = !0;
+        const operation = ++gamecoworkLspEpoch.current, capturedRoot = cr;
         const le = ae,
           Re = !le;
-        de(Re);
+        de(Re);gamecoworkSetLspBusy(true);gamecoworkSetLspError("");
         try {
-          await Ug(Re, cr);
+          const result = await Ug(Re, gamecoworkLspDocumentRoute ?? n ?? r);
+          if (operation !== gamecoworkLspEpoch.current || capturedRoot !== gamecoworkLspOwner.current) return;
+          if (window.GAMECOWORK_SHELL) gamecoworkApplyLspStatus(result);
         } catch (_e) {
-          (de(le), console.warn("[FilePreview] Failed to toggle LSP", _e));
+          if (operation !== gamecoworkLspEpoch.current || capturedRoot !== gamecoworkLspOwner.current) return;
+          gamecoworkSetLspError(_e instanceof Error ? _e.message : String(_e));
+          if (window.GAMECOWORK_SHELL) {
+            try { const actual = await gamecoworkFetchLspStatus(gamecoworkLspDocumentRoute ?? n ?? r); if (operation === gamecoworkLspEpoch.current && capturedRoot === gamecoworkLspOwner.current) gamecoworkApplyLspStatus(actual); } catch { if (operation === gamecoworkLspEpoch.current && capturedRoot === gamecoworkLspOwner.current) {gamecoworkLspStatusRef.current=null;gamecoworkSetLspStatus(null);de(false);} }
+          } else de(le);
+          console.warn("[FilePreview] Failed to toggle LSP", _e);
         } finally {
-          we.current = !1;
+          if (operation === gamecoworkLspEpoch.current && capturedRoot === gamecoworkLspOwner.current) {we.current = !1;gamecoworkSetLspBusy(false);}
         }
-      }, [ae, cr]);
+      }, [ae, cr, n, r, qe]);
+    const gamecoworkLspDocumentRoute = gamecoworkCSharpRoute(qe, r, n);
+    const gamecoworkLspEpoch = T.useRef(0), gamecoworkLspOwner = T.useRef(cr), gamecoworkLspStatusEpoch = T.useRef(0), gamecoworkLspStatusRef = T.useRef(gamecoworkLspStatus);
+    if (gamecoworkLspOwner.current !== cr) {gamecoworkLspOwner.current=cr;gamecoworkLspEpoch.current++;gamecoworkLspStatusEpoch.current++;gamecoworkLspStatusRef.current=null;we.current=false;}
+    function gamecoworkApplyLspStatus(value) {
+      const current = gamecoworkLspStatusRef.current;
+      if (current?.workspaceKey === value.workspaceKey && value.generation < current.generation) return false;
+      gamecoworkLspStatusEpoch.current++;gamecoworkLspStatusRef.current=value;
+      gamecoworkSetLspStatus(value);de(value.enabled === true);return true;
+    }
+    T.useEffect(() => {
+      if (!window.GAMECOWORK_SHELL || !t || !gamecoworkLspDocumentRoute) return;
+      gamecoworkSetLspBusy(false);gamecoworkSetLspError("");
+      if (!gamecoworkLspStatusRef.current) {gamecoworkSetLspStatus(null);de(false);}
+      let closed = false;
+      const controller = new AbortController();
+      const initialEpoch = gamecoworkLspStatusEpoch.current;
+      const owner = cr.replace(/\/+$/, "").toLowerCase();
+      const receive = (event) => {
+        if (closed || String(event.detail?.workspaceDir || "").replaceAll("\\", "/").replace(/\/+$/, "").toLowerCase() !== owner) return;
+        if (!gamecoworkApplyLspStatus(event.detail)) return;
+        if (event.detail.ready) gamecoworkSetLspError("");
+      };
+      window.addEventListener("gamecowork:lsp-state", receive);
+      gamecoworkFetchLspStatus(gamecoworkLspDocumentRoute, controller.signal).then((value) => { if (!closed && initialEpoch === gamecoworkLspStatusEpoch.current) gamecoworkApplyLspStatus(value); }).catch(() => {});
+      return () => {closed = true;controller.abort();window.removeEventListener("gamecowork:lsp-state", receive);};
+    }, [t, cr, JSON.stringify(gamecoworkLspDocumentRoute)]);
+    const gamecoworkLspFile = qe?.file ? { ...qe.file, lspStatus: window.GAMECOWORK_SHELL ? { ...gamecoworkLspStatus, supported: /\.cs$/i.test(qe.path || "") && gamecoworkLspStatus?.supported === true, connected: gamecoworkLspStatus?.ready === true && gamecoworkLspStatus?.connected === true } : qe.file.lspStatus } : null;
     (T.useEffect(() => {
       I.current = Q;
     }, [Q]),
@@ -37567,6 +37737,9 @@ const rg = new Set(),
         (qe == null ? void 0 : qe.pendingLine) != null && Sn(qe.id);
       }, [qe == null ? void 0 : qe.id, qe == null ? void 0 : qe.pendingLine, Sn]),
       [Yr, Er] = T.useState(null),
+      [gamecoworkLastSave, gamecoworkSetLastSave] = T.useState(null),
+      [gamecoworkSaveError, gamecoworkSetSaveError] = T.useState(""),
+      [gamecoworkWatchError, gamecoworkSetWatchError] = T.useState(""),
       Ai = T.useCallback(
         (le) => {
           qe && lr(qe.id, le);
@@ -37596,14 +37769,36 @@ const rg = new Set(),
           Re = qe.path,
           _e = qe.file.content;
         Er(le);
+        gamecoworkSetSaveError("");
         try {
-          (await el(Re, _e, n != null ? n : r), Kr(le));
+          const route = qe.workspaceRoute ?? n ?? r;
+          const result = await el(Re, _e, route, qe.file.sha256);
+          Kr(le, result?.afterSha256);
+          if (window.GAMECOWORK_SHELL)
+            gamecoworkSetLastSave(result?.ok === true && result?.applied === true && typeof result.changeId === "string"
+              ? { id: le, path: Re, changeId: result.changeId, workspaceRoute: route } : null);
         } catch (yt) {
+          gamecoworkSetSaveError(yt instanceof Error ? yt.message : String(yt));
           (dr(yt) && Dt({ path: Re, kind: "permission" }), console.error("[FilePreview] Failed to save file:", yt));
         } finally {
           Er(null);
         }
       }, [qe, Kr, Yr, r, n]),
+      gamecoworkUndoSave = T.useCallback(async () => {
+        if (!gamecoworkCanUndoSave(qe, gamecoworkLastSave, Yr, qe?.workspaceRoute ?? n ?? r)) return;
+        const saved = gamecoworkLastSave;
+        Er(saved.id);
+        gamecoworkSetSaveError("");
+        try {
+          await gamecoworkUndoFileChange(saved.changeId, saved.workspaceRoute);
+          gamecoworkSetLastSave(null);
+          zr(saved.path);
+        } catch (error) {
+          gamecoworkSetSaveError(error instanceof Error ? error.message : String(error));
+        } finally {
+          Er(null);
+        }
+      }, [qe, gamecoworkLastSave, Yr, zr, r, n]),
       Br = T.useRef(0),
       vr = T.useRef(null),
       Rr = T.useRef(null),
@@ -37622,7 +37817,9 @@ const rg = new Set(),
             const yt = n != null ? n : r,
               pt = le ? await Hg(cr, yt) : _e ? await W0(Wr.current, yt, { strict: !0 }) : await W0(Wr.current, yt);
             return Je !== _n.current ? null : (Pe(pt), le && et(pt.length > 0), pt);
-          } catch {
+          } catch (error) {
+            gamecoworkSetGitError(error instanceof Error ? error.message : String(error));
+            st(!0);
             return null;
           } finally {
             ((Tn.current -= 1), Re && Je === _n.current && ze(!1));
@@ -37654,11 +37851,13 @@ const rg = new Set(),
             pt = Array.from(new Set([Je.repoPath, Je.oldRepoPath].filter(Boolean)));
           (st(!1), jt(yt));
           try {
+            if (_e !== "unstage" && Nr.current.has(le)) throw new Error("Save or close the unsaved edits for this file before applying a Git file action.");
             (await Vg(Je.repoDir, _e, pt, n != null ? n : r), await Qe(!1));
           } catch (Vt) {
             console.warn("[FilePreview] Git file action failed", Vt);
             const Ut = await Qe(!1, !1, !0);
             if (Ut && sw(Ut, Re, le, _e)) return;
+            gamecoworkSetGitError(Vt instanceof Error ? Vt.message : String(Vt));
             st(!0);
           } finally {
             jt((Vt) => (Vt === yt ? null : Vt));
@@ -37703,8 +37902,10 @@ const rg = new Set(),
           if (!(!_e || _e.branch === Re || St)) {
             (We(), kt(!1), ut(null), qt(le));
             try {
+              if (Nr.current.size) throw new Error("Save or close your unsaved file edits before switching Git branches.");
               (await qg(_e.repoDir, Re, n != null ? n : r), await Qe(!1, !0));
             } catch (Je) {
+              gamecoworkSetGitError(Je instanceof Error ? Je.message : String(Je));
               (console.warn("[FilePreview] Failed to switch Git branch", Je), ut({ repoKey: le, branch: Re }), kt(!0));
             } finally {
               qt((Je) => (Je === le ? null : Je));
@@ -37718,28 +37919,18 @@ const rg = new Set(),
       }, []),
       ct = T.useCallback(
         async (le, Re = "all", _e) => {
-          var mn, Ta, On, Sa;
           const Je = ++Br.current,
             yt = n != null ? n : r,
             pt = di.find((Yi) => Di(Yi.path) === Di(le) && (!_e || Yi.repoKey === _e)),
-            Vt = (mn = pt == null ? void 0 : pt.repoDir) != null ? mn : cr,
-            Ut = (Ta = pt == null ? void 0 : pt.repoPath) != null ? Ta : Di(le),
-            ar =
-              (On = pt == null ? void 0 : pt.oldRepoPath) != null ? On : pt != null && pt.oldPath ? Di(pt.oldPath) : Ut;
-          let Cr, pn;
-          if (Re === "staged") [Cr, pn] = await Promise.all([G0(Vt, ar, yt), $0(Vt, Ut, yt)]);
-          else {
-            const Yi = ((pt != null && pt.oldRepoPath) || (pt != null && pt.oldPath)) && !pt.staged ? ar : Ut,
-              bs = Re === "untracked" ? Promise.resolve("") : Re === "unstaged" ? $0(Vt, Yi, yt) : G0(Vt, ar, yt),
-              [Ea, Zi] = await Promise.all([bs, _a(le, yt).catch(() => null)]);
-            ((Cr = Ea), (pn = (Zi == null ? void 0 : Zi.kind) === "text" && (Sa = Zi.content) != null ? Sa : ""));
-          }
-          if (Je === Br.current) {
-            if (!Cr && !pn) {
-              ir(le);
-              return;
-            }
-            Gr(le, Cr, pn);
+            Vt = pt?.repoDir ?? cr;
+          try {
+            const [Cr, pn] = await gamecoworkGitDiffContents(pt ?? { path: Di(le) }, Re,
+              (path) => G0(Vt, path, yt), (path) => $0(Vt, path, yt), () => _a(le, yt));
+            if (Je === Br.current) Gr(le, Cr, pn);
+          } catch (error) {
+            if (Je !== Br.current) return;
+            gamecoworkSetGitError(error instanceof Error ? error.message : String(error));
+            st(!0);
           }
         },
         [di, cr, Gr, ir, r, n],
@@ -37919,6 +38110,17 @@ const rg = new Set(),
         }
         const Re = Gg(
           (_e) => {
+            if (_e.watcherFailed) {
+              gamecoworkSetWatchError(x("filePreview.watchUnavailable", { defaultValue: "文件监听暂不可用，请重新打开文件面板以恢复自动刷新。" }));
+              return;
+            }
+            gamecoworkSetWatchError("");
+            if (_e.rescan) {
+              fn(Object.keys(I.current));
+              for (const openPath of j.current) {
+                if (!Nr.current.has(openPath)) zr(openPath);
+              }
+            }
             (hw(
               _e.changes,
               j.current,
@@ -38058,14 +38260,18 @@ const rg = new Set(),
             Re = qe.path,
             _e = qe.file.content;
           try {
-            return (await el(Re, _e, n != null ? n : r), Kr(le), !0);
+            const result = await el(Re, _e, qe.workspaceRoute ?? n ?? r, qe.file.sha256);
+            Kr(le, result?.afterSha256);
+            return !0;
           } catch (yt) {
+            gamecoworkSetSaveError(yt instanceof Error ? yt.message : String(yt));
             return (dr(yt) && Dt({ path: Re, kind: "permission" }), !1);
           }
         },
       }),
       [Ni, ii, qe, Kr, r, n],
     );
+    T.useEffect(() => { gamecoworkSetSaveError(""); }, [dn]);
     const xa = (Ri = qe == null ? void 0 : qe.path) != null ? Ri : cr,
       fi = T.useMemo(() => uw(cr, xa), [cr, xa]),
       Ii = T.useCallback(
@@ -38263,6 +38469,28 @@ const rg = new Set(),
                     segmentPopupMinWidth: 280,
                   }),
                 }),
+                window.GAMECOWORK_SHELL && qe?.file?.kind === "text" && f.jsx("button", {
+                  type: "button",
+                  "data-testid": "gamecowork-file-save",
+                  className: "shrink-0 rounded border-0 bg-transparent px-2 py-1 text-xs disabled:opacity-40",
+                  disabled: !!Yr || !qe.isDirty || qe.file.readOnly || qe.id.startsWith("virtual:"),
+                  onClick: Gi,
+                  children: x("filePreview.save", { defaultValue: "保存" }),
+                }),
+                window.GAMECOWORK_SHELL && qe?.file?.readOnly && f.jsx("span", {
+                  role: "status",
+                  "data-testid": "gamecowork-file-readonly",
+                  className: "shrink-0 px-1 text-xs",
+                  children: x("filePreview.readOnly", { defaultValue: "只读" }),
+                }),
+                window.GAMECOWORK_SHELL && qe?.file?.kind === "text" && f.jsx("button", {
+                  type: "button",
+                  "data-testid": "gamecowork-file-undo-save",
+                  className: "shrink-0 rounded border-0 bg-transparent px-2 py-1 text-xs disabled:opacity-40",
+                  disabled: !gamecoworkCanUndoSave(qe, gamecoworkLastSave, Yr, qe?.workspaceRoute ?? n ?? r),
+                  onClick: gamecoworkUndoSave,
+                  children: x("filePreview.undoSavedChange", { defaultValue: "撤销上次保存" }),
+                }),
                 f.jsxs(ha, {
                   minWidth: 200,
                   anchor: "bottom end",
@@ -38342,8 +38570,13 @@ const rg = new Set(),
                       }),
                   ],
                 }),
-                f.jsxs(_r, {
-                  tooltip: x(ae ? "filePreview.disableLsp" : "filePreview.enableLsp"),
+                (!window.GAMECOWORK_SHELL || gamecoworkLspDocumentRoute) && f.jsxs(_r, {
+                  tooltip: gamecoworkLspStatus?.failure?.error || x(ae ? "filePreview.disableLsp" : "filePreview.enableLsp"),
+                  "data-testid": "gamecowork-lsp-status",
+                  "data-lsp-connected": gamecoworkLspReady(gamecoworkLspFile, ae),
+                  "data-lsp-enabled": ae,
+                  "data-lsp-phase": gamecoworkLspStatus?.phase || "disabled",
+                  disabled: gamecoworkLspBusy,
                   "data-telemetry-id": ae ? "file_preview_disable_lsp" : "file_preview_enable_lsp",
                   onClick: () => {
                     en();
@@ -38354,10 +38587,13 @@ const rg = new Set(),
                     f.jsx("span", {
                       className: Lt(
                         "size-2 shrink-0 rounded-full",
-                        ae ? "bg-[var(--gamecowork-color-border-success)]" : "bg-gamecowork-color-text-tertiary",
+                        gamecoworkLspReady(gamecoworkLspFile, ae) ? "bg-[var(--gamecowork-color-border-success)]" : "bg-gamecowork-color-text-tertiary",
                       ),
                     }),
-                    f.jsx("span", { className: "select-none ml-1", children: x("filePreview.lsp") }),
+                    f.jsx("span", {
+                      className: "select-none ml-1",
+                      children: window.GAMECOWORK_SHELL ? (gamecoworkLspBusy ? "C# 连接中" : gamecoworkLspReady(gamecoworkLspFile, ae) ? "C# 已连接" : ae ? "C# 未连接" : "启用 C#") : x("filePreview.lsp"),
+                    }),
                   ],
                 }),
                 si &&
@@ -38759,6 +38995,12 @@ const rg = new Set(),
                             onPendingLineRevealed: ai,
                             onContentChange: Ai,
                             onSave: Gi,
+                            isSaving: !!Yr,
+                            saveError: gamecoworkSaveError,
+                            watchError: gamecoworkWatchError,
+                            workspaceRoute: n ?? r,
+                            lspError: gamecoworkLspError,
+                            onLspError: gamecoworkSetLspError,
                           }),
                       }),
                     }),
@@ -38814,7 +39056,7 @@ const rg = new Set(),
                   leftContent: null,
                   children: f.jsx("p", {
                     className: "text-gamecowork-color-text-secondary m-0 px-6 py-5 text-sm leading-5",
-                    children: x("filePreview.switchBranchFailed"),
+                    children: gamecoworkGitError || x("filePreview.switchBranchFailed"),
                   }),
                 }),
               }),
@@ -38834,7 +39076,7 @@ const rg = new Set(),
                   leftContent: null,
                   children: f.jsx("p", {
                     className: "text-gamecowork-color-text-secondary m-0 px-6 py-5 text-sm leading-5",
-                    children: x("filePreview.gitActionFailedDescription"),
+                    children: gamecoworkGitError || x("filePreview.gitActionFailedDescription"),
                   }),
                 }),
               }),
@@ -38924,6 +39166,9 @@ function bf(e, t) {
   return /^[A-Za-z]:$/.test(r) ? `${r}/` : r;
 }
 function dw(e) {
+  // The local native watcher already distinguishes a linked rename. Independent
+  // delete/create operations must never change an open tab's identity.
+  if (window.GAMECOWORK_SHELL) return e;
   if (e.length < 2) return e;
   const t = [],
     r = [],
@@ -40477,6 +40722,20 @@ function fk(e) {
     }),
   });
 }
+function gamecoworkEditorCaptureMode(tab) {
+  if (tab?.captureMode === "editor-window" || tab?.captureMode === "render-content") return tab.captureMode;
+  return ["scene_view", "game_view", "UnityEditor.SceneView", "UnityEditor.GameView"].includes(tab?.viewType || tab?.windowType) ? "render-content" : "editor-window";
+}
+function gamecoworkOpenUnityViews(payload, owner, activatePanel, addView) {
+  const normalize = value => typeof value === "string" ? value.replace(/\\/g, "/").replace(/\/+$/, "").toLowerCase() : "";
+  if (!window.GAMECOWORK_SHELL || owner.canOpenUnityPanel === false || (!owner.isUnityProject && !owner.canOpenUnityPanel) || !owner.workspaceKey || !normalize(owner.workspaceRoot) ||
+      payload?.workspaceKey !== owner.workspaceKey || normalize(payload?.workspaceRoot) !== normalize(owner.workspaceRoot)) return false;
+  const viewType = payload.windowType === undefined ? undefined : Object.keys(Bu).find(key => Bu[key] === payload.windowType);
+  if (payload.windowType !== undefined && (!owner.isUnityProject || !viewType || !owner.bridgeConnected || owner.streamingDisabled)) return false;
+  activatePanel("unity");
+  if (viewType) addView(viewType);
+  return true;
+}
 const Bu = {
     game_view: "UnityEditor.GameView",
     scene_view: "UnityEditor.SceneView",
@@ -40520,6 +40779,7 @@ function yk(e, t, r) {
   for (const o of e) i.has(o.id) || a.push({ id: o.id, activeTab: o, tabIds: [o.id] });
   return a;
 }
+const previewTabKey = tab => tab.workspaceKey ? tab.viewType + "::" + tab.workspaceKey : tab.viewType;
 function vk(e, t, r) {
   const n = e.length;
   if (n === 0) return [];
@@ -40554,11 +40814,14 @@ function vk(e, t, r) {
               ];
   return e.map((a, s) => {
     const o = a.activeTab.id,
-      l = r == null ? void 0 : r[a.activeTab.viewType];
+      l = r == null ? void 0 : r[previewTabKey(a.activeTab)];
     return {
       slotId: o,
       windowType: Zs(a.activeTab),
+      captureMode: gamecoworkEditorCaptureMode(a.activeTab),
       title: a.activeTab.label,
+      workspaceKey: a.activeTab.workspaceKey,
+      workspaceRoot: a.activeTab.workspaceRoot,
       rect: l != null ? l : i[Math.min(s, i.length - 1)],
     };
   });
@@ -40576,7 +40839,8 @@ function bk(e, t) {
   const r = e
     .map((n) => {
       const i = dg(n, t);
-      return i && n.rect ? { viewType: i, rect: n.rect } : null;
+      const tab = t.find(tab => tab.id === n.slotId);
+      return i && n.rect ? { viewType: i, captureMode: gamecoworkEditorCaptureMode(tab), workspaceKey: tab?.workspaceKey, workspaceRoot: tab?.workspaceRoot, rect: n.rect } : null;
     })
     .filter((n) => !!n);
   return r.length > 0 ? r : void 0;
@@ -40593,17 +40857,23 @@ function xk(e, t, r, n, i, a) {
     layoutPreset: s != null && s.length ? void 0 : n,
     focusedViewType:
       (u = l != null ? l : i == null ? void 0 : i.viewType) != null ? u : (c = t[0]) == null ? void 0 : c.viewType,
-    tabs: t.map((d) => ({ viewType: d.viewType, label: d.label })),
+    focusedWorkspaceKey: o?.workspaceKey || i?.workspaceKey,
+    tabs: t.map((d) => ({ viewType: d.viewType, captureMode: gamecoworkEditorCaptureMode(d), label: d.label, workspaceKey: d.workspaceKey, workspaceRoot: d.workspaceRoot })),
     slots:
       s != null
         ? s
         : r
             .map((d) => {
               const p = t.find((h) => h.id === d.slotId);
-              return p ? { viewType: p.viewType, rect: d.rect } : null;
+              return p ? { viewType: p.viewType, captureMode: gamecoworkEditorCaptureMode(p), workspaceKey: p.workspaceKey, workspaceRoot: p.workspaceRoot, rect: d.rect } : null;
             })
             .filter((d) => !!d),
   };
+}
+async function gamecoworkStreamingLayout(command,args){
+ if(!window.GAMECOWORK_SHELL)return ru(command,args);
+ const response=await fetch(window.location.origin+"/api/tauri/invoke",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messageType:command,messageId:crypto.randomUUID(),data:args??{}})});
+ const value=await response.json();if(!response.ok||value.data?.status!=="success")throw new Error(value.data?.error||"Editor layout operation failed");return value.data.content;
 }
 const wk = 160,
   kk = 320,
@@ -43432,6 +43702,16 @@ function mT({ message: e }) {
   });
 }
 function gT(e) {
+  const connectorRef = T.useRef(null), [connectorHeight, setConnectorHeight] = T.useState(0);
+  T.useLayoutEffect(() => {
+    const element = connectorRef.current;
+    if (!e.isUnityPanelActive || !element) return;
+    const measure = () => setConnectorHeight(Math.ceil(element.getBoundingClientRect().height));
+    measure();
+    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(measure) : null;
+    observer?.observe(element);
+    return () => observer?.disconnect();
+  }, [e.isUnityPanelActive, e.unityConnectorPanel, e.multiProjectControls]);
   const { t } = Sr(),
     {
       unityContentRef: r,
@@ -43510,12 +43790,28 @@ function gT(e) {
       compilationDescription: ze,
       setDomainReloadDismissed: Ie,
       requestStreamUrl: et,
+      multiProjectControls,
+      unityConnectorPanel,
+      previewWorkspaceKey,
+      previewTabCount,
     } = e;
   return f.jsxs("div", {
     ref: r,
     className: "tauri-right-sidebar-panel__content",
+    "data-preview-owner-key": previewWorkspaceKey,
+    "data-preview-owner-root": l,
+    "data-preview-tab-count": previewTabCount,
+    "data-preview-active-tab": p,
+    "data-preview-is-open": o,
+    "data-preview-loading": xe,
+    "data-preview-has-endpoint": !!be,
+    "data-preview-has-src": !!ue,
     style: { position: "relative" },
     children: [
+      N && (unityConnectorPanel || multiProjectControls) && f.jsxs("div", {
+        ref: connectorRef, style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 5 },
+        children: [multiProjectControls, unityConnectorPanel],
+      }),
       (Z || te) &&
         f.jsx("div", {
           "aria-hidden": !0,
@@ -43618,7 +43914,7 @@ function gT(e) {
             src: ue,
             sandbox: "allow-scripts allow-same-origin allow-pointer-lock",
             allow: "pointer-lock",
-            style: { width: "100%", height: "100%", border: "none", display: Ve ? "block" : "none" },
+            style: { position:"absolute",top:unityConnectorPanel ? connectorHeight : multiProjectControls ? 36 : 0,left:0,width:"100%",height:"calc(100% - " + (unityConnectorPanel ? connectorHeight : multiProjectControls ? 36 : 0) + "px)",border:"none",display:Ve ? "block" : "none" },
           },
           "unity-stream",
         ),
@@ -43647,7 +43943,7 @@ function gT(e) {
       N && V && f.jsx(Ps, { message: t("rightSidebar.streamingUnavailableMac"), useUnavailableIcon: !0 }),
       N &&
         !V &&
-        !z &&
+        !z && !X && !unityConnectorPanel &&
         f.jsx(Ps, {
           message: t("rightSidebar.openUnityEditorRequired"),
           actionLabel: t("rightSidebar.goOpen"),
@@ -44115,6 +44411,7 @@ function AT({
   hideAiCanvasTab: s = !1,
   hideSessionTabs: o,
   isUnityProject: l,
+  canOpenUnityPanel = false,
 }) {
   const { t: c } = Sr();
   return T.useMemo(() => {
@@ -44179,7 +44476,7 @@ function AT({
                 tabKind: "menu",
               };
         if (h === "unity")
-          return !l || o
+          return (!l && !canOpenUnityPanel) || o
             ? null
             : {
                 key: "unity",
@@ -44234,7 +44531,7 @@ function AT({
         );
       })
       .filter((h) => h !== null);
-  }, [i, n, r, a, s, o, l, c, e, t]);
+  }, [i, n, r, a, s, o, l, c, e, t, canOpenUnityPanel]);
 }
 function NT(e) {
   return e ? "text-gamecowork-color-text-default" : "text-gamecowork-color-text-tertiary";
@@ -44261,6 +44558,7 @@ function IT(e) {
       hasGitRepo: y,
       hideAiCanvasTab: x = !1,
       isUnityProject: k,
+      canOpenUnityPanel,
       unityBridgeConnected: E,
       isEditorStreamingDisabled: S,
       hasUnityTabs: A,
@@ -44569,6 +44867,12 @@ function IT(e) {
               ],
             }),
           A && D && !S && f.jsx("div", { className: "bg-gamecowork-color-border-subtle h-4 w-px shrink-0" }),
+          canOpenUnityPanel && !l && !D && f.jsx("button", {
+            type: "button", "aria-label": "串流", "aria-pressed": D,
+            "data-testid": "unity_streaming_panel_entry", "data-telemetry-id": "unity_streaming_panel_entry",
+            className: "text-gamecowork-color-text-tertiary hover:bg-gamecowork-color-interactive-hover inline-flex h-6 shrink-0 cursor-pointer items-center whitespace-nowrap rounded-md border-0 bg-transparent px-2 text-xs",
+            onClick: () => N("unity"), children: "串流",
+          }),
           f.jsxs(ha, {
             anchor: "bottom end",
             minWidth: 180,
@@ -44897,13 +45201,14 @@ function _T(e, t) {
     case "closeAll":
       return { ...e, tabs: [], activeId: null };
     case "setTabResult": {
-      if (!e.tabs.some((o) => o.id === t.id)) return e;
+      const target = e.tabs.find((o) => o.id === t.id || o.path === t.id);
+      if (!target || target.isDirty) return e;
       const s = ((n = t.file) == null ? void 0 : n.kind) === "text";
       return {
         ...e,
         tabs: e.tabs.map((o) => {
           var l, c, u;
-          return o.id === t.id
+          return o.id === t.id || o.path === t.id
             ? {
                 ...o,
                 file: (l = t.file) != null ? l : null,
@@ -44936,7 +45241,11 @@ function _T(e, t) {
             ...e,
             tabs: e.tabs.map((o) => {
               var l;
-              return o.id === t.id ? { ...o, isDirty: !1, savedContent: (l = o.file) == null ? void 0 : l.content } : o;
+              return o.id === t.id ? {
+                ...o, isDirty: !1,
+                savedContent: (l = o.file) == null ? void 0 : l.content,
+                file: t.sha256 && o.file ? { ...o.file, sha256: t.sha256 } : o.file,
+              } : o;
             }),
           }
         : e;
@@ -44957,11 +45266,14 @@ function _T(e, t) {
         ),
       };
     case "markExternalRenamed":
+      const renamedIds = new Map(e.tabs.filter((tab) => tab.id === t.oldPath).map((tab) => [tab.id, t.newPath]));
       return {
         ...e,
+        activeId: renamedIds.get(e.activeId) || e.activeId,
+        history: e.history.map((id) => renamedIds.get(id) || id),
         tabs: e.tabs.map((s) =>
           s.id === t.oldPath || s.path === t.oldPath
-            ? { ...s, path: t.newPath, externalStatus: { kind: "renamed", newPath: t.newPath } }
+            ? { ...s, id: renamedIds.get(s.id) || s.id, path: t.newPath, file: s.file ? { ...s.file, path: t.newPath } : s.file, externalStatus: { kind: "renamed", newPath: t.newPath } }
             : s,
         ),
       };
@@ -45077,8 +45389,8 @@ function OT(e, t) {
     A = T.useCallback((L, O) => {
       n({ type: "markDirty", id: L, content: O });
     }, []),
-    D = T.useCallback((L) => {
-      n({ type: "markClean", id: L });
+    D = T.useCallback((L, sha256) => {
+      n({ type: "markClean", id: L, sha256 });
     }, []),
     R = T.useMemo(() => {
       var L;
@@ -45114,23 +45426,26 @@ function OT(e, t) {
     markClean: D,
   };
 }
-function jT({ isOpen: e, workspaceRoot: t, workspaceRoute: r }) {
+function jT({ isOpen: e, workspaceRoot: t, workspaceRoute: r, workspaceKey }) {
   const [n, i] = T.useState(null),
     a = T.useRef(0),
     s = T.useCallback(() => {
-      if (!e || !t.trim()) {
+      const local = window.GAMECOWORK_SHELL && !!workspaceKey;
+      const lease = local ? gamecoworkWorkspaceLease(gamecoworkSidebarStore.getState(), workspaceKey) : null;
+      const current = () => !local || gamecoworkWorkspaceLeaseCurrent(gamecoworkSidebarStore.getState(), lease);
+      if (!e || !t.trim() || !current()) {
         i(!1);
         return;
       }
       const o = ++a.current;
       Xc(t, r != null ? r : t)
         .then(({ hasRepo: l }) => {
-          o === a.current && i(l);
+          o === a.current && current() && i(l);
         })
         .catch(() => {
-          o === a.current && i(!1);
+          o === a.current && current() && i(!1);
         });
-    }, [e, t, r]);
+    }, [e, t, r, workspaceKey]);
   return (
     T.useEffect(
       () => (
@@ -45333,11 +45648,9 @@ function BT({
           return !1;
         if (D.file.readOnly) return (u({ kind: "readOnly", paths: [D.path] }), !1);
         try {
-          return (
-            await el(D.path, D.file.content, (L = (q = D.workspaceRoute) != null ? q : r) != null ? L : t),
-            n(A),
-            !0
-          );
+          const result = await el(D.path, D.file.content, (L = (q = D.workspaceRoute) != null ? q : r) != null ? L : t, D.file.sha256);
+          n(A, result?.afterSha256);
+          return !0;
         } catch (O) {
           return (ap(O) && u({ kind: "permission", paths: [D.path] }), !1);
         }
@@ -45369,7 +45682,8 @@ function BT({
           continue;
         }
         try {
-          (await el(I.path, j.content, (O = (L = I.workspaceRoute) != null ? L : r) != null ? O : t), n(I.id));
+          const result = await el(I.path, j.content, (O = (L = I.workspaceRoute) != null ? L : r) != null ? O : t, j.sha256);
+          n(I.id, result?.afterSha256);
         } catch (H) {
           (ap(H) && q.push(I.path), (D = !1));
         }
@@ -45445,6 +45759,7 @@ const UT = 15e3,
   op = 1e4;
 function HT({
   workspaceRoot: e,
+  workspaceKey,
   isUnityProject: t,
   isEditorStreamingDisabled: r,
   isChatFullscreenActive: n,
@@ -45466,6 +45781,8 @@ function HT({
     [y, x] = T.useState(null),
     k = T.useRef([]);
   k.current = m;
+  const liveTabs = m.map(tab => ({...tab,workspaceKey:tab.workspaceKey || workspaceKey,workspaceRoot:tab.workspaceRoot || e}));
+  const [previewProjects,setPreviewProjects] = T.useState([]), [previewProject,setPreviewProject] = T.useState(workspaceKey || ""), [previewProjectError,setPreviewProjectError] = T.useState("");
   const [E, S] = T.useState([]),
     [A, D] = T.useState(null),
     [R, q] = T.useState(!1),
@@ -45496,6 +45813,9 @@ function HT({
     te = T.useRef(!1),
     ae = T.useRef(!1),
     de = T.useRef(e),
+    previewEpoch = T.useRef(0),
+    previewOwnerKey = T.useRef(workspaceKey),
+    controlRequest = T.useRef(null),
     [we, fe] = T.useState("stopped"),
     [Te, Ne] = T.useState(!1),
     Be = T.useRef(),
@@ -45506,7 +45826,7 @@ function HT({
     mt = et && !!Ye,
     jt = Ye ? Zs(Ye) : "",
     St = m.length > 0,
-    qt = yk(m, [], (Gi = Ye == null ? void 0 : Ye.id) != null ? Gi : ""),
+    qt = yk(liveTabs, [], (Gi = Ye == null ? void 0 : Ye.id) != null ? Gi : ""),
     Wt = vk(qt, L, A),
     kt = new Set(Wt.map((Me) => Me.slotId)),
     ut = {
@@ -45569,25 +45889,60 @@ function HT({
         Ee === "unity_busy" ||
         (!!K && Ee !== "streaming")),
     nr = T.useCallback(() => {
+      if (window.GAMECOWORK_SHELL) { N.current = false; he(false); ve(null); return; }
       r ||
         N.current ||
         ((N.current = !0),
         he(!0),
         ve(null),
         window.postMessage(
-          { source: "tauriShell", messageType: "shell/openUnityWindowInPreview", data: { resolveIfMissing: !0 } },
+          { source: "tauriShell", messageType: "shell/openUnityWindowInPreview", data: { resolveIfMissing: !0, workspaceRoot: e, workspaceKey, requestGeneration: previewEpoch.current } },
           "*",
         ));
-    }, [r]),
+    }, [r, e, workspaceKey]),
     $n = T.useCallback(() => {
       window.postMessage({ source: "tauriShell", messageType: "shell/openUnityEditor" }, "*");
     }, []);
+  const loadPreviewProjects = T.useCallback(async () => {
+    try {
+      const response = await fetch(window.location.origin + "/api/tauri/hub/workspaces");
+      if (!response.ok) throw new Error("无法读取已打开工程");
+      const result = await response.json();
+      if (de.current !== e) return;
+      setPreviewProjects(result.workspaces.filter(project => !project.isRemote));
+      setPreviewProjectError("");
+    } catch (error) { if (de.current === e) setPreviewProjectError(error.message); }
+  }, [e]);
+  T.useEffect(() => { setPreviewProject(workspaceKey || ""); if (window.GAMECOWORK_SHELL && et) loadPreviewProjects(); }, [workspaceKey, et, loadPreviewProjects]);
+  function addProjectView(viewType) {
+    const project = previewProjects.find(project => project.workspaceKey === previewProject);
+    if (!project) { setPreviewProjectError("请先选择已打开的工程"); return; }
+    const existing = liveTabs.find(tab => tab.viewType === viewType && tab.workspaceKey === project.workspaceKey);
+    if (existing) { x(existing.id); return; }
+    if (m.length >= 16) { setPreviewProjectError("最多可添加16个预览槽位"); return; }
+    const name = project.workspaceDir.replace(/\\/g, "/").split("/").filter(Boolean).pop();
+    const tab = {id:"unity-project-" + crypto.randomUUID(),viewType,label:name + " · " + (viewType === "scene_view" ? "Scene View" : "Game View"),workspaceKey:project.workspaceKey,workspaceRoot:project.workspaceDir};
+    j(false); G(false); D(null); q(false); S([]); te.current = true; ae.current = false;
+    g(previous => [...previous,tab]); a("unity"); x(tab.id);
+    if (!K && !ie) nr();
+  }
+  const multiProjectControls = window.GAMECOWORK_SHELL && et ? f.jsxs("div", {
+    style:{display:"flex",alignItems:"center",gap:6,padding:"5px 8px",height:36,boxSizing:"border-box",background:"var(--gamecowork-color-surface-primary)",borderBottom:"1px solid var(--gamecowork-color-border-subtle)"},
+    children:[
+      f.jsx("select",{"aria-label":"选择预览工程",value:previewProject,onFocus:loadPreviewProjects,onChange:event=>setPreviewProject(event.target.value),style:{minWidth:0,flex:1,background:"transparent",color:"inherit",border:"1px solid var(--gamecowork-color-border-subtle)",borderRadius:4},
+        children:[f.jsx("option",{value:"",children:"选择工程"}),...previewProjects.map(project=>f.jsx("option",{value:project.workspaceKey,title:project.workspaceDir,children:project.workspaceDir.replace(/\\/g,"/").split("/").filter(Boolean).pop()},project.workspaceKey))]}),
+      f.jsx("button",{type:"button","aria-label":"添加工程 Scene View",onClick:()=>addProjectView("scene_view"),disabled:!previewProject,children:"+ Scene"}),
+      f.jsx("button",{type:"button","aria-label":"添加工程 Game View",onClick:()=>addProjectView("game_view"),disabled:!previewProject,children:"+ Game"}),
+      f.jsx("button",{type:"button","aria-label":"停止所选工程预览",onClick:()=>{g(previous=>previous.filter(tab=>(tab.workspaceKey||workspaceKey)!==previewProject));D(null);q(false);},disabled:!previewProject,children:"停止"}),
+      previewProjectError && f.jsx("span",{role:"status",style:{fontSize:11,color:"#ffcc77"},children:previewProjectError})
+    ]
+  }) : null;
   function ri(Me) {
     var bt, ot;
     const We = (bt = Me == null ? void 0 : Me.requestUrlIfMissing) != null ? bt : !0;
     ((te.current = !0), D(null), q(!1));
     const Pe = [...m],
-      Qe = new Map(Pe.map((lt) => [lt.viewType, lt]));
+      Qe = new Map(Pe.filter(tab=>!tab.workspaceKey || tab.workspaceKey===workspaceKey).map((lt) => [lt.viewType, lt]));
     Fo.forEach((lt) => {
       var Ft;
       if (Qe.has(lt)) return;
@@ -45611,8 +45966,8 @@ function HT({
       (ae.current = !1),
       We && !K && !ie && nr());
   }
-  const Wr = async (Me) => ru("save_unity_streaming_layout", { contents: JSON.stringify(Me, null, 2) }),
-    _n = async () => ru("read_unity_streaming_layout", void 0),
+  const Wr = async (Me) => gamecoworkStreamingLayout("save_unity_streaming_layout", { contents: JSON.stringify(Me, null, 2) }),
+    _n = async () => gamecoworkStreamingLayout("read_unity_streaming_layout", void 0),
     Tn = () =>
       new Promise((Me) => {
         var gt;
@@ -45626,6 +45981,7 @@ function HT({
         }, 800);
         function Qe(bt) {
           var lt;
+          if (bt.source !== We || bt.origin !== window.location.origin) return;
           const ot = bt.data;
           (ot == null ? void 0 : ot.source) !== "unityWindowBridge" ||
             ot.messageType !== "unity-window/composite-layout-snapshot" ||
@@ -45638,7 +45994,7 @@ function HT({
       }),
     di = async () => {
       const Me = await Tn();
-      if (!(!Me || Me.length === 0)) return xk(Me, m, Wt, ut.layoutPreset, Ye, new Date().toISOString());
+      if (!(!Me || Me.length === 0)) return xk(Me, liveTabs, Wt, ut.layoutPreset, Ye, new Date().toISOString());
     },
     un = async () => {
       if (St)
@@ -45661,18 +46017,21 @@ function HT({
         return {
           id: `unity-${ct.viewType}-${Pe}-${_t}`,
           viewType: ct.viewType,
+          captureMode: gamecoworkEditorCaptureMode(ct),
+          workspaceKey: ct.workspaceKey || workspaceKey,
+          workspaceRoot: ct.workspaceRoot || e,
           label:
             ct.label ||
             ((hr = Xa.find((Lr) => Lr.viewType === ct.viewType)) == null ? void 0 : hr.label) ||
             ct.viewType,
         };
       }),
-      gt = new Map(Qe.map((ct) => [ct.viewType, ct])),
-      bt = (Me.focusedViewType && gt.get(Me.focusedViewType)) || Qe[0],
+      gt = new Map(Qe.map((ct) => [previewTabKey(ct), ct])),
+      bt = (Me.focusedViewType && gt.get(previewTabKey({viewType:Me.focusedViewType,workspaceKey:Me.focusedWorkspaceKey || workspaceKey}))) || Qe[0],
       ot = {};
     ((lt = Me.slots) == null ||
       lt.forEach((ct) => {
-        !(ct != null && ct.viewType) || !ct.rect || (ot[ct.viewType] = ct.rect);
+        !(ct != null && ct.viewType) || !ct.rect || (ot[previewTabKey({...ct,workspaceKey:ct.workspaceKey || workspaceKey})] = ct.rect);
       }),
       g(Qe),
       D(Object.keys(ot).length > 0 ? ot : null),
@@ -45681,7 +46040,7 @@ function HT({
         Me.layoutPreset === Dc
           ? Fo.map((ct) => {
               var _t;
-              return (_t = gt.get(ct)) == null ? void 0 : _t.id;
+              return (_t = gt.get(previewTabKey({viewType:ct,workspaceKey}))) == null ? void 0 : _t.id;
             }).filter((ct) => !!ct)
           : [],
       ),
@@ -45721,7 +46080,7 @@ function HT({
     ir = (Me, We) => {
       if (r) return;
       (j(!1), G(!1), (te.current = !0), D(null), q(!1));
-      const Pe = m.find((bt) => bt.viewType === Me);
+      const Pe = m.find((bt) => bt.viewType === Me && (!bt.workspaceKey || bt.workspaceKey === workspaceKey));
       if (Pe) {
         (o("unity"), x(Pe.id));
         return;
@@ -45801,6 +46160,8 @@ function HT({
     Qr = T.useCallback(
       (Me) => {
         var We, Pe;
+        previewEpoch.current++;
+        controlRequest.current = null;
         if (
           ((ae.current = !0),
           (z.current = 0),
@@ -45812,7 +46173,7 @@ function HT({
             (Pe = (We = c.current) == null ? void 0 : We.contentWindow) == null ||
               Pe.postMessage({ source: "parentPanel", messageType: "unity-window/request-stop" }, "*");
           } catch {}
-          window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStop" }, "*");
+          if (!window.GAMECOWORK_SHELL) window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStop", data: { workspaceRoot: e, workspaceKey, requestGeneration: previewEpoch.current } }, "*");
         }
         (g([]),
           S([]),
@@ -45830,7 +46191,7 @@ function HT({
           x(null),
           a("unity"));
       },
-      [a],
+      [a, e, workspaceKey],
     ),
     Wi = (Me) => {
       (Me.preventDefault(), Me.stopPropagation());
@@ -45851,31 +46212,41 @@ function HT({
       (document.addEventListener("mousemove", gt), document.addEventListener("mouseup", bt));
     },
     zr = T.useCallback((Me) => {
-      window.postMessage({ source: "tauriShell", messageType: "shell/unityGameControl", data: Me }, "*");
-    }, []),
+      const requestId = Me.requestId || "editor-control:" + Date.now() + ":" + Math.random();
+      if (Me.action !== "get_state") { controlRequest.current = requestId; Ne(!0); }
+      window.postMessage({ source: "tauriShell", messageType: "shell/unityGameControl", data: {...Me,requestId,workspaceRoot:e,workspaceKey,requestGeneration:previewEpoch.current} }, window.location.origin);
+      return requestId;
+    }, [e, workspaceKey]),
     hi = (Me) =>
       new Promise((We) => {
+        const requestId = "editor-control:" + Date.now() + ":" + Math.random();
         const Pe = setTimeout(() => {
             (window.removeEventListener("message", Qe), We(null));
           }, 18e4),
           Qe = (gt) => {
             const bt = gt.data;
+            if (gt.source !== window || gt.origin !== window.location.origin ||
+                bt?.data?.workspaceKey !== workspaceKey || bt?.data?.workspaceRoot !== e ||
+                bt?.data?.requestGeneration !== previewEpoch.current ||
+                bt?.data?.requestId !== requestId || bt?.data?.action !== Me.action) return;
             (bt == null ? void 0 : bt.source) === "tauriShell" &&
               bt.messageType === "shell/unityGameControlResult" &&
               (clearTimeout(Pe), window.removeEventListener("message", Qe), We(bt.data));
           };
-        (window.addEventListener("message", Qe), zr(Me));
+        (window.addEventListener("message", Qe), zr({...Me,requestId}));
       }),
     Kn = (Me) => {
-      Te ||
+      (Te || controlRequest.current) ||
         (Ne(!0),
         Be.current && clearTimeout(Be.current),
         (Be.current = setTimeout(() => {
-          (Ne(!1), zr({ action: "get_state" }));
-        }, 8e3)),
+          (controlRequest.current = null, Ne(!1), fe("unknown"), zr({ action: "get_state" }));
+        }, 65e3)),
         zr(Me));
     },
     lr = () => {
+      if (Te || controlRequest.current) return;
+      if (we === "unknown") { zr({action:"get_state"}); return; }
       const Me = we === "stopped" ? "play" : "stop";
       if (((ae.current = !1), Me === "stop")) {
         Kn({ action: Me });
@@ -45884,17 +46255,17 @@ function HT({
       (xe("compiling"),
         be(l("rightSidebar.streamCompilingStarting")),
         Ve(!1),
-        fe("playing"),
         Ne(!0),
         Be.current && clearTimeout(Be.current),
         (Be.current = setTimeout(() => {
-          (Ne(!1), xe(null), be(null), zr({ action: "get_state" }));
-        }, 18e4)),
+          (controlRequest.current = null, Ne(!1), xe("failed"), be(l("rightSidebar.streamCompileFailed")), fe("unknown"), zr({ action: "get_state" }));
+        }, 185e3)),
         (async () => {
           try {
-            const We = await hi({ action: "refresh" });
+            const We = await hi({ action: "refresh", timeoutSeconds: 180 });
             if (!We) {
-              zr({ action: "play" });
+              controlRequest.current = null;
+              Ne(!1); xe("failed"); be(l("rightSidebar.streamCompileFailed")); fe("unknown");
               return;
             }
             const { success: Pe, hasErrors: Qe, errors: gt } = We;
@@ -45908,12 +46279,13 @@ function HT({
             }
             zr({ action: "play" });
           } catch {
-            zr({ action: "play" });
+            controlRequest.current = null;
+            Ne(!1); xe("failed"); be(l("rightSidebar.streamCompileFailed")); fe("unknown");
           }
         })());
     },
     Kr = () => {
-      we !== "stopped" && Kn({ action: "pause" });
+      we !== "stopped" && Kn(we === "paused" ? { action: "resume", singleFrame: !1 } : { action: "pause" });
     },
     cr = () => Kn({ action: "resume", singleFrame: !0 }),
     en = () => {
@@ -45929,11 +46301,21 @@ function HT({
         We.postMessage({ source: "parentPanel", messageType: "unity-window/request-capture" }, "*");
     },
     fn = T.useCallback(() => {
-      window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStatusRequest" }, "*");
-    }, []);
+      if (window.GAMECOWORK_SHELL) return;
+      window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStatusRequest", data: { workspaceRoot: e, workspaceKey, requestGeneration: previewEpoch.current } }, "*");
+    }, [e, workspaceKey]);
   (T.useEffect(() => {
     var We, Pe;
     const Me = de.current;
+    const previousOwnerKey = previewOwnerKey.current;
+    previewOwnerKey.current = workspaceKey;
+    if (window.GAMECOWORK_SHELL && k.current.some(tab => tab.workspaceKey) &&
+        (previousOwnerKey === workspaceKey || k.current.some(tab => tab.workspaceKey && tab.workspaceKey !== previousOwnerKey))) {
+      de.current = e;
+      if (previousOwnerKey !== workspaceKey) { previewEpoch.current++; controlRequest.current = null; }
+      return;
+    }
+    if (Me !== e) { previewEpoch.current++; controlRequest.current = null; }
     ((de.current = e),
       !(!Me || !e || Me === e) &&
         ((Pe = (We = c.current) == null ? void 0 : We.contentWindow) == null ||
@@ -45951,8 +46333,9 @@ function HT({
         (N.current = !1),
         (z.current = 0),
         Z.current && clearTimeout(Z.current)));
-  }, [e]),
+  }, [e, workspaceKey]),
     T.useEffect(() => {
+      if (window.GAMECOWORK_SHELL && m.some(tab=>tab.workspaceKey)) return;
       t ||
         ((i === "unity" || i === "unityInsight" || m.length > 0) &&
           (a("insights"),
@@ -45972,6 +46355,9 @@ function HT({
         var Qe, gt, bt;
         const Pe = We.data;
         if ((Pe == null ? void 0 : Pe.source) === "tauriShell") {
+          if (Pe.data?.workspaceKey && Pe.data.workspaceKey !== workspaceKey) return;
+          if (Pe.data?.workspaceRoot && Pe.data.workspaceRoot !== e) return;
+          if (Number.isInteger(Pe.data?.requestGeneration) && Pe.data.requestGeneration !== previewEpoch.current) return;
           if (Pe.messageType === "shell/openUnityWindowInPreviewError") {
             const ot =
               typeof ((Qe = Pe.data) == null ? void 0 : Qe.error) == "string"
@@ -45994,7 +46380,14 @@ function HT({
                 (Z.current = setTimeout(() => nr(), op))));
           }
           if (Pe.messageType === "shell/unityGameControlResult") {
+            if (Pe.data?.unknown) { if (!controlRequest.current) { fe("unknown"); Ne(!1); } return; }
             const ot = (gt = Pe.data) == null ? void 0 : gt.playMode;
+            if (controlRequest.current && Pe.data?.requestId !== controlRequest.current) {
+              if (ot === "playing" || ot === "paused" || ot === "stopped") fe(ot);
+              return;
+            }
+            if (Pe.data?.pending) return;
+            controlRequest.current = null;
             ((ot === "playing" || ot === "paused" || ot === "stopped") && fe(ot),
               Ne(!1),
               Be.current && (clearTimeout(Be.current), (Be.current = void 0)));
@@ -46005,7 +46398,7 @@ function HT({
         }
       };
       return (window.addEventListener("message", Me), () => window.removeEventListener("message", Me));
-    }, []),
+    }, [e, workspaceKey, nr]),
     T.useEffect(() => {
       if (m.length === 0 || Ee === "domain_reloading" || Ee === "unity_busy") return;
       fn();
@@ -46116,7 +46509,7 @@ function HT({
         }
       };
       return (window.addEventListener("message", Me), () => window.removeEventListener("message", Me));
-    }, [Ee]),
+    }, [Ee, nr]),
     T.useEffect(() => {
       ((Ee === "idle" || Ee === "disconnected") && (be(null), xe(null), Ve(!1)),
         Ee === "streaming" && ue === "compile_done" && (be(null), xe(null), Ve(!1)));
@@ -46250,7 +46643,7 @@ function HT({
       };
       return (window.addEventListener("message", Me), () => window.removeEventListener("message", Me));
     }, [Er]));
-  const Ai = K ? `${h4("windowBridge.html")}?serverUrl=${encodeURIComponent(K)}&displayMode=fill` : "",
+  const Ai = window.GAMECOWORK_SHELL && St ? `${h4("windowBridge.html")}?displayMode=fill&multiProject=1` : K ? `${h4("windowBridge.html")}?serverUrl=${encodeURIComponent(K)}&displayMode=fill` : "",
     dr = we === "playing" && Ee === "streaming" && mt && jt.includes("GameView");
   return (
     T.useEffect(() => {
@@ -46319,7 +46712,7 @@ function HT({
           (Pe = (We = c.current) == null ? void 0 : We.contentWindow) == null ||
             Pe.postMessage({ source: "parentPanel", messageType: "unity-window/request-stop" }, "*");
         } catch {}
-        window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStop" }, "*");
+        if (!window.GAMECOWORK_SHELL) window.postMessage({ source: "tauriShell", messageType: "shell/unityWindowStop", data: { workspaceRoot: e, workspaceKey, requestGeneration: previewEpoch.current } }, "*");
       };
       return (
         window.addEventListener("beforeunload", Me),
@@ -46336,6 +46729,7 @@ function HT({
       [],
     ),
     {
+      multiProjectControls,
       iframeRef: c,
       unityContentRef: u,
       addMenuRef: d,
@@ -46348,7 +46742,7 @@ function HT({
       isUnityTabActive: mt,
       hasUnityTabs: St,
       dynamicWindows: ee,
-      unityWindowUrl: K,
+      unityWindowUrl: K || (window.GAMECOWORK_SHELL && St ? window.location.origin : ""),
       unityWindowLoading: ie,
       unityWindowError: pe,
       unityWindowIframeSrc: Ai,
@@ -46358,7 +46752,7 @@ function HT({
       domainReloadDismissed: Fe,
       setDomainReloadDismissed: Ve,
       playMode: we,
-      gameControlPending: Te,
+      gameControlPending: Te || we === "unknown",
       audioEnabled: Ce,
       showAddMenu: I,
       showAddViewSubmenu: H,
@@ -46461,6 +46855,7 @@ const lS = T.forwardRef(function (
     $ = T.useMemo(() => f4(), []),
     N = T.useMemo(() => p4(), []),
     V = T.useMemo(() => V0(), []),
+    canOpenUnityPanel = window.GAMECOWORK_SHELL && typeof u === "string" && !!u && typeof o === "string" && !!o.trim() && Array.isArray(d) && d.includes(u) && c?.runOn !== "remote",
     z = m && b !== void 0 && !jg(b),
     Z = T.useRef(null),
     te = T.useRef(Bs),
@@ -46518,7 +46913,7 @@ const lS = T.forwardRef(function (
     }),
     [Ct, Kt] = T.useState(pe != null ? pe : "insights"),
     [cn, nr] = T.useState([]),
-    { hasGitRepo: $n, refreshGitPresence: ri } = jT({ isOpen: t, workspaceRoot: o, workspaceRoute: c }),
+    { hasGitRepo: $n, refreshGitPresence: ri } = jT({ isOpen: t, workspaceRoot: o, workspaceRoute: c, workspaceKey: u }),
     [Wr, _n] = T.useState(null),
     [Tn, di] = T.useState(0),
     { containerWidth: un, isPanelLayoutSettling: qe, setIsPanelLayoutSettling: dn } = FT(de),
@@ -46676,7 +47071,8 @@ const lS = T.forwardRef(function (
     ),
     ai = HT({
       workspaceRoot: o,
-      isUnityProject: v,
+      workspaceKey: u,
+      isUnityProject: v || canOpenUnityPanel,
       isEditorStreamingDisabled: z,
       isChatFullscreenActive: n,
       activeTab: Ct,
@@ -46685,6 +47081,7 @@ const lS = T.forwardRef(function (
       activatePanelTab: hn,
     }),
     {
+      multiProjectControls,
       iframeRef: Yr,
       unityContentRef: Er,
       addMenuRef: Ai,
@@ -46749,6 +47146,7 @@ const lS = T.forwardRef(function (
         ((ir.current = !0), Xi({ path: Ze, original: Mt, modified: or, seq: Date.now() }), lr("changes", V0()));
       },
       openUnityWindow: Ha,
+      openUnityViews: payload => gamecoworkOpenUnityViews(payload, { workspaceKey: u, workspaceRoot: o, isUnityProject: v, canOpenUnityPanel, bridgeConnected: m, streamingDisabled: z }, lr, ka),
       openUnityInsight: (Ze) => {
         const Mt = Ze.trim();
         Mt && (lr("unityInsight"), _n(Mt), di((or) => or + 1));
@@ -46765,7 +47163,7 @@ const lS = T.forwardRef(function (
           .map((Ze) => ({ id: Ze.id, path: Ze.path })),
       saveAll: ut,
     }),
-    [Nr, fn, lr, zr, Ha, ut],
+    [Nr, fn, lr, zr, Ha, ut, ka, u, o, v, m, z, canOpenUnityPanel],
   ),
     T.useEffect(() => {
       nr((Ze) => {
@@ -46790,15 +47188,16 @@ const lS = T.forwardRef(function (
       hasGitRepo: $n,
       hideSessionTabs: Ee,
       isUnityProject: v,
+      canOpenUnityPanel,
       hideAiCanvasTab: Ve,
     }),
     xs = T.useCallback(
-      (Ze) => {
+      async (Ze) => {
         var gn, ws;
         const Mt = jn.findIndex((fr) => fr.key === Ze),
           or = jn.find((fr) => fr.key === Ze),
           oi = (gn = or == null ? void 0 : or.isActive) != null ? gn : !1;
-        if (Ze === "unity") (pt(), yt(), nr((fr) => fr.filter((tn) => tn !== Ze)));
+        if (Ze === "unity") { await pt(); await yt(); nr((fr) => fr.filter((tn) => tn !== Ze)); }
         else if (Ze === "git" || Ze === "changes" || Ze === "unityInsight" || Ze === "aiCanvas")
           nr((fr) => fr.filter((tn) => tn !== Ze));
         else if (Ze === "explorer" && (or == null ? void 0 : or.tabKind) === "menu")
@@ -46850,6 +47249,7 @@ const lS = T.forwardRef(function (
         terminalEnabled: ie,
         hideAiCanvasTab: Ve,
         isUnityProject: v,
+        canOpenUnityPanel,
         unityBridgeConnected: m,
         isEditorStreamingDisabled: z,
         hasUnityTabs: We,
@@ -46906,6 +47306,14 @@ const lS = T.forwardRef(function (
         handleToggleAudio: pn,
       }),
       f.jsx(gT, {
+        unityConnectorPanel: canOpenUnityPanel && f.jsx(GameCoworkUnityPanel, {
+          workspaceKey: u, workspaceRoot: o, onOpenEditor: Ki,
+          onView: windowType => gamecoworkOpenUnityViews({ workspaceKey: u, workspaceRoot: o, windowType },
+            { workspaceKey: u, workspaceRoot: o, isUnityProject: v, bridgeConnected: m, streamingDisabled: z }, lr, ka),
+        }),
+        multiProjectControls,
+        previewWorkspaceKey: u,
+        previewTabCount: ai.unityTabs.length,
         unityContentRef: Er,
         iframeRef: Yr,
         aiCanvasIframeRef: Zi,
