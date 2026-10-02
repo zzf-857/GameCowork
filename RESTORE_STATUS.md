@@ -1,4 +1,423 @@
-# RESTORE_STATUS — Tuanjie Cowork 还原状态
+# RESTORE_STATUS — GameCowork 功能、验收与交接
+
+<a id="handoff-20261003"></a>
+
+## 本轮收尾交接（2026-10-03）
+
+用户已要求完成当前收尾、覆盖现有安装，并由其他Agent延续后续开发。本节是最新状态；旧过程记录保留原事实。
+
+2026-10-03 后续按用户要求进行 GitHub 源码归档：研究、功能实现与文档分别使用中文提交说明，README 补齐当前功能总览和交接入口。提交身份采用已核实的仓库所有者 `zzf-857`（账号 ID 62880791）。本次归档不改应用版本、不重写已有历史，也不包含 `app/`、原件镜像、运行日志或私有服务配置；下文历史“未提交 / 未推送”仅描述其记录时点。
+
+## 当前方向与本轮交付状态
+
+用户要求继续补齐产品实际功能，并明确要求沿用真实 Codely EXE 加载的 Quick / History / Canvas 客户端，不接受以自研通用面板替代原界面。当前主体已复用原客户端，补的是自有宿主及兼容服务。原安装、原 Core 和原 CLI 只读研究；不运行原 EXE、不导入原凭据。
+
+主资产页使用原 PG / QG / sq 容器，默认右侧栏 Canvas 使用原 pw → cJ/ox 入口；两代都要维护。原 Quick 有 17 项资源、45 个原字面量模型描述；原 Canvas 有 315 项资源和 24 个关键编辑器 / renderer / 上传绑定。source ledger 记录来源和精确适配，不把远端缓存客户端说成 EXE 内嵌后端。此前自研 `gamecowork-asset-generation.js` 仍保留，但已不是当前可见主资产入口，旧 generic UI E2E 不能证明原组件恢复。
+
+用户已授权自建 CPA 的特定文本及图片模型。连接参数和密钥只留用户受控私有配置；本文不记录地址、密钥或私有配置文件名。只有 `gpt-6.1-sol` 用于文字 / 任务，`gpt-image-2` 用于本轮图片测试，不自动切换到其它模型。CPA 属于明确标记的本地扩展模型，不冒充原 45 模型或官方付费订阅。
+
+| 本轮证据层 | 已知结果 | 不应据此宣称 |
+| --- | --- | --- |
+| 用户授权的手动 CPA 直连 | `cpa-live-20261002/`：文本1次、Responses/Chat函数调用各1次均通过；直接Image API 1张PNG，实际1254×1254。函数调用只核协议，没有执行外部工具 | 不等于App实际ACP工具链已对真实CPA端到端验证；请求1024不能冒充实际尺寸 |
+| 自有 Core → 实际 CPA | `cpa-live-20261002/core-proof/result.json`：另外1张图片经过本轮binding/createTask/鉴权/缓存真实完成，1,221,872 bytes、1254×1254、SHA `6AF53098A92E9CE0A14FA7337051363036BBD5D53700A266CCCA313F6A61C0CE`，凭据未以明文落入资产状态，测试结束移除该测试Provider | 这张与上行合计2张，不是额外第三张；GUI验证仍使用loopback，未自动调用官方额度 |
+| CPA 后端隔离契约 | `tests/contracts/codely-cpa-generation.test.mjs` 8/8；真实服务模块、注入 fetch、自己构造的可解码 PNG；绑定、scope、参数、历史重启、密钥、LAN、跳转和超时 | 没有真实网络 / 额度；不是实际 CPA 接口兼容性的替代证明 |
+| 原 Quick CPA GUI | 原控件提交/PNG/History再生成/新宿主+新profile重启两代各9项；最终正式app current9项、最终候选 previous9项，见下方报告索引 | 自动验证使用loopback，不冒称在GUI中调用了真实CPA |
+| 原 Quick / History / Canvas 既有完整交互 | 两代先有 17/17、媒体版 21/21；原手绘、历史、Markdown、拖动、上传、视频选帧真实像素和换端口重启已验 | 后续多 iframe / 默认右栏 / 旧本地快照修复的最终包范围须单列 |
+| 本轮最终完整门禁 | `verify-handoff.log` 与 `verify-handoff-exit.txt` 为完整 **exit 0**；Rust **148/148**，包括最后Mh、Sidebar、CPA前后端及两代默认26/CPA9；真实Core、Chat、文件、Git/LSP、MCP、命令子代理均执行。未运行本轮 `-Editor` | 所有数字按本次实际范围记录，不把历史Editor计入本次gate |
+| 最终包与正式资源回归 | `candidate-handoff`：默认原界面current **26/26**；CPA previous **9/9**。原位更新后正式app CPA current **9/9**。全部1544资源与候选逐项一致；更早final3默认两代26/26、Editor缓存候选两代27/27另有记录 | 不将可选flexible布局的未通过报告写成默认布局失败或全部通过；不把不同包测试汇成一次全量 |
+| `app/` 原位更新 | `build-app-handoff.log` **exit 0**；北京时间 **2026-10-03 00:34:17**，Release **2.1.3-canary.2 / 1544资源**；`app-handoff-integrity.json` 全部大小/SHA匹配、1511项维护源无漂移、正常Agent guard=false。manifest SHA `092386461039ACC654325886795BBBA391DEDDC4154D3118FE8CACF2D5ACDE24` | 日常唯一入口继续为 `app/启动GameCowork.bat`，没有第二套正式安装 |
+| 官方账户 | 只有取证与设计；没有 account broker 模块、账号接线或本人订阅验证 | 用户授权接入不等于授权流程已执行，更不能造 token / Pro / 积分 |
+
+完整日志与截图证据根为 `F:/AI/AgentMake/temp/GameCowork/codely-source-reuse-20261002/`。最后配置通过正式app自身API添加了 **GPT Image 2 · CPA** 图片映射与 **GPT-6.1 Sol · CPA** 文字模型；没有改变原默认文字模型选择，没有在配置动作中发起推理。自有配置宿主/Core均已退出，捕获输出不含密钥。用户选择图片菜单中的CPA条目后才提交生成。账号仍是本地模式，本轮没有验证本人官方Pro。
+
+
+### 最终证据索引
+
+- 完整门禁：`verify-handoff.log` / `verify-handoff-exit.txt`（0）；原界面两代报告在统一temp的 `codely-assets-ui-8e6e43b6-eea9-4b8a-ae07-09caaa4aed08`、`codely-assets-ui-c8894e0b-4ae0-462e-abcb-54217633c936`，CPA两代为 `codely-assets-ui-bd110db5-bfa2-48ce-81d0-7e2efb627dec`、`codely-assets-ui-034559fe-921d-4239-bf87-bd70ce18c462`。
+- 最终候选完整性：`candidate-handoff-integrity.json`；包内默认 `handoff-package-default-current/result.json`（26），CPA `handoff-package-cpa-previous/result.json`（9），正式app `app-cpa-current/result.json`（9）。各报告 `ownProcessesExited:true`，外站与浏览器错误为空。
+- 正式宿主SHA：`B43F3B19CDAF0BA31D7DF835C6D23846F1B6A6B919213C6E14C6EE276B3F34D4`；正常CLI SHA：`B367640B35F777BAD3AD1D0C1C54551A0DB35934B07F138AE0895DCCE245DD3E`；CLI源SHA：`6B2A3C5F8FC961B16B1756B07AF5A667CA9832CA1E22E9D83F9FEC8DA65AEA08`。构建备份：`temp/GameCowork/build/003cf8b268094b2baace1945f60d4e6c`。
+- Editor缓存候选两代27项：`tests/editor-installations-cache-6921fe51-6531-456e-be2c-d2c9176c0b7a/summary.json`、`...-828b1b6d-730a-4403-9656-13d282f7866f/summary.json`；不作为最近文件mtime的独立验收。
+- 可选 `flexibleLayout=1` 的链式探针存在失败记录（`e2e-final3-optional-current`）；它不属于默认入口，本轮不宣称其最终完整通过，作为后续专项。默认右栏的多文档锁/接手/保存已分别实测。
+- 账号研究与后续合同：[来源审计](codelyreversebackup/api/asset-generation-and-canvas-source-audit.md)第6节。没有新增账号broker或读取原凭据。用户私有配置不进入Git或包；接手时保留本应用已有private目录与模型设置，不重复索要或输出密钥。
+
+<a id="feature-matrix"></a>
+
+## 已完成功能与代码入口矩阵
+
+表内“历史真实 Editor”表示已有自有工程 / 已许可 Editor 实测，但本轮没有重跑；“本轮”仅指当前资产与主视图改进范围。更老状态表里仍有未勾选或“未启动团结”的文字，须以较新的具体验收段为准。
+
+| 功能域 | 已实现范围 | 主要维护入口 | 证据与剩余边界 |
+| --- | --- | --- | --- |
+| 宿主通信 / 生命周期 | 请求 ID、单次发送、多帧与最终帧、Core 中继、工作区代次、自己子进程回收 | `src/shell/src/main.rs`、`transport.rs`、`process_lifetime.rs`；两代 store / messenger | 历史与本轮隔离 HTTP / 进程门禁；HTTP 200 不是内层成功 |
+| 项目管理 | 添加、打开、切换、关闭、收藏、注册持久化、缺失目录提示、最近改动排序 | `workspaces.rs`、`main.rs`、两代 TJHubRoute、`assets/gamecowork-project-status.js` | 项目刷新仍读实际改动；有界扫描不完整会提示；不写官方 Hub 注册表 |
+| Editor 安装缓存 | 持久快照、15 分钟复用、过期后台扫描、显式刷新合并、失败保留、SSE 更新 | `editor_installations_cache.rs`、`editor_installations.rs`；两 Core `unity/getHubProjects/getHubEditors` | 本轮候选两代各 27/27；该 driver 没有独立 mtime 排序断言，不能混称 |
+| 安装模板 / 许可标注 | 真实选定 Editor 本地 tgz、版本 / SHA / 依赖、新建与取消、坏包独立诊断；Unity / 团结 / 工作区权限分开 | `project_templates.rs`、`editor_licensing.rs`、`gamecowork-editor-licensing.js` | 历史真实 Unity 和 Tuanjie 完整模板导入均已通过；在线下载、Editor 安装卸载、许可激活仍未实现 |
+| 聊天 / Agent | 本地模型、真实流式响应与取消、A/B 会话隔离、审批、文件 / 命令工具、持久历史 | 两 Core 入口；`src/agent/cli-main.beautified.js` 与资源；宿主 ACP 中继 | 自动门禁使用同源 guarded Agent 与 loopback 模型；正常交付 Agent 不带 guard；手动 CPA 按本轮表单列 |
+| 初始化 / commands | 复用真实 Redux messenger；CLI 初始化命令缓存登记后回放；refresh 等已有初始化且拒绝旧代次 | 两代 store 与 index；Core `Tma/Pma` | 首次 slash 超时已定位并修；历史实际 Core 7/7 与两代 GUI / 并发刷新已证 |
+| 会话分支 / 回退 | 按原会话和工作区冻结身份；分支持久成功再发布；真实预览 / applied 结果；失败保留原会话 | `assets/gamecowork-history-operations.js`、两 Core history、CLI RewindService | 历史原 GUI / 实际字节通过；多文件恢复不是一个原子事务，部分失败须保留实情 |
+| 文件 / 搜索 / 终端 | 文件树、范围读取、搜索与 watcher、SHA 保存 / 备份撤销、ConPTY 真命令 / resize / exit | `files.rs`、`mutations.rs`、`file_events.rs`、`terminals.rs` | 历史及本轮完整 gate 回归；不是任意目录权限或远程终端 |
+| Git / Diff | 原界面分支、status、HEAD / index diff、stage / unstage / discard，冲突与版本保护 | `git.rs`、原两代 Git / Diff chunks | 历史包内 20 项；不自动覆盖并发保存或执行任意 Git filter |
+| 自定义能力 | Skills / Extensions、Commands / Subagents 的项目 / 全局 CRUD、SHA 冲突、ZIP、启停 / 重启；HTTP / stdio MCP 实际调用 | `gamecowork-custom.js`、两 Core、Agent CLI、自定义前端 chunks | 历史与本轮 gate；stdio 只用受控 fixture 验证，外部市场 / OAuth / 任意第三方不由此证明 |
+| Unity Insight | 真实 SQLite 索引、C# / Shader / YAML / GUID、方法 / 引用、watch / rename / rebuild、启停与双工程 | `insight.rs`、`src/unity-insight/bundle/`、原侧栏 / 设置 | 历史真实 worker / GUI 22 项；Agent vfs SDK 到同一个 worker 的接线仍有缺口，不等于模型 Insight 问答 |
+| C# LSP | 显式启用、hover / definition / references、未保存版本 / UTF16、双工作区与 Job 清理 | `lsp.rs`、两代 Monaco、`vendor/csharp-lsp/` | 历史 SDK fixture / GUI 20 项与实际 Unity 经典工程 6 项分别通过；依赖 .NET 10；不自动生成 / restore 工程，不覆盖其它语言 / ACP LSP |
+| 原生基础体验 | Windows 单实例、目录启动转交、最小化恢复、独立防休眠偏好 | `single_instance.rs`、`keep_awake.rs`、`native_window.rs/js` | 历史真实 Wry 单实例 11 项；防休眠测试会抑制电源效果；实验无边框手势 / DPI 仍未全面验收 |
+| Scene / Game 与其它窗口串流 | 自有 UPM 桥、实际 JPEG、输入映射、多槽、黑边、重载 / 关闭；大屏尺寸有界规范化 | `editor_bridge.rs`、`stream_layout.rs`；`src/editor-bridge/Editor/`、`windowBridge.html`、`gamecowork-image-frames.js` | 历史真实 Unity、Tuanjie、双引擎四槽；大屏双代各 21 项，包含六视图 / Hierarchy / Inspector 输入；不是 WebRTC / 音频 |
+| Editor 基本控制 | play / pause / step / resume / stop / refresh；真实 completed、排队取消无 ghost、已提交不假回滚 | Editor 控制状态机、`EditorCancellation`、Agent 工具与 `editor_bridge.rs` | 历史两引擎 GUI 各 15、严格 Agent 各 26；本轮未重跑 Editor |
+| Editor 查询 / Console | loaded scene hierarchy、对象与序列化组件、六项上下文、真实 AssetDatabase 与已加载包；Console 当前原生视图及批准 clear-all | `EditorSceneQueries.cs`、`EditorContextQueries.cs`、`EditorAssetQueries.cs`、`EditorPackageQueries.cs`、`EditorConsole.cs` | 历史 Unity：模型上下文/资产/包 48项、SceneQuery40、Console28；新查询团结主要为 DLL 编译，不推定全动作运行完成；Console不是隐藏全队列 |
+| 场景有限写入 | 空对象 create、局部 Transform / activeSelf modify、已加载既有场景 save；Undo / dirty / nonce / domain | `EditorSceneMutations.cs`、Bridge / Agent / Rust 白名单 | 历史 Unity source44、模型30、候选31；组件 / prefab / SaveAs / 包安装与任意脚本仍缺；SaveScene 有路径式 TOCTOU 边界 |
+| 原 Quick / History | 原模型参数控件、手绘 / Undo、网格 / 列表 / 日期 / 标签 / 丢弃、真实三媒体、再生成恢复 | `src/frontend/bundle/codely-generator/`，`gamecowork-codely-generator.js` | 本轮双代原组件交互与冷重启；官方45模型仍未逐项映射，未配置明确失败 |
+| 原 Canvas 本地编辑 | 原 ReactFlow、Markdown、拖动、完整 graph / viewport / unknown fields、版本、编辑租约与接手 | `codely-canvas/`、`codely_canvas.rs`、`codely_http.rs` | 本轮原上传 / 视频截帧及重启像素；默认右栏 / 多iframe两代已验证，最终包current26/26；云协作 / 模型 schema 未接 |
+| Canvas 跨页最新图 | 已保存本地图的 `Mh` 不使用跨 iframe 共享旧 localStorage，沿原 `sb.De→Fm` 下载已提交图；draft / 非本地不变 | Canvas source ledger `saved-local-canvas-read-through` | 精确 patch 与原绑定保留；故障源是服务器700ms保存与本地2s debounce卸载取消差异，不是时间精度；最终默认包26/26与真实Mh/De缓存契约已通过 |
+| 自有媒体 / 参考输入 | JSON / multipart、任务冻结输入、真实媒体校验与缓存、Range / export、换端口URL重定位 | `gamecowork-assets.js`、`gamecowork-codely-generator.js`、`generated_assets.rs`、`codely_http.rs` | PNG/JPEG/WebP/MP4/WebM/GLB，单文件64MiB；私有注册固定UUID与SHA；大型字节走native不进16MiB Core帧；音频等明确拒绝 |
+| CPA 显式本地图片绑定 | `cpa-gpt-image-2` descriptor、精确 Provider readiness、固定参数、原提交/轮询/结果/History；实际PNG尺寸 | `codely-generator/local-models.js`、`configuredCpa/isCpaTask`、`/local/model-bindings/…`、`gamecowork-assets.js` | 本轮8契约与双代9 GUI；真实服务及正式包证据按上表；不是原官方model或完整自定义Provider设置页 |
+
+## 当前架构与数据流
+
+```text
+两代桌面 / 工作区 GUI
+  ├─ 原聊天、文件、Git、设置 ── HTTP / SSE / WebSocket ── Rust 宿主
+  │                                                        ├─ 工作区 / 文件 / ConPTY / Git / 进程 Job
+  │                                                        ├─ Insight worker / C# LSP
+  │                                                        └─ stdio ── Node Core ── 自编译 Agent CLI ── 已配置模型
+  ├─ 原 Quick / History iframe ── 同源兼容 API ── 默认 Core owner
+  │                                   └─ gamecowork-codely-generator.js
+  │                                        └─ gamecowork-assets.js ── 明确绑定的自有 Provider
+  └─ 原 Canvas iframe ── codely_http.rs / codely_canvas.rs
+                           ├─ 自有完整 graph / 版本 / 编辑 lease
+                           └─ 上传、媒体读取、受控 URL 重定位
+
+Agent Editor 工具 / GUI 控制 ── 固定工程身份的桥 ── 自有 UPM ── 真 Editor 主线程
+Scene/Game/窗口 ── 实际帧与身份几何 ── native二进制 ── 原接收组件
+```
+
+- 维护输入只在 `src/`；冻结 C# 依赖在 `vendor/`。前端仍是维护 bundle，尚无可复现 Vite 源工程；两 Core 入口成套修改。`research/tauri-shell/` 不参与当前宿主。
+- 正常工作区 / 偏好位于本应用 LocalAppData；Core与CLI用自己的 home；生成任务 / Provider / input / 产物归 Core home 的 `generator/`，Canvas 图 / 版本归本应用 data。不得读取原软件账号或 Hub 用户数据补身份。
+- 上传：同源 raw / 原 multipart → Rust 固定UUID暂存并限制字节 → 私有 Core 注册解析 / 真实格式 / SHA → 自有 inputs 持久。公开 RPC 不开放路径注册与路径查询；暂存只清自己的文件。任务提交再次校验输入 snapshot，不接客户端任意 path。
+- 结果：Provider 实际 bytes →格式/CRC/长度校验→受控缓存与任务原子提交→原 output.data 投影。Rust 按 task/artifact/input 身份、范围和 SHA 直接读媒体；大资源不做 base64 stdio 往返。
+- Canvas 保存：runtime session 与 document lease 分开；HTTP GET 对已登记自有媒体完整 URL 值换当前 origin，磁盘图原字节 / 外部链接不变。已保存本地图重新打开沿原下载流程读新提交；未保存 draft 保留原行为。
+- 生成模型映射：本轮只有明确自有 CPA descriptor。保留 `studioModelId`、完整原 payload、scope 和实际 Provider model；不按显示名字猜映射、不使用假付费字段。
+- 测试的 guarded Agent、loopback Provider、工程、浏览器 profile 和日志全在统一 temp；正式 `app/` 经构建脚本装配正常 Agent。测试结果和包装来源分开记账，不能运行 guard 包当正式交付。
+
+<a id="handoff-plan"></a>
+
+## 后续实施计划
+
+以下是接手顺序建议；真正活动状态仍由 `RESTORE_STATUS.md` 记录。每项先找已复用原逻辑，再补确实缺的本地边界。完成标准必须包含真实用户操作链、原始返回字段和最终落盘 / 媒体 / 编辑器结果，不能仅看按钮、HTTP 200 或编译成功。
+
+### P0：本人官方账户、组织订阅和站点交换
+
+**P0-1 独立主账号 broker。** 来源：`codelyreversebackup/api/asset-generation-and-canvas-source-audit.md` 的“本人官方账号”第1–6节；原 CLI `VXu/HXu/QXu/qXu`、Core `are`、GUI `Mx/i4n`。拟新增 `src/core/binary/out/gamecowork-codely-account.js`，当前文件不存在。先实现 mandatory `vault.seal/unseal` +注入fetch的独立模块，再提供 Rust DPAPI，最后两Core入口与原弹窗接线。接口 start/poll/cancel/logout/refresh/status/close 及并发/代次约束已详写第6节。
+
+真实链为官方主域 device initiate → poll → exchange → external/me，client_name诚实填写GameCowork，是否接受需官方正常回执；不冒用原CLI客户端名。只给renderer验证页面/码/到期和白名单session数据；auth_request_token、授权码、access/refresh留受保护后端。先测pending/slow_down/expired/denied/completed、并发去重、取消/登出的晚到回执、原子密文持久/文件占用、refresh轮换和400/401重新登录，再由本人在官方返回页面完成一次真实授权。依赖：用户已授权连接本人账户，但本轮未执行；DPAPI及官方client_name接受规则未验证。禁止导入原凭据、读浏览器cookie、从JWT/截图造用户名或Pro、让官方登录替换CPA模型。
+
+**P0-2 实际组织与订阅。** 来源：原 `are.listTeams/listOrgs/getUserPlan/getUserUsage`，GUI `hV`；详细路径在同审计第3–4节。主会话通过后读取实际 external/me / teams，以真实 current_team_id 或已验证成员orgId查询 `/api/user/plan` 和usage summary/exhaustion。先实现白名单DTO/组织切换竞态和失败空值，再复用原账号展示。验收至少两组fixture组织不同权益、退出/重启、刷新过期及真实本人当前组织；没有第二真实组织不得造双组织验收。未知保持未知；不调用CLI推理Key端点，不把一个组织的Pro复制到所有组织。
+
+**P0-3 Quick / History 身份交换。** 来源：原host `kG`、Quick `s1e/Mn`；`GET /api/editor/sso/bootstrap` → `/api/user/me`，Cookie/CSRF与专属credit接口。主账户可用后独立实现受控服务器会话/必要cookie jar，并以精确iframe source/origin和代次接原协议；不要把官方Set-Cookie冒装到loopback域。先fixture验证bootstrap成功/失败/刷新/登出，再本人真实只读user/credits/paid-status。报价和生成单独按明确模型授权验收。主域付费不能作为Quick paidType，未验证报价不能填零积分或假fingerprint。
+
+**P0-4 Canvas 身份交换。** 来源：原host `QG`、Canvas `mg/Cm/pg`；`POST /api/v1/auth/exchange` 取得Canvas专属tokens/user，再profile/points。与主token分域保存；主会话轮换后重新exchange并废弃旧请求。先fixture过期/取消/登出/错域token，再本人真实profile/points。尚无已证实Canvas独立refresh端点，不把主域refresh用于Canvas JWT；不把paid映射成admin。本地图/本地CPA仍保持可辨识模式，不伪装云协作。
+
+### P1：原生成节点、下载与可配置服务
+
+**P1-1 Canvas 模型目录与schema执行。** 来源：原Canvas `aD/oD/sD/uD/YS/ZS` 读ai-models / models/:id/schema，`GR→oC→cC→mC→dC/fC` 处理表单、上游输入、创建轮询与outputMapping；AMIS原静态组件已经具备。先确定使用本人真实官方schema还是明确标记的本地Provider schema，不能混称来源。选一个模型/一个节点，保存完整实际schema与来源SHA，验证inputParams、taskLifecycle、状态、outputMapping和错误；再扩图片→视频→3D。原 `sF` 提供上游输入，不等于完整DAG调度；先验证一个有实际入边参考的节点，再多节点。验收实际PNG/视频/GLB、node.data/history、原渲染、下游引用、冷重启、失败/取消及无重复创建；缺schema或价格明确不可用。禁止填造官方schema、参数/点数和远端取消回执。
+
+**P1-2 原下载链。** 来源：原Host `openurl` 到 `/api/tauri/download-url`；当前专属native路由仍缺，已有 `generated_assets.rs` / mutations只证明旧导出能力。先静态核对原消息字段及两入口调用，再增加最薄原路由，只处理已登记自有媒体身份或经官方授权且明确来源的合法下载；固定工程/原生保存位置、实际SHA、无覆盖/版本检查。验收原Quick和Canvas的真实下载按钮分别落盘、重名、取消、scope、换端口、损坏媒体和外站拒绝；不能以浏览器打开URL或旧generic Save通过替代原按钮。
+
+**P1-3 Provider 设置与原模型显式绑定。** 来源：`gamecowork-assets.js`现有Provider配置；`gamecowork-codely-generator.js`的本地binding；`local-models.js`；审计“自定义服务入口”节。已缓存原Quick/Canvas没有已证实用户API Key设置页，AMIS通用输入能力不代表原后台配置已取得。先盘点当前产品可以复用的设置容器与配置读写，再让用户编辑现有Provider并保存显式descriptor→provider映射；不重建替代Quick/History/Canvas。按真实API返回发布逐模型capability，启停/删Key/改模型立即失效；任务冻结原payload/模型/Provider版本，改配置不将旧任务发向新endpoint。
+
+当前通用模板具体缺陷：`normalizeSpec()`用`parameters:{}`试render，`{{parameters.size}}`一类路径保存即报unknown/unavailable；整体`{{parameters}}`可用。先把保存时的合法模板语法校验与运行时实际数据解析分开，再对缺字段/危险路径/类型/数组/JSON/multipart补契约；不要用dummy固定参数掩盖所有情况。CPA本轮固定参数配置可用，不代表此缺陷已修。验收原控件实际payload到fixture精确字段/bytes、secret不进入public/明文metadata、超时/重启/取消/幂等、错误维持失败；最后按用户指定单个实际Provider少量手动复核，不把自动门禁变成收费测试。
+
+**CPA文字模型补验。** 本轮已通过真实Responses文字与两种接口的函数调用协议，已在正常模型列表添加GPT-6.1 Sol · CPA；尚未针对用户真实CPA跑完整App ACP流式/工具执行/取消链。用自有临时工程和无副作用工具补一次实际Agent验收，核对wireApi、输出token预算、工具ID、流式终帧与取消；不能把独立HTTP回执当作完整Agent执行证明。
+
+**P1-4 Quick原模型逐项支持。** 来源：`tests/fixtures/codely-generator-api-contract.json`的45描述、builder、10目录；原 `xN/hne/hwe/jwe/Bwe/wF`。先选一个已明确可用的原模型契约，按originalModelId显式绑定，保存完整payload及可信参考URL→已登记input/artifact/SHA映射；保留schema/格式约束。图片/首尾帧/多模态视频/3D各自验收，不用单一prompt/model伪覆盖45项。自有CPA descriptor继续独立；没有报价用明确本地能力，不造官方paidType。
+
+### P2：其余能力与产品体验
+
+**P2-1 音频和其它原节点。** 来源：Canvas `YZ`上传、音频renderer及`Bz/GR`，图层`Kz→QI→tI`、合成`Zz→QI→HI/hI`、导演台`Wz→QI→HF`。先补真实音频格式判别、时长/解码/大小/Range与原上传字段，再接一个原音频节点及waveform/playback；FBX/ZIP/SPLAT分别确认原消费者、解码依赖和有界格式验证。图层和视频合成必须从实际导出bytes检查像素/时序/音轨；导演台先查真实scene持久API。不能将估计上传进度当字节进度、thumbnail当3D渲染、内置三角轨迹当真实视频分析。
+
+**P2-2 真实团结的新操作与Editor扩展。** 真实Tuanjie模板、Scene/Game、输入、控制和双引擎已有历史验收；现在需验证后加的Console、上下文、资产/包、Scene写入在选定真实Tuanjie上的行为，不能重复声称从零未接入。复用`tests/integration/editor-*-smoke.mjs`与桥README，使用自有工程/已有许可，先只读再审批写入，核对实际engine/root/domain/issued ID/applied/文件SHA/Undo及重载取消。随后再按原26工具管理器目录分阶段补组件/prefab/SaveAs/资产写/包安装、隐藏Console全队列/增量、CustomTools；每项都有实际Editor对端与最小审批边界，不执行任意脚本来冒充已恢复动作。依赖真实已装版本与许可，绝不自动激活/登录或修改用户工程。
+
+**P2-3 原生桌面体验。** 来源：`native_window.rs/js`、原生窗口研究、默认系统decorations。在真实Wry/WebView2用自有窗口验证拖动/resize/最大化/焦点/关闭、不同DPI与多屏、OS拖放；不能以headless Chromium代替。实验无边框保持显式开关，过关后再决定默认。托盘/通知/deep-link/多窗口/更新器另建真实生命周期与失败反馈，不因原前端按钮存在就宣称完成。
+
+**P2-4 音频串流 / WebRTC / 远程。** 当前是image-frames，不是WebRTC。先独立音频采集播放、静音/回声/中断与资源释放，再真实协商/拥塞/重连；远程需自有配对、授权、目录/Agent/终端/Editor路由及断线恢复。仅放开监听地址、转发端口或复制本地workspace许可均不算远程功能。自动验证只能受控两端fixture，公网部署和费用单独授权。
+
+**P2-5 索引、LSP、安装与分发。** Insight的Agent vfs SDK应经ACP/Core转既有Rust worker，保留llmContent/returnDisplay与请求级取消；先issued-ID/双工程/关闭/watch/restart，再大工程性能和模型问答。LSP其它语言/扩展/ACP第二轨逐语言绑定真实runtime。Editor在线安装/模块/下载模板需要真实队列、校验、取消/断点、盘空间和EULA流程，不能执行原Hub原生实现冒充自有功能。安装器/自动更新先保证签名/回滚/数据兼容与包来源，日常仍只有一个app目录；本轮没有GitHub发布或提交推送。
+
+## 接手第一小时
+
+1. 读AGENTS、README、ARCHITECTURE、DEVELOPMENT和RESTORE_STATUS最新段，检查git status；保留现有WIP/未跟踪文件，不reset/clean，不创建第二份源码。
+2. 从root最终交付记录读取当前app manifest、builtAt、resource count、CLI guard=false及对应源码/候选SHA；以本节最新1544资源与实际manifest为准，不以旧1203/1543等资源数推定当前包。
+3. 核对`tools/import-codely-generator.mjs --check`、Canvas来源契约与source ledger。功能补丁必须记录可逆来源；不重写原45builder和24绑定来“简化”用户要求。
+4. 优先恢复账号P0任务前先确认root已经结束本轮打包；本轮没有account模块可以直接调用。不要在接手时自动触发真实设备授权或收费生成，保留用户选择和显式可见流程。
+5. 修改后先定向契约，再HTTP/E2E；影响业务共享逻辑必须双代，涉及包装必须包内复验。`verify-local -RealCore -Chat`自动外网禁用，真实Editor另选`-Editor`；真实CPA和账号行为单独记录。所有产物留统一temp，按自己启动的PID与唯一目录清理。
+
+本轮用户已要求收尾交接，后续开发由下一位Agent根据此计划继续。不要因旧过程记录出现“进行中/未覆盖app”而重新执行已完成的装配；先核对最新manifest和本节报告。默认完整gate不调用真实服务，手动真实调用单独说明与记录。
+
+
+---
+
+
+## 原客户端恢复开发过程（2026-10-02 至 10-03，历史过程）
+
+以下保留各次验证与候选阶段事实；最终交付与待办以文首交接段为准。
+
+用户再次提供真实 Codely 的快速生成、生成记录和画布截图，明确指出自研通用面板偏离目标，要求拆解并复用真实 EXE 加载的现成实现。此前“通用 Provider 面板通过验证”只证明自研功能范围，不能证明原 Codely 功能恢复；本节优先于下方旧阶段的界面交付表述。已停止进一步交付自研替代界面，保留已有修改，不回滚其它真实修复。
+
+参考输入阶段的 `reference-inputs-20261002/verify-full.log` 在用户纠正后主动中止，不作为完整通过；仅终止从已核实 PID / 创建时间 / 唯一命令建立的自有验证进程树，记录 `verification-interrupted-for-source-restoration.json`。该阶段候选没有覆盖正式 app。其已验证的离线项目收藏、Editor 到期后台刷新与底层文件传输逻辑保留，但不继续用自绘资产表单或素材布局代替原 Quick / History / Canvas。
+
+### 已核实来源与实际复用
+
+真实安装加载链重新核对为 `cowork.exe → dist/index.html → index-DG7m4Xaq.js → /gui.html → assets/index-BRxZ4eG7.js → PG/MG/jG 与 QG`。原生 EXE SHA 为 `55EA13A9707774DF61A707AC55179E94ABB9690583DE986C528DA056A69B8C3B`，活动桌面 JS 为 `E75A4C210950DBE4A03A33935F0F6DA1EE2ADB7B53FEBC6D9BCF520003FE9B13`，活动 GUI JS 为 `6CB34283488C0A2BC348EA6F43769CCCF810C5EB852B15FAFBB78F40CAB20707`。生成与画布主体是该原包明确加载的远端客户端，不能称为 EXE 内嵌源码；2026-10-02 的缓存字节也不能冒称与截图历史日期逐字相同。
+
+| 维护输入 | 实际内容与证据 |
+| --- | --- |
+| `src/frontend/bundle/codely-generator/` | 完整原 Quick / History 主 JS、CSS、3 viewer、原字体 / 背景 / 空态图和 Draco，共17原资源。保留原 HNe/UIe/FZ/VNe、手绘及45模型描述 / payload builder。`source-ledger.json` 记录原/当前 SHA 与精确可逆补丁；`tools/import-codely-generator.mjs --check` 能还原原SHA，不是截图重画 |
+| `src/frontend/bundle/codely-canvas/` | 完整原 ReactFlow 客户端与315项原资源，按实际 ESM import/import()、Vite依赖表和CSS引用补齐静态依赖。24个关键图编辑器 / renderer / 上传与截帧绑定逐字节保持；AMIS、Monaco、字体、Draco等依据原引用匿名读取并核SHA，没有执行原 EXE、读取原凭据或调用原生成 / 账号接口 |
+| 两代主 `index-*.js` | 已撤下自研 AssetPanel / CanvasPanel 的提前返回，重新使用原 PG / QG / sq 三页签和 iframe组件；局部恢复原 `codely:*` 消息协议，本地仅改同源URL、origin/source校验和身份边界。native不读取 / 发送原平台token，修改登记在client ledger的hostAdapter中 |
+| `gamecowork-codely-generator.js` | 依据真实23组API消费者合同适配本应用已有历史与媒体、筛选、标签、偏好和丢弃。不能把该自有服务适配器称为原平台服务端；无映射的模型生成返回503，官方账号 / 积分 / 订阅保持不可用 |
+| `codely_canvas.rs` / `codely_http.rs` | 原API形状的本地画布存储、完整图、真实版本提交 / 恢复及编辑锁；runtime本机session与浏览器编辑lease分开。原组件未重写，云协作 / 私有模型schema未伪造。实际媒体用native二进制响应与Range，本地HTML设置HTTP frame-ancestors self |
+
+原图原始数据、服务器schema和计费 / 组织能力分别记录边界；不以本地假余额、假会员、伪造官方token或空的成功回执消除缺口。原相机轨迹懒chunk自身按时长构造三角函数轨迹，不能宣传为真实视频轨迹分析。原客户端的filter.svg URL拼写错误且实际404，保留证据，不画替代图冒充原资源。
+
+原HNe现在包含精确记录的本地能力读取、提交、按钮与状态文案小补丁，不能称整段逐字节未改；原DOM/CSS、FZ/VNe和45个模型builder保持。真实`localGeneration:false`显示“服务未配置 / 此模型尚未连接生成服务”，未知/错误/仅全局true而无逐模型证据显示“本地状态未就绪”；按钮和快捷提交均不跳转官方购买或伪装可生成。该状态与原账号/付费/积分字段分离。
+
+### 当前验证状态
+
+证据根 `F:/AI/AgentMake/temp/GameCowork/codely-source-reuse-20261002/`。实际源码来源 / 切片已复核，Quick导入17项与45描述、Canvas315资源与24原绑定核验通过。最新原客户端 / 本地身份 / 兼容API / multipart上传 / 媒体重定位组合 **38/38**，记录 `final-codely-contracts.log`；Rust Canvas与HTTP聚焦 **10/10**。这些都不等同全部原功能已完成。
+
+`e2e-inspect-current-04/` 已在真实 Rust / Core / 主GUI中加载嵌套原客户端：四种生成模式和原模型 / 手绘控件可见，原History网格显示3个自有模拟服务实际PNG / WebM / GLB结果，原Canvas图库与新建入口可见。三张实机截图及API请求日志已保存，原平台请求为0。该次报告明确 `fullInteractionValidation:false`，尚不能证明手绘保存、原模型生成、所有节点执行、图库版本恢复和冷重启完整流程；完整交互driver正在继续。
+
+后续 `e2e-full-current-07/` 与 `e2e-full-previous-01/` 各 **17/17**：原模型与参数选择、真实手绘像素及撤销/重做、History网格/列表/日期/标签/丢弃恢复、PNG/WebM/GLB解码、原文本浮动工具栏进入真正Markdown编辑器、实际节点拖动保存均通过。重启Rust/Core并使用全新浏览器profile后恢复真实图、位置、标签和偏好，未重放生成；外站请求与致命浏览器错误均为0。原模型生成503是“明确不可用”断言，不是生成成功。
+
+原multipart现已接通native暂存与Core真实文件注册：PNG/JPEG/WebP、MP4/WebM、GLB最多64 MiB，原字段和顶层`{url}`回执保持；不支持的音频/FBX/splat明确报错。Canvas上传需要已保存画布和当前浏览器编辑租约。重启后的旧端口媒体URL通过私有helper核对实际身份、作用域和SHA，再仅替换读响应中的完整字符串，不改磁盘图或外部URL。
+
+媒体版 `e2e-media-current-03/` 与 `e2e-media-previous-01/` 各 **21/21**。原手绘“保存到参考图”的实际上传/解码像素一致；原媒体上传菜单读入PNG和自有红/蓝两段WebM，原进度条75%定位到蓝段，点击“截取当前帧”后产生实际PNG和flowing边，PNG完整RGBA SHA等于蓝段且不同于红色首帧。重启Rust/Core到新端口、全新浏览器profile后，原上传图/视频/截帧PNG均重新解码一致；两个driver各自两次启动的宿主与Core PID均退出，外站与浏览器错误为0。前两次菜单/进度条selector失败记录保留，不算产品通过。`http-private-adapters.log` 的真实Rust HTTP **17/17**另含私有RPC不能被公开invoke穿透、缺失/外站Origin写请求拒绝。
+
+随后发现原客户端可选flexible布局中，隐藏的PG画布与聊天分栏画布会共享sessionStorage编辑ID。现仅在原jV租约入口加入本地document独立内存UUID，原wm/upload边界只读已经创建的owner；原非本地分支不改，也不读写全局sessionStorage。315原资源、24绑定与1824静态依赖、缺身份/同storage多document/重载代次契约 **9/9**通过。进一步实机核实该布局须原有GUI query `flexibleLayout=1`；默认Rust窗口未启用，前两次专项在默认界面找布局选择器失败，不能据此称默认界面已有双Canvas或产品锁测试已通过。专项改从原支持的可选路由验收，不改产品默认值。三个nonliteral动态import仍须按所用功能运行验证，静态闭包不冒称覆盖所有路径。
+
+初轮Release候选 `candidate/` 已装配 **1542文件**（`build-candidate.log`），但早于document owner和本地未配置文案修正，仅作为准备中的候选；不能据此声称正式包或最终源码已通过。
+
+冻结产品源码后的 `tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage <guarded-cli-v4>` 已完整 **exit 0**，见 `verify-complete.log` / `verify-complete-exit.txt`。Rust **148/148**，契约/HTTP/生命周期、两代缓存/Hub、Git/LSP、真实Core/索引、Agent聊天/文件/审批/历史、扩展/stdio MCP/命令子代理全部执行；未运行`-Editor`或真实商业服务。该门禁中的原客户端driver仍为稳定21项版，两代各21/21，报告为统一temp的`codely-assets-ui-2882945e-2b6d-4744-a7e7-09b512662f13/`与`codely-assets-ui-ac1c65ac-38ea-4bc7-8f43-916a394aaab6/`；新增双iframe专项随后独立验收，不冒称已在这次完整gate中执行。
+
+最终候选 `candidate-final/` 已装配 **1543文件**（`build-candidate-final.log`，`builtAtUtc=2026-10-02T14:17:07.0516071Z`）。`candidate-final-integrity.json`：全部size/SHA匹配，1510项可映射维护源无漂移，正常CLI guard=false。包内两代Editor cache各 **27/27**，报告 `tests/editor-installations-cache-6921fe51-6531-456e-be2c-d2c9176c0b7a/` 与`...-828b1b6d-730a-4403-9656-13d282f7866f/`；错误/外站/残留进程均为0。此脚本验证缓存重启/刷新合并/失效恢复/项目刷新分离与界面Changed联动，没有专门的mtime排序断言。
+
+专项继续发现默认右侧栏“AI画布”使用独立的`pw → cJ/ox`及token消息hook，仍指向旧远端，不能由资产页QG/sq的通过结果推断这个入口已接通。正补两代该入口的最小同源/身份边界；`candidate-final`因此不再是待交付的最后源码版本，后续将重新装配。默认右栏与可选flexible布局分别验收，不混淆入口范围。
+
+当前仍待完成：默认右栏入口与双iframe编辑身份验收、最终包回归、原模型到实际已配置Provider的明确映射与计费边界、其余节点执行、模型schema和其它服务器依赖。另静态发现原Host `openurl`发送的`/api/tauri/download-url`尚无对应native路由，不能把旧自研面板的导出通过记作原画布下载已通。正式 app 尚未更新为本节版本，避免把仅导入或部分通过称为完整恢复。
+
+
+## 真实 Codely 资产生成 / Canvas 来源复核（2026-10-02，本对话开发暂停）
+
+用户指出现有实现偏离真实 Codely，明确要求从实际 EXE 拆解四张资产界面。当前对话已停止产品开发和打包，转为只读来源审计；已有代码保留。研究入口为 [真实来源报告](codelyreversebackup/api/asset-generation-and-canvas-source-audit.md)与来源证据 JSON。实际原壳 / Core / CLI 已核 SHA、解包或原字节；原包内是 iframe 容器和桥，四模式快速生成、模型参数、参考 / 手绘、音频、历史筛选及 Canvas 图节点的内部来自其明确引用的公开客户端。当前公开部署与截图历史版本分别记录，服务端未恢复。
+
+图层 Canvas2D、浏览器视频合成、导演台 3D 场景、multipart 上传、直接上游素材传播及 schema 驱动执行均已逐组件定位，未知服务端 schema / 真实额度 / 权限和全图自动调度不补设计。最终 120 项来源 / 范围 / 清单 / 文档检查通过，布局检查通过；这组结果是只读取证复核，不是产品运行验收。
+
+通用自定义 REST 适配器和现有素材布局应按自研能力记账，不能称为真实 Codely 的生成 / 无限画布恢复。旧研究 T17 的七条新增字符串来自维护改动，在本次实际原 Core 载荷中不存在，原厂 canary.2 功能归因已纠正；研究提取建档不等于完整功能闭环。
+
+交付目录有并发写入：另一对话「持续优化主视图与 Provider」在同一项目工作，构建日志及实际 `app/package-manifest.json` 显示它于 `2026-10-02T11:02:27.7680482Z` 更新为 1,203 文件。此处仅记录只读观察，没有在本来源审计中构建、启动或复验该包；下方由该对话登记的自身验收也不代表原版功能对齐。本对话暂停不会自动停止另一对话，跨对话同步暂停要求另需用户明确授权。
+
+## 主视图与通用资产 Provider（2026-10-02，本轮已交付）
+
+本轮按用户指出的启动重复加载和 AI 资产生成缺口继续修复；用户明确选择“先完善通用自定义接口”。保留接手时已有修改及未跟踪实现，继续对照 `codelyreversebackup/api/marketplace-feedback-walkthrough.md`、`agent-tools-and-llm-surface.md` 和 `codelyreversebackup_fromunityhub/REUSE_NOTES.md`。没有执行原版程序、读取原版凭据、访问真实 Provider 额度或修改用户工程，未提交 / 推送。
+
+| 研究对照及实际问题 | 本轮实现 |
+| --- | --- |
+| 原 Hub 持久安装列表与 changed 事件；原维护版本虽有缓存，项目发现仍调用项目 / Editor 联合扫描 | Core 分开 `unity/getHubProjects` / `unity/getHubEditors`；Rust 将安装 DTO 持久到自己的 `installed-editors.json`，15 分钟有效期、过期后台更新、显式刷新合并、失败保留旧时间与列表。两代项目页和安装页订阅同一变化，旧 HTTP 失败不覆盖新成功 |
+| 用户要求项目持续按最近改动显示 | 有界扫描 Assets / Packages / ProjectSettings 的文件元数据，以毫秒时间排序；既有文件改动可排顶部，无需修改根目录时间或注册表。缺失 / 不完整扫描保留提示；Editor 匹配保留产品和精确路径身份 |
+| 原 Codely 资产入口依赖官方嵌入页面，Core 只有云端历史 / 丢弃 / 下载接口 | 两份 Core 共用自有 `gamecowork-assets.js`，两代 GUI 共用 `gamecowork-asset-generation.js`。配置本地或 HTTPS REST 服务，支持三类资产、无鉴权 / Bearer / 自定义头、JSON 请求模板、响应和输出选择器、状态映射、异步轮询及无任务 ID 的同步输出 |
+| 已有资产实现的任务 / 配置 / Canvas 缺口 | 历史筛选不再污染快速生成；Canvas 再生成读取原任务完整参数；编辑保留空取消接口；名称变更不误中断；执行配置更改的旧回包不能复活任务。重复取消合并，关闭中止自有 I/O，持久失败恢复内存状态。Canvas 读取失败禁保存，轮询失败可恢复，工作区 A→B→A 晚返隔离 |
+| 实际媒体交付 | PNG / WebM / GLB 实际解码，按 task / artifact ID 读取已校验缓存，保存到选定工作区并拒绝意外覆盖。历史丢弃 / 恢复和 Canvas 引用 / 布局持久；重启不重复创建远端任务 |
+
+证据根为 `F:/AI/AgentMake/temp/GameCowork/mainview-provider-review-20261002/`。初轮候选 `candidate/` 为 Release **2.1.3-canary.2 / 1203 资源**；`candidate-integrity.json` 核对全部大小 / SHA，1170 个可映射维护输入一致，正常 CLI guard=false。初轮包内双代资产各 **27/27**（含同步模式、原生保存及真实 Rust / Core 重启）、双代缓存各 **26/26**（含项目页不重挂载接收安装变化）通过。缓存报告为 `tests/editor-installations-cache-7d44ab19-d8e3-4eb6-8807-a61fe05132b5` 和 `...-9276a6e5-fbab-4524-a4b9-a948289f123b`。这些初轮包内结果尚不代表下述最后修复已装配。
+
+完整门禁首次 `verify-full.log` 在旧“资产待开放”VM 预期失败；已改成注入实际资产工厂并保留非 native / 禁止原服务鉴权边界，80/80 契约通过。第二次 `verify-full-02.log` 的 Rust **128/128** 及两代缓存等通过，随后在项目页 Toast 栈的过早结束判断失败；该 E2E 还保留旧资产占位断言，正在随实际功能修正。两次 exit1 均保留，不写成完整通过。
+
+最终复核已补上对象存储 `application/octet-stream`、按 Provider / 工作区持久的幂等键，以及大媒体读取链路。媒体预览改走宿主可信缓存验证，不扩大 Core 的 16 MiB 帧上限；同步 Base64 校验还从递归正则改为线性扫描，修复大输出的栈溢出。最终 `candidate-final2/` 双代资产各 **30/30**，真实 **13,631,764 字节 PNG / 18,175,688 字符 Base64** 完成生成、解码、原生保存及后续 Core RPC；见 `final2-assets-{current,previous}/result.json`。`candidate-final2-integrity.json` 的 1203 项资源及 1170 可映射源均一致。Provider 契约 **36/36**、loopback 服务 **49/49**、新增原生大资源规则 **4/4**；大文件失败过程留在 `final-assets-{current,previous}/`。
+
+完整门禁第三次 `verify-full-final.log` 在安装列表 E2E 拦截旧 `getEditors` 时失败；测试现改为实际 `getEditorInstallations` 的显式刷新，保留旧安装与重试新回执断言，两代各 **19/19** 定向通过。第四次 `verify-complete.log` 已按冻结源码完整 **exit 0**。资产 driver 修正 Windows signal 退出记录，并在正式包验证中逐个核对自有宿主 / Core PID 消失；早期仅用 exitCode 的 `ownShellExited:false` 不作为存活结论。用户主动关闭正式 app 后，已完成原位更新及实际包内复验。
+
+### 本轮最终门禁与正式包
+
+| 实际命令 / 验收 | 结果与证据 |
+| --- | --- |
+| `tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage <guarded-cli-v4>` | **完整 exit 0**，`verify-complete.log` / `verify-complete-exit.txt`；Rust **132/132**，契约、HTTP / 生命周期、两代缓存与 Hub、Git / LSP、本地索引、真实 Core / 同源 guarded Agent、聊天 / 文件媒体 / 扩展 / stdio MCP / 命令子代理全部执行。未运行 `-Editor` 或真实商业服务 |
+| 自定义 Provider 与大媒体 | Provider 契约 **36/36**，真实 loopback 服务 **49/49**；原生规则 **4/4** 包含精确 64 MiB 上限、超限、篡改、链接、越界，以及与导出共用读取验证。同步模式、输出字段、通用 MIME、取消 / owner / 持久失败与幂等键均进入统一门禁 |
+| `tools/build-local.ps1 -CliPackageDirectory <normal-cli-v4> -SkipTests` | **exit 0**，`build-app.log`；用户已关闭正式程序后原位更新 `app/`，Release **2.1.3-canary.2 / 1203 文件**，`builtAtUtc=2026-10-02T11:02:27.7680482Z`（北京时间 **19:02:27**）。正常 Agent guard=false；测试由上述完整 gate 单独记账，旧二进制与暂存保留在 `temp/GameCowork/build/b8efea7f77aa4ea992dcb419e11f3b55/` |
+| 正式 app 资源审计 | `app-integrity.json`：**1203/1203** size / SHA 匹配，**1170** 可映射维护输入无漂移，正常 CLI 来源与 SHA 一致；没有将 guarded Agent 装入正式包 |
+| 正式 app 两代资产 GUI | `asset-generation-e2e.mjs --packaged --app-root <app> [--previous]` 各 **30/30**，`app-assets-{current,previous}/result.json`；实际包内 Rust / Core / frontend、同源 guarded Agent、loopback 服务，PNG / WebM / GLB 解码、原生保存、防覆盖、历史筛选、配置编辑、取消、Canvas 再生成及真实进程重启通过。大 PNG **13,631,764 bytes**、Base64 **18,175,688 chars**，保存 SHA 与实际源一致，后续 Core 请求正常 |
+| 正式 app 两代启动缓存 GUI | `editor-installations-cache.mjs --browser --binary <app EXE> --frontend <app/frontend> [--previous]` 各 **26/26**；实际暖启动在项目发现屏障未释放前显示缓存，项目刷新不重扫 Editor、过期后台变化更新仍挂载的项目页、失败保留 / 重试通过。报告 `tests/editor-installations-cache-52fc8c9f-451e-4b5f-87ce-cd71b145f3d9` 与 `...-6636ded9-4bce-4074-b69a-c8cc522ea835` |
+| 清理与外部边界 | 汇总 `app-validation-summary.json`；资产 driver 的四组自有宿主 / Core PID 均已退出，缓存 drivers `survivors=[]`。浏览器错误 / 外站请求为空；没有关闭用户其它进程、改用户工程或写官方 Hub 注册数据 |
+
+日常入口仍是 `app/启动GameCowork.bat`，没有第二个正式安装。首次使用新版本若尚无安装快照，仍需完成一次发现；后续启动先显示有效缓存，项目继续扫描最近改动。生成服务从“AI 资产生成 → 生成服务”配置，使用协议及剩余范围见开发指南；当前没有为用户配置或调用真实商业 Provider。
+
+范围边界：通用适配器不代表所有线上厂商已经实测；OAuth、multipart、WebSocket、上传型输入、节点图执行、Editor 在线安装和其它历史未完成项仍未完成。Canvas 当前为素材引用与布局，不把研究提取率或已有局部验收称为全部产品功能完成。
+
+## 持续拼齐功能逻辑：编辑器上下文、资产 / 包与场景编辑（2026-10-02，阶段已交付）
+
+上一轮属于已验证的实际进展：完整本地 / RealCore / Chat 门禁、正式包原位交付及草稿复验均完成。本轮继续沿研究与实际协议补更多操作，并按用户阶段总结 / 打包体验要求完成收尾；当前正式 `app/` 已更新为 **1,200 资源 / 6B2A Agent**。完整长期目标仍保留，未将当前有限动作集当作全部功能完成。
+
+已接通的维护源码：`unity_editor` 的工程根 / 选择 / 窗口 / 标签 / 命名层 / 当前工具查询；新增 `unity_asset` 的真实 AssetDatabase 搜索、资产详情与原生预览状态，以及 `unity_package/list_packages` 的实际已加载包快照。查询走主线程、范围 / 分页 / 字节限制和真实数据，未知 / 未实现动作报错；包列表不读取 manifest 来冒充已解析包、不调用联网 UPM。原生预览只在拿到实际 PNG 时报告 ready；无图形环境明确 unsupported。
+
+新增 `unity_gameobject/create/modify` 的空对象、局部 Transform / activeSelf 操作，及 `unity_scene/save` 保存已加载场景原文件。对象编辑有实际 Undo / dirty，磁盘 save 不自动 Undo。请求复用审批后的 nonce / domain / 工程身份，所有输入与存储代际检查先于单次 effect；错误回执保留实际 applied，不把提交后的取消误报成未执行。CLI 冻结审批前的工程，严格校验完成回执而不重放断连写入。尚未实现的组件 / prefab / SaveAs / 包安装卸载仍是完整目标中的缺口，不以本轮子集替代完成。
+
+阶段证据：上下文真实 Unity **17/17**（`tests/editor-bridge-context-0fc973a1-fb06-434e-ab9b-a0ac32c41e3e/summary.json`），实际 C# 边界 **12/12**、静态/meta **4/4**；资产 / 包 source headless **15/15**（`tests/editor-bridge-assets-packages-2929c3b1-2950-4b17-bb9c-f20d2a48285c/summary.json`）；场景写 source **44/44**（`tests/editor-bridge-scene-mutations-ab56ac61-b112-4624-9a0b-1aa48e891291/summary.json`），契约 **4/4**。均为自有 temp 工程、原始状态 / 文件字节 / Undo / 拒绝 / nonce取消 / 重载的实际观察；这些 source / 直接 TCP 证据不等同模型或包内通过。Unity / 团结 DLL 编译已完成相应范围；真实团结新操作未验证。Unity SaveScene 仍是路径式 API，检查至保存之间的并发替换不是原子句柄事务。
+
+实际模型联调发现并修正 `mQ` 附带 timeoutSeconds 而 Mutation 输入拒绝的兼容断点，公开矢量边界统一为 ±1,000,000，预算严格 1..180。随后修正 SDK 用通用取消通知覆盖实际 applied 结果：用户最终通知明确区分执行前取消、已提交且未回滚、结果未知。Own Unity 写入按真实 invocation / action 串行，同轮 modify→save 必须等修改回执后才发保存。真实函数审查又证明旧策略 `command` 优先可能掩盖实际 `action` 写入，现策略与执行字段一致，Editor / Console 校验拒绝 command / operation，实际模型负例确认无审批、无副作用。
+
+最终 Agent 源 SHA **`6B2A3C5F8FC961B16B1756B07AF5A667CA9832CA1E22E9D83F9FEC8DA65AEA08`**；正常 EXE SHA `B367640B35F777BAD3AD1D0C1C54551A0DB35934B07F138AE0895DCCE245DD3E`、guard=false。Context C# `BE36232E50402F7249D75152CDD47B6243FB92DCDE6D9E9E0559088800FA4117`；Asset `C48BE007EA3FDA4ADEC52B30A7BEE029DB9C0554E037F9DEDFA48CAF64037BA3`；Package `4F005817D3D744B2548E7EA72F2CA9921116DE7E7AF0E980FBC7EC7251582DC7`；Mutation `A35F3B10AE842085E26619974F0D8E3F9C8AC09470E68B4518C4722D03BDF212`。证据根为 `temp/GameCowork/logic-puzzle-next-20261002/`。旧 v1 / v2 / v3、编译 / meta / reload / README漂移失败证据保留，不冒充最终来源。
+
+### 本阶段最终验收与体验包
+
+| 实际命令 / 范围 | 结果与证据 |
+| --- | --- |
+| `tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage <guarded-cli-v4>` | **完整 exit 0**，本证据根 `verify-full.log` / `.json`，UTC 07:06:58 至 07:15:26。包含新增契约、既有 Rust / HTTP / 生命周期、Hub / Git / LSP、实际 Core / Agent / 索引 / 审批 / 历史与完整 GUI 聊天 / 文件媒体 / Skills / stdio MCP / 命令子代理；没有宣称全量 `-Editor` 通过 |
+| 实际函数 / C# 规则 | 新 CLI 操作 / action策略 / 取消消费者 / 串行调用契约 **7/7**，实际 C# 取消规则 **13/13**（包括 applied 错误回执不泄露 nonce / 不误报回滚）；Context 实现 **12/12**、静态/meta **4/4**，Asset/Package **3/3**，Mutation **4/4** |
+| source Unity 图形资产 / 包查询 | **18/18**，`tests/editor-bridge-assets-packages-83916cd2-40b0-4c46-afed-06063a0143c4/summary.json`；真实 native PNG pending→ready / 像素 / 限制、folder type、组件 / description 截断、加载包来源和原状态 / 字节保持，Editor 正常退出。headless 15 项另记录 unsupported，不与 PNG ready 混称 |
+| source Unity Scene 写操作 | 最终 **44/44**，上方 ab56ac61 报告；真实对象 / Undo / dirty / SHA 保存字节、scene / Assets物理代次、链接 / hardlink / 身份 / 重载及预算输入拒绝。团结 DLL 编译另 **2/2**，未证明团结运行 |
+| 最终 v4 实际模型写链 | **30/30**，`tests/editor-bridge-scene-mutations-agent-76c8295b-a9d5-45cb-bad4-271db098841b/summary.json`；审批 / issued ID / completed一致，拒绝 create/modify/save零提交，审批期间换工程拒绝；排队取消无ghost、已提交取消明确 applied:true且对象保留仅1提交。同一模型轮 modify→save 各独立审批，暂留实际 modify 回执并以真实 ACP 读取作为屏障，save 未先提交；释放后保存字节含本轮 `[21,22,23]` / active true，B未变 |
+| 候选实际包内模型写链 | **31/31**，`tests/editor-bridge-scene-mutations-agent-8c242fd9-8fa1-4695-a3f2-beec4c47efa1/summary.json`；加载候选桥、使用候选 CLI 资源、71相关资源核验及上述30行为通过。此后候选只重新装配 README 文档，所有运行输入及正式 app 均相同；主 EXE在该 driver仅hash |
+| 最终候选 r2 实际上下文 / 资产 / 包模型链 | **48/48**，`tests/editor-bridge-context-0e45a0e1-fc19-47ff-a51e-b92cfccc5ea0/summary.json`；含46行为、全部1200 ledger / 正常CLI catalog。实际包内桥39文件与维护源相同，正常CLI实列38工具；六上下文及资产 / loaded包实际issued结果正确，shadow play/clear被validation拒绝，Console哨兵 / 播放 / 选择 / tools / focus / Prefs / dirty / 字节保持。审批0、外站0，Editor/CLI正常退出；不冒称host GUI |
+| 预览 / 宿主 / 初始化回归 | 实际 `editor-bridge-smoke.mjs` **9/9**，`preview-regression.log`（真实帧 / 输入 / WindowBridge解码）；候选 `shell-http.mjs --binary <candidate EXE>` **16/16**；候选与正式 app `core-command-bootstrap.mjs --packaged --app-root <root> --package <v4>` 各 **7/7**，仅loopback models元数据，actorsStillRunning=[] |
+| 构建与正式目录 | `tools/build-local.ps1 -CliPackageDirectory <normal-cli-v4> -SkipTests` **exit 0**，`build-app.log`；正式 Release **2.1.3-canary.2 / 1200文件**，`builtAtUtc=2026-10-02T07:27:16.5516651Z`（北京时间15:27:16）。旧二进制 / 暂存 `temp/GameCowork/build/5478d84166494d438b5a582e8ef644aa/` |
+| 正式 app 审计 | **1200项完整 ledger / 来源通过**，`app-resource-audit-final.log`，`tests/editor-bridge-context-f1094f50-57e6-4d46-9325-89f3bc73a634/summary.json`；`app-candidate-summary.json` differences=[]。初次审计发现历史 `app/cli/gamecowork.exe.bak`，完整保留到 `temp/GameCowork/cleanup-2026-10-02/package-backup-fcc80c589d4e4c33bcb408eb682a1ec7/` 并附 MANIFEST / SHA，未执行 / 删除该备份 |
+
+已同步项目 README、架构、开发指南、测试导航及桥说明，按实际选项登记新契约和 `-Editor` 四个 driver。日常体验入口仍为 **`app/启动GameCowork.bat`**，原位更新保留用户状态；没有第二个正式安装、原版 / 真实 Provider / 用户工程实验，未提交 / 推送。对接操作需用户当前工程已安装自己的 `cn.gamecowork.bridge` 并运行 Editor；本轮自动验证只用自有工程与 loopback 模拟模型。
+
+完整持续目标的剩余范围仍保留：资产写入、包安装 / 移除 / 完整解析任务；组件 / prefab / batch / 场景创建加载及 SaveAs；Console全队列 / 增量 / GUI完整链；Custom tool真实激活与更多团结运行、原研究中其它未闭环能力。本轮没有把“基础查询与有限编辑”重定义为全部功能完成。
+
+## 持续拼齐功能逻辑：初始化、刷新与 Console（2026-10-02，本轮已交付）
+
+本节延续用户持续深挖完善功能逻辑的目标，完整目标仍进行。以下实际结果更新下方历史记录中的首次 slash 未解决及旧 app 状态；研究提取完成不等于全部产品功能完成。保留全部既有工作树和并行 Unity Hub 修改，未提交、未推送。
+
+已修复两个独立 Core 竞态：真实 Agent 会在 `session/new` 返回前发出 `available_commands_update`，登记 owner 后现在回放真实缓存；刷新等待已有初始化，不启动替代会话，并校验 CLI 的真实成功回执。工作区关闭后的晚到初始化和旧 manager 通知受 messenger / holder / 初始化代次检查，不能复活已关闭的 registry。
+
+首次 slash 的前端断点也已确证：同步观察中的超时请求 `0fa5d331-6c22-49c0-802a-5372c5aacf03` 来自 `ready:false` 的 Redux Native client，30 秒内没有 iframe send、父窗消息或 HTTP；迟到的 HTTP 属于另一 UI 实例的新请求。证据为 `temp/GameCowork/refresh-startup-diagnosis-20261002/commands-current-race-sync-5e/refresh-trace.json`。两代原生启动现在让 Context 与 thunk 复用真实消息 client，并保留同一 Redux store、persistor 和草稿；`Ab` 后恢复幂等健康握手，实际 pong / Core ready 才就绪。没有增加默认 30 秒超时、固定等待或重试。曾改变 postMessage incumbent realm 的诊断探针已排除；默认成功流程不启用该探针。
+
+Console 已补齐当前原生视图的 `read_console/get` 和经 Agent 审批的 `clear(all)`。读取支持类型、文本筛选、数量、格式与堆栈，按实际运行时 enum 名称分类编译诊断；失败上下文保持失败，两个消费者保留 scope / 完整性限制。Get 不修改 Console flags、搜索、Collapse 或 EditorPrefs，明确报告 `current-native-console-view`，隐藏日志的全队列读取仍未完成。清空核验冻结工程、domain、client / cancel nonce、operation ID 和实际 applied / cleared 回执；拒绝、排队取消及错误身份不清空，已提交 effect 不自动重建旧日志。选择性清空、时间增量和 `set_collapse` 仍明确不支持。
+
+当前维护 / 交付哈希：Core 实际入口 `FE61F426F62067BDC95E6A4B6B46D690122C4B87EB7BABBDAF42BDF49EF65780`，可读入口 `642E84F661FD5E416BC0BEA7373B5F6AD1E3C352964EBA83E8666F6D904808CC`；Agent 源 `5E1733825C7C2276C045629E22D7828281498D8853EEAA80B8D307A35645B33D`；Console C# `14F3F848C4AF0CCA6A722905771463A6D30EFF5EE0FE9BEB3193EA1AB0D0F168`。
+
+### 本轮实际验收与正式包
+
+统一交付证据根为 `F:/AI/AgentMake/temp/GameCowork/logic-puzzle-20261002/`；界面诊断根为 `temp/GameCowork/refresh-startup-diagnosis-20261002/`。guarded Agent 只运行自有 fixture 与 loopback 模拟模型；正常交付 CLI 不带 guard。没有调用真实 Provider、运行原版 EXE、读写原版凭据或修改用户工程。
+
+| 实际命令 / 范围 | 结果与事实来源 |
+| --- | --- |
+| 实际函数契约 | Core bootstrap **24/24**；双代 request / startup **70/70**；Console **3/3** 及既有控制 / 取消 / 场景相关契约合计 **18**。新契约及 bootstrap / Console integration 已接入统一脚本 |
+| `tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage <console-guarded-20261002>` | **完整 exit 0**，`verify-final-complete.log` / `.json`；UTC 05:28:26 至 05:36:52。Rust **107/107**，全部默认契约 / HTTP / 生命周期 / 双代 Hub、Git / LSP / 真 Core / 索引、ACP / 审批 / 历史、GUI 聊天 / 文件媒体 / 扩展 / stdio MCP / 命令子代理完成。没有追加全量 `-Editor` 或真实团结 runtime |
+| 候选两代命令 / 子代理 | current 含六轮 A/B 并发 refresh **16/16**，previous **15/15**；`commands-{current,previous}-shared-candidate/command-subagent-report.json`。真实 slash 展开、保存后的 specialization 与 issued task 回执通过，无浏览器 / 外站失败 |
+| 候选草稿 / 冷重启 | **4/4**，`shared-client-drafts-candidate-02/chat-report.json`；A/B 未发送草稿、实际 history/list 持久化、新浏览器与 Rust / Core 重启后的正文及原 SID / 草稿恢复 |
+| 实际 Rust / Core / Agent 初始化 | 候选 **7/7**（`core-command-bootstrap-18621aa9-2186-473b-8edb-8e67702ced49/summary.json`），正式 app 再 **7/7**（本证据根 `app-core-bootstrap/summary.json`）。测试屏障只控制真实 session/new 登记时序，三次 loopback models GET，无 completion / 外站，actorsStillRunning=[] |
+| 候选真实 Console / 模型消费 | **28/28**，`tests/editor-bridge-console-b3e2ce93-4100-4d71-b1bd-ca6f0c934e88/summary.json`；63 项包资源核验，真实编译 enum / 筛选范围、消费者失败及限制保留、批准 / 拒绝 / nonce / 排队取消，批准 all-clear 后全局各级计数为 0。host EXE 在该 driver 仅核 hash，不冒称 GUI Console 验收 |
+| 新 Agent 的真实 Editor 控制 / SceneQuery 回归 | 同源 5E 控制 **26/26**，`tests/editor-bridge-cli-controls-7319a5f7-b5f2-4946-93b5-c5a962f8b097/summary.json`；候选 SceneQuery **40/40**，`tests/editor-bridge-scene-queries-0c8d7220-dc5b-4a06-a619-a53443766cb8/summary.json`，63 项包资源、正常 Agent 37 工具目录、模型 issued IDs / 两消费者和实际场景只读不变通过。自有 Editor / CLI 退出，外站 0 |
+| 测试观察修复 | 两次先前全门禁分别停在 project-panel / licensing 的 `Close toast` 过期 `.all()` 索引，失败日志 `verify-local.log` / `verify-final.log` 保留。共享 helper 每次读取当前前景 DOM handle，实际 click 并等实际移除，不 force click；定向项目面板 **8**、双代许可各 **5**，随后完整门禁通过 |
+| `tools/build-local.ps1 -CliPackageDirectory <normal-cli> -SkipTests` | **exit 0**，`build-app.log`；正式 `app/` 原位更新为 Release **2.1.3-canary.2、1,192 资源**，`builtAtUtc=2026-10-02T05:38:02.5396023Z`（北京时间 13:38:02）。旧二进制备份及暂存为 `temp/GameCowork/build/a099c37eb4394e79bc5150a72c79b65d/`；独立门禁与构建跳过的测试分别记账 |
+| 正式 app 独立只读资源审计 | **1,192/1,192** size / SHA 匹配，`app-package-audit.json` errors=[]；正常 CLI `testGuardIncluded:false`、源 / entry / EXE 匹配。与已验候选唯一差异是已审查、匹配当前源的桥 README（补验收记录），其余资源含主 EXE 与两代 GUI 均相同 |
+| 正式 app 草稿 / 冷重启复验 | `chat-e2e.mjs --packaged --app-root <app> --until drafts --agent <同源guard>` **4/4、exit 0**；本证据根 `drafts-actual-app-final/chat-report.json` 明确记录正式 EXE / 包内 Core / frontend，packagedAgentSourceVerified=true。真实 A/B 草稿及新浏览器 / 重启 Core 的同一正文和未发送草稿恢复；browserErrors / blockedExternalOrigins / guardNetworkAttempts 均为空，自有测试进程退出 |
+
+已同步 README、架构、开发指南、测试导航及桥说明。日常入口仍为 `app/启动GameCowork.bat`，没有第二个正式安装。仍须继续完成完整 Console / GUI / 团结验证，以及研究中尚无完整对端的资产、包、Editor 上下文和更多场景 / GameObject 操作；本轮不把这些缺口标成已完成。
+
+## 占用解除后的完整门禁与正式 app 更新（2026-10-02）
+
+用户明确已退出占用 EXE 后，重新检查未发现 GameCowork 实例，原先的开发 EXE 重编译阻塞解除。保留全部已有工作树修改；本轮只继续验证、通过装配脚本原位更新以及补验收证据，没有改产品行为或运行真实 Provider / Editor / 许可服务。
+
+证据根为 `F:/AI/AgentMake/temp/GameCowork/unity-hub-integration-20261002/retry-after-unlock-20261002-01/`。本节更新下方首次候选阶段的“完整门禁未跑完、app 未覆盖”状态，旧记录仍保留当时事实。
+
+| 本轮实际命令 / 验收 | 结果 |
+| --- | --- |
+| `pwsh -NoProfile -File tools/verify-local.ps1` | **完整默认门禁 exit 0**，`verify-local.log`。开发 EXE 编译成功、Rust **107/107**；契约、隔离 HTTP / worker / 进程生命周期、真实 Chromium 项目 / Monaco / 编辑器发现与安装列表、双代许可证和项目状态、Git **20**、C# LSP **20** 与缺失/恢复状态 **7** 全部完成。未追加 `-RealCore -Chat -Editor` |
+| 候选交付前独立只读复核 | 1,190 个候选清单文件 SHA/大小一致，1,186 个可映射资源与当前维护输入一致，无漏装或源码漂移；Hub 原码核对及 frozen 属性通过。`hub-reference-candidate-audit.json` |
+| `pwsh -NoProfile -File tools/build-local.ps1` | **exit 0**，正式 `app/` 原位更新为 **Release 2.1.3-canary.2，1,190 runtime 文件**，`build-app.log`。构建及旧二进制备份在 `temp/GameCowork/build/3a67cb26c7c446bc9cf43409182055e7`；manifest `builtAtUtc=2026-10-02T04:15:46.9457217Z`（北京时间 12:15:46） |
+| 正式资源完整性 | `app-integrity.json` mismatches=[]；正常 CLI `testGuardIncluded:false`，维护源码 SHA 与 EXE SHA 分别匹配 CLI manifest |
+| 正式 app 双代许可证 / Editor 刷新 | `editor-licensing-e2e.mjs --binary <app/GameCowork.exe> --frontend <app/frontend>` 当前/上一代各 **5 项，exit 0**；`license-app-current`、`license-app-previous`。错误/外部请求为 0，cleanup.json 核对自有 shell/Core PID 均退出；Editor 打开仍是隔离 fixture 回执，不冒称真实启动或激活 |
+| 正式 app 双代项目状态 | `hub-project-status-e2e.mjs --binary <app/GameCowork.exe> --frontend <app/frontend>` 各 **12 项，exit 0**；`temp/GameCowork/tests/hub-refresh-68194ec1-829c-4b75-b9e3-8b675a84124f`、`hub-refresh-e352b937-0ce4-45be-8ed7-e6a2d3949ad5`。报告明确记录 binary/frontend；实际刷新、锁提示、目录/元数据失效及恢复、注册表不写入通过，pageErrors/external 为 0 |
+| 正式 app 双代模板详情 / 坏包诊断 | `project-template-details-e2e.mjs --warning-fixture --binary <app/GameCowork.exe> --frontend <app/frontend>` 各 **11/11，exit 0**；`template-app-current`、`template-app-previous`。实际三模板元数据/依赖完整、官方 tgz SHA 未变，诊断只为呈现 fixture、重进后清除；errors/external/cleanupErrors 为空，ownPidsGone=true |
+
+上述正式包验收均使用 `F:/AI/AgentMake/CyberSoftwares/GameCowork/app/GameCowork.exe` 与 `app/frontend`，Core / 浏览器 / 工程数据留在各自 temp。只关闭自己启动的测试进程；未启动普通用户会话或改用户工程/官方 Hub。日常入口仍为 `app/启动GameCowork.bat`。在线模板下载、Editor 安装卸载和真实许可证申请/激活的剩余范围未扩大为已完成。
+
+## Unity Hub 四域原码与本地产品接线（2026-10-02）
+
+本节对应用户指定的 `E:\Unity Hub\EXE` 参考与独立 `codelyreversebackup_fromunityhub/` 备份。保留接手时的未提交修改及其它正在运行的 GameCowork 实例；本轮没有运行原 Hub、许可客户端或原生模块，没有读取账号/许可文件或改用户工程。产品继续复用既有 Core 扫描、双代 Hub 界面与完整模板创建，没有另建项目管理服务。
+
+### 原码依据与实际功能
+
+Unity Hub **3.17.3** 的安装 ASAR SHA 为 `d1561ffb566fcbd38479fec8b15198f38db25f22795cbeb6013f1d68d81349c1`。从 26 个来源 chunk 保存 **152 个原字节区域、4 个纯逻辑适配**，包括项目管理、模板创建、Editor 管理和 Unity 许可；原路径、行号、SHA、导入范围及尚缺依赖见 [源码索引](codelyreversebackup_fromunityhub/_SOURCE-INDEX.md) 与 [复用说明](codelyreversebackup_fromunityhub/REUSE_NOTES.md)。服务片段不能当独立可执行模块，备份不进入装配依赖。纯适配为版本类、项目常量、文件名/路径校验与原字符串中的 CC0 Unity gitignore。
+
+| 域 | 本轮产品变化 |
+| --- | --- |
+| 项目管理 | 重新读取有界 `ProjectVersion.txt`，团结技术号用于 Editor 选择、营销号用于显示；显式“刷新本机项目”重扫既有 Core。缺失目录/元数据不可用仍保留注册与收藏并有实际界面提示，列表查询不写注册表。`lockFilePresent` 只显示锁文件存在，不宣称 Editor 在线 |
+| 官方模板 | 按 Hub `scanTemplates` 的逐包隔离语义保留可用模板，坏 tgz/缺失或重复元数据单独报告 `skippedTemplates`，双代界面显示原因。沿用完整 manifest、场景、取消、防覆盖与已选 Editor 身份校验；保留 CORE/SAMPLE/LEARNING、Preview 元数据及大小写 tgz 扩展 |
+| Editor 版本 | 复用原发现与 DTO，显式“刷新本机编辑器”越过 60 秒缓存；失败不将旧数据标新，并保留已呈现列表供重试。没有安装、卸载或更新真实 Editor |
+| Unity 许可证 | 标题与官方说明入口明确是 Unity Editor 许可；Unity/团结分别 `not-detected`、`isValid:null`。`workspaceAllowed:true` 仅用于本地工作区，不冒充激活。申请/激活/导入/归还及服务器配置在宿主拒绝，用户按官方 Hub 文档处理；未调用真实许可服务 |
+
+原码复核纠正了早期分析：Hub 打开状态实际检查锁文件是否受锁，不是存在即打开；模板合并按 package name 与 semver，`displayName@version` 不是通用主键；Hub 本身用所选 Editor 的 `-projectTemplate` / `-cloneFromTemplate` 创建，GameCowork 的独立物化需要自己的完整导入验收。本轮不把两者实现方式写成相同。
+
+### 本次验证与候选包
+
+通用日志及候选位于 `F:/AI/AgentMake/temp/GameCowork/unity-hub-integration-20261002/`。下表均为本轮执行，未沿用历史数字。
+
+| 命令 / 范围 | 结果与证据 |
+| --- | --- |
+| `cargo test --manifest-path src/shell/Cargo.toml --offline --locked` | 最终 **107/107**，`rust-final.log`；含本轮模板 12 项、许可 2 项、Hub 参数及项目只读刷新测试 |
+| `node --test` 许可/编辑器/详情/诊断/提取五份契约 | **69/69**，`contracts-final.log`；提取自身 5 项含原 ASAR/片段字节与纯适配约束 |
+| `node tools/research/extract-unity-hub-reference.mjs --check`、`cargo fmt --check`、`node tools/check-layout.mjs`、`git diff --check` | 均通过；提取核对 152/4/26。目录检查当次 149 测试输入、16 文档、454 路径；diff 只有既有 CRLF 转换提示 |
+| 源码真实官方模板详情当前/上一代及实际创建 driver | 详情各 **9**、创建 **9**，`template-details-98991405-390e-456f-a312-ebdf5097a28f`、`template-details-c67501cd-2f0a-4965-93fa-525db3d0f012`、`project-templates-8da42baf-fcf4-4911-b534-bdd3cb2d1022`；官方 tgz SHA 不变，manifest 259 字节与原包逐字节一致。未启动真实 Editor |
+| 原项目面板 Chromium 回归 | **8** 项，`project-panel-e2e-1790913781644-73392`；首次揭示旧 fixture 混用团结营销号/技术号，修正 fixture 后通过，不修改真实 Hub 数据 |
+| 候选 `shell-http.mjs --binary <candidate EXE>` | **16/16**，`shell-http-candidate.log` |
+| 候选项目状态当前/上一代 `hub-project-status-e2e.mjs --binary <candidate EXE> --frontend <candidate/frontend>` | 各 **12**；`tests/hub-refresh-dd97ab9c-0733-4fed-894e-543171a766d2`、`tests/hub-refresh-216967ef-8371-451f-b7e1-f5b0d3eed510`。实际锁提示、缺失目录、超限元数据及恢复，三次 GUI 刷新、注册表 SHA 不变；pageErrors/external 为 0 |
+| 候选许可证/Editor 刷新当前/上一代 `editor-licensing-e2e.mjs --binary <candidate EXE> --frontend <candidate/frontend>` | 各 **5**；本目录 `license-current-verified-1790914074451`、`license-previous-verified-1790914074451`。独立许可状态/七条明确拒绝、工作区许可放行、显式官方链接、刷新/失败保留/重试；实际 Editor 打开回执是 fixture，不能冒称真实 Editor 启动。errors/external 为 0，cleanup.json 核对自有 shell/Core PID 全退出 |
+| 候选真实模板详情与诊断 `project-template-details-e2e.mjs --warning-fixture --binary <candidate EXE> --frontend <candidate/frontend>` 当前/上一代 | 各 **11**；`template-details-c509563a-25fa-40e2-a21d-398593ac3693`、`template-details-b1ef8c3b-f4ab-427b-ae69-d9c24ba3edcf`。真实三模板回执保留，仅追加两条诊断呈现 fixture；回退重入后空诊断清除。坏档案隔离由 Rust 真坏 tgz fixture 独立验证；errors/external/cleanupErrors 为 0 |
+| `tools/build-local.ps1 -Configuration Release -OutputDirectory <本目录/candidate> -SkipTests` | **Release 2.1.3-canary.2，1,190 runtime 文件逐项 SHA 通过**，`build-candidate.log`。构建暂存 `temp/GameCowork/build/07be0a3bdb7f45f683486f0c07d5adce`，正式 CLI `testGuardIncluded:false`；最终 `candidate-integrity.json` mismatches=[]，两代 Hub chunk/两个共享 helper 与维护源 SHA 一致 |
+
+表中未带完整前缀的模板与项目报告均在统一 `temp/GameCowork/`；测试工程、浏览器配置和截图没有进源码。已目视检查候选项目缺失提示与两代许可/模板诊断布局。所有本轮 driver 都清理自己启动的进程，没有停止其它聊天或用户的实例。
+
+`tools/verify-local.ps1` 本轮已尝试，Rust 测试完成后在 **开发 `target/debug/GameCowork.exe` 被其它现有进程占用** 的重编译阶段停止（os error 5，`verify-local.log`），故**没有宣称完整默认门禁通过**。改用独立 Release 候选继续完成上述受影响门禁；构建 `-SkipTests` 与单独实际测试分别记账。新契约和双代许可/项目 E2E 已接入统一脚本。原 `app/` 仍有实例使用，未原位替换，本候选仅供审查/验收，不作为第二个日常安装。
+
+仍待后续接入：远端官方模板下载/暂停/升级与目录型模板、Editor 在线版本/模块下载及安装卸载、真实 Unity 账号与许可证申请/激活、完整 Hub IPC 活动状态映射。本轮不宣称这些在线能力完成，也未重复完整 Editor 导入/GPU 或 Agent/Provider 门禁。
+
+## 研究成果转为实际功能（2026-10-02）
+
+本轮按用户“功能更加齐全”的要求，复核 T6/T8/T14/T15/T17 的研究清单与实际维护源码，开始补齐产品链路。保留接手时已有的研究文档和提取清单修改，没有重跑原版程序、读写原版凭据或改用户 Unity 工程。以下是本轮最新状态；下方早期审计中的“未实现”应按本节更新，研究提取率仍不代表产品完成率。
+
+| 功能 | 实际变化与范围 | 维护入口 |
+| --- | --- | --- |
+| 场景 / GameObject 查询 | 新增 Agent `unity_scene/get_hierarchy`、`unity_gameobject/find/list_children/get_components`；返回实际已加载场景、对象 ID、父子关系和序列化组件数据。排除持久 prefab、预览 / Prefab Stage、已关闭场景；不打开 / 保存场景，不改选择或 dirty 状态，不执行任意 getter。明确有界、重名选择必须精确 ID，未知及写入动作报错 | `EditorSceneQueries.cs`、`Bridge.cs`、Agent 注册表、`editor_bridge.rs` 白名单，详见桥 README |
+| 会话分支 / 检查点回退 | 两代共用按会话 / 工作区代次绑定的操作模块；流式保护覆盖纯分支、预览和确认。分支持久成功后才发布 UI，保存失败补偿本次分支；A 的晚返不激活 B，关闭 / 重开的 A 不接收旧操作。Core 分支必须确认实际新检查点；回退预览包含目标之后完整恢复计划，代码回退必须真实 `applied:true`，失败不伪造检查点或清掉原错误。代码已恢复而后续分支失败时明确提示，重试仅执行分支 | `gamecowork-history-operations.js`、两代 index、两份 Core history 入口、CLI RewindService |
+| 弹窗与错误显示 | 修复通用 modal 在 JSX 内容变化时重复申请焦点造成 React #185 的循环；输入已在弹窗内时保留光标 / 选择范围；会话菜单保留引用身份；防休眠错误显示在对应卡内，已知写入失败使用可重试文案 | 两代 index / VscTheme、`gamecowork-settings-errors.js` |
+| Windows 防休眠 | 修复独立设置入口，解除对未实现隧道的依赖，提交等待真实回执并显示失败。专用线程持有 / 释放系统电源请求，原子偏好保存、失败回滚、重启恢复；仅防系统自动休眠，不强制屏幕常亮。headless / test 保存偏好并明确 `active:false, suppressed:true` | `keep_awake.rs`、两代 VscTheme 设备设置 |
+| 桌面单实例 / 目录启动 | 同一 Windows 登录会话 / 应用数据目录共用内核锁；重复启动验证 PID、数据身份和实例代次后转交已有目录、恢复窗口。支持 `--workspace <已有目录>`，拒绝不存在路径和未知参数；崩溃元数据不阻止重新启动；转交超时不重放已发送的打开操作 | `single_instance.rs`、`main.rs` 启动与 loopback 激活端点 |
+
+已接入统一门禁：新增会话 / Core 回退 / CLI 恢复计划与路径 / Agent 查询契约及真实进程单实例集成；`-Editor` 加入真实模型工具发起的场景查询 smoke。测试 guard 只允许自有 fixture 精确祖先的 stat / lstat / realpath 元数据，并保留带同等权限检查的 realpath.native；祖先读文件、列目录、写入和兄弟路径访问继续拒绝，正式 Agent 不含 guard。
+
+### 本轮验证与包内证据
+
+主要日志 / 装配记录在 `F:/AI/AgentMake/temp/GameCowork/functional-completion-20261002/`，界面报告在 `temp/GameCowork/feature-session-20261002/`。只使用隔离状态、自有 Unity 工程与 loopback 模拟模型，未运行原 EXE、读取原版凭据、调用真实 Provider 或修改用户工程；Git 未提交、未推送。
+
+| 执行 | 结果与范围 |
+| --- | --- |
+| `cargo fmt --check` / `cargo test --offline --locked` / build（统一 gate） | 本轮功能版本 Rust 99/99；单实例 3 项与防休眠 6 项另定向复验。此数字不覆盖随后另一聊天新增 Hub Rust 测试 |
+| 双代实际会话 / 设置 / modal 函数契约 | 最终新增契约 37/37；MCP 焦点相关实际函数 22/22 |
+| Core history + CLI rewind 真实函数契约 | Core 历史相关合计 66/66；回退/分支与路径计划组合 35 通过、0 失败、1 跳过。Windows 无文件 symlink 创建权限，实际目录 junction / hardlink / 根代际 / 新叶 exclusive 场景已运行 |
+| `single-instance.mjs --native`，再 `--binary app/GameCowork.exe` | 各 11 项实际进程 / Wry 检查通过：首启目录、慢初始化、重复转交、大小写同根、失败回滚、代际拒绝、真实最小化恢复 / 焦点、崩溃重启和数据隔离；`single-instance-app.log` |
+| `editor-scene-queries-smoke.mjs --app .../candidate-final --package .../guarded-cli-safe-final --issued-tools` | 候选包 40/40；61 项相关包资源 SHA 核验，实际包内正常 Agent 工具目录、包内桥与物理 Unity scene/target ID、序列化哨兵及匹配模型 issued ID / completed 通知通过。主 EXE 在此 driver 仅核 SHA；模型执行用同源码 guarded Agent。报告 `tests/editor-bridge-scene-queries-19e51774-959f-405c-8178-a20ce4de6fff/summary.json` |
+| 桥回归 / 编译 | 实际预览 smoke 9/9、原查询前置 30/30、团结程序集离线编译 2/2；未冒称真实团结查询运行 |
+| 最终候选两代 GUI | branches 各 7/7、设备防休眠各 5/5，共 24 项，`branches-packaged-{current,previous}-verified/actions-report.json`、`keep-awake-packaged-{current,previous}/result.json`。目标消息没有编辑、后续消息修改文件的累计预览实际 1 文件 +1/-1；回退 restoredCount=1 / skipped=failed=0，磁盘恢复原字节 |
+| 实际 app GUI 复验 | current branches 7/7、防休眠 5/5；`branches-app-current/actions-report.json`、`keep-awake-app-current/result.json`。防休眠自动测试明确抑制 native 电源调用，不验证系统实际睡眠 |
+| 完整默认 Agent actions / stdio MCP | modal 修复后 actions 15/15；改正过期 probe 后两代 stdio MCP 各 15/15，无合成 timer，实际焦点 guard 与进程回收通过。报告 `actions-modal-fixed-01`、`mcp-focus-probe-{current,previous}-final` |
+| 两次 `verify-local.ps1 -RealCore -Chat` | 第一轮在 rename 的真实 React 更新循环失败；第二轮在旧 MCP probe 强求 timer 失败。上述均已修复并定向复跑。两轮已运行的 Rust / Node / HTTP / 生命周期 / 索引 / 终端 / 项目 / 编辑器发现 / Git / LSP / 聊天 / 文件媒体与 custom 基础流程按日志记录；不能把 exit1 写成整 gate exit0 |
+
+最后单独执行 `command-subagent-management-e2e.mjs`，随后追加 `--refresh-race` 的独立复验均 exit1，仍在首次 slash prompt 的 `acp/refreshCommands` 30 秒超时，尚未进入子代理及六轮并发阶段，Provider 收到 0 请求。此前本文件已记录同类初始化时序问题；本次未发现查询 / 回退 path guard 拒绝或调用，且 Core 到超时截止才开始刷新，不能据此认定本轮功能导致该失败，也未靠固定等待消除问题。两份失败日志为 `command-subagent-final.log`、`command-subagent-refresh-race.log`。该项保留未完成，未宣称完整门禁全部通过。
+
+### 正式 app 与并行工作树
+
+`tools/build-local.ps1 -CliPackageDirectory .../normal-cli-safe-final -SkipTests` 已原位更新 `app/`，`app-build.log` exit0；`builtAtUtc=2026-10-02T03:57:31.6825766Z`，1190 资源哈希全部匹配，正常 Agent `testGuardIncluded=false`，源 SHA `1E81687A4458E71FFC86A44A232798797E1D531FE27C8CDB470505667080A11E`。构建跳过的测试由上面的独立 gate 完成相应范围，不能作为完整验收声明。旧二进制 / 装配暂存位于 `temp/GameCowork/build/d50b9bf35bd14f2191a71ac167929fed/`。
+
+装配时另一用户聊天“完善 GameCowork Unity Hub 功能”正在共享工作树增加 Hub 许可标注 / 项目提示。实际 app 比已验 1188 候选多 `gamecowork-editor-licensing.js` / `gamecowork-project-status.js`，主 EXE 及两代 TJHubRoute 有差异，完整清单在 `app-integrity.json`；未回滚这些源码或冒称候选与 app 字节相同。额外实际 app 两代许可 / 新建 / 打开 / 编辑器刷新 GUI 各 5 项通过，报告 `licensing-app-review-45b40e78ef604fc299f9c4e7cfbc6ea7/`。五个许可激活 / 导入 / 归还操作由 native 拒绝，但 app 的 getServerConfig / updateServerConfig 仍为 Core 未实现错误，而另一聊天当前 source 已有显式拒绝，保留该包 / 源差异；其 Hub 全功能验收属于该聊天后续范围。
+
+### 已知边界
+
+回退固定工程 / 备份根身份，拒绝 directory junction、symlink、实际路径重定向和多 hardlink 文件；回退不接受目录链接工程。先验证完整恢复计划再开始写入，逐项临近重新验证，新文件使用 exclusive copy。恢复仍按文件执行，部分失败可能已经改变前面的文件；最后检查至 Node 路径式操作仍存在 TOCTOU 窗口，没有 native 目录句柄的原子保证，未宣称防住恶意并发替换。关闭工作区后已经由 CLI 生成的分支检查点不跨失效 lease 清理，避免错误删除别的代际数据。
+
+本轮未扩展远程 / 移动端、更新器、Hub 下载队列、桌宠、跨 Windows Session 多实例协调、Scene / GameObject 写入、任意脚本执行、WebRTC / 音频或第三方媒体 Provider。这些继续保留独立未完成范围。
 
 ## 工程目录与开发入口整理（2026-10-01）
 
@@ -31,7 +450,69 @@ README 现在只保留项目介绍、启动与开发命令、目录职责和文�
 
 用户已重新要求持续完善至功能跑通；第五阶段已将实际 Tuanjie/双引擎预览、Git/Diff、Commands/Subagents 与 GUI 编辑器控制装配并验收。用户随后指出此前遗漏 NativeWindowBridgeHost 完整实现，当前以原 EXE/原桥加载链与通用窗口托管作为编辑器扩展主线。安装编辑器面板已修复，当前日常包已更新为1184资源（14:46 UTC，大屏修复版）；LSP菜单时序原因已查明，1179包真实LSP完整gate随后20/20通过；12:20包两代MCP15项修复已验收，12:53包品牌/营销版本/精确选择及完整GUI主流程均已完成本轮复验。新增模块进入包不等于全部包内功能已通过。接手入口 [HANDOFF.md](./docs/history/HANDOFF.md) 是第四阶段暂停时的历史交接；活动状态与新验收统一记录在本文件。目标仍持续进行，远程与第三方媒体 Provider 保留后续范围。
 
-### 大窗口复合画面尺寸越界与面板发现（2026-10-01，已装配并验收）
+### 功能实现状态对照（2026-10-02，用户实测反馈"仍有很多功能没实现"）
+
+用户再次实测后反馈未实现功能仍多。本轮对 [codelyreversebackup/index-and-templates/GAPS-AUDIT.md](./codelyreversebackup/index-and-templates/GAPS-AUDIT.md)（2026-10-01 早上的静态审计）逐项复核当前 `src/` 实际状态（grep 壳 17 个 Rust 模块 + 两代前端 chunk + core 入口），并完成第三轮反编译深挖（见下）。本轮只读审计+文档，未改产品代码、未运行原版 EXE、未触碰凭据；未重跑门禁，GUI 实际行为以既有验收记录为准。
+
+**自 GAPS-AUDIT 写成后已补上的项**（该文档相应行已过时）：
+
+| 项 | GAPS-AUDIT 旧状态 | 当前实测 | 证据 |
+|---|---|---|---|
+| versionUpdate/getSeenFeatures·markFeatureSeen | ❌ | ✅ 真实持久化 `seen-features.json`（按 platform 分组、featureId 校验、原子写） | `src/shell/src/main.rs` `seen_features` |
+| insight 索引持久化落地 | 🟡（设计✅ 本机未落地） | ✅ 代码完整：`settings.json` 偏好 + `projects/<sha256>/index.current` 代际检查；本机目录为空是旧版本环境问题 | `src/shell/src/insight.rs:167,450` |
+| 编辑器列表缓存 | ❌（每次重扫） | 🟡 `hub_snapshot` 已有 60 秒内存缓存（仍非原版持久 installedEditorList+editors.changed 模型，但启动重扫痛点已缓解） | `src/shell/src/main.rs` `hub_snapshot` |
+| tjhub 项目/编辑器数据面 | 🟡 | getEditors/getRecentProjects/getTemplates/createProject/cancelCreateProject/getUniqueProjectName/add/remove/toggleFavorite/openProject/getProjectDirectory/getInstallLocation/getStatus/getUserInfo/getLicenses(本地)/getOrganizations(空)/getModules(空) 均有实现 | `main.rs:1476-1613`、`project_templates.rs`、`editor_installations.rs` |
+| lsp/isServerInstalled | 🟡 | 有诚实 unavailable 状态回执（runtime 缺失时 `installed:false`，不伪造支持） | `main.rs:466-488` |
+
+**仍然缺失（按用户可感知程度排序）**——这是"很多功能没实现"的直接来源：
+
+1. **设置页"关于/更新"区**：壳无 `check-update/pending-update/apply-update` 端点与更新状态机（catch-all 路由回 501），更新通道 stable|canary 无。
+2. **许可/管理路由**（`#/license`、`#/manage` 触发 `tauri/openHub`）：壳无处理也无 Hub 窗口，点击无响应；`save-file-modal`（许可请求导出用）同样缺失。
+3. **编辑器下载安装队列**：`installEnqueue/installCancel/installRetry/enqueueArchive/getReleases/getArchive(+EULA 两条)/downloadTemplate/installRosetta2/checkRosetta2/locateEditor/getDownloadLocation/set*/getProjectSizes/getDiskSpace/uninstallEditor/removeEditor/openRemoteProject/connectCloud/getWatermarkStatus` 全部无处理（`getModules` 仅空数组回执），事件族 `installProgress/statusUpdate/templateDownloaded(-Error)/projectListUpdated/watermarkStatus/projectStructureReady` 无推送。当前安装面板对下载安装/模块变更/移除是**显式禁用**（诚实边界），模板创建链路真实可用。
+4. **桌面体验域**：单实例锁、系统托盘、WinRT Toast、`cowork://` deep-link 冷启动、`tauri/newWindow|bringToFront`（后者 JetBrains/VSCode 连接需要）、多窗口、OS 拖放 `tauri://drag-*`（前端已用 `gamecowork:drop-files` 内部消息部分替代）——均未实现。
+5. **pet/* 11 条、drill/* 5 条**：桌宠五窗口与新手引导窗口整体未做（`pet/getVisible` 有诚实 stub，`indexWalkthrough.html`/`pet.html` 在包内但壳无开窗能力）。
+6. **editor/* 转发族**：`recompile/setEmbedMode/getColors/onLoad/selectAsset` 壳无处理（原版经 Unity IPC 管道）；`getEmbedMode/getSidechat` 已回 false。
+7. **文件/系统杂项**：`showFile/showOpenFilePicker/saveTempFile/applyToFile/copyText/getHomedir/openLogFolder/debugUnityConsole` 壳与 core 均无处理（GAPS-AUDIT 该行"大多有等价实现"**已证伪**）；前端部分有浏览器降级（copyText 走剪贴板 API、showOpenFilePicker 自回空），`getHomedir/saveTempFile/applyToFile/showFile` 静默失败——涉及 `~/.gamecowork-cli` 路径解析、粘贴图保存、IDE diff 应用，**待 GUI 实测确认实际影响面**。
+8. **insight 四操作**：`get-max-turns/set-max-turns/active-build/live-serves` 未实现（前端 max-turns/active-build 有调用）；enabled/index-status/ensure-index/vfs 五操作已实现。
+9. **LSP 双轨**：仅有自有 C# 宿主（vendor runtime）；原版 basedpyright/vtsls 内置表、扩展 `gemini-extension.json` 注入、ACP `_gamecowork/lsp/*` 第二轨未做。
+10. **模板体系后半段**（GAPS-AUDIT D 维持）：示例模板远端下载、反向打包、兜底模板、路径预检 ❌。
+11. **远程域**（按用户排期后期）：frp/隧道/移动端聚合/远程窗口桥代理，`setTunnelEnabled` 现返回明确"Remote access is not configured"。
+12. 会话检查点：core 面 `history/rewind(dryRun/code)/fork/checkpoint/rewindPreview` 已具备（维护副本同源），**壳与前端 UI 入口未验证**——不冒称可用。
+
+**第三轮反编译深挖产出**（`codelyreversebackup/`，REVERSE-PLAN §6 遗留三项全部收口）：
+
+- [api/acp-extension-surface.md](./codelyreversebackup/api/acp-extension-surface.md)（T11）：core↔CLI ACP 扩展方法总表首次全量提取——`Ur` 表 `_gamecowork/*` 全部请求方法（unity 桥 18 条含 window_bridge 四件/context 三件/tool/invoke、session set_mode/enqueue(inject)/permission cancel_auto_continue/mcp refresh、**LSP over ACP 9 条**、org/rewind/subagent）、通知表 `xb`（package_update/job_update/plan_files/changed_files/injected_user）、createSession `_meta` 能力声明；同时闭合遗留三域：`ide/*` 实为控制面云 REST（未登录优雅降级，本地模式无需实现）、`userEnvConfig` 安装对话框 UX 全字段（`guide_url`+`required_envs[{key,title_zh/en,description_zh/en,placeholder}]`、只读/预填规则）、`unity/installMcpPackage` 完整链路（install_bridge→get_project_status→unityPackageUpdate 通知，桥侧行为 editor-bridge-original 已有）；意外收获 `unity/openWindowBridge` 入口参数契约（`wb_` bridgeSessionId/10 分钟 expiresAt/streamBackend=native）。
+- [shell-logic/shell-http-surface.md](./codelyreversebackup/shell-logic/shell-http-surface.md)（T12）：壳自有 `/api/tauri/*` HTTP 面全表，★新增此前未记录：更新三端点+清单 URL、`file-preview-media|file-explorer/media`、`save-file-modal`、`download-url`、`drop-files`（OS 拖放）、`set-embed-mode|attach-embed-workspace`（嵌入模式）、`hub/workspace-ready`、`init-workspace`、insight `get|set-max-turns/active-build/live-serves`、`mobile/v1/machine/*`、events 的 `workspaceDir&forwardOsNotifications` 参数；tjhub 事件族六条；`tauri://` 原生事件清单。两文档均已登记 `_EXTRACT-MANIFEST.json`，codelyreversebackup README/REVERSE-PLAN §7 同步。
+
+**第四轮反编译深挖产出**（同日追加，REVERSE-PLAN §8）：
+
+- [api/agent-tools-and-llm-surface.md](./codelyreversebackup/api/agent-tools-and-llm-surface.md)（T13）：**Agent 工具枚举全表 54 个**首次提取（T9 的 Unity 8 个补全为 15 个；子代理 `task`=DelegateToAgent；`job_create/update/list/get` 四件以 Agent 工具暴露）+ 每工具 displayTitle/wouldLikeTo/isCurrently/hasAlready 三态审批文案、readonly/isInstant、defaultToolPolicy 与特殊工具集 7 个；**llm/\* 十 handler**（streamChat 实际经 ACP 转发、editCorrector fuzzy-edit 纠错、loopDetect/toolcallLoopDetect 循环检测、complete/listModels 含 Ollama 特判、compileChat/countHistoryTokens）+ 模型四角色 chat/edit/embed/rerank + onboarding Local|API Key 写入链；commands/subagents 确认为 core 调 CLI `commands|agents` 子命令的代理面（subagents/list 合并策略=custom 全部+all 中 builtin/extension）；acp/* 16 handler 全表（含 withdrawLastUserPrompt 撤回）；三项证伪：pairing 是 CLI 流式消息配对修复的 Sentry 遥测而非远程配对、images 无独立域（走 generator+analyze_multimedia）、generator 已内置 `GAMECOWORK_LOCAL_PROVIDER_MODE` 本地降级开关。该表是自研 Agent 工具面/审批策略/循环检测的直接实现契约，也是第三方 Provider 阶段的扩展点。下轮候选：CLI 20.5MB 美化版完整子命令树与运行时内部、前端逐 feature UX、editor-bridge 26 管理器逐动作、insight worker 内部管线、canary.2 core 内容级差分。
+
+**第五轮反编译深挖产出**（同日追加，REVERSE-PLAN §9）：
+
+- [api/cli-command-tree-and-runtime.md](./codelyreversebackup/api/cli-command-tree-and-runtime.md)（T14）：**CLI 交互式斜杠命令注册表 60+ 全量**（/chat save|resume-path|loop|export、/fork、/rewind、/restore、/revert、/subagent run --background、/tasks、/hooks 六操作+工程级信任、**/goal** 长时目标含 token 预算、**/init** 分析工程生成 GAMECOWORK.md（general|unity 两模式）、**/upm** Unity TCP 自动重连、/swarm join|leave|send、/mcp refresh+OAuth、/memory add-global|add-project 等）；**Swarm 多进程团队文件协作协议**（16 个 SWARM_* 错误码：文件栅栏/邮箱容量/任务认领 agent_busy/worker 不可用）；**CLI 侧第二套工具枚举**（apply_patch、task/task_output/task_stop 后台任务三件、send_message_to_task、cron_create/list/delete、lsp、read/append/update_memory、swarm 四件——与 core 54 表同名不同义处已标注）；审批模式 default/autoEdit/yolo 及映射 yolo→bypassPermissions、grant 作用域语法 approvalModes/collaborationModes、autoApproveAskUser、agent TOML 工具门控；**seatbelt 六档消费链**（SEATBELT_PROFILE→包内/临时解包→sandbox-exec/docker/podman 执行器链，restrictive-* 才算 sandboxed，proxied 走代理进程；**Windows 无沙箱**——GameCowork 替代设计边界）；loop-detection 分层合并语义与 strike 硬停；hooks 9 事件+工程级默认不可信；RewindService 状态机。功能补齐清单新增：/init、/goal、Swarm、cron（GameCowork 尚无对等物）。
+
+**第六轮反编译深挖产出**（同日追加，REVERSE-PLAN §10）：
+
+- [api/bridge-tools-action-catalog.md](./codelyreversebackup/api/bridge-tools-action-catalog.md)（T15）：**原版桥 26 个 Tools 管理器逐动作目录**首次提取——ManageEditor 24 动作（get_state/get_windows/get_selection/step/wait_for_idle 等）、ManageGameObject 14（含 ensure_mesh_collider_mesh/ensure_renderer_material/ensure_prefab_default_sprite 修复型动作）、ManageScene 4、ManageInput 12+VirtualInputDevices 虚拟输入设备、ManageScreenshot 10（**capture_game_view 已禁用并指路 exec_runtime_script 的 record_game_view**；默认长边 256 下采样；MP4 录制）、ReadConsole 3、资产域 15（Asset/Package/Shader/Bake/GameView）、执行域 5 族（ExecuteCSharpScript 的 execution_mode 播放态互斥+ScriptFix 自动修复管道 10 文件+ExecuteMenuItem+CustomToolsRegistry+REPL）、ManageWindowBridge 9（**start/stop_offscreen_stream 单窗口轻量流**）、ManageJob 3+9 个 StepJob 类、ManageDialog 模态扫描、内部监听/脏状态通道；分发机制统一（ActionRouter+Response 错误带补救指引）。**own 差距表**: own editor-bridge 目前仅 manage_editor+manage_window_bridge 两个命令族，其余约 90 个动作分域标 ❌/🟡——补 own 桥动作时对齐 action 字符串与参数名即可让 core 侧 8/15 个 Unity 工具零改动可用；安全边界（WriteGuard/EditorAutomationGuard/ReplGuard 守卫族）与"Agent 自愈"设计（ScriptFix+ensure_*）为整体借鉴点。
+
+**第七轮反编译深挖产出**（同日追加，REVERSE-PLAN §11）：
+
+- [api/insight-pipeline-and-cli-process-tree.md](./codelyreversebackup/api/insight-pipeline-and-cli-process-tree.md)（T16）：**unity-insight worker 内部管线**首次成文——七文件分工（编排/构建/同步/查询/YAML 抽取/壳/路径），SQLite **19 张 STRICT 表 + 42 索引**（symbols/symbol_edges/cs_mentions/semantic_bindings/vfs_entries 等，FK CASCADE），**VFS 物化代次**（materialization_generation+entryKind source_prefab_link|prefab_overrides），同步三模式 full/scoped/incremental（回执 schemaVersion=11/completedStages/reconcile/skipReason），**边类型五种** calls/binds_to/depends_on/instance_of/refs（in|out 双域），YAML 引用三元组与 prefab 位标志 bitmask；**yargs 六变量解码完成**=gamecowork mcp 六子命令，进程参数树 31 组全量（extensions install 三源/link/new 样板/Gemini CLI 兼容 config；**serve 三服务器**: unity-mcp 把 Unity 工具暴露成 MCP、web-ui 为 ACP→WebSocket 代理、control-plane 管理多 web-ui 端点；**swarm 七子命令**含 worker 生命周期 spawn/resume/stop/status）。
+
+**第八轮反编译深挖产出**（同日追加，REVERSE-PLAN §12，**提取面就此闭环、下轮候选清空**）：
+
+- [api/canary2-content-diff-and-ux-inventory.md](./codelyreversebackup/api/canary2-content-diff-and-ux-inventory.md)（T17）：对旧版 core EXE（original 只读镜像的 codely-binary-old，载荷 15,787,839B/161 文件）用 `tools/research/pkg-unpack.mjs` 解包（输出仅在统一 temp）做 canary.2 内容级差分——**index.js 实质仅 +18KB、域/方法字符串差分恰 7 条**：＋`custom/create|read|rename|update`（统一自定义定义 CRUD 门面，经 `out/gamecowork-custom.js` 操作 commands|agents|skills 三类定义并按 kind 刷新会话注册表）＋`settings/{get,prepare,apply}GameCoworkHomeChange`（替换 CodelyHome）；tree-sitter 36 查询文件逐一相同；**"载荷翻倍 15.8→32.6MB"量化根因 = 新载荷把 sqlite3 完整构建树（解包 7.76→71.78MB，含 sqlite3.c 8.9MB/.obj/.pdb/.tlog/autoconf 树）打进 pkg 快照，非功能增量**。前端侧：`t()` 24 命名空间 466 处 + registry 资源表 1,407 中文叶子键；4,373 条文案按 18 功能域全量分类；行为级发现六条（桥插件版本协商三连 UX、资产自动刷新聚合导入、fork 流式期间禁用、模型生成会话标题、MCP 白名单输入框格式提示、主区画布六布局选项）。**八轮 T1–T17 至此覆盖壳/许可/安装器/差分/索引模板/core 五域/ACP/工具/llm/CLI 命令树与运行时/桥 26 管理器/insight 管线/前端 UX 全部已知名面**；后续原厂发新版本时复跑解包与差分脚本（temp/GameCowork/mine/）增量跟进。
+
+**Unity Hub 提取库新增**（2026-10-02，T18，独立目录 [codelyreversebackup_fromunityhub/](./codelyreversebackup_fromunityhub/README.md)）：
+
+- 应用户要求反编译 `E:\Unity Hub\EXE`（只读；复用既有解包 temp/GameCowork/unity-hub-asar 3,203 文件，未重复解包），四域产出 4 文档 + README + `_EXTRACT-MANIFEST.json`（5 文件 SHA 全对）：
+  - **项目管理**（project-management.md）：projectService 常量实锤（`Temp/UnityLockfile` 锁、ProjectVersion.txt/ProjectSettings.asset 监听白名单、projectDir/sort/table 偏好键）、打开中检测双源（磁盘锁 + 编辑器 UnityIPC socket 接入 hubIPCService 的归属映射）、openProject 分析事件（localProjectId/cloudProjectId/organizationId 三标识）、git 凭据服务（GCM 环境钳制 GIT_TERMINAL_PROMPT=0）、内置 Unity .gitignore 为 github/gitignore 上游 CC0 同步件（2025-12-18，含 PlasticSCM 段）。
+  - **新建项目**（new-project-templates.md）：模板按编辑器版本缓存（getTemplatesForEditor→editorPath→扫 ProjectTemplates 目录，未装回退默认模板）、远端模板下载状态机（DOWNLOAD_STATES: DOWNLOADING/PAUSED/FINISHED/CLEANUP→replaceTemplate(isUpgrade)，模板身份 `displayName@version`）、createProject 流（创建后 vcsManagementService 探测 provider 并入分析事件）——与 template-pipeline.md 的 tgz 实证互补成完整契约。
+  - **Editor 版本管理**（editor-version-management.md）：installedEditorList 双安装位（default+secondaryInstallPath）+ `available-editors.changed` 事件实锤、`@unity/hub-generate-releases`（x86_64/arm64、HEAD 体积核验）、模块下载路径 `download.unity3d.com/download_unity/{revisionHash}/{module.url}`、NSIS `/S` 静默装/卸与 WRONG_UNINSTALLER 错误族、paused-downloads.json 断点续装、原生探测模块族（hub-unity-editor-registry/-version/-launch/-elevate）。
+  - **许可证**（licensing.md，⚠️ **Unity 专属显式标注**）：`@licensing/licensing-sdk` 31 方法全录（activateUlfLicense/generateEntitlementAlf/generateUnityAlf/importLicense/returnEntitlementGroups/borrowLicense/checkEntitlements 四档/onLicenseUpdate 等）、管道族 `Unity-LicenseClient-{user}`+nanoid 副通道+`-notifications`（**Tuanjie 分支同源实证**：T2 的 Tuanjie-LicenseClient-{user}）、LICENSE_TYPES 十类、ULF 有效性判定/EGL E4 前缀/浮动 LICENSING_SERVICE_BASE_URL、**装好编辑器自动激活个人版**（AVAILABLE_EDITORS_CHANGED→activateUlfPeIfRequired）。红线：仅协议形状与血缘对照，不含许可文件内容/指纹/凭据，原厂端点永不接入，GameCowork 本地模式无许可体系。
+
+
 
 用户1184旧包截图各槽位共同报 `Composite dimensions/fps are out of bounds`。本轮只读其实际运行程序：窗口最大化 **2560×1369、scaleFactor=1**，工程桥 `running=true/capturing=false/streamCount=0`；没有安装包、修改用户工程、调用Provider或停止用户Unity。旧1184隔离真实Unity同条件复现：2560×1800/DPR1的实际请求 **450×1597/fps15**，父复合画面尚未拆槽就被 `PreviewStreams.ValidateComposite` 的1920×1080边界拒绝，所有槽位一起失败。报告 `temp/GameCowork/tests/editor-bridge-generic-product-large-baseline-20261001-audit-01`；这是真正产品失败，前一轮1600×1000等测试未覆盖该条件。
 

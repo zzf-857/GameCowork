@@ -18,6 +18,7 @@ cd F:\AI\AgentMake\CyberSoftwares\GameCowork
 | --- | --- | --- |
 | `app/GameCowork.exe` | `src/shell/` 的 Rust 构建产物 | 使用当前主壳；不能替换成历史 Tauri 骨架或原版主程序 |
 | `app/frontend/` | `src/frontend/bundle/` | 完整复制实际桌面/GUI 入口、两代业务 chunk、预览页面及独有帧模块；这是维护源码输入 |
+| `app/frontend/codely-generator/`、`app/frontend/codely-canvas/` | 同名维护输入目录 | 原 Quick / History 与 ReactFlow 完整客户端资源、原字体与懒加载依赖、来源ledger及本地适配器一并复制；构建前执行Quick精确补丁核对与Canvas静态依赖检查，不能仅复制主JS |
 | `app/core/` | `src/core/binary/out/` | 包含实际 `index.js`、本地辅助模块、资源与 `build/Release/node_sqlite3.node`；不遗漏 `gamecowork-custom.js` |
 | `app/core/gamecowork-runtime.exe` | 本应用保留的 Node runtime | 当前 Core 和本地索引 worker 的运行时；不再要求历史 `gamecowork-binary.exe` 重打流程 |
 | `app/cli/` | `src/agent/cli-main.beautified.js` 经自有工厂入口恢复和 Bun 编译 | 正常 `gamecowork.exe`、`resources/` 与 `cli-package-manifest.json` 成套装配 |

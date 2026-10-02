@@ -1,3 +1,23 @@
+# GameCowork 交接导读（2026-10-03）
+
+用户要求本轮收尾、打包覆盖现有安装，后续由其他Agent接手。本文仅作导读，**功能状态、证据和详细plan统一维护在RESTORE_STATUS**。
+
+1. 先读 [最新交付记录](../../RESTORE_STATUS.md#handoff-20261003)、[已完成功能与代码入口](../../RESTORE_STATUS.md#feature-matrix) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。当前正式入口是项目根的 `app/启动GameCowork.bat`，资源和数据职责见 [架构](../ARCHITECTURE.md)。
+2. 读 [项目规范](../../AGENTS.md) 与 [开发指南](../DEVELOPMENT.md)。维护 `src/` 与两代bundle/两份Core入口；只用 `tools/build-local.ps1` 更新app，不创建第二份源码，不回退已有WIP或复制原EXE。
+3. 资产模块先看 [实际来源审计](../../codelyreversebackup/api/asset-generation-and-canvas-source-audit.md) 和两个client的source-ledger。保留原Quick/History/ReactFlow逻辑；CPA是明确扩展，不是把原45模型改名。
+4. 下一阶段首项是**真实官方设备授权、组织订阅与两站点身份交换**。本轮没有account broker、没有本人官方登录验收；审计第6节给出已取证协议、vault要求与逐步验收合同。不要导入原软件凭据或复制Pro标记。
+5. 先定向验证，再按变更跑HTTP/GUI/生命周期与包内检查。自动门禁使用隔离fixture；真实CPA手动试验的范围和限制已单列。已有私有配置保留在本机，不写进源码、截图或日志。
+
+可直接给下一位Agent的指令：
+
+> 先阅读AGENTS.md、README.md、docs/ARCHITECTURE.md、docs/DEVELOPMENT.md，以及RESTORE_STATUS.md文首的2026-10-03交接段和详细plan。检查git status并保留现有修改。沿原Codely客户端和已恢复业务代码继续工作，优先实施官方设备授权、真实组织订阅及Quick/Canvas独立交换；不要重写资产主界面，也不要把研究、假账号或HTTP200当作功能完成。每完成一段记录实际测试与剩余边界，再按用户要求装配。
+
+---
+
+## 2026-10-01历史交接原文
+
+以下旧路径、旧计数与旧“未完成”判断仅保留为当时记录，已被上方链接的最新状态覆盖。
+
 # GameCowork 项目交接
 
 > 历史交接：正文保留当时的源码路径、包状态和任务判断。当前开发入口见 [开发指南](../DEVELOPMENT.md)，路径对应见 [迁移表](../ARCHITECTURE.md#旧目录迁移表)。不要把下文的暂停或验收记录当作最新状态。
