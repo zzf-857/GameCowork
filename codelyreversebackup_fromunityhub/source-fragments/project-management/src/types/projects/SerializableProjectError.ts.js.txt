@@ -1,0 +1,17 @@
+//#region src/types/projects/SerializableProjectError.ts
+var SerializableProjectError = class extends SerializableError {
+	errorCode;
+	projectName;
+	projectVersion;
+	projectArchitecture;
+	projectPath;
+	constructor(errorCode, options) {
+		super();
+		this.errorCode = errorCode;
+		this.projectName = options?.projectName;
+		this.projectVersion = options?.projectVersion;
+		this.projectArchitecture = options?.projectArchitecture;
+		this.projectPath = options?.projectPath;
+	}
+};
+//#endregion

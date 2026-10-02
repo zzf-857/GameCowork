@@ -1,0 +1,17 @@
+//#region src/main/services/licenseService/licenseEulaManager.ts
+var LicenseEulaManager = class {
+	logger = loggerFactory("LicenseEulaManager");
+	personalEulaAgreementStatus;
+	constructor() {
+		this.personalEulaAgreementStatus = LICENSE_EULA_AGREEMENT_STATUSES.PENDING;
+	}
+	getPersonalEulaAgreementStatus() {
+		return this.personalEulaAgreementStatus;
+	}
+	setPersonalEulaAgreementStatus(value) {
+		this.logger.info(`Setting personal EULA answer. New Personal EULA agreement status: ${value}`);
+		this.personalEulaAgreementStatus = value;
+	}
+};
+var licenseEulaManager_default = new LicenseEulaManager();
+//#endregion

@@ -1,0 +1,177 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstallerProcess_win32.ts
+var logger = loggerFactory("InstallerWinProcess");
+var ipcClient = new UnityIPCClient(`hubInstallServer-${argv.winInstaller}`);
+var modulesFile = Config.INSTALLS.MODULES_FILE;
+var metadataFile = Config.INSTALLS.METADATA_FILE;
+var handlers = {
+	disconnect: async () => {
+		await gracefullyExit();
+	},
+	installEditor: async (install) => {
+		try {
+			await beforeEditorInstallation(install);
+			await execInstaller(install.installerPath, null, install.destinationPath);
+			await afterEditorInstallation(install);
+			return;
+		} catch (e) {
+			logger.error("Error while installing an Editor", e);
+			ipcClient.serverLog(`Error while installing an Editor: ${JSON.stringify(e)}`);
+			throw e;
+		}
+	},
+	installModule: async (installModule) => {
+		try {
+			await beforeModuleInstallation(installModule);
+			await execInstaller(installModule.installerPath, installModule.cmd, installModule.destination);
+			await afterModuleInstallation(installModule);
+			return { restartRequired: false };
+		} catch (error) {
+			if (installModule.cmd && installModule.cmd.indexOf("VisualStudio") !== -1) switch (error.code) {
+				case 3010: return { restartRequired: true };
+				case 1602:
+				case 5004:
+					ipcClient.serverLog("visual studio installation was cancelled");
+					return {
+						restartRequired: false,
+						cancelled: true
+					};
+				default: throw error;
+			}
+			else throw error;
+		}
+	},
+	runValidation: async (strategyData) => {
+		logger.debug(`Validation strategy: ${JSON.stringify(strategyData.validationItemMetadata)}`);
+		const validationStrategy = new InstallValidationStrategy(strategyData.validationItemMetadata, strategyData.editor);
+		return await Validator.runValidation(validationStrategy);
+	},
+	createMetadataFile: async (destination, metadata) => {
+		await createMetadataFile(destination, metadata);
+	},
+	createModulesFile: async (destination, modules) => {
+		await createModulesFile(destination, modules);
+	},
+	updateModulesFile: async (destination, moduleId, isSelected) => {
+		await updateModulesFile(destination, moduleId, isSelected);
+	},
+	uninstallEditor: async (version, editorRootPath) => {
+		try {
+			await uninstallEditor(version, editorRootPath);
+			return true;
+		} catch (e) {
+			logger.error(`Error while uninstalling the editor ${version}`, e);
+			ipcClient.serverLog(`Error while uninstalling the editor ${version}: ${JSON.stringify(e)}`);
+			return false;
+		}
+	}
+};
+/**
+* Disconnect from IPC, flush logs, and end logging before gracefully exiting this installer
+* process.
+*
+* @returns {Promise<void>} A `Promise` resolved once IPC and logging have ended.
+*/
+var gracefullyExit = async () => {
+	ipcClient.disconnect();
+	await logger.end();
+	app.quit();
+};
+start().catch((error) => {
+	logger.error("Error while trying to connect to the IPC server", error);
+	gracefullyExit();
+});
+async function start() {
+	logger.info("Trying to connect to the ipc server");
+	await ipcClient.connect();
+	logger.info("Connected to the ipc server");
+	ipcClient.on("disconnect", () => gracefullyExit());
+	ipcClient.on("request", async (message) => {
+		if (message.type !== "request") return;
+		const { id, channel, payload } = message;
+		const handler = handlers[channel];
+		if (!handler) {
+			logger.error(`No handler for channel: ${channel}`);
+			ipcClient.serverLog(`No handler for channel: ${channel}`);
+			return;
+		}
+		try {
+			const response = {
+				type: "response",
+				id,
+				channel,
+				result: await handler(...payload)
+			};
+			ipcClient.emit("response", response);
+		} catch (e) {
+			const response = {
+				type: "response",
+				id,
+				channel,
+				error: {
+					name: e.name,
+					message: e.message,
+					stack: e.stack
+				}
+			};
+			ipcClient.emit("response", response);
+		}
+	});
+}
+async function exists(path) {
+	try {
+		await import_lib.default.promises.access(path, import_lib.default.constants.F_OK);
+		return true;
+	} catch {
+		return false;
+	}
+}
+async function createMetadataFile(destination, metadata) {
+	try {
+		const metadataFilePath = path.join(destination, metadataFile);
+		if (await exists(metadataFilePath)) await import_lib.default.promises.unlink(metadataFilePath);
+		logger.info(`Creating metadata file at: ${metadataFilePath}`);
+		await import_lib.default.promises.writeFile(metadataFilePath, JSON.stringify(metadata));
+	} catch (error) {
+		logger.error(`Couldn't create metadata file after editor installation:`, error);
+		throw new Error("Post Installation: Cannot create metadata file after editor installation", { cause: error });
+	}
+}
+async function createModulesFile(destination, modulesList) {
+	try {
+		const modulesFilePath = path.join(destination, modulesFile);
+		if (await exists(modulesFilePath)) await import_lib.default.promises.unlink(modulesFilePath);
+		logger.info(`Creating ${modulesFile} at: ${modulesFilePath}`);
+		await import_lib.default.promises.writeFile(modulesFilePath, JSON.stringify(modulesList));
+	} catch (error) {
+		logger.error(`Couldn't create ${modulesFile} after module install:`, error);
+		throw new Error(`Post Installation: Cannot create ${modulesFile} after editor installation`, { cause: error });
+	}
+}
+async function updateModulesFile(destination, updatedModuleUid, isSelected) {
+	try {
+		const modulesFilePath = path.join(destination, modulesFile);
+		const modulesData = JSON.parse(await import_lib.default.promises.readFile(modulesFilePath, "utf8"));
+		let selectedIndex;
+		const selectedModule = modulesData.find((fileModule, index) => {
+			if (fileModule.id === updatedModuleUid) {
+				selectedIndex = index;
+				return fileModule;
+			}
+		});
+		if (selectedModule) {
+			modulesData[selectedIndex] = {
+				...selectedModule,
+				selected: isSelected
+			};
+			logger.info(`Updating ${modulesFile} file at: ${modulesFilePath}`);
+			await import_lib.default.promises.writeFile(modulesFilePath, JSON.stringify(modulesData));
+		} else {
+			logger.error(`Cannot find module "${updatedModuleUid}" in editor ${modulesFile}`);
+			throw new Error(`Cannot find module "${updatedModuleUid}" in editor ${modulesFile}`);
+		}
+	} catch (error) {
+		logger.error(`Couldn't update ${modulesFile} after module install:`, error);
+		throw new Error(`Couldn't update ${modulesFile} after module install`, { cause: error });
+	}
+}
+//#endregion

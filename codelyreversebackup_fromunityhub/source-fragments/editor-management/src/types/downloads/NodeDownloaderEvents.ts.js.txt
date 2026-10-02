@@ -1,0 +1,11 @@
+//#region src/types/downloads/NodeDownloaderEvents.ts
+var NODE_DOWNLOADER_EVENTS = {
+	START: "start",
+	STOP: "stop",
+	END: "end",
+	DOWNLOAD: "download",
+	ERROR: "error",
+	PROGRESS: "progress.throttled",
+	TIMEOUT: "timeout"
+};
+//#endregion

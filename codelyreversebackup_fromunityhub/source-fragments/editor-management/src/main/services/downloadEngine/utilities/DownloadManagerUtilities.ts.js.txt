@@ -1,0 +1,123 @@
+//#region src/main/services/downloadEngine/utilities/DownloadManagerUtilities.ts
+var DownloadManagerUtilities = class DownloadManagerUtilities {
+	static logger = loggerFactory("DownloadManagerUtilities");
+	/**
+	* Get the default persistent download location in the user data directory.
+	* This ensures downloads can be resumed after app restarts.
+	*/
+	static getDefaultDownloadLocation() {
+		const downloadsDir = path.join(mainContainer.get(IPathsId).getAppDataPath(), "downloads");
+		if (!import_lib.default.existsSync(downloadsDir)) try {
+			import_lib.default.mkdirSync(downloadsDir, { recursive: true });
+		} catch (error) {
+			DownloadManagerUtilities.logger.error(`Failed to create downloads directory: ${error}`);
+		}
+		return downloadsDir;
+	}
+	static async getDownloadLocation() {
+		try {
+			const hasDownloadPath = await mainContainer.get(IJsonStorageId).get(Config.DOWNLOADS.DOWNLOAD_LOCATION_FILENAME);
+			if (!hasDownloadPath?.path) throw new Error();
+			return hasDownloadPath.path;
+		} catch (_e) {
+			return DownloadManagerUtilities.getDefaultDownloadLocation();
+		}
+	}
+	static async chooseDownloadLocation(defaultPath) {
+		const translate = mainContainer.get(ITranslateId);
+		const updatedPath = await windowManager_default.mainWindow.showOpenFileDialog({
+			title: translate.t("download:DOWNLOAD_LOCATION_DIALOG"),
+			buttonLabel: translate.t("common:SELECT_FOLDER"),
+			defaultPath,
+			properties: ["openDirectory"]
+		});
+		await DownloadManagerUtilities.setDownloadLocation(updatedPath);
+		AmplitudeService_default.client?.yellowBucket.changePreference({
+			current_value: defaultPath,
+			new_value: updatedPath,
+			page_path: PREFERENCES_IDS.locationPreferences.page_path,
+			preference_id: PREFERENCES_IDS.locationPreferences.LOCATION_PREFERENCES_DOWNLOAD_LOCATION
+		});
+		return updatedPath;
+	}
+	static isArchiveDownload() {
+		return unityReleaseServiceAdapter_default.isCustomEditorLoaded();
+	}
+	static getLoadedArchiveEditorReleaseInfo() {
+		return unityReleaseServiceAdapter_default.getCustomEditorInfo();
+	}
+	static isSpecificEditorDownload() {
+		return unityReleaseServiceAdapter_default.isSpecificEditorsLoaded();
+	}
+	static getSpecificEditorReleaseInfo(version, architecture) {
+		return unityReleaseServiceAdapter_default.getSpecificEditor(version, architecture);
+	}
+	static clearSpecificEditors() {
+		unityReleaseServiceAdapter_default.clearSpecificEditors();
+	}
+	static async getDownloadableEditorsList(fromCache = false) {
+		try {
+			return (await editorManager_default.getReleasesWithModuleStatuses(fromCache)).map(DownloadManagerUtilities.filterReleaseType);
+		} catch (e) {
+			throw new Error(`Unable to fetch the Downloadable Editors list. Error: ${e}`);
+		}
+	}
+	static async getRecommendedDownloadableEditor() {
+		const editorReleases = await DownloadManagerUtilities.getDownloadableEditorsList();
+		return editorReleases.find((editorRelease) => editorRelease.isRecommended) || editorReleases[0];
+	}
+	static async getEditorModules(editorUniqueId) {
+		const { architecture, version } = editorUniqueId;
+		try {
+			let specificModules = null;
+			if (DownloadManagerUtilities.isSpecificEditorDownload()) specificModules = DownloadManagerUtilities.getSpecificEditorReleaseInfo(version, architecture)?.modules || null;
+			const editorModules = await editorManager_default.getEditorDefaultModulesWithStatuses(editorUniqueId, specificModules);
+			if (!editorModules || !Array.isArray(editorModules)) {
+				DownloadManagerUtilities.logger.warn(`getEditorDefaultModulesWithStatuses returned invalid data: ${editorModules}`);
+				return [];
+			}
+			return editorModules.map(({ selected, downloadUrl, renameFrom, renameTo, ...module }) => module);
+		} catch (e) {
+			const editorUniqueIdStr = getUniqueIdentifier(editorUniqueId);
+			throw new Error(`Unable to fetch the Modules list of the editor ${editorUniqueIdStr}. Error: ${e}`);
+		}
+	}
+	static async deleteFromDownloadFolder(filePath) {
+		let pathToRemove = filePath;
+		const dirPath = path.dirname(pathToRemove);
+		if (hub_fs_default.isTmpDir(path.basename(dirPath))) pathToRemove = dirPath;
+		for (let tries = 0; tries < Config.DOWNLOADS.CLEANUP_RETRIES_COUNT; tries += 1) try {
+			if (!await import_lib.default.pathExists(pathToRemove)) {
+				DownloadManagerUtilities.logger.warn("Downloaded file does not exist: ", pathToRemove);
+				return true;
+			}
+			await import_lib.default.remove(pathToRemove);
+			DownloadManagerUtilities.logger.info(`Removed ${pathToRemove} from the disk.`);
+			return true;
+		} catch (error) {
+			DownloadManagerUtilities.logger.error(`An error occurred while removing ${pathToRemove}. Error: `, error);
+		}
+		return false;
+	}
+	static calculateEditorAndModulesSize(editor, selectedModuleIds) {
+		if (!editor || editor.installedSize === 0) return 0;
+		const editorSize = editor.installedSize;
+		if (!editor.modules || !Array.isArray(editor.modules)) {
+			DownloadManagerUtilities.logger.warn("Editor modules array is invalid, returning editor size only");
+			return editorSize;
+		}
+		return editorSize + editor.modules.filter((module) => selectedModuleIds[module.id] && !selectedModuleIds[module.id].isSynced).reduce((sizeSum, module) => sizeSum + module.installedSize, 0);
+	}
+	static filterReleaseType(item) {
+		if (item.releaseType === EDITOR_RELEASE_TYPES.BETA && e.isAlpha(item.version)) {
+			const itemCopy = item;
+			itemCopy.releaseType = EDITOR_RELEASE_TYPES.ALPHA;
+			return itemCopy;
+		}
+		return item;
+	}
+	static setDownloadLocation(newPath) {
+		return mainContainer.get(IJsonStorageId).set(Config.DOWNLOADS.DOWNLOAD_LOCATION_FILENAME, { path: newPath });
+	}
+};
+//#endregion

@@ -205,8 +205,78 @@ codelyreversebackup/
 
 全程只读 `restored/` 维护副本（与原版 EXE 内嵌 JS 同源）并回指原版安装路径；未运行原版 EXE/CLI；未触碰凭据；未修改 `restored/`、`app/` 现有代码；产出仅本目录文档。
 
-### 遗留（下轮候选）
+### 遗留（下轮候选）→ 第三轮 T11/T12 已全部收口（2026-10-02，见 §7）
 
-- CLI `mcp/`OAuth 之外：`ide/*`（list-assistants、sync-secrets、policy）为控制面云服务，本地复刻价值待用户定夺；
-- `extensions` 远程安装的 `config/userEnvConfig` 交互流程只提取了字段名，对话框 UX 未还原；
-- `unity/installMcpPackage` 的 UPM 装包链路只提取了 core 侧入口，桥侧安装器行为需与 editor-bridge-original 对照后再补。
+---
+
+## 7. 第三轮：ACP 扩展面与壳 HTTP 面收口（T11-T12，2026-10-02）
+
+上一轮 §6 遗留三项全部闭合，另有两项计划外新提取：
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T11 | core↔CLI ACP 扩展方法总表 | `Ur` 常量表全量提取：`_gamecowork/unity/*` 18 条（含 window_bridge 四件、context 三件、tool/invoke、insight 两件）、session set_mode/enqueue(inject)/permission cancel_auto_continue/mcp(refresh)、LSP over ACP 9 条、org list/switch、rewind/file_diff、subagent_activity/load、request_file_permission；通知表 `xb`（package_update/job_update/plan_files/changed_files/injected_user 等）；createSession `_meta.gamecowork.{overwriteConfirmed,capabilities.lazySubagentActivity}`。遗留域结论：ide/* 是控制面云 REST（isSignedIn 降级，本地模式无需实现）；userEnvConfig={guide_url, required_envs[{key,title_zh/en,description_zh/en,placeholder}]}，安装对话框渲染/只读/预填规则齐；installMcpPackage=install_bridge→get_project_status→unityPackageUpdate 通知，桥侧行为在 editor-bridge-original 已有，缺口闭合；意外收获 openWindowBridge 入口参数契约（wb_ bridgeSessionId/10min expiresAt/streamBackend=native） | api/acp-extension-surface.md |
+| T12 | 壳自有 HTTP 面全表 | strings/cowork-routes-urls.txt 逐条复核 + 前端调用点交叉：★check-update/pending-update/apply-update（更新状态机+清单 URL `.../api/plugins/cowork/latest?beta=true`）、★file-preview-media|file-explorer/media、★save-file-modal、★download-url、★drop-files（OS 拖放）、★set-embed-mode|attach-embed-workspace、★hub/workspace-ready、★init-workspace、★insight get|set-max-turns/active-build/live-serves、★mobile/v1/machine/{home,archive,sessions}、events 的 workspaceDir+forwardOsNotifications 参数；tjhub 事件族（installProgress/statusUpdate/templateDownloaded(-Error)/projectListUpdated/watermarkStatus/projectStructureReady）；tauri:// 拖放与窗口事件清单 | shell-logic/shell-http-surface.md |
+
+方法：维护副本 core/前端逐调用点精读 + 既有 T1 字符串产物复核；全程只读、未运行原版 EXE/CLI、未触碰凭据、未修改 GameCowork 产品代码。两个产出均已登记各自 `_EXTRACT-MANIFEST.json`。
+
+---
+
+## 8. 第四轮：Agent 工具注册表与 llm/模型域（T13，2026-10-02）
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T13 | Agent 工具注册表 + llm/模型域 + 命令代理面 | 工具枚举 `ee.*` 全量 **54 个**（T9 的 Unity 8 个补全为 15 个：新增 unity_scene/gameobject/asset/input/workflow/execute_custom_tool/exec_editor_script/exec_runtime_script 等；子代理 `task`=DelegateToAgent；Job 四件 job_create/update/list/get 是 Agent 工具）+ 每工具 displayTitle/wouldLikeTo/isCurrently/hasAlready 三态文案、readonly/isInstant、defaultToolPolicy；特殊工具集 7 个（activate_skill/ask_user/enter|exit_plan_mode/save_memory/run_shell_command/write_file）；llm/* 十 handler（streamChat 实际经 ACP、editCorrector fuzzy edit 纠错、loopDetect/toolcallLoopDetect 循环检测、complete/listModels(Ollama 特判)/compileChat/countHistoryTokens）+ chatDescriber/tts/kill + 模型四角色 chat/edit/embed/rerank + onboarding Local|API Key 写入；commands/subagents=core 调 CLI `commands|agents` 子命令代理（subagents/list 合并策略=custom 全部+all 中 builtin/extension）；acp/* 16 handler 全表（withdrawLastUserPrompt 撤回上一条用户消息）；**证伪**: pairing=CLI 流式消息配对修复 Sentry 遥测（非远程配对）、images 无独立域（走 generator+analyze_multimedia）、generator 本地降级开关 `GAMECOWORK_LOCAL_PROVIDER_MODE` 已内置；CLI 内 zod 校验 IDE 扩展 JSON-RPC（ide/contextUpdate、diffAccepted、diffClosed） | api/agent-tools-and-llm-surface.md |
+
+下轮候选：CLI 20.5MB 美化版完整子命令树与 agent 运行时内部（session 状态机/审批/seatbelt）、前端 4373 条文案逐 feature UX、editor-bridge-original 26 Tools 管理器逐动作、unity-insight worker 内部管线、canary.2 core 载荷内容级差分。
+
+---
+
+## 9. 第五轮：CLI 斜杠命令树与运行时内部（T14，2026-10-02）
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T14 | CLI 交互命令树 + 运行时内部 | 斜杠命令注册表 60+ 全量（/chat save·resume-path·loop·export、/fork、/rewind、/restore、/revert、/subagent run、/tasks stop、/hooks panel·logs·test·dry-run·trust-project、**/goal set·status·pause·resume·budget·complete**、**/init 生成 GAMECOWORK.md（general\|unity）**、**/upm Unity TCP 自动重连**、/swarm join·leave·send、/mcp refresh·OAuth、/memory、/org switch、/usage、/stats、/btw、/corgi）；**Swarm 文件协作协议**（16 个 SWARM_* 错误码：栅栏/邮箱容量上限/任务认领 agent_busy/worker 不可用；swarm_message attachment 注入）；**CLI 侧第二套工具枚举**（apply_patch、task/task_output/task_stop、send_message_to_task、cron_create/list/delete、lsp、read/append/update_memory、swarm_manage/send/worker/task）；审批模式 default/autoEdit/yolo 与映射 yolo→bypassPermissions、grant 作用域语法 approvalModes/collaborationModes、autoApproveAskUser、agent TOML 工具门控（allowed_tools 通配/disallowed_tools/skills.allowed_skills）；**seatbelt 六档消费链**（SEATBELT_PROFILE 默认 permissive-open→包内/解包 tmp `gamecowork-seatbelt/<uuid>`→sandbox-exec/docker/podman 执行器链；restrictive-* 才算 sandboxed；SANDBOX 注入系统提示；proxied 走 gamecowork-cli-sandbox-proxy；**Windows 无沙箱**）；loop policy 分层合并（字典序、阈值最后声明/rules 首条、strike=3 硬停、exempt_model 通配）；hooks 事件 9 种（PreToolUse…SessionEnd）+ 工程级默认不可信；RewindService 状态（snapshotList/currentSnapshotId/lastRestoreBackup/fileBackupDedupe/hydrate） | api/cli-command-tree-and-runtime.md |
+
+下轮候选（更新）：前端 4373 条文案逐 feature UX、editor-bridge-original 26 Tools 管理器逐动作、unity-insight worker 内部管线、canary.2 core 载荷内容级差分、yargs 六主命令变量解码（CLI 进程参数树补全）。
+
+---
+
+## 10. 第六轮：桥 Tools 管理器逐动作目录（T15，2026-10-02）
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T15 | editor-bridge 26 管理器逐动作 | 分析机制统一（ActionRouter.Route/TryResolve + Response 错误带补救指引）；逐管理器动作数：ManageEditor 24（get_state/get_windows/get_selection/step/wait_for_idle(StepJob)/get_compilation_summary/deprecated 三态）、ManageGameObject 14（find/create_batch/edit_batch/ensure_component/ensure_mesh_collider_mesh/ensure_renderer_material/ensure_prefab_default_sprite 等修复型 ensure）、ManageScene 4、ManageInput 12+VirtualInputDevices 虚拟设备、ManageScreenshot 10（**capture_game_view 禁用**→record_game_view on exec_runtime_script；默认长边 256 下采样；MP4 录制 PlatformMp4Encoder）、ReadConsole 3、ManageAsset 5/ManagePackage 3(UpmJob)/ManageShader 2/ManageBake 5/ManageGameView 3、执行域 5 族（ExecuteCSharpScript 的 execution_mode=editor|play 播放态互斥+asyncTimeoutSeconds+日志捕获；ExecuteScriptCommand 双入口；ExecuteMenuItem 2；ExecuteCustomTool 的 CustomToolsRegistry 特性扫描+手动注册合并；REPL 三件）、ScriptFix 自动修复管道 10 文件（缺括号/分号/导入/歧义引用/未限定 Unity 静态方法）、ManageWindowBridge 9（**start/stop_offscreen_stream 单窗口轻量流**+resolve_native_window+input）、ManageJob 3+9 Job 类（Refresh/WaitForCompile/CompilePipeline/WaitForIdle/Play/Pause/StopPlayMode/Upm/ListPackages）、ManageDialog click+Win32/Mac 模态扫描、_InternalAssetListening/_InternalStateDirtyNotifier、TmpEssentialsAutoImporter；**own 差距表**: own 仅 manage_editor+manage_window_bridge 两命令族，~90 动作分域 ❌/🟡 | api/bridge-tools-action-catalog.md |
+
+下轮候选（再更新）：前端 4373 条文案逐 feature UX、unity-insight worker 内部管线、canary.2 core 载荷内容级差分、yargs 六主命令变量解码（CLI 进程参数树补全）。
+
+---
+
+## 11. 第七轮：insight worker 管线 + CLI 进程参数树补全（T16，2026-10-02）
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T16 | unity-insight worker 内部管线 + yargs 解码 | worker 七文件分工（cli 941KB 编排/build 579KB/sync 637KB/query 321KB/yamlExtract 194KB/shimmer 壳/paths）；**SQLite 19 张 STRICT 表**（projects/files/assemblies/assembly_references/yaml_objects/yaml_references/cs_declarations/cs_mentions/semantic_bindings/symbols/symbol_edges/assets/vfs_entries/vfs_edges/index_diagnostics/rebuild_summary）+ 42 索引 + FK CASCADE；**VFS 物化代次**（materialization_generation + 七个 idx_vfs_entries_*，entryKind source_prefab_link/prefab_overrides）；同步三模式 full/scoped/incremental，回执含 publishedIndexPath/schemaVersion=11/completedStages/reconcile/skipReason；**边类型五种** calls/binds_to/depends_on/instance_of/refs（in|out 方向，symbol_edges+vfs_edges 双域）；YAML 引用三元组与 **prefab 位标志 bitmask**（gameObjectFileId=1…prefabRootName=32）；**yargs 变量解码=gamecowork mcp 六子命令**（add/remove/list/disable/enable/auth）；进程树全量 31 组：extensions 六子命令（install 三源 git/zip/local、link、**new 样板**、config **Gemini CLI 兼容**）、**serve 三服务器**（unity-mcp=Unity 工具暴露成 MCP、web-ui=ACP→WebSocket 代理、control-plane 管理多 web-ui）、**swarm 七子命令**（create 自任 leader/send 邮箱/stop 持久请求/worker spawn\|resume\|stop\|status/spawn/resume） | api/insight-pipeline-and-cli-process-tree.md |
+
+下轮候选（余量）：前端 4373 条文案逐 feature UX、canary.2 core 载荷内容级差分。
+
+---
+
+## 12. 第八轮：canary.2 内容级差分 + 前端逐功能 UX（T17，2026-10-02，收尾轮）
+
+| # | 域 | 关键新事实 | 产出 |
+|---|---|---|---|
+| T17 | canary.2 内容级差分 + 前端 UX 清单 | 旧版 core（codely-binary-old，载荷 15,787,839B/161 文件）pkg 解包后与 canary.2 维护副本差分：**index.js 实质仅 +18KB、字符串差分恰 7 条**——＋`custom/create|read|rename|update`（统一自定义定义 CRUD 门面：经 `out/gamecowork-custom.js` 对 kind=commands\|agents\|skills 做创建/读/改/重命名，写后按 kind 刷新对应会话注册表）、＋`settings/{get,prepare,apply}GameCoworkHomeChange`（替换 CodelyHome 三条）；tree-sitter 36 查询文件逐一相同；**"载荷翻倍 15.8→32.6MB"的量化根因 = 新载荷把 sqlite3 完整构建树打进快照（解包 7.76→71.78MB：sqlite3.c 8.9MB/shell.c/autoconf 树/.obj/.pdb/.tlog）**，非功能增量。前端：`t()` 24 命名空间 466 处、registry 资源表 1,407 中文叶子键；4,373 条文案按 18 功能域分类（Unity 连接 240/错误边界 178/技能扩展市场 150/许可账号 122/Git 90/更新 84/资产生成 84/画布布局 80/终端 72/远程 68/记忆 64/子代理 62/MCP 54/LSP 28/审批 26/规划 24/检查点 16/通用 2931）；行为级发现六条（桥插件版本协商三连 UX、资产自动刷新聚合导入、fork 流式禁用、模型生成会话标题、MCP 白名单格式提示、画布六布局选项） | api/canary2-content-diff-and-ux-inventory.md |
+
+**下轮候选：无。** 提取面已闭环（壳/许可/安装器/差分/索引模板/core 五域/ACP/工具/llm/CLI/桥动作/insight 管线/前端 UX 全部建档）。
+后续原厂发 canary.3+ 时，复跑 `tools/research/pkg-unpack.mjs` 与 temp/GameCowork/mine/ 差分脚本增量跟进即可。
+
+---
+
+## 13. 实际原包与远端资产客户端复核（2026-10-02）
+
+用户指出此前自行设计资产功能，要求先拆解真实 Codely EXE 和四张截图。本阶段停止当前对话的开发 / 打包，直接核验实际 `E:/TuanjieCodely/EXE/Tuanjie Cowork/` 原壳、Core、CLI 和随包前端；沿其真实 iframe URL 匿名取得当前公开生成 / 历史 / Canvas 客户端，仅静态解析，不运行原程序、读凭据或调用账号 / 生成 API。
+
+产出：[asset-generation-and-canvas-source-audit.md](api/asset-generation-and-canvas-source-audit.md)与来源证据 JSON。原包负责容器、主题 / 工作区 / 身份字段和下载 / 参考桥；远端负责四生成模式、模型参数、参考 / 手绘、SSO 创建 / 轮询、历史筛选 / 标签、模板图库和节点图。公开客户端不等于 EXE 载荷，也不能证明截图时历史部署。
+
+**纠正 §12 的闭环判断与 T17 归因**：维护副本包含四条 `custom/*` 和三条 `GameCoworkHome` 新名称；实际原 Core 载荷没有它们。不能将自研改动归为原厂 canary.2 增量。T1–T17 已有建档仍保留，但不是所有真实功能已完整拆出或运行恢复的证明；远端节点内部、服务端、组织权限、真实价格与私有 Provider 仍分别保留来源和缺口。不得用自定 REST / 简化素材布局替代原功能依据。

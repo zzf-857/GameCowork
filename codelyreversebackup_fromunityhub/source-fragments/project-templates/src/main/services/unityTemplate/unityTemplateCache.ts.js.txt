@@ -1,0 +1,18 @@
+//#region src/main/services/unityTemplate/unityTemplateCache.ts
+var LOCAL_TEMPLATES_KEY = "localTemplates";
+var UnityTemplateCache = class extends HubCache {
+	static __injection = {
+		id: IUnityTemplateCacheId,
+		dependencies: []
+	};
+	setLocalTemplatesByEditor(editorVersion, templates) {
+		this.set(this._getLocalTemplatesKey(editorVersion), templates);
+	}
+	getLocalTemplatesByEditor(editorVersion) {
+		return this.get(this._getLocalTemplatesKey(editorVersion));
+	}
+	_getLocalTemplatesKey(editorVersion) {
+		return `${LOCAL_TEMPLATES_KEY}:${editorVersion}`;
+	}
+};
+//#endregion

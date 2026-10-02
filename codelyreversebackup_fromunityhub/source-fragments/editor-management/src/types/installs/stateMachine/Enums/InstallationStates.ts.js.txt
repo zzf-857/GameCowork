@@ -1,0 +1,10 @@
+//#region src/types/installs/stateMachine/Enums/InstallationStates.ts
+var INSTALLATION_STATES = {
+	VALIDATION: "install_validation",
+	INSTALLATION: "installation",
+	FAILED: "install_failed",
+	CLEANUP: "install_cleanup",
+	TEMP_CLEANUP: "install_temp_cleanup",
+	FINISHED: "install_finished"
+};
+//#endregion

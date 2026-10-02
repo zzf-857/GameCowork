@@ -1,0 +1,202 @@
+//#region src/main/services/editorApp/EditorApp.ts
+var logger$11 = loggerFactory("EditorApp");
+var cloudEnvironment;
+/**
+* Gives a user-friendly error from a process spawn error.
+*/
+var EditorAppError = class extends Error {
+	errorCode;
+	params;
+	constructor(errorCode, exec, args, options) {
+		switch (errorCode) {
+			case "ENOTDIR":
+			case "EPERM":
+			case "ENOENT":
+			case "EACCES":
+			case "LICENSE":
+				errorCode = `ERROR.LAUNCH_EDITOR.${errorCode}`;
+				break;
+			default: errorCode = "ERROR.LAUNCH_EDITOR.GENERIC";
+		}
+		super(`Error launching Editor application ${errorCode}`, options);
+		this.name = "EditorAppError";
+		logger$11.warn(`Launch error app.editor: exec: ${exec}, args: ${args}, errorCode: ${errorCode}`, options?.cause);
+	}
+};
+var EditorApp = class {
+	version;
+	main;
+	architecture;
+	editorPath;
+	exec;
+	path;
+	resources;
+	/**
+	* Represents a unity editor application
+	*
+	* @param appOptions Object containing arguments
+	*/
+	constructor(appOptions) {
+		if (appOptions.editorPath === void 0) throw new TypeError("missing mandatory editorPath options");
+		this.version = appOptions.version;
+		this.main = appOptions.main;
+		this.architecture = appOptions.architecture;
+		this.editorPath = appOptions.editorPath;
+		this.exec = appOptions.editorPath;
+		this.path = path.join(path.dirname(this.exec), "..");
+		this.resources = path.resolve(this.path, "Data", "Resources");
+		if (os.platform() === "darwin") {
+			this.exec = `${appOptions.editorPath}/Contents/MacOS/Unity`;
+			this.path = path.dirname(appOptions.editorPath);
+			this.resources = path.resolve(this.path, "Contents", "Resources");
+		}
+	}
+	static init() {
+		logger$11.info("Init");
+		const settings = mainContainer.get(ILocalSettingsId);
+		cloudEnvironment = settings.get(settings.keys.CLOUD_ENVIRONMENT);
+	}
+	/**
+	* Get optional arguments to start the editor
+	* @param options
+	* @param customArgs - The path to the project.
+	* @returns Array of optional arguments
+	*/
+	getOptionalArguments(options, customArgs) {
+		options = options || {};
+		customArgs = Array.isArray(customArgs) ? customArgs : [];
+		const args = ["-useHub", "-hubIPC"];
+		if (cloudEnvironment && customArgs.indexOf("-cloudEnvironment") <= -1) args.push("-cloudEnvironment", cloudEnvironment);
+		if (options.buildPlatform?.buildTarget && customArgs.indexOf("-buildTarget") <= -1) {
+			args.push("-buildTarget", options.buildPlatform.buildTarget);
+			if (options.buildPlatform.buildTargetGroup !== void 0 && customArgs.indexOf("-buildTargetGroup") <= -1) args.push("-buildTargetGroup", options.buildPlatform.buildTargetGroup);
+		}
+		const ipcName = licensingSdk.getInstance().getConnectedPipeName();
+		if (ipcName !== "") args.push("-licensingIpc", ipcName);
+		if (Array.isArray(options.args)) args.push(...options.args);
+		return args;
+	}
+	/**
+	* Start this unity app
+	* @param args Array arguments to be passed to process
+	* @param onError Function called if the process returns an error post-launch (asynchronously).
+	*/
+	async start(args, onError) {
+		const combinedArgs = [
+			...args,
+			"-hubSessionId",
+			AmplitudeService_default.sessionGUID
+		];
+		const accessToken = getAccessTokenValue();
+		if (accessToken) combinedArgs.push("-accessToken", accessToken);
+		if (!await licenseService_default.isLicenseValid()) throw new EditorAppError("LICENSE", this.exec, combinedArgs);
+		const command = this.exec;
+		const commandLineArguments = combinedArgs;
+		if (isEditorVersionInRange(this.version, "2017.2.0f1", "2019.1.0f1")) await EditorCommunicationService_default.startRESTService();
+		try {
+			const process = await start(command, commandLineArguments, this.exec);
+			process.on("close", (code) => {
+				if (code && code > 0) {
+					const message = `Editor exited with code ${code}`;
+					logger$11.error(message);
+					if (onError) onError(new Error(message));
+				}
+			});
+			process.on("error", async (error) => {
+				logger$11.error("Error launching the Editor", error);
+				if (onError) onError(error);
+				const translate = mainContainer.get(ITranslateId);
+				const { response } = await dialog.showMessageBox({
+					type: "error",
+					title: translate.t("common:ERROR_LAUNCHING_EDITOR"),
+					message: `${translate.t("common:ERROR_LAUNCHING_EDITOR_MESSAGE")} \n${translate.t("common:REPORT_A_BUG_MESSAGE")}`,
+					buttons: [translate.t("tray:TROUBLESHOOTING_REPORT_A_BUG"), translate.t("common:CONTINUE")]
+				});
+				if (response === 0) await openBugReporter();
+			});
+			return process;
+		} catch (error) {
+			throw new EditorAppError(error.code || "GENERIC", this.exec, combinedArgs, { cause: error });
+		}
+	}
+	/**
+	* Open a project
+	*
+	* @param projectPath - The path to the project.
+	* @param options - Options for opening the project.
+	* @param customArgs - Custom arguments for the Unity command line interface.
+	* @param onError - Callback function to handle errors.
+	*
+	* @returns Promise resolving to the detached process.
+	*/
+	async openProject(projectPath, options, customArgs, onError) {
+		let customArgumentList = [];
+		if (customArgs?.[projectPath]?.cliArgs) customArgumentList = split(customArgs[projectPath].cliArgs);
+		const optionalArgs = this.getOptionalArguments(options, customArgumentList);
+		const args = [
+			"-projectpath",
+			projectPath,
+			"-acceptSoftwareTermsForThisRunOnly",
+			...customArgumentList,
+			...optionalArgs
+		];
+		logger$11.debug(`opening the project with args ${util.inspect(args)}`);
+		return this.start(args, onError);
+	}
+	/**
+	* Create a project
+	*
+	* @param projectPath - The path where the project will be created.
+	* @param selectedPackages - The selected packages for the project.
+	* @param projectTemplate - The template for the project.
+	* @param organizationId - The organization ID for the project.
+	* @param cloudProjectId - The cloud project ID for the project.
+	* @param onError - The error callback function.
+	* @returns Promise resolving to the detached process.
+	*/
+	createProject(projectPath, selectedPackages, projectTemplate, organizationId, cloudProjectId, onError) {
+		const packageArgs = selectedPackages.map((pkg) => pkg.packageName);
+		const templateKey = projectTemplate === 0 || projectTemplate === 1 ? "projectTemplate" : "cloneFromTemplate";
+		const args = [
+			"-createproject",
+			projectPath,
+			...packageArgs,
+			`-${templateKey}`,
+			String(projectTemplate),
+			"-cloudOrganization",
+			organizationId,
+			"-cloudProject",
+			cloudProjectId ?? "",
+			"-cloudEnvironment",
+			cloudEnvironment,
+			"-useHub",
+			"-hubIPC"
+		];
+		return this.start(args, onError);
+	}
+	/**
+	* Create a temporary project
+	*
+	* @param selectedPackages - The selected packages for the project.
+	* @param projectTemplate - The project template to use for creating the project.
+	* @param onError - The error callback function.
+	* @returns Promise resolving to the detached process.
+	*/
+	createTempProject(selectedPackages, projectTemplate, onError) {
+		const templateKey = projectTemplate === 0 || projectTemplate === 1 ? "projectTemplate" : "cloneFromTemplate";
+		const args = [
+			"-createproject",
+			...selectedPackages,
+			`-${templateKey}`,
+			String(projectTemplate),
+			"-temporary",
+			"-cloudEnvironment",
+			cloudEnvironment,
+			"-useHub",
+			"-hubIPC",
+			"-skipUpgradeDialogs"
+		];
+		return this.start(args, onError);
+	}
+};
+//#endregion

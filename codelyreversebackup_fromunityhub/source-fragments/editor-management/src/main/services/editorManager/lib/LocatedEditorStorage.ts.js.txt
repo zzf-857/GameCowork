@@ -1,0 +1,85 @@
+//#region src/main/services/editorManager/lib/LocatedEditorStorage.ts
+/**
+* The key defining where located editors are stored in `localStorage`.
+*/
+var STORAGE_KEY = "editors-v2";
+var SCHEMA_VERSION = "2";
+var STORAGE_KEY_LEGACY = "editors";
+var LocatedEditorStorage = class {
+	logger = loggerFactory("LocatedEditorStorage");
+	editorsList = [];
+	get editors() {
+		const editorMap = {};
+		this.editorsList.forEach((editor) => {
+			editor.architecture = editor.architecture ?? CHIP_ARCHITECTURES.X86_64;
+			editor.location = Array.isArray(editor.location) ? editor.location : [editor.location];
+			const editorMapKey = getUniqueIdentifier(editor);
+			editorMap[editorMapKey] = editor;
+		});
+		return editorMap;
+	}
+	async fetchEditors() {
+		try {
+			const locatedEditorFileContent = await mainContainer.get(IJsonStorageId).get(STORAGE_KEY);
+			const hasContent = Object.keys(locatedEditorFileContent).length > 0;
+			this.editorsList = locatedEditorFileContent?.data ?? [];
+			if (!hasContent) await this.extractFromLegacyLocatedEditor();
+			this.getMissingProductNames();
+			this.logger.info(`${this.editorsList.length} located editors found in storage`);
+			return;
+		} catch (error) {
+			this.logger.warn("The list of manually located editors is corrupted - flushing list", error);
+			this.editorsList = [];
+			return this.flushLocatedEditorContent();
+		}
+	}
+	addEditor(editor) {
+		this.editorsList.push(editor);
+		return this.saveLocatedEditorContent();
+	}
+	removeEditor(editor) {
+		this.editorsList = this.editorsList.filter((existingEditor) => existingEditor.version !== editor.version || existingEditor.architecture !== editor.architecture);
+		return this.saveLocatedEditorContent();
+	}
+	/**
+	* productName was introduced in 3.8 with Unity 6 (6000.0.0b11). This method adds productNames to
+	* any editors located before 3.8.
+	*/
+	getMissingProductNames() {
+		if (this.editorsList.every((editor) => editor.productName)) return;
+		this.editorsList = this.editorsList.map((editor) => {
+			if (editor.productName) return editor;
+			const productName = getProductNameFallback(editor.version);
+			return {
+				...editor,
+				productName
+			};
+		});
+		this.saveLocatedEditorContent();
+	}
+	async extractFromLegacyLocatedEditor() {
+		const editorMap = await mainContainer.get(IJsonStorageId).get(STORAGE_KEY_LEGACY);
+		const legacyEditors = Object.values(editorMap);
+		legacyEditors.forEach((legacyEditor) => {
+			const editor = {
+				version: legacyEditor.version,
+				manual: legacyEditor.manual,
+				architecture: legacyEditor.architecture ?? CHIP_ARCHITECTURES.X86_64,
+				location: Array.isArray(legacyEditor.location) ? legacyEditor.location : [legacyEditor.location]
+			};
+			this.addEditor(editor);
+		});
+		this.logger.info(`${legacyEditors.length} located editors found in legacy storage`);
+	}
+	flushLocatedEditorContent() {
+		return mainContainer.get(IJsonStorageId).set(STORAGE_KEY, {});
+	}
+	saveLocatedEditorContent() {
+		const locatedEditorFileContent = {
+			schema_version: SCHEMA_VERSION,
+			data: this.editorsList
+		};
+		return mainContainer.get(IJsonStorageId).set(STORAGE_KEY, locatedEditorFileContent);
+	}
+};
+//#endregion

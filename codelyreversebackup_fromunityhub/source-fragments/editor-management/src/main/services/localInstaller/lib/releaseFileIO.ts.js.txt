@@ -1,0 +1,6 @@
+//#region src/main/services/localInstaller/lib/releaseFileIO.ts
+var read = async (filepath) => {
+	const data = await fs.promises.readFile(filepath, "utf8");
+	return JSON.parse(data);
+};
+//#endregion

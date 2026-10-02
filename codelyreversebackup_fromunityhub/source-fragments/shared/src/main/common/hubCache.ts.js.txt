@@ -1,0 +1,49 @@
+//#region src/main/common/hubCache.ts
+var logger = loggerFactory("hubCache");
+var HubCache = class {
+	hubCache;
+	constructor() {
+		this.hubCache = /* @__PURE__ */ new Map();
+	}
+	set(key, value, ttl) {
+		if (this.hubCache.has(key)) logger.warn(`key ${key} already been set and will be reset by new value`);
+		const cachedItem = { value: structuredClone(value) };
+		if (ttl) {
+			cachedItem.timestamp = Date.now();
+			cachedItem.ttl = ttl;
+			logger.debug(`Setting key ${key} with ttl: ${ttl} at timestamp ${cachedItem.timestamp}`);
+		} else logger.debug(`Setting key ${key} with no ttl`);
+		this.hubCache.set(key, cachedItem);
+	}
+	get(key) {
+		const cachedItem = this.hubCache.get(key);
+		if (cachedItem?.value && !this._isCacheExpired(cachedItem)) {
+			logger.debug(`Cache hit for key: ${key}`);
+			return structuredClone(cachedItem.value);
+		}
+		logger.debug(`Cache miss for key: ${key}`);
+		this.delete(key);
+		return null;
+	}
+	delete(key) {
+		this.hubCache.delete(key);
+	}
+	filter(predicate) {
+		for (const key of this.hubCache.keys()) if (!predicate(key)) this.delete(key);
+	}
+	_getTimeStamp(cachedItem) {
+		return cachedItem?.timestamp ?? null;
+	}
+	_getTTL(cachedItem) {
+		return cachedItem?.ttl ?? null;
+	}
+	_isCacheExpired(cachedItem) {
+		if (!this._getTTL(cachedItem)) return false;
+		if (cachedItem) {
+			const lastCacheTime = this._getTimeStamp(cachedItem);
+			if (lastCacheTime !== null && Date.now() - lastCacheTime < this._getTTL(cachedItem)) return false;
+		}
+		return true;
+	}
+};
+//#endregion

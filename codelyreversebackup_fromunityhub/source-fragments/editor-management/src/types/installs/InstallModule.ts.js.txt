@@ -1,0 +1,32 @@
+//#region src/types/installs/InstallModule.ts
+var MODULE_CATEGORIES = {
+	TOOLS: "Dev tools",
+	PLATFORMS: "Platforms",
+	DOCUMENTATION: "Documentation",
+	LANGUAGE: "Language packs (Preview)"
+};
+var MODULE_IDS = {
+	ANDROID: "android",
+	ANDROID_NDK: "android-ndk",
+	ANDROID_OPEN_JDK: "android-open-jdk",
+	ANDROID_SDK_BUILD_TOOLS: "android-sdk-build-tools",
+	ANDROID_SDK_NDK_TOOLS: "android-sdk-ndk-tools",
+	ANDROID_SDK_PLATFORMS: "android-sdk-platforms",
+	ANDROID_SDK_PLATFORMS_29: "android-sdk-platforms-29",
+	ANDROID_SDK_PLATFORMS_30: "android-sdk-platforms-30",
+	ANDROID_SDK_PLATFORM_TOOLS: "android-sdk-platform-tools",
+	APPLE_TV: "appletv",
+	DOCUMENTATION: "documentation",
+	IOS: "ios",
+	LINUX_BUILD_SUPPORT: "linux-il2cpp",
+	LINUX_MONO: "linux-mono",
+	LUMIN: "lumin",
+	MAC_BUILD_SUPPORT: "mac-il2cpp",
+	VISUAL_STUDIO: "visualstudio",
+	VISUAL_STUDIO_MONO: "mono",
+	VISUAL_STUDIO_CODE: "visualstudiocode",
+	WEBGL: "webgl",
+	WINDOWS_MONO: "windows-mono"
+};
+MODULE_CATEGORIES.TOOLS, MODULE_CATEGORIES.PLATFORMS, MODULE_CATEGORIES.DOCUMENTATION, MODULE_CATEGORIES.LANGUAGE;
+//#endregion

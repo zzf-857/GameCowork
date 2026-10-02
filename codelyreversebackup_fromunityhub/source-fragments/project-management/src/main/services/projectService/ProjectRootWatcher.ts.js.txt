@@ -1,0 +1,108 @@
+//#region src/main/services/projectService/ProjectRootWatcher.ts
+var WATCHED_DIR_PREFIXES = [
+	"ProjectSettings/",
+	"Library/",
+	".git/",
+	".plastic/"
+];
+var WATCHED_EXACT_NAMES = new Set([".git", ".plastic"]);
+var IGNORED_VCS_PREFIXES = [".git/objects/", ".git/lfs/"];
+var WATCHED_PLASTIC_FILES = new Set([".plastic/plastic.selector", ".plastic/plastic.workspace"]);
+var MAX_RETRIES = 5;
+var RETRY_INTERVAL_MS = 2e3;
+var DEFAULT_DEBOUNCE_MS = 300;
+var shouldWatch = (relativePath) => {
+	const normalized = relativePath.replaceAll("\\", "/");
+	if (WATCHED_EXACT_NAMES.has(normalized)) return true;
+	if (IGNORED_VCS_PREFIXES.some((p) => normalized.startsWith(p))) return false;
+	if (normalized.startsWith(".plastic/")) return WATCHED_PLASTIC_FILES.has(normalized);
+	return WATCHED_DIR_PREFIXES.some((p) => normalized.startsWith(p));
+};
+var ProjectRootWatcher = class {
+	watchers = /* @__PURE__ */ new Map();
+	debounceTimers = /* @__PURE__ */ new Map();
+	retryTimers = /* @__PURE__ */ new Map();
+	retryCounts = /* @__PURE__ */ new Map();
+	callback;
+	debounceMs;
+	constructor(callback, debounceMs = DEFAULT_DEBOUNCE_MS) {
+		this.callback = callback;
+		this.debounceMs = debounceMs;
+	}
+	watch(projectRoot) {
+		if (this.watchers.has(projectRoot)) return;
+		this.startWatcher(projectRoot);
+	}
+	unwatch(projectRoot) {
+		const watcher = this.watchers.get(projectRoot);
+		if (watcher) {
+			watcher.close();
+			this.watchers.delete(projectRoot);
+		}
+		const retryTimer = this.retryTimers.get(projectRoot);
+		if (retryTimer) {
+			clearTimeout(retryTimer);
+			this.retryTimers.delete(projectRoot);
+		}
+		this.retryCounts.delete(projectRoot);
+		const prefix = `${projectRoot}\0`;
+		for (const [key, timer] of this.debounceTimers) if (key.startsWith(prefix)) {
+			clearTimeout(timer);
+			this.debounceTimers.delete(key);
+		}
+	}
+	close() {
+		for (const watcher of this.watchers.values()) watcher.close();
+		this.watchers.clear();
+		for (const timer of this.debounceTimers.values()) clearTimeout(timer);
+		this.debounceTimers.clear();
+		for (const timer of this.retryTimers.values()) clearTimeout(timer);
+		this.retryTimers.clear();
+		this.retryCounts.clear();
+	}
+	startWatcher(projectRoot) {
+		try {
+			const watcher = fs.watch(projectRoot, {
+				recursive: true,
+				persistent: false,
+				ignore: (relativePath) => !shouldWatch(relativePath)
+			}, (_event, filename) => {
+				if (filename) this.debouncedCallback(projectRoot, filename);
+			});
+			watcher.on("error", () => {
+				watcher.close();
+				this.watchers.delete(projectRoot);
+				this.scheduleRetry(projectRoot);
+			});
+			this.watchers.set(projectRoot, watcher);
+			this.retryCounts.delete(projectRoot);
+		} catch (error) {
+			if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") this.scheduleRetry(projectRoot);
+		}
+	}
+	scheduleRetry(projectRoot) {
+		if (this.retryTimers.has(projectRoot)) return;
+		const count = this.retryCounts.get(projectRoot) ?? 0;
+		if (count >= MAX_RETRIES) {
+			this.retryCounts.delete(projectRoot);
+			return;
+		}
+		this.retryCounts.set(projectRoot, count + 1);
+		const timer = setTimeout(() => {
+			this.retryTimers.delete(projectRoot);
+			if (!this.watchers.has(projectRoot)) this.startWatcher(projectRoot);
+		}, RETRY_INTERVAL_MS);
+		this.retryTimers.set(projectRoot, timer);
+	}
+	debouncedCallback(projectRoot, filename) {
+		const key = `${projectRoot}\0${filename}`;
+		const existing = this.debounceTimers.get(key);
+		if (existing) clearTimeout(existing);
+		const timer = setTimeout(() => {
+			this.debounceTimers.delete(key);
+			this.callback(projectRoot, filename);
+		}, this.debounceMs);
+		this.debounceTimers.set(key, timer);
+	}
+};
+//#endregion

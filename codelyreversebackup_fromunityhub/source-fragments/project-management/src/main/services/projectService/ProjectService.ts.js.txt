@@ -1,0 +1,333 @@
+//#region src/main/services/projectService/ProjectService.ts
+var ProjectService = class ProjectService {
+	static logger = loggerFactory("LocalProjectService");
+	/**
+	* Show a file open dialog for the user to select a project to open. The selected project will be
+	* opened immediately in the editor version at `source`, or in the default editor if, somehow, the
+	* running version is unavailable.
+	*
+	* @param source type of source of the open request (e.g. IPC, REST IPC, tray icon)
+	* @returns a `Promise` resolved with `false` (legacy behaviour) if the project is opening in the
+	* editor or resolved with some extra contextual information if the project is, somehow, opening
+	* in a different editor (the default one). The `Promise` is rejected if no valid project is
+	* selected in the file open dialog.
+	*/
+	static async showOpenOtherDialog(source) {
+		const projectData = await localProject.chooseProjectDialog();
+		if (!projectData) throw new Error("No project selected");
+		const { projectDirectory, editorVersion, editorArchitecture } = projectData;
+		if (!editorManager_default.availableEditors[getUniqueIdentifier({
+			version: editorVersion,
+			architecture: editorArchitecture
+		})]) {
+			const defaultEditor = await editorManager_default.getDefaultEditor();
+			return {
+				projectDirectory,
+				editorVersion,
+				preferredEditorVersion: defaultEditor.version,
+				editorArchitecture,
+				preferredEditorArchitecture: defaultEditor.architecture
+			};
+		}
+		ProjectService.openProject({
+			path: projectDirectory,
+			version: editorVersion,
+			architecture: editorArchitecture,
+			source
+		}).catch((error) => {
+			ProjectService.logger.error("Error while opening project", error);
+		});
+		return false;
+	}
+	static async createProject(newProject, enableAnalytics = true) {
+		const foundIssue = await ProjectService.getLicenseProjectIssue(newProject.editorVersion, newProject.editorArchitecture);
+		if (foundIssue) return Promise.reject(foundIssue);
+		const fullProjectPath = join(newProject.projectPath, newProject.projectName);
+		if (await hub_fs_default.pathExists(fullProjectPath)) return Promise.reject(PROJECT_ISSUES.PROJECT_EXISTS_AT_LOCATION);
+		if (!(await hub_fs_default.checkReadWriteAccess(newProject.projectPath)).isValid) return Promise.reject(PROJECT_ISSUES.INSUFFICIENT_PERMISSIONS);
+		await LocalProjectService.createProject(newProject, enableAnalytics);
+		return Promise.resolve();
+	}
+	static async addProject(inputProjectData) {
+		let projectData = inputProjectData;
+		if (!projectData) projectData = await localProject.chooseProjectDialog();
+		if (!projectData) return null;
+		const { projectName, projectDirectory, editorVersion } = projectData;
+		const cloudProjectIdFromRenderer = inputProjectData?.cloudProjectId ?? null;
+		const organizationIdFromRenderer = inputProjectData?.organizationId ?? null;
+		const editorMatchingVersion = editorManager_default.findEditorsByVersion(editorVersion);
+		let editorArchitecture = editorMatchingVersion.length === 1 ? editorMatchingVersion[0].architecture : CHIP_ARCHITECTURES.Unknown;
+		if (editorArchitecture === CHIP_ARCHITECTURES.Unknown) editorArchitecture = localProject.getProjectArchitecture(projectDirectory) || editorArchitecture;
+		try {
+			if (!isValidFilename(projectName)) throw new ProjectError(PROJECT_ISSUES.COULD_NOT_ADD_PROJECT);
+			await ProjectValidatorService.ensureAssetsFolder(projectDirectory);
+			let cloudProjectIdResolved = cloudProjectIdFromRenderer;
+			let organizationIdResolved = organizationIdFromRenderer;
+			try {
+				const playerSettings = await localProject.getPlayerSettingsData(projectDirectory);
+				cloudProjectIdResolved = cloudProjectIdFromRenderer ?? playerSettings.cloudProjectId ?? null;
+				organizationIdResolved = organizationIdFromRenderer ?? playerSettings.organizationId ?? null;
+			} catch (error) {
+				ProjectService.logger.debug("Could not read cloud connection data from project settings on add", error);
+			}
+			const genesisOrgIdResolved = organizationIdResolved;
+			if (cloudProjectIdResolved && organizationIdResolved) {
+				const projectSettingsPath = path.join(projectDirectory, ProjectSettingsFolderPath, ProjectSettingsFileName);
+				try {
+					await updateCloudProjectData(projectSettingsPath, {
+						organizationId: organizationIdResolved,
+						cloudProjectId: cloudProjectIdResolved,
+						genesisOrgId: genesisOrgIdResolved
+					});
+				} catch (syncError) {
+					ProjectService.logger.warn("Could not persist cloud IDs to ProjectSettings.asset; Hub list will still use resolved values.", syncError);
+				}
+			}
+			await localProject.addToRecentProjects(projectDirectory, editorVersion, editorArchitecture, cloudProjectIdResolved, organizationIdResolved, genesisOrgIdResolved);
+			localProject.watchProjectSettings(projectDirectory);
+			if (editorMatchingVersion.length === 0) throw new ProjectError(PROJECT_ISSUES.MISSING_EDITOR_VERSION);
+			if (editorArchitecture === CHIP_ARCHITECTURES.Unknown) throw new ProjectError(PROJECT_ISSUES.MISSING_EDITOR_ARCHITECTURE);
+		} catch (error) {
+			const projectError = ProjectService.parseProjectError(error);
+			if (!projectError) {
+				ProjectService.logger.error(`Error while adding project: ${JSON.stringify(error)}`);
+				throw error;
+			}
+			projectError.errorCode = projectError.errorCode ?? PROJECT_ISSUES.COULD_NOT_ADD_PROJECT;
+			projectError.projectName = projectName;
+			projectError.projectPath = projectDirectory;
+			projectError.projectVersion = editorVersion;
+			projectError.projectArchitecture = editorArchitecture;
+			const errorResponse = new ErrorResponse(projectError);
+			ProjectService.logger.error(`Error while adding project: ${JSON.stringify(errorResponse)}`);
+			return errorResponse;
+		}
+		return new OkResponse();
+	}
+	/**
+	* Attempt to open a project. Depending on the source (e.g. IPC, tray icon, GUI), the error
+	* handling behavior may differ.
+	*
+	* @param projectPath the path to the project to open
+	* @param editorVersion the version of the editor to open the project with
+	* @param editorArchitecture the architecture of the editor to open the project with
+	* @param openProjectPayload parameters affecting the behavior of opening the project, including path, version, architecture, source, etc.
+	* @returns a `Promise` with an `IpcResponse` resolved if the project opens successfully or rejected if an error occurs
+	* when trying to open the project. Some errors are automatically handled, including lacking an
+	* active license when trying to open the project from the app tray icon, in which case the
+	* `Promise` is still resolved.
+	*/
+	static async openProject(openProjectPayload) {
+		const { path, version, architecture, source } = openProjectPayload;
+		try {
+			const foundIssue = await ProjectService.getLicenseProjectIssue(version, architecture);
+			if (foundIssue) return await Promise.reject(foundIssue);
+			await LocalProjectService.openProject(openProjectPayload);
+			return new OkResponse();
+		} catch (error) {
+			const projectError = ProjectService.parseProjectError(error);
+			if (!projectError) {
+				ProjectService.logger.error(`Error while opening project: ${JSON.stringify(error)}`);
+				throw error;
+			}
+			if (source !== void 0 && source !== OPEN_PROJECT_SOURCES.Projects && projectError.errorCode === PROJECT_ISSUES.NO_LICENSE_ACTIVATED) await ProjectService.showSystemPromptLicenseError(source);
+			projectError.errorCode = projectError.errorCode ?? PROJECT_ISSUES.PROJECT_FAILED_TO_OPEN;
+			projectError.projectName = openProjectPayload.title;
+			projectError.projectPath = path;
+			projectError.projectVersion = version;
+			projectError.projectArchitecture = architecture;
+			const errorResponse = new ErrorResponse(projectError);
+			ProjectService.logger.error(`Error while opening project: ${JSON.stringify(errorResponse)}`);
+			return errorResponse;
+		}
+	}
+	/**
+	* Move a project (by renaming its project directory) provided it is not currently open in an
+	* editor. The project is re-watched for settings changes. The modified timestamp on the project
+	* is not updated.
+	*
+	* @param projectPath The path to the project to move.
+	* @param newProjectName The new name (directory) for the project.
+	* @returns A `Promise` resolving with an `OkResponse` when the project is successfully moved.
+	* It is resolved with an `ErrorResponse` containing error details when the project is not
+	* successfully moved (for a known reason) or is currently open in an editor. It is rejected
+	* with any unhandled errors.
+	*/
+	static async moveProject(projectPath, newProjectName) {
+		try {
+			await ProjectValidatorService.validateProjectNotOpen(projectPath);
+			const newProjectPath = join(dirname(projectPath), newProjectName);
+			localProject.stopWatchingProjectSettings(projectPath);
+			try {
+				await rename(projectPath, newProjectPath);
+			} catch (e) {
+				localProject.watchProjectSettings(projectPath);
+				throw e;
+			}
+			await localProject.removeProject(projectPath);
+			localProject.watchProjectSettings(newProjectPath);
+			await ProjectService.moveProjectInProjectsInfo(projectPath, newProjectPath);
+			await ProjectService.moveProjectInFavorites(projectPath, newProjectPath);
+			ProjectService.refreshProjects().catch((error) => {
+				ProjectService.logger.error("Error while refreshing projects after move", error);
+			});
+			return new OkResponse();
+		} catch (e) {
+			let projectError;
+			if (e instanceof ProjectError) projectError = e;
+			else {
+				const projectIssue = {
+					EACCES: PROJECT_ISSUES.RENAME_PERMISSION_DENIED,
+					ENOENT: PROJECT_ISSUES.RENAME_SOURCE_MISSING,
+					ENOTEMPTY: PROJECT_ISSUES.RENAME_DESTINATION_EXISTS,
+					EPERM: PROJECT_ISSUES.RENAME_OPERATION_NOT_PERMITTED
+				}[e.code];
+				if (!projectIssue) {
+					ProjectService.logger.error(`Unexpected error while moving project at ${projectPath} to ${newProjectName}`, e);
+					throw e;
+				}
+				projectError = new ProjectError(projectIssue, {
+					projectName: basename(projectPath),
+					projectPath
+				});
+			}
+			ProjectService.logger.warn(`Unable to move project at ${projectPath} to ${newProjectName}`, projectError.getSerializableData());
+			return new ErrorResponse(projectError);
+		}
+	}
+	/**
+	* If the project that is being moved has any project info, remove that entry and add it back with the new path
+	*
+	* @param projectPath the old project path
+	* @param newProjectPath the new project path
+	*/
+	static async moveProjectInProjectsInfo(projectPath, newProjectPath) {
+		try {
+			const allProjectsInfo = await localProject.getProjectsInfo();
+			if (allProjectsInfo[projectPath]) {
+				const { [projectPath]: projectPathInfo, ...allProjectsInfoWithoutPreviousProjectPath } = allProjectsInfo;
+				const updatedAllProjectsInfo = {
+					...allProjectsInfoWithoutPreviousProjectPath,
+					[newProjectPath]: projectPathInfo
+				};
+				await localProject.setProjectsInfo(updatedAllProjectsInfo);
+			}
+			const allProjectArchitecture = localProject.getProjectsArchitecture();
+			if (allProjectArchitecture[path.basename(projectPath)]) {
+				allProjectArchitecture[path.basename(newProjectPath)] = allProjectArchitecture[path.basename(projectPath)];
+				delete allProjectArchitecture[path.basename(projectPath)];
+			}
+			localProject.setProjectsArchitecture(allProjectArchitecture);
+		} catch (err) {
+			ProjectService.logger.error(`Unable to update saved project info for moved project: ${projectPath} to ${newProjectPath}`, err);
+		}
+	}
+	/**
+	* If project that is being moved is favorited, remove it and add the new path to the list of favorites
+	*
+	* @param projectPath the old project path
+	* @param newProjectPath the new project path
+	*/
+	static async moveProjectInFavorites(projectPath, newProjectPath) {
+		try {
+			if (localProject.getFavoriteProjects().indexOf(projectPath) !== -1) {
+				await localProject.setFavoriteProject(projectPath, false);
+				await localProject.setFavoriteProject(newProjectPath, true);
+			}
+		} catch (err) {
+			ProjectService.logger.error(`Unable to update favorited project from '${projectPath}' to '${newProjectPath}'`, err);
+		}
+	}
+	static async renameProject(projectPath, newProjectName) {
+		try {
+			await localProject.renameProject(projectPath, newProjectName);
+			return new OkResponse();
+		} catch (error) {
+			const projectIssue = {
+				EACCES: PROJECT_ISSUES.RENAME_PERMISSION_DENIED,
+				ENOENT: PROJECT_ISSUES.RENAME_SOURCE_MISSING,
+				ENOTEMPTY: PROJECT_ISSUES.RENAME_DESTINATION_EXISTS,
+				EPERM: PROJECT_ISSUES.RENAME_OPERATION_NOT_PERMITTED
+			}[error.code];
+			if (!projectIssue) {
+				ProjectService.logger.error(`Unexpected error while renaming project at ${projectPath} to ${newProjectName}`, error);
+				throw error;
+			}
+			ProjectService.logger.error(`Unable to rename project from '${projectPath}' to '${newProjectName}'`, error);
+			return new ErrorResponse(new ProjectError(projectIssue, {
+				projectName: basename(projectPath),
+				projectPath
+			}));
+		}
+	}
+	static async getLicenseProjectIssue(editorVersion, editorArchitecture) {
+		if (!await licenseService_default.isLicenseValid()) return PROJECT_ISSUES.NO_LICENSE_ACTIVATED;
+		if (editorManager_default.availableEditors[getUniqueIdentifier({
+			version: editorVersion,
+			architecture: editorArchitecture
+		})]?.requiresUlf && !await licenseService_default.hasValidUlfLicense()) return PROJECT_ISSUES.INCOMPATIBLE_LICENSE_FILE;
+		return null;
+	}
+	/**
+	* Updates the renderer to reflect all changes made to projects and projects info
+	*/
+	static async refreshProjects(removeMissingProjects = false) {
+		windowManager_default.broadcastContent(RENDERER_EVENTS.GET_PROJECTS_INFO);
+		await localProject.getRecentProjects(true, removeMissingProjects);
+	}
+	/**
+	* Shows an error to the user through the OS.
+	* If the user tried to open the project from the system tray, throw a legacy error.
+	*
+	* @param openProjectSource the source of the request to open the project
+	* @returns a `Promise` resolved if the issue/error is automatically handled, such as when the
+	* user is lacking an active license when trying to open the project from the app tray icon. The
+	* `Promise` is rejected in any other case, potentially transforming the error.
+	*/
+	static async showSystemPromptLicenseError(openProjectSource) {
+		const translate = mainContainer.get(ITranslateId);
+		const { response: buttonIndex } = await dialog.showMessageBox(null, {
+			type: "warning",
+			title: translate.t("license-management:NO_LICENSE_ACTIVATED"),
+			message: translate.t("license-management:NO_LICENSE_ACTIVATED_DESC"),
+			buttons: [translate.t("license-management:ACTIVATE_LICENSE"), translate.t("common:CANCEL")]
+		});
+		if (buttonIndex === 0) await windowManager_default.showLicenseManagement();
+		if (openProjectSource !== OPEN_PROJECT_SOURCES.Tray) return Promise.reject({ errorCode: "ERROR.LAUNCH_EDITOR.LICENSE" });
+		return Promise.resolve();
+	}
+	static parseProjectError(error) {
+		if (error instanceof ProjectError) return error;
+		const parseProjectIssueFromString = (message) => Object.values(PROJECT_ISSUES).find((value) => message.includes(value));
+		if (error instanceof Error || typeof error === "string") {
+			const projectIssue = parseProjectIssueFromString(error.message ?? error);
+			if (projectIssue) return new ProjectError(projectIssue);
+		}
+	}
+	static async validateIfProjectIsOpen(projectPath) {
+		return !await ProjectValidatorService.validateProjectNotOpen(projectPath, false);
+	}
+	static async disconnectVersionControl(projectPath) {
+		try {
+			await localProject.vcsManagementService.disconnectVersionControl(projectPath, localProject.updateProjectSettings.bind(localProject));
+		} catch (error) {
+			ProjectService.logger.error("Failed to disconnect from version control", {
+				projectPath,
+				error: error instanceof Error ? error.message : String(error),
+				stack: error instanceof Error ? error.stack : void 0
+			});
+			throw error;
+		}
+	}
+	/**
+	* Forces an immediate update of a project's source control status.
+	* This bypasses the polling mechanism and immediately checks and updates the project's VCS state.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves when the update is complete
+	*/
+	static async forceUpdateProjectSourceControlStatus(projectPath) {
+		await localProject.vcsManagementService.forceUpdateProjectStatus(projectPath, localProject.updateProjectSettings.bind(localProject));
+	}
+};
+//#endregion

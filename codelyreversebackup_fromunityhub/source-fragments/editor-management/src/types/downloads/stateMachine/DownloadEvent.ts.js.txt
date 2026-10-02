@@ -1,0 +1,11 @@
+//#region src/types/downloads/stateMachine/DownloadEvent.ts
+var DOWNLOAD_EVENTS = {
+	START: "START",
+	VALIDATION_PASSED: "VALIDATION_PASSED",
+	PAUSE: "PAUSE",
+	RESUME: "RESUME",
+	ERROR: "ERROR",
+	REMOVE: "REMOVE",
+	COMPLETED: "COMPLETED"
+};
+//#endregion

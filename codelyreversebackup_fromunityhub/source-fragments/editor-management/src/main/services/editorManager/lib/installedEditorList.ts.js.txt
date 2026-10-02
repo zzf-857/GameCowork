@@ -1,0 +1,68 @@
+//#region src/main/services/editorManager/lib/installedEditorList.ts
+var logger$4 = loggerFactory("installedEditorList");
+var SECONDARY_INSTALL_PATH_KEY = "secondaryInstallPath";
+var InstalledEditorList = class {
+	#editors;
+	#defaultPath;
+	#baseInstallLocation;
+	#secondaryInstallLocation;
+	get editors() {
+		return this.#editors;
+	}
+	get secondaryInstallPath() {
+		return this.#secondaryInstallLocation.installPath;
+	}
+	constructor(defaultInstallPath) {
+		this.#defaultPath = defaultInstallPath;
+		this.#baseInstallLocation = new InstalledEditorLocation(defaultInstallPath);
+		this.#secondaryInstallLocation = new CustomInstallLocation(SECONDARY_INSTALL_PATH_KEY);
+		this.#editors = {};
+	}
+	findInstalledEditors() {
+		return this.#secondaryInstallLocation.initializeCustomLocation().then(() => this.#scanEditorPaths()).then(() => this.#updateEditors());
+	}
+	#scanEditorPaths() {
+		return this.#baseInstallLocation.scanForInstallsAndGenerateEditors().then(() => this.#secondaryInstallLocation.scanForInstallsAndGenerateEditors());
+	}
+	#updateEditors() {
+		this.#editors = this.#mergeEditorLocations();
+	}
+	#mergeEditorLocations() {
+		const baseEditorList = this.#baseInstallLocation.editors;
+		const secondaryEditorList = this.#secondaryInstallLocation.editors;
+		return Object.entries(secondaryEditorList).reduce((mergedList, [editorUniqueIdStr, editor]) => {
+			const existingEditor = mergedList[editorUniqueIdStr];
+			if (existingEditor) {
+				logger$4.info(`More than one location detected for Editor ${editorUniqueIdStr}.`);
+				existingEditor.location.push(...editor.location);
+			} else mergedList[editorUniqueIdStr] = editor;
+			return mergedList;
+		}, Object.assign({}, baseEditorList));
+	}
+	async addEditor(editor) {
+		if (!this.#secondaryInstallLocation.installPath) await this.#baseInstallLocation.updateEditor(editor);
+		else await this.#secondaryInstallLocation.updateEditor(editor);
+		this.#updateEditors();
+	}
+	async updateEditor(editor) {
+		if (this.#baseInstallLocation.editors[getUniqueIdentifier(editor)]) await this.#baseInstallLocation.updateEditor(editor);
+		else await this.#secondaryInstallLocation.updateEditor(editor);
+		this.#updateEditors();
+	}
+	removeEditor(editor) {
+		this.#baseInstallLocation.removeEditor(editor);
+		this.#secondaryInstallLocation.removeEditor(editor);
+		this.#updateEditors();
+	}
+	setSecondaryInstallLocation(installPath) {
+		if (this.#isEqualToBasePathOrEmpty(installPath)) return this.#clearSecondaryInstallLocation();
+		return this.#secondaryInstallLocation.setInstallLocation(installPath).then(() => this.#secondaryInstallLocation.scanForInstallsAndGenerateEditors()).then(() => this.#updateEditors());
+	}
+	#isEqualToBasePathOrEmpty(installPath) {
+		return !installPath || installPath === this.#defaultPath;
+	}
+	#clearSecondaryInstallLocation() {
+		return this.#secondaryInstallLocation.setInstallLocation("").then(() => this.#updateEditors());
+	}
+};
+//#endregion

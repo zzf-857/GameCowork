@@ -1,0 +1,14 @@
+//#region src/main/services/unityTemplate/termsOfServiceFetcher.ts
+/**
+* Fetches the content of a terms of service .txt file using axios
+* The text content has no special formatting that needs to be parsed, so can be returned as is and is rendered in html correctly.
+*
+* @param termsOfServiceUrl url to the .txt file
+* @returns text content of the .txt file
+*/
+var TermsOfServiceFetcher = class {
+	static async fetchTermsOfServiceText(termsOfServiceUrl) {
+		return axios.get(termsOfServiceUrl).then((response) => response.data);
+	}
+};
+//#endregion

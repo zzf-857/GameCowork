@@ -1,0 +1,35 @@
+//#region src/main/services/editorManager/eulaFetcher.js
+var import_lib$1 = require_lib$5();
+var logger$7 = loggerFactory("EulaFetcher");
+/**
+* EulaFetcher is a utility class made of static function to fetch online hosted EULA (End User License Agreement) content
+* for Unity Editor modules requiring user consent for these agreements.
+*
+* The only public API of this class is the fetch method expecting an editor's module object as parameter.
+* The proper fetching method will be called, based on the module id, if available.
+*
+*/
+var EulaFetcher = class EulaFetcher {
+	static async fetch(module) {
+		const methodName = `_${module.id}`;
+		if (typeof EulaFetcher[methodName] === "function") return EulaFetcher[methodName](module.eulaUrl1);
+		return "";
+	}
+	static async "_android-sdk-ndk-tools"(url) {
+		return axios(url).then((response) => {
+			const doc = new import_lib$1.DOMParser().parseFromString(response.data, "text/xml");
+			let text = "";
+			const elements = doc.documentElement.getElementsByTagName("license");
+			for (let i = 0; i < elements.length; i++) if (elements[i].getAttribute("id") === "android-sdk-license") {
+				text = elements[i].firstChild.nodeValue;
+				break;
+			}
+			return text;
+		}).catch((e) => {
+			logger$7.warn(`Failed to fetch eula for android-sdk-ndk-tools, at ${url}`);
+			logger$7.debug(e);
+			throw e;
+		});
+	}
+};
+//#endregion

@@ -1,0 +1,731 @@
+//#region src/main/services/sourceControl/SourceControlStateManagementService.ts
+var import_isomorphic_git = /* @__PURE__ */ __toESM(require_isomorphic_git(), 1);
+var GitDir = ".git";
+var GitConfigFile = ".git/config";
+var PlasticDir = ".plastic";
+var VCS_CHANGE_DEBOUNCE_MS = 2e3;
+var logger$32 = loggerFactory("SourceControlStateManagementService");
+/**
+* Source Control State Management Service handles all version control system operations for Unity projects.
+*
+* This service manages:
+* - Unity Version Control (UVCS/Plastic SCM) integration
+* - Git-based providers (GitHub, GitLab) integration
+* - VCS configuration file monitoring
+* - VCS provider detection and prioritization
+* - VCS disconnection operations
+*/
+var SourceControlStateManagementService = class SourceControlStateManagementService {
+	/** Set of connected Git project paths */
+	connectedGitProjects;
+	/** Set of connected UVCS project paths */
+	connectedUVCSProjects;
+	/** Map of project paths to their last known VCS config for change detection */
+	projectLastVCSConfig;
+	/** Projects list for VCS operations */
+	projects = [];
+	/** Reference to LocalProject service for checking missing projects */
+	localProject;
+	/**
+	* Callback for updating project settings when VCS status changes.
+	* Set once in the constructor so watcher- and polling-triggered updates always use the same callback.
+	* When vcsData is provided, the callback uses it directly instead of re-fetching.
+	* When vcsData is null, VCS fields are cleared (disconnection).
+	* When vcsData is undefined, the callback falls back to fetching VCS data itself.
+	*/
+	updateProjectSettingsCallback;
+	/**
+	* Callback to request watching a VCS root directory (e.g. a Git repo root in a parent directory).
+	* Used for monorepo setups where .git/ is outside the Unity project root.
+	*/
+	watchVCSRootCallback;
+	/** Debounce timeout for handling file changes */
+	changeDebounceTimeouts;
+	/** Cached plastic.selector content per project path — used to detect real changes vs daemon noise */
+	lastPlasticSelectorContent;
+	/** Whether the service has been disposed; used to avoid double cleanup and use-after-dispose */
+	disposed;
+	/** Map of UVCS workspace roots to consecutive UVCS failure counts for exponential backoff */
+	uvcsFailureCounts;
+	/** Map of UVCS workspace roots to next allowed poll timestamp (for exponential backoff) */
+	nextPollTime;
+	/** Maximum consecutive failures before giving up on a project temporarily */
+	static MAX_CONSECUTIVE_FAILURES = 10;
+	/** Base backoff delay in milliseconds (3 seconds) */
+	static BASE_BACKOFF_MS = 3e3;
+	/** Maximum backoff delay in milliseconds (5 minutes) */
+	static MAX_BACKOFF_MS = 300 * 1e3;
+	/** Time in milliseconds before resetting failure count after reaching max failures (1 hour) */
+	static FAILURE_RESET_INTERVAL_MS = 3600 * 1e3;
+	constructor(localProject, updateProjectSettingsCallback, watchVCSRootCallback) {
+		this.localProject = localProject;
+		this.updateProjectSettingsCallback = updateProjectSettingsCallback;
+		this.watchVCSRootCallback = watchVCSRootCallback;
+		this.connectedGitProjects = /* @__PURE__ */ new Set();
+		this.connectedUVCSProjects = /* @__PURE__ */ new Set();
+		this.projectLastVCSConfig = /* @__PURE__ */ new Map();
+		this.changeDebounceTimeouts = /* @__PURE__ */ new Map();
+		this.lastPlasticSelectorContent = /* @__PURE__ */ new Map();
+		this.disposed = false;
+		this.uvcsFailureCounts = /* @__PURE__ */ new Map();
+		this.nextPollTime = /* @__PURE__ */ new Map();
+	}
+	/**
+	* Disposes the service: closes file watchers, clears all pending debounce timeouts,
+	* and stops the unconnected-projects poll. Safe to call multiple times (idempotent).
+	* The service must not be used after dispose.
+	*/
+	dispose() {
+		if (this.disposed) return;
+		this.disposed = true;
+		for (const timeout of this.changeDebounceTimeouts.values()) clearTimeout(timeout);
+		this.changeDebounceTimeouts.clear();
+		this.uvcsFailureCounts.clear();
+		this.nextPollTime.clear();
+		this.lastPlasticSelectorContent.clear();
+	}
+	/**
+	* Handles VCS-relevant file changes forwarded from the project root watcher.
+	* Debounces per project to collapse rapid writes from VCS tools (e.g. cm.exe writing
+	* multiple files over several seconds) into a single re-evaluation.
+	*/
+	onVCSFileChanged(projectPath) {
+		const existing = this.changeDebounceTimeouts.get(projectPath);
+		if (existing) clearTimeout(existing);
+		const timeout = setTimeout(() => {
+			this.changeDebounceTimeouts.delete(projectPath);
+			if (this.connectedUVCSProjects.has(projectPath)) {
+				this.handleConnectedUVCSFileChange(projectPath);
+				return;
+			}
+			this.processProjectVCSUpdate(projectPath, this.updateProjectSettingsCallback).catch((e) => logger$32.debug("VCS update error", e));
+		}, VCS_CHANGE_DEBOUNCE_MS);
+		this.changeDebounceTimeouts.set(projectPath, timeout);
+	}
+	/**
+	* Handles watcher events for connected UVCS projects without spawning cm.exe.
+	* Compares plastic.selector content to detect real changes vs Plastic daemon noise.
+	*/
+	handleConnectedUVCSFileChange(projectPath) {
+		const lastConfig = this.projectLastVCSConfig.get(projectPath);
+		const workspaceRoot = lastConfig && "vcsConfigurationPath" in lastConfig && lastConfig.vcsConfigurationPath ? lastConfig.vcsConfigurationPath : projectPath;
+		const selectorPath = path.join(workspaceRoot, ".plastic", "plastic.selector");
+		fs.promises.readFile(selectorPath, "utf-8").then((content) => {
+			if (content === this.lastPlasticSelectorContent.get(projectPath)) return;
+			this.lastPlasticSelectorContent.set(projectPath, content);
+			windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_VCS_STATUS_CHANGED, projectPath);
+		}).catch(() => {
+			this.lastPlasticSelectorContent.delete(projectPath);
+			this.processProjectVCSUpdate(projectPath, this.updateProjectSettingsCallback).catch((e) => logger$32.debug("VCS update error", e));
+		});
+	}
+	/**
+	* Removes a project from all VCS tracking sets (connected watchers and last config).
+	* This is the common cleanup logic used when a project is removed or stops being watched.
+	*/
+	removeProjectFromAllTrackingSets(projectPath) {
+		this.connectedGitProjects.delete(projectPath);
+		this.connectedUVCSProjects.delete(projectPath);
+		this.projectLastVCSConfig.delete(projectPath);
+		this.lastPlasticSelectorContent.delete(projectPath);
+	}
+	/**
+	* Checks if UVCS operations should be skipped for a workspace due to exponential backoff.
+	* Returns true if the workspace is in backoff period.
+	* Note: This only affects UVCS operations, not Git detection.
+	*
+	* @param workspaceRoot - The UVCS workspace root path (parent directory of .plastic)
+	* @param projectPath - The project path (used for logging only)
+	*/
+	shouldSkipUVCSParsing(workspaceRoot, projectPath) {
+		const nextPoll = this.nextPollTime.get(workspaceRoot);
+		if (!nextPoll) return false;
+		if (Date.now() < nextPoll) return true;
+		if ((this.uvcsFailureCounts.get(workspaceRoot) || 0) >= SourceControlStateManagementService.MAX_CONSECUTIVE_FAILURES) {
+			logger$32.info(`Resetting UVCS failure count for workspace ${workspaceRoot} (project ${projectPath}) after reaching timeout`);
+			this.resetUVCSFailureTracking(workspaceRoot);
+			return false;
+		}
+		return false;
+	}
+	/**
+	* Records a UVCS operation failure and sets exponential backoff delay.
+	* Each failure doubles the backoff time (3s, 6s, 12s, 24s, 48s, ...).
+	*
+	* @param workspaceRoot - The UVCS workspace root path (parent directory of .plastic)
+	* @param projectPath - The project path (used for logging only)
+	*/
+	recordUVCSFailure(workspaceRoot, projectPath) {
+		const newCount = (this.uvcsFailureCounts.get(workspaceRoot) || 0) + 1;
+		this.uvcsFailureCounts.set(workspaceRoot, newCount);
+		let nextPoll;
+		let backoffDelay;
+		if (newCount >= SourceControlStateManagementService.MAX_CONSECUTIVE_FAILURES) {
+			backoffDelay = SourceControlStateManagementService.FAILURE_RESET_INTERVAL_MS;
+			nextPoll = Date.now() + backoffDelay;
+			logger$32.warn(`Workspace ${workspaceRoot} (project ${projectPath}) has reached max UVCS failures (${SourceControlStateManagementService.MAX_CONSECUTIVE_FAILURES}). Will retry after ${Math.round(SourceControlStateManagementService.FAILURE_RESET_INTERVAL_MS / 6e4)} minutes.`);
+		} else {
+			backoffDelay = Math.min(SourceControlStateManagementService.BASE_BACKOFF_MS * Math.pow(2, newCount - 1), SourceControlStateManagementService.MAX_BACKOFF_MS);
+			nextPoll = Date.now() + backoffDelay;
+			logger$32.debug(`UVCS failure recorded for workspace ${workspaceRoot} (project ${projectPath}). Count: ${newCount}/${SourceControlStateManagementService.MAX_CONSECUTIVE_FAILURES}, next poll in ${Math.round(backoffDelay / 1e3)}s`);
+		}
+		this.nextPollTime.set(workspaceRoot, nextPoll);
+	}
+	/**
+	* Resets UVCS failure tracking for a workspace (called when VCS operations succeed).
+	*
+	* @param workspaceRoot - The UVCS workspace root path (parent directory of .plastic)
+	*/
+	resetUVCSFailureTracking(workspaceRoot) {
+		const hadFailures = this.uvcsFailureCounts.has(workspaceRoot);
+		this.uvcsFailureCounts.delete(workspaceRoot);
+		this.nextPollTime.delete(workspaceRoot);
+		if (hadFailures) logger$32.debug(`Reset UVCS failure tracking for workspace ${workspaceRoot}`);
+	}
+	/**
+	* Processes a single project's VCS status update immediately.
+	* This is used to force an update after connect/disconnect operations.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param updateProjectSettings - Callback function to update project settings
+	* @returns Promise that resolves when the update is complete
+	*/
+	async processProjectVCSUpdate(projectPath, updateProjectSettings) {
+		try {
+			const project = this.localProject.getProjectFromMemory(projectPath);
+			if (!project?.lastModified) {
+				logger$32.debug(`Project is not found or marked as missing, removing from tracking: ${projectPath}`);
+				this.removeProjectFromAllTrackingSets(projectPath);
+				return;
+			}
+			if (!fs.existsSync(projectPath)) {
+				await updateProjectSettings(projectPath, null);
+				this.removeProjectFromAllTrackingSets(projectPath);
+				return;
+			}
+			const isConnectedGit = this.connectedGitProjects.has(projectPath);
+			const isConnectedUVCS = this.connectedUVCSProjects.has(projectPath);
+			if (!project && !isConnectedGit && !isConnectedUVCS) {
+				logger$32.debug(`Ignoring VCS update for path that is not tracked as a project: ${projectPath}`);
+				return;
+			}
+			const vcsConfig = await this.getProjectVCSData(projectPath);
+			const lastVCSConfig = this.projectLastVCSConfig.get(projectPath);
+			if (isConnectedGit) if (!vcsConfig) {
+				this.connectedGitProjects.delete(projectPath);
+				this.projectLastVCSConfig.delete(projectPath);
+				await updateProjectSettings(projectPath, null);
+				const isProjectStillOnDisk = fs.existsSync(projectPath);
+				if (lastVCSConfig?.provider && project && isProjectStillOnDisk) await this.handleGitDisconnection(lastVCSConfig.provider);
+			} else {
+				if (lastVCSConfig?.provider && getIsGitProvider(lastVCSConfig.provider) && vcsConfig.provider === SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL) try {
+					const gitRepoRoot = await import_isomorphic_git.findRoot({
+						fs: fs.promises,
+						filepath: projectPath
+					});
+					const resolvedGitRepoRoot = path.isAbsolute(gitRepoRoot) ? gitRepoRoot : path.resolve(projectPath, gitRepoRoot);
+					const gitDirPath = path.join(resolvedGitRepoRoot, GitDir);
+					try {
+						await fs.promises.access(gitDirPath);
+						logger$32.debug(`Ignoring false positive UVCS detection for Git project: ${projectPath}. Git repository still exists at: ${gitRepoRoot}`);
+						return;
+					} catch {}
+				} catch (error) {
+					if (!(error && typeof error === "object" && "code" in error && error.code === "NotFoundError")) logger$32.debug("Error verifying Git repository removal", error);
+				}
+				if (!lastVCSConfig || lastVCSConfig.provider !== vcsConfig.provider || lastVCSConfig.repositoryName !== vcsConfig.repositoryName || lastVCSConfig.organizationName !== vcsConfig.organizationName) {
+					this.projectLastVCSConfig.set(projectPath, vcsConfig);
+					await updateProjectSettings(projectPath, vcsConfig);
+					await this.handleGitConfigurationChange(lastVCSConfig, vcsConfig, projectPath);
+				}
+			}
+			else if (isConnectedUVCS) {
+				if (!vcsConfig || vcsConfig.provider !== SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL) {
+					this.connectedUVCSProjects.delete(projectPath);
+					this.projectLastVCSConfig.delete(projectPath);
+					await updateProjectSettings(projectPath, null);
+					const isProjectStillOnDisk = fs.existsSync(projectPath);
+					if (lastVCSConfig?.provider && project && isProjectStillOnDisk) await this.handleUVCSDisconnection();
+				} else if (!lastVCSConfig || lastVCSConfig.repositoryName !== vcsConfig.repositoryName || lastVCSConfig.organizationName !== vcsConfig.organizationName || lastVCSConfig.projectPathInsideRepository !== vcsConfig.projectPathInsideRepository) {
+					this.projectLastVCSConfig.set(projectPath, vcsConfig);
+					await updateProjectSettings(projectPath, vcsConfig);
+					await this.handleUVCSConfigurationChange(lastVCSConfig, vcsConfig);
+				}
+			} else if (!isConnectedGit && !isConnectedUVCS) if (vcsConfig?.provider || vcsConfig?.vcsConfigurationPath) await this.watchFoundVCSConfigurationFile(projectPath, vcsConfig, updateProjectSettings);
+			else {
+				this.projectLastVCSConfig.delete(projectPath);
+				await updateProjectSettings(projectPath, null);
+			}
+			if (isConnectedGit || isConnectedUVCS) windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_VCS_STATUS_CHANGED, projectPath);
+		} catch (error) {
+			logger$32.debug(`Error processing VCS configuration for project ${projectPath}`, error);
+		}
+	}
+	/**
+	* Gets VCS data for a project with proper provider prioritization.
+	*
+	* This method efficiently checks for VCS configuration in priority order,
+	* then parses the highest priority one found (Git > UVCS).
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves to VCS data or null if no VCS is found
+	*/
+	async getProjectVCSData(projectPath) {
+		try {
+			const gitRepoRoot = await import_isomorphic_git.findRoot({
+				fs: fs.promises,
+				filepath: projectPath
+			});
+			const resolvedGitRepoRoot = path.isAbsolute(gitRepoRoot) ? gitRepoRoot : path.resolve(projectPath, gitRepoRoot);
+			const gitDirPath = path.join(resolvedGitRepoRoot, GitDir);
+			try {
+				await fs.promises.access(gitDirPath);
+				return this.parseGitConfiguration(projectPath, resolvedGitRepoRoot);
+			} catch {}
+		} catch (error) {
+			if (!(error && typeof error === "object" && "code" in error && error.code === "NotFoundError")) logger$32.debug("Error checking for Git repository", error);
+		}
+		const plasticDirPath = await this.findPlasticDirectory(projectPath);
+		if (plasticDirPath) {
+			const workspaceRoot = path.dirname(plasticDirPath);
+			if (!this.shouldSkipUVCSParsing(workspaceRoot, projectPath)) {
+				const uvcsConfig = await this.parseUVCSConfiguration(projectPath, plasticDirPath);
+				if (uvcsConfig) return uvcsConfig;
+			}
+		}
+		return null;
+	}
+	/**
+	* Walks up parent directories looking for a .plastic directory.
+	* UVCS workspaces can have nested Unity projects where .plastic is in a parent directory.
+	*
+	* @param projectPath - The absolute path to start searching from
+	* @returns Promise that resolves to the .plastic directory path if found, null otherwise
+	*/
+	async findPlasticDirectory(projectPath) {
+		let currentPath = path.resolve(projectPath);
+		const root = path.parse(currentPath).root;
+		while (true) {
+			const plasticDirPath = path.join(currentPath, PlasticDir);
+			try {
+				await fs.promises.access(plasticDirPath);
+				return plasticDirPath;
+			} catch {}
+			if (currentPath === root) break;
+			const parentPath = path.dirname(currentPath);
+			if (parentPath === currentPath) break;
+			currentPath = parentPath;
+		}
+		return null;
+	}
+	/**
+	* Checks if a project path is in a Git repository.
+	* Helper method to avoid code duplication.
+	*
+	* @param projectPath - The absolute path to check
+	* @returns Promise that resolves to true if it's a Git repository, false otherwise
+	*/
+	async isGitRepository(projectPath) {
+		try {
+			const gitRepoRoot = await import_isomorphic_git.findRoot({
+				fs: fs.promises,
+				filepath: projectPath
+			});
+			const resolvedGitRepoRoot = path.isAbsolute(gitRepoRoot) ? gitRepoRoot : path.resolve(projectPath, gitRepoRoot);
+			const gitDirPath = path.join(resolvedGitRepoRoot, GitDir);
+			try {
+				await fs.promises.access(gitDirPath);
+				return true;
+			} catch {
+				return false;
+			}
+		} catch (error) {
+			if (!(error && typeof error === "object" && "code" in error && error.code === "NotFoundError")) logger$32.debug("Error checking for Git repository", error);
+			return false;
+		}
+	}
+	/**
+	* Parses UVCS configuration using UVCS CLI commands.
+	*
+	* Performance: Accepts plasticDirPath to avoid redundant directory searches.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param plasticDirPath - The path to the .plastic directory (if already found)
+	* @returns Promise that resolves to UVCS data or null if parsing fails or workspace not found
+	*/
+	async parseUVCSConfiguration(projectPath, plasticDirPath) {
+		const resolvedPlasticDirPath = plasticDirPath ?? await this.findPlasticDirectory(projectPath);
+		if (!resolvedPlasticDirPath) return null;
+		const workspaceRoot = path.dirname(resolvedPlasticDirPath);
+		const projectRecord = this.localProject.getProjectFromMemory(projectPath);
+		const workspaceInfo = await getUVCSWorkspaceInfo(projectPath, projectRecord?.genesisOrgId ?? projectRecord?.organizationId);
+		if (!workspaceInfo) {
+			if (!await this.isGitRepository(projectPath)) this.recordUVCSFailure(workspaceRoot, projectPath);
+			return null;
+		}
+		this.resetUVCSFailureTracking(workspaceRoot);
+		if (await this.isGitRepository(projectPath)) {
+			logger$32.debug(`Ignoring UVCS detection for project ${projectPath} because Git repository exists`);
+			return null;
+		}
+		const projectPathInsideRepository = getProjectPathInsideRepository(workspaceInfo.workspaceRootPath, projectPath);
+		let organizationName = workspaceInfo.organizationName;
+		try {
+			organizationName = await resolveOrganizationName(workspaceInfo.organizationName);
+		} catch (error) {
+			logger$32.warn(`Failed to resolve organization name "${workspaceInfo.organizationName}", using original value`, error);
+		}
+		return {
+			repositoryName: workspaceInfo.repositoryName,
+			organizationName,
+			projectPathInsideRepository,
+			vcsConfigurationPath: workspaceInfo.workspaceRootPath,
+			provider: SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL
+		};
+	}
+	/**
+	* Parses Git configuration using isomorphic-git.
+	*
+	* For Git-based projects, this method returns a result even when no remote is configured
+	* or the remote is not a supported provider (GitHub/GitLab). In such cases, it returns
+	* the vcsConfigurationPath for tracking purposes but leaves provider as undefined.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param gitRepoRoot - The absolute path to the Git repository root (from git.findRoot)
+	* @returns Promise that resolves to Git data or null if parsing fails
+	*/
+	async parseGitConfiguration(projectPath, gitRepoRoot) {
+		try {
+			const vcsConfigPath = path.join(gitRepoRoot, GitConfigFile);
+			let remoteUrl = null;
+			try {
+				const remotes = await import_isomorphic_git.listRemotes({
+					fs: fs.promises,
+					dir: gitRepoRoot
+				});
+				if (remotes.length > 0) {
+					const selectedRemote = remotes.find((remote) => remote.remote === "origin") || remotes[0];
+					if (selectedRemote) remoteUrl = selectedRemote.url;
+				}
+			} catch (error) {
+				logger$32.debug("Failed to read git remotes using isomorphic-git", error);
+			}
+			if (!remoteUrl) return {
+				provider: void 0,
+				vcsConfigurationPath: vcsConfigPath
+			};
+			const githubMatch = remoteUrl.match(/(?:https?:\/\/)?(?:www\.)?github\.com[/:]([^/]+)\/([^/]+?)(?:\.git)?(?:\/.*)?$/i);
+			const gitlabMatch = remoteUrl.match(/(?:https?:\/\/)?(?:www\.)?gitlab\.com[/:]([^/]+)\/([^/]+?)(?:\.git)?(?:\/.*)?$/i);
+			let provider;
+			let organizationName;
+			let repositoryName;
+			if (githubMatch) {
+				provider = SOURCE_CONTROL_PROVIDERS.GITHUB;
+				organizationName = githubMatch[1];
+				repositoryName = githubMatch[2];
+			} else if (gitlabMatch) {
+				provider = SOURCE_CONTROL_PROVIDERS.GITLAB;
+				organizationName = gitlabMatch[1];
+				repositoryName = gitlabMatch[2];
+			} else return {
+				provider: void 0,
+				vcsConfigurationPath: vcsConfigPath
+			};
+			const projectPathInsideRepository = path.relative(gitRepoRoot, projectPath);
+			return {
+				provider,
+				repositoryName,
+				organizationName,
+				projectPathInsideRepository: projectPathInsideRepository || void 0,
+				vcsConfigurationPath: vcsConfigPath
+			};
+		} catch (error) {
+			logger$32.error("Failed to read git configuration", error);
+		}
+		return null;
+	}
+	/**
+	* Handles Git configuration changes (connection, disconnection, or provider changes).
+	*/
+	async handleGitConfigurationChange(lastVCSConfig, currentVCSConfig, projectPath) {
+		const currentProvider = currentVCSConfig.provider;
+		const lastProvider = lastVCSConfig?.provider;
+		if (!lastProvider && currentProvider) return;
+		if (lastProvider && getIsGitProvider(lastProvider) && !currentProvider) {
+			const project = this.localProject.getProjectFromMemory(projectPath);
+			const isProjectStillOnDisk = fs.existsSync(projectPath);
+			if (project && isProjectStillOnDisk) await this.handleGitDisconnection(lastProvider);
+			return;
+		}
+		if (lastProvider !== currentProvider && currentProvider) {
+			const i18n = mainContainer.get(ITranslateId);
+			const providerName = i18n.t(SOURCE_CONTROL_PROVIDER_PRODUCT_NAMES[currentProvider]);
+			const message = i18n.t("project:VCS_CONNECT_CHANGE", { providerName });
+			const toastId = `${currentProvider}-connect-change`;
+			windowManager_default.broadcastContent(RENDERER_EVENTS.TOAST_NOTIFICATION, message, toastId);
+		}
+	}
+	/**
+	* Handles Git repository disconnection.
+	*/
+	async handleGitDisconnection(provider) {
+		const i18n = mainContainer.get(ITranslateId);
+		const providerName = i18n.t(SOURCE_CONTROL_PROVIDER_PRODUCT_NAMES[provider]);
+		const message = i18n.t("project:VCS_DISCONNECT_SUCCESS", { providerName });
+		const toastId = `${provider}-disconnect`;
+		windowManager_default.broadcastContent(RENDERER_EVENTS.TOAST_NOTIFICATION, message, toastId, "success");
+	}
+	/**
+	* Handles UVCS workspace disconnection.
+	*/
+	async handleUVCSDisconnection() {
+		const i18n = mainContainer.get(ITranslateId);
+		const providerName = i18n.t(SOURCE_CONTROL_PROVIDER_PRODUCT_NAMES[SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL]);
+		const message = i18n.t("project:VCS_DISCONNECT_SUCCESS", { providerName });
+		const toastId = `${SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL}-disconnect`;
+		windowManager_default.broadcastContent(RENDERER_EVENTS.TOAST_NOTIFICATION, message, toastId, "success");
+	}
+	/**
+	* Handles UVCS configuration changes (repository, organization, or path changes).
+	*/
+	async handleUVCSConfigurationChange(_lastVCSConfig, _currentVCSConfig) {
+		const i18n = mainContainer.get(ITranslateId);
+		const providerName = i18n.t(SOURCE_CONTROL_PROVIDER_PRODUCT_NAMES[SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL]);
+		const message = i18n.t("project:VCS_CONNECT_CHANGE", { providerName });
+		const toastId = `${SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL}-connect-change`;
+		windowManager_default.broadcastContent(RENDERER_EVENTS.TOAST_NOTIFICATION, message, toastId);
+	}
+	/**
+	* Stops monitoring VCS configuration for a project.
+	*
+	* This method removes the project from polling queues and file watchers.
+	* It's called when a project is removed or when the configuration is found.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	*/
+	stopWatchingUnconnectedProjectVCSConfigurationFile(projectPath) {
+		logger$32.debug(`Stop watching VCS configuration for ${projectPath}`);
+		this.removeProjectFromAllTrackingSets(projectPath);
+	}
+	/**
+	* Stops monitoring a VCS configuration when no projects use it.
+	*
+	* For UVCS and Git projects: removes from file watchers.
+	*
+	* @param vcsConfigurationFilePath - The workspace root path (for UVCS) or Git config path
+	*/
+	stopWatchingConnectedProjectVCSConfigurationFile(vcsConfigurationFilePath) {
+		const connectedProjects = this.projects.filter((project) => project.vcsConfigurationPath === vcsConfigurationFilePath);
+		connectedProjects.forEach((project) => {
+			if (connectedProjects.length <= 1) {
+				this.connectedGitProjects.delete(project.path);
+				this.connectedUVCSProjects.delete(project.path);
+				this.projectLastVCSConfig.delete(project.path);
+			}
+		});
+	}
+	/**
+	* Starts monitoring a VCS configuration that was found for a project.
+	*
+	* For UVCS and Git projects: uses file watchers for change detection.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param vcsConfig - The VCS configuration data containing provider and configuration path
+	* @param updateProjectSettingsOverride - Optional callback for this call only; when omitted, uses the constructor callback
+	* @returns Promise that resolves when file watching is set up and project is updated
+	*/
+	async watchFoundVCSConfigurationFile(projectPath, vcsConfig, updateProjectSettingsOverride) {
+		await (updateProjectSettingsOverride ?? this.updateProjectSettingsCallback)(projectPath, vcsConfig);
+		this.projectLastVCSConfig.set(projectPath, vcsConfig);
+		if (getIsUnityVersionControl(vcsConfig.provider)) this.connectedUVCSProjects.add(projectPath);
+		else if (getIsGitProvider(vcsConfig.provider)) this.connectedGitProjects.add(projectPath);
+		else if (vcsConfig.vcsConfigurationPath) this.connectedGitProjects.add(projectPath);
+		if (vcsConfig.vcsConfigurationPath) {
+			const vcsRoot = getIsUnityVersionControl(vcsConfig.provider) ? vcsConfig.vcsConfigurationPath : path.dirname(path.dirname(vcsConfig.vcsConfigurationPath));
+			if (!(process.platform === "win32" ? vcsRoot.toLowerCase() === projectPath.toLowerCase() : vcsRoot === projectPath)) this.watchVCSRootCallback(vcsRoot);
+		}
+	}
+	/**
+	* Detects and monitors VCS configuration for a Unity project.
+	*
+	* Checks for existing VCS configuration files (Git or UVCS) and sets up
+	* file watching if found. If not found, the project root watcher will
+	* detect when .git/ or .plastic/ appears and trigger re-evaluation.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves when detection is complete
+	*/
+	async watchVCSConfigurationFileForProject(projectPath) {
+		if (this.connectedGitProjects.has(projectPath) || this.connectedUVCSProjects.has(projectPath)) return;
+		const vcsConfig = await this.getProjectVCSData(projectPath);
+		if (vcsConfig) await this.watchFoundVCSConfigurationFile(projectPath, vcsConfig);
+		else await this.updateProjectSettingsCallback(projectPath, null);
+	}
+	/**
+	* Sets up VCS configuration monitoring for all known projects at startup.
+	*
+	* Runs VCS detection (including cm.exe for UVCS) for each project, fire-and-forget
+	* to avoid blocking startup. The file watcher handles ongoing change detection.
+	*
+	* @param projectsList - Array of project objects with at least a 'path' property
+	*/
+	watchAllProjectsVCSConfigurationFiles(projectsList) {
+		const iterable = projectsList;
+		this.projects = iterable.map((project) => ({
+			path: project.path,
+			vcsConfigurationPath: "vcsConfigurationPath" in project ? project.vcsConfigurationPath : void 0,
+			vcsProvider: "vcsProvider" in project ? project.vcsProvider : void 0
+		}));
+		iterable.forEach(({ path: projectPath }) => {
+			this.watchVCSConfigurationFileForProject(projectPath).catch((error) => {
+				logger$32.error("Error while watching VCS configuration", error);
+			});
+		});
+	}
+	/**
+	* Completely removes Plastic SCM configuration from a Unity project.
+	*
+	* This method deletes the entire Plastic SCM configuration directory (.plastic) and all its
+	* contents, effectively disconnecting the project from Unity Version Control.
+	* This is a destructive operation that cannot be undone.
+	*
+	* @param workspaceRootPath - The absolute path to the workspace root
+	* @returns Promise that resolves when the operation completes
+	* @throws Will log an error if the configuration cannot be removed
+	*/
+	async removePlasticConfiguration(workspaceRootPath) {
+		try {
+			const plasticDir = path.join(workspaceRootPath, ".plastic");
+			await fs.promises.rm(plasticDir, {
+				recursive: true,
+				force: true
+			});
+			logger$32.info("Successfully removed Plastic SCM configuration", { plasticDir });
+		} catch (error) {
+			logger$32.error("Unable to remove Plastic SCM configuration", {
+				workspaceRootPath,
+				error: error instanceof Error ? error.message : String(error)
+			});
+			throw error;
+		}
+	}
+	/**
+	* Removes Git remote configuration from a Unity project.
+	*
+	* This method removes all remote sections from the Git configuration,
+	* effectively disconnecting the project from GitHub/GitLab repositories.
+	* This is a destructive operation that cannot be undone.
+	*
+	* @param vcsConfigurationPath - The absolute path to the Git configuration file (.git/config)
+	* @returns Promise that resolves when the operation completes
+	* @throws Will log an error if the Git remote cannot be removed
+	*/
+	async removeGitRemoteConfiguration(vcsConfigurationPath) {
+		try {
+			try {
+				await fs.promises.access(vcsConfigurationPath);
+			} catch {
+				logger$32.warn(`Git configuration not found at: ${vcsConfigurationPath}`);
+				return;
+			}
+			const gitRepoRoot = path.dirname(path.dirname(vcsConfigurationPath));
+			try {
+				const remotes = await import_isomorphic_git.listRemotes({
+					fs: fs.promises,
+					dir: gitRepoRoot
+				});
+				await Promise.all(remotes.map((remote) => import_isomorphic_git.deleteRemote({
+					fs: fs.promises,
+					dir: gitRepoRoot,
+					remote: remote.remote
+				})));
+				logger$32.info("Successfully removed Git remote configuration", {
+					vcsConfigurationPath,
+					remotesRemoved: remotes.length
+				});
+			} catch (error) {
+				logger$32.error("Unable to remove Git remote configuration using isomorphic-git", {
+					gitRepoRoot,
+					error: error instanceof Error ? error.message : String(error)
+				});
+				throw error;
+			}
+		} catch (error) {
+			logger$32.error("Unable to remove Git remote configuration", {
+				vcsConfigurationPath,
+				error: error instanceof Error ? error.message : String(error)
+			});
+			throw error;
+		}
+	}
+	/**
+	* Forces an immediate update of a project's source control status.
+	* This bypasses the polling mechanism and immediately checks and updates the project's VCS state.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param updateProjectSettings - Callback function to update project settings
+	* @returns Promise that resolves when the update is complete
+	*/
+	async forceUpdateProjectStatus(projectPath, updateProjectSettings) {
+		logger$32.debug(`Forcing immediate VCS status update for project: ${projectPath}`);
+		await this.processProjectVCSUpdate(projectPath, updateProjectSettings);
+	}
+	/**
+	* Disconnects a project from version control based on its VCS provider.
+	*
+	* This method determines the VCS provider for a project and then removes the
+	* appropriate configuration (Git remote for GitHub/GitLab, Plastic SCM config for UVCS).
+	* After disconnection, it optionally forces an immediate status update.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param updateProjectSettings - Optional callback function to update project settings immediately after disconnection
+	* @returns Promise that resolves when the disconnection is complete
+	* @throws Will throw an error if the VCS provider is unknown or VCS is not found
+	*/
+	async disconnectVersionControl(projectPath, updateProjectSettings) {
+		logger$32.info("Disconnecting project from version control", { projectPath });
+		const vcsData = await this.getProjectVCSData(projectPath);
+		if (!vcsData) throw new Error(`No VCS configuration found for project: ${projectPath}`);
+		const { provider, vcsConfigurationPath } = vcsData;
+		if (!vcsConfigurationPath) throw new Error(`VCS configuration path not found for project: ${projectPath}`);
+		const wasUVCS = provider === SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL;
+		const wasGit = getIsGitProvider(provider);
+		const previousVCSConfig = this.projectLastVCSConfig.get(projectPath);
+		if (wasUVCS) this.connectedUVCSProjects.delete(projectPath);
+		else if (wasGit) this.connectedGitProjects.delete(projectPath);
+		this.projectLastVCSConfig.delete(projectPath);
+		try {
+			switch (provider) {
+				case SOURCE_CONTROL_PROVIDERS.GITHUB:
+				case SOURCE_CONTROL_PROVIDERS.GITLAB:
+					await this.removeGitRemoteConfiguration(vcsConfigurationPath);
+					break;
+				case SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL:
+					await this.removePlasticConfiguration(vcsConfigurationPath);
+					break;
+				default: throw new Error(`Unknown VCS provider: ${provider}, attempting both disconnection methods`);
+			}
+		} catch (error) {
+			if (wasUVCS) this.connectedUVCSProjects.add(projectPath);
+			else if (wasGit) this.connectedGitProjects.add(projectPath);
+			if (previousVCSConfig) this.projectLastVCSConfig.set(projectPath, previousVCSConfig);
+			AmplitudeService_default.client.yellowBucket.disconnectFromSourceControl({
+				success: false,
+				source_control_provider: provider,
+				error_message: error instanceof Error ? error.message : String(error),
+				source_control_error_type: SOURCE_CONTROL_ANALYTICS_ERROR_SLUGS.ERROR_DISCONNECTING_REPOSITORY
+			});
+			throw error;
+		}
+		if (updateProjectSettings) await this.forceUpdateProjectStatus(projectPath, updateProjectSettings);
+		logger$32.info("Successfully disconnected project from version control", {
+			projectPath,
+			provider
+		});
+		AmplitudeService_default.client.yellowBucket.disconnectFromSourceControl({
+			success: true,
+			source_control_provider: provider
+		});
+	}
+};
+//#endregion

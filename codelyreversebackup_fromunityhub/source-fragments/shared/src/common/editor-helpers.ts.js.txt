@@ -1,0 +1,50 @@
+//#region src/common/editor-helpers.ts
+var getUniqueIdentifier = ({ version, architecture }) => `${version}-${architecture}`;
+var getEditorUniqueIdFromStr = (editorUniqueIdStr) => {
+	const [version, archStr] = editorUniqueIdStr.split("-");
+	let architecture = CHIP_ARCHITECTURES.Unknown;
+	if (archStr.toLowerCase() === CHIP_ARCHITECTURES.ARM64) architecture = CHIP_ARCHITECTURES.ARM64;
+	else if (archStr.toLowerCase() === CHIP_ARCHITECTURES.X86_64) architecture = CHIP_ARCHITECTURES.X86_64;
+	return {
+		version,
+		architecture
+	};
+};
+var getIsUnity6LTS = (unityVersion) => {
+	if (unityVersion.compare("6000.0.23f1") >= 0 && unityVersion.compare("6000.1.0a2") < 0) return true;
+	if (unityVersion.compare("6000.3.0f1") >= 0 && unityVersion.compare("6000.4.0a1") < 0) return true;
+	if (unityVersion.compare("6000.7.0f1") >= 0 && unityVersion.compare("6000.8.0a1") < 0) return true;
+	return false;
+};
+/**
+* Determine the release stream of an editor version. The hard-coded determination can be overridden
+* using the `ltsFlag` parameter.
+*
+* @param ltsFlag If null/undefined, will use hard-coded numbers. If boolean, will use that value.
+* @param editorVersion the version of the editor
+* @param stream the release stream of the editor version
+* @returns The release stream of the editor version.
+*/
+function getReleaseStream(ltsFlag, editorVersion, stream) {
+	const extension = editorVersion?.match(/-.+$/);
+	try {
+		if (!extension) {
+			if (e.isAlpha(editorVersion)) return UnityReleaseStream.Alpha;
+			if (e.isBeta(editorVersion)) return UnityReleaseStream.Beta;
+			if (stream === UnityReleaseStream.Supported || stream === UnityReleaseStream.Lts) return stream;
+			const unityVersion = new e(editorVersion);
+			const unityLtsMajorVersions = {
+				"2017": 4,
+				"2018": 4,
+				"2019": 4,
+				"2020": 3,
+				"2021": 3,
+				"2022": 3
+			};
+			const isUnity6LTS = getIsUnity6LTS(unityVersion);
+			if (ltsFlag ?? (unityLtsMajorVersions[unityVersion.major] === unityVersion.minor || isUnity6LTS)) return UnityReleaseStream.Lts;
+		}
+	} catch {}
+	return UnityReleaseStream.Tech;
+}
+//#endregion

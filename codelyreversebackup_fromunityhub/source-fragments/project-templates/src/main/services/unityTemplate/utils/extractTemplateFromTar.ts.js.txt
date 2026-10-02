@@ -1,0 +1,30 @@
+//#region src/main/services/unityTemplate/utils/extractTemplateFromTar.ts
+var logger$36 = loggerFactory("extractTemplateFromTar");
+/**
+* Extracts template properties from a tar archive.
+* @param tarPath The path to the tar file.
+* @returns A promise that resolves to the content of the template package.json.
+*/
+async function extractTemplateFromTar(tarPath) {
+	if (!/\.tgz$/i.test(tarPath)) {
+		logger$36.debug(`Skipping non-tgz file: ${tarPath}`);
+		return;
+	}
+	logger$36.debug(`Extracting template from tar: ${tarPath}`);
+	try {
+		const packageJsonString = await extractFileFromTar(tarPath, "package/package.json");
+		let packageJson;
+		try {
+			packageJson = JSON.parse(packageJsonString);
+		} catch (parseError) {
+			logger$36.error(`Failed to parse package.json from ${tarPath}:`, parseError);
+			throw new Error(`Invalid JSON in package.json from ${tarPath}`, { cause: parseError });
+		}
+		packageJson.tar = tarPath;
+		return packageJson;
+	} catch (error) {
+		logger$36.error(`Failed to process template from ${tarPath}:`, error);
+		throw error;
+	}
+}
+//#endregion

@@ -1,0 +1,13 @@
+//#region src/main/common/editor-helper-win32.ts
+var editorHelper = {
+	getUnityFolderInUserData() {
+		return "Unity";
+	},
+	getBaseUserDataPath() {
+		return process.env.APPDATA || "%AppData%";
+	},
+	getEditorLogPath() {
+		return `${process.env.USERPROFILE}\\AppData\\Local\\Unity\\Editor`;
+	}
+};
+//#endregion

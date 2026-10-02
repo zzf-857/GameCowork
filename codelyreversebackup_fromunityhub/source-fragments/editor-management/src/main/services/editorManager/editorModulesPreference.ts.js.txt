@@ -1,0 +1,38 @@
+//#region src/main/services/editorManager/editorModulesPreference.ts
+var logger$7 = loggerFactory("editorModulesPreference");
+var MODULES_PREFERENCE_STORAGE_KEY = "modulesPreference";
+var userModules;
+var isValidModulePreference = (modules) => {
+	return typeof modules === "object" && modules !== null && "selected" in modules && "deselected" in modules && Array.isArray(modules.selected) && Array.isArray(modules.deselected);
+};
+var parsePreferredModules = (data) => {
+	if (typeof data === "string") {
+		const modulesArray = JSON.parse(data);
+		return {
+			selected: Array.isArray(modulesArray) ? modulesArray : [],
+			deselected: []
+		};
+	} else if (isValidModulePreference(data)) return data;
+	else return {
+		selected: [],
+		deselected: []
+	};
+};
+var getPreferredModules = async () => {
+	if (userModules) return userModules;
+	return parsePreferredModules(await mainContainer.get(IJsonStorageId).get(MODULES_PREFERENCE_STORAGE_KEY));
+};
+var setPreferredModules = async (preferredModules) => {
+	try {
+		await mainContainer.get(IJsonStorageId).set(MODULES_PREFERENCE_STORAGE_KEY, preferredModules);
+		userModules = preferredModules;
+	} catch (error) {
+		logger$7.error("Unable to set modules preference", error);
+		throw error;
+	}
+};
+var editorModulesPreference = {
+	getPreferredModules,
+	setPreferredModules
+};
+//#endregion

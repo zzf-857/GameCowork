@@ -1,0 +1,6 @@
+//#region src/types/downloads/Editor/UnityReleaseServiceType.ts
+var UNITY_RELEASE_SERVICE_TYPES = {
+	LIVE_PLATFORM_API: "LivePlatformAPI",
+	UNITY_RELEASE_SERVICE: "UnityReleaseService"
+};
+//#endregion

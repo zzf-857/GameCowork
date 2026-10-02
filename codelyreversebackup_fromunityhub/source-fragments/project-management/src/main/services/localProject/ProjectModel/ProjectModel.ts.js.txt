@@ -1,0 +1,17 @@
+//#region src/main/services/localProject/ProjectModel/ProjectModel.ts
+var ProjectModel = class {
+	storage;
+	constructor() {
+		this.storage = new ProjectStorage();
+	}
+	async fileExists() {
+		return this.storage.fileExists();
+	}
+	async getProjectList() {
+		return this.storage.getProjectList();
+	}
+	async saveProjectList(projectList) {
+		await this.storage.saveProjectList(projectList);
+	}
+};
+//#endregion

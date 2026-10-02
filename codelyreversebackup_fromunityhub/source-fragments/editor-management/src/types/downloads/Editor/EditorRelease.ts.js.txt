@@ -1,0 +1,6 @@
+//#region src/types/downloads/Editor/EditorRelease.ts
+var EDITOR_RELEASE_TYPE_NAMES = {
+	MISSING: "MISSING",
+	NEAREST: "NEAREST"
+};
+//#endregion

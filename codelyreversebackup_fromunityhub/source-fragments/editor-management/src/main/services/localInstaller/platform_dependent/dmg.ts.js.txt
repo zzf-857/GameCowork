@@ -1,0 +1,86 @@
+//#region src/main/services/localInstaller/platform_dependent/dmg.ts
+var import_sudo_prompt = /* @__PURE__ */ __toESM(require_sudo_prompt(), 1);
+var execFileAsync = promisify(execFile);
+var logger$1 = loggerFactory("DmgUtils");
+/**
+* Mount a DMG file and return mount information
+* @param {string} dmgPath - Path to the DMG file
+* @param options - Mount options
+* @returns - Information about the mounted DMG
+*/
+async function mount(dmgPath, options = {}) {
+	if (!dmgPath || typeof dmgPath !== "string") throw new Error("DMG path must be a non-empty string");
+	if (!fs.existsSync(dmgPath)) throw new Error(`DMG file does not exist: ${dmgPath}`);
+	if (!dmgPath.toLowerCase().endsWith(".dmg")) throw new Error("File must have .dmg extension");
+	const args = [
+		"mount",
+		dmgPath,
+		"-nobrowse"
+	];
+	if (options.readonly) args.push("-readonly");
+	if (options.noVerify) args.push("-noverify");
+	try {
+		const { stdout, stderr } = await execFileAsync("/usr/bin/hdiutil", args, { maxBuffer: MAX_BUFFER_SIZE });
+		if (stderr?.trim()) logger$1.warn("hdiutil stderr:", stderr.trim());
+		const mountInfo = parseMountOutput(stdout);
+		if (!mountInfo.mountPath) throw new Error(`Could not extract mount path from hdiutil output: ${stdout}`);
+		return mountInfo;
+	} catch (error) {
+		if (error.code === "ENOENT") throw new Error("hdiutil command not found. Make sure you are running on macOS.", { cause: error });
+		if (error.stderr) throw new Error(`hdiutil failed: ${error.stderr.trim()}`, { cause: error });
+		throw new Error(`Failed to mount DMG: ${error.message}`, { cause: error });
+	}
+}
+/**
+* Parse hdiutil attach output to extract mount information
+* @param output - Raw hdiutil output
+* @return Parsed mount information
+*/
+function parseMountOutput(output) {
+	if (!output || !output.trim()) throw new Error("Empty output from hdiutil");
+	const lines = output.trim().split("\n");
+	let devicePath = "";
+	let mountPath = "";
+	let volumeName = "";
+	for (const line of lines) {
+		const trimmedLine = line.trim();
+		if (trimmedLine.startsWith("/dev/disk")) devicePath = trimmedLine.split(/\s+/)[0];
+		if (trimmedLine.includes("/Volumes/")) {
+			const volumeMatch = trimmedLine.match(/\/Volumes\/(.+?)(?:\s*)$/);
+			if (volumeMatch) {
+				mountPath = `/Volumes/${volumeMatch[1]}`;
+				volumeName = volumeMatch[1];
+				break;
+			}
+		}
+	}
+	if (!mountPath) {
+		const volumeMatch = output.match(/^.*?\s+.*?\s+(\/Volumes\/.+?)$/m);
+		if (volumeMatch) {
+			mountPath = volumeMatch[1].trim();
+			volumeName = path.basename(mountPath);
+		}
+	}
+	return {
+		mountPath,
+		devicePath,
+		volumeName
+	};
+}
+/**
+* Unmount and eject a DMG file
+* @param mountPathOrDevice - Mount path or device path
+* @param options - Unmount options
+*/
+async function unmount(mountPathOrDevice, options = {}) {
+	if (!mountPathOrDevice || typeof mountPathOrDevice !== "string") throw new Error("Mount path or device path must be a non-empty string");
+	const args = ["detach", mountPathOrDevice];
+	if (options.force) args.push("-force");
+	try {
+		await execFileAsync("/usr/bin/hdiutil", args, { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		if (error.stderr) throw new Error(`Failed to detach DMG: ${error.stderr.trim()}`, { cause: error });
+		throw new Error(`Failed to detach DMG: ${error.message}`, { cause: error });
+	}
+}
+//#endregion

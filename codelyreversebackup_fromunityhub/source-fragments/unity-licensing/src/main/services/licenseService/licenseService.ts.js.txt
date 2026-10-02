@@ -1,0 +1,528 @@
+//#region src/main/services/licenseService/licenseService.ts
+var ULF_COMPLIANCE_MESSAGES = {
+	DEFAULT: "20128:User restricted Personal Edition",
+	COMINGLING: "20128:User restricted Personal Edition due to comingling",
+	REVENUE: "20128:User restricted Personal Edition due to revenue",
+	DUNNING: "20128:User restricted Personal Edition due to dunning",
+	DEBT: "20128:User restricted Personal Edition due to debt",
+	REVOKE_DEFAULT: "20129:User has his Personal Edition revoked",
+	REVOKE_COMINGLING: "20129:User restricted Personal Edition due to comingling",
+	REVOKE_REVENUE: "20129:User restricted Personal Edition due to revenue",
+	REVOKE_DUNNING: "20129:User restricted Personal Edition due to dunning",
+	REVOKE_DEBT: "20129:User restricted Personal Edition due to debt"
+};
+var NUL_COMPLIANCE_MESSAGES = {
+	ASSIGN_SEAT_WARNING_COMPANY_DOMAIN: "ASSIGN_SEAT_WARNING_COMPANY_DOMAIN",
+	ASSIGN_SEAT_WARNING_USER: "ASSIGN_SEAT_WARNING_USER",
+	RESTRICTED_SEAT_COMINGLER: "RESTRICTED_SEAT_COMINGLER",
+	RESTRICTED_SEAT_REVENUE: "RESTRICTED_SEAT_REVENUE",
+	RESTRICTED_SEAT_DUNNING: "RESTRICTED_SEAT_DUNNING",
+	RESTRICTED_SEAT_DEBT: "RESTRICTED_SEAT_DEBT",
+	RESTRICTED_SEAT: "RESTRICTED_SEAT"
+};
+var licenseService_default = new class LicenseService extends LicenseServiceCore {
+	static logger = loggerFactory("LicenseService");
+	stickyLicenseErrors = [];
+	entitlementBasedActivationError = null;
+	editorManager;
+	authService;
+	returnAllEntitlementBasedLicensesPromise = null;
+	constructor() {
+		super(LicenseService.logger);
+	}
+	async init(editorManager, authService) {
+		this.editorManager = editorManager;
+		this.authService = authService;
+		if (this.authService.isUserSignedIn()) await this.onUserSignedIn(false);
+		this.authService.on(AUTH_EVENTS.LOGGED_IN_WITH_ACCESS_TOKEN, this.onUserSignedIn.bind(this));
+		this.authService.on(AUTH_EVENTS.LOGGED_OUT, async () => {
+			let resolvePromise;
+			this.returnAllEntitlementBasedLicensesPromise = new Promise((resolve, _reject) => {
+				resolvePromise = () => {
+					this.returnAllEntitlementBasedLicensesPromise = null;
+					resolve();
+				};
+			});
+			try {
+				await this.returnAllEntitlementBasedLicenses();
+			} catch (error) {
+				LicenseService.logger.error("Failed to return all entitlement based licenses on logout", error);
+			}
+			try {
+				await this.setAccessToken();
+			} catch (error) {
+				LicenseService.logger.warn("Failed to reset access token in licensing client on logout", error);
+			}
+			resolvePromise();
+		});
+		this.editorManager.editorList.on(INSTALL_LIST_EVENTS.AVAILABLE_EDITORS_CHANGED, this.activateUlfPeIfRequired.bind(this));
+	}
+	hasValidUlfLicense = () => LicenseServiceCore.hasValidUlfLicense();
+	getLicense = LicenseServiceCore.getLicense;
+	includesEGL = LicenseServiceCore.includesEGL;
+	hasEGLLicense = LicenseServiceCore.hasEGLLicense;
+	getEntitlementBasedActivationError = () => this.entitlementBasedActivationError;
+	getStickyLicenseErrors = () => this.stickyLicenseErrors;
+	isFloatingEnabled() {
+		return LicenseServiceCore.isFloatingEnabled();
+	}
+	chooseLicenseFileToLoad() {
+		const translate = mainContainer.get(ITranslateId);
+		const paths = mainContainer.get(IPathsId);
+		return windowManager_default.mainWindow.showOpenFileDialog({
+			title: translate.t("license-management:ACTIVATE_WITH_FILE_TITLE"),
+			buttonLabel: translate.t("common:SELECT_FILE"),
+			properties: ["openFile"],
+			defaultPath: path.resolve(paths.getDownloadsPath()),
+			filters: [{
+				name: translate.t("license-management:UNITY_ACTIVATION_FILE"),
+				extensions: ["ulf"]
+			}]
+		});
+	}
+	async loadLicense(fileName) {
+		let response;
+		try {
+			response = await licensingSdk.getInstance().importLicense(fileName);
+		} catch (err) {
+			LicenseService.logger.error(err);
+			throw new Error(LICENSE_ERRORS.Generic);
+		}
+		if (!response.isSuccessful()) {
+			LicenseService.logger.warn(response.responseStatus);
+			throw new Error(LICENSE_ERRORS.Generic);
+		}
+		LicenseService.sendLicenseUpdateNotification();
+	}
+	async saveLicenseRequest() {
+		const defaultFileName = "Unity_lic.alf";
+		const translate = mainContainer.get(ITranslateId);
+		const paths = mainContainer.get(IPathsId);
+		const selectedFilePath = await windowManager_default.mainWindow.showSaveDialog({
+			title: translate.t("license-management:SAVE_LICENSE_INFORMATION"),
+			defaultPath: path.resolve(paths.getDocumentsPath(), defaultFileName),
+			filters: [{
+				name: translate.t("license-management:UNITY_ACTIVATION_FILE"),
+				extensions: ["alf"]
+			}]
+		});
+		try {
+			const response = await licensingSdk.getInstance().generateUnityAlf(selectedFilePath);
+			if (!response.isSuccessful()) throw new Error(`request failed with code [${response.responseCode}] and status [${response.responseStatus}]`);
+		} catch (err) {
+			LicenseService.logger.warn(`error while generating alf, reason: ${err}`);
+			throw new Error(DIALOG_RESPONSES.FILE_COULD_NOT_BE_SAVED);
+		}
+	}
+	async activateLicense(serialNumber) {
+		let ulfActivationResponse;
+		try {
+			ulfActivationResponse = await licensingSdk.getInstance().activateUlfLicense(serialNumber?.trim());
+			if (ulfActivationResponse.isSuccessful()) {
+				LicenseService.sendLicenseUpdateNotification();
+				const floating = this.isFloatingEnabled();
+				LicenseServiceCore.getLicense().then((licenses) => {
+					const ULFLicense = licenses?.filter(({ licenseType }) => licenseType === import_lib$2.LicenseType.ULF)[0];
+					const licenseActivatedProps = {
+						floating,
+						license_type: ULFLicense ? ULFLicense.label : LICENSE_TYPES.Unknown
+					};
+					AmplitudeService_default.client.redBucket.licenseActivated(licenseActivatedProps);
+					AmplitudeService_default.client.yellowBucket.licenseActivated(licenseActivatedProps);
+				}).catch(() => {
+					const licenseActivatedProps = {
+						floating,
+						license_type: LICENSE_TYPES.Unknown
+					};
+					AmplitudeService_default.client.redBucket.licenseActivated(licenseActivatedProps);
+					AmplitudeService_default.client.yellowBucket.licenseActivated(licenseActivatedProps);
+				});
+				return null;
+			}
+		} catch (_error) {
+			throw new Error(LICENSE_ERRORS.SerialActivationUnhandledError);
+		}
+		switch (ulfActivationResponse.responseCode) {
+			case UlfActivationResponseCode.MaximumActivationLimitReached: return LICENSE_ERRORS.MaximumActivationLimitReached;
+			case UlfActivationResponseCode.InvalidSerial: return LICENSE_ERRORS.InvalidSerial;
+			case UlfActivationResponseCode.SerialDoesNotBelongToUser: return LICENSE_ERRORS.SerialDoesNotBelongToUser;
+			case UlfActivationResponseCode.SerialExpired: return LICENSE_ERRORS.SerialExpired;
+			case UlfActivationResponseCode.RestrictedSeatDebt: return LICENSE_ERRORS.RestrictedSeatDebt;
+			case UlfActivationResponseCode.RestrictedSeatComingler: return LICENSE_ERRORS.RestrictedSeatComingler;
+			case UlfActivationResponseCode.RestrictedSeatRevenue: return LICENSE_ERRORS.RestrictedSeatRevenue;
+			case UlfActivationResponseCode.RestrictedSeatDunning: return LICENSE_ERRORS.RestrictedSeatDunning;
+			case LicenseComplianceResponseCode.GenesisPeRestrictedCode:
+			case LicenseComplianceResponseCode.NonCompliantLicenseRefreshCode:
+			case LicenseComplianceResponseCode.NonCompliantLicenseActivateCode: return this.mapUlfComplianceErrorFromResponseStatus(ulfActivationResponse.responseStatus) || LICENSE_ERRORS.PersonalLicenseRestricted;
+			default: return serialNumber ? LICENSE_ERRORS.SerialActivationGenericError : LICENSE_ERRORS.LicenseActivationGenericError;
+		}
+	}
+	async returnLicense(license) {
+		if (!license) {
+			LicenseService.logger.warn("returnLicense: object license to be returned is null");
+			return LICENSE_ERRORS.Generic;
+		}
+		try {
+			const response = await licensingSdk.getInstance().returnEntitlementGroup(license.entitlementGroupId);
+			const hasSubError = (subStatusCode) => response.getSubResult().some((x) => x.statusCode === subStatusCode);
+			if (!response.isSuccessful()) {
+				if (hasSubError(UlfReturnResponseCode.ActivatedManually)) return LICENSE_ERRORS.LicenseIsActivatedManually;
+				return LICENSE_ERRORS.ReturnFailed;
+			}
+			LicenseService.sendLicenseUpdateNotification();
+			return null;
+		} catch (_err) {
+			return LICENSE_ERRORS.Generic;
+		}
+	}
+	async borrowLicense(days) {
+		return licensingSdk.getInstance().borrowLicense(days).then((response) => this.getBorrowLicenseErrorFromResponse(response)).catch((error) => {
+			LicenseService.logger.error(`Error while borrowing license for ${days} days: `, error);
+			return { licenseError: LICENSE_ERRORS.Generic };
+		}).then((borrowError) => {
+			if (borrowError === null) {
+				const licenseBorrowedProps = { number_of_days: days };
+				AmplitudeService_default.client.redBucket.licenseBorrowed(licenseBorrowedProps);
+				AmplitudeService_default.client.yellowBucket.licenseBorrowed(licenseBorrowedProps);
+			} else {
+				const licenseBorrowFailedProps = {
+					failure_message: borrowError.licenseError,
+					number_of_days: days
+				};
+				AmplitudeService_default.client.redBucket.licenseBorrowFailed(licenseBorrowFailedProps);
+				AmplitudeService_default.client.yellowBucket.licenseBorrowFailed(licenseBorrowFailedProps);
+			}
+			return borrowError;
+		});
+	}
+	async returnBorrow(leaseToken) {
+		return licensingSdk.getInstance().returnBorrow(leaseToken).then((response) => {
+			if (response.isSuccessful()) return null;
+			switch (response.responseCode) {
+				case constants$1.HTTP_STATUS_BAD_GATEWAY:
+				case constants$1.HTTP_STATUS_INTERNAL_SERVER_ERROR: return LICENSE_ERRORS.ServerUnavailable;
+				default: return LICENSE_ERRORS.ReturnFailed;
+			}
+		}).catch((error) => {
+			LicenseService.logger.error(`Error while returning borrow license for lease token '${leaseToken}': `, error);
+			return LICENSE_ERRORS.ReturnFailed;
+		}).then((licenseError) => {
+			if (licenseError === null) {
+				AmplitudeService_default.client.redBucket.licenseBorrowReturned();
+				AmplitudeService_default.client.yellowBucket.licenseBorrowReturned();
+			} else {
+				const licenseBorrowReturnFailedProps = { failure_message: licenseError };
+				AmplitudeService_default.client.redBucket.licenseBorrowReturnFailed(licenseBorrowReturnFailedProps);
+				AmplitudeService_default.client.yellowBucket.licenseBorrowReturnFailed(licenseBorrowReturnFailedProps);
+			}
+			return licenseError;
+		});
+	}
+	getBorrowLicenseErrorFrom400Response(responseStatus) {
+		const dateExpiryIndex = responseStatus.indexOf("expiry: ");
+		if (dateExpiryIndex >= 0) {
+			const serverExpiryDate = responseStatus?.slice(dateExpiryIndex + 8);
+			return {
+				licenseError: LICENSE_ERRORS.InvalidBorrowLength,
+				licenseServerExpiryDate: serverExpiryDate
+			};
+		}
+		return { licenseError: LICENSE_ERRORS.InvalidBorrowInput };
+	}
+	getBorrowLicenseErrorFromResponse(borrowResponse) {
+		return [
+			{
+				condition: (response) => response.responseCode === constants$1.HTTP_STATUS_BAD_REQUEST,
+				error: (response) => this.getBorrowLicenseErrorFrom400Response(response.responseStatus)
+			},
+			{
+				condition: (response) => response.responseCode === constants$1.HTTP_STATUS_FORBIDDEN,
+				error: () => ({ licenseError: LICENSE_ERRORS.OfflineModeUnavailable })
+			},
+			{
+				condition: (response) => response.responseCode === constants$1.HTTP_STATUS_NOT_FOUND,
+				error: () => ({ licenseError: LICENSE_ERRORS.OfflineModeUnknown })
+			},
+			{
+				condition: (response) => response.responseCode === constants$1.HTTP_STATUS_REQUEST_TIMEOUT,
+				error: () => ({ licenseError: LICENSE_ERRORS.ServerUnreachable })
+			},
+			{
+				condition: (response) => response.responseCode === constants$1.HTTP_STATUS_TOO_MANY_REQUESTS,
+				error: () => ({ licenseError: LICENSE_ERRORS.NoLicenseAvailable })
+			},
+			{
+				condition: (response) => [constants$1.HTTP_STATUS_INTERNAL_SERVER_ERROR, constants$1.HTTP_STATUS_BAD_GATEWAY].indexOf(response.responseCode) >= 0,
+				error: () => ({ licenseError: LICENSE_ERRORS.ServerUnavailable })
+			},
+			{
+				condition: (response) => !response.isSuccessful(),
+				error: () => ({ licenseError: LICENSE_ERRORS.Generic })
+			},
+			{
+				condition: () => true,
+				error: () => null
+			}
+		].find((item) => item.condition(borrowResponse)).error(borrowResponse);
+	}
+	async refreshLicenses() {
+		LicenseService.logger.debug("refreshLicenses");
+		let activateAllResponse;
+		let updateResponse;
+		try {
+			activateAllResponse = await this.activateAllEntitlementBasedLicenses();
+			updateResponse = await licensingSdk.getInstance().updateLicenses([import_lib$2.LicenseType.ULF]);
+		} catch (error) {
+			throw new Error(`${LICENSE_ERRORS.RefreshFailed} Error: ${error}`);
+		}
+		if (!updateResponse.isSuccessful() && updateResponse.responseCode === LicenseComplianceResponseCode.GenesisPeRevokedCode) return LICENSE_ERRORS.PersonalLicenseRevokedRestricted;
+		if (!activateAllResponse.isSuccessful() && activateAllResponse.getSubResult().every((subResult) => subResult.statusCode !== LicenseComplianceResponseCode.GenesisPeRestrictedCode) || !updateResponse.isSuccessful() && updateResponse.responseCode !== UlfActivationResponseCode.UlfNotFoundCode) return LICENSE_ERRORS.RefreshFailed;
+		LicenseService.logger.info("refreshLicenses: finished");
+		LicenseService.sendLicenseUpdateNotification();
+		return null;
+	}
+	async isLicenseValid() {
+		LicenseService.logger.debug("isLicenseValid");
+		if (this.isFloatingEnabled()) return true;
+		try {
+			return await licensingSdk.getInstance().checkEntitlement(import_lib$2.EntitlementConstants.useEditorUi);
+		} catch (err) {
+			LicenseService.logger.error(`isLicenseValid: Failed to checkEntitlement for ${import_lib$2.EntitlementConstants.useEditorUi}. Exception: ${err}`);
+			return false;
+		}
+	}
+	isLicenseEntitlementEnabled() {
+		const settings = mainContainer.get(ILocalSettingsId);
+		return settings.get(settings.keys.ENABLE_ENTITLEMENT_LICENSING);
+	}
+	getActivationErrorFromResponse(response) {
+		const { responseCode } = response;
+		let activationError = null;
+		if (responseCode.toString().startsWith("5")) activationError = LICENSE_ERRORS.ServerUnavailable;
+		else if (responseCode === AssignedLicenseResponseCode.MaximumLicenseActivationsCode) activationError = LICENSE_ERRORS.MaximumActivationLimitReached;
+		else if (responseCode === AssignedLicenseResponseCode.TimeoutCode) activationError = LICENSE_ERRORS.ServerTimeout;
+		else if (responseCode === constants$1.HTTP_STATUS_MULTI_STATUS) {
+			if (response.getNonSuccessResults().every((subStatus) => subStatus.statusCode !== LicenseComplianceResponseCode.GenesisPeRestrictedCode && subStatus.statusCode !== LicenseComplianceResponseCode.GenesisPeRevokedCode)) activationError = this.determineMaximumActivationLimitError(response);
+		} else activationError = LICENSE_ERRORS.Generic;
+		return activationError;
+	}
+	getErrorFromSubResult(response) {
+		let complianceError = null;
+		const genesisPESubResult = response.getSubResult().find(({ statusCode }) => statusCode === LicenseComplianceResponseCode.GenesisPeRestrictedCode || statusCode === LicenseComplianceResponseCode.GenesisPeRevokedCode);
+		const warningSubResult = response.getSubResult().find(({ statusCode }) => statusCode === LicenseComplianceResponseCode.NonCompliantLicenseWarningCode);
+		const message = genesisPESubResult?.message || warningSubResult?.message;
+		if (message) {
+			complianceError = this.mapNulComplianceErrorFromMessage(message);
+			if (warningSubResult && !complianceError) complianceError = LICENSE_ERRORS.WarningLicenseNonCompliant;
+		}
+		return {
+			message: complianceError,
+			isWarning: warningSubResult != null
+		};
+	}
+	async activateAllEntitlementBasedLicenses() {
+		LicenseService.logger.debug("activateAllEntitlementBasedLicenses: started");
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ACTIVATION_ENTITLEMENT_BASED_STARTED);
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_CLEAR_STICKY_ERRORS);
+		this.stickyLicenseErrors = [];
+		this.entitlementBasedActivationError = null;
+		let activationError = null;
+		let response;
+		let errorMessage = null;
+		try {
+			const shouldIncludePersonal = await this.isEligibleToActivateAssignedUnityPersonal();
+			response = await licensingSdk.getInstance().activateAllEntitlementBasedLicenses(shouldIncludePersonal);
+			errorMessage = this.getErrorFromSubResult(response);
+			LicenseService.logger.info("activateAllEntitlementBasedLicenses: ", response, errorMessage);
+			if (!response.isSuccessful()) activationError = this.getActivationErrorFromResponse(response);
+			else if (this.editorManager.hasEditorWhichRequiresUlf()) await LicenseServiceCore.matchIdlPeWithUlfPe();
+		} catch (error) {
+			if (!response || errorMessage && !errorMessage.isWarning) {
+				activationError = LICENSE_ERRORS.Generic;
+				throw error;
+			}
+		} finally {
+			if (errorMessage?.message) {
+				this.entitlementBasedActivationError = errorMessage.message;
+				windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ACTIVATION_ENTITLEMENT_COMPLIANCE_WARNING, this.entitlementBasedActivationError);
+			} else this.entitlementBasedActivationError = activationError;
+			windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ACTIVATION_ENTITLEMENT_BASED_FINISHED, this.entitlementBasedActivationError);
+		}
+		LicenseService.logger.info("activateAllEntitlementBasedLicenses: finished");
+		return response;
+	}
+	async returnAllEntitlementBasedLicenses() {
+		LicenseService.logger.debug("returnAllEntitlementBasedLicenses: started");
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_CLEAR_STICKY_ERRORS);
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ACTIVATION_ENTITLEMENT_CLEAR_COMPLIANCE_WARNING);
+		this.stickyLicenseErrors = [];
+		try {
+			if (!await this.tryReturnUlfLicenseIfAssignedExists(LICENSE_TYPES.Personal)) LicenseService.logger.info("returnAllEntitlementBasedLicenses: ULF personal not returned");
+		} catch (error) {
+			LicenseService.logger.warn(`returnAllEntitlementBasedLicenses: failed to return ULF personal license: ${error}`);
+		}
+		let response;
+		try {
+			const entitlementGroups = await licensingSdk.getValidEntitlementGroupsByType([import_lib$2.LicenseType.Assigned]);
+			if (entitlementGroups?.length > 0) {
+				const entitlementIds = entitlementGroups.map((entitlementDetails) => entitlementDetails.entitlementGroupId);
+				response = await licensingSdk.getInstance().returnEntitlementGroups(entitlementIds);
+			} else {
+				LicenseService.logger.info("returnAllEntitlementBasedLicenses: finished");
+				return;
+			}
+		} catch (_err) {
+			throw new Error(LICENSE_ERRORS.Generic);
+		}
+		if (!response.isSuccessful() || response.hasSubError()) throw new Error(LICENSE_ERRORS.ReturnAllAssignedFailed);
+		this.entitlementBasedActivationError = null;
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ENTITLEMENT_BASED_RETURNED);
+		LicenseService.logger.info("returnAllEntitlementBasedLicenses: finished");
+	}
+	async tryReturnUlfLicenseIfAssignedExists(productNameFilter) {
+		LicenseService.logger.debug("tryReturnUlfLicenseIfAssignedExists: started");
+		LicenseService.logger.debug(`tryReturnUlfLicenseIfAssignedExists: filtering licenses for product name '${productNameFilter}'`);
+		let response;
+		try {
+			const ulfEntitlementGroupId = await licensingSdk.getUlfEntitlementGroupId(productNameFilter);
+			if (!ulfEntitlementGroupId) {
+				LicenseService.logger.info("tryReturnUlfLicenseIfAssignedExists: no ULF license found");
+				LicenseService.logger.info("tryReturnUlfLicenseIfAssignedExists: finished");
+				return false;
+			}
+			LicenseService.logger.debug("tryReturnUlfLicenseIfAssignedExists: ULF license found");
+			const entitlements = await licensingSdk.getAssignedEntitlements();
+			if (entitlements?.length > 0 && (productNameFilter === null || entitlements.includes(productNameFilter))) {
+				LicenseService.logger.debug("tryReturnUlfLicenseIfAssignedExists: assigned license found");
+				response = await licensingSdk.getInstance().returnEntitlementGroup(ulfEntitlementGroupId);
+			} else {
+				LicenseService.logger.info("tryReturnUlfLicenseIfAssignedExists: no assigned license found");
+				LicenseService.logger.info("tryReturnUlfLicenseIfAssignedExists: finished");
+				return false;
+			}
+		} catch (_err) {
+			throw new Error(LICENSE_ERRORS.ReturnFailed);
+		}
+		if (!response.isSuccessful() || response.hasSubError()) throw new Error(LICENSE_ERRORS.ReturnFailed);
+		LicenseService.logger.info("tryReturnUlfLicenseIfAssignedExists: finished");
+		return true;
+	}
+	async setAccessToken() {
+		LicenseService.logger.debug("setAccessToken: started");
+		const accessToken = getAccessTokenValue();
+		LicenseService.logger.debug(`Access token to be set ${accessToken}`);
+		await licensingSdk.getInstance().setAccessToken(accessToken);
+		LicenseService.logger.debug("setAccessToken: finished");
+	}
+	selectValidAssignedLicenseNameCSV(licenses) {
+		const productNames = licenses.filter(({ valid, licenseType }) => valid && licenseType === import_lib$2.LicenseType.Assigned).filter(shouldDisplayLicense).map(({ label }) => label);
+		return productNames.length > 0 ? `${productNames.join(", ")},` : "";
+	}
+	static sendLicenseUpdateNotification() {
+		import_postal.default.publish({
+			channel: "app",
+			topic: POSTAL_TOPICS.LICENSE_CHANGE,
+			data: {}
+		});
+	}
+	async userDisagreedWithPersonalLicenseEula() {
+		licenseEulaManager_default.setPersonalEulaAgreementStatus(LICENSE_EULA_AGREEMENT_STATUSES.DISAGREED);
+		await this.returnAllEntitlementBasedLicenses();
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_VALID);
+	}
+	userAgreedToPersonalLicenseEula() {
+		licenseEulaManager_default.setPersonalEulaAgreementStatus(LICENSE_EULA_AGREEMENT_STATUSES.AGREED);
+	}
+	async hasAnyNonPersonalUlf() {
+		return (await this.getLicense()).some((license) => license.licenseType === import_lib$2.LicenseType.ULF && license.label !== LICENSE_TYPES.Personal);
+	}
+	async isEligibleToActivateAssignedUnityPersonal() {
+		const hasAnyNonPersonalUlf = await this.hasAnyNonPersonalUlf();
+		const isFloatingDisabled = !this.isFloatingEnabled();
+		const isHubPeEnabled = !mainContainer.get(ILocalConfigId).isPEDisabled();
+		const shouldIncludePersonal = !hasAnyNonPersonalUlf && isFloatingDisabled && isHubPeEnabled && licenseEulaManager_default.getPersonalEulaAgreementStatus() !== LICENSE_EULA_AGREEMENT_STATUSES.DISAGREED;
+		LicenseService.logger.info(`user is ${shouldIncludePersonal ? "" : "not "}eligible for free tier`);
+		return shouldIncludePersonal;
+	}
+	determineMaximumActivationLimitError(response) {
+		const subResults = response.getSubResult();
+		const hasCode = (code) => subResults.some((e) => e.statusCode === code);
+		if (!hasCode(AssignedLicenseResponseCode.MaximumLicenseActivationsCode)) return LICENSE_ERRORS.Generic;
+		return LICENSE_ERRORS.MaximumActivationLimitReached;
+	}
+	async onUserSignedIn(shouldBroadcast = true) {
+		try {
+			if (shouldBroadcast) windowManager_default.broadcastContent(RENDERER_EVENTS.SET_LICENSES_LOADING, true);
+			if (this.returnAllEntitlementBasedLicensesPromise) await this.returnAllEntitlementBasedLicensesPromise;
+			await this.setAccessToken();
+			await this.activateAllEntitlementBasedLicenses();
+			if (shouldBroadcast) windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_VALID);
+		} catch (error) {
+			LicenseService.logger.warn("Failed to activate all entitlement based licenses on login:", error);
+			if (shouldBroadcast) windowManager_default.broadcastContent(RENDERER_EVENTS.SET_LICENSES_LOADING, false);
+		}
+	}
+	activateUlfPeIfRequired() {
+		if (this.editorManager.hasEditorWhichRequiresUlf()) LicenseServiceCore.matchIdlPeWithUlfPe().catch(() => {
+			LicenseService.logger.warn("Failed to match IDL PE with ULF PE");
+		});
+	}
+	/**
+	* Maps ULF responseStatus messages for compliance errors (20128) to specific error types.
+	* Returns null if the responseStatus doesn't match any known compliance messages.
+	*/
+	mapUlfComplianceErrorFromResponseStatus(responseStatus) {
+		if (!responseStatus) return null;
+		switch (responseStatus) {
+			case ULF_COMPLIANCE_MESSAGES.COMINGLING:
+			case ULF_COMPLIANCE_MESSAGES.REVOKE_COMINGLING: return LICENSE_ERRORS.RestrictedSeatComingler;
+			case ULF_COMPLIANCE_MESSAGES.REVENUE:
+			case ULF_COMPLIANCE_MESSAGES.REVOKE_REVENUE: return LICENSE_ERRORS.RestrictedSeatRevenue;
+			case ULF_COMPLIANCE_MESSAGES.DUNNING:
+			case ULF_COMPLIANCE_MESSAGES.REVOKE_DUNNING: return LICENSE_ERRORS.RestrictedSeatDunning;
+			case ULF_COMPLIANCE_MESSAGES.DEBT:
+			case ULF_COMPLIANCE_MESSAGES.REVOKE_DEBT: return LICENSE_ERRORS.RestrictedSeatDebt;
+			case ULF_COMPLIANCE_MESSAGES.DEFAULT: return LICENSE_ERRORS.PersonalLicenseRestricted;
+			case ULF_COMPLIANCE_MESSAGES.REVOKE_DEFAULT: return LICENSE_ERRORS.PersonalLicenseRevokedRestricted;
+			default: {
+				let licenseErrorKey = null;
+				const errorMatch = Object.entries(UlfActivationResponseCode).find(([, code]) => responseStatus.includes(`Error [${code}]`));
+				licenseErrorKey = errorMatch ? errorMatch[0] : null;
+				if (licenseErrorKey && LICENSE_ERRORS[licenseErrorKey]) return LICENSE_ERRORS[licenseErrorKey];
+				else {
+					const errorMatch = Object.entries(ULF_COMPLIANCE_MESSAGES).find(([, message]) => responseStatus.includes(message));
+					licenseErrorKey = {
+						DEFAULT: LICENSE_ERRORS.PersonalLicenseRestricted,
+						REVOKE_DEFAULT: LICENSE_ERRORS.PersonalLicenseRevokedRestricted,
+						REVOKE_COMINGLING: LICENSE_ERRORS.RestrictedSeatComingler,
+						REVOKE_REVENUE: LICENSE_ERRORS.RestrictedSeatRevenue,
+						REVOKE_DUNNING: LICENSE_ERRORS.RestrictedSeatDunning,
+						REVOKE_DEBT: LICENSE_ERRORS.RestrictedSeatDebt
+					}[errorMatch ? errorMatch[0] : null];
+				}
+				LicenseService.logger.warn(`No errors match for: ${responseStatus} (${licenseErrorKey})`);
+				return licenseErrorKey;
+			}
+		}
+	}
+	/**
+	* Maps NUL compliance error messages from sub-results to specific error types.
+	* returns null if the message doesn't match any known compliance messages
+	*/
+	mapNulComplianceErrorFromMessage(message) {
+		if (!message) return null;
+		switch (message) {
+			case NUL_COMPLIANCE_MESSAGES.ASSIGN_SEAT_WARNING_COMPANY_DOMAIN: return LICENSE_ERRORS.AssignSeatWarningCompanyDomain;
+			case NUL_COMPLIANCE_MESSAGES.ASSIGN_SEAT_WARNING_USER: return LICENSE_ERRORS.AssignSeatWarningUser;
+			case NUL_COMPLIANCE_MESSAGES.RESTRICTED_SEAT: return LICENSE_ERRORS.RestrictedSeat;
+			case NUL_COMPLIANCE_MESSAGES.RESTRICTED_SEAT_COMINGLER: return LICENSE_ERRORS.RestrictedSeatComingler;
+			case NUL_COMPLIANCE_MESSAGES.RESTRICTED_SEAT_REVENUE: return LICENSE_ERRORS.RestrictedSeatRevenue;
+			case NUL_COMPLIANCE_MESSAGES.RESTRICTED_SEAT_DUNNING: return LICENSE_ERRORS.RestrictedSeatDunning;
+			case NUL_COMPLIANCE_MESSAGES.RESTRICTED_SEAT_DEBT: return LICENSE_ERRORS.RestrictedSeatDebt;
+			default:
+				LicenseService.logger.warn(`No errors match for: ${message}`);
+				return null;
+		}
+	}
+}();
+//#endregion

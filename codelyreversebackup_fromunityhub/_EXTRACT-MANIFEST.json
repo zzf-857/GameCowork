@@ -1,0 +1,44 @@
+{
+  "_EXTRACT-MANIFEST": "codelyreversebackup_fromunityhub 首批产出（Unity Hub 四域：项目管理/新建项目/Editor 版本管理/许可，T18，2026-10-02）",
+  "generated": "2026-10-02",
+  "source": {
+    "install_dir": "E:/Unity Hub/EXE (只读; Unity Hub.exe + UnityLicensingClient_V1 + resources/app.asar 28,895,412B)",
+    "asar_unpack": "F:/AI/AgentMake/temp/GameCowork/unity-hub-asar (既有解包复用，选中 26 个 chunk 逐一与原 ASAR 比对，未重复解包)",
+    "related": "codelyreversebackup/index-and-templates/template-pipeline.md (模板二进制出处与 tgz 实证) + hub-licensing/ T2 (Tuanjie 分支对照)"
+  },
+  "redlines": "全程只读；未运行 Unity Hub 或 Unity.Licensing.Client；licensing.md 为 Unity 专属协议形状参考，不含许可文件内容/机器指纹/凭据；原厂云端点不得接入",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "8F983D430544877091FDE7B2B77DF7925879A0FCE6E5C37108470834EB77AA29",
+      "bytes": 7197,
+      "extracted": "2026-10-02"
+    },
+    {
+      "path": "project-management.md",
+      "sha256": "34531A436661F03E5F7ADCC904F928B2BF127897A41C8F68553D76C9E8AEE723",
+      "bytes": 4701,
+      "extracted": "2026-10-02"
+    },
+    {
+      "path": "new-project-templates.md",
+      "sha256": "1734DE88A2AD7FB61A4E7520DFA4EA7F56A6149C9012385666A3DA868094A782",
+      "bytes": 4495,
+      "extracted": "2026-10-02"
+    },
+    {
+      "path": "editor-version-management.md",
+      "sha256": "13BDC3426D85EA0789D8A5B55DB25C4C80CE8958AF4D36CCA590DF0694A92ACF",
+      "bytes": 4497,
+      "extracted": "2026-10-02"
+    },
+    {
+      "path": "licensing.md",
+      "sha256": "D8CA5BE714337DFCD03E0CDB8690512C10DBA73F9C3EA582E2015D68483D3BB3",
+      "bytes": 6701,
+      "extracted": "2026-10-02"
+    }
+  ],
+  "codeManifest": "_SOURCE-MANIFEST.json",
+  "artifactScope": "首批分析文档清单；文档 SHA 更新至本次，原字节代码与适配依赖使用独立 SOURCE 清单"
+}

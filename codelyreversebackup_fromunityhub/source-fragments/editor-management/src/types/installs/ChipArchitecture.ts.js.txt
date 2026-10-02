@@ -1,0 +1,7 @@
+//#region src/types/installs/ChipArchitecture.ts
+var CHIP_ARCHITECTURES = {
+	X86_64: "x86_64",
+	ARM64: "arm64",
+	Unknown: "unknown"
+};
+//#endregion

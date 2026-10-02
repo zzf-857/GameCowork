@@ -1,0 +1,60 @@
+//#region src/main/services/projectService/ProjectAnalyticsService.ts
+function sendNewProjectEvent(newProjectEvent) {
+	const { succeeded, newProject, organizationId, enableAnalytics } = newProjectEvent;
+	const { editorVersion = "", editorArchitecture = "", template = null, selectedPackages = [], cloudProjectId = null } = newProject;
+	const selectedPackagesName = selectedPackages?.map((selectedPackage) => path.basename(selectedPackage.packageName));
+	const templateName = template?.code || template?.tar || template?.name || unityTemplateService_default.defaultTemplateCode.toString();
+	cloudAnalytics.addEvent({
+		type: cloudAnalytics.eventTypes.NEW_PROJECT,
+		msg: {
+			editor_version: editorVersion,
+			editor_architecture: editorArchitecture,
+			template_id: templateName,
+			organizationid: organizationId?.toString(),
+			localprojectid: void 0,
+			project_type: "normal",
+			packages: selectedPackagesName,
+			enable_analytics: enableAnalytics,
+			cloud_project_id: cloudProjectId,
+			status: succeeded ? "Success" : "Error"
+		}
+	});
+}
+function sendOpenProjectEvent(openProjectEvent) {
+	const { succeeded, editorVersion, editorArchitecture, project, targetPlatform = "", source = "" } = openProjectEvent;
+	const { cloudProjectId = null, organizationId = "", localProjectId = "" } = project;
+	cloudAnalytics.addEvent({
+		type: cloudAnalytics.eventTypes.OPEN_PROJECT,
+		msg: {
+			editor_version: editorVersion,
+			editor_architecture: editorArchitecture,
+			target_platform: targetPlatform,
+			cloudprojectid: cloudProjectId,
+			organizationid: organizationId,
+			localprojectid: localProjectId,
+			status: succeeded ? "Success" : "Error",
+			source
+		}
+	});
+}
+function sendProjectConnectedEvent(projectConnectedProperties) {
+	AmplitudeService_default.client.yellowBucket.projectConnected(projectConnectedProperties);
+}
+function sendProjectConnectionFailedEvent(projectConnectionFailedProperties) {
+	AmplitudeService_default.client.yellowBucket.projectConnectionFailed(projectConnectionFailedProperties);
+}
+function sendProjectDisconnectedEvent(projectDisconnectedProperties) {
+	AmplitudeService_default.client.yellowBucket.projectDisconnected(projectDisconnectedProperties);
+}
+function sendProjectDisconnectionFailedEvent(projectDisconnectionFailedProperties) {
+	AmplitudeService_default.client.yellowBucket.projectDisconnectionFailed(projectDisconnectionFailedProperties);
+}
+var ProjectAnalyticsService = {
+	sendNewProjectEvent,
+	sendOpenProjectEvent,
+	sendProjectConnectedEvent,
+	sendProjectConnectionFailedEvent,
+	sendProjectDisconnectedEvent,
+	sendProjectDisconnectionFailedEvent
+};
+//#endregion

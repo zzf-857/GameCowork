@@ -1,0 +1,74 @@
+//#region src/core/src/file-system/fs.ts
+/**
+* see: https://github.com/torvalds/linux/blob/d19cc4bfbff1ae72c3505a00fb8ce0d3fa519e6c/include/uapi/linux/limits.h#L12-L13
+*/
+var MAX_FILENAME = 255;
+var MAX_PATH = 4096;
+/**
+* Finder and others on macOS do not work with colon
+* see: https://superuser.com/questions/326103/what-are-invalid-characters-for-a-file-name-under-os-x#comment1525053_326104
+*/
+var FILENAME_INVALID_PATTERN = /[:/`%]/;
+var FILENAME_MIN_ASCII_VALUE = 1;
+var PATH_NAMESPACES = /^(~?\/|)(.*)$/;
+/**
+* Get the max permitted filename length.
+*
+* @param crossPlatform if true, restrict the max length to be compatible with all supported
+* platforms
+* @returns the max permitted filename length
+*/
+var getMaxFilenameLength = (crossPlatform = true) => {
+	if (crossPlatform) return Math.min(MAX_FILENAME, 260);
+	return os.platform() === "win32" ? 260 : MAX_FILENAME;
+};
+/**
+* Get the max permitted path length for the current platform.
+*
+* @returns the max permitted path length
+*/
+var getMaxPathLength = () => {
+	return os.platform() === "win32" ? 260 : MAX_PATH;
+};
+/**
+* Check if the given filename is valid (does not contain unacceptable characters and is within
+* length limits).
+*
+* @param filename the filename to check
+* @param crossPlatform if true, ensure the filename would be valid on all supported platforms
+* @returns true if the given filename is valid
+*/
+var isValidFilename = (filename, crossPlatform = true) => {
+	const platformName = os.platform();
+	const isValidUnixFilename = isValidFilename$2(filename, {
+		caseInsensitive: platformName !== "linux",
+		invalidRegExp: FILENAME_INVALID_PATTERN,
+		minAsciiValue: FILENAME_MIN_ASCII_VALUE,
+		maxLength: MAX_FILENAME
+	});
+	return crossPlatform ? isValidFilename$1(filename) && isValidUnixFilename : platformName === "win32" ? isValidFilename$1(filename) : isValidUnixFilename;
+};
+/**
+* Check if the given path is valid (formatted correctly so as to identify a file on the file system
+* and such that each filename component of the path is also valid).
+*
+* @param pathToCheck the path to check
+* @param crossPlatform if true, ensure the path only contains path components that would be valid
+* on all supported platforms
+* @returns true if the given path is valid
+*/
+var isValidPath = (pathToCheck, crossPlatform = true) => {
+	const platformName = os.platform();
+	let pathValidator$2;
+	pathToCheck = path.normalize(pathToCheck);
+	if (platformName === "win32") pathValidator$2 = pathValidator(pathToCheck);
+	else pathValidator$2 = pathValidator$1(pathToCheck, platformName !== "linux", MAX_PATH, (path2) => {
+		return path2.match(PATH_NAMESPACES)?.[2] ?? null;
+	});
+	return pathValidator$2((componentsStr) => {
+		const components = componentsStr.split(path.sep);
+		const lastComponent = components.pop();
+		return components.every((component) => isValidFilename(component, crossPlatform)) && (lastComponent === "" || lastComponent !== void 0 && isValidFilename(lastComponent, crossPlatform));
+	});
+};
+//#endregion

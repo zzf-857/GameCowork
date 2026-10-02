@@ -1,0 +1,12 @@
+//#region src/main/services/editorManager/editorUtils_platform.ts
+var EditorUtilsError = class extends Error {
+	errorCode;
+	params;
+	constructor(message, errorCode, params, options) {
+		super(message, options);
+		this.name = "EditorUtilsError";
+		this.errorCode = errorCode;
+		this.params = params;
+	}
+};
+//#endregion

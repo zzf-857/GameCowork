@@ -1,0 +1,331 @@
+//#region src/main/services/projectService/localProjects/LocalProjectService.ts
+var LocalProjectService = class LocalProjectService {
+	static hubIPCState = mainContainer.get(IHubIPCStateId);
+	static logger = loggerFactory("LocalProjectService");
+	static sendCreateProjectAnalytics = async ({ fullProjectPath, editorVersion, template }) => {
+		const { localProjectId } = await localProject.getPlayerSettingsData(fullProjectPath);
+		const { provider } = await localProject.vcsManagementService.getProjectVCSData(fullProjectPath) || {};
+		AmplitudeService_default.client?.yellowBucket.createProject({
+			editor_version: editorVersion,
+			template_id: template?.name,
+			template_version: template?.version,
+			local_project_id: localProjectId,
+			source_control_provider: provider ?? "none",
+			packages: template?.packages.map((pkg) => pkg.name)
+		});
+	};
+	static async createProject(newProject, enableAnalytics = true) {
+		const { projectName, projectPath, template, selectedPackages = [], defaultScene = "", editorVersion, editorArchitecture, organizationId, cloudProjectId } = newProject;
+		const fullProjectPath = path.join(projectPath, projectName);
+		LocalProjectService.logger.info(`createProject projectPath: ${fullProjectPath}, editor version: ${newProject.editorVersion}, edtitor architecture ${editorArchitecture}`);
+		const templateName = template?.code || template?.tar || template?.name || unityTemplateService_default.defaultTemplateCode;
+		const hasConnectedEditor = LocalProjectService.hubIPCState.connectedEditor;
+		const normalizedProjectPath = projectPath.replace(/\\/g, "/");
+		const deeplinkInfo = await localProject.getDeeplinkInfo();
+		const hasDeeplink = deeplinkInfo !== null && deeplinkInfo.openInEditorUrl !== void 0;
+		const hasOpenInEditorFeature = await localProject.validateEditorHasIPCFeatureSupport(editorVersion, editorArchitecture, POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL);
+		let cancelCreatingEarly;
+		const projectConnectedEventProperties = {
+			organization_id: organizationId,
+			cloud_project_id: cloudProjectId,
+			is_new_cloud_project: true,
+			is_new_local_project: true
+		};
+		const handleCreateProjectError = async (error) => {
+			cancelCreatingEarly?.();
+			if (hasDeeplink) localProject.clearProjectDeeplinkInfo(fullProjectPath);
+			await localProject.removeProject(fullProjectPath);
+			ProjectAnalyticsService.sendNewProjectEvent({
+				succeeded: false,
+				newProject: {
+					...newProject,
+					cloudProjectId
+				},
+				organizationId,
+				enableAnalytics
+			});
+			if (cloudProjectId !== void 0 && cloudProjectId !== null) ProjectAnalyticsService.sendProjectConnectionFailedEvent(projectConnectedEventProperties);
+			LocalProjectService.logger.error("Error while creating a new project", error);
+		};
+		const onCreateProjectError = async (error) => {
+			await windowManager_default.mainWindow.show();
+			await handleCreateProjectError(error);
+		};
+		import_postal.default.publish({
+			channel: "app",
+			topic: POSTAL_TOPICS.PROJECT_CREATE,
+			data: {
+				defaultScene,
+				organizationId,
+				cloudProjectId,
+				projectName,
+				projectPath: normalizedProjectPath,
+				projectDirectory: normalizedProjectPath,
+				projectType: templateName,
+				selectedPackages
+			}
+		});
+		try {
+			ProjectNotifierService.notifyProjectOpening(fullProjectPath);
+			cancelCreatingEarly = ProjectNotifierService.notifyProjectOpenedWhenFinished(fullProjectPath);
+			if (!hasConnectedEditor) await (await editorManager_default.getEditorApp({
+				version: editorVersion,
+				architecture: editorArchitecture
+			})).createProject(fullProjectPath, selectedPackages, templateName, organizationId, cloudProjectId, onCreateProjectError);
+			await localProject.refreshUserDefault();
+			await localProject.addToRecentProjects(fullProjectPath, editorVersion, editorArchitecture, cloudProjectId ?? void 0, organizationId ?? void 0, organizationId ?? void 0);
+			ProjectSettingsFilesToWatch.forEach((fileName) => {
+				ProjectNotifierService.onFileCreated(path.join(fullProjectPath, ProjectSettingsFolderPath), fileName, () => {
+					localProject.watchProjectSettingsFile(fullProjectPath, fileName);
+					if (fileName === "ProjectSettings.asset") LocalProjectService.sendCreateProjectAnalytics({
+						fullProjectPath,
+						editorVersion,
+						template
+					}).catch((error) => {
+						LocalProjectService.logger.error("Error while sending create project analytics", error);
+					});
+				});
+			});
+			ProjectNotifierService.onFileCreated(path.join(fullProjectPath, ProjectLibraryFolderPath), ProjectBuildSettingsFileName, () => {
+				localProject.watchBuildTargetFile(fullProjectPath);
+			});
+			[ProjectQualitySettingsFileName, ProjectGraphicsSettingsFileName].forEach((fileName) => {
+				ProjectNotifierService.onFileCreated(path.join(fullProjectPath, ProjectSettingsFolderPath), fileName, () => {
+					localProject.watchRenderPipelineFiles(fullProjectPath);
+				});
+			});
+			ProjectNotifierService.onFileCreated(projectPath, projectName, () => {
+				localProject.vcsManagementService.watchVCSConfigurationFileForProject(fullProjectPath).catch((error) => {
+					LocalProjectService.logger.error("Error while watching VCS configuration for new project", error);
+				});
+			});
+			if (await window$1.getHideHubOnEditorOpen()) windowManager_default.mainWindow.hide();
+			await ProjectsPreferencesService_default.setProjectsLocation(projectPath);
+			ProjectAnalyticsService.sendNewProjectEvent({
+				succeeded: true,
+				newProject: {
+					...newProject,
+					cloudProjectId
+				},
+				organizationId,
+				enableAnalytics
+			});
+			if (cloudProjectId !== void 0 && cloudProjectId !== null) ProjectAnalyticsService.sendProjectConnectedEvent(projectConnectedEventProperties);
+			if (hasDeeplink) {
+				if (hasOpenInEditorFeature) localProject.setProjectDeeplinkInfo(fullProjectPath, deeplinkInfo.openInEditorUrl);
+				else LocalProjectService.logger.warn(`The selected Editor version ${editorVersion} does not support deeplink activation from hub. Ignoring deeplink operation`);
+				await localProject.removeDeeplinkInfo();
+			}
+		} catch (error) {
+			handleCreateProjectError(error).catch((error) => {
+				LocalProjectService.logger.error("Error while handling create project error", error);
+			});
+			throw error;
+		}
+	}
+	static sendOpenProjectAnalytics = async ({ projectData, editorVersion, source, targetPlatform }) => {
+		const OpenProjectPropertiesSourceMapping = {
+			[OPEN_PROJECT_SOURCES.LocalIPC]: "open",
+			[OPEN_PROJECT_SOURCES.LocalREST]: "open",
+			[OPEN_PROJECT_SOURCES.Tray]: "tray",
+			[OPEN_PROJECT_SOURCES.Projects]: "projects"
+		};
+		const openSource = source ? OpenProjectPropertiesSourceMapping[source] : "open";
+		AmplitudeService_default.client?.yellowBucket.openProject({
+			editor_version: editorVersion,
+			cloud_project_id: projectData.cloudProjectId ?? "",
+			local_project_id: projectData.localProjectId,
+			source: openSource,
+			target_platform: targetPlatform
+		});
+	};
+	static sendProjectOpenErrorAnalytics = async ({ projectPath, editorVersion, editorArchitecture }) => {
+		let projectData = localProject.getProjectFromMemory(projectPath);
+		if (!projectData) projectData = await localProject.getProjectData(projectPath);
+		ProjectAnalyticsService.sendOpenProjectEvent({
+			succeeded: false,
+			editorVersion,
+			editorArchitecture,
+			project: projectData
+		});
+	};
+	/**
+	* Converts a Unity Editor deeplink URL to the com.unity3d.kharma: format
+	* @param urlString - The URL string to convert
+	* @returns The converted URL string
+	*/
+	static convertToShowPackageManagerUrl(urlString) {
+		return urlString.replace("com.unity.editor://package-manager/", "com.unity3d.kharma:");
+	}
+	static async validateEditorHasOpenInEditorFeatureSupport(editorVersion, editorArchitecture) {
+		const ipcFeaturesPath = (await editorManager_default.getEditorApp({
+			version: editorVersion,
+			architecture: editorArchitecture
+		})).exec;
+		const ipcFeaturesJsonRelativePath = getUserOS() === PLATFORMS.MAC ? "../Resources/PackageManager/IPC/ipcFeatures.json" : "Data/Resources/PackageManager/IPC/ipcFeatures.json";
+		const combinedPath = path.resolve(path.dirname(ipcFeaturesPath), ipcFeaturesJsonRelativePath);
+		if (!await hub_fs_default.isFilePresentAsync(combinedPath)) {
+			LocalProjectService.logger.warn(`ipcFeatures.json does not exist: ${combinedPath}`);
+			return false;
+		}
+		let hasOpenInEditorFeature = false;
+		let canReadFile = false;
+		let content;
+		try {
+			content = await readFile(combinedPath, "utf8");
+			canReadFile = true;
+		} catch (err) {
+			LocalProjectService.logger.warn(`Failed to read file ${err}`);
+			return false;
+		}
+		if (canReadFile) try {
+			const json = JSON.parse(content);
+			if (Array.isArray(json.ipc) && json.ipc.includes(POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL)) {
+				LocalProjectService.logger.warn("project.openInEditorUrl ipc message is supported.");
+				hasOpenInEditorFeature = true;
+			} else LocalProjectService.logger.warn("project.openInEditorUrl ipc message is not supported.");
+		} catch (err) {
+			LocalProjectService.logger.warn(`Error parsing json ${err}`);
+		}
+		return hasOpenInEditorFeature;
+	}
+	static async openProject(projectOptions) {
+		const { path: projectPath, version: editorVersion, architecture: editorArchitecture, source, openInEditorUrl } = projectOptions;
+		const customArgs = await localProject.getProjectsInfo();
+		let projectData;
+		let cancelOpeningEarly;
+		const hasConnectedEditor = LocalProjectService.hubIPCState.connectedEditor;
+		if (openInEditorUrl) localProject.setProjectDeeplinkInfo(projectPath, openInEditorUrl);
+		const deeplinkInfo = await localProject.getDeeplinkInfo();
+		const handleOpenProjectError = (error) => {
+			cancelOpeningEarly?.();
+			if (error.code === editorManager_default.errorCodes.MULTIPLE_EDITOR_FOUND) {
+				LocalProjectService.logger.warn(`Multiple editors found matching ${editorVersion}`);
+				throw new ProjectError(PROJECT_ISSUES.MISSING_EDITOR_ARCHITECTURE);
+			}
+			if (error.code === editorManager_default.errorCodes.NO_EDITORS_FOUND) throw new ProjectError(PROJECT_ISSUES.MISSING_EDITOR_VERSION);
+			LocalProjectService.sendProjectOpenErrorAnalytics({
+				projectPath,
+				editorVersion,
+				editorArchitecture
+			}).catch((error) => {
+				LocalProjectService.logger.error("Error while sending open project error analytics", error);
+			});
+			LocalProjectService.logger.error("Error while opening a local new project", error);
+		};
+		const onOpenProjectError = (error) => {
+			windowManager_default.mainWindow.show();
+			handleOpenProjectError(error);
+		};
+		const hasDeeplink = deeplinkInfo !== null && deeplinkInfo.openInEditorUrl !== void 0;
+		try {
+			if (!await ProjectValidatorService.validatePath(projectPath, false)) throw new ProjectError(PROJECT_ISSUES.PROJECT_PATH_NOT_FOUND);
+			await ProjectValidatorService.ensureAssetsFolder(projectPath);
+			const projectNotOpen = await ProjectValidatorService.validateProjectNotOpen(projectPath, false);
+			const hasOpenInEditorFeature = await localProject.validateEditorHasIPCFeatureSupport(editorVersion, editorArchitecture, POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL);
+			const hasShowProjectManagerFeature = await localProject.validateEditorHasIPCFeatureSupport(editorVersion, editorArchitecture, POSTAL_TOPICS.SHOW_PROJECT_MANAGER);
+			if (!projectNotOpen) {
+				cancelOpeningEarly = ProjectNotifierService.notifyProjectOpenedWhenFinished(projectPath);
+				cancelOpeningEarly?.();
+				if (hasOpenInEditorFeature) {
+					import_postal.default.publish({
+						channel: "app",
+						topic: POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL,
+						data: {
+							openInEditorURL: "com.unity.editor://activate",
+							projectPath
+						}
+					});
+					if (hasDeeplink) {
+						import_postal.default.publish({
+							channel: "app",
+							topic: POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL,
+							data: {
+								openInEditorURL: deeplinkInfo.openInEditorUrl,
+								projectPath
+							}
+						});
+						await localProject.removeDeeplinkInfo();
+					}
+					windowManager_default.mainWindow.hide();
+					return;
+				} else {
+					if (hasDeeplink && deeplinkInfo.openInEditorUrl?.includes("package-manager")) {
+						if (hasShowProjectManagerFeature) {
+							const showPackageManagerUrl = LocalProjectService.convertToShowPackageManagerUrl(deeplinkInfo.openInEditorUrl);
+							import_postal.default.publish({
+								channel: "app",
+								topic: POSTAL_TOPICS.SHOW_PROJECT_MANAGER,
+								data: {
+									packageURL: showPackageManagerUrl,
+									projectPath
+								}
+							});
+							await localProject.removeDeeplinkInfo();
+							windowManager_default.mainWindow.hide();
+							return;
+						}
+					}
+					if (hasDeeplink) {
+						LocalProjectService.logger.warn(`The selected Editor version ${editorVersion} does not support deeplink activation from hub. Ignoring deeplink operation`);
+						await localProject.removeDeeplinkInfo();
+					}
+					throw new ProjectError(PROJECT_ISSUES.ALREADY_OPEN);
+				}
+			}
+			ProjectNotifierService.notifyProjectOpening(projectPath);
+			cancelOpeningEarly = ProjectNotifierService.notifyProjectOpenedWhenFinished(projectPath);
+			LocalProjectService.logger.info(`openProject projectPath: ${projectPath}, current editor:`, LocalProjectService.hubIPCState.connectedEditor);
+			if (hasDeeplink) {
+				if (hasOpenInEditorFeature) localProject.setProjectDeeplinkInfo(projectPath, deeplinkInfo.openInEditorUrl);
+				else if (hasShowProjectManagerFeature && deeplinkInfo.openInEditorUrl?.includes("package-manager")) localProject.pendingShowPackageManagerUrl = LocalProjectService.convertToShowPackageManagerUrl(deeplinkInfo.openInEditorUrl);
+				else LocalProjectService.logger.warn(`The selected Editor version ${editorVersion} does not support deeplink activation from hub. Ignoring deeplink operation`);
+				await localProject.removeDeeplinkInfo();
+			}
+			const normalizedProjectPath = projectPath.replace(/\\/g, "/");
+			import_postal.default.publish({
+				channel: "app",
+				topic: POSTAL_TOPICS.PROJECT_OPENED,
+				data: {
+					projectPath: normalizedProjectPath,
+					normalizedProjectPath
+				}
+			});
+			if (!hasConnectedEditor) {
+				const editorAppForProject = Boolean(projectCustomEditorHelper.hasCustomEditor(projectPath)) ? projectCustomEditorHelper.getCustomEditorForProject(projectPath) : await editorManager_default.getEditorApp({
+					version: editorVersion,
+					architecture: editorArchitecture
+				});
+				if (editorAppForProject.version !== editorVersion) {
+					LocalProjectService.logger.warn(`Tried to open project that uses Editor version ${editorVersion} with version ${editorAppForProject.version}`);
+					throw new ProjectError(PROJECT_ISSUES.MISSING_EDITOR_VERSION);
+				}
+				if (!hasOpenInEditorFeature) localProject.pendingOpeningProjectPath = normalizedProjectPath;
+				localProject.lastDisconnectedProjectPath = null;
+				await editorAppForProject.openProject(projectPath, projectOptions, customArgs, onOpenProjectError);
+			}
+			await localProject.closeHomeWindow();
+			projectData = await localProject.addToRecentProjects(projectPath, editorVersion, editorArchitecture, null, null);
+			const targetPlatform = projectOptions?.buildPlatform?.buildTarget ?? projectOptions?.buildPlatform?.buildTargetGroup;
+			ProjectAnalyticsService.sendOpenProjectEvent({
+				succeeded: true,
+				editorVersion,
+				editorArchitecture,
+				project: projectData,
+				targetPlatform
+			});
+			LocalProjectService.sendOpenProjectAnalytics({
+				projectData,
+				editorVersion,
+				source,
+				targetPlatform
+			}).catch((error) => {
+				LocalProjectService.logger.error("Error while sending open project analytics", error);
+			});
+		} catch (error) {
+			handleOpenProjectError(error);
+			throw error;
+		}
+	}
+};
+//#endregion

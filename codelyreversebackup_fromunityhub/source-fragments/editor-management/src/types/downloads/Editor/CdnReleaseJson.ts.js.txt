@@ -1,0 +1,79 @@
+//#region src/types/downloads/Editor/CdnReleaseJson.ts
+/**
+* Platform identifiers used in the CDN release.json manifest entries.
+*/
+var CDN_PLATFORMS = {
+	MAC_OS: "MAC_OS",
+	WINDOWS: "WINDOWS",
+	LINUX: "LINUX"
+};
+/**
+* Architecture identifiers used in the CDN release.json manifest entries.
+*/
+var CDN_ARCHITECTURES = {
+	X86_64: "X86_64",
+	ARM64: "ARM64"
+};
+/**
+* Maps Node.js process.platform to CDN platform identifiers.
+*/
+var ProcessPlatformToCdnPlatform = {
+	darwin: CDN_PLATFORMS.MAC_OS,
+	win32: CDN_PLATFORMS.WINDOWS,
+	linux: CDN_PLATFORMS.LINUX,
+	aix: void 0,
+	android: void 0,
+	freebsd: void 0,
+	haiku: void 0,
+	openbsd: void 0,
+	sunos: void 0,
+	cygwin: void 0,
+	netbsd: void 0
+};
+/**
+* Maps ChipArchitecture to CDN architecture identifiers.
+*/
+var ChipArchitectureToCdnArchitecture = {
+	x86_64: CDN_ARCHITECTURES.X86_64,
+	arm64: CDN_ARCHITECTURES.ARM64,
+	unknown: CDN_ARCHITECTURES.X86_64
+};
+/**
+* Maps CDN architecture to ChipArchitecture.
+*/
+var CdnArchitectureToChipArchitecture = {
+	[CDN_ARCHITECTURES.X86_64]: "x86_64",
+	[CDN_ARCHITECTURES.ARM64]: "arm64"
+};
+/**
+* Maps CDN module to Hub's InstallModule format.
+*/
+function mapCdnModuleToInstallModule(module, revisionHash, parent = "") {
+	const mappedModules = [];
+	const fullDownloadUrl = module.url ? module.url.startsWith("http://") || module.url.startsWith("https://") ? module.url : revisionHash ? `https://download.unity3d.com/download_unity/${revisionHash}/${module.url}` : module.url : "";
+	const installModule = {
+		id: module.id,
+		name: module.name,
+		description: module.description,
+		downloadUrl: fullDownloadUrl,
+		category: module.category,
+		installedSize: module.installedSize?.value ?? 0,
+		downloadSize: module.downloadSize?.value ?? 0,
+		visible: !module.hidden,
+		selected: module.preSelected ?? false,
+		preselected: module.preSelected ?? false,
+		parent,
+		sync: module.hidden && module.required ? parent : module.sync ?? "",
+		destination: module.destination ?? "",
+		eulaUrl1: module.eula?.[0]?.url ?? "",
+		eulaLabel1: module.eula?.[0]?.label ?? "",
+		eulaMessage: module.eula?.[0]?.message ?? "",
+		renameFrom: module.extractedPathRename?.from ?? "",
+		renameTo: module.extractedPathRename?.to ?? "",
+		integrity: module.checksum ?? module.integrity ?? ""
+	};
+	mappedModules.push(installModule);
+	if (module.subModules) for (const subModule of module.subModules) mappedModules.push(...mapCdnModuleToInstallModule(subModule, revisionHash, module.id));
+	return mappedModules;
+}
+//#endregion

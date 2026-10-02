@@ -16,6 +16,7 @@
 - `vendor/csharp-lsp/` 是冻结的公开 C# LSP runtime、来源/许可证与 SHA ledger；`shell/src/lsp.rs` 及两代 Monaco 是实际接线。只在用户显式启用后启动，按已打开工作区的根与代际隔离文档/进程，禁止接受客户端指定 runtime 或缓存根。读取真实 `.sln/.csproj`，不自动生成工程、转换 Unity 元数据或联网 restore；未保存内容只做递增版本同步，不代替文件保存。关闭/启停/重开与旧查询必须验证版本和代际，回收自己的 Job。
 - `project_templates.rs` 只枚举选定安装编辑器的真实本地 UPM 模板；创建独立新目录并拒绝覆盖，取消提交前任务要释放自己的暂存目录。编辑器身份必须与注册候选一致；Unity/Tuanjie 同版本不能串选。模板测试不裁减原 manifest 或用停用 Package Manager 替代完整导入；公开包依赖准备与离线验收分开记录，不修改用户缓存或凭据。
 - 功能状态、未完成项和本次验证记录写入 `RESTORE_STATUS.md`，不要新增平行计划或状态快照。历史文件提取率不等于功能完成率。
+- `codelyreversebackup_fromunityhub/` 是用户指定的 Unity Hub 原码参考库；原 ASAR 与片段须核对 SHA，保留依赖缺口，不执行原 Hub/native/licensing 实现。运行源码继续沿用自有 Core 扫描与模板服务。Unity 与团结许可证分别标注；`workspaceAllowed` 只表示本地工作区权限，不能用它或锁文件宣称 Editor 已激活/在线。
 - 用户指定的 `docs/history/HANDOFF.md` 是交接导读，引用当前状态和源码复用位置；恢复任务后继续更新 `RESTORE_STATUS.md`，不要将交接文档变为第二套活动状态。
 
 ## 验证

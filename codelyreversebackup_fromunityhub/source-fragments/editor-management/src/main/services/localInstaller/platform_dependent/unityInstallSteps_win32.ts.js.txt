@@ -1,0 +1,558 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstallSteps_win32.ts
+var import_lib = /* @__PURE__ */ __toESM(require_lib(), 1);
+var import_ini = /* @__PURE__ */ __toESM(require_ini(), 1);
+var logger$1 = loggerFactory("UnityInstallStepsWindows");
+var execAsync = promisify(exec);
+/**
+* Before installing an editor,
+* - verify if we are trying to install 64-bit on a 32-bit system
+* - make sure the folder needed is created
+* @param installer object{ "editor":{
+*                            "releaseType", "downloadUrl", "lts", "downloadSize", "installedSize", "modules", "version"
+*                          },
+*                          "installerPath",
+*                          "destinationPath",
+*                          "modules",
+*                          "cancelled",
+*                          "status":"INSTALLING",
+*                          "jobType":"editorInstall"
+*                        }
+* @return {*}
+*/
+function beforeEditorInstallation(installer) {
+	logger$1.debug("beforeEditorInstallation");
+	if (getMachine() === "x86") {
+		logger$1.warn("Installing a 64-bit on a 32-bit system!");
+		return Promise.reject(new InstallerError(INSTALLER_ERROR.INVALID_ARCHITECTURE));
+	}
+	return import_lib.default.mkdirs(installer.destinationPath).catch((e) => {
+		logger$1.warn(`Error while trying to create the directory of the installation ${installer.destinationPath}`, e);
+		return Promise.reject(new InstallerError(INSTALLER_ERROR.INVALID_DESTINATION, { cause: e }));
+	});
+}
+/**
+* Before adding a module to an editor,
+* - make sure the folder needed is created
+*/
+function beforeModuleInstallation(module) {
+	logger$1.debug("beforeModuleInstallation");
+	if (!module.destination) {
+		logger$1.debug(`The module ${module.id} does not have a destination`);
+		return Promise.resolve();
+	}
+	logger$1.debug(`Creating the folder of ${module.id}, if needed: ${module.destination}`);
+	return import_lib.default.mkdirs(module.destination).catch((e) => {
+		logger$1.warn(`Error while trying to create the directory of the module ${module.destination}`, e);
+		return Promise.reject(new InstallerError(INSTALLER_ERROR.INVALID_DESTINATION, { cause: e }));
+	});
+}
+async function execInstaller(installerPath, parameterStr, destination) {
+	logger$1.debug("execInstaller");
+	const fileExtension = path.extname(installerPath);
+	if (!destination && (fileExtension === ".po" || fileExtension === ".tgz")) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+	if ([
+		".exe",
+		".zip",
+		".msi",
+		".po"
+	].indexOf(fileExtension) === -1) {
+		logger$1.warn(`The installer ${installerPath} is not a valid installer`);
+		throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+	}
+	try {
+		if (fileExtension === ".exe") await installFromExe(installerPath, parameterStr, destination);
+		else if (fileExtension === ".zip") await installFromZip(installerPath, destination);
+		else if (fileExtension === ".msi") await installFromMsi(installerPath, parameterStr);
+		else if (fileExtension === ".po") {
+			destination = path.join(destination, path.basename(installerPath));
+			logger$1.debug(`Move ${installerPath} to ${destination}`);
+			await import_lib.default.copy(installerPath, destination);
+		}
+	} catch (err) {
+		if (!err.error || !err.error.code) {
+			logger$1.warn(`An unknown error occurred while installing "${installerPath}"`, err);
+			throw new InstallerError(INSTALLER_ERROR.INSTALLER_ERROR, { cause: err });
+		}
+		throw err;
+	}
+}
+/**
+* if the user has Admin rights and the installation is from a zip,
+* then do what the nsis installer does:
+* - register Unity in HKCU
+* - register extensions in HKCR
+* - register uri in HKCR
+* - Install VS 2010/2013/2015 runtime if missing
+* - Install .net framework 3.5/4.5 if missing
+* - set firewall rules for unity.exe
+* - create start menu shortcuts (?)
+* - create desktop shortcut (?)
+*/
+async function afterEditorInstallation(installer) {
+	logger$1.debug("afterEditorInstallation");
+	if (installer === void 0 || installer.installerPath === void 0) throw new InstallerError(INSTALLER_ERROR.INSTALLER_MISSING);
+	if (path.extname(installer.installerPath) !== ".zip") return await checkDotNetCorePrerequisites();
+	if (!await isAdmin()) {
+		logger$1.info("The process does not run with administrative privileges.");
+		await removeExternalInstallersFolder(installer);
+		return;
+	}
+	logger$1.info("The process runs with administrative privileges.");
+	const exe = path.join(installer.destinationPath, "Editor", "Unity.exe");
+	const promiseList = [
+		registerUnity(installer, exe),
+		registerExtension(installer, exe),
+		registerUri(installer, exe),
+		mainContainer.get(IVisualStudioServiceId).installVisualStudioRuntime(installer),
+		installDotNetFramework(installer),
+		createStartMenuShortcut(installer, exe),
+		createDesktopShortcut(installer, exe),
+		setFirewallRules(installer, exe)
+	];
+	try {
+		await Promise.all(promiseList);
+		await removeExternalInstallersFolder(installer);
+	} catch (err) {
+		logger$1.warn(`An error occurred while installing ${installer.editor.version}`, err);
+		throw err;
+	}
+	return await checkDotNetCorePrerequisites();
+}
+async function afterModuleInstallation(module) {
+	logger$1.debug("afterModuleInstallation");
+	if (module.renameFrom && module.renameTo) if (module.renameFrom.includes(module.renameTo)) {
+		const tempFolder = path.join(path.dirname(module.renameTo), "temp_parent");
+		await import_lib.default.move(module.renameFrom, tempFolder);
+		await import_lib.default.move(tempFolder, module.renameTo, { overwrite: true }).catch((err) => {
+			logger$1.warn("The renameTo is the parent of the renameFrom: Could not rename folder", err);
+			return Promise.reject(new Error(`Module ${module.name} after installation step failed`, { cause: err }));
+		});
+	} else await import_lib.default.move(module.renameFrom, module.renameTo).catch((err) => {
+		logger$1.warn("Could not rename folder", err);
+		return Promise.reject(new Error(`Module ${module.name} after installation step failed`, { cause: err }));
+	});
+}
+async function uninstallEditor(version, editorRootPath) {
+	logger$1.info(`uninstall ${version} at ${editorRootPath}`);
+	if (!editorRootPath || !version) throw new InstallerError(INSTALLER_ERROR.WRONG_UNINSTALLER);
+	const uninstallerPath = path.join(editorRootPath, "Editor", "Uninstall.exe");
+	if (import_lib.default.existsSync(uninstallerPath)) {
+		try {
+			await execUninstaller(uninstallerPath);
+		} catch (err) {
+			logger$1.warn(`An error occurred while running the uninstaller ${uninstallerPath}`, err);
+			throw err;
+		}
+		try {
+			await Promise.all([removeStartMenuShortcut(version), removeDesktopShortcut(version)]);
+			await removeEditorFolder(editorRootPath);
+		} catch (err) {
+			logger$1.warn(`An error occurred while uninstalling ${version}. Ignoring`, err);
+		}
+		return;
+	}
+	try {
+		await removeEditorFolder(editorRootPath);
+	} catch (err) {
+		logger$1.warn(`An error occurred while removing the files of ${version}`, err);
+		throw err;
+	}
+	try {
+		await Promise.all([
+			removeStartMenuShortcut(version),
+			removeDesktopShortcut(version),
+			removeRegistryKeys(version),
+			removeFirewallRules(version, editorRootPath)
+		]);
+	} catch (e) {
+		logger$1.warn(`An error occurred while uninstalling ${version}. Ignoring`, e);
+	}
+}
+var baseStartMenuFolder = path.join(process$1.env.PROGRAMDATA, "Microsoft", "Windows", "Start Menu", "Programs");
+async function execUninstaller(uninstallerPath) {
+	logger$1.info(`exec uninstaller at "${uninstallerPath}"`);
+	if (path.extname(uninstallerPath) !== ".exe") throw new InstallerError(INSTALLER_ERROR.WRONG_UNINSTALLER);
+	try {
+		await execAsync(`"${uninstallerPath}" /S`);
+	} catch (error) {
+		logger$1.warn(`An error occurred while uninstalling ${uninstallerPath}`, error);
+		throw error;
+	}
+}
+async function installFromExe(installerPath, parameterStr, destination) {
+	logger$1.debug("installFromExe");
+	let parameterOption = "/S";
+	if (parameterStr && parameterStr !== "") parameterOption = parameterStr;
+	let destinationOption = "";
+	if (destination) destinationOption = `/D=${destination}`;
+	logger$1.info(`install ${installerPath} ${parameterOption} ${destinationOption}`);
+	try {
+		await execAsync(`"${installerPath}" ${parameterOption} ${destinationOption}`);
+	} catch (error) {
+		logger$1.warn(`An error occurred while installing ${installerPath}`, error);
+		throw error;
+	}
+}
+async function installFromMsi(installerPath, parameterStr) {
+	logger$1.debug("installFromMsi");
+	const cmd = parameterStr.replace("/i", `/i "${installerPath}"`);
+	logger$1.info(`install ${cmd}`);
+	try {
+		await execAsync(`${cmd}`);
+	} catch (error) {
+		logger$1.warn(`An error occurred while installing ${installerPath}`, error);
+		throw error;
+	}
+}
+async function installFromZip(installerPath, destination) {
+	logger$1.debug("installFromZip");
+	if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+	try {
+		await unzip(installerPath, destination);
+		logger$1.info("unzip finished");
+	} catch (err) {
+		logger$1.warn("Error while deploying zip", err);
+		throw err;
+	}
+}
+/**
+* The NSIS installer will generate 1 key:
+* 'HKCU\\Software\\Unity Technologies\\Installer\\Unity' 'Location x64' ${exe}
+* If the installer is for an alpha/beta version, the key will rather be:
+* 'HKCU\\Software\\Unity Technologies\\Installer\\Unity ${version}' 'Location x64' ${exe}
+*
+* In order to improve on that, this installer will always create both unless it is an alpha/beta.
+*
+* HKCU\\Software\\Unity Technologies
+*   |__ Installer
+*     |__ Unity 'Location x64' ${exe}
+*     |__ Unity 'Version' ${version}
+*   |__ Unity Editor 5.x IsMainWindowMaximized_h1679813210 1
+* HKCU\\Software\\Unity
+*   |__ WebPlayer' 'UnityWebPlayerReleaseChannel' 'Dev'
+*
+* @param installer
+* @param exe
+* @return {Promise}
+*/
+function registerUnity(installer, exe) {
+	return new Promise((resolve, reject) => {
+		logger$1.info(`registerUnity of ${installer.editor.version}`);
+		try {
+			const sysarch = getMachine();
+			let location = "Location x64";
+			if (sysarch === "x86") location = "Location";
+			let unityKeyName = `HKEY_CURRENT_USER\\Software\\Unity Technologies\\Installer\\Unity ${installer.editor.version}\\`;
+			registry.setString(unityKeyName, location, exe);
+			registry.setString(unityKeyName, "Version", installer.editor.version);
+			if (!isBetaVersion(installer.editor.version) || isAlphaVersion(installer.editor.version)) {
+				unityKeyName = "HKEY_CURRENT_USER\\Software\\Unity Technologies\\Installer\\Unity\\";
+				registry.setString(unityKeyName, location, exe);
+			}
+			unityKeyName = "HKEY_CURRENT_USER\\Software\\Unity Technologies\\Unity Editor 5.x\\";
+			if (registry.getUInt32(unityKeyName, "IsMainWindowMaximized_h1679813210", 0) === 0) registry.setUInt32(unityKeyName, "IsMainWindowMaximized_h1679813210", 1);
+			unityKeyName = "HKEY_CURRENT_USER\\Software\\Unity\\WebPlayer\\";
+			registry.setString(unityKeyName, "UnityWebPlayerReleaseChannel", "Dev");
+			resolve();
+		} catch (e) {
+			reject(e);
+		}
+	});
+}
+function registerExtension(installer, exe) {
+	return new Promise((resolve, reject) => {
+		logger$1.info(`registerExtension of ${installer.editor.version}`);
+		try {
+			registerFileAssociation("Unity scene file", exe, ".unity", "-open");
+			registerFileAssociation("Unity package file", exe, ".unityPackage", "-open");
+			resolve();
+		} catch (e) {
+			reject(e);
+		}
+	});
+}
+function registerUri(installer, exe) {
+	return new Promise((resolve, reject) => {
+		logger$1.info(`registerUri of ${installer.editor.version}`);
+		try {
+			registerURIHandler("com.unity3d.kharma", exe, "-openurl");
+			resolve();
+		} catch (e) {
+			reject(e);
+		}
+	});
+}
+async function installDotNetFramework(installer) {
+	logger$1.info(`installDotNetFramework of ${installer.editor.version}`);
+	if (Number.parseInt(installer.editor.version.slice(0, 1), 10) < 6) await installDotNet35Framework();
+	await installDotNet45Framework(installer);
+}
+async function setFirewallRules(installer, exe) {
+	logger$1.info(`setFirewallRules of ${installer.editor.version}`);
+	const deleteRules = [`netsh advfirewall firewall delete rule name=all program="${exe}"`];
+	const addRules = [`netsh advfirewall firewall add rule name="Unity ${installer.editor.version} Editor" dir=in action=allow program="${exe}" profile=domain protocol=any`, `netsh advfirewall firewall add rule name="Unity ${installer.editor.version} Editor" dir=in action=block program="${exe}" profile=public protocol=any`];
+	if (Number.parseInt(installer.editor.version.slice(0, 4), 10) <= 2017) {
+		const nodeExe = path.join(installer.destinationPath, "Editor", "Data", "Tools", "nodejs", "node.exe");
+		deleteRules.push(`netsh advfirewall firewall delete rule name=all program="${nodeExe}"`);
+		addRules.push(`netsh advfirewall firewall add rule name="Unity ${installer.editor.version} Package Manager" dir=in action=allow program="${nodeExe}" profile=domain protocol=any`, `netsh advfirewall firewall add rule name="Unity ${installer.editor.version} Package Manager" dir=in action=block program="${nodeExe}" profile=public protocol=any`);
+	}
+	await spawnFirewallRules(deleteRules);
+	await spawnFirewallRules(addRules);
+}
+/**
+* HKCR/{extension} "" {description}
+* HKCR/{description} "" {description}
+*   |__shell "" 'open'
+*     |__open
+*       |__command "" '"{exePath}" {extra} "%1"'
+*     |__edit "" "Edit {description}"
+*       |__command "" '"{exePath}" {extra} "%1"'
+*   |__DefaultIcon "" '"{exePath}",0'
+*
+* @param description
+* @param exePath
+* @param extensionName
+* @param extra
+*/
+function registerFileAssociation(description, exePath, extensionName, extra) {
+	registry.setString(`HKEY_CLASSES_ROOT\\${extensionName}\\`, "", description);
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\`, "", description);
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\shell\\`, "", "open");
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\shell\\open\\command\\`, "", `${exePath} ${extra} "%1"`);
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\shell\\edit\\`, "", `Edit ${description}`);
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\shell\\edit\\command\\`, "", `"${exePath}" ${extra} "%1"`);
+	registry.setString(`HKEY_CLASSES_ROOT\\${description}\\DefaultIcon\\`, "", `"${exePath}",0`);
+}
+/**
+* HKCR/{schemeName} "" URL:{schemeName}
+* HKCR/{schemeName} "URL Protocol" ""
+*   |__DefaultIcon "" {exePath}
+*   |__shell "" ""
+*     |__Open "" ""
+*       |__command "" '"{exePath}" {extra} "%1"'
+* @param schemeName
+* @param exePath
+* @param extra
+*/
+function registerURIHandler(schemeName, exePath, extra) {
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\`, "", `URL:${schemeName}`);
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\`, "URL Protocol", "");
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\DefaultIcon\\`, "", exePath);
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\shell\\`, "", "");
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\shell\\Open\\`, "", "");
+	registry.setString(`HKEY_CLASSES_ROOT\\${schemeName}\\shell\\Open\\command\\`, "", `"${exePath}" ${extra} "%1"`);
+}
+async function spawnFirewallRules(rulesList) {
+	await Promise.all(rulesList.map(async (rule) => {
+		try {
+			await execAsync(rule);
+		} catch (err) {
+			logger$1.warn(`Ignoring error while trying to spawn the firewall rule: ${rule}`, err);
+		}
+	}));
+}
+/**
+* @param installer
+* @param exe
+*/
+async function createStartMenuShortcut(installer, exe) {
+	logger$1.info(`create Start Menu Shortcut of ${installer.editor.version}`);
+	const startMenuFolder = path.join(baseStartMenuFolder, `Unity ${installer.editor.version}`);
+	let releaseNotesUrl = "";
+	if (isBetaVersion(installer.editor.version)) releaseNotesUrl = `https://unity3d.com/unity/beta/unity${installer.editor.version}`;
+	else if (!isAlphaVersion(installer.editor.version)) releaseNotesUrl = `https://unity3d.com/unity/whatsnew/unity-${installer.editor.version.substring(0, installer.editor.version.length - 2)}`;
+	try {
+		await import_lib.default.mkdirs(startMenuFolder);
+	} catch (e) {
+		logger$1.warn(`Ignoring error could not create the start menu folder "${startMenuFolder}"`, e);
+	}
+	const promiseList = [createShortcut(path.join(startMenuFolder, `Unity ${installer.editor.version}.lnk`), exe), createShortcut(path.join(startMenuFolder, "Report a Problem with Unity.lnk"), path.join(installer.destinationPath, "Editor", "BugReporter", "unity.bugreporter.exe"))];
+	if (releaseNotesUrl !== "") promiseList.push(createInternetShortcut(path.join(startMenuFolder, "Unity Release Notes.url"), releaseNotesUrl));
+	if (filter(installer.editor.modules, {
+		id: "documentation",
+		selected: true
+	}).length > 0) promiseList.push(createShortcut(path.join(startMenuFolder, "Unity Documentation.lnk"), path.join(installer.destinationPath, "Editor", "Data", "Documentation", "en", "Manual", "index.html")));
+	try {
+		await Promise.all(promiseList);
+	} catch (e) {
+		logger$1.warn("Ignoring an error while creating the start menu shortcut", e);
+	}
+}
+/**
+* @param installer
+* @param exe
+*/
+async function createDesktopShortcut(installer, exe) {
+	logger$1.info(`create Desktop shortcut of ${installer.editor.version}`);
+	try {
+		await createShortcut(path.join("%USERPROFILE%", "Desktop", `Unity ${installer.editor.version}.lnk`), exe);
+	} catch (e) {
+		logger$1.warn(`Ignoring an error while creating the desktop shortcut`, e);
+	}
+}
+async function createShortcut(link, target) {
+	try {
+		await promisify(ws.create).bind(ws)(link, {
+			target,
+			workingDir: path.dirname(target),
+			runStyle: ws.NORMAL
+		});
+	} catch (e) {
+		logger$1.warn(`Error while creating shortcut ${link} with target ${target}`, e);
+		throw e;
+	}
+}
+function createInternetShortcut(link, target) {
+	return import_lib.default.outputFile(link, import_ini.default.encode({ InternetShortcut: { URL: `'${target}'` } }).replace(/'/g, ""));
+}
+function removeExternalInstallersFolder(installer) {
+	const externalInstallers = path.join(installer.destinationPath, "ExternalInstallers");
+	logger$1.info(`Trying to remove ${externalInstallers}`);
+	return import_lib.default.remove(externalInstallers).then(() => logger$1.info(`Successfully removed the external installers of ${installer.destinationPath}`)).catch((e) => {
+		logger$1.warn(`There was an error while trying to remove the ExternalInstallers folder. Ignored`, e);
+	});
+}
+async function installDotNet35Framework() {
+	const cmd = "dism.exe /NoRestart /online /enable-feature /featurename:NetFx3 /all";
+	logger$1.info(`Enable .Net 3.5 Framework with command: ${cmd}`);
+	try {
+		await execAsync(cmd);
+	} catch (err) {
+		logger$1.warn("Ignoring error while trying to enable the .NET 3.5 Framework", err);
+	}
+}
+async function installDotNet45Framework(installer) {
+	if (!shouldInstallDotNetFramework("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full")) {
+		logger$1.info("No need to install .Net 4.5 Framework");
+		return;
+	}
+	logger$1.info("Need to install .Net 4.5 Framework");
+	const cmd = `"${path.join(installer.destinationPath, "ExternalInstallers", "Microsoft", "dotnet45", "builds", "dotNetFx45_Full_setup.exe")}" /passive /norestart /chainingpackage Unity`;
+	try {
+		await execAsync(cmd);
+	} catch (error) {
+		logger$1.warn(`Ignoring error while trying to verify or install .Net 4.5 framework`, error);
+	}
+}
+function shouldInstallDotNetFramework(runtimeKeyName) {
+	let installFramework = false;
+	try {
+		if (registry.getUInt32(runtimeKeyName, "Release", 0) < 378389) installFramework = true;
+	} catch (e) {
+		logger$1.warn(`There was an error while trying to check the .NET Framework version. Ignoring`, e);
+		installFramework = true;
+	}
+	return installFramework;
+}
+async function removeEditorFolder(editorRootPath) {
+	try {
+		await import_lib.default.remove(editorRootPath);
+		logger$1.info(`Successfully removed the editor files at "${editorRootPath}"`);
+	} catch (e) {
+		logger$1.warn(`There was an error while trying to remove the editor folder at "${editorRootPath}"`, e);
+		throw e;
+	}
+}
+async function removeRegistryKeys(version) {
+	const unityKeyName = `HKEY_CURRENT_USER\\Software\\Unity Technologies\\Installer\\Unity ${version}`;
+	logger$1.info(`remove registry key of ${version}: ${unityKeyName}`);
+	try {
+		await execAsync(`reg delete "${unityKeyName}" /f`);
+	} catch (error) {
+		logger$1.warn(`Ignoring error occurred while deleting registry key "${unityKeyName}"`, error);
+	}
+}
+function removeFirewallRules(version, editorRootPath) {
+	const deleteRules = [`netsh advfirewall firewall delete rule name=all program="${path.join(editorRootPath, "Editor", "Unity.exe")}"`];
+	if (Number.parseInt(version.slice(0, 4), 10) <= 2017) {
+		const nodeExe = path.join(editorRootPath, "Editor", "Data", "Tools", "nodejs", "node.exe");
+		deleteRules.push(`netsh advfirewall firewall delete rule name=all program="${nodeExe}"`);
+	}
+	return spawnFirewallRules(deleteRules).catch((e) => logger$1.warn("There was an error while deleting the firewall rules. Ignored", e));
+}
+async function removeStartMenuShortcut(version) {
+	let startMenuFolder = path.join(baseStartMenuFolder, `Unity ${version}`);
+	logger$1.info(`remove Start Menu Shortcut of ${version} at ${startMenuFolder}`);
+	try {
+		await import_lib.default.remove(startMenuFolder);
+		startMenuFolder = path.join(baseStartMenuFolder, `Unity ${version} (64-bit)`);
+		logger$1.info(`remove Start Menu Shortcut of ${version} at ${startMenuFolder}`);
+		await import_lib.default.remove(startMenuFolder);
+	} catch (e) {
+		logger$1.warn("Ignoring an error while removing the start menu shortcut", e);
+	}
+}
+/**
+* @param version
+*/
+async function removeDesktopShortcut(version) {
+	const desktopShortcutFile = path.join("%USERPROFILE%", "Desktop", `Unity ${version}.lnk`);
+	logger$1.info(`remove Desktop shortcut of ${version} at ${desktopShortcutFile}`);
+	try {
+		await import_lib.default.remove(desktopShortcutFile);
+	} catch (e) {
+		logger$1.warn("Ignoring an error while removing the desktop shortcut", e);
+	}
+}
+function isBetaVersion(version) {
+	return version.indexOf("b") > 0;
+}
+function isAlphaVersion(version) {
+	return version.indexOf("a") > 0;
+}
+async function checkDotNetCorePrerequisites() {
+	const osRelease = os.release().split(".");
+	logger$1.debug("Check DotNet Core Prerequisites, os release", osRelease);
+	let major = 0;
+	let minor = 0;
+	try {
+		major = parseInt(osRelease[0], 10);
+		minor = parseInt(osRelease[1], 10);
+	} catch (err) {
+		logger$1.warn("Could not retrieve the os release", err);
+		return;
+	}
+	logger$1.debug("major", major, "minor", minor);
+	let shouldInstallKB2999226 = false;
+	let shouldInstallKB2533623 = false;
+	if (major < 6 || major === 6 && minor <= 3) {
+		const isKBInstalled = await checkIfWindowsUpdateIsInstalled("KB2999226");
+		logger$1.debug("major", major, "minor", minor);
+		if (!isKBInstalled) shouldInstallKB2999226 = true;
+	}
+	if (major < 6 || major === 6 && minor <= 1) {
+		if (!await checkIfWindowsUpdateIsInstalled("KB2533623")) shouldInstallKB2533623 = true;
+	}
+	logger$1.debug("shouldInstallKB2999226: ", shouldInstallKB2999226, "shouldInstallKB2533623: ", shouldInstallKB2533623);
+	if (shouldInstallKB2999226 && shouldInstallKB2533623) return {
+		warningCode: "ERROR.INSTALL.WIN_UPDATE",
+		winUpdate: "KB2999226, KB2533623"
+	};
+	else if (shouldInstallKB2999226) return {
+		warningCode: "ERROR.INSTALL.WIN_UPDATE",
+		winUpdate: "KB2999226"
+	};
+	else if (shouldInstallKB2533623) return {
+		warningCode: "ERROR.INSTALL.WIN_UPDATE",
+		winUpdate: "KB2533623"
+	};
+}
+/**
+* Given a KB (windows update number), it will check if the update is installed.
+* Empty result means not installed.
+* @param kb
+* @returns {Promise<any>}
+*/
+async function checkIfWindowsUpdateIsInstalled(kb) {
+	const cmd = `dism.exe /online /get-packages | findstr ${kb}`;
+	try {
+		const { stdout } = await execAsync(cmd);
+		logger$1.debug("std out for ", kb, stdout);
+		if (stdout && stdout.trim() !== "") return true;
+		return false;
+	} catch (err) {
+		logger$1.warn("Ignoring an error while trying to check the windows updates", err);
+		return false;
+	}
+}
+//#endregion

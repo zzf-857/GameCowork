@@ -1,0 +1,8 @@
+//#region src/types/projects/UnifiedCloudProject.ts
+var import_dayjs_min = /* @__PURE__ */ __toESM(require_dayjs_min(), 1);
+var COPPA_COMPLIANCES = {
+	UNSPECIFIED: "unspecified",
+	COMPLIANT: "compliant",
+	NOT_COMPLIANT: "not_compliant"
+};
+//#endregion

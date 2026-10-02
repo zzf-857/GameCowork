@@ -1,0 +1,157 @@
+//#region src/main/services/editorManager/unityReleaseService.ts
+var { default: defaultUnityReleases } = await (() => {
+	switch (os.platform()) {
+		case "win32": return import("./defaultReleases-win32-CkUIg56j.js");
+		case "darwin": return import("./defaultReleases-darwin-C3Fv4C2i.js");
+		case "linux": return import("./defaultReleases-linux-B2gywDKi.js");
+		default: throw new Error(`Unsupported platform: ${os.platform()}`);
+	}
+})();
+var STORAGE_KEY = "releases";
+var UnityReleaseService = class extends PollingClient {
+	static __injection = {
+		id: IUnityReleaseServiceId,
+		dependencies: [
+			ILocalSettingsId,
+			IJsonStorageId,
+			ISystemInfoId,
+			ICloudConfigId,
+			IVisualStudioServiceId,
+			ILoggerFactoryId
+		]
+	};
+	/**
+	* @type {*}
+	*/
+	customEditorInfo;
+	customEditorLoaded;
+	#settings;
+	#cloudConfig;
+	#systemInfo;
+	#visualStudioService;
+	#logger;
+	constructor(settings, jsonStorage, systemInfo, cloudConfig, visualStudioService, loggerFactory) {
+		super(settings, jsonStorage, systemInfo);
+		this.#settings = settings;
+		this.#cloudConfig = cloudConfig;
+		this.#systemInfo = systemInfo;
+		this.#visualStudioService = visualStudioService;
+		this.#logger = loggerFactory.createLogger("UnityReleaseService");
+		this.clearCustomEditorInfo();
+	}
+	get logger() {
+		return this.#logger;
+	}
+	get jsonStorageKey() {
+		return STORAGE_KEY;
+	}
+	get refreshIntervalKey() {
+		return this.#settings.keys.RELEASES_REFRESH_INTERVAL;
+	}
+	get isInitBlocking() {
+		return false;
+	}
+	get defaultData() {
+		return defaultUnityReleases;
+	}
+	get overwriteDefault() {
+		return true;
+	}
+	setEndpoint() {
+		let releasesFile = `releases-${os.platform()}.json`;
+		if (this.#systemInfo.isAppleSilicon()) releasesFile = "releases-silicon.json";
+		this.endpoint = this.#cloudConfig.getHubBaseEndpoint() + releasesFile;
+		this.#logger.info(`Releases endpoint: ${this.endpoint}`);
+	}
+	convertReleasesObjIntoEditorReleases(releasesObj) {
+		return flatMap(releasesObj, (releasesList, releaseType) => {
+			const releases = releasesList.map((release) => ({
+				architecture: release.arch || CHIP_ARCHITECTURES.X86_64,
+				releaseType,
+				downloadUrl: release.downloadUrl,
+				lts: release.lts ? release.lts : false,
+				downloadSize: release.downloadSize,
+				installedSize: release.installedSize,
+				checksum: release.checksum,
+				modules: release.modules,
+				version: release.version,
+				productName: release?.productName ?? String(release.version),
+				sync: release.sync ? release.sync : "",
+				parent: release.parent ? release.parent : ""
+			})).sort(composeComparison(compareEditorsByReleaseStream, compareEditorsByReleaseArchitecture, compareEditorsByVersion));
+			if (releaseType === EDITOR_RELEASE_TYPES.OFFICIAL) releases[0].isRecommended = true;
+			return releases;
+		});
+	}
+	/**
+	* Returns the releases found on the cloud
+	*
+	* @return The releases found/available on the cloud.
+	*/
+	get releases() {
+		return this.convertReleasesObjIntoEditorReleases(this.data);
+	}
+	getDefaultReleases() {
+		return this.convertReleasesObjIntoEditorReleases(defaultUnityReleases);
+	}
+	/**
+	* This will find the ini file url and
+	* fetch the installation info of a given editor version and architecture
+	* set that info to the customEditorInfo
+	* @param {string} version
+	* @param {string} revisionHash
+	* @param {ChipArchitecture} architecture
+	* @return {Promise<void>}
+	*/
+	async setCustomEditorInfo(version, revisionHash, architecture) {
+		this.customEditorInfo = await this.fetchReleaseInfo(version, revisionHash, architecture);
+		this.customEditorInfo.revisionHash = revisionHash;
+		this.customEditorInfo.architecture = architecture;
+		this.customEditorInfo.id = this.customEditorInfo.version;
+		this.customEditorInfo.name = `Unity ${this.customEditorInfo.version}`;
+		this.customEditorLoaded = true;
+		this.customEditorInfo.modules.forEach((editorModule) => {
+			editorModule.preselected = Boolean(editorModule.selected);
+		});
+		this.customEditorInfo.modules = await this.#visualStudioService.getModulesThatRespectVisualStudioStatus(this.customEditorInfo.modules);
+	}
+	/**
+	* Given a list of architectures, return an corresponding list of release info.
+	* @param architectures
+	* @returns editorInfo[]
+	*/
+	async getReleasesPerArchitecture(architectures = []) {
+		const { version, revisionHash } = this.customEditorInfo;
+		return (await Promise.allSettled(architectures.map((arch) => this.fetchReleaseInfo(version, revisionHash, arch)))).filter((release) => release.status === "fulfilled").map((release) => release.value);
+	}
+	/**
+	* Given the version and revisionHash of a release, it will return the information of that release
+	*
+	* @param version
+	* @param revisionHash
+	* @param architecture
+	* @return editorInfo
+	*/
+	fetchReleaseInfo(version, revisionHash, architecture) {
+		let downloadBaseUrl = `https://download.unity3d.com/download_unity/${revisionHash}/`;
+		if (version.indexOf("b") > 0 || version.indexOf("a") > 0) downloadBaseUrl = `http://beta.unity3d.com/download/${revisionHash}/`;
+		return this._getReleaseInfoPerPlatform(version, downloadBaseUrl, os.platform(), architecture);
+	}
+	_getReleaseInfoPerPlatform(version, downloadBaseUrl, releasePlatform, architecture) {
+		return new ae().getReleaseInfoPerPlatform({
+			version,
+			downloadBaseUrl
+		}, releasePlatform, architecture);
+	}
+	getCustomEditorInfo() {
+		return this.customEditorInfo;
+	}
+	isCustomEditorLoaded() {
+		return this.customEditorLoaded;
+	}
+	clearCustomEditorInfo() {
+		this.customEditorInfo = null;
+		this.customEditorLoaded = false;
+	}
+};
+//#endregion

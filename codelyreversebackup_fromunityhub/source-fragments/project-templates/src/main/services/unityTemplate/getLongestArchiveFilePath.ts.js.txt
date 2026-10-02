@@ -1,0 +1,25 @@
+//#region src/main/services/unityTemplate/getLongestArchiveFilePath.ts
+var execFile$1 = util.promisify(child_process.execFile);
+async function getLongestArchiveFilePath(tarPath, projectDataDirectoryPath) {
+	const { stdout } = await execFile$1(await getTarPath(), ["-tf", tarPath], { maxBuffer: MAX_BUFFER_SIZE });
+	return stdout.split("\n").filter(Boolean).reduce((longestLength, filePath) => Math.max(longestLength, filePath.startsWith(projectDataDirectoryPath) ? filePath.length : -1), 0);
+}
+var defaultTemplates_default = {
+	defaultTemplateCode: 0,
+	templates: [{
+		"name": "com.unity.template.3d",
+		"displayName": "3D",
+		"code": 0,
+		"description": "This is an empty 3D project that uses Unity's built-in renderer.",
+		"status": "READY",
+		"version": "0.0.0"
+	}, {
+		"name": "com.unity.template.2d",
+		"displayName": "2D",
+		"code": 1,
+		"description": "This is an empty project configured for 2D apps. It uses Unity's built-in renderer.",
+		"status": "READY",
+		"version": "0.0.0"
+	}]
+};
+//#endregion

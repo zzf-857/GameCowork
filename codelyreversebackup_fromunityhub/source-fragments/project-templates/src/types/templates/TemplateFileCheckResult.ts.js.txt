@@ -1,0 +1,7 @@
+//#region src/types/templates/TemplateFileCheckResult.ts
+var TEMPLATE_FILE_CHECK_RESULTS = {
+	Exists: 0,
+	NotFound: 1,
+	IntegrityCheckFailed: 2
+};
+//#endregion

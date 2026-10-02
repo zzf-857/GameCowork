@@ -1,0 +1,8 @@
+//#region src/types/projects/OpenProjectSource.ts
+var OPEN_PROJECT_SOURCES = {
+	LocalIPC: 0,
+	LocalREST: 1,
+	Tray: 2,
+	Projects: 3
+};
+//#endregion

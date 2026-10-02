@@ -1,0 +1,453 @@
+//#region src/main/services/editorManager/unityReleaseServiceAdapter.ts
+var UnityReleaseServiceAdapter = class {
+	logger = loggerFactory("UnityReleaseServiceAdapter");
+	storedReleases = [];
+	releaseService = UNITY_RELEASE_SERVICE_TYPES.LIVE_PLATFORM_API;
+	licensingSdk;
+	streamConfigs = [
+		{
+			stream: UnityReleaseStream.Alpha,
+			numberOfReleases: 1
+		},
+		{
+			stream: UnityReleaseStream.Beta,
+			numberOfReleases: 1
+		},
+		{
+			stream: UnityReleaseStream.Lts,
+			numberOfReleases: 4
+		},
+		{
+			stream: UnityReleaseStream.Supported,
+			numberOfReleases: 1
+		}
+	];
+	get releaseServiceType() {
+		return this.releaseService;
+	}
+	customEditorInfo = null;
+	specificEditors;
+	editorsByVersion;
+	get releases() {
+		if (this.releaseService === UNITY_RELEASE_SERVICE_TYPES.LIVE_PLATFORM_API) return this.storedReleases;
+		if (this.releaseService === UNITY_RELEASE_SERVICE_TYPES.UNITY_RELEASE_SERVICE) return mainContainer.get(IUnityReleaseServiceId).releases;
+		return [];
+	}
+	/**
+	* Initializes this instance, determining the service type to use based on the current Hub configuration
+	* and the passed in serviceType.
+	* @param licensingSdk The licensing SDK.
+	* @param serviceType The service type to feed into the adapter.
+	*/
+	init(licensingSdk, serviceType, span = null) {
+		startSpan({
+			parentSpan: span,
+			op: "UnityReleaseServiceAdapter.init",
+			name: "Unity Release Service Adapter Initialization"
+		}, () => {
+			const settings = mainContainer.get(ILocalSettingsId);
+			const settingsKey = settings.keys.SERVICES_CONFIG_BASE_URL;
+			const endpoint = settings.get(settingsKey);
+			const defaultEndpoint = defaultSettings_exports[settingsKey];
+			this.licensingSdk = licensingSdk;
+			if (serviceType) this.releaseService = serviceType;
+			else if (endpoint && endpoint !== defaultEndpoint) this.releaseService = UNITY_RELEASE_SERVICE_TYPES.UNITY_RELEASE_SERVICE;
+			this.logger.info(`Initialization with service type: ${this.releaseService}.`);
+		});
+	}
+	/**
+	* Retrieves the release information for the custom editor set by setCustomEditorInfo.
+	*
+	* @returns The editor release information retrieved by setCustomEditorInfo.
+	*/
+	getCustomEditorInfo() {
+		if (this.customEditorInfo) {
+			this.logger.info("getCustomEditorInfo retrieved custom editor info from the unityReleaseServiceAdapter.");
+			return this.customEditorInfo;
+		}
+		const unityReleaseCustomEditorInfo = mainContainer.get(IUnityReleaseServiceId).getCustomEditorInfo();
+		if (unityReleaseCustomEditorInfo) {
+			this.logger.info("getCustomEditorInfo retrieved custom editor info from the unityReleaseService.");
+			return unityReleaseCustomEditorInfo;
+		}
+		this.logger.info("getCustomEditorInfo could not find any custom editor info.");
+		return null;
+	}
+	getEditorsByVersion() {
+		return this.formatForArchivedSideBySide(this.editorsByVersion);
+	}
+	/**
+	* Retrieves the release information for the custom editor set by setCustomEditorInfo.
+	*
+	* @returns The editor release information retrieved by setCustomEditorInfo.
+	*/
+	getSpecificEditor(version, architecture) {
+		if (this.specificEditors) {
+			const desiredEditor = this.specificEditors.find((editor) => editor.architecture === architecture && editor.version === version);
+			if (desiredEditor) {
+				this.logger.info("getSpecificEditor retrieved specific editor info from the unityReleaseServiceAdapter.");
+				return desiredEditor;
+			}
+		}
+		this.logger.info("getSpecificEditor could not find any specific editor info.");
+		return null;
+	}
+	/**
+	* Clears the stored customEditorInfo for the release adapter and for the unityReleaseService.
+	*/
+	clearCustomEditorInfo() {
+		this.customEditorInfo = null;
+		mainContainer.get(IUnityReleaseServiceId).clearCustomEditorInfo();
+		this.logger.info("clearCustomEditorInfo cleared both the adapter and the unityReleaseService.");
+	}
+	/**
+	* Checks the release adapter and the unityReleaseService to see if any custom editor info is loaded.
+	*
+	* @returns Whether there is custom editor information currently loaded.
+	*/
+	isCustomEditorLoaded() {
+		const unityReleaseService = mainContainer.get(IUnityReleaseServiceId);
+		return Boolean(this.customEditorInfo || unityReleaseService.isCustomEditorLoaded());
+	}
+	async setEditorsByVersion(version) {
+		const downloadPlatform = ProcessPlatformToUnityReleasePlatform[process$1.platform];
+		const allEntitlements = Object.values(UnityReleaseEntitlement);
+		let releases = await this.mapLivePlatformReleasesToEditorReleases(await this.fetchLivePlatformReleases({
+			architecture: [UnityReleaseDownloadArchitecture.X86_64, UnityReleaseDownloadArchitecture.Arm64],
+			platform: downloadPlatform,
+			limit: 1,
+			version,
+			entitlements: allEntitlements,
+			orderBy: UnityReleaseOrder.ReleaseDateAsc
+		}, false));
+		if (!releases[0]) {
+			this.logger.info(`Live Platform API does not have version ${version}, trying CDN release.json for setEditorsByVersion`);
+			const customEditorInfo = this.getCustomEditorInfo();
+			const revisionHash = customEditorInfo?.revisionHash;
+			if (revisionHash && customEditorInfo?.version === version) releases = await fetchEditorReleasesFromCdn(version, revisionHash, [CHIP_ARCHITECTURES.X86_64, CHIP_ARCHITECTURES.ARM64]);
+		}
+		if (!releases[0]) {
+			this.logger.info(`CDN release.json not available for version ${version}, falling back to Unity Release Watcher service for setEditorsByVersion`);
+			releases = await mainContainer.get(IUnityReleaseServiceId).getReleasesPerArchitecture([CHIP_ARCHITECTURES.X86_64, CHIP_ARCHITECTURES.ARM64]);
+		}
+		this.editorsByVersion = releases;
+	}
+	/**
+	* Checks the release adapter to see if specific editors were fetched for missing/nearest editor.
+	*
+	* @returns Whether there is custom editor information currently loaded.
+	*/
+	isSpecificEditorsLoaded() {
+		return Boolean(this.specificEditors);
+	}
+	/**
+	* Clears the stored specific for the release adapter
+	*/
+	clearSpecificEditors() {
+		this.specificEditors = null;
+		this.logger.info("clearSpecificEditors cleared the adapter");
+	}
+	/**
+	* Fetches the requested editor version and checks if the user is entitled to it.
+	* @param version The Unity version to retrieve editor info for.
+	*
+	* @returns Whether the user is entitled to this editor or not. Defaults to true if something goes wrong, we'd rather they have access than not.
+	*/
+	async checkIfEntitledToEditor(version) {
+		const downloadPlatform = ProcessPlatformToUnityReleasePlatform[process$1.platform];
+		try {
+			const userEntitlements = this.mapEntitlementIdsToUnityReleaseEntitlements(await this.licensingSdk.getEditorEntitlements());
+			const currentCustomEditorInfo = this.getCustomEditorInfo();
+			const existingRelease = currentCustomEditorInfo?.version === version ? currentCustomEditorInfo : null;
+			const release = (existingRelease ? [existingRelease] : await this.mapLivePlatformReleasesToEditorReleases(await this.fetchLivePlatformReleases({
+				platform: downloadPlatform,
+				limit: 1,
+				version,
+				orderBy: UnityReleaseOrder.ReleaseDateAsc,
+				architecture: getUnityReleaseDownloadArchitecture()
+			}, false)))?.[0];
+			if (release) {
+				this.logger.info(`Checking entitlements for editor: ${release.version}`, {
+					releaseEntitlements: release.entitlements,
+					userEntitlements
+				});
+				return validateEntitlements(release.entitlements, userEntitlements);
+			}
+		} catch (error) {
+			this.logger.error(`checkIfEntitledToEditor encountered an error while checking entitlements for version ${version}.`, error);
+			return true;
+		}
+		return true;
+	}
+	/**
+	* Given a version and revision hash, will retrieve the editor info for that version+hash.
+	* Note that the revision hash is unused when retrieving data from Live Platform.
+	* It is only used when retrieving data from the unity release watcher.
+	* We retrieve all releases with all entitlements, as we want to give the user the option to download
+	* an editor that they're not entitled to, if they so choose.
+	* The Editor itself will stop them from accessing.
+	*
+	* @param version The Unity version to retrieve editor info for.
+	* @param revisionHash The revision hash for that unity version.
+	*/
+	async setCustomEditorInfo(version, revisionHash, architecture = UnityReleaseDownloadArchitecture.X86_64) {
+		const downloadPlatform = ProcessPlatformToUnityReleasePlatform[process$1.platform];
+		let releaseServiceUsed = UNITY_RELEASE_SERVICE_TYPES.LIVE_PLATFORM_API;
+		const allEntitlements = Object.values(UnityReleaseEntitlement);
+		let release = (await this.mapLivePlatformReleasesToEditorReleases(await this.fetchLivePlatformReleases({
+			architecture,
+			platform: downloadPlatform,
+			limit: 1,
+			version,
+			entitlements: allEntitlements,
+			orderBy: UnityReleaseOrder.ReleaseDateAsc
+		}, false)))[0];
+		if (!release) {
+			const unityReleaseService = mainContainer.get(IUnityReleaseServiceId);
+			const chipArchitecture = DownloadArchitectureToChipArchitecture[architecture];
+			await unityReleaseService.setCustomEditorInfo(version, revisionHash, chipArchitecture);
+			release = unityReleaseService.getCustomEditorInfo();
+			releaseServiceUsed = UNITY_RELEASE_SERVICE_TYPES.UNITY_RELEASE_SERVICE;
+		}
+		if (release) {
+			this.customEditorInfo = release;
+			this.logger.info(`setCustomEditorInfo sets a new custom editor using release service ${releaseServiceUsed} for version ${version} with revisionHash ${revisionHash} and architecutre ${architecture}`);
+		} else {
+			this.clearCustomEditorInfo();
+			this.logger.info(`setCustomEditorInfo could not find a release for version ${version} with revisionHash ${revisionHash} and architecture ${architecture}`);
+		}
+	}
+	/**
+	* Given a version, will retrieve the editors
+	*
+	* @param version The Unity version to retrieve editor info for.
+	*/
+	async getSpecificEditorsByVersion(version) {
+		const versionYear = version?.split(".")[0];
+		const systemInfo = mainContainer.get(ISystemInfoId);
+		const downloadPlatform = ProcessPlatformToUnityReleasePlatform[process$1.platform];
+		const architecture = systemInfo.isAppleSilicon() || systemInfo.isWindowsArm64() ? [UnityReleaseDownloadArchitecture.Arm64, UnityReleaseDownloadArchitecture.X86_64] : [UnityReleaseDownloadArchitecture.X86_64];
+		const architectureNearest = getUnityReleaseDownloadArchitecture();
+		const userEntitlements = this.mapEntitlementIdsToUnityReleaseEntitlements(await this.licensingSdk.getEditorEntitlements());
+		const releases = await this.fetchLivePlatformReleasesByVersion({
+			architecture,
+			architectureNearest,
+			platform: downloadPlatform,
+			limit: version ? Config$2.RELEASES.PAGE_LIMIT : 1,
+			orderBy: UnityReleaseOrder.ReleaseDateDesc,
+			version,
+			versionYear,
+			entitlements: userEntitlements
+		}, false);
+		releases[EDITOR_RELEASE_TYPE_NAMES.MISSING] = releases[EDITOR_RELEASE_TYPE_NAMES.MISSING].filter((release) => compareEditorVersions(release.version, version) === 0);
+		if (systemInfo.isAppleSilicon() && hasDownloadMatchingArchitecture(releases[EDITOR_RELEASE_TYPE_NAMES.MISSING], UnityReleaseDownloadArchitecture.Arm64)) releases[EDITOR_RELEASE_TYPE_NAMES.MISSING] = filterReleasesWithDownloadsMatchingArchitecture(releases[EDITOR_RELEASE_TYPE_NAMES.MISSING], UnityReleaseDownloadArchitecture.Arm64);
+		const [latestLTS] = releases[EDITOR_RELEASE_TYPE_NAMES.NEAREST];
+		if (latestLTS) releases[EDITOR_RELEASE_TYPE_NAMES.NEAREST] = [latestLTS];
+		const mappedReleasesByVersion = {
+			[EDITOR_RELEASE_TYPE_NAMES.MISSING]: [],
+			[EDITOR_RELEASE_TYPE_NAMES.NEAREST]: []
+		};
+		await Promise.all(Object.entries(releases).map(async ([category, node]) => {
+			mappedReleasesByVersion[category] = await this.mapLivePlatformReleasesToEditorReleases(node);
+		}));
+		if (!version) mappedReleasesByVersion[EDITOR_RELEASE_TYPE_NAMES.MISSING] = [];
+		this.specificEditors = mappedReleasesByVersion[EDITOR_RELEASE_TYPE_NAMES.MISSING].concat(mappedReleasesByVersion[EDITOR_RELEASE_TYPE_NAMES.NEAREST]);
+		return mappedReleasesByVersion;
+	}
+	/**
+	* Updates the service type that will be used by the adapter, and refreshes/re-fetches the releases.
+	*
+	* @param serviceType Specify the service type to change to.
+	* @returns A list of releases, for convenience.
+	*/
+	updateReleaseServiceType = (serviceType) => {
+		this.logger.info(`Updating the release service type to: ${serviceType}.`);
+		this.releaseService = serviceType;
+		return this.refreshReleases();
+	};
+	/**
+	* Will refresh the list of releases from whichever service type is currently selected.
+	*
+	* @param fromCache Whether or not to pull the data from cache.
+	* @param specificArchitecture Optional specific architecture to fetch releases for instead of using system architecture.
+	* @returns The list of releases after refresh.
+	*/
+	refreshReleases = async (fromCache = false, specificArchitecture) => {
+		this.logger.info("Begin fetching Unity editor release data.");
+		if (this.releaseService === UNITY_RELEASE_SERVICE_TYPES.LIVE_PLATFORM_API) await this.fetchAndStoreLivePlatformReleases(fromCache, specificArchitecture);
+		else if (this.releaseService === UNITY_RELEASE_SERVICE_TYPES.UNITY_RELEASE_SERVICE) this.storedReleases = this.fetchUnityReleaseServiceReleases();
+		return this.storedReleases;
+	};
+	formatForArchivedSideBySide = (list) => {
+		const systemInfo = mainContainer.get(ISystemInfoId);
+		return list.map((editor) => editor?.architecture === systemInfo.getEffectiveChipArchitecture() ? {
+			...editor,
+			isRecommended: true
+		} : editor).sort(compareEditorsByReleaseArchitecture);
+	};
+	/**
+	* This performs the fetch(es) necessary to get the releases data from Live Platform.
+	*/
+	fetchAndStoreLivePlatformReleases = async (fromCache = false, specificArchitecture) => {
+		const downloadPlatform = ProcessPlatformToUnityReleasePlatform[process$1.platform];
+		if (!downloadPlatform) {
+			const errorMessage = `Unsupported platform (${process$1.platform})!`;
+			this.logger.error(errorMessage);
+			throw new Error(errorMessage);
+		}
+		const architecture = specificArchitecture ? [specificArchitecture] : getUnityReleaseDownloadArchitecture();
+		const userEntitlements = this.mapEntitlementIdsToUnityReleaseEntitlements(await this.licensingSdk.getEditorEntitlements());
+		const livePlatformReleasesByStream = await this.fetchLivePlatformReleasesByStream({
+			architecture,
+			platform: downloadPlatform,
+			entitlements: userEntitlements
+		}, fromCache);
+		const livePlatformReleases = this.streamConfigs.reduce((reduceArray, streamConfig) => reduceArray.concat(livePlatformReleasesByStream[streamConfig.stream].slice(0, streamConfig.numberOfReleases)), []);
+		if (livePlatformReleases.length > 0) this.storedReleases = (await this.mapLivePlatformReleasesToEditorReleases(livePlatformReleases)).sort(compareEditorsByReleaseArchitecture);
+	};
+	getEditorLabels = async (options) => {
+		const validVersions = (Array.isArray(options.versions) ? options.versions : [options.versions]).filter((v) => Boolean(v));
+		if (validVersions.length === 0) {
+			this.logger.info("No valid versions provided to getEditorLabels.");
+			return [];
+		}
+		try {
+			const labelEntities = await LivePlatformAPI.getUnityReleaseLabelForVersions(options);
+			this.logger.info(`${labelEntities.length} releases retrieved from ${this.releaseService} for versions: ${validVersions.join(", ")}.`);
+			return labelEntities;
+		} catch (error) {
+			this.logger.warn(`${this.releaseService} was unable to retrieve releases for versions: ${validVersions.join(", ")}.`, error);
+			return [];
+		}
+	};
+	/**
+	* Performs a fetch with getUnityReleases from Live Platform API,
+	* retrieving only the most recent major versions,
+	* and sorting by stream.
+	*/
+	fetchLivePlatformReleasesByStream = async (options, fromCache = false) => {
+		let releasesByStream;
+		try {
+			releasesByStream = await LivePlatformAPI.getUnityReleaseMajorVersionsByStream(options, fromCache);
+			releasesByStream = filterPromotedReleasesFromPrereleaseStreams(releasesByStream);
+		} catch (error) {
+			this.logger.warn(`${this.releaseService} was unable to retrieve releases${fromCache ? " from cache" : ""}.`, error);
+			return {
+				[UnityReleaseStream.Lts]: [],
+				[UnityReleaseStream.Tech]: [],
+				[UnityReleaseStream.Alpha]: [],
+				[UnityReleaseStream.Beta]: [],
+				[UnityReleaseStream.Supported]: [],
+				[UnityReleaseStream.Release]: []
+			};
+		}
+		Object.entries(releasesByStream).forEach(([stream, releases]) => {
+			this.logger.info(`${releases?.length || 0} ${stream} releases retrieved from ${this.releaseService}.`, options);
+		});
+		return releasesByStream;
+	};
+	fetchLivePlatformReleasesByVersion = async (options, fromCache = false) => {
+		let releasesByVersion;
+		try {
+			releasesByVersion = await LivePlatformAPI.getUnityReleasesByVersion(options, fromCache);
+		} catch (error) {
+			this.logger.warn(`${this.releaseService} was unable to retrieve releases${fromCache ? " from cache" : ""}.`, error);
+			return {
+				[EDITOR_RELEASE_TYPE_NAMES.MISSING]: [],
+				[EDITOR_RELEASE_TYPE_NAMES.NEAREST]: []
+			};
+		}
+		Object.entries(releasesByVersion).forEach(([category, releases]) => {
+			this.logger.info(`${releases.length} ${category} editor releases retrieved from ${this.releaseService}.`, options);
+		});
+		return releasesByVersion;
+	};
+	/**
+	* Performs a basic fetch with getUnityReleases from Live Platform API.
+	*/
+	fetchLivePlatformReleases = async (options, fromCache = false) => {
+		let releases = [];
+		try {
+			releases = await LivePlatformAPI.getUnityReleases(options, fromCache);
+		} catch (error) {
+			this.logger.warn(`${this.releaseService} was unable to retrieve releases${fromCache ? " from cache" : ""}.`, error);
+			return [];
+		}
+		this.logger.info(`${releases.length} releases retrieved from ${this.releaseService}.`, options);
+		return releases;
+	};
+	/**
+	* Fetches the releases from the old unity release service.
+	*/
+	fetchUnityReleaseServiceReleases = () => {
+		const { releases } = mainContainer.get(IUnityReleaseServiceId);
+		this.logger.info(`${releases.length} releases retrieved from ${this.releaseService}.`);
+		return releases;
+	};
+	/**
+	* Map the releases from the type UnityRelease to the type EditorRelease
+	* to make the new Release Management API compatible with the old releases system.
+	*/
+	mapLivePlatformReleasesToEditorReleases = async (releasesToMap) => {
+		return await Promise.all(flatten(releasesToMap.map((release) => release.downloads.map((releaseDownload) => this.mapUnityReleaseToEditorRelease(release, releaseDownload)))));
+	};
+	/**
+	* Calculates whether the given editor should be recommended,
+	* taking the API preference into account.
+	*/
+	shouldRecommendEditor = (isRecommended, editorArchitecture) => {
+		const systemInfo = mainContainer.get(ISystemInfoId);
+		return isRecommended && systemInfo.isSystemArchitecture(editorArchitecture);
+	};
+	/**
+	* Map the release from the type UnityRelease to the type EditorRelease
+	* to make the new Release Management API compatible with the old releases system.
+	*/
+	mapUnityReleaseToEditorRelease = async (releaseToMap, downloadToMap) => ({
+		architecture: DownloadArchitectureToChipArchitecture[downloadToMap.architecture],
+		version: releaseToMap.version,
+		productName: releaseToMap.productName ?? releaseToMap.version,
+		releaseType: DownloadStreamToReleaseType[releaseToMap.stream],
+		downloadUrl: downloadToMap?.url ?? "",
+		lts: releaseToMap.stream === UnityReleaseStream.Lts,
+		stream: releaseToMap.stream,
+		downloadSize: downloadToMap?.downloadSize?.value ?? 0,
+		installedSize: downloadToMap?.installedSize?.value ?? 0,
+		checksum: downloadToMap.integrity,
+		parent: "",
+		isRecommended: this.shouldRecommendEditor(releaseToMap.recommended, DownloadArchitectureToChipArchitecture[downloadToMap.architecture]),
+		modules: await mainContainer.get(IVisualStudioServiceId).getModulesThatRespectVisualStudioStatus(this.mapUnityReleaseModulesToInstallModules(downloadToMap?.modules ?? [])),
+		entitlements: releaseToMap.entitlements ?? [],
+		label: releaseToMap.label
+	});
+	/**
+	* Maps the modules from the type UnityReleaseModules to the type InstallModules
+	* to make the new Release Management API compatible with the old releases system.
+	*/
+	mapUnityReleaseModulesToInstallModules = (modules, parent = "") => {
+		const mappedModules = [];
+		modules.forEach((module) => {
+			mappedModules.push({
+				...module,
+				category: UnityReleaseModuleCategoryToModuleCategory[module.category],
+				downloadUrl: module.url,
+				installedSize: module.installedSize?.value ?? 0,
+				downloadSize: module.downloadSize?.value ?? 0,
+				visible: !module.hidden,
+				selected: module.preSelected,
+				sync: module.hidden && module.required ? parent : "",
+				parent,
+				eulaUrl1: module.eula?.[0]?.url ?? "",
+				eulaLabel1: module.eula?.[0]?.label ?? "",
+				eulaMessage: module.eula?.[0]?.message ?? "",
+				renameTo: module.extractedPathRename?.to ?? "",
+				renameFrom: module.extractedPathRename?.from ?? "",
+				preselected: module.preSelected
+			}, ...this.mapUnityReleaseModulesToInstallModules(module.subModules ?? [], module.id));
+		});
+		return mappedModules;
+	};
+	mapEntitlementIdsToUnityReleaseEntitlements = (entitlements) => entitlements.map((id) => EntitlementIdToUnityReleaseEntitlement[id]).filter((entitlement) => entitlement !== void 0);
+};
+var unityReleaseServiceAdapter_default = new UnityReleaseServiceAdapter();
+//#endregion

@@ -1,0 +1,151 @@
+//#region src/main/services/projectService/ProjectsPreferencesService.ts
+var SKIP_REMOVE_CONFIRMATION_SETTING_DEFAULT = {
+	always: false,
+	timestamp: 0
+};
+var SORT_PREFERENCES_DEFAULT = {
+	sortBy: "lastModified",
+	sortDirection: "ascending"
+};
+var PROJECT_TABLE_PREFERENCES_DEFAULT = {
+	isFavorite: true,
+	isVersionControlConnected: true,
+	cloudServices: true,
+	lastModified: true,
+	version: true,
+	hideMissingProjects: false
+};
+var ProjectsPreferencesService = class {
+	logger = loggerFactory("ProjectsPreferencesService");
+	async getSkipRemoveConfirmationFromStorage() {
+		let obj;
+		try {
+			obj = await mainContainer.get(IJsonStorageId).get(SkipRemoveConfirmationKey);
+		} catch (e) {
+			this.logger.info(`Missing ${SkipRemoveConfirmationKey}.json file`, e);
+			return SKIP_REMOVE_CONFIRMATION_SETTING_DEFAULT;
+		}
+		if (!this.isSkipRemoveConfirmationSetting(obj)) {
+			this.logger.info(`Read skip remove confirmation setting object from disk: ${JSON.stringify(obj)}`);
+			return SKIP_REMOVE_CONFIRMATION_SETTING_DEFAULT;
+		}
+		return obj;
+	}
+	async setSkipRemoveConfirmationToStorage(setting) {
+		return mainContainer.get(IJsonStorageId).set(SkipRemoveConfirmationKey, setting);
+	}
+	isSkipRemoveConfirmationSetting(obj) {
+		return typeof obj === "object" && obj !== null && typeof obj.always === "boolean" && typeof obj.timestamp === "number";
+	}
+	isLastUsedOrganizationSetting(obj) {
+		return typeof obj === "object" && obj !== null && typeof obj.organization === "string" && obj.organization !== null && obj.organization !== void 0;
+	}
+	async getLastUsedOrganizationFromStorage() {
+		let organization;
+		try {
+			organization = await mainContainer.get(IJsonStorageId).get(ProjectOrganizationKey);
+			if (!this.isLastUsedOrganizationSetting(organization)) return "";
+		} catch (e) {
+			this.logger.info(`Missing ${ProjectOrganizationKey}.json file`, e);
+			return "";
+		}
+		return organization.organization;
+	}
+	async setLastUsedOrganizationToStorage(org) {
+		return mainContainer.get(IJsonStorageId).set(ProjectOrganizationKey, { organization: org });
+	}
+	isSortPreferencesSetting(obj) {
+		return typeof obj === "object" && obj !== null && typeof obj.sortBy === "string" && [
+			"title",
+			"lastModified",
+			"version",
+			"path",
+			"isFavorite",
+			"cloudServices",
+			"isVersionControlConnected"
+		].includes(obj.sortBy) && typeof obj.sortDirection === "string" && ["ascending", "descending"].includes(obj.sortDirection);
+	}
+	async getSortPreferencesFromStorage() {
+		try {
+			const obj = await mainContainer.get(IJsonStorageId).get(ProjectSortPreferencesKey);
+			if (!this.isSortPreferencesSetting(obj)) {
+				this.logger.info(`Read sort preferences setting from disk: ${JSON.stringify(obj)}`);
+				return SORT_PREFERENCES_DEFAULT;
+			}
+			return obj;
+		} catch (e) {
+			this.logger.info(`Missing ${ProjectSortPreferencesKey}.json file`, e);
+			return SORT_PREFERENCES_DEFAULT;
+		}
+	}
+	async setSortPreferencesToStorage(preferences) {
+		return mainContainer.get(IJsonStorageId).set(ProjectSortPreferencesKey, preferences);
+	}
+	isNonNullObject(obj) {
+		return typeof obj === "object" && obj !== null;
+	}
+	async getTablePreferencesFromStorage() {
+		try {
+			const obj = await mainContainer.get(IJsonStorageId).get(ProjectTablePreferencesKey);
+			if (!this.isNonNullObject(obj)) {
+				this.logger.info(`Read column visibility preferences setting from disk: ${JSON.stringify(obj)}`);
+				return PROJECT_TABLE_PREFERENCES_DEFAULT;
+			}
+			return {
+				...PROJECT_TABLE_PREFERENCES_DEFAULT,
+				...obj
+			};
+		} catch (e) {
+			this.logger.info(`Missing ${ProjectTablePreferencesKey}.json file`, e);
+			return PROJECT_TABLE_PREFERENCES_DEFAULT;
+		}
+	}
+	async setTablePreferencesToStorage(preferences) {
+		return mainContainer.get(IJsonStorageId).set(ProjectTablePreferencesKey, preferences);
+	}
+	/**
+	* Gets the hideBuiltInRPDeprecationWarning preference from storage.
+	* Returns false if the file does not exist or data is not a boolean.
+	*
+	* @returns Promise resolving to boolean indicating if the warning should be hidden
+	*/
+	async getHideBuiltInRPDeprecationWarning() {
+		try {
+			const value = await mainContainer.get(IJsonStorageId).get(HideBuiltInRPDeprecationWarningKey);
+			if (typeof value !== "boolean") {
+				this.logger.debug(`Read hideBuiltInRPDeprecationWarning setting from disk: ${JSON.stringify(value)}`);
+				return false;
+			}
+			return value;
+		} catch (e) {
+			this.logger.info(`Missing ${HideBuiltInRPDeprecationWarningKey}.json file`, e);
+			return false;
+		}
+	}
+	/**
+	* Sets the hideBuiltInRPDeprecationWarning preference to storage.
+	*
+	* @param hideWarning - Boolean indicating if the warning should be hidden
+	*/
+	async setHideBuiltInRPDeprecationWarning(hideWarning) {
+		return mainContainer.get(IJsonStorageId).set(HideBuiltInRPDeprecationWarningKey, hideWarning);
+	}
+	/**
+	* Sets the default project directory location.
+	* This is used when a user creates or clones a project to save the location as the default.
+	*
+	* @param directoryPath - The directory path to set as the default project location
+	* @throws Error if the operation fails
+	*/
+	async setProjectsLocation(directoryPath) {
+		try {
+			await mainContainer.get(IJsonStorageId).set(ProjectDirectoryLocalStorageKey, { directoryPath });
+			await localProject.refreshUserDefault();
+		} catch (error) {
+			this.logger.error("Unable to store default project path:", error);
+			throw error;
+		}
+	}
+};
+var ProjectsPreferencesService_default = new ProjectsPreferencesService();
+//#endregion

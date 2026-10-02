@@ -1,0 +1,261 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstaller_linux.ts
+var import_sudo_prompt = /* @__PURE__ */ __toESM(require_sudo_prompt(), 1);
+var logger = loggerFactory("UnityInstallerLinux");
+var execFile$1 = util.promisify(child_process.execFile);
+var unityInstallerLinux = {
+	async uninstall(_editor, installationPath) {
+		try {
+			await fs.promises.rm(installationPath, {
+				recursive: true,
+				force: true
+			});
+		} catch (error) {
+			logger.warn("Error while uninstalling", error);
+			if (error.code !== "EPERM" && error.code !== "EACCES") throw error;
+		}
+		logger.info(`Requesting sudo access to uninstall editor at ${installationPath}`);
+		return new Promise((resolve, reject) => {
+			import_sudo_prompt.default.exec(`rm -rf "${installationPath}"`, { name: "Unity uninstaller" }, (rdError) => {
+				if (rdError) if (rdError.message === INSTALLER_ERROR.PERMISSION_DENIED.code) resolve({ cancelled: true });
+				else reject(rdError);
+				else resolve(void 0);
+			});
+		});
+	},
+	async installEditor(install) {
+		const { installerPath, destinationPath: destination } = install;
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		const extname = path.extname(installerPath).toLowerCase();
+		if (extname !== ".zip" && extname !== ".xz") throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+		try {
+			await fs.promises.rm(destination, {
+				recursive: true,
+				force: true
+			});
+			await fs.promises.mkdir(destination, { recursive: true });
+		} catch (error) {
+			if (error.code === "ENOENT" || error.code === "ENOTDIR") throw new InstallerError(INSTALLER_ERROR.INVALID_DESTINATION, { cause: error });
+			throw error;
+		}
+		if (extname === ".zip") await extractZipToDestination(installerPath, destination);
+		if (extname === ".xz") await untarFile(installerPath, destination);
+	},
+	async cleanupEditorInstallation(install) {
+		const { destinationPath: destination } = install;
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		try {
+			await fs.promises.rm(destination, {
+				recursive: true,
+				force: true
+			});
+		} catch (deleteError) {
+			logger.warn("Error while cleaning up editor", deleteError);
+			return false;
+		}
+		return true;
+	},
+	async installModule(installer) {
+		let { destination, installerPath } = installer;
+		logger.debug(`install module ${installerPath} to ${destination}`);
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		const fileExtension = path.extname(installerPath);
+		if ([
+			".pkg",
+			".zip",
+			".xz",
+			".po"
+		].indexOf(fileExtension) === -1) throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+		if (fileExtension === ".pkg") {
+			await fs.promises.mkdir(destination, { recursive: true });
+			await extractPkgFile(installerPath, destination);
+		}
+		if (fileExtension === ".zip") {
+			await fs.promises.mkdir(destination, { recursive: true });
+			await extractZipToDestination(installerPath, destination);
+		}
+		if (fileExtension === ".xz") {
+			const playbackEngineSubdirectoryIndex = destination.indexOf("Editor/Data/PlaybackEngines");
+			const finalDestination = playbackEngineSubdirectoryIndex === -1 ? destination : destination.substring(0, playbackEngineSubdirectoryIndex);
+			await fs.promises.mkdir(destination, { recursive: true });
+			await untarFile(installerPath, finalDestination);
+		}
+		if (fileExtension === ".po") {
+			destination = path.join(destination, path.basename(installerPath));
+			logger.debug(`Move ${installerPath} to ${destination}`);
+			await fs.promises.cp(installerPath, destination, {
+				recursive: true,
+				force: true
+			});
+		}
+	},
+	async cleanupModuleInstallation(install) {
+		let { destination, installerPath } = install;
+		logger.debug(`cleanup module ${destination}`);
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		const fileExtension = path.extname(installerPath);
+		if ([
+			".pkg",
+			".zip",
+			".xz",
+			".po"
+		].indexOf(fileExtension) === -1) throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+		if (fileExtension === ".pkg") {
+			try {
+				await fs.promises.rm(destination, {
+					recursive: true,
+					force: true
+				});
+			} catch (deleteError) {
+				logger.warn("Error while cleaning up .pkg:", deleteError);
+				return false;
+			}
+			return true;
+		}
+		if (fileExtension === ".zip") return true;
+		if (fileExtension === ".xz") {
+			const playbackEngineSubdirectoryIndex = destination.indexOf("Editor/Data/PlaybackEngines");
+			const finalDestination = playbackEngineSubdirectoryIndex === -1 ? destination : destination.substring(0, playbackEngineSubdirectoryIndex);
+			try {
+				await fs.promises.rm(finalDestination, {
+					recursive: true,
+					force: true
+				});
+			} catch (deleteError) {
+				logger.warn("Error while cleaning up .xz:", deleteError);
+				return false;
+			}
+			return true;
+		}
+		if (fileExtension === ".po") {
+			destination = path.join(destination, path.basename(installerPath));
+			logger.debug(`Removing ${destination} directory/file`);
+			try {
+				await fs.promises.rm(destination, {
+					recursive: true,
+					force: true
+				});
+			} catch (deleteError) {
+				logger.warn("Error while cleaning up .po:", deleteError);
+				return false;
+			}
+			return true;
+		}
+	},
+	async afterModuleInstallation(module) {
+		logger.debug("afterModuleInstallation");
+		if (!module.renameFrom || !module.renameTo) return;
+		try {
+			if (module.renameFrom.includes(module.renameTo)) {
+				const tempFolder = await fs.promises.mkdtemp(path.join(os.tmpdir(), "unity-module-rename-"));
+				await hub_fs_default.move(module.renameFrom, tempFolder);
+				await hub_fs_default.move(tempFolder, module.renameTo, { overwrite: true });
+			} else await hub_fs_default.move(module.renameFrom, module.renameTo);
+		} catch (err) {
+			logger.warn("Could not rename folder", err);
+			throw new Error(`Module ${module.name} after installation step failed`, { cause: err });
+		}
+	}
+};
+async function extractZipToDestination(installerPath, destination) {
+	try {
+		await execFile$1(await hub_fs_default.which("unzip", { linux: ["/usr/bin/unzip", "/bin/unzip"] }), [
+			"-o",
+			"-q",
+			installerPath,
+			"-d",
+			destination
+		], { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		logger.warn("Error in deployZip:", error);
+		throw error;
+	}
+}
+async function extractPkgFile(pkgPath, destination) {
+	try {
+		const sevenzipPath = await hub_fs_default.which("7z", { linux: ["/usr/bin/7z", "/bin/7z"] });
+		const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "pkg-"));
+		try {
+			logger.debug("Step 1: Extracting pkg (xar) to temp directory");
+			await execFile$1(sevenzipPath, [
+				"x",
+				pkgPath,
+				`-o${tempDir}`,
+				"-y"
+			], { maxBuffer: MAX_BUFFER_SIZE });
+			const payloadPath = await findPayloadPath(tempDir);
+			if (path.basename(payloadPath) === "Payload~") {
+				logger.debug("Payload~ found, extracting cpio to final destination");
+				await execFile$1(sevenzipPath, [
+					"x",
+					payloadPath,
+					`-o${destination}`,
+					"-y"
+				], { maxBuffer: MAX_BUFFER_SIZE });
+			} else {
+				const payloadDir = path.dirname(payloadPath);
+				logger.debug("Step 2: Extracting Payload (gzip) to get Payload~ (cpio)");
+				await execFile$1(sevenzipPath, [
+					"x",
+					payloadPath,
+					`-o${payloadDir}`,
+					"-y"
+				], { maxBuffer: MAX_BUFFER_SIZE });
+				const payloadTildePath = path.join(payloadDir, "Payload~");
+				if (!await fs.promises.access(payloadTildePath).then(() => true).catch(() => false)) {
+					logger.warn("Payload~ file not found after gzip extraction");
+					throw new InstallerError(INSTALLER_ERROR.COULD_NOT_EXTRACT, { cause: /* @__PURE__ */ new Error("Payload~ file not found after gzip extraction") });
+				}
+				logger.debug("Step 3: Extracting Payload~ (cpio) to final destination");
+				await execFile$1(sevenzipPath, [
+					"x",
+					payloadTildePath,
+					`-o${destination}`,
+					"-y"
+				], { maxBuffer: MAX_BUFFER_SIZE });
+			}
+		} finally {
+			await fs.promises.rm(tempDir, {
+				recursive: true,
+				force: true
+			});
+		}
+	} catch (error) {
+		logger.warn("Error in extractPkgFile:", error);
+		throw error;
+	}
+}
+async function findPayloadPath(directory) {
+	const files = await fs.promises.readdir(directory);
+	const pkgTmpDir = files.find((file) => file.endsWith(".pkg.tmp"));
+	if (pkgTmpDir) {
+		logger.debug(`Found .pkg.tmp directory: ${pkgTmpDir}`);
+		const payloadDir = path.join(directory, pkgTmpDir);
+		const payloadTildePath = path.join(payloadDir, "Payload~");
+		if (await fs.promises.access(payloadTildePath).then(() => true).catch(() => false)) {
+			logger.debug("Found Payload~ in .pkg.tmp directory (gzip already extracted)");
+			return payloadTildePath;
+		}
+		return path.join(payloadDir, "Payload");
+	}
+	const payloadFile = files.find((file) => file === "Payload~");
+	if (payloadFile) {
+		logger.debug(`Found Payload~ file: ${payloadFile}`);
+		return path.join(directory, payloadFile);
+	}
+	logger.warn("Payload file not found in pkg archive");
+	throw new InstallerError(INSTALLER_ERROR.COULD_NOT_EXTRACT, { cause: /* @__PURE__ */ new Error("Payload file not found in pkg archive") });
+}
+async function untarFile(archivePath, destination) {
+	try {
+		await execFile$1(await hub_fs_default.which("tar", { linux: ["/usr/bin/tar", "/bin/tar"] }), [
+			"-xmf",
+			archivePath,
+			"-C",
+			destination
+		], { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		logger.warn("Error in untarFile:", error);
+		throw error;
+	}
+}
+//#endregion

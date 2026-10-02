@@ -1,0 +1,74 @@
+//#region src/main/services/downloadEngine/downloadItemFactories/createTemplateDownloadItem.ts
+/**
+* Create a download item for downloading a template for a particular editor version. The template
+* will be added to the list of locally-available templates on successful download. Download errors
+* will be reported to the template service.
+*
+* @param params download item enqueue params
+* @param destination directory where the item will be downloaded
+* @param uid unique ID to refer to the download item when pausing/resuming/etc.
+* @returns download item data including the download state change callback
+*/
+var createTemplateDownloadItem = (params, uid) => {
+	const { downloadUrl, downloadSize, parentItemUid, desiredDestination, desiredFilename, editorVersion, editorArchitecture, template, isUpgrade } = params;
+	const { displayName, name, version } = template;
+	return {
+		metadata: {
+			type: DOWNLOAD_ITEM_TYPES.TEMPLATE,
+			source: downloadUrl,
+			sourceSizeinBytes: downloadSize,
+			sourceType: DOWNLOAD_SOURCE_TYPES.HTTP,
+			itemName: uid,
+			itemDisplayName: `${displayName} (${version})`,
+			destination: desiredDestination,
+			destinationFilename: desiredFilename,
+			uid,
+			parentItemUid,
+			lastChecksumValue: {
+				bytes: 0,
+				md5: ""
+			},
+			editorVersion,
+			editorArchitecture,
+			isUpgrade,
+			templateName: name,
+			version
+		},
+		onStateChangeHandler: ({ error, state }) => {
+			let reportedError = error;
+			if (state === DOWNLOAD_STATES.CLEANUP) reportedError = /* @__PURE__ */ new Error("cancelled");
+			switch (state) {
+				case DOWNLOAD_STATES.FINISHED:
+					unityTemplateService_default.replaceTemplate(editorVersion, template, isUpgrade);
+					if (isUpgrade) AmplitudeService_default.client?.yellowBucket.templateUpdated({ template_id: `${template.displayName}@${template.version}` });
+					break;
+				case DOWNLOAD_STATES.PAUSED:
+					unityTemplateService_default.updateTemplateStatus({
+						editorVersion,
+						templateName: name,
+						templateStatus: "PAUSED"
+					});
+					break;
+				case DOWNLOAD_STATES.DOWNLOADING:
+					unityTemplateService_default.updateTemplateStatus({
+						editorVersion,
+						templateName: name,
+						templateStatus: isUpgrade ? "UPGRADING" : "DOWNLOADING"
+					});
+					break;
+				case DOWNLOAD_STATES.CLEANUP:
+				case DOWNLOAD_STATES.FAILED:
+					unityTemplateService_default.reportTemplateDownloadError({
+						editorVersion,
+						templateName: name,
+						templateVersion: version,
+						wasUpgradeAttempt: isUpgrade,
+						errorMessage: reportedError.message
+					});
+					break;
+				default:
+			}
+		}
+	};
+};
+//#endregion

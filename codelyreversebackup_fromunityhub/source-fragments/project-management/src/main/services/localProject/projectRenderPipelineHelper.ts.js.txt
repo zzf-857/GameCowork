@@ -1,0 +1,335 @@
+//#region src/main/services/localProject/projectRenderPipelineHelper.ts
+var logger$29 = loggerFactory("RenderPipelineDetection");
+/**
+* Number of header comment lines to skip when parsing Unity asset files.
+* Unity asset files typically start with metadata comments that should be ignored during parsing.
+*/
+var HEADER_COMMENT_LINES_COUNT = 3;
+var META_FILE_GLOB_PATTERN = "**/*.asset.meta";
+/**
+* Maximum number of concurrent file reads during GUID index building.
+*/
+var CONCURRENCY_LIMIT = 20;
+/**
+* Timeout for GUID index building in milliseconds.
+*/
+var GUID_INDEX_TIMEOUT_MS = 1e4;
+/**
+* Maximum number of projects to cache GUID indices for.
+*/
+var MAX_CACHED_PROJECTS = 10;
+/**
+* LRU cache for GUID indices to avoid rebuilding for the same project.
+* Stores Map<projectPath, { guidIndex: Map<guid, assetPath>, timestamp: number }>
+*/
+var guidIndexCache = /* @__PURE__ */ new Map();
+/**
+* In-flight detection requests to prevent duplicate concurrent calls.
+* Stores Map<projectPath, Promise<RenderPipeline>>
+*/
+var inFlightDetections = /* @__PURE__ */ new Map();
+/**
+* Script GUIDs for identifying specific render pipeline assets.
+*/
+var SCRIPT_GUIDS = {
+	HDRP: "0cf1dab834d4ec34195b920ea7bbf9ec",
+	URP: "bf2edee5c58d82540a51f03df9d42094"
+};
+/**
+* Checks if a path is a symbolic link and should be skipped.
+*
+* @param filePath - Absolute path to check
+* @returns Promise that resolves to true if the path is a symlink, false otherwise
+*/
+async function isSymbolicLink(filePath) {
+	try {
+		return (await lstat(filePath)).isSymbolicLink();
+	} catch {
+		return false;
+	}
+}
+/**
+* Parses a Unity YAML file by reading it from disk and removing the Unity header.
+*
+* @param filePath - Absolute path to the Unity asset file
+* @returns Promise that resolves to the parsed YAML object, or null on error
+*/
+async function parseYamlFile(filePath) {
+	try {
+		const contentWithoutHeader = (await readFile(filePath, "utf8")).split("\n").slice(HEADER_COMMENT_LINES_COUNT).join("\n");
+		return browser_default.parse(contentWithoutHeader);
+	} catch (error) {
+		logger$29.debug(`Failed to parse YAML file: ${filePath}`, error);
+		return null;
+	}
+}
+/**
+* Wraps a promise with a timeout that is automatically cleared when the promise settles.
+*
+* @param promise - The promise to wrap
+* @param timeoutMs - Timeout in milliseconds
+* @param errorMessage - Error message for timeout
+* @returns Promise that resolves/rejects with the original promise or times out
+*/
+function promiseWithTimeout(promise, timeoutMs, errorMessage) {
+	let timer = null;
+	const timeoutPromise = new Promise((_, reject) => {
+		timer = setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+	});
+	return Promise.race([promise.finally(() => {
+		if (timer) clearTimeout(timer);
+	}), timeoutPromise]);
+}
+/**
+* Parses QualitySettings.asset to extract render pipeline references.
+* Step 1 of the detection algorithm.
+*
+* @param projectPath - Absolute path to the Unity project root
+* @returns Promise that resolves to the pipeline asset GUID, null (fallback indicator), or undefined on error
+*/
+async function parseQualitySettings(projectPath) {
+	const qualitySettingsPath = path.join(projectPath, "ProjectSettings", "QualitySettings.asset");
+	logger$29.debug(`Parsing QualitySettings.asset: ${qualitySettingsPath}`);
+	const qualitySettings = await parseYamlFile(qualitySettingsPath);
+	if (!qualitySettings?.QualitySettings) {
+		logger$29.debug("Failed to parse QualitySettings or missing QualitySettings section");
+		return;
+	}
+	const { m_CurrentQuality, m_QualitySettings } = qualitySettings.QualitySettings;
+	if (m_QualitySettings) {
+		for (const qualityLevel of m_QualitySettings) if (!qualityLevel.customRenderPipeline || qualityLevel.customRenderPipeline.fileID === 0) {
+			logger$29.debug("Found quality level fallback to default render pipeline");
+			return null;
+		}
+	}
+	if (m_CurrentQuality !== void 0 && m_QualitySettings && m_QualitySettings[m_CurrentQuality]) {
+		const guid = m_QualitySettings[m_CurrentQuality].customRenderPipeline?.guid;
+		if (guid) {
+			logger$29.debug(`Found SRP GUID in current quality level: ${guid}`);
+			return guid;
+		}
+	}
+	logger$29.debug("No valid pipeline reference found in QualitySettings");
+}
+/**
+* Parses GraphicsSettings.asset to extract global render pipeline reference.
+* Step 2 of the detection algorithm.
+*
+* @param projectPath - Absolute path to the Unity project root
+* @returns Promise that resolves to the pipeline GUID or null (BiRP indicator), or undefined on error
+*/
+async function parseGraphicsSettings(projectPath) {
+	const graphicsSettingsPath = path.join(projectPath, "ProjectSettings", "GraphicsSettings.asset");
+	logger$29.debug(`Parsing GraphicsSettings.asset: ${graphicsSettingsPath}`);
+	const graphicsSettings = await parseYamlFile(graphicsSettingsPath);
+	if (!graphicsSettings?.GraphicsSettings) {
+		logger$29.debug("Failed to parse GraphicsSettings or missing GraphicsSettings section");
+		return;
+	}
+	const { m_CustomRenderPipeline } = graphicsSettings.GraphicsSettings;
+	if (m_CustomRenderPipeline?.fileID === 0) {
+		logger$29.debug("Global render pipeline is BiRP (fileID: 0)");
+		return null;
+	}
+	const guid = m_CustomRenderPipeline?.guid;
+	if (guid) {
+		logger$29.debug(`Found global SRP GUID: ${guid}`);
+		return guid;
+	}
+	logger$29.debug("No valid pipeline reference found in GraphicsSettings");
+}
+/**
+* Builds a mapping of GUIDs to asset paths by scanning all .meta files in the Assets folder.
+* Step 3 of the detection algorithm.
+*
+* @param assetsPath - Absolute path to the Unity project's Assets folder
+* @returns Promise that resolves to a Map of GUID to asset path
+*/
+async function buildGuidIndex(assetsPath) {
+	const guidIndex = /* @__PURE__ */ new Map();
+	const startTime = performance.now();
+	try {
+		logger$29.debug(`Building GUID index for Assets folder: ${assetsPath}`);
+		await promiseWithTimeout((async () => {
+			const metaFiles = await Array.fromAsync(glob(META_FILE_GLOB_PATTERN, { cwd: assetsPath }));
+			logger$29.debug(`Found ${metaFiles.length} .asset.meta files`);
+			const limit = pLimit(CONCURRENCY_LIMIT);
+			const readPromises = metaFiles.map((metaFile) => limit(async () => {
+				try {
+					const metaFilePath = path.join(assetsPath, metaFile);
+					if (await isSymbolicLink(metaFilePath)) {
+						logger$29.debug(`Skipping symlink: ${metaFile}`);
+						return null;
+					}
+					const metaContent = await readFile(metaFilePath, "utf8");
+					const guidMatch = /^guid:\s*([a-f0-9]+)/m.exec(metaContent);
+					if (guidMatch?.[1]) return {
+						guid: guidMatch[1],
+						assetPath: metaFile.replace(/\.meta$/, "")
+					};
+				} catch (error) {
+					logger$29.debug(`Failed to read meta file: ${metaFile}`, error);
+				}
+				return null;
+			}));
+			const results = await Promise.all(readPromises);
+			for (const result of results) if (result) guidIndex.set(result.guid, result.assetPath);
+			return guidIndex;
+		})(), GUID_INDEX_TIMEOUT_MS, "GUID index building timeout");
+		const duration = performance.now() - startTime;
+		logger$29.debug(`Built GUID index with ${guidIndex.size} entries in ${duration.toFixed(2)}ms`);
+	} catch (error) {
+		const duration = performance.now() - startTime;
+		if (error instanceof Error && error.message === "GUID index building timeout") logger$29.error(`GUID index building timed out after ${duration.toFixed(2)}ms`);
+		else logger$29.error("Failed to build GUID index", error);
+	}
+	return guidIndex;
+}
+/**
+* Gets a GUID index from cache or builds a new one.
+* Implements LRU caching with max 10 projects.
+*
+* @param projectPath - Absolute path to the Unity project root
+* @returns Promise that resolves to a Map of GUID to asset path
+*/
+async function getCachedGuidIndex(projectPath) {
+	const normalizedPath = path.normalize(projectPath);
+	const cached = guidIndexCache.get(normalizedPath);
+	if (cached) {
+		logger$29.debug(`Using cached GUID index for project: ${normalizedPath}`);
+		cached.timestamp = Date.now();
+		guidIndexCache.delete(normalizedPath);
+		guidIndexCache.set(normalizedPath, cached);
+		return cached.guidIndex;
+	}
+	const guidIndex = await buildGuidIndex(path.join(projectPath, "Assets"));
+	guidIndexCache.set(normalizedPath, {
+		guidIndex,
+		timestamp: Date.now()
+	});
+	if (guidIndexCache.size > MAX_CACHED_PROJECTS) {
+		let oldestKey = null;
+		let oldestTimestamp = Number.POSITIVE_INFINITY;
+		for (const [key, value] of guidIndexCache.entries()) if (value.timestamp < oldestTimestamp) {
+			oldestTimestamp = value.timestamp;
+			oldestKey = key;
+		}
+		if (oldestKey) {
+			guidIndexCache.delete(oldestKey);
+			logger$29.debug(`Evicted oldest GUID index from cache: ${oldestKey}`);
+		}
+	}
+	return guidIndex;
+}
+/**
+* Resolves a GUID to an asset path using the GUID index.
+* Helper for Step 3 of the detection algorithm.
+*
+* @param guid - The GUID to resolve
+* @param guidIndex - Map of GUIDs to asset paths
+* @returns The asset path if found, null otherwise
+*/
+function resolveGuid(guid, guidIndex) {
+	const assetPath = guidIndex.get(guid);
+	if (assetPath) {
+		logger$29.debug(`Resolved GUID ${guid} to asset: ${assetPath}`);
+		return assetPath;
+	}
+	logger$29.debug(`GUID not found in index: ${guid}`);
+	return null;
+}
+/**
+* Parses a Scriptable Render Pipeline asset to determine its specific type.
+* Step 4 of the detection algorithm.
+*
+* @param projectPath - Absolute path to the Unity project root
+* @param assetPath - Relative path to the SRP asset (from Assets folder)
+* @returns Promise that resolves to the detected render pipeline type
+*/
+async function parseSRPAsset(projectPath, assetPath) {
+	const fullAssetPath = path.join(projectPath, "Assets", assetPath);
+	logger$29.debug(`Parsing SRP asset: ${fullAssetPath}`);
+	const srpAsset = await parseYamlFile(fullAssetPath);
+	if (!srpAsset?.MonoBehaviour?.m_Script) {
+		logger$29.debug("Failed to parse SRP asset or missing MonoBehaviour/m_Script field");
+		return RENDER_PIPELINES.Unknown;
+	}
+	const scriptGuid = srpAsset.MonoBehaviour.m_Script.guid;
+	if (scriptGuid === SCRIPT_GUIDS.HDRP) {
+		logger$29.debug("Detected HDRP asset");
+		return RENDER_PIPELINES.Hdrp;
+	}
+	if (scriptGuid === SCRIPT_GUIDS.URP) {
+		logger$29.debug("Detected URP asset");
+		return RENDER_PIPELINES.Urp;
+	}
+	logger$29.debug(`Detected generic SRP asset with script GUID: ${scriptGuid}`);
+	return RENDER_PIPELINES.Srp;
+}
+/**
+* Detects the render pipeline used in a Unity project.
+* Orchestrates Steps 1-4 of the detection algorithm.
+* Uses LRU caching and in-flight request deduplication for performance.
+*
+* @param projectPath - Absolute path to the Unity project root
+* @returns Promise that resolves to the detected render pipeline type
+*/
+async function detectRenderPipeline(projectPath) {
+	const normalizedPath = path.normalize(projectPath);
+	const overallStartTime = performance.now();
+	const inFlight = inFlightDetections.get(normalizedPath);
+	if (inFlight) {
+		logger$29.debug(`Using in-flight detection for project: ${normalizedPath}`);
+		return inFlight;
+	}
+	const detectionPromise = (async () => {
+		try {
+			logger$29.debug(`Starting render pipeline detection for project: ${normalizedPath}`);
+			const step1Start = performance.now();
+			let pipelineGuid = await parseQualitySettings(normalizedPath);
+			logger$29.debug(`Step 1 completed in ${(performance.now() - step1Start).toFixed(2)}ms`);
+			if (pipelineGuid === null) {
+				const step2Start = performance.now();
+				const graphicsPipelineRef = await parseGraphicsSettings(normalizedPath);
+				logger$29.debug(`Step 2 completed in ${(performance.now() - step2Start).toFixed(2)}ms`);
+				if (graphicsPipelineRef === null) {
+					const totalDuration = performance.now() - overallStartTime;
+					logger$29.debug(`Detected BiRP for project: ${normalizedPath} (${totalDuration.toFixed(2)}ms)`);
+					return RENDER_PIPELINES.BuiltIn;
+				}
+				if (graphicsPipelineRef === void 0) {
+					logger$29.debug("Failed to determine pipeline from GraphicsSettings");
+					return RENDER_PIPELINES.Unknown;
+				}
+				pipelineGuid = graphicsPipelineRef;
+			}
+			if (pipelineGuid === void 0) {
+				logger$29.debug("Failed to determine pipeline from QualitySettings");
+				return RENDER_PIPELINES.Unknown;
+			}
+			const step3Start = performance.now();
+			const guidIndex = await getCachedGuidIndex(normalizedPath);
+			logger$29.debug(`Step 3 completed in ${(performance.now() - step3Start).toFixed(2)}ms`);
+			const assetPath = resolveGuid(pipelineGuid, guidIndex);
+			if (!assetPath) {
+				logger$29.debug(`Failed to resolve GUID to asset path: ${pipelineGuid}`);
+				return RENDER_PIPELINES.Unknown;
+			}
+			const step4Start = performance.now();
+			const pipelineType = await parseSRPAsset(normalizedPath, assetPath);
+			logger$29.debug(`Step 4 completed in ${(performance.now() - step4Start).toFixed(2)}ms`);
+			const totalDuration = performance.now() - overallStartTime;
+			logger$29.debug(`Detected ${pipelineType} for project: ${normalizedPath} (${totalDuration.toFixed(2)}ms)`);
+			return pipelineType;
+		} catch (error) {
+			const totalDuration = performance.now() - overallStartTime;
+			logger$29.error(`Error detecting render pipeline for ${normalizedPath} (${totalDuration.toFixed(2)}ms)`, error);
+			return RENDER_PIPELINES.Unknown;
+		} finally {
+			inFlightDetections.delete(normalizedPath);
+		}
+	})();
+	inFlightDetections.set(normalizedPath, detectionPromise);
+	return detectionPromise;
+}
+//#endregion

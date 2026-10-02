@@ -1,0 +1,622 @@
+//#region src/main/services/localProject/projectBuildTargetHelper.ts
+var logger$31 = loggerFactory("ProjectBuildTargetHelper");
+/**
+* Common strings used in Unity type trees.
+* These are referenced by offset with the high bit set.
+*/
+var COMMON_STRINGS = {
+	0: "AABB",
+	5: "AnimationClip",
+	19: "AnimationCurve",
+	34: "AnimationState",
+	49: "Array",
+	55: "Base",
+	60: "BitField",
+	69: "bitset",
+	76: "bool",
+	81: "char",
+	86: "ColorRGBA",
+	96: "Component",
+	106: "data",
+	111: "deque",
+	117: "double",
+	124: "dynamic_array",
+	138: "FastPropertyName",
+	155: "first",
+	161: "float",
+	167: "Font",
+	172: "GameObject",
+	183: "Generic Mono",
+	196: "GradientNEW",
+	208: "GUID",
+	213: "GUIStyle",
+	222: "int",
+	226: "list",
+	231: "long long",
+	241: "map",
+	245: "Matrix4x4f",
+	256: "MdFour",
+	263: "MonoBehaviour",
+	277: "MonoScript",
+	288: "m_ByteSize",
+	299: "m_Curve",
+	307: "m_EditorClassIdentifier",
+	331: "m_EditorHideFlags",
+	349: "m_Enabled",
+	359: "m_ExtensionPtr",
+	374: "m_GameObject",
+	387: "m_Index",
+	395: "m_IsArray",
+	405: "m_IsStatic",
+	416: "m_MetaFlag",
+	427: "m_Name",
+	434: "m_ObjectHideFlags",
+	452: "m_PrefabInternal",
+	469: "m_PrefabParentObject",
+	490: "m_Script",
+	499: "m_StaticEditorFlags",
+	519: "m_Type",
+	526: "m_Version",
+	536: "Object",
+	543: "pair",
+	548: "PPtr<Component>",
+	564: "PPtr<GameObject>",
+	581: "PPtr<Material>",
+	596: "PPtr<MonoBehaviour>",
+	616: "PPtr<MonoScript>",
+	633: "PPtr<Object>",
+	646: "PPtr<Prefab>",
+	659: "PPtr<Sprite>",
+	672: "PPtr<TextAsset>",
+	688: "PPtr<Texture>",
+	702: "PPtr<Texture2D>",
+	718: "PPtr<Transform>",
+	734: "Prefab",
+	741: "Quaternionf",
+	753: "Rectf",
+	759: "RectInt",
+	767: "RectOffset",
+	778: "second",
+	785: "set",
+	789: "short",
+	795: "size",
+	800: "SInt16",
+	807: "SInt32",
+	814: "SInt64",
+	821: "SInt8",
+	827: "staticvector",
+	840: "string",
+	847: "TextAsset",
+	857: "TextMesh",
+	866: "Texture",
+	874: "Texture2D",
+	884: "Transform",
+	894: "TypelessData",
+	907: "UInt16",
+	914: "UInt32",
+	921: "UInt64",
+	928: "UInt8",
+	934: "unsigned int",
+	947: "unsigned long long",
+	966: "unsigned short",
+	981: "vector",
+	988: "Vector2f",
+	997: "Vector3f",
+	1006: "Vector4f",
+	1015: "m_ScriptingClassIdentifier",
+	1042: "Gradient",
+	1051: "Type*",
+	1057: "int2_storage",
+	1070: "int3_storage",
+	1083: "BoundsInt",
+	1093: "m_CorrespondingSourceObject",
+	1121: "m_PrefabInstance",
+	1138: "m_PrefabAsset",
+	1152: "FileSize",
+	1161: "Hash128"
+};
+var EndianBinaryReader = class {
+	buffer;
+	_position = 0;
+	_endian;
+	baseOffset = 0;
+	constructor(buffer, endian = "big", baseOffset = 0) {
+		this.buffer = buffer;
+		this._endian = endian;
+		this.baseOffset = baseOffset;
+	}
+	get position() {
+		return this._position;
+	}
+	set position(value) {
+		this._position = value;
+	}
+	get length() {
+		return this.buffer.length;
+	}
+	get endian() {
+		return this._endian;
+	}
+	set endian(value) {
+		this._endian = value;
+	}
+	read(size) {
+		const result = this.buffer.subarray(this._position, this._position + size);
+		this._position += size;
+		return result;
+	}
+	readByte() {
+		const value = this.buffer.readInt8(this._position);
+		this._position += 1;
+		return value;
+	}
+	readUByte() {
+		const value = this.buffer.readUInt8(this._position);
+		this._position += 1;
+		return value;
+	}
+	readBoolean() {
+		return this.readUByte() !== 0;
+	}
+	readShort() {
+		const value = this._endian === "little" ? this.buffer.readInt16LE(this._position) : this.buffer.readInt16BE(this._position);
+		this._position += 2;
+		return value;
+	}
+	readUShort() {
+		const value = this._endian === "little" ? this.buffer.readUInt16LE(this._position) : this.buffer.readUInt16BE(this._position);
+		this._position += 2;
+		return value;
+	}
+	readInt() {
+		const value = this._endian === "little" ? this.buffer.readInt32LE(this._position) : this.buffer.readInt32BE(this._position);
+		this._position += 4;
+		return value;
+	}
+	readUInt() {
+		const value = this._endian === "little" ? this.buffer.readUInt32LE(this._position) : this.buffer.readUInt32BE(this._position);
+		this._position += 4;
+		return value;
+	}
+	readLong() {
+		const value = this._endian === "little" ? this.buffer.readBigInt64LE(this._position) : this.buffer.readBigInt64BE(this._position);
+		this._position += 8;
+		return value;
+	}
+	readULong() {
+		const value = this._endian === "little" ? this.buffer.readBigUInt64LE(this._position) : this.buffer.readBigUInt64BE(this._position);
+		this._position += 8;
+		return value;
+	}
+	readFloat() {
+		const value = this._endian === "little" ? this.buffer.readFloatLE(this._position) : this.buffer.readFloatBE(this._position);
+		this._position += 4;
+		return value;
+	}
+	readDouble() {
+		const value = this._endian === "little" ? this.buffer.readDoubleLE(this._position) : this.buffer.readDoubleBE(this._position);
+		this._position += 8;
+		return value;
+	}
+	readStringToNull(maxLength = 32767) {
+		const start = this._position;
+		let end = start;
+		while (end < this.buffer.length && end - start < maxLength && this.buffer[end] !== 0) end++;
+		const result = this.buffer.toString("utf8", start, end);
+		this._position = end + 1;
+		return result;
+	}
+	readAlignedString() {
+		const length = this.readInt();
+		if (length <= 0 || length > this.length - this._position) return "";
+		const result = this.buffer.toString("utf8", this._position, this._position + length);
+		this._position += length;
+		this.alignStream();
+		return result;
+	}
+	readBytes(count) {
+		return this.read(count);
+	}
+	readByteArray() {
+		const length = this.readInt();
+		return this.read(length);
+	}
+	readUIntArray(length) {
+		if (length === void 0) length = this.readInt();
+		const result = [];
+		for (let i = 0; i < length; i++) result.push(this.readUInt());
+		return result;
+	}
+	readIntArray(length) {
+		if (length === void 0) length = this.readInt();
+		const result = [];
+		for (let i = 0; i < length; i++) result.push(this.readInt());
+		return result;
+	}
+	alignStream(alignment = 4) {
+		const mod = this._position % alignment;
+		if (mod !== 0) this._position += alignment - mod;
+	}
+	realOffset() {
+		return this.baseOffset + this._position;
+	}
+};
+function readString(stringBufferReader, value) {
+	if ((value & 2147483648) === 0) {
+		stringBufferReader.position = value;
+		return stringBufferReader.readStringToNull();
+	}
+	const offset = value & 2147483647;
+	return COMMON_STRINGS[offset] ?? String(offset);
+}
+function parseTypeTreeBlob(reader, version) {
+	let effectiveVersion = version;
+	if (version >= 23 || version === 0) {
+		const magicHeader = reader.read(4).toString("ascii");
+		if (magicHeader !== "tthm" && magicHeader !== "mhtt") throw new Error(`Invalid type tree header: ${magicHeader}`);
+		effectiveVersion = reader.readUInt();
+		if (version !== 0 && effectiveVersion !== version) throw new Error(`Type tree version mismatch. Expected ${version}, found ${effectiveVersion}`);
+	}
+	const nodeCount = reader.readInt();
+	const stringBufferSize = reader.readInt();
+	const nodeStructSize = effectiveVersion >= 19 ? 32 : 24;
+	const nodeData = reader.read(nodeStructSize * nodeCount);
+	const stringBufferReader = new EndianBinaryReader(reader.read(stringBufferSize), reader.endian);
+	const nodes = [];
+	const nodeReader = new EndianBinaryReader(nodeData, reader.endian);
+	for (let i = 0; i < nodeCount; i++) {
+		const nodeVersion = nodeReader.readShort();
+		const level = nodeReader.readUByte();
+		const typeFlags = nodeReader.readUByte();
+		const typeStrOffset = nodeReader.readUInt();
+		const nameStrOffset = nodeReader.readUInt();
+		const byteSize = nodeReader.readInt();
+		const index = nodeReader.readInt();
+		const metaFlag = nodeReader.readInt();
+		let refTypeHash;
+		if (effectiveVersion >= 19) refTypeHash = nodeReader.readULong();
+		nodes.push({
+			level,
+			type: readString(stringBufferReader, typeStrOffset),
+			name: readString(stringBufferReader, nameStrOffset),
+			byteSize,
+			version: nodeVersion,
+			typeFlags,
+			metaFlag,
+			index,
+			refTypeHash,
+			children: []
+		});
+	}
+	if (nodes.length === 0) return {
+		level: 0,
+		type: "",
+		name: "",
+		byteSize: 0,
+		version: 0,
+		children: []
+	};
+	const fakeRoot = {
+		level: -1,
+		type: "",
+		name: "",
+		byteSize: 0,
+		version: 0,
+		children: []
+	};
+	const stack = [fakeRoot];
+	let parent = fakeRoot;
+	let prev = fakeRoot;
+	for (const node of nodes) {
+		if (node.level > prev.level) {
+			stack.push(parent);
+			parent = prev;
+		} else if (node.level < prev.level) while (node.level <= parent.level) parent = stack.pop();
+		parent.children.push(node);
+		prev = node;
+	}
+	return fakeRoot.children[0];
+}
+function parseTypeTree(reader, version) {
+	const fakeRoot = {
+		level: -1,
+		type: "",
+		name: "",
+		byteSize: 0,
+		version: 0,
+		children: []
+	};
+	const stack = [{
+		parent: fakeRoot,
+		count: 1
+	}];
+	while (stack.length > 0) {
+		const item = stack[stack.length - 1];
+		if (item.count === 1) stack.pop();
+		else item.count--;
+		const node = {
+			level: item.parent.level + 1,
+			type: reader.readStringToNull(),
+			name: reader.readStringToNull(),
+			byteSize: reader.readInt(),
+			version: 0,
+			typeFlags: 0,
+			metaFlag: 0,
+			children: []
+		};
+		if (version === 2) reader.readInt();
+		if (version !== 3) node.index = reader.readInt();
+		node.typeFlags = reader.readInt();
+		node.version = reader.readInt();
+		if (version !== 3) node.metaFlag = reader.readInt();
+		item.parent.children.push(node);
+		const childrenCount = reader.readInt();
+		if (childrenCount > 0) stack.push({
+			parent: node,
+			count: childrenCount
+		});
+	}
+	return fakeRoot.children[0];
+}
+function parseSerializedType(reader, headerVersion, enableTypeTree, isRefType) {
+	const classId = reader.readInt();
+	const result = {
+		classId,
+		scriptTypeIndex: -1
+	};
+	if (headerVersion >= 16) result.isStrippedType = reader.readBoolean();
+	if (headerVersion >= 17) result.scriptTypeIndex = reader.readShort();
+	if (headerVersion >= 13) {
+		if (isRefType && result.scriptTypeIndex >= 0 || headerVersion < 16 && classId < 0 || headerVersion >= 16 && classId === 114) result.scriptId = reader.readBytes(16);
+		result.oldTypeHash = reader.readBytes(16);
+	}
+	if (enableTypeTree) {
+		if (headerVersion >= 23) {
+			reader.readBytes(16);
+			const typeTreeSize = reader.readUInt();
+			if (typeTreeSize > reader.length - reader.position) throw new Error(`Type tree size out of range: ${typeTreeSize}`);
+			if (typeTreeSize > 0) result.node = parseTypeTreeBlob(new EndianBinaryReader(reader.readBytes(typeTreeSize), reader.endian), headerVersion);
+		} else if (headerVersion >= 12 || headerVersion === 10) result.node = parseTypeTreeBlob(reader, headerVersion);
+		else result.node = parseTypeTree(reader, headerVersion);
+		if (headerVersion >= 21) if (isRefType) {
+			result.className = reader.readStringToNull();
+			result.nameSpace = reader.readStringToNull();
+			result.assemblyName = reader.readStringToNull();
+		} else result.typeDependencies = reader.readIntArray();
+	}
+	return result;
+}
+function parseObjectInfo(reader, headerVersion, bigIdEnabled, types, dataOffset) {
+	let pathId;
+	if (bigIdEnabled) pathId = reader.readLong();
+	else if (headerVersion < 14) pathId = reader.readInt();
+	else {
+		reader.alignStream();
+		pathId = reader.readLong();
+	}
+	let byteStart;
+	if (headerVersion >= 22) byteStart = Number(reader.readLong());
+	else byteStart = reader.readUInt();
+	byteStart += dataOffset;
+	const byteSize = reader.readUInt();
+	const typeId = reader.readInt();
+	let classId;
+	let serializedType;
+	if (headerVersion < 16) {
+		classId = reader.readUShort();
+		for (const typ of types) if (typ.classId === typeId) {
+			serializedType = typ;
+			break;
+		}
+	} else {
+		serializedType = types[typeId];
+		classId = serializedType?.classId ?? 0;
+	}
+	if (headerVersion < 11) reader.readUShort();
+	if (headerVersion >= 11 && headerVersion < 17) {
+		const scriptTypeIndex = reader.readShort();
+		if (serializedType) serializedType.scriptTypeIndex = scriptTypeIndex;
+	}
+	if (headerVersion === 15 || headerVersion === 16) reader.readByte();
+	return {
+		pathId,
+		byteStart,
+		byteSize,
+		typeId,
+		classId,
+		serializedType
+	};
+}
+var K_ALIGN_BYTES = 16384;
+function metaflagIsAligned(metaFlag) {
+	return ((metaFlag ?? 0) & K_ALIGN_BYTES) !== 0;
+}
+var PRIMITIVE_READ_MAP = {
+	SInt8: (r) => r.readByte(),
+	UInt8: (r) => r.readUByte(),
+	char: (r) => r.readUByte(),
+	short: (r) => r.readShort(),
+	SInt16: (r) => r.readShort(),
+	"unsigned short": (r) => r.readUShort(),
+	UInt16: (r) => r.readUShort(),
+	int: (r) => r.readInt(),
+	SInt32: (r) => r.readInt(),
+	"unsigned int": (r) => r.readUInt(),
+	UInt32: (r) => r.readUInt(),
+	"Type*": (r) => r.readUInt(),
+	"long long": (r) => r.readLong(),
+	SInt64: (r) => r.readLong(),
+	"unsigned long long": (r) => r.readULong(),
+	UInt64: (r) => r.readULong(),
+	FileSize: (r) => r.readULong(),
+	float: (r) => r.readFloat(),
+	double: (r) => r.readDouble(),
+	bool: (r) => r.readBoolean(),
+	string: (r) => r.readAlignedString(),
+	TypelessData: (r) => r.readByteArray()
+};
+function readValue(node, reader) {
+	let align = metaflagIsAligned(node.metaFlag);
+	const primitiveReader = PRIMITIVE_READ_MAP[node.type];
+	if (primitiveReader) {
+		const value = primitiveReader(reader);
+		if (align) reader.alignStream();
+		return value;
+	}
+	if (node.type === "pair") {
+		const first = readValue(node.children[0], reader);
+		const second = readValue(node.children[1], reader);
+		if (align) reader.alignStream();
+		return [first, second];
+	}
+	if (node.children.length > 0 && node.children[0].type === "Array") {
+		const arrayNode = node.children[0];
+		if (metaflagIsAligned(arrayNode.metaFlag)) align = true;
+		const size = reader.readInt();
+		if (size < 0) throw new Error("Negative array size");
+		const subtype = arrayNode.children[1];
+		const result = [];
+		for (let i = 0; i < size; i++) result.push(readValue(subtype, reader));
+		if (align) reader.alignStream();
+		return result;
+	}
+	const result = {};
+	for (const child of node.children) result[child.name] = readValue(child, reader);
+	if (align) reader.alignStream();
+	return result;
+}
+function parseSerializedFile(buffer) {
+	const reader = new EndianBinaryReader(buffer, "big");
+	const header = {
+		metadataSize: reader.readUInt(),
+		fileSize: reader.readUInt(),
+		version: reader.readUInt(),
+		dataOffset: reader.readUInt(),
+		endian: "big",
+		reserved: Buffer.alloc(3)
+	};
+	if (header.version >= 9) {
+		header.endian = reader.readBoolean() ? "big" : "little";
+		header.reserved = reader.readBytes(3);
+		if (header.version >= 22) {
+			header.metadataSize = reader.readUInt();
+			header.fileSize = Number(reader.readLong());
+			header.dataOffset = Number(reader.readLong());
+			reader.readLong();
+		}
+	} else {
+		reader.position = header.fileSize - header.metadataSize;
+		header.endian = reader.readBoolean() ? "big" : "little";
+	}
+	reader.endian = header.endian;
+	let unityVersion = "2.5.0f5";
+	if (header.version >= 7) unityVersion = reader.readStringToNull();
+	let targetPlatform = 0;
+	if (header.version >= 8) targetPlatform = reader.readInt();
+	let enableTypeTree = true;
+	if (header.version >= 13) enableTypeTree = reader.readBoolean();
+	const typeCount = reader.readInt();
+	const types = [];
+	for (let i = 0; i < typeCount; i++) types.push(parseSerializedType(reader, header.version, enableTypeTree, false));
+	let bigIdEnabled = false;
+	if (header.version >= 7 && header.version < 14) bigIdEnabled = reader.readInt() !== 0;
+	const objectCount = reader.readInt();
+	const objects = /* @__PURE__ */ new Map();
+	for (let i = 0; i < objectCount; i++) {
+		const obj = parseObjectInfo(reader, header.version, bigIdEnabled, types, header.dataOffset);
+		objects.set(obj.pathId, obj);
+	}
+	return {
+		header,
+		unityVersion,
+		targetPlatform,
+		enableTypeTree,
+		types,
+		objects,
+		bigIdEnabled
+	};
+}
+function readObjectData(buffer, file, obj) {
+	if (!obj.serializedType?.node) throw new Error(`No type tree for object with classId ${obj.classId}`);
+	const reader = new EndianBinaryReader(buffer, file.header.endian);
+	reader.position = obj.byteStart;
+	return readValue(obj.serializedType.node, reader);
+}
+/**
+* Convert BigInt values to numbers/strings for JSON serialization
+*/
+function serializeValue(value) {
+	if (value === null || value === void 0) return null;
+	if (typeof value === "bigint") return Number.isSafeInteger(Number(value)) ? Number(value) : value.toString();
+	if (Buffer.isBuffer(value)) return value.toString("hex");
+	if (Array.isArray(value)) return value.map(serializeValue);
+	if (typeof value === "object") {
+		const result = {};
+		for (const [key, val] of Object.entries(value)) result[key] = serializeValue(val);
+		return result;
+	}
+	return value;
+}
+async function readUnityAsset(filePath) {
+	const buffer = await i.readFile(filePath);
+	const file = parseSerializedFile(buffer);
+	let settings = {};
+	for (const [, obj] of file.objects) {
+		if (!obj.serializedType?.node) continue;
+		settings = serializeValue(readObjectData(buffer, file, obj));
+		break;
+	}
+	return {
+		filePath,
+		unityVersion: file.unityVersion,
+		targetPlatform: file.targetPlatform,
+		settings
+	};
+}
+var BUILD_TARGET_MAP = {
+	2: "StandaloneOSX",
+	5: "StandaloneWindows",
+	9: "iOS",
+	13: "Android",
+	19: "StandaloneWindows64",
+	20: "WebGL",
+	21: "WSAPlayer",
+	24: "StandaloneLinux64",
+	31: "PS4",
+	33: "XboxOne",
+	37: "tvOS",
+	38: "Switch",
+	41: "LinuxHeadlessSimulation",
+	42: "GameCoreXboxSeries",
+	43: "GameCoreXboxOne",
+	44: "PS5",
+	45: "EmbeddedLinux",
+	46: "QNX",
+	47: "VisionOS",
+	48: "Switch2",
+	49: "Kepler"
+};
+async function getEditorBuildTarget(assetPath) {
+	try {
+		const { settings } = await readUnityAsset(assetPath);
+		if (settings && typeof settings === "object" && "m_ActiveBuildTarget" in settings) {
+			const buildTargetValue = settings.m_ActiveBuildTarget;
+			if (typeof buildTargetValue === "number") {
+				const buildTargetName = BUILD_TARGET_MAP[buildTargetValue];
+				if (buildTargetName) return buildTargetName;
+				logger$31.warn(`Unknown build target value: ${buildTargetValue}`);
+				return;
+			}
+		}
+		logger$31.warn(`Could not find m_ActiveBuildTarget in ${assetPath}`);
+		return;
+	} catch (error) {
+		if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+			logger$31.debug(`EditorUserBuildSettings.asset not found for ${assetPath} - project may not have been opened in Unity yet`);
+			return;
+		}
+		logger$31.error(`Failed to read EditorUserBuildSettings.asset from ${assetPath}`, error);
+		return;
+	}
+}
+//#endregion

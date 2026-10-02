@@ -1,0 +1,246 @@
+//#region src/main/services/editorManager/cdnReleaseService.ts
+var logger$9 = loggerFactory("CdnReleaseService");
+/**
+* Base URL for the Unity download CDN.
+*/
+var CDN_BASE_URL = "https://download.unity3d.com/download_unity";
+/**
+* Beta CDN URL for alpha and beta releases.
+*/
+var BETA_CDN_BASE_URL = "https://beta.unity3d.com/download";
+/**
+* Determines if a version is alpha or beta based on version string.
+*/
+function isPreRelease(version) {
+	return version.includes("a") || version.includes("b");
+}
+/**
+* Gets the appropriate CDN base URL for a given version.
+*/
+function getCdnBaseUrl(version) {
+	return isPreRelease(version) ? BETA_CDN_BASE_URL : CDN_BASE_URL;
+}
+/**
+* Determines the release type from the version string.
+*/
+function getReleaseTypeFromVersion(version) {
+	if (version.includes("a")) return EDITOR_RELEASE_TYPES.ALPHA;
+	if (version.includes("b")) return EDITOR_RELEASE_TYPES.BETA;
+	return EDITOR_RELEASE_TYPES.OFFICIAL;
+}
+/**
+* Builds the URL for the release.json file for a given revision hash.
+*/
+function buildReleaseJsonUrl(revisionHash, version) {
+	return `${version ? getCdnBaseUrl(version) : CDN_BASE_URL}/${revisionHash}/release.json`;
+}
+/**
+* Builds the URL for a manifest file.
+*/
+function buildManifestFileUrl(revisionHash, fileName, version) {
+	return `${version ? getCdnBaseUrl(version) : CDN_BASE_URL}/${revisionHash}/${fileName}`;
+}
+/**
+* Builds the full download URL from a relative path.
+*/
+function buildFullDownloadUrl(revisionHash, relativePath, version) {
+	return `${version ? getCdnBaseUrl(version) : CDN_BASE_URL}/${revisionHash}/${relativePath}`;
+}
+/**
+* Fetches the release.json from the CDN for a given revision hash.
+* @param revisionHash The revision hash (SHA) to fetch the release.json for.
+* @param version Optional version string to determine the correct CDN URL.
+* @returns The parsed CdnReleaseJson or null if not found/invalid.
+*/
+async function fetchCdnReleaseJson(revisionHash, version) {
+	const url = buildReleaseJsonUrl(revisionHash, version);
+	logger$9.info(`Fetching CDN release.json from: ${url}`);
+	const systemInfo = mainContainer.get(ISystemInfoId);
+	try {
+		const response = await fetch(url, { headers: {
+			"User-Agent": `hub ${systemInfo.hubVersion()}`,
+			Accept: "application/json"
+		} });
+		if (response.status === 404) {
+			logger$9.info(`CDN release.json not found at: ${url}`);
+			return null;
+		}
+		if (!response.ok) {
+			logger$9.warn(`Failed to fetch CDN release.json from: ${url}, status: ${response.status}`);
+			return null;
+		}
+		const data = await response.json();
+		if (!data?.version || !data?.manifests) {
+			logger$9.warn(`CDN release.json is missing required fields: ${url}`);
+			return null;
+		}
+		logger$9.info(`Successfully fetched CDN release.json for version: ${data.version}`);
+		return data;
+	} catch (error) {
+		logger$9.warn(`Failed to fetch CDN release.json from: ${url}`, error);
+		return null;
+	}
+}
+/**
+* Fetches a manifest file from the CDN.
+* @param revisionHash The revision hash.
+* @param fileName The manifest file name (e.g., "unity-mac_os-arm64.json").
+* @param version Optional version string.
+* @returns The parsed manifest file or null if not found.
+*/
+async function fetchManifestFile(revisionHash, fileName, version) {
+	const url = buildManifestFileUrl(revisionHash, fileName, version);
+	logger$9.info(`Fetching CDN manifest file from: ${url}`);
+	const systemInfo = mainContainer.get(ISystemInfoId);
+	try {
+		const response = await fetch(url, { headers: {
+			"User-Agent": `hub ${systemInfo.hubVersion()}`,
+			Accept: "application/json"
+		} });
+		if (response.status === 404) {
+			logger$9.info(`CDN manifest file not found at: ${url}`);
+			return null;
+		}
+		if (!response.ok) {
+			logger$9.warn(`Failed to fetch CDN manifest file from: ${url}, status: ${response.status}`);
+			return null;
+		}
+		const data = await response.json();
+		if (!data?.url) {
+			logger$9.warn(`CDN manifest file is missing required fields: ${url}`);
+			return null;
+		}
+		logger$9.info(`Successfully fetched CDN manifest file: ${fileName}`);
+		return data;
+	} catch (error) {
+		logger$9.warn(`Failed to fetch CDN manifest file from: ${url}`, error);
+		return null;
+	}
+}
+/**
+* Validates that the version from the release.json matches the expected version.
+* @param releaseJson The fetched release.json data.
+* @param expectedVersion The version expected from the deeplink.
+* @returns True if versions match, false otherwise.
+*/
+function validateVersion(releaseJson, expectedVersion) {
+	const matches = releaseJson.version === expectedVersion;
+	if (!matches) logger$9.warn(`CDN release.json version mismatch: expected ${expectedVersion}, got ${releaseJson.version}`);
+	return matches;
+}
+/**
+* Finds the manifest entry for the current platform and specified architecture.
+* @param releaseJson The release.json data.
+* @param architecture The chip architecture to find the manifest for.
+* @returns The manifest entry or null if not found.
+*/
+function findManifestEntry(releaseJson, architecture) {
+	const cdnPlatform = ProcessPlatformToCdnPlatform[process$1.platform];
+	if (!cdnPlatform) {
+		logger$9.warn(`Unsupported platform: ${process$1.platform}`);
+		return null;
+	}
+	const cdnArchitecture = ChipArchitectureToCdnArchitecture[architecture];
+	const entry = releaseJson.manifests.find((m) => m.platform === cdnPlatform && m.architecture === cdnArchitecture);
+	if (!entry) {
+		logger$9.info(`No manifest entry found for ${cdnPlatform}/${cdnArchitecture} in CDN release.json`);
+		return null;
+	}
+	logger$9.info(`Found manifest entry for ${cdnPlatform}/${cdnArchitecture}: ${entry.fileName}`);
+	return entry;
+}
+/**
+* Maps a CDN manifest file to an EditorRelease object.
+* @param releaseJson The release.json data.
+* @param manifestFile The fetched manifest file.
+* @param revisionHash The revision hash for this release.
+* @returns The mapped EditorRelease object.
+*/
+async function mapManifestToEditorRelease(releaseJson, manifestFile, revisionHash) {
+	const architecture = CdnArchitectureToChipArchitecture[manifestFile.architecture];
+	const downloadUrl = buildFullDownloadUrl(revisionHash, manifestFile.url, releaseJson.version);
+	let modules = manifestFile.modules ? manifestFile.modules.flatMap((module) => mapCdnModuleToInstallModule(module, revisionHash)) : [];
+	modules = await mainContainer.get(IVisualStudioServiceId).getModulesThatRespectVisualStudioStatus(modules);
+	const releaseType = getReleaseTypeFromVersion(releaseJson.version);
+	const isLts = releaseJson.version.includes("f") && !releaseJson.version.includes("a") && !releaseJson.version.includes("b");
+	return {
+		architecture,
+		version: releaseJson.version,
+		productName: releaseJson.productName ?? releaseJson.version,
+		releaseType,
+		downloadUrl,
+		lts: isLts,
+		downloadSize: manifestFile.downloadSize?.value ?? 0,
+		installedSize: manifestFile.installedSize?.value ?? 0,
+		checksum: manifestFile.integrity ?? "",
+		modules,
+		parent: "",
+		revisionHash,
+		isRecommended: mainContainer.get(ISystemInfoId).isSystemArchitecture(architecture)
+	};
+}
+/**
+* Fetches editor release information from the CDN release.json.
+* This is the main entry point for getting release info from CDN.
+*
+* @param version The expected Unity version.
+* @param revisionHash The revision hash (SHA) to fetch.
+* @param architecture The chip architecture to get the manifest for.
+* @returns The EditorRelease if found and valid, null otherwise.
+*/
+async function fetchEditorReleaseFromCdn(version, revisionHash, architecture) {
+	logger$9.info(`Attempting to fetch editor release from CDN for version: ${version}, hash: ${revisionHash}, arch: ${architecture}`);
+	const releaseJson = await fetchCdnReleaseJson(revisionHash, version);
+	if (!releaseJson) {
+		logger$9.info("CDN release.json not available, will try other sources");
+		return null;
+	}
+	if (!validateVersion(releaseJson, version)) {
+		logger$9.warn("CDN release.json version mismatch, will try other sources");
+		return null;
+	}
+	const manifestEntry = findManifestEntry(releaseJson, architecture);
+	if (!manifestEntry) {
+		logger$9.info("No matching manifest entry found in CDN release.json, will try other sources");
+		return null;
+	}
+	const manifestFile = await fetchManifestFile(revisionHash, manifestEntry.fileName, version);
+	if (!manifestFile) {
+		logger$9.info("Failed to fetch manifest file from CDN, will try other sources");
+		return null;
+	}
+	const editorRelease = await mapManifestToEditorRelease(releaseJson, manifestFile, revisionHash);
+	logger$9.info(`Successfully fetched editor release from CDN for version: ${version}`);
+	return editorRelease;
+}
+/**
+* Fetches editor releases for multiple architectures from the CDN release.json.
+* @param version The expected Unity version.
+* @param revisionHash The revision hash (SHA) to fetch.
+* @param architectures The chip architectures to get manifests for.
+* @returns Array of EditorRelease objects for each available architecture.
+*/
+async function fetchEditorReleasesFromCdn(version, revisionHash, architectures) {
+	logger$9.info(`Attempting to fetch editor releases from CDN for version: ${version}, hash: ${revisionHash}, architectures: ${architectures.join(", ")}`);
+	const releaseJson = await fetchCdnReleaseJson(revisionHash, version);
+	if (!releaseJson) {
+		logger$9.info("CDN release.json not available, will try other sources");
+		return [];
+	}
+	if (!validateVersion(releaseJson, version)) {
+		logger$9.warn("CDN release.json version mismatch, will try other sources");
+		return [];
+	}
+	const manifestPromises = architectures.map(async (architecture) => {
+		const manifestEntry = findManifestEntry(releaseJson, architecture);
+		if (!manifestEntry) return null;
+		const manifestFile = await fetchManifestFile(revisionHash, manifestEntry.fileName, version);
+		if (!manifestFile) return null;
+		return mapManifestToEditorRelease(releaseJson, manifestFile, revisionHash);
+	}).filter((promise) => promise !== null);
+	const releases = (await Promise.all(manifestPromises)).filter((release) => release !== null);
+	if (releases.length > 0) logger$9.info(`Successfully fetched ${releases.length} editor release(s) from CDN for version: ${version}`);
+	else logger$9.info("No matching manifests found in CDN release.json for requested architectures");
+	return releases;
+}
+//#endregion

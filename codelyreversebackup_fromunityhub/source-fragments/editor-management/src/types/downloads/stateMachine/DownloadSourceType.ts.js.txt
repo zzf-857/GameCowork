@@ -1,0 +1,8 @@
+//#region src/types/downloads/stateMachine/DownloadSourceType.ts
+var DOWNLOAD_SOURCE_TYPES = {
+	HTTP: "HTTP",
+	FTP: "FTP",
+	SFTP: "SFTP",
+	NFS: "NFS"
+};
+//#endregion

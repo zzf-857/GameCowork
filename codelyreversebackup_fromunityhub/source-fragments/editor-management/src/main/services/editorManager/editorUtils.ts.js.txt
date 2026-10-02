@@ -1,0 +1,81 @@
+//#region src/main/services/editorManager/editorUtils.ts
+var editorUtilsPlatforms;
+switch (os.platform()) {
+	case "darwin": {
+		const { editorUtils } = await import("./editorUtils_darwin-CGgyFInr.js");
+		editorUtilsPlatforms = editorUtils;
+		break;
+	}
+	case "linux": {
+		const { editorUtils } = await import("./editorUtils_linux-BVjtmqoz.js");
+		editorUtilsPlatforms = editorUtils;
+		break;
+	}
+	case "win32": {
+		const { editorUtils } = await import("./editorUtils_win32-BkuOZZ_g.js");
+		editorUtilsPlatforms = editorUtils;
+		break;
+	}
+	default: throw new Error(`Platform ${os.platform()} not supported`);
+}
+var logger$8 = loggerFactory("EditorManager::Utils");
+/**
+* Reading from the ivy file like the editor does in BuildPlatform.cs
+* On mac, playback engines are in 2 places:
+* 2017.1.0f1/PlaybackEngines or
+* 2017.1.0f1/Unity.app/Contents/PlaybackEngines (contains the default mac standalone support platform)
+*
+* On windows, playback engines are only in 1 place:
+* 2017.1.0f1/Editor/Data/PlaybackEngines
+*
+* The editor finds the list of platforms by finding all the folders under Data/PlaybackEngines
+* and ready an ivy file under each folder.
+* The ivy file is available since Unity 4.5.0
+*/
+async function findBuildPlatformInfo(editorPath) {
+	const platformsPath = editorUtilsPlatforms.getPlaybackEnginesPathsFromFolder(editorPath);
+	return (await Promise.allSettled(platformsPath.map((platformPath) => findBuildPlatformsPerPath(platformPath)))).reduce((acc, result) => {
+		if (result.status === "fulfilled") acc.push(...result.value);
+		else logger$8.warn(`An error occurred while trying to find the platforms of ${editorPath}`, result.reason);
+		return acc;
+	}, []);
+}
+async function findBuildPlatformsPerPath(platformsPath) {
+	return (await getBuildPlatformFromFolder(platformsPath))?.filter((entry) => typeof entry === "object") ?? [];
+}
+/**
+* @param platformsPath
+*/
+async function getBuildPlatformFromFolder(platformsPath) {
+	let folders = [];
+	try {
+		folders = await fs.promises.readdir(platformsPath);
+	} catch (e) {
+		if (e.code !== "ENOENT") throw e;
+		logger$8.debug(`No platform found in ${platformsPath}`);
+	}
+	return folders.map((folder) => {
+		const buildPlatform = getBuildPlatform(folder);
+		if (buildPlatform && typeof buildPlatform === "object") return buildPlatform;
+	}).filter((entry) => typeof entry === "object" && entry !== null);
+}
+/**
+* Platform available
+* @param platformsPath
+*/
+function getBuildPlatform(platformsPath) {
+	const result = find(buildTarget_default, { dirName: path.basename(platformsPath) });
+	if (!result) return null;
+	if (result.buildTargetGroup) result.buildTarget = editorUtilsPlatforms.getOSBuildTarget();
+	return result;
+}
+var editorUtils = {
+	findBuildPlatforms(editorPath) {
+		return findBuildPlatformInfo(path.dirname(editorPath));
+	},
+	findEditorArchitecture(_editorPath) {
+		return Promise.resolve(CHIP_ARCHITECTURES.X86_64);
+	},
+	...editorUtilsPlatforms
+};
+//#endregion

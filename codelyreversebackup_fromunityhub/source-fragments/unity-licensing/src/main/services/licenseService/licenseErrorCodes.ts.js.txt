@@ -1,0 +1,28 @@
+//#region src/main/services/licenseService/licenseErrorCodes.ts
+var AssignedLicenseResponseCode = {
+	MaximumLicenseActivationsCode: 404003,
+	NotActivatedBecauseOfDependencyFailure: 424001,
+	AssignSeat: 200,
+	TimeoutCode: 1500
+};
+var LicenseComplianceResponseCode = {
+	GenesisPeRestrictedCode: 20128,
+	GenesisPeRevokedCode: 20129,
+	NonCompliantLicenseWarningCode: 299,
+	NonCompliantLicenseRestrictedCode: 403,
+	NonCompliantLicenseRefreshCode: 448,
+	NonCompliantLicenseActivateCode: 422
+};
+var UlfActivationResponseCode = {
+	MaximumActivationLimitReached: 20111,
+	InvalidSerial: 20110,
+	SerialDoesNotBelongToUser: 20100,
+	SerialExpired: 20113,
+	UlfNotFoundCode: 1404,
+	RestrictedSeatDebt: 20130,
+	RestrictedSeatComingler: 20131,
+	RestrictedSeatDunning: 20132,
+	RestrictedSeatRevenue: 20133
+};
+var UlfReturnResponseCode = { ActivatedManually: 20124 };
+//#endregion

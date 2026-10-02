@@ -1,0 +1,8 @@
+//#region src/types/installs/frontend/InstallLocateError.ts
+var INSTALL_LOCATE_ERRORS = {
+	NOT_AN_APP: "ERROR.NOT_AN_APP",
+	NOT_AN_UNITY_APP: "ERROR.NOT_AN_UNITY_APP",
+	APP_NOT_SIGNED: "ERROR.NOT_SIGNED",
+	ALREADY_IN_LIST: "ERROR.EDITOR_ALREADY_IN_LIST"
+};
+//#endregion

@@ -1,0 +1,369 @@
+//#region src/main/services/downloadEngine/utilities/DownloadPersistence.ts
+var persistenceLogger = loggerFactory("Download Persistence");
+var PAUSED_DOWNLOADS_FILENAME = "paused-downloads.json";
+/**
+* The persisted status of a download item.
+* - 'paused': The download was paused by the user and has partial progress
+* - 'queued': The download was in queue and hasn't started yet
+* - 'install-queued': The download finished and is waiting for installation
+*/
+var PERSISTED_STATUSES = {
+	PAUSED: "paused",
+	QUEUED: "queued",
+	INSTALL_QUEUED: "install-queued"
+};
+var DownloadPersistence = class DownloadPersistence {
+	static SCHEMA_VERSION = 1;
+	static MAX_PERSISTED_AGE_MS = 10080 * 60 * 1e3;
+	/**
+	* Proper mutex to prevent concurrent read/write operations that could cause data loss.
+	* Using async-mutex library for reliable lock acquisition and release.
+	* This prevents race conditions when multiple downloads are queued/paused simultaneously.
+	*/
+	static mutex = new Mutex();
+	/**
+	* Acquire the persistence lock and execute an operation.
+	* This ensures only one persistence operation runs at a time.
+	* Uses proper mutex that handles error cases and prevents deadlocks.
+	*/
+	static async withLock(operation) {
+		const release = await DownloadPersistence.mutex.acquire();
+		try {
+			return await operation();
+		} finally {
+			release();
+		}
+	}
+	/**
+	* Save one or more downloads to persistent storage in a single atomic operation.
+	* When saving multiple items, this prevents race conditions that can occur when
+	* saving items one by one, where concurrent removeDownload() calls could interleave
+	* and cause lost updates.
+	*/
+	static async saveDownload(itemOrItems) {
+		const items = Array.isArray(itemOrItems) ? itemOrItems : [itemOrItems];
+		if (items.length === 0) return;
+		return DownloadPersistence.withLock(async () => {
+			try {
+				const existing = await DownloadPersistence.loadAllDownloadsUnsafe();
+				const itemsToSaveMap = /* @__PURE__ */ new Map();
+				for (const item of items) itemsToSaveMap.set(item.metadata.uid, {
+					...item,
+					timestamp: Date.now()
+				});
+				const updatedDownloads = [...existing.downloads.filter((download) => !itemsToSaveMap.has(download.metadata.uid)), ...itemsToSaveMap.values()];
+				await mainContainer.get(IJsonStorageId).set(PAUSED_DOWNLOADS_FILENAME, {
+					downloads: updatedDownloads,
+					version: DownloadPersistence.SCHEMA_VERSION
+				});
+				const statusCounts = items.reduce((acc, item) => {
+					const status = item.status ?? PERSISTED_STATUSES.PAUSED;
+					acc[status] = (acc[status] || 0) + 1;
+					return acc;
+				}, {});
+				const statusSummary = Object.entries(statusCounts).map(([status, count]) => `${count} ${status}`).join(", ");
+				persistenceLogger.info(`Saved ${items.length} download(s) (${statusSummary}) in batch (total: ${updatedDownloads.length})`);
+			} catch (error) {
+				persistenceLogger.error(`Failed to save downloads in batch: ${error}`);
+				throw error;
+			}
+		});
+	}
+	/**
+	* Load all persisted paused downloads (with lock protection)
+	*/
+	static async loadAllDownloads() {
+		return DownloadPersistence.withLock(() => DownloadPersistence.loadAllDownloadsUnsafe());
+	}
+	/**
+	* Internal method to load downloads without acquiring the lock.
+	* Used by other methods that already hold the lock.
+	*/
+	static async loadAllDownloadsUnsafe() {
+		try {
+			const data = await mainContainer.get(IJsonStorageId).get(PAUSED_DOWNLOADS_FILENAME);
+			if (!data || !data.downloads) return {
+				downloads: [],
+				version: DownloadPersistence.SCHEMA_VERSION
+			};
+			const now = Date.now();
+			return {
+				downloads: data.downloads.filter((download) => {
+					const age = now - download.timestamp;
+					if (age > DownloadPersistence.MAX_PERSISTED_AGE_MS) {
+						persistenceLogger.info(`Removing stale paused download: ${download.metadata.uid} (age: ${Math.round(age / (1440 * 60 * 1e3))} days)`);
+						return false;
+					}
+					return true;
+				}),
+				version: data.version
+			};
+		} catch (error) {
+			persistenceLogger.error(`Failed to load paused downloads: ${error}`);
+			return {
+				downloads: [],
+				version: DownloadPersistence.SCHEMA_VERSION
+			};
+		}
+	}
+	/**
+	* Result of loading and validating persisted downloads.
+	* Includes both valid downloads and information about lost downloads for user notification.
+	*/
+	static async loadValidDownloadsWithLostInfo() {
+		const { downloads } = await DownloadPersistence.loadAllDownloads();
+		const validDownloads = [];
+		const lostDownloads = [];
+		const queuedDownloads = downloads.filter((item) => item.status === PERSISTED_STATUSES.QUEUED);
+		const installQueuedDownloads = downloads.filter((item) => item.status === PERSISTED_STATUSES.INSTALL_QUEUED);
+		const pausedDownloads = downloads.filter((item) => item.status !== PERSISTED_STATUSES.QUEUED && item.status !== PERSISTED_STATUSES.INSTALL_QUEUED);
+		for (const download of queuedDownloads) {
+			validDownloads.push(download);
+			persistenceLogger.info(`Valid queued download found: ${download.metadata.uid}`);
+		}
+		for (const download of installQueuedDownloads) {
+			validDownloads.push(download);
+			persistenceLogger.info(`Valid install-queued item found: ${download.metadata.uid}`);
+		}
+		const fileInfoResults = await Promise.all(pausedDownloads.map(async (download) => {
+			const partialFilePathWithExt = DownloadPersistence.getPartialFilePath(download.metadata);
+			const partialFilePathWithoutExt = partialFilePathWithExt.replace(/\.download$/, "");
+			try {
+				let existsWithExt = false;
+				try {
+					await import_lib.default.access(partialFilePathWithExt);
+					existsWithExt = true;
+				} catch {}
+				let existsWithoutExt = false;
+				if (!existsWithExt) try {
+					await import_lib.default.access(partialFilePathWithoutExt);
+					existsWithoutExt = true;
+				} catch {}
+				if (!existsWithExt && !existsWithoutExt) return {
+					download,
+					status: "missing",
+					paths: {
+						withExt: partialFilePathWithExt,
+						withoutExt: partialFilePathWithoutExt
+					}
+				};
+				const actualPath = existsWithExt ? partialFilePathWithExt : partialFilePathWithoutExt;
+				try {
+					return {
+						download,
+						status: "found",
+						actualPath,
+						stats: await import_lib.default.stat(actualPath)
+					};
+				} catch (statError) {
+					persistenceLogger.warn(`Failed to stat partial file ${actualPath}: ${statError}`);
+					return {
+						download,
+						status: "found-no-stats",
+						actualPath
+					};
+				}
+			} catch (error) {
+				return {
+					download,
+					status: "error",
+					error
+				};
+			}
+		}));
+		const downloadsToRemove = [];
+		for (const result of fileInfoResults) {
+			const { download } = result;
+			const displayName = download.metadata.itemDisplayName ?? download.metadata.uid;
+			if (result.status === "missing") {
+				persistenceLogger.warn(`Partial file not found for paused download: ${download.metadata.uid} - checked ${result.paths.withExt} and ${result.paths.withoutExt}`);
+				lostDownloads.push({
+					name: displayName,
+					uid: download.metadata.uid,
+					reason: "download:ERROR_PARTIAL_FILE_MISSING"
+				});
+				downloadsToRemove.push(download.metadata.uid);
+			} else if (result.status === "error") {
+				persistenceLogger.error(`Error checking partial file for ${download.metadata.uid}: ${result.error}`);
+				lostDownloads.push({
+					name: displayName,
+					uid: download.metadata.uid,
+					reason: "download:ERROR_PARTIAL_FILE_CHECK_FAILED"
+				});
+			} else if (result.status === "found-no-stats") {
+				validDownloads.push(download);
+				persistenceLogger.info(`Valid paused download found: ${download.metadata.uid} (${Math.round(download.progress?.progress ?? 0)}%) at ${result.actualPath}`);
+			} else {
+				const { stats, actualPath } = result;
+				if (stats.size === 0) {
+					persistenceLogger.warn(`Partial file is empty for ${download.metadata.uid}: ${actualPath}`);
+					lostDownloads.push({
+						name: displayName,
+						uid: download.metadata.uid,
+						reason: "download:ERROR_PARTIAL_FILE_EMPTY"
+					});
+					downloadsToRemove.push(download.metadata.uid);
+				} else {
+					const expectedBytes = download.metadata.lastChecksumValue?.bytes ?? download.progress?.downloaded;
+					if (expectedBytes !== void 0) {
+						const MAX_SIZE_TOLERANCE = 64 * 1024;
+						const sizeDiff = stats.size - expectedBytes;
+						if (sizeDiff < 0 || sizeDiff > MAX_SIZE_TOLERANCE) {
+							persistenceLogger.warn(`Partial file size mismatch for ${download.metadata.uid}: expected ${expectedBytes} bytes, got ${stats.size} bytes (diff: ${sizeDiff > 0 ? "+" : ""}${sizeDiff}) at ${actualPath}`);
+							lostDownloads.push({
+								name: displayName,
+								uid: download.metadata.uid,
+								reason: "download:ERROR_PARTIAL_FILE_SIZE_MISMATCH"
+							});
+							downloadsToRemove.push(download.metadata.uid);
+						} else {
+							if (sizeDiff > 0) persistenceLogger.info(`Paused download ${download.metadata.uid} has ${sizeDiff} extra bytes (within tolerance), will resume from checkpoint at ${expectedBytes} bytes`);
+							validDownloads.push(download);
+							persistenceLogger.info(`Valid paused download found: ${download.metadata.uid} (${Math.round(download.progress?.progress ?? 0)}%) at ${actualPath}`);
+						}
+					} else {
+						validDownloads.push(download);
+						persistenceLogger.info(`Valid paused download found: ${download.metadata.uid} (${Math.round(download.progress?.progress ?? 0)}%) at ${actualPath}`);
+					}
+				}
+			}
+		}
+		await DownloadPersistence.removeDownloads(downloadsToRemove);
+		return {
+			validDownloads,
+			lostDownloads
+		};
+	}
+	/**
+	* Load and validate persisted downloads, checking that partial files still exist for paused items.
+	* Queued items don't require partial files since they never started downloading.
+	* @deprecated Use loadValidDownloadsWithLostInfo() to also get information about lost downloads
+	*/
+	static async loadValidDownloads() {
+		const { validDownloads } = await DownloadPersistence.loadValidDownloadsWithLostInfo();
+		return validDownloads;
+	}
+	/**
+	* Remove a download from persistent storage
+	*/
+	static async removeDownload(uid) {
+		return DownloadPersistence.removeDownloads([uid]);
+	}
+	/**
+	* Remove multiple downloads from persistent storage in a single operation.
+	* More efficient than calling removeDownload() multiple times.
+	*/
+	static async removeDownloads(uids) {
+		if (uids.length === 0) return;
+		return DownloadPersistence.withLock(async () => {
+			try {
+				const existing = await DownloadPersistence.loadAllDownloadsUnsafe();
+				const uidsSet = new Set(uids);
+				const filtered = existing.downloads.filter((download) => !uidsSet.has(download.metadata.uid));
+				await mainContainer.get(IJsonStorageId).set(PAUSED_DOWNLOADS_FILENAME, {
+					downloads: filtered,
+					version: DownloadPersistence.SCHEMA_VERSION
+				});
+				persistenceLogger.info(`Removed ${uids.length} persisted download(s) (remaining: ${filtered.length})`);
+			} catch (error) {
+				persistenceLogger.error(`Failed to remove persisted downloads: ${error}`);
+			}
+		});
+	}
+	/**
+	* Clear all persisted downloads
+	*/
+	static async clearAll() {
+		return DownloadPersistence.withLock(async () => {
+			try {
+				await mainContainer.get(IJsonStorageId).set(PAUSED_DOWNLOADS_FILENAME, {
+					downloads: [],
+					version: DownloadPersistence.SCHEMA_VERSION
+				});
+				persistenceLogger.info("Cleared all persisted downloads");
+			} catch (error) {
+				persistenceLogger.error(`Failed to clear persisted downloads: ${error}`);
+			}
+		});
+	}
+	/**
+	* Verify that a partial file exists and is valid for resuming.
+	* Returns the path if valid, null if not found or invalid.
+	* Also indicates if the file is already complete (no download needed, just validation).
+	* This should be called before attempting to resume a download.
+	*/
+	static async verifyPartialFileForResume(metadata) {
+		const partialFilePathWithExt = DownloadPersistence.getPartialFilePath(metadata);
+		const partialFilePathWithoutExt = partialFilePathWithExt.replace(/\.download$/, "");
+		try {
+			let existsWithExt = false;
+			try {
+				await import_lib.default.access(partialFilePathWithExt);
+				existsWithExt = true;
+			} catch {}
+			let existsWithoutExt = false;
+			if (!existsWithExt) try {
+				await import_lib.default.access(partialFilePathWithoutExt);
+				existsWithoutExt = true;
+			} catch {}
+			if (!existsWithExt && !existsWithoutExt) return {
+				isValid: false,
+				path: null,
+				reason: "download:ERROR_PARTIAL_FILE_MISSING"
+			};
+			const actualPath = existsWithExt ? partialFilePathWithExt : partialFilePathWithoutExt;
+			try {
+				const stats = await import_lib.default.stat(actualPath);
+				if (stats.size === 0) return {
+					isValid: false,
+					path: actualPath,
+					reason: "download:ERROR_PARTIAL_FILE_EMPTY"
+				};
+				const totalSize = metadata.sourceSizeinBytes;
+				if (totalSize && stats.size >= totalSize) {
+					persistenceLogger.info(`Download ${metadata.uid} is already complete: file size ${stats.size} >= expected ${totalSize}`);
+					return {
+						isValid: true,
+						path: actualPath,
+						isAlreadyComplete: true
+					};
+				}
+				const expectedBytes = metadata.lastChecksumValue?.bytes;
+				if (expectedBytes !== void 0) {
+					const MAX_SIZE_TOLERANCE = 64 * 1024;
+					const sizeDiff = stats.size - expectedBytes;
+					if (sizeDiff < 0 || sizeDiff > MAX_SIZE_TOLERANCE) {
+						persistenceLogger.warn(`Partial file size mismatch for ${metadata.uid}: expected ${expectedBytes} bytes, got ${stats.size} bytes (diff: ${sizeDiff > 0 ? "+" : ""}${sizeDiff})`);
+						return {
+							isValid: false,
+							path: actualPath,
+							reason: "download:ERROR_PARTIAL_FILE_SIZE_MISMATCH"
+						};
+					}
+					if (sizeDiff > 0) persistenceLogger.info(`Paused download ${metadata.uid} has ${sizeDiff} extra bytes (within tolerance), will resume from checkpoint at ${expectedBytes} bytes`);
+				}
+			} catch (statError) {
+				persistenceLogger.warn(`Failed to stat partial file ${actualPath}: ${statError}`);
+			}
+			return {
+				isValid: true,
+				path: actualPath
+			};
+		} catch (error) {
+			persistenceLogger.error(`Error verifying partial file for ${metadata.uid}: ${error}`);
+			return {
+				isValid: false,
+				path: null,
+				reason: "download:ERROR_PARTIAL_FILE_CHECK_FAILED"
+			};
+		}
+	}
+	/**
+	* Get the path to the partial download file
+	*/
+	static getPartialFilePath(metadata) {
+		const fileName = metadata.type === DOWNLOAD_ITEM_TYPES.LEARN_CONTENT ? `${metadata.uid}.unitypackage` : metadata.destinationFilename;
+		return `${metadata.destination}/${fileName}.download`;
+	}
+};
+//#endregion

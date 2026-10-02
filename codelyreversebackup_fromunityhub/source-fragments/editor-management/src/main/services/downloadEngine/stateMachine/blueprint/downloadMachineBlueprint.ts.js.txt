@@ -1,0 +1,86 @@
+//#region src/main/services/downloadEngine/stateMachine/blueprint/downloadMachineBlueprint.ts
+var downloadMachineSetup = (0, import_xstate_cjs.setup)({
+	types: {},
+	actions: {
+		onValidation: ({ context, event }) => context.downloadItem.onValidation(context, event),
+		onValidationExit: ({ context, event }) => context.downloadItem.onValidationExit(context, event),
+		onDownload: ({ context, event }) => context.downloadItem.onDownload(context, event),
+		onDownloadExit: ({ context, event }) => context.downloadItem.onDownloadExit(context, event),
+		onPause: ({ context, event }) => context.downloadItem.onPause(context, event),
+		onPauseExit: ({ context, event }) => context.downloadItem.onPauseExit(context, event),
+		onError: ({ context, event }) => context.downloadItem.onError(context, event),
+		onErrorExit: ({ context, event }) => context.downloadItem.onErrorExit(context, event),
+		onFinish: ({ context, event }) => context.downloadItem.onFinish(context, event),
+		onFinishExit: ({ context, event }) => context.downloadItem.onFinishExit(context, event),
+		onCleanup: ({ context, event }) => context.downloadItem.onCleanup(context, event),
+		onCleanupExit: ({ context, event }) => context.downloadItem.onCleanupExit(context, event)
+	}
+});
+var validationState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onValidation"],
+	exit: ["onValidationExit"],
+	on: {
+		VALIDATION_PASSED: { target: DOWNLOAD_STATES.DOWNLOADING },
+		ERROR: { target: DOWNLOAD_STATES.FAILED },
+		REMOVE: { target: DOWNLOAD_STATES.CLEANUP }
+	}
+});
+var downloadingState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onDownload"],
+	exit: ["onDownloadExit"],
+	on: {
+		ERROR: { target: DOWNLOAD_STATES.FAILED },
+		COMPLETED: { target: DOWNLOAD_STATES.FINISHED },
+		REMOVE: { target: DOWNLOAD_STATES.CLEANUP },
+		PAUSE: { target: DOWNLOAD_STATES.PAUSED }
+	}
+});
+var pausedState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onPause"],
+	exit: ["onPauseExit"],
+	on: {
+		RESUME: { target: DOWNLOAD_STATES.DOWNLOADING },
+		REMOVE: { target: DOWNLOAD_STATES.CLEANUP }
+	}
+});
+var failedState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onError"],
+	exit: ["onErrorExit"],
+	on: {
+		RESUME: { target: DOWNLOAD_STATES.VALIDATION },
+		REMOVE: { target: DOWNLOAD_STATES.CLEANUP }
+	}
+});
+var cleanupState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onCleanup"],
+	exit: ["onCleanupExit"],
+	on: { COMPLETED: { target: DOWNLOAD_STATES.FINISHED } }
+});
+var finishedState = downloadMachineSetup.createStateConfig({
+	type: "atomic",
+	entry: ["onFinish"],
+	exit: ["onFinishExit"]
+});
+var downloadMachine = downloadMachineSetup.createMachine({
+	id: "downloadItem",
+	initial: DOWNLOAD_STATES.VALIDATION,
+	context: ({ input }) => ({
+		metadata: input.metadata,
+		validationStrategy: input.validationStrategy,
+		downloadItem: input.downloadItem
+	}),
+	states: {
+		[DOWNLOAD_STATES.VALIDATION]: validationState,
+		[DOWNLOAD_STATES.DOWNLOADING]: downloadingState,
+		[DOWNLOAD_STATES.PAUSED]: pausedState,
+		[DOWNLOAD_STATES.FAILED]: failedState,
+		[DOWNLOAD_STATES.CLEANUP]: cleanupState,
+		[DOWNLOAD_STATES.FINISHED]: finishedState
+	}
+});
+//#endregion

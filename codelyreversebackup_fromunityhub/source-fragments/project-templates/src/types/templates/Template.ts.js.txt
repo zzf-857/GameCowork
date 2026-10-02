@@ -1,0 +1,41 @@
+//#region src/types/templates/Template.ts
+var TEMPLATE_STATUSES = {
+	READY: "READY",
+	UPGRADABLE: "UPGRADABLE",
+	DOWNLOADABLE: "DOWNLOADABLE",
+	DOWNLOADING: "DOWNLOADING",
+	UPGRADING: "UPGRADING",
+	PAUSED: "PAUSED"
+};
+var TEMPLATE_FILTER_CUSTOM_TYPES = {
+	All: "ALL",
+	New: "NEW",
+	User: "USER"
+};
+var TemplateFilterTypes = {
+	...TEMPLATE_FILTER_CUSTOM_TYPES,
+	...TemplateType
+};
+var EDITABLE_PROPS = [
+	"displayName",
+	"description",
+	"version",
+	"previewImage"
+];
+var EDITABLE_MANIFEST_PROPS = [
+	"displayName",
+	"description",
+	"version"
+];
+var TEMPLATE_CREATION_STATUSES = {
+	IDLE: "IDLE",
+	CREATING: "CREATING",
+	EDITING: "EDITING",
+	SYNCING: "SYNCING",
+	SUCCESS: "SUCCESS",
+	WARNING: "WARNING",
+	ERROR: "ERROR",
+	ABORTED: "ABORTED",
+	UNKNOWN: "UNKNOWN"
+};
+//#endregion

@@ -1,0 +1,200 @@
+//#region src/main/services/licenseService/licensingSdk.ts
+var logger$38 = loggerFactory("LicensingSdkService");
+var UNITY_LICENSING_CLIENT_FOLDER_WITH_VERSION = `UnityLicensingClient_V1`;
+var loggerCallback = (message, level, data) => {
+	const logPayload = data ? [message, data] : message;
+	switch (level) {
+		case import_lib$2.LogLevel.Info:
+			logger$38.info(logPayload);
+			break;
+		case import_lib$2.LogLevel.Debug:
+			logger$38.debug(logPayload);
+			break;
+		case import_lib$2.LogLevel.Error:
+			logger$38.error(logPayload);
+			break;
+		case import_lib$2.LogLevel.Warn:
+			logger$38.warn(logPayload);
+			break;
+		default: break;
+	}
+	try {
+		reportConnectionError(message);
+	} catch (error) {
+		logger$38.error(error);
+	}
+};
+var LicensingSdk = class {
+	licensingSdkInstance;
+	init(span, externalCorrelationId) {
+		return startSpan$1({
+			parentSpan: span,
+			op: "LicensingSdk.init.init",
+			name: "Licensing SDK Initialization"
+		}, async () => {
+			if (this.licensingSdkInstance) return false;
+			const localSettings = mainContainer.get(ILocalSettingsId);
+			const cloudEnvironment = localSettings.get(localSettings.keys.CLOUD_ENVIRONMENT);
+			const licensingClientLaunchTimeoutInMs = localSettings.get(localSettings.keys.globalMachineSettings.LICENSING_CLIENT_LAUNCH_TIMEOUT);
+			const ipcSendMessageTimeoutInMs = localSettings.get(localSettings.keys.globalMachineSettings.LICENSING_IPC_SEND_MESSAGE_TIMEOUT);
+			const ensureConnectionTimeoutInMs = localSettings.get(localSettings.keys.globalMachineSettings.LICENSING_ENSURE_CONNECTION_TIMEOUT);
+			const systemInfo = mainContainer.get(ISystemInfoId);
+			const licensingClientPath = this.getLicensingClientBinPath();
+			const config = {
+				userAgent: `Hub ${systemInfo.hubVersion()}`,
+				licensingClientPath,
+				cloudEnvironment,
+				...licensingClientLaunchTimeoutInMs && { licensingClientLaunchTimeoutInMs },
+				...ipcSendMessageTimeoutInMs && { ipcSendMessageTimeoutInMs },
+				...ensureConnectionTimeoutInMs && { ensureConnectionTimeoutInMs },
+				externalCorrelationId,
+				useBundledLicensing: Boolean(argv.useBundledLicensing) ?? false
+			};
+			const licensingSdkConfig = new import_lib$2.LicensingSdkConfig(config);
+			this.licensingSdkInstance = import_lib$2.createLicensingSdk(licensingSdkConfig, loggerCallback);
+			const isConnected = await this.licensingSdkInstance.connect();
+			if (isConnected) logger$38.info("Init");
+			windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_SDK_STATUS_CHANGED, { status: isConnected ? LICENSE_SDK_STATUSES.READY : LICENSE_SDK_STATUSES.ERROR });
+			import_postal.default.publish({
+				channel: "app",
+				topic: POSTAL_TOPICS.LICENSE_INITIALIZED,
+				data: isConnected ? LICENSE_SDK_STATUSES.READY : LICENSE_SDK_STATUSES.ERROR
+			});
+			this.licensingSdkInstance.onLicenseUpdate(async (msg) => {
+				await licenseNotificationHandler_default.handleLicenseUpdateNotification(msg);
+			});
+			this.licensingSdkInstance.onLicenseExpired((msg) => {
+				licenseNotificationHandler_default.handleLicenseExpireNotification(msg);
+			});
+			this.licensingSdkInstance.onBorrowFeatureStatus((msg) => {
+				licenseNotificationHandler_default.handleBorrowFeatureStatusNotification(msg);
+			});
+			return isConnected;
+		});
+	}
+	/**
+	* Retrieve the LicensingSDK instance. Returns null if the LicensingSDK instance is not initialized.
+	*
+	* @returns {licensingSdkLib.LicensingSdk} The LicensingSDK instance, or null if not initialized.
+	*/
+	getInstance() {
+		if (!this.licensingSdkInstance) {
+			logger$38.error("LicensingSDK is accessed but has not been initialized yet!");
+			return null;
+		}
+		return this.licensingSdkInstance;
+	}
+	/**
+	* Check if the LicensingSDK instance is initialized.
+	*
+	* @returns {boolean} True if the LicensingSDK instance is initialized, false otherwise.
+	*/
+	isInitialized() {
+		return !!this.licensingSdkInstance;
+	}
+	async disposeLicensingClient() {
+		logger$38.info("Dispose Licensing client", typeof this.licensingSdkInstance);
+		await this.licensingSdkInstance?.dispose(100, true);
+		this.licensingSdkInstance = null;
+		windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_SDK_STATUS_CHANGED, { status: LICENSE_SDK_STATUSES.DISPOSED });
+	}
+	async getMachineId() {
+		return this.getInstance()?.getMachineId();
+	}
+	async getCorrelationId() {
+		return this.getInstance()?.getCorrelationId();
+	}
+	async getUlfSerialHashAndKind() {
+		try {
+			const UNKNOWN = "Unity";
+			const entitlementGroupDetail = await this.getUlfEntitlementGroupDetails();
+			if (!entitlementGroupDetail) return {
+				hash: "",
+				kind: ""
+			};
+			return {
+				hash: entitlementGroupDetail.entitlementGroupIdHash,
+				kind: entitlementGroupDetail.productName ? entitlementGroupDetail.productName : UNKNOWN
+			};
+		} catch (e) {
+			logger$38.error(`Error while executing getUlfSerialHashAndKind: ${e}`);
+			return {
+				hash: "",
+				kind: ""
+			};
+		}
+	}
+	async getUlfEntitlementGroupId(productNameFilter = null) {
+		try {
+			const entitlementGroupDetails = await this.getUlfEntitlementGroupDetails();
+			if (entitlementGroupDetails && (productNameFilter === null || entitlementGroupDetails.productName === productNameFilter)) return entitlementGroupDetails.entitlementGroupId;
+		} catch (error) {
+			logger$38.error("Error while calling getUlfEntitlementGroupId:", error);
+		}
+		return null;
+	}
+	async getAssignedEntitlements() {
+		try {
+			return (await this.getValidEntitlementGroupsByType([import_lib$2.LicenseType.Assigned]))?.map(({ productName }) => productName) || [];
+		} catch (error) {
+			logger$38.error("Error while calling getAssignedEntitlements:", error);
+			return [];
+		}
+	}
+	filterEntitlementGroups(response, includeTypes, includeWithErrors) {
+		if (!response.entitlementGroupsDetails) return [];
+		return response.entitlementGroupsDetails.filter((entitlementGroupDetail) => (includeWithErrors || !entitlementGroupDetail.validationErrors?.length) && (!includeTypes?.length || includeTypes.some((type) => entitlementGroupDetail.licenseType === type)));
+	}
+	async getValidEntitlementGroupsByType(licenseTypes) {
+		try {
+			const entitlementGroups = await this.getInstance().getAllEntitlementGroups();
+			return this.filterEntitlementGroups(entitlementGroups, licenseTypes, false);
+		} catch (error) {
+			logger$38.error(`Error while getting valid entitlement groups of type ${licenseTypes}:`, error);
+			return null;
+		}
+	}
+	async getUlfEntitlementGroupDetails() {
+		return (await this.getInstance()?.getAllEntitlementGroups())?.entitlementGroupsDetails.find((entitlement) => entitlement.licenseType === import_lib$2.LicenseType.ULF && !entitlement.validationErrors?.length);
+	}
+	async getEditorEntitlements() {
+		try {
+			const foundEntitlements = await this.getInstance().checkEntitlementDetails(Object.values(UnityReleaseEntitlementToEntitlementId), [], false);
+			const localSettings = mainContainer.get(ILocalSettingsId);
+			const isFloatingEnabled = localSettings.get(localSettings.keys.globalMachineSettings.LICENSING_SERVICE_BASE_URL);
+			let userEntitlements = [];
+			if (!foundEntitlements || !foundEntitlements.entitlementGroups) logger$38.info("No user entitlements found");
+			else userEntitlements = foundEntitlements.entitlementGroups.flatMap((entitlementGroup) => entitlementGroup.matchedEntitlements).map((matchedEntitlement) => matchedEntitlement.entitlementId);
+			if (isFloatingEnabled) {
+				logger$38.info("Floating license detected, enabling XLTS entitlement");
+				userEntitlements.push(UnityReleaseEntitlementToEntitlementId.XLTS);
+			}
+			return Array.from(new Set(userEntitlements));
+		} catch (error) {
+			logger$38.error(`Error while attempting to retrieve user entitlements: ${error}`);
+			return [];
+		}
+	}
+	getLicensingClientBinPath() {
+		const licensingClientPath = this.getBundledClientPath();
+		logger$38.info(`licensingClientPath: ${licensingClientPath}`);
+		return licensingClientPath;
+	}
+	getBundledClientPath() {
+		const pathAndFolderName = app.isPackaged ? {
+			pathToLicensingClientBinFolder: os.platform() === "darwin" ? path.join(app.getAppPath(), "..", "..", "Frameworks") : path.join(app.getAppPath(), "..", ".."),
+			folderName: UNITY_LICENSING_CLIENT_FOLDER_WITH_VERSION
+		} : {
+			pathToLicensingClientBinFolder: path.join(path.dirname(url.fileURLToPath(importResolve("@licensing/licensing-sdk"))), "..", "bin"),
+			folderName: os.platform() === "darwin" ? "UnityLicensingClient" : "LicensingClient"
+		};
+		switch (os.platform()) {
+			case "win32": return path.join(pathAndFolderName.pathToLicensingClientBinFolder, pathAndFolderName.folderName, "Unity.Licensing.Client.exe");
+			case "darwin": return path.join(pathAndFolderName.pathToLicensingClientBinFolder, `${pathAndFolderName.folderName}.app`, "Contents", "MacOS", "Unity.Licensing.Client");
+			case "linux": return path.join(pathAndFolderName.pathToLicensingClientBinFolder, pathAndFolderName.folderName, "Unity.Licensing.Client");
+			default: return "";
+		}
+	}
+};
+var licensingSdk = new LicensingSdk();
+//#endregion

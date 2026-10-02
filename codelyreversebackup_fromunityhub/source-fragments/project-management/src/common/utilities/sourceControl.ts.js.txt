@@ -1,0 +1,23 @@
+//#region src/common/utilities/sourceControl.ts
+var import_dayjs_min = /* @__PURE__ */ __toESM(require_dayjs_min(), 1);
+/** UVCS plugin package name */
+var MANIFEST_UVCS_PLUGIN_NAME = "com.unity.collab-proxy";
+/**
+* Utility functions to check source control provider types
+*/
+var getIsUnityVersionControl = (provider) => {
+	return provider === SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL;
+};
+var getIsGitProvider = (provider) => {
+	return provider === SOURCE_CONTROL_PROVIDERS.GITHUB || provider === SOURCE_CONTROL_PROVIDERS.GITLAB;
+};
+var getIsGitHub = (provider) => {
+	return provider === SOURCE_CONTROL_PROVIDERS.GITHUB;
+};
+var getIsGitLab = (provider) => {
+	return provider === SOURCE_CONTROL_PROVIDERS.GITLAB;
+};
+var generateTimestampedGitName = (baseName) => {
+	return `${baseName} ${(0, import_dayjs_min.default)(/* @__PURE__ */ new Date()).format("YYYY-MM-DD_HH-mm-ss")}`;
+};
+//#endregion

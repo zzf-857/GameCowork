@@ -1,0 +1,46 @@
+//#region src/types/common/sourceControl.ts
+/**
+* Source Control Provider Types
+*/
+var SOURCE_CONTROL_PROVIDERS = {
+	UNITY_VERSION_CONTROL: "unity-version-control",
+	GITHUB: "github",
+	GITLAB: "gitlab"
+};
+/**
+* Mapping of source control providers to their product name translation keys
+*/
+var SOURCE_CONTROL_PROVIDER_PRODUCT_NAMES = {
+	[SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL]: "source-control:PRODUCT_NAME_UNITY_VERSION_CONTROL",
+	[SOURCE_CONTROL_PROVIDERS.GITHUB]: "source-control:PRODUCT_NAME_GITHUB",
+	[SOURCE_CONTROL_PROVIDERS.GITLAB]: "source-control:PRODUCT_NAME_GITLAB"
+};
+/**
+* Git Repository Visibility Types
+*/
+var GIT_REPO_VISIBILITY = {
+	PRIVATE: "private",
+	INTERNAL: "internal",
+	PUBLIC: "public"
+};
+var SOURCE_CONTROL_ANALYTICS_ERROR_SLUGS = {
+	SOURCE_CONTROL_OPERATION_ERROR: "git_operation_error",
+	ERROR_CREDENTIAL_RETRIEVAL: "credential_retrieval_error",
+	REPO_URL_CREATION_FAILURE: "repo_url_creation_failure",
+	ERROR_REPOSITORY_INITIALIZATION: "repository_initialization_error",
+	ERROR_REMOTE_CREATION: "remote_creation_error",
+	ERROR_ADDING_REMOTE: "adding_remote_error",
+	ERROR_COMMITTING_FILES: "committing_files_error",
+	ERROR_PUSHING_TO_REMOTE: "pushing_to_remote_error",
+	ERROR_CLONING_REPOSITORY: "cloning_repository_error",
+	ERROR_DISCONNECTING_REPOSITORY: "disconnecting_repository_error",
+	ERROR_UVCS_ORGANIZATION_CREATION_FAILURE: "uvcs_organization_creation_failure"
+};
+/**
+* Mapping of source control providers to their Git domains
+*/
+var GIT_SOURCE_CONTROL_DOMAINS = {
+	[SOURCE_CONTROL_PROVIDERS.GITHUB]: "github.com",
+	[SOURCE_CONTROL_PROVIDERS.GITLAB]: "gitlab.com"
+};
+//#endregion

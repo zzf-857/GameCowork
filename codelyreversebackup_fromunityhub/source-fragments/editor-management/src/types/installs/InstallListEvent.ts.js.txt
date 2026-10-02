@@ -1,0 +1,3 @@
+//#region src/types/installs/InstallListEvent.ts
+var INSTALL_LIST_EVENTS = { AVAILABLE_EDITORS_CHANGED: "available-editors.changed" };
+//#endregion

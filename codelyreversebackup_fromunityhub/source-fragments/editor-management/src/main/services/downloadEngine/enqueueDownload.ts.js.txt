@@ -1,0 +1,31 @@
+//#region src/main/services/downloadEngine/enqueueDownload.ts
+/**
+* Enqueue a new download item for download by the `DownloadManager`. The appropriate download item
+* is created based on the `type` provided in the `params` argument.
+*
+* @param params download item enqueue params
+* @returns Resolves to the unique ID to refer to the download item when pausing/resuming/etc.
+* Rejects with an `Error` if the download item creation fails for any reason
+*/
+var enqueueDownload = async (params) => {
+	const uid = params.uid ?? crypto.randomUUID();
+	const downloadDestination = await DownloadManagerUtilities.getDownloadLocation();
+	let downloadItem;
+	switch (params.type) {
+		case DOWNLOAD_ITEM_TYPES.EDITOR:
+			downloadItem = createEditorDownloadItem(params, downloadDestination, uid);
+			break;
+		case DOWNLOAD_ITEM_TYPES.EDITOR_MODULE:
+			downloadItem = await createModuleDownloadItem(params, downloadDestination, uid);
+			break;
+		case DOWNLOAD_ITEM_TYPES.LEARN_CONTENT:
+			downloadItem = createLearnContentDownloadItem(params, downloadDestination, uid);
+			break;
+		case DOWNLOAD_ITEM_TYPES.TEMPLATE:
+			downloadItem = createTemplateDownloadItem(params, uid);
+			break;
+		default:
+	}
+	return DownloadManager.queue(downloadItem);
+};
+//#endregion

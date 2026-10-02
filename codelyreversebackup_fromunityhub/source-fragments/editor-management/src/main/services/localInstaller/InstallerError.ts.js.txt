@@ -1,0 +1,90 @@
+//#region src/main/services/localInstaller/InstallerError.ts
+var INSTALLER_ERROR = {
+	CANCEL_FAILED: {
+		code: "CANCEL_FAILED",
+		message: "The installation could not revert installation."
+	},
+	COULD_NOT_EXTRACT: {
+		code: "COULD_NOT_EXTRACT",
+		message: "There was an issue extracting the installer content."
+	},
+	DEFAULT: {
+		code: "DEFAULT",
+		message: "An unexpected error occurred during installation."
+	},
+	INSTALLER_MISSING: {
+		code: "INSTALLER_MISSING",
+		message: "The Unity installer could not be found."
+	},
+	MISSING_DESTINATION: {
+		code: "MISSING_DESTINATION",
+		message: "The install destination was invalid or missing."
+	},
+	PERMISSION_DENIED: {
+		code: "User did not grant permission.",
+		message: "The Hub does not have proper permissions to install Unity."
+	},
+	WRONG_INSTALLER: {
+		code: "WRONG_INSTALLER",
+		message: `The installer given is not a valid format and should be a zip, a ${os.platform() === "darwin" ? "pkg" : "exe, a msi"} or a po.`
+	},
+	INSTALLER_ERROR: {
+		code: "INSTALL_ERROR",
+		message: "Error happened while executing the installer. Aborting."
+	},
+	INVALID_ARCHITECTURE: {
+		code: "INVALID_ARCHITECTURE",
+		message: "Trying to install a 64-bit software on a 32-bit architecture. The installation would work, but running Unity would fail. Aborting."
+	},
+	INVALID_DESTINATION: {
+		code: "INVALID_DESTINATION",
+		message: "Cannot install at the given destination"
+	},
+	WRONG_UNINSTALLER: {
+		code: "WRONG_UNINSTALLER",
+		message: `The uninstaller given is not a valid format and should be a ${os.platform() === "darwin" ? "pkg" : "exe"}.`
+	},
+	UNINSTALLER_MISSING: {
+		code: "UNINSTALLER_MISSING",
+		message: "The Unity uninstaller could not be found."
+	},
+	UNKNOWN_INSTALLER: {
+		code: "UNKNOWN_INSTALLER",
+		message: "The Unity installer asked is not part of the list of supported installations. Aborting."
+	},
+	UNKNOWN_EDITOR: {
+		code: "UNKNOWN_EDITOR",
+		message: "The Unity Editor could not be found. Aborting."
+	},
+	TIMEOUT: {
+		code: "TIMEOUT",
+		message: "The operation timed out."
+	}
+};
+function decodeError(installError) {
+	if (installError === void 0 || installError === null || typeof installError !== "object") return INSTALLER_ERROR.DEFAULT;
+	if ("code" in installError && typeof installError.code === "string") {
+		const errorCode = installError.code;
+		if (INSTALLER_ERROR[errorCode]) return INSTALLER_ERROR[errorCode];
+	}
+	if ("message" in installError && typeof installError.message === "string") {
+		const errorMessage = installError.message;
+		const error = Object.values(INSTALLER_ERROR).find((error) => error.message === errorMessage);
+		if (error) return error;
+	}
+	if ("error" in installError && typeof installError.error === "object") return decodeError(installError.error);
+	return INSTALLER_ERROR.DEFAULT;
+}
+var InstallerError = class extends ErrorBase {
+	code;
+	error;
+	constructor(error, options = {}) {
+		super(error.message, {
+			name: error.code,
+			cause: options.cause
+		});
+		this.code = error.code;
+		this.error = error;
+	}
+};
+//#endregion

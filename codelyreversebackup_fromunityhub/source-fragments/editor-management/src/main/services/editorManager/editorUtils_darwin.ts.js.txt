@@ -1,0 +1,94 @@
+//#region src/main/services/editorManager/editorUtils_darwin.ts
+var execFile$1 = util.promisify(child_process.execFile);
+var logger = loggerFactory("EditorUtils_Mac");
+/**
+* Gets the editor information from the Info.plist file.
+* @param editorPath
+* @returns The editor information parsed from the Info.plist file.
+*/
+async function getEditorInformation(editorPath) {
+	return parse(await fs.promises.readFile(`${editorPath}/Contents/Info.plist`, "utf8"));
+}
+var editorUtils = {
+	async makeEditorInstallsDir(installsPath) {
+		await hub_fs_default.elevateAndMakeDir(installsPath);
+	},
+	getEditorPathFromFolder(editorFolder) {
+		return path.join(editorFolder, "Unity.app");
+	},
+	async findUnityVersion(editorPath) {
+		const editorInformation = await getEditorInformation(editorPath);
+		if (typeof editorInformation !== "object" || editorInformation === null || !("CFBundleVersion" in editorInformation) || typeof editorInformation.CFBundleVersion !== "string") throw new EditorUtilsError("Failed to get Info.plist", "ERROR.FAILED_GET_INFO", { location: editorPath });
+		return { version: editorInformation.CFBundleVersion };
+	},
+	async findUnityProductName(editorFolder) {
+		const { ProductName: productName } = await getEditorBuildInfo(path.join(this.getEditorPathFromFolder(editorFolder), "Contents", "MacOS", "buildInfo"));
+		return productName;
+	},
+	getPlaybackEnginesPathsFromFolder(editorFolder) {
+		return [path.join(editorFolder, "PlaybackEngines"), path.join(editorFolder, "Unity.app", "Contents", "PlaybackEngines")];
+	},
+	getOSBuildTarget() {
+		return "OSXUniversal";
+	},
+	async validateEditorFile(editorPath, skipSignatureCheck = false) {
+		if (!editorPath) throw new EditorUtilsError("Invalid path", "ERROR.INVALID_PATH", { location: editorPath });
+		if (!editorPath.endsWith(".app")) throw new EditorUtilsError("Not an app", "ERROR.NOT_AN_APP", { location: editorPath });
+		await fs.promises.access(editorPath).catch((error) => {
+			if (error.code === "ENOENT") throw new EditorUtilsError("File not found", "ERROR.FILE_NOT_FOUND", { location: editorPath }, { cause: error });
+			throw new EditorUtilsError("Invalid path", "ERROR.INVALID_PATH", { location: editorPath }, { cause: error });
+		});
+		if (skipSignatureCheck) {
+			const editorInformation = await getEditorInformation(editorPath).catch((error) => {
+				throw new EditorUtilsError("Failed to get Info.plist", "ERROR.FAILED_GET_INFO", {
+					location: editorPath,
+					skipSignatureCheck
+				}, { cause: error });
+			});
+			if (typeof editorInformation !== "object" || editorInformation === null || !("CFBundleIdentifier" in editorInformation) || typeof editorInformation.CFBundleIdentifier !== "string") throw new EditorUtilsError("Failed to get Info.plist", "ERROR.FAILED_GET_INFO", { location: editorPath });
+			if (!editorInformation.CFBundleIdentifier.includes("com.unity3d.UnityEditor")) throw new EditorUtilsError("Not a Unity app", "ERROR.NOT_AN_UNITY_APP", { location: editorPath });
+			return true;
+		}
+		let fields = [];
+		try {
+			const { stderr: licenseInfo } = await execFile$1("/usr/bin/codesign", ["-dvvv", editorPath], { maxBuffer: MAX_BUFFER_SIZE });
+			fields = licenseInfo.split("\n");
+		} catch (error) {
+			logger.error("Failed to parse license info", error);
+			throw new EditorUtilsError("Failed to parse license info", "ERROR.FAILED_LICENSE_INFO", { location: editorPath }, { cause: error });
+		}
+		let executable = "";
+		let identifier = "";
+		let developer = "";
+		for (const line of fields) if (line.startsWith("Executable")) executable = line;
+		else if (line.startsWith("Identifier")) identifier = line;
+		else if (line.startsWith("Authority=Developer ID Application:")) developer = line;
+		if (!executable.includes(`${editorPath}/Contents/MacOS/Unity`) || !identifier.includes("com.unity3d.UnityEditor")) throw new EditorUtilsError("Not a Unity app", "ERROR.NOT_AN_UNITY_APP", { location: editorPath });
+		else if (fields.length === 2 || !developer.includes("Unity Technologies")) throw new EditorUtilsError("Not signed", "ERROR.NOT_SIGNED", { location: editorPath });
+		return true;
+	},
+	validateInstallPath() {
+		return true;
+	},
+	async findEditorArchitecture(editorPath) {
+		if (getMachine() !== "arm64") return CHIP_ARCHITECTURES.X86_64;
+		const binaryLocation = path.join(editorPath, "Contents", "MacOS", "Unity");
+		try {
+			const { stdout, stderr } = await execFile$1("/usr/bin/file", [binaryLocation]);
+			if (stderr) {
+				logger.warn(`Finding editor architecture failed for ${binaryLocation}: ${stderr}`);
+				return null;
+			}
+			const fileParams = stdout.split(" ");
+			if (fileParams.length) {
+				const arch = fileParams[fileParams.length - 1].trim();
+				return Object.values(CHIP_ARCHITECTURES).includes(arch) ? arch : null;
+			}
+			return null;
+		} catch (e) {
+			logger.warn(`Finding editor architecture failed for ${binaryLocation}`, e);
+			return null;
+		}
+	}
+};
+//#endregion

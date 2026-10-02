@@ -1,0 +1,205 @@
+//#region src/main/services/localProject/projectDataHelpers.ts
+/**
+* Number of header comment lines to skip when parsing Unity asset files.
+* Unity asset files typically start with metadata comments that should be ignored during parsing.
+*/
+var HEADER_COMMENT_LINES_COUNT$1 = 3;
+var logger$30 = loggerFactory("ProjectDataHelpers");
+/**
+* Gets the modified time of a file or directory in milliseconds.
+*
+* @param path - The file or directory path to check
+* @returns Promise that resolves to the modified time in milliseconds (rounded up to nearest integer), or null if an error occurs
+*/
+async function getModifiedTime(path) {
+	try {
+		const stats = await fs.promises.stat(path);
+		return Math.ceil(stats.mtimeMs);
+	} catch (error) {
+		logger$30.error(`Error getting modified time for ${path}:`, error);
+		return null;
+	}
+}
+/**
+* Extracts Unity editor version and changeset information from a Unity project's version file.
+*
+* @param versionPath - The file path to the Unity project's version file (typically ProjectSettings/ProjectVersion.txt)
+* @returns Promise that resolves to an object containing:
+*   - version: Unity editor version string (e.g., "2021.3.4f1") or null if invalid/not found
+*   - changeset: Git changeset hash from the editor version or null if not found
+*/
+async function getVersionAndChangeset(versionPath) {
+	try {
+		const versionFileContents = await fs.promises.readFile(versionPath, "utf8");
+		const versionDoc = browser_default.parse(versionFileContents);
+		const [, changeset] = (versionDoc?.m_EditorVersionWithRevision ?? "").replace(")", "").split("(");
+		return {
+			version: e$4.isValid(versionDoc?.m_EditorVersion) ? versionDoc?.m_EditorVersion : null,
+			changeset: changeset ?? null
+		};
+	} catch (error) {
+		logger$30.error(`Error getting version and changeset for ${versionPath}:`, error);
+		return {
+			version: null,
+			changeset: null
+		};
+	}
+}
+/**
+* Extracts cloud-related project data from Unity's PlayerSettings.asset file.
+*
+* This function parses the PlayerSettings.asset file to extract Unity Cloud project information,
+* including cloud project ID, organization ID, and cloud enablement status. It attempts to parse
+* the file as YAML first, and falls back to regex-based extraction if YAML parsing fails.
+*
+* @param settingsPath - The file path to the PlayerSettings.asset file (typically ProjectSettings/PlayerSettings.asset)
+* @returns Promise that resolves to an object containing:
+*   - cloudEnabled: Whether Unity Cloud services are enabled for this project
+*   - localProjectId: The local Unity project GUID (productGUID)
+*   - cloudProjectId: The Unity Cloud project ID (if connected to cloud)
+*   - organizationId: The Unity organization ID (if connected to cloud)
+*   - projectName: The project name as defined in player settings
+*/
+async function getPlayerSettingsData(settingsPath) {
+	const results = { cloudEnabled: false };
+	try {
+		const contentWithoutHeader = (await fs.promises.readFile(settingsPath, "utf8")).split("\n").slice(HEADER_COMMENT_LINES_COUNT$1).join("\n");
+		try {
+			const playerSettings = browser_default.parse(contentWithoutHeader).PlayerSettings;
+			return {
+				...results,
+				cloudProjectId: playerSettings?.cloudProjectId,
+				organizationId: playerSettings?.organizationId,
+				cloudEnabled: playerSettings?.cloudEnabled === 0,
+				localProjectId: playerSettings?.productGUID,
+				projectName: playerSettings?.projectName,
+				productName: playerSettings?.productName
+			};
+		} catch (error) {
+			logger$30.error(`Could not parse PlayerSettings.asset file using Yaml reader. Will attempt to find keys manually. File path: ${settingsPath}`, error);
+			const extractValue = (key, allowWhiteSpace) => {
+				const regex = new RegExp(`^[ \\t]*${key}[ \\t]*:[ \\t]+(${allowWhiteSpace ? "[^\\n]" : "[^ \\t\\n\\r]"}+)[ \\t]*$`, "m");
+				return contentWithoutHeader.match(regex);
+			};
+			const cloudProjectIdMatch = extractValue("cloudProjectId", false);
+			const organizationIdMatch = extractValue("organizationId", false);
+			const cloudEnabledMatch = extractValue("cloudEnabled", false);
+			const localProjectIdMatch = extractValue("productGUID", false);
+			const projectNameMatch = extractValue("projectName", true);
+			const productNameMatch = extractValue("productName", true);
+			if (cloudProjectIdMatch) results.cloudProjectId = cloudProjectIdMatch[1];
+			if (organizationIdMatch) results.organizationId = organizationIdMatch[1];
+			if (cloudEnabledMatch) results.cloudEnabled = cloudEnabledMatch[1] === "0";
+			if (localProjectIdMatch) results.localProjectId = localProjectIdMatch[1];
+			if (projectNameMatch) results.projectName = projectNameMatch[1];
+			if (productNameMatch) results.productName = productNameMatch[1];
+			return results;
+		}
+	} catch (error) {
+		logger$30.error(`Could not read PlayerSettings.asset file. File path: ${settingsPath}`, error);
+		return { cloudEnabled: false };
+	}
+}
+/**
+* Interpolates and updates specific project settings within a PlayerSettings.asset file content.
+*
+* This function takes the raw content of a PlayerSettings.asset file and updates specific
+* settings by finding existing lines that match the provided keys and replacing their values
+* while preserving the original indentation and formatting.
+*
+* @param projectSettings - The raw content of the PlayerSettings.asset file as a string
+* @param newProjectSettings - Object containing the new values for specific settings to update
+* @returns The updated PlayerSettings.asset content with new values interpolated
+*
+* @internal This function is used internally by updateCloudProjectData
+*/
+function interpolateProjectSettings(projectSettings, newProjectSettings) {
+	return projectSettings.split("\n").map((line) => {
+		let updatedLine = line;
+		Object.keys(newProjectSettings).forEach((key) => {
+			const regex = new RegExp(`\\s*${key}:`);
+			if (line.match(regex)) {
+				const settingValue = newProjectSettings[key];
+				updatedLine = `${line.match(/^\s*/)?.[0]}${key}: ${settingValue ?? ""}`;
+			}
+		});
+		return updatedLine;
+	}).join("\n");
+}
+/**
+* Updates Unity Cloud project data in a PlayerSettings.asset file.
+*
+* This function reads the PlayerSettings.asset file, updates the specified Unity Cloud
+* project settings (such as cloudProjectId, organizationId, etc.), and writes the
+* updated content back to the file. It preserves the original file structure and
+* formatting while only updating the specified settings.
+*
+* @param settingsPath - The file path to the PlayerSettings.asset file to update
+* @param newProjectSettings - Object containing the new Unity Cloud project settings to apply
+* @throws {Error} Throws an error if the file cannot be read or written, with the original error as the cause
+*/
+async function updateCloudProjectData(settingsPath, newProjectSettings) {
+	try {
+		const updatedProjectSettings = interpolateProjectSettings(await fs.promises.readFile(settingsPath, "utf8"), newProjectSettings);
+		await fs.promises.writeFile(settingsPath, updatedProjectSettings, "utf8");
+	} catch (error) {
+		logger$30.error(`Error updating project settings at ${settingsPath}:`, error);
+		throw new Error("Error updating project settings", { cause: error });
+	}
+}
+/**
+* Type guard to check if an error is a NodeJS.ErrnoException.
+*/
+function isErrnoException(error) {
+	return typeof error === "object" && error !== null && "code" in error && typeof error.code === "string";
+}
+/**
+* Reads the project name from a specified file path.
+*
+* This function attempts to read the project name from a file at the given path.
+* If the file is not found or is empty, it returns undefined.
+*
+* @param projectNamePath - The file path to read the project name from
+* @returns Promise that resolves to the project name string or undefined if not found
+*/
+async function getProjectName(projectNamePath) {
+	try {
+		let projectName = await fs.promises.readFile(projectNamePath, "utf8");
+		projectName = projectName.trim();
+		if (projectName.length === 0) return;
+		return projectName;
+	} catch (error) {
+		if (!(isErrnoException(error) && error.code === "ENOENT")) logger$30.error(`Could not read project name file. File path: ${projectNamePath}`, error);
+		return;
+	}
+}
+/**
+* Renames a project by updating the project name file at the specified path.
+*
+* This function reads the current project name from the specified file and updates it
+* to a new name. If the new name is the same as the current name, it does nothing.
+*
+* @param projectNamePath - The file path to the project name file
+* @param newName - The new project name to set
+* @throws {Error} Throws an error if there is an issue reading or writing the file, with the original error as the cause
+*/
+async function renameProject(projectNamePath, userProjectNamePath, newName) {
+	try {
+		if (await getProjectName(userProjectNamePath) === newName) return;
+		if (newName.length === 0) {
+			const results = await Promise.allSettled([fs.promises.unlink(projectNamePath), fs.promises.unlink(userProjectNamePath)]);
+			for (const result of results) {
+				if (result.status !== "rejected") continue;
+				if (isErrnoException(result.reason) && result.reason.code === "ENOENT") continue;
+				throw result.reason;
+			}
+		} else {
+			await fs.promises.mkdir(path.dirname(userProjectNamePath), { recursive: true });
+			await fs.promises.writeFile(userProjectNamePath, newName, "utf8");
+		}
+	} catch (error) {
+		logger$30.error(`Error renaming project at ${userProjectNamePath}:`, error);
+		throw error;
+	}
+}
+//#endregion

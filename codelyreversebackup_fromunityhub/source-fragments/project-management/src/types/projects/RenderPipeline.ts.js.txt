@@ -1,0 +1,13 @@
+//#region src/types/projects/RenderPipeline.ts
+/**
+* Known render pipeline types in Unity.
+*/
+var RENDER_PIPELINES = {
+	BuiltIn: "BUILT_IN",
+	Srp: "SRP",
+	Urp: "URP",
+	Hdrp: "HDRP",
+	Unknown: "Unknown"
+};
+RENDER_PIPELINES.BuiltIn, RENDER_PIPELINES.Srp, RENDER_PIPELINES.Urp, RENDER_PIPELINES.Hdrp, RENDER_PIPELINES.Unknown;
+//#endregion

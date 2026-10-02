@@ -1,0 +1,26 @@
+//#region src/main/services/editorManager/UnityReleaseServicePlatformMaps.ts
+var ProcessPlatformToUnityReleasePlatform = {
+	darwin: UnityReleaseDownloadPlatform.MacOs,
+	linux: UnityReleaseDownloadPlatform.Linux,
+	win32: UnityReleaseDownloadPlatform.Windows
+};
+var DownloadArchitectureToChipArchitecture = {
+	[UnityReleaseDownloadArchitecture.Arm64]: CHIP_ARCHITECTURES.ARM64,
+	[UnityReleaseDownloadArchitecture.X86_64]: CHIP_ARCHITECTURES.X86_64
+};
+var DownloadStreamToReleaseType = {
+	[UnityReleaseStream.Lts]: EDITOR_RELEASE_TYPES.OFFICIAL,
+	[UnityReleaseStream.Supported]: EDITOR_RELEASE_TYPES.OFFICIAL,
+	[UnityReleaseStream.Beta]: EDITOR_RELEASE_TYPES.BETA,
+	[UnityReleaseStream.Alpha]: EDITOR_RELEASE_TYPES.ALPHA,
+	[UnityReleaseStream.Tech]: EDITOR_RELEASE_TYPES.OFFICIAL
+};
+var UnityReleaseModuleCategoryToModuleCategory = {
+	[UnityReleaseModuleCategory.Component]: MODULE_CATEGORIES.TOOLS,
+	[UnityReleaseModuleCategory.Plugin]: MODULE_CATEGORIES.TOOLS,
+	[UnityReleaseModuleCategory.DevTool]: MODULE_CATEGORIES.TOOLS,
+	[UnityReleaseModuleCategory.LanguagePack]: MODULE_CATEGORIES.LANGUAGE,
+	[UnityReleaseModuleCategory.Platform]: MODULE_CATEGORIES.PLATFORMS,
+	[UnityReleaseModuleCategory.Documentation]: MODULE_CATEGORIES.DOCUMENTATION
+};
+//#endregion

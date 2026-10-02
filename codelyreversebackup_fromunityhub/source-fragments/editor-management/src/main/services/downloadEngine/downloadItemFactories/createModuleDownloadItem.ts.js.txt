@@ -1,0 +1,70 @@
+//#region src/main/services/downloadEngine/downloadItemFactories/createModuleDownloadItem.ts
+var logger$8 = loggerFactory("createModuleDownloadItem");
+/**
+* Create a download item for downloading a module for a particular editor version. The module will
+* be automatically installed on successful download.
+*
+* @param params download item enqueue params
+* @param destination directory where the item will be downloaded
+* @param uid unique ID to refer to the download item when pausing/resuming/etc.
+* @returns download item data including the download state change callback
+* @throws {Error} if the desired module cannot be found in the release config for the specified
+* official editor version
+* @throws {Error} if the desired module cannot be found in the specified custom editor version
+* archive
+*/
+var createModuleDownloadItem = async (params, destination, uid) => {
+	const { parentItemUid, release, moduleId, downloadTrigger } = params;
+	const editorUniqueIdStr = getUniqueIdentifier(release);
+	let targetModule;
+	if (DownloadManagerUtilities.isArchiveDownload()) {
+		const editorRelease = DownloadManagerUtilities.getLoadedArchiveEditorReleaseInfo();
+		if (editorRelease.modules) targetModule = editorRelease.modules.find((item) => item.id === moduleId);
+		if (!targetModule && release.modules) targetModule = release.modules.find((item) => item.id === moduleId);
+		if (!targetModule) targetModule = (await editorManager_default.getEditorDefaultModules(release)).find((item) => item.id === moduleId);
+		if (!targetModule) {
+			const errorMessage = `Module ${moduleId} cannot be found in the archive editor release ${editorUniqueIdStr}. Available modules: ${(editorRelease.modules ?? release.modules ?? []).map((m) => m.id).join(", ") || "none"}`;
+			logger$8.error(errorMessage);
+			throw new Error(errorMessage);
+		}
+	} else if (downloadTrigger === EDITOR_RELEASE_TYPE_NAMES.MISSING || downloadTrigger === EDITOR_RELEASE_TYPE_NAMES.NEAREST) {
+		targetModule = release.modules?.find((item) => item.id === moduleId);
+		if (!targetModule) {
+			const errorMessage = `Module ${moduleId} cannot be found in the specific editor release ${release.version}.`;
+			logger$8.error(errorMessage);
+			throw new Error(errorMessage);
+		}
+	} else {
+		targetModule = (await editorManager_default.getEditorDefaultModules(release)).find((item) => item.id === moduleId);
+		if (!targetModule) {
+			const errorMessage = `Module ${moduleId} cannot be found in the release config in editor ${editorUniqueIdStr}.`;
+			logger$8.error(errorMessage);
+			throw new Error(errorMessage);
+		}
+	}
+	return {
+		metadata: {
+			type: DOWNLOAD_ITEM_TYPES.EDITOR_MODULE,
+			source: targetModule.downloadUrl,
+			sourceSizeinBytes: targetModule.downloadSize,
+			sourceType: DOWNLOAD_SOURCE_TYPES.HTTP,
+			itemName: moduleId,
+			itemDisplayName: targetModule.name,
+			destination,
+			uid,
+			parentItemUid,
+			lastChecksumValue: {
+				bytes: 0,
+				md5: ""
+			},
+			editorUniqueId: release,
+			rawModulesList: [targetModule],
+			productName: release.productName,
+			entitlements: release.entitlements
+		},
+		onStateChangeHandler: ({ metadata: updatedMetadata, state }) => {
+			if (state === DOWNLOAD_STATES.FINISHED) InstallationManager.addToInstalls(updatedMetadata, updatedMetadata.parentItemUid);
+		}
+	};
+};
+//#endregion

@@ -1,0 +1,10 @@
+//#region src/types/installs/stateMachine/Enums/InstallationEvent.ts
+var INSTALLATION_EVENTS = {
+	START: "START",
+	VALIDATION_PASSED: "VALIDATION_PASSED",
+	RETRY: "RETRY",
+	ERROR: "ERROR",
+	REMOVE: "REMOVE",
+	COMPLETED: "COMPLETED"
+};
+//#endregion

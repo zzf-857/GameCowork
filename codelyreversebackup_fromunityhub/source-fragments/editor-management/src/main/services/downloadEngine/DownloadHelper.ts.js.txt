@@ -1,0 +1,72 @@
+//#region src/main/services/downloadEngine/DownloadHelper.ts
+var import_dist = require_dist();
+var DownloadHelper = class extends EventEmitter {
+	helper;
+	logger;
+	forceResume;
+	constructor(metadata, forceResume = false) {
+		super();
+		this.forceResume = forceResume;
+		this.logger = loggerFactory(`Node Downloader for ${metadata.uid}`);
+		const fileName = metadata.type === DOWNLOAD_ITEM_TYPES.LEARN_CONTENT ? {
+			name: metadata.uid,
+			ext: "unitypackage"
+		} : metadata.destinationFilename;
+		this.helper = new import_dist.DownloaderHelper(metadata.source, metadata.destination, {
+			fileName,
+			override: !!forceResume,
+			resumeIfFileExists: !!forceResume,
+			removeOnFail: false,
+			removeOnStop: false,
+			retry: false,
+			httpRequestOptions: { timeout: Config.DOWNLOADS.TIMEOUT },
+			httpsRequestOptions: { timeout: Config.DOWNLOADS.TIMEOUT }
+		});
+		this.registerEvents();
+	}
+	registerEvents() {
+		Object.entries(NODE_DOWNLOADER_EVENTS).forEach((event) => {
+			const value = event[1];
+			this.emitUnderlyingEvents(value);
+		});
+	}
+	emitUnderlyingEvents(eventName) {
+		this.helper.on(eventName, (data) => {
+			this.emit(eventName, data);
+		});
+	}
+	async start() {
+		if (this.forceResume) {
+			this.helper.start().catch((error) => {
+				this.logger.warn("Failed to start download (resume mode)", error);
+			});
+			return;
+		}
+		if (this.helper.getStats().downloaded === 0) {
+			this.helper.start().catch((error) => {
+				this.logger.warn("Download failed", error);
+			});
+			this.logger.info("Download started");
+		} else {
+			const stats = this.helper.getStats();
+			this.helper.resume();
+			this.logger.info(`Resume started from ${stats.downloaded} bytes`);
+		}
+	}
+	pause() {
+		this.helper.pause();
+		const stats = this.helper.getStats();
+		this.logger.info(`Download paused at ${stats.downloaded} bytes / ${stats.total} bytes`);
+	}
+	async stop() {
+		await this.helper.stop();
+		this.logger.info("Download stopped");
+	}
+	pipe(hash) {
+		this.helper.pipe(hash);
+	}
+	getStats() {
+		return this.helper.getStats();
+	}
+};
+//#endregion

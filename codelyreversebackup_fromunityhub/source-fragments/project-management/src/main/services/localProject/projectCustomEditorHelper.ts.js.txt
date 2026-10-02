@@ -1,0 +1,93 @@
+//#region src/main/services/localProject/projectCustomEditorHelper.ts
+var HUBINFO_FILENAME = "hubInfo.json";
+var projectCustomEditorHelper = new class ProjectCustomEditorHelper {
+	customEditors;
+	static logger = loggerFactory("ProjectCustomEditorHelper");
+	constructor() {
+		this.customEditors = {};
+	}
+	/**
+	* Retrieves the custom editor path for a Unity project by reading and parsing the hub info file.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns A promise that resolves to the custom editor path (absolute or relative resolved to absolute),
+	*          or null if no custom editor is configured, the hub info file doesn't exist, is empty,
+	*          or if an error occurs during file reading or parsing
+	*
+	* @remarks
+	* This method looks for a hub info file in the project directory, parses it as JSON to extract
+	* custom editor configuration, and returns either the absolute path directly or resolves a
+	* relative path against the project directory. Logs errors for various failure scenarios.
+	*/
+	async getCustomEditorPath(projectPath) {
+		try {
+			const pathFile = join(projectPath, HUBINFO_FILENAME);
+			let hubInfoFile;
+			try {
+				hubInfoFile = await fs.promises.readFile(pathFile, "utf8");
+			} catch (e) {
+				if (e && typeof e === "object" && "code" in e && e.code === "ENOENT") return null;
+				throw e;
+			}
+			if (!hubInfoFile.length) {
+				ProjectCustomEditorHelper.logger.error(`${join(projectPath, HUBINFO_FILENAME)} is empty resulting in your custom editor not being found`);
+				return null;
+			}
+			let customEditor;
+			try {
+				customEditor = JSON.parse(hubInfoFile).customEditor;
+			} catch (e) {
+				ProjectCustomEditorHelper.logger.error(`an error occurred while parsing ${join(projectPath, HUBINFO_FILENAME)}`, e);
+				return null;
+			}
+			if (customEditor) {
+				const { absolutePath, relativePath } = customEditor;
+				if (absolutePath) return absolutePath;
+				if (relativePath) return join(projectPath, relativePath);
+			}
+		} catch (e) {
+			ProjectCustomEditorHelper.logger.error(`an error occured while locating your custom editor in project ${projectPath}`, e);
+			return null;
+		}
+		return null;
+	}
+	/**
+	* Checks if a Unity project has a custom editor path configured and adds it to the internal registry.
+	*
+	* @param projectPath - The file system path to the Unity project directory
+	* @returns A promise that resolves to true if a custom editor path was found and added, false otherwise
+	*
+	* @remarks
+	* This method first attempts to retrieve a custom editor path for the specified project.
+	* If a custom editor path is found (not null), it stores the mapping in the internal
+	* customEditors registry for future reference.
+	*/
+	async checkForAndAddCustomEditorPath(projectPath) {
+		const editorPath = await this.getCustomEditorPath(projectPath);
+		const isCustomEditor = editorPath !== null;
+		if (isCustomEditor) this.customEditors[projectPath] = editorPath;
+		return isCustomEditor;
+	}
+	/**
+	* Checks if a project has a custom editor configured.
+	*
+	* @param projectPath - The file system path to the Unity project
+	* @returns The custom editor identifier if one exists, otherwise undefined
+	*/
+	hasCustomEditor(projectPath) {
+		return this.customEditors[projectPath];
+	}
+	/**
+	* Retrieves the custom Unity editor associated with a specific project path.
+	*
+	* @param projectPath - The file system path to the Unity project
+	* @returns An EditorApp instance configured with the custom editor path
+	* @throws {Error} When no custom editor is found for the specified project path
+	*/
+	getCustomEditorForProject(projectPath) {
+		const editorPath = this.customEditors[projectPath];
+		if (editorPath) return new EditorApp({ editorPath });
+		throw new Error("No matching project path in list of custom editor");
+	}
+}();
+//#endregion

@@ -1,0 +1,97 @@
+//#region src/main/services/licenseService/licenseServiceCore.ts
+var EGL_PREFIX = "E4";
+var isEGL = (label, groupId) => label === LICENSE_TYPES.Education && groupId.startsWith(EGL_PREFIX);
+var LicenseServiceCore = class LicenseServiceCore {
+	static licenseServiceCoreLogger;
+	constructor(logger) {
+		LicenseServiceCore.licenseServiceCoreLogger = logger;
+	}
+	static filterInvalidAndNonSupportedEntitlementGroups(response) {
+		if (!response.entitlementGroupsDetails) return [];
+		return response.entitlementGroupsDetails.filter((entitlementGroupDetail) => !entitlementGroupDetail.validationErrors?.length);
+	}
+	static async getValidEntitlementGroups() {
+		return licensingSdk.getInstance().getAllEntitlementGroups().then(LicenseServiceCore.filterInvalidAndNonSupportedEntitlementGroups).catch((error) => {
+			LicenseServiceCore.licenseServiceCoreLogger.error(`Error while getting valid entitlement groups: ${error}`);
+			return null;
+		});
+	}
+	static convertEntitlementGroupsIntoLicenses(entitlementGroups) {
+		return entitlementGroups.map((entitlementGroupDetail) => {
+			const label = entitlementGroupDetail.productName;
+			const { entitlementGroupId } = entitlementGroupDetail;
+			return {
+				startDate: entitlementGroupDetail.startDate,
+				stopDate: entitlementGroupDetail.expirationDate,
+				updateDate: entitlementGroupDetail.updateDate,
+				valid: !entitlementGroupDetail.validationErrors?.length,
+				activated: true,
+				canExpire: entitlementGroupDetail.expirationDate !== "",
+				error: false,
+				returned: false,
+				maintenance: false,
+				initialized: true,
+				mustReactivate: false,
+				beta: false,
+				isLicenseActionInProgress: false,
+				label,
+				flow: label,
+				entitlementGroupId,
+				isEGL: isEGL(label, entitlementGroupId),
+				transactionId: "",
+				licenseType: entitlementGroupDetail.licenseType,
+				subLabel: LicenseServiceCore.getSubLabel(entitlementGroupDetail),
+				entitlementGroupType: entitlementGroupDetail.type
+			};
+		});
+	}
+	static getSubLabel(entitlementGroupDetail) {
+		if (entitlementGroupDetail.productName === LICENSE_TYPES.Personal) return "";
+		if (entitlementGroupDetail.licenseType === import_lib$2.LicenseType.ULF) return mainContainer.get(ITranslateId).t("license-management:SERIAL_KEY_ACTIVATION");
+		return entitlementGroupDetail.organizationName;
+	}
+	static isEGL(license) {
+		return isEGL(license.label, license.entitlementGroupId);
+	}
+	static isFloatingEnabled() {
+		const settings = mainContainer.get(ILocalSettingsId);
+		return !!settings.get(settings.keys.globalMachineSettings.LICENSING_SERVICE_BASE_URL);
+	}
+	static async getLicense() {
+		try {
+			const validEntitlementGroups = await LicenseServiceCore.getValidEntitlementGroups();
+			if (validEntitlementGroups) return LicenseServiceCore.convertEntitlementGroupsIntoLicenses(validEntitlementGroups);
+			return null;
+		} catch (e) {
+			LicenseServiceCore.licenseServiceCoreLogger.error(`Error while getting all entitlement groups: ${e}`);
+			return null;
+		}
+	}
+	static async hasEGLLicense() {
+		const licenses = await LicenseServiceCore.getLicense() ?? [];
+		return LicenseServiceCore.includesEGL(licenses);
+	}
+	static async hasValidUlfLicense() {
+		const licenses = await LicenseServiceCore.getLicense() ?? [];
+		return LicenseServiceCore.includeValidUlf(licenses);
+	}
+	static includeValidUlf = (licenses) => licenses.some((license) => license.licenseType === import_lib$2.LicenseType.ULF && license.valid);
+	static includesEGL = (licenses) => licenses.some(LicenseServiceCore.isEGL);
+	/**
+	* Activates ULF PE if there is a valid IDL PE
+	* @returns {Promise<void>}. Throws an Error if activation failed.
+	*/
+	static async matchIdlPeWithUlfPe() {
+		LicenseServiceCore.licenseServiceCoreLogger?.info("matchIdlPeWithUlfPe: started");
+		const validEntitlements = await licensingSdk.getValidEntitlementGroupsByType([import_lib$2.LicenseType.Assigned, import_lib$2.LicenseType.ULF]);
+		const hasValidIdlPe = validEntitlements?.some((entitlement) => entitlement.licenseType === import_lib$2.LicenseType.Assigned && entitlement.productName === LICENSE_TYPES.Personal);
+		const hasValidUlf = validEntitlements?.some((entitlement) => entitlement.licenseType === import_lib$2.LicenseType.ULF);
+		if (hasValidIdlPe && !hasValidUlf) {
+			const response = await licensingSdk.getInstance().activateUlfLicense();
+			if (!response.isSuccessful()) throw new Error();
+			LicenseServiceCore.licenseServiceCoreLogger?.info("matchIdlPeWithUlfPe: ", response);
+		}
+		LicenseServiceCore.licenseServiceCoreLogger?.info("matchIdlPeWithUlfPe: finished");
+	}
+};
+//#endregion

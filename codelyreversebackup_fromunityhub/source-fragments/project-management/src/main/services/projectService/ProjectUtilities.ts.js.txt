@@ -1,0 +1,50 @@
+//#region src/main/services/projectService/ProjectUtilities.ts
+var ProjectUtilities = class {
+	static logger = loggerFactory("ProjectUtilities");
+	static generateReadableDateTime = () => (0, import_dayjs_min.default)(/* @__PURE__ */ new Date()).format("YYYY-MM-DD_HH-mm-ss");
+	/**
+	* Extracts the HTTP status code from an error object.
+	* Handles both standard axios errors and SafeAxiosError structures.
+	*/
+	static extractStatusCodeFromError(error) {
+		const err = error;
+		return err?.response?.status || err?.cause?.cause?.status || err?.cause?.status;
+	}
+	static obtainCloudProjectForProjectNameInOrganization = async (name, organizationId) => {
+		const nameTakenResponseCode = 422;
+		const delayBetweenCallsMs = 1e3;
+		const firstTryFailedMessage = "First API call to create a new cloud project returned with 422 error (name taken). Trying again with unique name.";
+		const secondTryFailedMessage = "Could not create a cloud project after two tries, one with given project name and one with unique name.";
+		const finalFailureMessage = "Could not create a cloud project to attach its id to the new project created";
+		let cloudProject;
+		try {
+			this.logger.info("Issuing first API call to create a cloud project with the user provided project name.");
+			cloudProject = await createCloudProject({
+				organizationId,
+				name,
+				coppa: COPPA_COMPLIANCES.NOT_COMPLIANT
+			});
+		} catch (error) {
+			if (this.extractStatusCodeFromError(error) === nameTakenResponseCode) {
+				this.logger.info(firstTryFailedMessage);
+				await new Promise((resolve) => setTimeout(resolve, delayBetweenCallsMs));
+				const newName = `${name} ${this.generateReadableDateTime()}`;
+				try {
+					cloudProject = await createCloudProject({
+						organizationId,
+						name: newName,
+						coppa: COPPA_COMPLIANCES.NOT_COMPLIANT
+					});
+				} catch (secondTryError) {
+					this.logger.warn(secondTryFailedMessage, secondTryError.message);
+					throw new Error(`${secondTryFailedMessage}: ${secondTryError.message}`);
+				}
+			} else {
+				this.logger.warn(finalFailureMessage, error);
+				throw new Error(`${finalFailureMessage}: ${error.message}`);
+			}
+		}
+		return cloudProject;
+	};
+};
+//#endregion

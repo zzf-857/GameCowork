@@ -1,0 +1,22 @@
+//#region src/main/services/editorManager/lib/buildInfoUtils.ts
+function buildInfoParse(buildInfoContent) {
+	const buildInfo = {};
+	buildInfoContent.split("\n").forEach((line) => {
+		if (line) {
+			const [key, value] = line.split(":");
+			const trimmedKey = key.trim();
+			if (trimmedKey && value) buildInfo[trimmedKey] = value.trim();
+		}
+	});
+	return buildInfo;
+}
+async function getEditorBuildInfo(buildInfoPath, logger = null) {
+	try {
+		return buildInfoParse(await fs.promises.readFile(buildInfoPath, "utf8"));
+	} catch (error) {
+		if (error.code === "ENOENT") logger?.info(`No buildInfo file found for ${buildInfoPath}`, error);
+		logger?.warn(`Unable to get build info for ${buildInfoPath}`, error);
+		return {};
+	}
+}
+//#endregion

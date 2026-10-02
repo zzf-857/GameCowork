@@ -1,0 +1,647 @@
+//#region src/main/services/unityTemplate/unityTemplateService.ts
+var import_semver = /* @__PURE__ */ __toESM(require_semver(), 1);
+var logger$35 = loggerFactory("Templates");
+var MANIFEST_FILENAME = "manifest.json";
+var TEMPLATES_DIR = "Templates";
+var TEMPLATE_EXTENSION = "tgz";
+var TEMPLATE_TYPE_DEFAULT = "template";
+var TEMPLATES_PATH = {
+	darwin: path.join("Contents", "Resources", "PackageManager", "ProjectTemplates"),
+	win32: path.join("..", "Data", "Resources", "PackageManager", "ProjectTemplates"),
+	linux: path.join("..", "Data", "Resources", "PackageManager", "ProjectTemplates")
+}[os.platform()];
+var memoizedGetLongestArchiveFilePath = memoize(getLongestArchiveFilePath);
+var Templates = class {
+	#hubIPCState = mainContainer.get(IHubIPCStateId);
+	#unityTemplateCache = mainContainer.get(IUnityTemplateCacheId);
+	get previewSuffix() {
+		return "(Preview)";
+	}
+	get defaultTemplateCode() {
+		return defaultTemplates_default.defaultTemplateCode;
+	}
+	init() {
+		editorManager_default.editorList.on(INSTALL_LIST_EVENTS.AVAILABLE_EDITORS_CHANGED, this._filterStaleTemplatesCache.bind(this));
+	}
+	/**
+	* Get local, downloaded, and remote templates available for the specified editor version.
+	*
+	* @param {string} version Get templates compatible with this editor version
+	* @param {boolean} cached If true, only get templates that are locally-known or were previously
+	* cached from remote templates
+	* @returns {Promise<import('../../../types/templates/Template.ts').Template[]>} Templates compatible
+	* with the specified editor version
+	*/
+	async getTemplatesForEditor(version, cached = false) {
+		const localTemplates = await this._getLocalTemplatesForEditor(version);
+		const remoteTemplates = await this._getRemoteTemplates(version, cached);
+		return this._mergeRemoteTemplates(localTemplates, remoteTemplates);
+	}
+	/**
+	* Get locally-known and previously-cached remote templates for the specified editor version.
+	*
+	* @param {string} version Get templates compatible with this editor version
+	* @returns {Promise<import('../../../types/templates/Template.ts').Template[]>} Templates compatible
+	* with the specified editor version
+	*/
+	getLocalTemplatesForEditor(version) {
+		return this.getTemplatesForEditor(version, true);
+	}
+	_mergeLocalTemplates(localEditorTemplates, downloadedTemplates) {
+		const templateMap = this._templatesToTemplateMap(localEditorTemplates);
+		downloadedTemplates.forEach((downloadedTemplate) => {
+			const { name, version } = downloadedTemplate;
+			const existingTemplate = templateMap[name];
+			if (!existingTemplate || import_semver.default.gte(version, existingTemplate.version)) templateMap[name] = downloadedTemplate;
+		});
+		return Object.values(templateMap);
+	}
+	/**
+	*
+	* @returns Templates categories
+	*/
+	getTemplateCategories() {
+		return TemplateServiceManager.getCategories();
+	}
+	/**
+	* Merge additional information provided in remote templates over locally-known templates.
+	*
+	* @param {import('../../../types/templates/Template.ts').Template[]} localTemplates locally-known
+	* templates
+	* @param {import('../../../types/templates/Template.ts').Template[]} remoteTemplates templates that
+	* are available remotely from the package registry
+	* @returns {import('../../../types/templates/Template.ts').Template[]} An updated array of templates
+	* each with preview image, icon, and upgradability status
+	*/
+	_mergeRemoteTemplates(localTemplates, remoteTemplates) {
+		const templateMap = this._templatesToTemplateMap(localTemplates);
+		remoteTemplates.forEach((remoteTemplate) => {
+			const templateName = remoteTemplate.name;
+			const existingTemplate = templateMap[templateName];
+			if (!existingTemplate) templateMap[templateName] = remoteTemplate;
+			else if (import_semver.default.eq(existingTemplate.version, remoteTemplate.version)) templateMap[templateName] = this._mergeDownloadedTemplateData(existingTemplate, remoteTemplate);
+			else if (import_semver.default.lt(existingTemplate.version, remoteTemplate.version)) templateMap[templateName] = this._mergeUpgradableTemplateData(existingTemplate, remoteTemplate);
+			else Object.assign(existingTemplate, this._mergeHigherVersionedBuiltInTemplateAndRemote(existingTemplate, remoteTemplate));
+		});
+		return Object.values(templateMap);
+	}
+	/**
+	* Merges data for template that is downloaded and is the most up to date version of that template available remotely
+	*
+	* @param {import('../../../types/templates/Template.ts').Template} existingTemplate
+	* @param {import('../../../types/templates/Template.ts').Template} remoteTemplate
+	*
+	* @returns {import('../../../types/templates/Template.ts').Template}
+	*/
+	_mergeDownloadedTemplateData(existingTemplate, remoteTemplate) {
+		return {
+			...remoteTemplate,
+			tar: existingTemplate.tar,
+			status: existingTemplate.status
+		};
+	}
+	/**
+	* When a downloaded template is upgradeable, show metadata for the version that is downloaded
+	* but make sure information needed for downloading new version is available.
+	*
+	* If the downloaded version's information is not available remotely, show the most recent version's information
+	*
+	* @param {import('../../../types/templates/Template.ts').Template} existingTemplate
+	* @param {import('../../../types/templates/Template.ts').Template} remoteTemplate
+	*
+	* @returns {import('../../../types/templates/Template.ts').Template}
+	*/
+	_mergeUpgradableTemplateData(existingTemplate, remoteTemplate) {
+		let { size, version, packages } = remoteTemplate;
+		const downloadedVersionInfo = remoteTemplate.previousVersions.find((previousVersionInfo) => previousVersionInfo.name === existingTemplate.version);
+		if (downloadedVersionInfo) {
+			size = downloadedVersionInfo.size.value;
+			version = downloadedVersionInfo.name;
+			packages = downloadedVersionInfo.dependencies;
+		}
+		return {
+			...remoteTemplate,
+			version,
+			size,
+			packages,
+			tar: existingTemplate.tar,
+			status: TEMPLATE_STATUSES.UPGRADABLE
+		};
+	}
+	/**
+	* If built in template has a version greater than what's available from Live Platform API
+	* This ideally shouldn't happen, but we will cover it so that a potential Templates data-entry problem doesn't break the Hub
+	*
+	* @param {import('../../../types/templates/Template.ts').Template} existingTemplate
+	* @param {import('../../../types/templates/Template.ts').Template} remoteTemplate
+	*
+	* @returns {import('../../../types/templates/Template.ts').Template}
+	*/
+	_mergeHigherVersionedBuiltInTemplateAndRemote(existingTemplate, remoteTemplate) {
+		return {
+			displayName: remoteTemplate.displayName,
+			type: remoteTemplate.type,
+			dynamicIcon: remoteTemplate.dynamicIcon,
+			previewImage: remoteTemplate.previewImage,
+			renderPipeline: remoteTemplate.renderPipeline,
+			size: remoteTemplate.size,
+			buildPlatforms: remoteTemplate.buildPlatforms,
+			minimumAge: remoteTemplate.minimumAge,
+			termsOfServiceUrl: remoteTemplate.termsOfServiceUrl,
+			description: existingTemplate.description || remoteTemplate.description
+		};
+	}
+	/**
+	* Check if there is space on disk to download `template` or if the template already exists on
+	* disk for another editor version.
+	*
+	* @param {import('../../../types/templates/Template.ts').Template} template the template to download
+	* @returns {Promise<boolean>} Resolves to true if the template can be downloaded or false
+	* otherwise
+	*/
+	async isDiskSpaceAvailableForTemplate(template) {
+		const templatesPath = await this._getTemplatesPath();
+		if (await this._templatePresentOnDisk(templatesPath, template.name, template.version)) return true;
+		return (await hub_fs_default.getDiskSpaceAvailable(templatesPath)).available > template.size;
+	}
+	/**
+	* Get the max file path length needed to unpack a given template when creating a new Unity project
+	*
+	* @param {string} tarPath the full path of the tgz template file
+	* @returns {Promise<number>} the longest path length needed to extract the template
+	*/
+	async getPathLengthRequiredForTemplateExtraction(tarPath) {
+		const tempDirectoryPathLength = 53;
+		const projectDataDirectoryPath = "package/ProjectData~";
+		if (!tarPath) return 0;
+		try {
+			return await memoizedGetLongestArchiveFilePath(tarPath, projectDataDirectoryPath) + tempDirectoryPathLength;
+		} catch (error) {
+			logger$35.error(`Unable to inspect file paths in template file: "${tarPath}".`, error);
+			return 0;
+		}
+	}
+	/**
+	* Get the download item information required to start a download for the desired template. If the
+	* template is already on disk and passes an integrity check, the template will be considered
+	* already downloaded and will not return the download item information.
+	*
+	* @param {string} templateName name of the template to download
+	* @param {string} editorVersion version that the template must be compatible with
+	* @param {import('../../../types/installs/ChipArchitecture.ts').ChipArchitecture} editorArchitecture architecture of the editor version
+	* @param {boolean} isUpgrade if true, indicates that there is an older version of the template to
+	* download that should be replaced
+	* @returns {Promise<import('../../../types/downloads/DownloadManager.ts').EnqueueTemplateParams | void>}
+	* Resolves to either the download item information required to start the download or nothing,
+	* if the template is already on disk. Rejects with an `Error` if the template to download is not
+	* available for the editor or the template is already on disk, the integrity check fails, and the
+	* damaged/partial template file is unable to be removed for any reason
+	*/
+	async downloadRemoteTemplate(templateName, editorVersion, editorArchitecture, isUpgrade = false) {
+		const templatesPath = await this._getTemplatesPath();
+		let templateToDownload = (await this.getTemplatesForEditor(editorVersion)).find((template) => template.name === templateName);
+		if (!templateToDownload) {
+			const errorMessage = `Attempted to download unavailable template "${templateName}"`;
+			cloudAnalytics.errorEvent(errorMessage, "exception");
+			throw new Error(errorMessage);
+		}
+		const { integrity, remoteTar: templateURL, remoteVersion: templateVersion } = templateToDownload;
+		let templateFileCheckResult = await this._checkTemplateFileIntegrity({
+			templatesPath,
+			templateName,
+			templateVersion,
+			integrity
+		});
+		if (templateFileCheckResult === TEMPLATE_FILE_CHECK_RESULTS.IntegrityCheckFailed) {
+			await import_lib$4.default.remove(this._getTemplatePath(templatesPath, templateName, templateVersion));
+			templateFileCheckResult = TEMPLATE_FILE_CHECK_RESULTS.NotFound;
+		}
+		const downloadSize = templateToDownload.remoteSize;
+		templateToDownload = {
+			...templateToDownload,
+			size: downloadSize,
+			version: templateVersion
+		};
+		if (templateFileCheckResult === TEMPLATE_FILE_CHECK_RESULTS.Exists) return this.replaceTemplate(editorVersion, templateToDownload, isUpgrade);
+		else return {
+			type: DOWNLOAD_ITEM_TYPES.TEMPLATE,
+			parentItemUid: editorVersion,
+			downloadUrl: templateURL,
+			downloadSize,
+			desiredDestination: templatesPath,
+			desiredFilename: path.basename(templateURL),
+			editorVersion,
+			editorArchitecture,
+			isUpgrade,
+			template: templateToDownload
+		};
+	}
+	/**
+	* Add `template` to the templates manifest for the specified editor version and notify the
+	* renderer to add the template to its UI state.
+	*
+	* @param {string} editorVersion add `template` to this editor version in the templates manifest
+	* @param {import('../../../types/templates/Template.ts').Template} template the template to replace
+	* @param {boolean} isUpgrade if true, indicates that there is an older version of the template to
+	* download that should be replaced
+	* @returns {Promise<void>} Resolved after successfully updating the templates manifest and
+	* notifying the renderer
+	*/
+	async replaceTemplate(editorVersion, template, isUpgrade = false) {
+		try {
+			const templatesPath = await this._getTemplatesPath();
+			const { name: templateName, version: templateVersion } = template;
+			await this._updateManifestWithEditorDependency({
+				templatesPath,
+				editorVersion,
+				templateName,
+				templateVersion
+			});
+			cloudAnalytics.addEvent({
+				type: cloudAnalytics.eventTypes[isUpgrade ? "TEMPLATE_UPDATE" : "TEMPLATE_DOWNLOAD"],
+				msg: {
+					editor_version: editorVersion,
+					template_id: `${templateName}@${templateVersion}`,
+					status: "Success"
+				}
+			});
+			windowManager_default.broadcastContent(RENDERER_EVENTS.TEMPLATE_REPLACED, {
+				editorVersion,
+				template: {
+					...template,
+					tar: this._getTemplatePath(templatesPath, templateName, templateVersion)
+				}
+			});
+		} catch (error) {
+			this.reportTemplateDownloadError({
+				wasUpgradeAttempt: isUpgrade,
+				editorVersion,
+				templateName: template.name,
+				templateVersion: template.version,
+				errorMessage: error.message
+			});
+		}
+	}
+	/**
+	* Report a template download error. The cloud analytics service as well as the renderer receive
+	* this notification.
+	*
+	* @param {Object} options
+	* @param {string} options.editorVersion the editor version the template was going to be downloaded for
+	* @param {string} options.templateName the name of the template ex: "2D Game Kit"
+	* @param {string} options.templateVersion the version of the template ex: "1.0.0"
+	* @param {boolean} options.wasUpgradeAttempt if true, an older version was previously downloaded
+	* @param {string} options.errorMessage the error that occurred during the download and will be reported
+	*/
+	reportTemplateDownloadError({ editorVersion, templateName, templateVersion, wasUpgradeAttempt, errorMessage }) {
+		cloudAnalytics.addEvent({
+			type: cloudAnalytics.eventTypes[wasUpgradeAttempt ? "TEMPLATE_UPDATE" : "TEMPLATE_DOWNLOAD"],
+			msg: {
+				editor_version: editorVersion,
+				template_id: `${templateName}@${templateVersion}`,
+				status: "Error"
+			}
+		});
+		const analyticsErrorMessage = `Error ${wasUpgradeAttempt ? "upgrading" : "downloading"} template "${templateName}" (version "${templateVersion}"): ${errorMessage}`;
+		cloudAnalytics.errorEvent(analyticsErrorMessage, "exception");
+		windowManager_default.broadcastContent(RENDERER_EVENTS.TEMPLATE_DOWNLOAD_ERROR, {
+			editorVersion,
+			templateName,
+			templateVersion,
+			wasUpgradeAttempt,
+			errorMessage
+		});
+	}
+	/**
+	* Update a template's status and notify the renderer.
+	*
+	* @param {Object} options
+	* @param {string} options.editorVersion the editor version the template belongs to
+	* @param {string} options.templateName the name of the template
+	* @param {import('../../../types/templates/Template.ts').TemplateStatus} options.templateStatus the new status
+	*/
+	updateTemplateStatus({ editorVersion, templateName, templateStatus }) {
+		windowManager_default.broadcastContent(RENDERER_EVENTS.TEMPLATE_STATUS_UPDATED, {
+			editorVersion,
+			templateName,
+			templateStatus
+		});
+	}
+	/**
+	* Get the templates manifest and download path. Attempts to create it if it doesn't exist.
+	*
+	* @returns {Promise<string>} Resolves to the templates manifest and download path. Rejects with
+	* an `Error` if unable to create the templates path when it doesn't exist or unable to verify it
+	* does exist
+	*/
+	async _getTemplatesPath() {
+		const paths = mainContainer.get(IPathsId);
+		const templatesPath = path.join(paths.getAppDataPath(), TEMPLATES_DIR);
+		try {
+			await import_lib$4.default.ensureDir(templatesPath);
+		} catch (error) {
+			const errorMessage = `Unable to create "${TEMPLATES_DIR}" dir in userData: ${error.message}`;
+			cloudAnalytics.errorEvent(errorMessage, "exception");
+			throw error;
+		}
+		return templatesPath;
+	}
+	/**
+	* Get the path to the archive of the template with the specified name and version.
+	*
+	* @param {string} templatesPath the templates manifest and download path (from
+	* `_getTemplatesPath`)
+	* @param {string} templateName name of the template
+	* @param {string} templateVersion requisite version of the template
+	* @returns {string} the path to the template archive
+	*/
+	_getTemplatePath(templatesPath, templateName, templateVersion) {
+		return path.join(templatesPath, `${templateName}-${templateVersion}.${TEMPLATE_EXTENSION}`);
+	}
+	/**
+	* Get the path to the templates manifest.
+	*
+	* @param {string} templatesPath the templates manifest and download path (from
+	* `_getTemplatesPath`)
+	* @returns {string} the path to the templates manifest
+	*/
+	_getManifestPath(templatesPath) {
+		return path.join(templatesPath, MANIFEST_FILENAME);
+	}
+	/**
+	* Write the templates manifest to disk.
+	*
+	* @param {string} manifestPath the path to the templates manifest
+	* @param {Object} dependencies all dependencies for all editor versions, which will be written to
+	* disk
+	* @returns {Promise<void>} Resolved after successfully writing the templates manifest to disk.
+	* Rejected with an `Error` if unable to write the templates manifest to `manifestPath`
+	*/
+	async _outputManifest(manifestPath, dependencies) {
+		try {
+			await import_lib$4.default.outputJSON(manifestPath, dependencies);
+		} catch (error) {
+			const errorMessage = `Unable to write to "${manifestPath}": ${error.message}`;
+			cloudAnalytics.errorEvent(errorMessage, "exception");
+			throw error;
+		}
+	}
+	async _getEditorPath(version) {
+		if (this.#hubIPCState.connectedEditor && this.#hubIPCState.editorLocation) {
+			logger$35.info("using hub ipc editor location");
+			return this.#hubIPCState.editorLocation;
+		}
+		try {
+			return editorManager_default.getEditor({ version }).location[0];
+		} catch (error) {
+			logger$35.warn("failed to find the editor location, are you sure you have this editor installed on your machine?", error);
+			return "";
+		}
+	}
+	/**
+	* Get local and downloaded templates available for the specified editor version.
+	*
+	* @param {string} version get templates associated with this editor version
+	* @returns {Promise<import('../../../types/templates/Template.ts').Template[]>} Templates compatible
+	* with the specified editor version
+	*/
+	async _getLocalTemplatesForEditor(version) {
+		const localEditorTemplates = await this._getTemplatesForEditorVersion(version);
+		const downloadedTemplates = await this._getDownloadedTemplates(version);
+		return this._mergeLocalTemplates(localEditorTemplates, downloadedTemplates);
+	}
+	async _getTemplatesForEditorVersion(version) {
+		const localTemplatesCache = this.#unityTemplateCache.getLocalTemplatesByEditor(version);
+		if (localTemplatesCache) return localTemplatesCache;
+		const editorPath = await this._getEditorPath(version);
+		const localTemplates = await this._getTemplatesForEditorPath(editorPath);
+		this.#unityTemplateCache.setLocalTemplatesByEditor(version, localTemplates);
+		return localTemplates;
+	}
+	async _getTemplatesForEditorPath(editorPath) {
+		if (!editorPath) {
+			logger$35.warn("Editor not found, the hub will fall back to default templates");
+			return defaultTemplates_default.templates;
+		}
+		try {
+			let templates = await scanTemplates(path.join(editorPath, TEMPLATES_PATH));
+			templates = templates.filter(this._isValidTemplate).map(this._mapLocalTemplate).map(this._setTemplateStatus(TEMPLATE_STATUSES.READY));
+			if (templates.length > 0) return this._setPreviewFlag(templates);
+			logger$35.info("No templates bundled with the editor");
+		} catch (error) {
+			logger$35.warn(error);
+		}
+		return defaultTemplates_default.templates;
+	}
+	_setPreviewFlag(templates) {
+		return templates.map((template) => {
+			if (template.displayName?.includes(this.previewSuffix)) {
+				template.displayName = template.displayName.replace(this.previewSuffix, "").trim();
+				template.isPreview = true;
+			}
+			return template;
+		});
+	}
+	/**
+	* Get templates for the specified editor version that are in the templates manifest and have
+	* their archive files on disk. Templates without archive files on disk are ignored.
+	*
+	* @param {string} version get templates associated with this editor version
+	* @returns Resolves to a list of templates found on disk
+	*/
+	async _getDownloadedTemplates(version) {
+		const templatesPath = await this._getTemplatesPath();
+		const editorDependencies = (await this._getAllEditorDependenciesFromManifest(templatesPath))[version]?.dependencies ?? {};
+		return (await Promise.all(Object.entries(editorDependencies).map(([templateName, templateVersion]) => this._templatePresentOnDisk(templatesPath, templateName, templateVersion)))).filter((template) => template !== null);
+	}
+	async _getRemoteTemplates(version, cached = false) {
+		const unityVersionBranch = version === Config$2.EDITORS.DEVELOPMENT_VERSION ? version : new e$4(version).branch;
+		return (await LivePlatformAPI.getTemplates([unityVersionBranch], cached)).map((template) => this._mapRemoteTemplate(template)).map(this._setTemplateStatus(TEMPLATE_STATUSES.DOWNLOADABLE));
+	}
+	/**
+	* Get template dependencies for each editor as name/version pairs from the templates manifest. If
+	* unable to read the dependencies, resets the templates manifest and returns an empty
+	* dependencies map.
+	*
+	* @param {string} templatesPath the templates manifest and download path (from
+	* `_getTemplatesPath`)
+	* @returns {Promise<Object>} Resolves to a template dependencies map, which may be empty if the
+	* templates manifest was corrupted or absent. Rejected with an `Error` if unable to write the
+	* templates manifest to disk when it was corrupted or absent.
+	*/
+	async _getAllEditorDependenciesFromManifest(templatesPath) {
+		const manifestPath = this._getManifestPath(templatesPath);
+		try {
+			return await import_lib$4.default.readJSON(manifestPath);
+		} catch (e) {
+			const errorMessage = "Manifest was corrupted, dependencies are unknown, forced to reset manifest.json";
+			cloudAnalytics.errorEvent(errorMessage, "exception");
+			logger$35.error(`${errorMessage}: ${e.message}`);
+		}
+		const fallbackEditorDependencies = {};
+		await this._outputManifest(manifestPath, fallbackEditorDependencies);
+		return fallbackEditorDependencies;
+	}
+	/**
+	* Update the templates manifest with a new template available for the specified editor version.
+	*
+	* @param {Object} params - Parameters object
+	* @param {string} params.templatesPath the templates manifest and download path (from
+	* `_getTemplatesPath`)
+	* @param {string} params.editorVersion the editor version the template is now available for
+	* @param {string} params.templateName the name of the template
+	* @param {string} params.templateVersion the version of the template
+	* @returns {Promise<void>} Resolves upon successfully writing the updated templates manifest to
+	* disk. Rejected with an `Error` if unable to write the templates manifest to disk.
+	*/
+	async _updateManifestWithEditorDependency({ templatesPath, editorVersion, templateName, templateVersion }) {
+		const allEditorDependencies = await this._getAllEditorDependenciesFromManifest(templatesPath);
+		let editorDependencies = allEditorDependencies[editorVersion];
+		if (!editorDependencies) editorDependencies = { dependencies: {} };
+		editorDependencies.dependencies[templateName] = templateVersion;
+		allEditorDependencies[editorVersion] = editorDependencies;
+		await this._outputManifest(this._getManifestPath(templatesPath), allEditorDependencies);
+	}
+	/**
+	* Check whether a template archive is already present on disk.
+	*
+	* @param {string} templatesPath the templates manifest and download path (from
+	* `_getTemplatesPath`)
+	* @param {string} templateName check for the archive of the template with this name
+	* @param {string} templateVersion check for the archive of the template with this version
+	* @returns Resolves to a partial template object containing the archive path if the template archive
+	* exists on disk, otherwise null.
+	*/
+	async _templatePresentOnDisk(templatesPath, templateName, templateVersion) {
+		const templatePath = this._getTemplatePath(templatesPath, templateName, templateVersion);
+		try {
+			return await import_lib$4.default.pathExists(templatePath) ? {
+				displayName: templateName,
+				name: templateName,
+				status: TEMPLATE_STATUSES.READY,
+				tar: templatePath,
+				type: TemplateType.Core,
+				version: templateVersion
+			} : null;
+		} catch (error) {
+			const errorMessage = `Unable to check if ${templatePath} exists: ${error.message}`;
+			cloudAnalytics.errorEvent(errorMessage, "exception");
+			logger$35.error(errorMessage);
+			return null;
+		}
+	}
+	/**
+	* Check whether a template archive is present on disk and whether it's SHA-1 hash matches the
+	* provided `integrity` value.
+	*
+	* @param {Object} params - Parameters object
+	* @param {string} params.templatesPath - The templates manifest and download path (from `_getTemplatesPath`)
+	* @param {string} params.templateName - Check the template archive of the template with this name
+	* @param {string} params.templateVersion - Check the template archive of the template with this version
+	* @param {string} params.integrity - SHA-1 hash value for subresource integrity (SRI) check
+	* @returns {Promise<TemplateFileCheckResult>} Resolves to a `TemplateFileCheckResult` option:
+	* not found, exists, or integrity check failed. Rejected with an `Error` if there is a problem
+	* reading the template archive (excluding `ENOENT`).
+	*/
+	async _checkTemplateFileIntegrity({ templatesPath, templateName, templateVersion, integrity }) {
+		const templatePath = this._getTemplatePath(templatesPath, templateName, templateVersion);
+		const hash = createHash("sha1");
+		const templateReadStream = import_lib$4.default.createReadStream(templatePath);
+		return new Promise((resolve, reject) => {
+			templateReadStream.on("error", (error) => {
+				if (error.message.includes("ENOENT")) {
+					resolve(TEMPLATE_FILE_CHECK_RESULTS.NotFound);
+					return;
+				}
+				reject(error);
+			});
+			hash.once("data", () => {
+				resolve(TEMPLATE_FILE_CHECK_RESULTS[`sha1-${Buffer.from(hash.digest("hex")).toString("base64")}` === integrity ? "Exists" : "IntegrityCheckFailed"]);
+			});
+			templateReadStream.pipe(hash);
+		});
+	}
+	_mapLocalTemplate({ name, displayName, description, type, version, tar, dependencies = {} }) {
+		return {
+			name,
+			displayName,
+			description,
+			type: type === TEMPLATE_TYPE_DEFAULT ? TemplateType.Core : type,
+			version,
+			tar,
+			packages: Object.entries(dependencies).map(([packageName, packageVersion]) => ({
+				name: packageName,
+				packageName,
+				version: packageVersion
+			}))
+		};
+	}
+	/**
+	* Map a remote template to a local template.
+	* @param {Object} param - The remote template to map.
+	* @returns The mapped local template.
+	*/
+	_mapRemoteTemplate({ packageName, name, description, type, isNew, versions, icon, previewImage, renderPipeline, buildPlatforms, termsOfService, extraFields }) {
+		const { name: versionName, tarball, size, dependencies } = versions[0];
+		const ageGateField = extraFields ? extraFields.find((extraField) => extraField.name === "ageGate") : null;
+		return {
+			name: packageName,
+			displayName: name,
+			description,
+			type,
+			isNew,
+			version: versionName,
+			remoteVersion: versionName,
+			remoteTar: tarball.url,
+			integrity: tarball.integrity,
+			size: size.value,
+			remoteSize: size.value,
+			packages: dependencies,
+			dynamicIcon: icon.url,
+			previewImage: previewImage.url,
+			renderPipeline,
+			buildPlatforms,
+			minimumAge: ageGateField ? ageGateField.value : null,
+			termsOfServiceUrl: termsOfService ? termsOfService.url : null,
+			previousVersions: versions.slice(1)
+		};
+	}
+	_setTemplateStatus(status) {
+		return (template) => ({
+			...template,
+			status
+		});
+	}
+	/**
+	* Run a crude validation of a built-in template, ensuring the minimum required fields are present
+	* and the correct types.
+	*
+	* @param param0 An object possibly containing the minimum required template fields.
+	* @returns `true` if the supplied template has the minimum required fields.
+	*/
+	_isValidTemplate({ name, displayName, version }) {
+		return typeof name === "string" && name.length > 0 && typeof displayName === "string" && displayName.length > 0 && typeof version === "string" && version.length > 0;
+	}
+	/**
+	* Convert an array of templates to an object mapping of template names to templates.
+	*
+	* @param templates The array of
+	* templates to create an object mapping for.
+	* @returns The object mapping of template names to templates.
+	*/
+	_templatesToTemplateMap(templates) {
+		return templates.reduce((map, template) => {
+			map[template.name] = template;
+			return map;
+		}, {});
+	}
+	/**
+	* Remove stale cached templates for editor versions that are not currently known by Hub.
+	*/
+	_filterStaleTemplatesCache() {
+		const installedVersions = Object.values(editorManager_default.availableEditors).map(({ version }) => version);
+		this.#unityTemplateCache.filter((editorVersion) => installedVersions.includes(editorVersion));
+	}
+};
+var unityTemplateService_default = new Templates();
+//#endregion

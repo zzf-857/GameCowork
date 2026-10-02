@@ -1,0 +1,18 @@
+//#region src/main/services/licenseService/reportConnectionError.ts
+/**
+* @file: When connection error happens on windows, get the list of Unity processes,
+* and report it to sentry.
+* The purpose of theses log are for help debugging HUBX-998/HUBX-990
+*/
+async function reportConnectionError(message) {
+	if (os.platform() !== "win32") return;
+	if ([
+		/Failed to connect to pipe: 'Unity-LicenseClient/,
+		/Failed to connect to .* pipe: 'Unity-Licens/,
+		/Failed to launch licensing client: Error: Timeout/
+	].some((regex) => message.match(regex))) {
+		const processInfo = await getProcessInfo("Unity");
+		captureException(new Error(message), { extra: { processInfo } });
+	}
+}
+//#endregion

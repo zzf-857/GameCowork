@@ -1,0 +1,63 @@
+//#region src/main/services/editorManager/lib/installedEditorLocation.ts
+var logger$6 = loggerFactory("InstalledEditorLocation");
+var InstalledEditorLocation = class {
+	get editors() {
+		return this.#editors;
+	}
+	#editorFolderScanner;
+	#editors;
+	constructor(_installPath) {
+		this.#editorFolderScanner = new EditorFolderScanner(_installPath);
+		this.#editors = {};
+	}
+	async scanForInstallsAndGenerateEditors() {
+		const editorPaths = await this.#editorFolderScanner.fetchEditorPaths();
+		await Promise.all(editorPaths.map((editorPath) => this.#generateEditorFromFolderPath(editorPath).catch((e) => {
+			logger$6.warn("Failed to generate editor", editorPath, e);
+		})));
+	}
+	async #generateEditorFromFolderPath(folderPath) {
+		const editorExePath = editorUtils.getEditorPathFromFolder(folderPath);
+		const moduleInfoFilePath = join(folderPath, Config$2.INSTALLS.MODULES_FILE);
+		const metadataFilePath = join(folderPath, Config$2.INSTALLS.METADATA_FILE);
+		const modules = await this.#fetchModules(moduleInfoFilePath);
+		const metadata = await this.#fetchMetadata(metadataFilePath);
+		const { version } = await editorUtils.findUnityVersion(editorExePath);
+		const productName = getProductNameFallback(version);
+		let architecture = metadata?.architecture;
+		if (!architecture) architecture = await editorUtils.findEditorArchitecture(editorExePath);
+		const newEditor = {
+			location: [editorExePath],
+			folderPath,
+			version,
+			productName,
+			architecture,
+			entitlements: [],
+			manual: modules.length === 0,
+			modules: modules.length > 0 ? modules : void 0
+		};
+		newEditor.productName = metadata?.productName || newEditor.productName;
+		newEditor.entitlements = metadata?.entitlements || newEditor.entitlements;
+		newEditor.revisionHash = metadata?.revisionHash || void 0;
+		this.#editors[getUniqueIdentifier(newEditor)] = newEditor;
+	}
+	#fetchModules(modulesFilePath) {
+		return read(modulesFilePath).catch(() => {
+			logger$6.warn(`Failed to read from ${modulesFilePath}, using fallback release info.`);
+			return [];
+		});
+	}
+	#fetchMetadata(metadataFilePath) {
+		return read(metadataFilePath).catch(() => {
+			logger$6.warn(`Failed to read from ${metadataFilePath}, using fallback release info`);
+			return null;
+		});
+	}
+	updateEditor({ folderPath }) {
+		return this.#generateEditorFromFolderPath(folderPath);
+	}
+	removeEditor(editor) {
+		delete this.#editors[getUniqueIdentifier(editor)];
+	}
+};
+//#endregion

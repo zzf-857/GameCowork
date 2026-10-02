@@ -1,0 +1,36 @@
+//#region src/main/services/editorManager/lib/EditorFolderScanner.ts
+var import_lib = /* @__PURE__ */ __toESM(require_lib$4(), 1);
+var ERR_CODES_NOT_FOUND = ["ENOENT", "ENOTDIR"];
+var EditorFolderScanner = class {
+	logger = loggerFactory("EditorFolderScanner");
+	constructor(basePath) {
+		this.basePath = basePath;
+	}
+	async fetchEditorPaths() {
+		const paths = await this.scan();
+		const validEditorFolderNameRegExp = /* @__PURE__ */ new RegExp("^\\d+\\.\\d+\\.\\d+[a|b|f|p]\\d+-?");
+		const editorPaths = (await Promise.all(paths.filter((folderName) => validEditorFolderNameRegExp.test(folderName)).map(async (folderName) => {
+			const path = join(this.basePath, folderName);
+			return {
+				path,
+				exists: await import_lib.default.pathExists(editorUtils.getEditorPathFromFolder(path))
+			};
+		}))).filter(({ exists }) => exists).map(({ path }) => path);
+		this.logger.info(`${editorPaths.length} out of ${paths.length} valid paths found in path:
+      ${this.basePath}`);
+		return editorPaths;
+	}
+	async scan() {
+		try {
+			return await import_lib.default.readdir(this.basePath);
+		} catch (e) {
+			if (this.isFolderNotFound(e)) return [];
+			throw e;
+		}
+	}
+	isFolderNotFound(e) {
+		const errnoException = e;
+		return ERR_CODES_NOT_FOUND.includes(errnoException.code);
+	}
+};
+//#endregion

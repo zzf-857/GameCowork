@@ -1,0 +1,331 @@
+//#region src/main/services/downloadEngine/DownloadItem.ts
+var DownloadItem = class extends DownloadItemBase {
+	metadata;
+	errorObj;
+	downloadProgress = {
+		downloaded: 0,
+		progress: 0,
+		speed: 0
+	};
+	started = false;
+	validationStrategy;
+	notifyParent;
+	downloadMachineService;
+	downloader;
+	DownloadHelperModule;
+	machineState = void 0;
+	hash;
+	interimStream;
+	logger;
+	isMachineStopped;
+	forceResume = false;
+	/**
+	* When true, the download phase will be skipped and COMPLETED event sent immediately.
+	* This is used when the file is already fully downloaded (e.g., Hub was closed during validation).
+	* Prevents HTTP 416 errors when trying to resume an already-complete file.
+	*/
+	isAlreadyComplete = false;
+	constructor(params) {
+		super();
+		this.metadata = { ...params.metadata };
+		this.validationStrategy = params.validationStrategy;
+		this.notifyParent = params.onStateChangeHandler;
+		this.forceResume = params.forceResume ?? false;
+		this.hash = crypto.createHash(Config.DOWNLOADS.HASHING_ALGORITHM);
+		this.logger = loggerFactory(`Download Item ${this.metadata.uid}`);
+		this.downloadMachineService = (0, import_xstate_cjs.createActor)(downloadMachine, { input: {
+			metadata: this.metadata,
+			validationStrategy: this.validationStrategy,
+			downloadItem: this
+		} });
+	}
+	async initHelperModule() {
+		const { DownloadHelper } = await import("./DownloadHelper-DhNfyq-p.js");
+		this.DownloadHelperModule = DownloadHelper;
+	}
+	/** *********************
+	Public Functions
+	********************* */
+	start() {
+		if (!this.started) {
+			this.downloadMachineService.start();
+			this.started = true;
+		} else {
+			const currentMachineState = this.downloadMachineService.getSnapshot().value;
+			if (currentMachineState === DOWNLOAD_STATES.PAUSED || currentMachineState === DOWNLOAD_STATES.FAILED) {
+				if (currentMachineState === DOWNLOAD_STATES.FAILED) this.validationStrategy = new DownloadValidationStrategy(this.metadata);
+				this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.RESUME });
+			} else this.logger.error(`Unable to RESUME ${this.metadata.uid} in ${currentMachineState}. Received a RESUME action.`);
+		}
+	}
+	/**
+	* Mark this download as already complete (file fully downloaded on disk).
+	* When the state machine transitions to DOWNLOADING, it will immediately send COMPLETED.
+	* This prevents HTTP 416 errors when trying to resume an already-complete file.
+	*/
+	markAsAlreadyComplete() {
+		this.isAlreadyComplete = true;
+		this.logger.info("Download marked as already complete - will skip download phase");
+	}
+	/**
+	* Pause the download. Only works if the download is in DOWNLOADING state.
+	* @returns true if pause was successful, false if pause failed (e.g., not in DOWNLOADING state)
+	*/
+	pause() {
+		const currentMachineState = this.downloadMachineService.getSnapshot().value;
+		if (currentMachineState === DOWNLOAD_STATES.DOWNLOADING) {
+			this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.PAUSE });
+			return true;
+		}
+		this.logger.error(`Unable to PAUSE ${this.metadata.uid} in ${currentMachineState}. Received a PAUSE action.`);
+		return false;
+	}
+	resume() {
+		const currentMachineState = this.downloadMachineService.getSnapshot().value;
+		if (currentMachineState === DOWNLOAD_STATES.PAUSED) this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.RESUME });
+		else this.logger.error(`Unable to RESUME ${this.metadata.uid} in ${currentMachineState}. Received a RESUME action.`);
+	}
+	remove() {
+		if (!this.started) {
+			this.logger.info(`Removing unstarted download ${this.metadata.uid} - directly triggering cleanup`);
+			DownloadAnalyticsHelper.cancelDownload(this.metadata);
+			this.cleanup().catch((error) => {
+				this.logger.error(`Failed to cleanup unstarted download: ${error}`);
+			});
+			this.isMachineStopped = true;
+			this.updateState(DOWNLOAD_STATES.FINISHED);
+			return;
+		}
+		const currentMachineState = this.downloadMachineService.getSnapshot().value;
+		if (currentMachineState === DOWNLOAD_STATES.VALIDATION || currentMachineState === DOWNLOAD_STATES.DOWNLOADING || currentMachineState === DOWNLOAD_STATES.PAUSED || currentMachineState === DOWNLOAD_STATES.FAILED) {
+			this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.REMOVE });
+			DownloadAnalyticsHelper.cancelDownload(this.metadata);
+		} else this.logger.error(`Unable to REMOVE ${this.metadata.uid} in ${currentMachineState}. Received a REMOVE action.`);
+	}
+	/**
+	* Initialize a restored download in paused state.
+	* This is used when restoring paused downloads on app restart.
+	* Sets the internal state for UI display without starting the state machine.
+	* When resumed, it will transition directly to DOWNLOADING and resume from the partial file.
+	* @param progress Optional progress to restore (downloaded bytes and percentage)
+	*/
+	initializeAsPaused(progress) {
+		this.updateState(DOWNLOAD_STATES.PAUSED);
+		if (progress) this.downloadProgress = {
+			downloaded: progress.downloaded || 0,
+			progress: progress.progress || 0,
+			speed: progress.speed || 0
+		};
+		this.notifyParent(this.getStatus());
+	}
+	/**
+	* Reset the download to start fresh from 0%.
+	* This is used when the partial file is corrupted/missing and we need to restart.
+	* Returns a promise that resolves when cleanup is complete.
+	*/
+	async resetForFreshStart() {
+		this.logger.info("Resetting download for fresh start (partial file was corrupted/missing)");
+		this.downloadProgress = {
+			downloaded: 0,
+			progress: 0,
+			speed: 0
+		};
+		this.metadata.lastChecksumValue = {
+			bytes: 0,
+			md5: ""
+		};
+		this.forceResume = false;
+		this.hash = crypto.createHash(Config.DOWNLOADS.HASHING_ALGORITHM);
+		if (this.downloader) {
+			try {
+				await this.downloader.stop();
+			} catch {}
+			this.downloader = void 0;
+		}
+		if (this.metadata.destination && this.metadata.destinationFilename) {
+			const baseFilePath = path.join(this.metadata.destination, this.metadata.destinationFilename);
+			const downloadFilePath = `${baseFilePath}.download`;
+			try {
+				await DownloadManagerUtilities.deleteFromDownloadFolder(baseFilePath);
+				this.logger.info(`Deleted corrupted partial file: ${baseFilePath}`);
+			} catch {}
+			try {
+				await DownloadManagerUtilities.deleteFromDownloadFolder(downloadFilePath);
+				this.logger.info(`Deleted corrupted partial file: ${downloadFilePath}`);
+			} catch {}
+		} else this.logger.info("Skipping file cleanup - destination/filename not yet set (item was queued)");
+	}
+	getStatus() {
+		const errorItem = this.machineState === DOWNLOAD_STATES.CLEANUP || this.machineState === DOWNLOAD_STATES.FAILED ? this.errorObj : null;
+		return {
+			metadata: this.metadata,
+			state: this.machineState,
+			error: errorItem,
+			progress: this.machineState === DOWNLOAD_STATES.DOWNLOADING || this.machineState === DOWNLOAD_STATES.PAUSED ? this.downloadProgress : null
+		};
+	}
+	getDownloadItem() {
+		return {
+			metadata: this.metadata,
+			onStateChangeHandler: this.notifyParent,
+			validationStrategy: this.validationStrategy
+		};
+	}
+	serialize() {}
+	isMachineInFinalState() {
+		return this.isMachineStopped;
+	}
+	async cleanup() {
+		if (this.downloader) {
+			await this.downloader.stop();
+			const downloadStats = this.downloader.getStats();
+			const pathToRemove = path.join(this.metadata.destination, downloadStats.name);
+			return DownloadManagerUtilities.deleteFromDownloadFolder(pathToRemove);
+		}
+		return true;
+	}
+	/** *********************
+	Download Helper Events Listeners
+	********************* */
+	async onDownloadHelperEnd(downloadInfo) {
+		this.logger.info(`Download Finished. Wrote ${downloadInfo.downloadedSize} bytes on the disk.`);
+		this.metadata.lastChecksumValue.bytes = downloadInfo.downloadedSize;
+		try {
+			this.metadata.lastChecksumValue.md5 = this.hash.copy().digest("hex");
+		} catch (e) {
+			this.logger.error(`Failed to read the file: ${downloadInfo.fileName} to calculate the Hash., Error message: ${e}`);
+		}
+		if (this.machineState === DOWNLOAD_STATES.DOWNLOADING) {
+			this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.COMPLETED });
+			DownloadAnalyticsHelper.completeDownload(this.metadata);
+		}
+	}
+	async onDownloadHelperError(error) {
+		if (this.downloader) this.downloader.pause();
+		if (!this.errorObj) this.errorObj = /* @__PURE__ */ new Error();
+		this.errorObj.message = error.message;
+		this.logger.info(`Error while downloading: ${error.message}`);
+		captureException(error);
+		this.metadata.lastChecksumValue.bytes = this.downloader.getStats().downloaded;
+		try {
+			this.metadata.lastChecksumValue.md5 = this.hash.copy().digest("hex");
+		} catch (e) {
+			this.logger.error(`Failed to read the file: ${this.metadata.destinationFilename} to calculate the Hash., Error message: ${e}`);
+		}
+		this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.ERROR });
+	}
+	async onDownloadHelperTimeout() {
+		if (this.downloader) this.downloader.pause();
+		if (!this.errorObj) this.errorObj = /* @__PURE__ */ new Error("Request timeout");
+		this.logger.error("Error while downloading. Request timeout.");
+		this.metadata.lastChecksumValue.bytes = this.downloader.getStats().downloaded;
+		try {
+			this.metadata.lastChecksumValue.md5 = this.hash.copy().digest("hex");
+		} catch (e) {
+			this.logger.error(`Failed to read the file: ${this.metadata.destinationFilename} to calculate the Hash., Error message: ${e}`);
+		}
+		this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.ERROR });
+	}
+	onDownloadHelperDownload(downloadInfo) {
+		this.metadata.destinationFilename = downloadInfo.fileName;
+	}
+	onDownloadProgress(progress) {
+		this.downloadProgress.progress = progress.progress;
+		this.downloadProgress.downloaded = progress.downloaded;
+		this.downloadProgress.speed = progress.speed;
+		this.notifyParent(this.getStatus());
+	}
+	/** *********************
+	State Machine Actions
+	********************* */
+	onDownload(ctx, event) {
+		super.onDownload(ctx, event);
+		this.updateState(DOWNLOAD_STATES.DOWNLOADING);
+		if (this.isAlreadyComplete) {
+			this.logger.info("File already complete - skipping download, sending COMPLETED event");
+			this.downloadProgress.progress = 100;
+			this.downloadProgress.downloaded = this.metadata.sourceSizeinBytes || 0;
+			this.notifyParent(this.getStatus());
+			this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.COMPLETED });
+			return;
+		}
+		if (!this.downloader) {
+			this.downloader = new this.DownloadHelperModule(this.metadata, this.forceResume);
+			this.downloader.on(NODE_DOWNLOADER_EVENTS.END, this.onDownloadHelperEnd.bind(this));
+			this.downloader.on(NODE_DOWNLOADER_EVENTS.ERROR, this.onDownloadHelperError.bind(this));
+			this.downloader.on(NODE_DOWNLOADER_EVENTS.TIMEOUT, this.onDownloadHelperTimeout.bind(this));
+			this.downloader.on(NODE_DOWNLOADER_EVENTS.DOWNLOAD, this.onDownloadHelperDownload.bind(this));
+			this.downloader.on(NODE_DOWNLOADER_EVENTS.PROGRESS, this.onDownloadProgress.bind(this));
+		}
+		this.interimStream = new PassThrough();
+		this.downloader.pipe(this.interimStream);
+		this.interimStream.pipe(this.hash);
+		this.downloader.start().catch((error) => {
+			this.logger.error(`Error starting download: ${error}`);
+		});
+		this.notifyParent(this.getStatus());
+	}
+	onError(ctx, event) {
+		super.onError(ctx, event);
+		this.updateState(DOWNLOAD_STATES.FAILED);
+		this.notifyParent(this.getStatus());
+	}
+	onFinish(ctx, event) {
+		super.onFinish(ctx, event);
+		this.isMachineStopped = true;
+		this.updateState(DOWNLOAD_STATES.FINISHED);
+		this.downloadMachineService.stop();
+		this.notifyParent(this.getStatus());
+	}
+	async onCleanup(ctx, event) {
+		super.onCleanup(ctx, event);
+		this.updateState(DOWNLOAD_STATES.CLEANUP);
+		if (!await this.cleanup()) {
+			if (!this.errorObj) this.errorObj = /* @__PURE__ */ new Error();
+			this.errorObj.message = "Cleanup Failed";
+		}
+		this.notifyParent(this.getStatus());
+		this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.COMPLETED });
+	}
+	async onPause(ctx, event) {
+		super.onPause(ctx, event);
+		this.updateState(DOWNLOAD_STATES.PAUSED);
+		this.downloader.pause();
+		const downloadStats = this.downloader.getStats();
+		const filePath = path.join(this.metadata.destination, downloadStats.name);
+		try {
+			const stats = await import_lib.default.stat(filePath);
+			this.metadata.lastChecksumValue.bytes = stats.size;
+		} catch (statError) {
+			this.logger.warn(`Could not stat file ${filePath}, using reported bytes. Error: ${statError}`);
+			this.metadata.lastChecksumValue.bytes = downloadStats.downloaded;
+		}
+		if (!this.forceResume) try {
+			this.metadata.lastChecksumValue.md5 = this.hash.copy().digest("hex");
+		} catch (e) {
+			this.logger.error(`Failed to read the file: ${this.metadata.destinationFilename} to calculate the Hash., Error message: ${e}`);
+		}
+		else this.metadata.lastChecksumValue.md5 = "";
+		this.notifyParent(this.getStatus());
+	}
+	async onValidation(ctx, event) {
+		super.onValidation(ctx, event);
+		this.updateState(DOWNLOAD_STATES.VALIDATION);
+		this.notifyParent(this.getStatus());
+		const validationResult = await Validator.runValidation(this.validationStrategy);
+		if (isFailedValidationResult(validationResult)) {
+			this.errorObj = /* @__PURE__ */ new Error("Validation Failed");
+			if (isFailedValidationResultWithError(validationResult)) {
+				const [, error] = validationResult;
+				this.errorObj = error;
+			}
+			this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.ERROR });
+			DownloadAnalyticsHelper.validationFail(ctx.metadata);
+		} else this.downloadMachineService.send({ type: DOWNLOAD_EVENTS.VALIDATION_PASSED });
+	}
+	updateState(state) {
+		this.logger.info(`Transition to state ${state}`);
+		this.machineState = state;
+	}
+};
+//#endregion

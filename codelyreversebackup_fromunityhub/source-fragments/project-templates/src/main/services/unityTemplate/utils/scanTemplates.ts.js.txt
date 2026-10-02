@@ -1,0 +1,32 @@
+//#region src/main/services/unityTemplate/utils/scanTemplates.ts
+var BUILT_IN_TEMPLATES_IGNORED_FILES = ["libcache"];
+/**
+* Scan for built-in templates under `templatesPath`. Templates are extracted from tarballs
+* automatically. If template metadata is invalid, the corresponding template is not included in the
+* return.
+*
+* @param {string} templatesPath The path to an editor's built-in templates.
+* @returns {Promise<Partial<import('../../../types/templates/Template').Template>[]>} The built-in
+* templates included with the editor.
+*/
+var scanTemplates = async (templatesPath) => {
+	const filteredDirectoryEntries = (await import_lib$4.default.readdir(templatesPath, { withFileTypes: true })).filter((dirent) => !BUILT_IN_TEMPLATES_IGNORED_FILES.includes(dirent.name));
+	return (await Promise.allSettled(filteredDirectoryEntries.map(async (dirent) => {
+		const filename = dirent.name;
+		const fullPath = join(templatesPath, filename);
+		if (!dirent.isDirectory()) return extractTemplateFromTar(fullPath);
+		let data;
+		try {
+			const packagePath = join(fullPath, "package.json");
+			data = await import_lib$4.default.readFile(packagePath, "utf8");
+		} catch (error) {
+			throw new Error(`No package.json found for the ${filename} template: ${error.message}`);
+		}
+		try {
+			return JSON.parse(data);
+		} catch (error) {
+			throw new Error(`package.json for the ${filename} template was corrupt: ${error.message}`);
+		}
+	}))).filter((promise) => promise.status === "fulfilled" && promise.value !== void 0).map(({ value: template }) => template);
+};
+//#endregion

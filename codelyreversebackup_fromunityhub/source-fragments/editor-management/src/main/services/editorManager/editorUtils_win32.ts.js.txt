@@ -1,0 +1,73 @@
+//#region src/main/services/editorManager/editorUtils_win32.ts
+var logger = loggerFactory("EditorManager::Utils");
+var COFF_HEADER_OFFSET_ADDRESS = 60;
+var EXPECTED_COFF_SIGNATURE = 17744;
+var MACHINE_BYTE_OFFSET = 4;
+var WindowsPEMachineArchitectures = {
+	43620: CHIP_ARCHITECTURES.ARM64,
+	332: CHIP_ARCHITECTURES.X86_64,
+	34404: CHIP_ARCHITECTURES.X86_64,
+	0: CHIP_ARCHITECTURES.Unknown
+};
+async function getWindowsApplicationArchitecture(filePath) {
+	if (!filePath) throw new Error("Invalid file path");
+	const fileBuffer = await fs.promises.readFile(filePath);
+	const coffHeaderAddress = fileBuffer.readInt32LE(COFF_HEADER_OFFSET_ADDRESS);
+	if (fileBuffer.readInt32LE(coffHeaderAddress) === EXPECTED_COFF_SIGNATURE) return WindowsPEMachineArchitectures[fileBuffer.readUint16LE(coffHeaderAddress + MACHINE_BYTE_OFFSET)] || CHIP_ARCHITECTURES.Unknown;
+	throw new Error("Unable to determine architecture");
+}
+function findManufacturer(editorPath) {
+	const manufacturer = editorVersion.getUnityManufacturer(editorPath).trim();
+	logger.debug(`Manufacturer:${manufacturer}`);
+	return manufacturer;
+}
+var editorUtils = {
+	makeEditorInstallsDir(_installsPath) {
+		return Promise.resolve();
+	},
+	getEditorPathFromFolder(editorFolder) {
+		return path.join(editorFolder, "Editor", "Unity.exe");
+	},
+	findUnityVersion(editorPath) {
+		const versionWithChangeset = editorVersion.getUnityVersion(editorPath).trim().split("_");
+		return Promise.resolve({ version: versionWithChangeset[0] });
+	},
+	async findUnityProductName(editorFolder) {
+		const { ProductName: productName } = await getEditorBuildInfo(path.join(editorFolder, "Editor", "buildInfo"));
+		return productName;
+	},
+	getPlaybackEnginesPathsFromFolder(editorFolder) {
+		return [path.join(editorFolder, "Data", "PlaybackEngines")];
+	},
+	getOSBuildTarget() {
+		return "Win";
+	},
+	async validateEditorFile(editorPath, skipSignatureCheck) {
+		if (!editorPath) throw new EditorUtilsError("Invalid path", "ERROR.INVALID_PATH", { location: editorPath });
+		if (!editorPath.endsWith(".exe")) throw new EditorUtilsError("Not an app", "ERROR.NOT_AN_APP", { location: editorPath });
+		await fs.promises.access(editorPath).catch((error) => {
+			if (error.code === "ENOENT") throw new EditorUtilsError("File not found", "ERROR.FILE_NOT_FOUND", { location: editorPath }, { cause: error });
+			throw new EditorUtilsError("Invalid path", "ERROR.INVALID_PATH", { location: editorPath }, { cause: error });
+		});
+		if (!editorPath.endsWith("Unity.exe")) throw new EditorUtilsError("Not an Unity app", "ERROR.NOT_AN_APP", { location: editorPath });
+		if (!skipSignatureCheck) {
+			if (!findManufacturer(editorPath).includes("Unity Technologies")) throw new EditorUtilsError("Not signed", "ERROR.NOT_SIGNED", { location: editorPath });
+		}
+		return true;
+	},
+	validateInstallPath(location) {
+		const paths = mainContainer.get(IPathsId);
+		const hubPath = path.dirname(paths.getAppExePath());
+		return location.indexOf(hubPath) === -1;
+	},
+	async findEditorArchitecture(binaryLocation) {
+		if (getMachine() !== "arm64") return CHIP_ARCHITECTURES.X86_64;
+		try {
+			return await getWindowsApplicationArchitecture(binaryLocation);
+		} catch (error) {
+			logger.info(`Error finding editor architecture for "${binaryLocation}"`, error);
+		}
+		return null;
+	}
+};
+//#endregion

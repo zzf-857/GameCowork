@@ -1,67 +1,185 @@
 {
-  "_EXTRACT-MANIFEST": "api 目录第二批 core 域深挖产出（T6-T10）；本目录更早的 MESSAGE-LAYERS/frontend-inventory/core-rpc-registry/git-tools/domains-surface 属第一批，未在此列",
-  "generated": "2026-10-01",
-  "redlines": "全程只读原版与维护副本；未运行原版 EXE/CLI；未触碰凭据；未修改 restored/ 或 app/ 现有代码",
-  "files": [
-    {
-      "path": "session-checkpoints.md",
-      "sha256": "4278197BCA866E4AB8D22B9458F65134357E4E161485D2DB2E001B72C0C733DF",
-      "bytes": 8871,
-      "extracted": "2026-10-01",
-      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
-      "sources": [
-        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
-        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
-        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
-      ]
-    },
-    {
-      "path": "mcp-oauth-elicitation.md",
-      "sha256": "D493433ABC8E8D975974D4E5E8AD027E491037AE1B78C862F79DB0024830CA29",
-      "bytes": 6363,
-      "extracted": "2026-10-01",
-      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
-      "sources": [
-        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
-        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
-        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
-      ]
-    },
-    {
-      "path": "config-memory-allowlist.md",
-      "sha256": "35FE1C141E3E3966D89A459FEA91FE7C2867799A21F3FD103B97417282AC6E75",
-      "bytes": 7696,
-      "extracted": "2026-10-01",
-      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
-      "sources": [
-        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
-        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
-        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
-      ]
-    },
-    {
-      "path": "context-engine-and-unity-tools.md",
-      "sha256": "D2F3883775FF771C8CB5AC283B60053D8647638E0B1EFAF95E112DBD6098587C",
-      "bytes": 7561,
-      "extracted": "2026-10-01",
-      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
-      "sources": [
-        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
-        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
-        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
-      ]
-    },
-    {
-      "path": "marketplace-feedback-walkthrough.md",
-      "sha256": "67EA5EEE7F63B60C4D45E28F7A7EA1E1C90EB0931DC739FFF7AD4C2B54E3CFDD",
-      "bytes": 7156,
-      "extracted": "2026-10-01",
-      "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
-      "sources": [
-        "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
-        "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
-        "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
-      ]
-    }
-  ]
+ "_EXTRACT-MANIFEST": "api 目录第二批 core 域深挖产出、acp-extension-surface（T11，2026-10-02）、agent-tools-and-llm-surface（T13，2026-10-02）、cli-command-tree-and-runtime（T14，2026-10-02）、bridge-tools-action-catalog（T15，2026-10-02）、insight-pipeline-and-cli-process-tree（T16，2026-10-02）、canary2-content-diff-and-ux-inventory（T17，2026-10-02）；本目录更早的 MESSAGE-LAYERS/frontend-inventory/core-rpc-registry/git-tools/domains-surface 属第一批，未在此列；实际原包及其匿名公开资产客户端审计（2026-10-02）",
+ "generated": "2026-10-01",
+ "redlines": "全程只读原版与维护副本；未运行原版 EXE/CLI；未触碰凭据；未修改 restored/ 或 app/ 现有代码",
+ "files": [
+  {
+   "path": "session-checkpoints.md",
+   "sha256": "4278197BCA866E4AB8D22B9458F65134357E4E161485D2DB2E001B72C0C733DF",
+   "bytes": 8871,
+   "extracted": "2026-10-01",
+   "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+   "sources": [
+    "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+    "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+    "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+   ]
+  },
+  {
+   "path": "mcp-oauth-elicitation.md",
+   "sha256": "D493433ABC8E8D975974D4E5E8AD027E491037AE1B78C862F79DB0024830CA29",
+   "bytes": 6363,
+   "extracted": "2026-10-01",
+   "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+   "sources": [
+    "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+    "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+    "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+   ]
+  },
+  {
+   "path": "config-memory-allowlist.md",
+   "sha256": "35FE1C141E3E3966D89A459FEA91FE7C2867799A21F3FD103B97417282AC6E75",
+   "bytes": 7696,
+   "extracted": "2026-10-01",
+   "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+   "sources": [
+    "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+    "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+    "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+   ]
+  },
+  {
+   "path": "context-engine-and-unity-tools.md",
+   "sha256": "D2F3883775FF771C8CB5AC283B60053D8647638E0B1EFAF95E112DBD6098587C",
+   "bytes": 7561,
+   "extracted": "2026-10-01",
+   "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+   "sources": [
+    "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+    "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+    "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+   ]
+  },
+  {
+   "path": "marketplace-feedback-walkthrough.md",
+   "sha256": "67EA5EEE7F63B60C4D45E28F7A7EA1E1C90EB0931DC739FFF7AD4C2B54E3CFDD",
+   "bytes": 7156,
+   "extracted": "2026-10-01",
+   "method": "core/CLI/前端美化维护副本逐 handler 精读（与原版 codely-binary/dist 同源），事实均带文件行号引用",
+   "sources": [
+    "restored/core-gamecowork-binary/binary/out/index.beautified.js (原版 app/resource/core/bin/win32-x64/codely-binary.exe 同源)",
+    "restored/cli-gamecowork/cli-main.beautified.js (原版 cli/bin/win32-x64/codely.exe 同源)",
+    "restored/frontend/dist-beautified/assets/ (原版 app/resource/dist 同源)"
+   ]
+  },
+  {
+   "path": "acp-extension-surface.md",
+   "sha256": "E139CB257AF82F54F130C459F9F151F041A1AB38195927D24D4A3E5656397930",
+   "bytes": 13035,
+   "extracted": "2026-10-02",
+   "method": "core 维护副本 Ur/xb 常量表全量提取 + 调用点逐个精读参数形状；前端 VscTheme chunk 提取 userEnvConfig 对话框组件；全程只读",
+   "sources": [
+    "src/core/binary/out/index.js (原版 core 载荷同源维护副本)",
+    "src/agent/cli-main.beautified.js",
+    "src/frontend/bundle/assets/VscTheme-BExNMG_K.js (原版 dist 同源)"
+   ]
+  },
+  {
+   "path": "agent-tools-and-llm-surface.md",
+   "sha256": "9A6165223DF2761D027EA98B4D79B42A9DCEA6DFFADF03D6188F77F33ABC2461",
+   "bytes": 12859,
+   "extracted": "2026-10-02",
+   "method": "core 维护副本工具枚举 ee.* 全量正则提取 + display 对象逐个捕获 + llm/commands/subagents/acp handler 逐个精读；pairing/images 证伪复核",
+   "sources": [
+    "src/core/binary/out/index.js (原版 core 载荷同源维护副本)",
+    "src/agent/cli-main.beautified.js (原版 cli 同源维护副本)",
+    "src/agent/resources/loop-detection-policies/ (策略资源)"
+   ]
+  },
+  {
+   "path": "cli-command-tree-and-runtime.md",
+   "sha256": "EEBC96C521CA2F97C8F0B3A7F05EC6EA3261A70580C0F43DB917003BF4FB927D",
+   "bytes": 12762,
+   "extracted": "2026-10-02",
+   "method": "cli-main.beautified.js 斜杠命令注册表正则全量提取 + 审批/seatbelt/swarm/hooks 调用点精读 + resources 维护输入交叉",
+   "sources": [
+    "src/agent/cli-main.beautified.js (原版 cli 同源维护副本, 20.5MB)",
+    "src/agent/resources/builtin-agents/explore.toml",
+    "src/agent/resources/seatbelt/sandbox-macos-*.sb",
+    "src/agent/resources/loop-detection-policies/default.toml"
+   ]
+  },
+  {
+   "path": "bridge-tools-action-catalog.md",
+   "sha256": "51FA32BF2BBB4E73D1445537946BCDB9908FD323E668EFE9C5199D8C8200CCD2",
+   "bytes": 9130,
+   "extracted": "2026-10-02",
+   "method": "Tools/ 26 管理器逐文件提取动作分发表（ActionHandlers 字典/ValidActions/switch）与参数名；own 桥命令面 grep 对照",
+   "sources": [
+    "codelyreversebackup/editor-bridge-original/Editor/Bridge/Tools/*.cs (cn.tuanjie.codely.bridge@1.0.85 全量源码)",
+    "src/editor-bridge/Editor/Bridge.cs, EditorControl.cs (own 桥对照)"
+   ]
+  },
+  {
+   "path": "insight-pipeline-and-cli-process-tree.md",
+   "sha256": "C445F62796DE76C7A87C11D2F76076870CFCDBD132405BF92184EBD49830C8BC",
+   "bytes": 7164,
+   "extracted": "2026-10-02",
+   "method": "worker bundle 逐个正则提取 schema/模式/边类型/位标志 + yargs command:describe 对象形态全量普查与变量解码",
+   "sources": [
+    "src/unity-insight/bundle/*.js (原版 cli/lib bundle 同源维护副本, worker 0.0.1/protocol 4)",
+    "src/agent/cli-main.beautified.js"
+   ]
+  },
+  {
+   "path": "canary2-content-diff-and-ux-inventory.md",
+   "sha256": "CDE2C9D67A1AF190515A286D5A5F4188EF5CAB514198F1C0289DC735711D2655",
+   "bytes": 8846,
+   "extracted": "2026-10-02",
+   "method": "pkg-unpack.mjs 解包旧版 core EXE（载荷 15,787,839B→161 文件）+ index.js 字符串集差分 + sqlite3 树体积核算 + 前端 t() 命名空间普查与 4373 条文案关键词分类",
+   "sources": [
+    "original/Tuanjie Cowork/app/resource/core/bin/win32-x64/codely-binary-old-1790684865080.exe (只读镜像, 解包输出在统一 temp)",
+    "src/core/binary/out/index.js (canary.2 维护副本)",
+    "src/frontend/bundle/assets/registry-BL-NPVNy.js 等 + codelyreversebackup/frontend/zh-strings.md"
+   ],
+   "correction": "2026-10-02 direct C7 original Core payload B4B146C5 disproves attribution of maintained custom/* and GameCoworkHome strings to original canary.2; see asset-generation-and-canvas-source-audit.md"
+  },
+  {
+   "path": "asset-generation-and-canvas-source-audit.md",
+   "sha256": "40D04A0A8028B2FEB75BFDD9B4CDCB8EB49FD83635549037F3FBF8EBBCD26A18",
+   "bytes": 46908,
+   "extracted": "2026-10-02",
+   "method": "Direct original EXE/package static extraction; anonymous static dependencies traced from original iframe URLs; hash/size and byte-range validation. No original execution or account/generation API. Added source-only custom-provider entry audit and an explicitly unimplemented local binding proposal; the proposal is not original server code. Added read-only original device authorization, refresh, account and subscription flow evidence plus official public documentation; no credential access or authenticated API requests.",
+   "sourceClasses": [
+    "actual-original-package",
+    "anonymous-current-remote-deployment",
+    "user-screenshot-structure"
+   ],
+   "sources": [
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/cowork.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/app/resource/core/bin/win32-x64/codely-binary.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/cli/bin/win32-x64/codely.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/app/resource/dist/assets/index-BRxZ4eG7.js",
+    "https://ai.cdn.tuanjie.cn/static/dist/assets/index-DZWJHC3S.js",
+    "https://aicanvas.tuanjie.cn/assets/index-A8ll_iBT.js",
+    "https://codely-docs.tuanjie.cn/using-codely/codely-cowork/",
+    "https://codely-docs.tuanjie.cn/subscription/account-usage/",
+    "https://codely-docs.tuanjie.cn/faq/common-questions/"
+   ],
+   "limitations": "Static client evidence only; no private server, account balance, exact historical remote deployment, runtime parity or completed product restoration."
+  },
+  {
+   "path": "asset-generation-and-canvas-source-evidence.json",
+   "sha256": "109A83702B6F2BBADFE34A29E3D35B56DAA60B6721290F47557BA1B1A020C53C",
+   "bytes": 827363,
+   "extracted": "2026-10-02",
+   "method": "Direct original EXE/package static extraction; anonymous static dependencies traced from original iframe URLs; hash/size and byte-range validation. No original execution or account/generation API.",
+   "sourceClasses": [
+    "actual-original-package",
+    "anonymous-current-remote-deployment",
+    "user-screenshot-structure"
+   ],
+   "sources": [
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/cowork.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/app/resource/core/bin/win32-x64/codely-binary.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/cli/bin/win32-x64/codely.exe",
+    "E:/TuanjieCodely/EXE/Tuanjie Cowork/app/resource/dist/assets/index-BRxZ4eG7.js",
+    "https://ai.cdn.tuanjie.cn/static/dist/assets/index-DZWJHC3S.js",
+    "https://aicanvas.tuanjie.cn/assets/index-A8ll_iBT.js"
+   ],
+   "limitations": "Static client evidence only; no private server, account balance, exact historical remote deployment, runtime parity or completed product restoration."
+  }
+ ],
+ "latestReferenceAudit": "2026-10-02; original package bytes and anonymous current remote deployment are separately recorded"
 }

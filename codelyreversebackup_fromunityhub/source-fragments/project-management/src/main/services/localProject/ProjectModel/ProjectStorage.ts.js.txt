@@ -1,0 +1,40 @@
+//#region src/main/services/localProject/ProjectModel/ProjectStorage.ts
+/**
+*
+* @param data Data to be validated
+* @returns true if data is valid type
+*/
+function isProject(data) {
+	return typeof data === "object" && data !== null && "path" in data;
+}
+/**
+* Type guard to check if data is valid.
+* NOTE: we may consider libraries to accomplish more complete runtime validation such as zod, etc.
+*
+* @param data Data to be validated
+* @returns true if data is of type Record<string, ProjectEntity>
+*/
+function isProjectList(data) {
+	return typeof data === "object" && data !== null && Object.values(data).every(isProject);
+}
+var PROJECT_LIST_KEY = "projects-v1";
+var ProjectStorage = class {
+	async fileExists() {
+		return mainContainer.get(IJsonStorageId).has(PROJECT_LIST_KEY);
+	}
+	async getProjectList() {
+		const content = await mainContainer.get(IJsonStorageId).get(PROJECT_LIST_KEY);
+		if (!isProjectList(content?.data)) throw new ProjectEntityError({
+			name: "SCHEMA_VALIDATION_ERROR",
+			message: "The shape of the data read from storage is malformed"
+		});
+		return content.data;
+	}
+	async saveProjectList(projectList) {
+		await mainContainer.get(IJsonStorageId).set(PROJECT_LIST_KEY, {
+			schema_version: "v1",
+			data: projectList
+		});
+	}
+};
+//#endregion

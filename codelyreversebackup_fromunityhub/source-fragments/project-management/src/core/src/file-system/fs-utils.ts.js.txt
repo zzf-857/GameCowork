@@ -1,0 +1,69 @@
+//#region src/core/src/file-system/fs-utils.ts
+/**
+* Check if the given filename is valid (does not contain unacceptable characters and is within
+* length limits).
+*
+* @param filename the filename to check
+* @param options options for validation
+* @param options.caseInsensitive if true, ignore differences in character case when validating
+* @param options.invalidRegExp `RegExp` of unacceptable characters and patterns
+* @param options.minAsciiValue characters with ASCII value lower than this are considered unacceptable
+* @param options.maxLength max length for a filename to be valid
+* @returns true if the given filename is valid
+*/
+var isValidFilename$2 = (filename, { caseInsensitive, invalidRegExp, minAsciiValue, maxLength }) => {
+	const workingFilename = caseInsensitive ? filename.toLocaleLowerCase() : filename;
+	return !workingFilename.match(invalidRegExp) && workingFilename.split("").every((char) => char.charCodeAt(0) >= minAsciiValue) && workingFilename.length > 0 && (maxLength ? workingFilename.length <= maxLength : true) && !workingFilename.startsWith(" ");
+};
+/**
+* Create a validator that can check if the given path is valid (formatted correctly such that each
+* filename component of the path is also valid).
+*
+* @param path the path to check
+* @param caseInsensitive if true, ignore differences in character case when validating
+* @param maxLength max length for a path to be valid
+* @param parsePathComponents called to parse out the filename components of the path and separate
+* the volume prefix
+* @returns path validator for use on the given path
+*/
+var pathValidator$1 = (path, caseInsensitive, maxLength, parsePathComponents) => (validatePathComponents) => {
+	const workingPath = caseInsensitive ? path.toLocaleLowerCase() : path;
+	const components = parsePathComponents(workingPath);
+	return workingPath.length > 0 && workingPath.length <= maxLength && typeof components === "string" && validatePathComponents(components);
+};
+/**
+* see: https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions
+*/
+var FILENAME_INVALID_PATTERN$1 = /([<>:"/\\|?*`%]|^(con|prn|aux|nul|(com|lpt)[1-9])(?:\..*)?$|[ .]$)/;
+var FILENAME_MIN_ASCII_VALUE$1 = 32;
+/**
+* Permits "\\server\share\*", "\device\*", "c:\*", and "*"
+*
+* see: https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#fully-qualified-vs-relative-paths
+*/
+var PATH_NAMESPACES$1 = /^((?:\\\\?.+|[a-z]:)\\|)(.*)$/;
+var CASE_INSENSITIVE = true;
+/**
+* Check if the given filename is valid (does not contain unacceptable characters and is within
+* length limits).
+*
+* @param filename the filename to check
+* @returns true if the given filename is valid
+*/
+var isValidFilename$1 = (filename) => isValidFilename$2(filename, {
+	caseInsensitive: CASE_INSENSITIVE,
+	invalidRegExp: FILENAME_INVALID_PATTERN$1,
+	minAsciiValue: FILENAME_MIN_ASCII_VALUE$1,
+	maxLength: 260
+});
+/**
+* Create a validator that can check if the given path is valid (formatted correctly such that each
+* filename component of the path is also valid).
+*
+* @param path the path to check
+* @returns path validator for use on the given path
+*/
+var pathValidator = (path) => pathValidator$1(path, CASE_INSENSITIVE, 260, (path2) => {
+	return path2.match(PATH_NAMESPACES$1)?.[2] ?? null;
+});
+//#endregion

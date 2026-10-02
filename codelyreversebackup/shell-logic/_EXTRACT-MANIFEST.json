@@ -472,6 +472,17 @@
    "path": "unity-shell-side.md",
    "sha256": "0a8e2f64d47a330dbc2ccfa202f099d1da929ba726483c9a46fe851c963490e3",
    "size": 8699
+  },
+  {
+   "path": "shell-http-surface.md",
+   "sha256": "1632EC7B3079A1DD2605C516E3C136241F86F457B87084CB9E749A21A1F3AEFA",
+   "bytes": 8080,
+   "extracted": "2026-10-02",
+   "method": "cowork-routes-urls.txt 逐条复核 + 维护副本前端调用点交叉验证；未运行原版 EXE",
+   "sources": [
+    "codelyreversebackup/strings/cowork-routes-urls.txt (cowork.exe 提取产物)",
+    "src/frontend/bundle/assets/index-BRxZ4eG7.js 等 (原版 dist 同源维护副本)"
+   ]
   }
  ]
 }

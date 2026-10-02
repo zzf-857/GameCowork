@@ -1,0 +1,44 @@
+//#region src/main/services/downloadEngine/DownloadItemBase.ts
+var DownloadItemBase = class {
+	downloadlogger = loggerFactory("Download Item");
+	onDownload(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Current State: Downloading, Event: ${event.type}`);
+	}
+	onDownloadExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Downloading, Event: ${event.type}`);
+	}
+	onError(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Current State: Failed, Event: ${event.type}`);
+		DownloadAnalyticsHelper.failDownload(ctx.metadata);
+	}
+	onErrorExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Failed, Event: ${event.type}`);
+	}
+	onFinish(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Filename: ${ctx.metadata.destinationFilename}
+    Current State: Finished, Event: ${event.type}, exiting the state machine.`);
+	}
+	onFinishExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Finished, Event: ${event.type}`);
+	}
+	onCleanup(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Current State: Cleanup, Event: ${event.type}`);
+	}
+	onCleanupExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Cleanup, Event: ${event.type}`);
+	}
+	onPause(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Current State: Paused, Event: ${event.type}`);
+	}
+	onPauseExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Paused, Event: ${event.type}`);
+	}
+	onValidation(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Current State: Validation, Event: ${event.type}`);
+		DownloadAnalyticsHelper.startDownload(ctx.metadata);
+	}
+	onValidationExit(ctx, event) {
+		this.downloadlogger.info(`Download: ${ctx.metadata.uid}, Exiting from State: Validation, Event: ${event.type}`);
+	}
+};
+//#endregion

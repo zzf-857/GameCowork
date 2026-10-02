@@ -1,0 +1,9 @@
+//#region src/types/downloads/stateMachine/DownloadItemType.ts
+var DOWNLOAD_ITEM_TYPES = {
+	EDITOR: "editor",
+	EDITOR_MODULE: "editorModule",
+	LEARN_CONTENT: "learnContent",
+	TEMPLATE: "template"
+};
+var INSTALLABLE_DOWNLOAD_TYPES = [DOWNLOAD_ITEM_TYPES.EDITOR, DOWNLOAD_ITEM_TYPES.EDITOR_MODULE];
+//#endregion

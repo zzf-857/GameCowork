@@ -1,0 +1,129 @@
+//#region src/main/services/editorManager/buildTarget.json
+var buildTarget_default = [
+	{
+		"dirName": "MacStandaloneSupport",
+		"name": "macOS",
+		"buildTarget": "StandaloneOSX"
+	},
+	{
+		"dirName": "MetroSupport",
+		"name": "Universal Windows Platform",
+		"buildTarget": "WindowsStoreApps"
+	},
+	{
+		"dirName": "windowsstandalonesupport",
+		"name": "Windows 64-bit",
+		"buildTarget": "StandaloneWindows64"
+	},
+	{
+		"dirName": "WindowsStandaloneSupport",
+		"name": "Windows 64-bit",
+		"buildTarget": "StandaloneWindows64"
+	},
+	{
+		"dirName": "LinuxStandaloneSupport",
+		"name": "Linux",
+		"buildTarget": "StandaloneLinux64"
+	},
+	{
+		"dirName": "iOSSupport",
+		"name": "iOS",
+		"buildTarget": "iOS"
+	},
+	{
+		"dirName": "AppleTVSupport",
+		"name": "tvOS",
+		"buildTarget": "tvOS"
+	},
+	{
+		"dirName": "PS4Player",
+		"name": "PS4",
+		"buildTarget": "PS4"
+	},
+	{
+		"dirName": "PS5Player",
+		"name": "PS5",
+		"buildTarget": "PS5"
+	},
+	{
+		"dirName": "PSP2Player",
+		"name": "PSP Vita",
+		"buildTarget": "PSP2"
+	},
+	{
+		"dirName": "XboxOnePlayer",
+		"name": "XboxOne",
+		"buildTarget": "XboxOne"
+	},
+	{
+		"dirName": "AndroidPlayer",
+		"name": "Android",
+		"buildTarget": "Android"
+	},
+	{
+		"dirName": "WebGLSupport",
+		"name": "WebGL",
+		"buildTarget": "WebGL"
+	},
+	{
+		"dirName": "Switch",
+		"name": "Switch",
+		"buildTarget": "Switch"
+	},
+	{
+		"dirName": "Switch2",
+		"name": "Switch 2",
+		"buildTarget": "Switch2"
+	},
+	{
+		"dirName": "N3DS",
+		"name": "3DS",
+		"buildTarget": "N3DS"
+	},
+	{
+		"dirName": "LuminSupport",
+		"name": "Lumin",
+		"buildTarget": "Lumin"
+	},
+	{
+		"dirName": "Facebook",
+		"name": "Facebook",
+		"buildTargetGroup": "facebook"
+	},
+	{
+		"dirName": "BJMSupport",
+		"name": "Stadia",
+		"buildTarget": "Stadia"
+	},
+	{
+		"dirName": "CloudRendering",
+		"name": "Linux Headless Simulation",
+		"buildTarget": "CloudRendering"
+	},
+	{
+		"dirName": "GameCoreScarlettSupport",
+		"name": "Game Core - Xbox Series",
+		"buildTarget": "GameCoreScarlett"
+	},
+	{
+		"dirName": "GameCoreXboxOneSupport",
+		"name": "Game Core - Xbox One",
+		"buildTarget": "GameCoreXboxOne"
+	},
+	{
+		"dirName": "EmbeddedLinux",
+		"name": "Embedded Linux",
+		"buildTarget": "EmbeddedLinux"
+	},
+	{
+		"dirName": "QNX",
+		"name": "QNX",
+		"buildTarget": "QNX"
+	},
+	{
+		"dirName": "VisionOSPlayer",
+		"name": "visionOS",
+		"buildTarget": "VisionOS"
+	}
+];
+//#endregion

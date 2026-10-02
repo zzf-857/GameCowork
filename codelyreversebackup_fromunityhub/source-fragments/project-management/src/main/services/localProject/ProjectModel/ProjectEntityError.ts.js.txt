@@ -1,0 +1,10 @@
+//#region src/main/services/localProject/ProjectModel/ProjectEntityError.ts
+var ProjectEntityError = class extends ErrorBase {
+	constructor(options) {
+		super(options.message, {
+			name: options.name,
+			cause: options.cause
+		});
+	}
+};
+//#endregion

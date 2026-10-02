@@ -1,0 +1,11 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstallerIpc_win32.ts
+var import_lib = /* @__PURE__ */ __toESM(require_lib(), 1);
+function createRequest(channel, ...payload) {
+	return {
+		type: "request",
+		id: randomUUID(),
+		channel,
+		payload
+	};
+}
+//#endregion

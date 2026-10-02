@@ -1,0 +1,46 @@
+//#region src/main/services/projectService/ProjectNotifierService.ts
+var notifyProjectOpening = (projectPath) => {
+	windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_OPENING, projectPath);
+};
+/**
+* Intermittently checks if the project is open, once it is, it broadcasts a opened message.
+* @param projectPath
+* @returns a function that can be called to cancel and send the opened broadcast early
+*/
+var notifyProjectOpenedWhenFinished = (projectPath) => {
+	let pingProjectOpened = null;
+	const projectOpened = () => {
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_OPENED, projectPath);
+		clearInterval(pingProjectOpened);
+	};
+	const checkIfOpen = () => ProjectValidatorService.validateProjectNotOpen(projectPath, false).then((projectNotOpen) => {
+		if (!projectNotOpen) projectOpened();
+	});
+	setTimeout(projectOpened, Config$2.PROJECTS.OPEN_TIMEOUT);
+	pingProjectOpened = setInterval(checkIfOpen, Config$2.PROJECTS.OPEN_PING_RATE);
+	return projectOpened;
+};
+/**
+* Intermittently checks if the file is created, once it is, invokes callback.
+* @param filePath
+* @param fileName
+* @param callback a function to be invoked once file check is successful
+*/
+var onFileCreated = (filePath, fileName, callback) => {
+	let intervalTimeout = null;
+	let attemptsLeft = Math.floor(Config$2.PROJECTS.OPEN_TIMEOUT / Config$2.PROJECTS.OPEN_PING_RATE);
+	const checkIfExists = async () => {
+		if (await hub_fs_default.pathExists(filePath, fileName)) {
+			callback();
+			clearInterval(intervalTimeout);
+		} else if (attemptsLeft <= 1) clearInterval(intervalTimeout);
+		attemptsLeft--;
+	};
+	intervalTimeout = setInterval(checkIfExists, Config$2.PROJECTS.OPEN_PING_RATE);
+};
+var ProjectNotifierService = {
+	notifyProjectOpening,
+	notifyProjectOpenedWhenFinished,
+	onFileCreated
+};
+//#endregion

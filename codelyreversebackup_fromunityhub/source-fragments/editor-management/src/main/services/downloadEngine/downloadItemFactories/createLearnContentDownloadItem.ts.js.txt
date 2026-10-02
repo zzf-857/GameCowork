@@ -1,0 +1,43 @@
+//#region src/main/services/downloadEngine/downloadItemFactories/createLearnContentDownloadItem.ts
+var logger$9 = loggerFactory("createLearnContentDownloadItem");
+/**
+* Create a download item for downloading learn content. The content is serialized as JSON and
+* stored on disk on successful download.
+*
+* @param params download item enqueue params
+* @param destination base directory where the item will be downloaded
+* @param uid unique ID to refer to the download item when pausing/resuming/etc.
+* @returns download item data including the download state change callback
+*/
+var createLearnContentDownloadItem = (params, destination, uid) => {
+	const { downloadUrl, downloadSize, parentItemUid, learnItem } = params;
+	const { title } = learnItem;
+	const learnContentDestination = join(destination, Config.DOWNLOADS.LEARN_DIRECTORY);
+	return {
+		metadata: {
+			type: DOWNLOAD_ITEM_TYPES.LEARN_CONTENT,
+			source: downloadUrl,
+			sourceSizeinBytes: downloadSize,
+			sourceType: DOWNLOAD_SOURCE_TYPES.HTTP,
+			itemName: uid,
+			itemDisplayName: title,
+			destination: learnContentDestination,
+			uid,
+			parentItemUid,
+			lastChecksumValue: {
+				bytes: 0,
+				md5: ""
+			},
+			learnProjectMetadata: { learnItem }
+		},
+		onStateChangeHandler: async ({ metadata: updatedMetadata, state }) => {
+			if (state === DOWNLOAD_STATES.FINISHED) {
+				const objToWrite = cloneDeep(updatedMetadata.learnProjectMetadata);
+				objToWrite.downloadedProject = { location: join(updatedMetadata.destination, updatedMetadata.destinationFilename) };
+				if (!await LivePlatformAPI.serializeLearnItem([objToWrite])) logger$9.error(`${updatedMetadata.uid} is ${state} but failed to update the persisted learn metadata.
+            Hub cannot associate the downloaded project with the learn card in the UI.`);
+			}
+		}
+	};
+};
+//#endregion

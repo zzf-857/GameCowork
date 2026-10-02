@@ -1,0 +1,7 @@
+//#region src/types/downloads/Editor/EditorReleaseType.ts
+var EDITOR_RELEASE_TYPES = {
+	OFFICIAL: "official",
+	BETA: "beta",
+	ALPHA: "alpha"
+};
+//#endregion

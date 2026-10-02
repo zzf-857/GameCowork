@@ -1,0 +1,49 @@
+//#region src/main/services/licenseService/licenseNotificationHandler.ts
+var import_lib$2 = /* @__PURE__ */ __toESM(require_lib$2(), 1);
+var LicenseNotificationHandler = class {
+	logger = loggerFactory("LicenseNotificationHandler");
+	ignoredRevokedLicenseProductNames = IGNORED_REVOKED_LICENSE_PRODUCT_NAMES;
+	handleLicenseExpireNotification(msg) {
+		this.logger.info("license expired notification received");
+		const offlineValidityEndedProductNames = msg.details.filter((detail) => detail.reason === import_lib$2.NotificationReasons.EntitlementGroupUpdateDateExpired).map((detail) => detail.productName);
+		if (offlineValidityEndedProductNames.length > 0) {
+			this.logger.debug(`received entitlement group update date expired notification for: ${offlineValidityEndedProductNames.join(", ")}`);
+			windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_OFFLINE_VALIDITY_ENDED, offlineValidityEndedProductNames);
+		}
+	}
+	async handleLicenseUpdateNotification(msg) {
+		this.logger.info("license update notification received");
+		this.processRevokedNotifications(msg);
+		await this.processAddedNotifications(msg);
+	}
+	processRevokedNotifications(msg) {
+		const revokedLicenseProductNames = msg.details.filter((detail) => detail.reason === import_lib$2.NotificationReasons.EntitlementGroupRevoked).map((detail) => detail.productName);
+		if (revokedLicenseProductNames.length > 0) {
+			this.logger.debug(`received revoked notification for: ${revokedLicenseProductNames.join(", ")}`);
+			const trimmedRevokedLicenseProductNames = revokedLicenseProductNames.filter((item) => !this.ignoredRevokedLicenseProductNames.includes(item));
+			if (trimmedRevokedLicenseProductNames.length > 0) windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_REVOKED_NOTIFICATION, trimmedRevokedLicenseProductNames);
+		}
+	}
+	async processAddedNotifications(msg) {
+		if (msg.details.filter((detail) => detail.reason === import_lib$2.NotificationReasons.EntitlementGroupAdded && detail.productName === LICENSE_TYPES.Personal && !detail.entitlementGroupId.startsWith("F4")).length > 0) {
+			if (!(await window$1.getFirstTimeSettings()).showWelcomeModal && licenseEulaManager_default.getPersonalEulaAgreementStatus() !== LICENSE_EULA_AGREEMENT_STATUSES.AGREED) {
+				this.logger.info(`Attempting to show Unity Personal EULA modal`);
+				windowManager_default.broadcastContent(RENDERER_EVENTS.LICENSE_ADDED_PERSONAL_EULA_SHOW_NOTIFICATION);
+			}
+		}
+	}
+	handleBorrowFeatureStatusNotification(msg) {
+		this.logger.info("borrow feature status notification received");
+		let status = BorrowFeatureStatusCodeMapping[msg.details.status];
+		if (status === void 0) {
+			this.logger.error(`Error while parsing borrow feature status notification... Defaulting to ${BORROW_FEATURE_STATUSES.Unknown}`);
+			status = BORROW_FEATURE_STATUSES.Unknown;
+		}
+		windowManager_default.broadcastContent(RENDERER_EVENTS.BORROW_FEATURE_STATUS_NOTIFICATION, {
+			status,
+			maxBorrowDurationDays: msg.details.maxBorrowDurationDays
+		});
+	}
+};
+var licenseNotificationHandler_default = new LicenseNotificationHandler();
+//#endregion

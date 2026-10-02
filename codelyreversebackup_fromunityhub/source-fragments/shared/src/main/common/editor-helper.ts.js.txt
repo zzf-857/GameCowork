@@ -1,0 +1,57 @@
+//#region src/main/common/editor-helper.ts
+var { editorHelper: editorHelperPlatform } = await (async () => {
+	const platform = os.platform();
+	switch (platform) {
+		case PROCESS_PLATFORMS.WINDOWS: return await import("./editor-helper-win32-CK-DuG26.js");
+		case PROCESS_PLATFORMS.MAC: return await import("./editor-helper-darwin-Cwp4mp84.js");
+		case PROCESS_PLATFORMS.LINUX: return await import("./editor-helper-linux-Cwi4dgcD.js");
+		default: throw new Error(`Unsupported platform: ${platform}`);
+	}
+})();
+var editorHelper = {
+	getUserDataPath() {
+		return path.join(this.getBaseUserDataPath(), this.getUnityFolderInUserData());
+	},
+	getUnityFolderInUserData() {
+		return editorHelperPlatform.getUnityFolderInUserData();
+	},
+	getBaseUserDataPath() {
+		return editorHelperPlatform.getBaseUserDataPath();
+	},
+	getEditorLogPath() {
+		return editorHelperPlatform.getEditorLogPath();
+	},
+	getDefaultAssetStoreFolderName() {
+		return "Asset Store-5.x";
+	},
+	getDefaultAssetStorePath() {
+		return path.join(this.getUserDataPath(), this.getDefaultAssetStoreFolderName());
+	},
+	async getAvailableInstallPath(baseInstallPath, editorUniqueId) {
+		let osSpecificPartialPath;
+		switch (os.platform()) {
+			case PROCESS_PLATFORMS.WINDOWS:
+				osSpecificPartialPath = path.join("Editor", "Unity.exe");
+				break;
+			case PROCESS_PLATFORMS.MAC:
+				osSpecificPartialPath = path.join("Unity.app", "Contents", "MacOS", "Unity");
+				break;
+			case PROCESS_PLATFORMS.LINUX:
+				osSpecificPartialPath = path.join("Editor", "Unity");
+				break;
+			default: return null;
+		}
+		const checkInstallPathAvailable = async (editorBinaryLocation) => {
+			const readWriteAccessValidationResult = await hub_fs_default.checkReadWriteAccess(editorBinaryLocation);
+			if (readWriteAccessValidationResult.isValid) return false;
+			return readWriteAccessValidationResult.errorCode === "ENOENT";
+		};
+		const primaryPath = path.join(baseInstallPath, editorUniqueId.version);
+		let pathIsAvailable = await checkInstallPathAvailable(path.join(primaryPath, osSpecificPartialPath));
+		if (pathIsAvailable) return primaryPath;
+		const secondaryPath = path.join(baseInstallPath, getUniqueIdentifier(editorUniqueId));
+		pathIsAvailable = await checkInstallPathAvailable(path.join(secondaryPath, osSpecificPartialPath));
+		return pathIsAvailable ? secondaryPath : null;
+	}
+};
+//#endregion

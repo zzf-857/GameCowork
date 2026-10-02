@@ -1,0 +1,8 @@
+//#region src/main/services/unityTemplate/unityTemplateDownloadHelper.ts
+var downloadRemoteTemplate = async (templateName, editorVersion, editorArchitecture, isUpgrade = false) => {
+	const downloadParams = await unityTemplateService_default.downloadRemoteTemplate(templateName, editorVersion, editorArchitecture, isUpgrade);
+	if (downloadParams) await enqueueDownload(downloadParams);
+	return !!downloadParams;
+};
+var upgradeTemplate = (templateName, editorVersion, editorArchitecture) => downloadRemoteTemplate(templateName, editorVersion, editorArchitecture, true);
+//#endregion

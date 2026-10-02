@@ -1,0 +1,28 @@
+//#region src/main/services/unityTemplate/templateServiceManager.ts
+var hardcodedTemplateCategories = [
+	{
+		type: TemplateFilterTypes.All,
+		iconName: "list_small"
+	},
+	{
+		type: TemplateFilterTypes.New,
+		iconName: "star_alt"
+	},
+	{
+		type: TemplateType.Core,
+		iconName: "cube_contained"
+	},
+	{
+		type: TemplateType.Sample,
+		iconName: "cube_stack"
+	},
+	{
+		type: TemplateType.Learning,
+		iconName: "school_small"
+	}
+];
+var getCategories = () => {
+	return hardcodedTemplateCategories;
+};
+var TemplateServiceManager = { getCategories };
+//#endregion

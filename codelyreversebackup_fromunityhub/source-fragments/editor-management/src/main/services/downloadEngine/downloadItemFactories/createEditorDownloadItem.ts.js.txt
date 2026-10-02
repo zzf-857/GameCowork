@@ -1,0 +1,44 @@
+//#region src/main/services/downloadEngine/downloadItemFactories/createEditorDownloadItem.ts
+/**
+* Create a download item for downloading an editor version. The editor will be automatically
+* installed on successful download.
+*
+* @param params download item enqueue params
+* @param destination directory where the item will be downloaded
+* @param uid unique ID to refer to the download item when pausing/resuming/etc.
+* @returns download item data including the download state change callback
+* @throws {Error} if the desired editor version is an official one, but does not exist in the
+* release config
+*/
+var createEditorDownloadItem = (params, destination, uid) => {
+	const { release, downloadTrigger } = params;
+	const { version, modules, productName, entitlements } = release;
+	const downloadUrl = params.downloadUrl ?? release.downloadUrl;
+	const downloadSize = params.downloadSize ?? release.downloadSize;
+	const itemDisplayName = productName ? `${productName} (${version})` : `Unity (${version})`;
+	return {
+		metadata: {
+			type: DOWNLOAD_ITEM_TYPES.EDITOR,
+			source: downloadUrl,
+			sourceSizeinBytes: downloadSize,
+			sourceType: DOWNLOAD_SOURCE_TYPES.HTTP,
+			itemName: uid,
+			itemDisplayName,
+			destination,
+			uid,
+			lastChecksumValue: {
+				bytes: 0,
+				md5: ""
+			},
+			release,
+			rawModulesList: modules,
+			downloadTrigger,
+			productName,
+			entitlements
+		},
+		onStateChangeHandler: ({ metadata: updatedMetadata, state }) => {
+			if (state === DOWNLOAD_STATES.FINISHED) InstallationManager.addToInstalls(updatedMetadata, updatedMetadata.itemName);
+		}
+	};
+};
+//#endregion

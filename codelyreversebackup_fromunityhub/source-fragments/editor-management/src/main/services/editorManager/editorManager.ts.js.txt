@@ -1,0 +1,572 @@
+//#region src/main/services/editorManager/editorManager.ts
+var logger$2 = loggerFactory("EditorManager");
+function throwError(message) {
+	throw new Error(message);
+}
+var APP_PATH = {
+	darwin: path.join("/Applications"),
+	win32: process$1.env.PROGRAMFILES || path.join("C:", "Program Files"),
+	linux: process$1.env.HOME
+}[os.platform()] ?? throwError(`Unsupported platform: ${os.platform()}`);
+var INSTALL_PATH = {
+	darwin: path.join(APP_PATH, "Unity", "Hub", "Editor"),
+	win32: path.join(APP_PATH, "Unity", "Hub", "Editor"),
+	linux: path.join(APP_PATH, "Unity", "Hub", "Editor")
+}[os.platform()] ?? throwError(`Unsupported platform: ${os.platform()}`);
+function generateEditorAppInstance(editor) {
+	if (!editor) return void 0;
+	return new EditorApp({
+		editorPath: editor.location[0],
+		version: editor.version,
+		architecture: editor.architecture
+	});
+}
+var EditorError = class extends Error {
+	code;
+	constructor(message, code, options) {
+		super(message, options);
+		this.code = code;
+	}
+};
+var EditorManager = class {
+	#hubIPCState = mainContainer.get(IHubIPCStateId);
+	editorList = new EditorList(INSTALL_PATH);
+	errorCodes = {
+		NO_EDITORS_FOUND: 0,
+		NO_DEFAULT_EDITOR_FOUND: 1,
+		EDITOR_NOT_FOUND: 2,
+		MULTIPLE_EDITOR_FOUND: 3
+	};
+	get availableEditors() {
+		return this.editorList.availableEditors;
+	}
+	get currentInstallPath() {
+		return this.editorList.secondaryInstallPath || INSTALL_PATH;
+	}
+	get defaultEditorVersion() {
+		return this.editorList.latest ? this.editorList.latest.version : void 0;
+	}
+	/**
+	* Initializes the editor manager.
+	* @public
+	*/
+	async init(span) {
+		logger$2.info("Init");
+		return startSpan$1({
+			parentSpan: span,
+			op: "EditorManager.init",
+			name: "Editor Manager Initialization"
+		}, async () => {
+			await this.editorList.init();
+			return this._initSecondaryInstallLocation();
+		});
+	}
+	/**
+	* Opens dialog for selecting the editor
+	*/
+	chooseEditor() {
+		const translate = mainContainer.get(ITranslateId);
+		const args = {
+			title: translate.t("install:LOCATE_EDITOR_TITLE"),
+			buttonLabel: translate.t("install:SELECT_EDITOR"),
+			defaultPath: this.currentInstallPath,
+			properties: ["openFile"]
+		};
+		return windowManager_default.mainWindow.showOpenFileDialog(args);
+	}
+	/**
+	* Validate if a path/location is a Unity Editor file or not.
+	* @param {string} location
+	* @param {boolean} skipSignatureCheck Whether to skip Unity signature checking
+	* @returns {Promise<boolean>}
+	*/
+	validateEditorFile(location, skipSignatureCheck) {
+		return editorUtils.validateEditorFile(location, skipSignatureCheck).catch((err) => {
+			logger$2.info(`failed to validate the Editor file ${err}`);
+			return Promise.reject(err);
+		});
+	}
+	/**
+	* Validates the installation path of the editor.
+	*
+	* @param {string} location - The installation path of the editor.
+	* @returns {boolean}
+	* @public
+	*/
+	validateInstallPath(location) {
+		return editorUtils.validateInstallPath(location);
+	}
+	/**
+	* For a given editor location, finds the version
+	* @param {string} editorPath
+	* @returns {Promise<{version: string}>}
+	*/
+	findVersion(editorPath) {
+		return editorUtils.findUnityVersion(editorPath);
+	}
+	/**
+	* For a given editor location, finds the architecture
+	* @param {string} editorPath
+	* @returns {Promise<ChipArchitecture>}
+	*/
+	findArchitecture(editorPath) {
+		return editorUtils.findEditorArchitecture(editorPath);
+	}
+	/**
+	* Given a path, adds/overwrites that editor to local storage if it is a valid
+	* editor and version is found.
+	* It set the default editor if this is the first editor added.
+	* @param {string} location
+	* @param {boolean} skipSignatureCheck Whether to skip Unity signature checking
+	* @returns {Promise<LocatedInstall>}
+	* @public
+	*/
+	addEditor(location, skipSignatureCheck) {
+		return this.validateEditorFile(location, skipSignatureCheck).then(() => this.findVersion(location)).then(async (versionInfo) => {
+			const editorArchitecture = await this.findArchitecture(location);
+			const productName = await editorUtils.findUnityProductName(path.dirname(location)) || getProductNameFallback(versionInfo.version);
+			const newEditor = {
+				version: versionInfo.version,
+				location: [location],
+				manual: true,
+				architecture: editorArchitecture,
+				productName
+			};
+			if (find(this.editorList.availableEditors, {
+				version: newEditor.version,
+				architecture: newEditor.architecture
+			})) return Promise.reject({
+				errorCode: INSTALL_LOCATE_ERRORS.ALREADY_IN_LIST,
+				params: { version: newEditor.version }
+			});
+			return this.editorList.addLocatedEditor(newEditor).then(() => {
+				cloudAnalytics.addEvent({
+					type: cloudAnalytics.eventTypes.EDITOR_LOCATE,
+					msg: {
+						editor_version: newEditor.version,
+						editor_architecture: newEditor.architecture,
+						used_shift_key: skipSignatureCheck,
+						status: "Success"
+					}
+				});
+			}).then(() => newEditor).catch((err) => {
+				cloudAnalytics.addEvent({
+					type: cloudAnalytics.eventTypes.EDITOR_LOCATE,
+					msg: {
+						editor_version: newEditor.version,
+						editor_architecture: newEditor.architecture,
+						used_shift_key: skipSignatureCheck,
+						status: "Error"
+					}
+				});
+				return Promise.reject(err);
+			});
+		});
+	}
+	/**
+	* Given a version, it removes a manually added editor from local storage
+	* @param {string} version
+	* @param {ChipArchitecture} architecture
+	* @returns {Promise<void>}
+	* @public
+	*/
+	removeEditor(version, architecture) {
+		const editor = this.availableEditors[getUniqueIdentifier({
+			version,
+			architecture
+		})];
+		return this.editorList.removeLocatedEditor(editor);
+	}
+	/**
+	* Uninstalls the specified editor.
+	*
+	* @param {Install} editor - The editor to uninstall.
+	* @returns {Promise<void | { cancelled: boolean }>}
+	* @public
+	*/
+	async uninstallEditor(editor) {
+		try {
+			if ((await unityInstaller.prepareInstallService())?.cancelled) return { cancelled: true };
+			if ((await Promise.all(editor.location.map((editorPath) => unityInstaller.uninstall(editor, new EditorApp({
+				editorPath,
+				version: editor.version,
+				architecture: editor.architecture
+			}).path)))).some((response) => response?.cancelled)) return { cancelled: true };
+			await this.editorList.removeInstalledEditor(editor);
+		} catch (error) {
+			throw new Error(`The Editor ${getUniqueIdentifier(editor)} could not be uninstalled.`, { cause: error });
+		}
+	}
+	/**
+	* Opens a dialog for choosing an editor and then adding it
+	* @param {boolean} [skipSignatureCheck=false] Whether to skip signature checking
+	* @returns {Promise<LocatedInstall>}
+	* @public
+	*/
+	async chooseAndAddEditor(skipSignatureCheck = false) {
+		try {
+			const location = await this.chooseEditor();
+			return await this.addEditor(location, skipSignatureCheck);
+		} catch (err) {
+			switch (err.errorCode) {
+				case INSTALL_LOCATE_ERRORS.ALREADY_IN_LIST:
+					windowManager_default.broadcastContent("editor-already-in-list.error", err);
+					break;
+				case INSTALL_LOCATE_ERRORS.NOT_AN_UNITY_APP:
+				case INSTALL_LOCATE_ERRORS.NOT_AN_APP:
+				case INSTALL_LOCATE_ERRORS.APP_NOT_SIGNED:
+					windowManager_default.broadcastContent("editor-not-valid-app.error", err);
+					break;
+				default: break;
+			}
+			throw err;
+		}
+	}
+	/**
+	* Automatically locate the editor that is connected to the hub
+	* @param {string} location
+	* @returns {Promise<void | LocatedInstall>}
+	* @public
+	*/
+	async checkAutoLocate(location) {
+		const { version } = await this.findVersion(location);
+		const architecture = await this.findArchitecture(location);
+		const editorWithTheSameVersion = this.availableEditors[getUniqueIdentifier({
+			version,
+			architecture
+		})];
+		if (!editorWithTheSameVersion || editorWithTheSameVersion.location.indexOf(location) < 0) return this.addEditor(location, true).catch((err) => Promise.reject(err));
+		return Promise.resolve();
+	}
+	/**
+	* Get/find an editor install given a set of criteria to match exactly in the install props.
+	*
+	* @param {{ version: string } & Partial<Install>} criteria The criteria for finding the editor. Any props on the install can be
+	* selected in the criteria, but only using strict equality (i.e. object values won't work).
+	* @param {boolean} [installationFlow=false] Whether the call is part of the installation flow.
+	* @returns {Install} The found editor install.
+	* @public
+	*/
+	getEditor(criteria, installationFlow = false) {
+		const editors = Object.values(this.availableEditors);
+		let editor = find(editors, criteria);
+		let multipleEditorsFound = false;
+		if (!installationFlow) {
+			const editorsWithMatchingVersion = this.findEditorsByVersion(criteria.version);
+			if (editorsWithMatchingVersion.length === 1) editor = editorsWithMatchingVersion[0];
+			else if (editorsWithMatchingVersion.length === 2) multipleEditorsFound = true;
+		}
+		if (editor) return editor;
+		if (multipleEditorsFound) throw new EditorError(`Multiple editors found matching the version ${criteria.version} and no architecture was specified`, this.errorCodes.MULTIPLE_EDITOR_FOUND);
+		else if (editors.length === 0) throw new EditorError(`No editor installed. Could not be retrieved for criteria: ${JSON.stringify(criteria)}`, this.errorCodes.NO_EDITORS_FOUND);
+		throw new EditorError(`Editor could not be retrieved for criteria: ${JSON.stringify(criteria)}`, this.errorCodes.EDITOR_NOT_FOUND);
+	}
+	/**
+	* Get/find list of editors install given a version to match exactly in the install props.
+	*
+	* @param version The version for finding the editor.
+	* @returns The list of found editor install.
+	* @public
+	*/
+	findEditorsByVersion(version) {
+		const foundEditors = [];
+		Object.keys(this.availableEditors).forEach((key) => {
+			if (key.includes(version)) foundEditors.push(this.availableEditors[key]);
+		});
+		return foundEditors;
+	}
+	/**
+	* Returns the default editor version.
+	* @deprecated use getter instead
+	* @returns {*}
+	*/
+	getDefaultEditorVersion() {
+		if (this.editorList?.latest) return Promise.resolve(this.editorList.latest.version);
+		return Promise.resolve();
+	}
+	/**
+	* Returns the default editor. Format the same as getEditor
+	* @returns {Promise<Install?>}
+	* @public
+	*/
+	getDefaultEditor() {
+		return Promise.resolve(this.editorList.latest);
+	}
+	/**
+	* Gets the default editor app
+	* @returns {Promise<EditorApp | undefined>} The editor app selected by default.
+	* @public
+	*/
+	getDefaultEditorApp() {
+		return this.getDefaultEditor().then((editor) => generateEditorAppInstance(editor));
+	}
+	/**
+	* Gets editor which matches specific set of criteria if available. Otherwise just the default.
+	* @param {EditorUniqueIdentification} criteria a set of criteria to match exactly in the install props.
+	* @returns {Promise<EditorApp | undefined>} The editor app of the given version or the default.
+	* @public
+	*/
+	async getEditorApp(criteria) {
+		try {
+			return generateEditorAppInstance(this.getEditor(criteria));
+		} catch (error) {
+			if (error.code === this.errorCodes.NO_EDITORS_FOUND || error.code === this.errorCodes.MULTIPLE_EDITOR_FOUND) throw error;
+			return this.getDefaultEditorApp();
+		}
+	}
+	/**
+	* Download and installation could be done on 2 different disks
+	* If space is missing for either, we should warn the user and reject the promise.
+	* @param editor Information about the current editor to install or to add modules to. Knows where the installs will be
+	* @param modules Information about the modules to install. Could be empty
+	* @param downloadDest Where to download the required files
+	* @param onlyModules Whether we should add the dl/install size of the editor or not to the disk size required
+	*/
+	hasEnoughSpaceOnDisk(editor, modules, downloadDest, onlyModules) {
+		return this.getRequiredSizesPerDisk(editor, modules, downloadDest, onlyModules).then((diskList) => {
+			for (const disk of Object.keys(diskList)) if (diskList[disk].available < diskList[disk].totalSizeRequired) return Promise.reject("Not enough space on disk to download and install");
+			return Promise.resolve();
+		});
+	}
+	getRequiredSizesPerDisk(editor, modules, downloadDest, onlyModules) {
+		const diskInfo = {};
+		let downloadDiskRootPath = "";
+		let installDiskRootPath = "";
+		try {
+			downloadDiskRootPath = hub_fs_default.getDiskRootPath(downloadDest);
+			const editorPath = editor.location ? editor.location[0] : this.currentInstallPath;
+			installDiskRootPath = hub_fs_default.getDiskRootPath(editorPath);
+		} catch (e) {
+			logger$2.error("Could not validate size on disk for download because of ", e);
+			return Promise.resolve();
+		}
+		return hub_fs_default.getDiskUsage(downloadDiskRootPath).then((info) => {
+			diskInfo[downloadDiskRootPath] = {
+				totalSizeRequired: 0,
+				available: info.available
+			};
+		}).then(() => hub_fs_default.getDiskUsage(installDiskRootPath)).then((info) => {
+			if (!diskInfo[installDiskRootPath]) diskInfo[installDiskRootPath] = {
+				totalSizeRequired: 0,
+				available: info.available
+			};
+		}).then(() => {
+			forEach(modules, (module) => {
+				diskInfo[downloadDiskRootPath].totalSizeRequired += parseInt(module.downloadSize, 10);
+				diskInfo[installDiskRootPath].totalSizeRequired += parseInt(module.installedSize, 10);
+			});
+			if (!onlyModules) {
+				diskInfo[downloadDiskRootPath].totalSizeRequired += parseInt(editor.downloadSize, 10);
+				diskInfo[installDiskRootPath].totalSizeRequired += parseInt(editor.installedSize, 10);
+			}
+			return Promise.resolve(diskInfo);
+		}).catch((e) => {
+			logger$2.error("Could not calculate required size on disk for download because of", e);
+			return Promise.resolve({});
+		});
+	}
+	/**
+	* Gets the disk usage information for the path given
+	* If no path is given, it will return the usage information for the default install path
+	* @param folder The folder to check the disk usage for
+	* @public
+	*/
+	getDiskSpaceAvailable(folder = this.currentInstallPath) {
+		return hub_fs_default.getDiskSpaceAvailable(folder);
+	}
+	/**
+	* Get the default modules for an editor.
+	*
+	* @param editorUniqueId
+	* The unique identification of the editor that default modules should be returned for.
+	* @returns The modules list from the
+	* `modules.json`, CDN, or releases file for the given editor.
+	* @public
+	*/
+	async getEditorDefaultModules(editorUniqueId) {
+		const filteredEditorUniqueId = pick(editorUniqueId, ["version", "architecture"]);
+		try {
+			const installedEditor = this.getEditor(filteredEditorUniqueId, true);
+			if (installedEditor.revisionHash) {
+				logger$2.info(`Editor has revisionHash ${installedEditor.revisionHash}, fetching modules from CDN`);
+				const cdnRelease = await fetchEditorReleaseFromCdn(installedEditor.version, installedEditor.revisionHash, installedEditor.architecture);
+				if (cdnRelease?.modules) {
+					logger$2.info(`Successfully fetched ${cdnRelease.modules.length} modules from CDN for ${installedEditor.version}`);
+					const installedModules = installedEditor.modules ?? [];
+					return cdnRelease.modules.map((cdnModule) => {
+						const installedModule = installedModules.find((m) => m.id === cdnModule.id);
+						return {
+							...cdnModule,
+							selected: installedModule?.selected ?? false
+						};
+					});
+				}
+				logger$2.warn(`Failed to fetch CDN modules for ${installedEditor.version}, falling back to installed modules`);
+			}
+			return installedEditor.modules ?? [];
+		} catch (_e) {
+			return this.getDefaultReleasesModules(filteredEditorUniqueId);
+		}
+	}
+	/**
+	* @param editorUniqueId
+	* @param specificModules
+	* @public
+	*/
+	async getEditorDefaultModulesWithStatuses(editorUniqueId, specificModules = null) {
+		const modules = specificModules ?? await this.getEditorDefaultModules(editorUniqueId);
+		this._assignPropertyBasedOnSelectedProperty(modules, "isInstalled");
+		return await mainContainer.get(IVisualStudioServiceId).getModulesThatRespectVisualStudioStatus(modules);
+	}
+	/**
+	* Get the default modules for an editor release.
+	*
+	* @param editorUniqueId The unique identification of the editor release that default modules
+	* should be returned for.
+	* @returns {InstallModule[]} The modules list from the releases file for the given editor release.
+	* @public
+	*/
+	getDefaultReleasesModules(editorUniqueId) {
+		return find(this.getReleases(), {
+			version: editorUniqueId.version,
+			architecture: editorUniqueId.architecture
+		})?.modules ?? [];
+	}
+	/**
+	* Returns the list of releases available (official, beta)
+	* @public
+	*/
+	getReleases() {
+		return unityReleaseServiceAdapter_default.releases;
+	}
+	/**
+	* @param fromCache
+	*/
+	async getReleasesWithModuleStatuses(fromCache = false) {
+		const releases = await unityReleaseServiceAdapter_default.refreshReleases(fromCache);
+		this._setPreselectedModulesForEditors(releases);
+		return releases;
+	}
+	/**
+	* Make sure to close any subprocess, when needed
+	* @returns {void}
+	* @public
+	*/
+	closeInstallService() {
+		unityInstaller.closeInstallService();
+	}
+	/**
+	* @returns {string}
+	* @public
+	*/
+	getSecondaryInstallLocation() {
+		return this.editorList.secondaryInstallPath;
+	}
+	/**
+	* @param {string} installPath
+	* @returns {Promise<void>}
+	* @public
+	*/
+	setSecondaryInstallLocation(installPath) {
+		return this.editorList.setSecondaryInstallLocation(installPath);
+	}
+	/**
+	* @param {string} defaultPath
+	* @returns {Promise<string>}
+	* @public
+	*/
+	async chooseSecondaryInstallLocation(defaultPath) {
+		const translate = mainContainer.get(ITranslateId);
+		const args = {
+			title: translate.t("install:EDITOR_INSTALL_LOCATION_TITLE"),
+			buttonLabel: translate.t("common:SELECT_FOLDER"),
+			defaultPath,
+			properties: ["openDirectory"]
+		};
+		const updatedPath = await windowManager_default.mainWindow.showOpenFileDialog(args);
+		await this.setSecondaryInstallLocation(updatedPath);
+		AmplitudeService_default.client?.yellowBucket.changePreference({
+			current_value: defaultPath,
+			new_value: updatedPath,
+			page_path: PREFERENCES_IDS.locationPreferences.page_path,
+			preference_id: PREFERENCES_IDS.locationPreferences.LOCATION_PREFERENCES_INSTALL_LOCATION
+		});
+		return updatedPath;
+	}
+	/**
+	* @param {InstallModule} module
+	* @returns {Promise<string>}
+	* @public
+	*/
+	async getEulaText(module) {
+		try {
+			return await EulaFetcher.fetch(module);
+		} catch (err) {
+			logger$2.warn(`Could not fetch eula text for ${module.name}, reason: `, err);
+			throw err;
+		}
+	}
+	findDevelopmentEditor(developmentEditorVersion) {
+		return find(this.availableEditors, (editor) => editor.version === developmentEditorVersion && editor.location[0] === this.#hubIPCState.editorLocation);
+	}
+	/**
+	* @param location
+	* @public
+	*/
+	findEditorByLocation(location) {
+		return find(this.availableEditors, (editor) => editor.location[0] === location);
+	}
+	/**
+	* @returns {Install | undefined}
+	* @public
+	*/
+	getConnectedEditor() {
+		const connectedInstall = this.findEditorByLocation(this.#hubIPCState.editorLocation) || this.findDevelopmentEditor(Config$2.EDITORS.DEVELOPMENT_VERSION);
+		if (!this.#hubIPCState.connectedEditor || !connectedInstall) return;
+		return {
+			...connectedInstall,
+			location: [this.#hubIPCState.editorLocation],
+			version: this.#hubIPCState.editorVersion
+		};
+	}
+	/**
+	* @returns {void}
+	*/
+	disconnectEditor() {
+		import_postal.default.publish({
+			channel: "app",
+			topic: POSTAL_TOPICS.MAIN_WINDOW_CHANGE,
+			data: { state: "all-closed" }
+		});
+	}
+	_initSecondaryInstallLocation() {
+		if (isEmpty$1(this.getSecondaryInstallLocation())) {
+			const localSettings = mainContainer.get(ILocalSettingsId);
+			const secondaryInstallLocation = localSettings.get(localSettings.keys.MACHINE_WIDE_SECONDARY_INSTALL_LOCATION);
+			if (!isEmpty$1(secondaryInstallLocation)) {
+				logger$2.info(`Machine wide secondary install location is configured. Setting secondary install location to: ${secondaryInstallLocation}`);
+				this.setSecondaryInstallLocation(secondaryInstallLocation);
+			}
+		}
+		return Promise.resolve();
+	}
+	_assignPropertyBasedOnSelectedProperty(modules, propertyName) {
+		modules.forEach((module) => {
+			module[propertyName] = !!module.selected;
+		});
+	}
+	_setPreselectedModulesForEditors(editors) {
+		editors.forEach((editor) => {
+			this._assignPropertyBasedOnSelectedProperty(editor.modules, "preselected");
+		});
+	}
+	/**
+	* @returns {boolean}
+	* @public
+	*/
+	hasEditorWhichRequiresUlf() {
+		return this.editorList.hasEditorWhichRequiresUlf();
+	}
+};
+var editorManager_default = new EditorManager();
+//#endregion

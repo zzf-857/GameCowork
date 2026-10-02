@@ -1,0 +1,96 @@
+//#region src/main/services/editorManager/editorReleaseServiceUtils.ts
+/**
+* Compares 2 editors by release architecture. Sorts `a` before `b` when `a` matches the system
+* architecture (truthy === 1) and `b` does not match the system architecture (falsy === 0)
+*
+* @param a compared against b to determine if a comes before b
+* @param b compared against a to determine if b comes before a
+* @returns -1 if a comes before b, 1 if b comes before a, or 0 if a/b are equivalent in the order
+*/
+var compareEditorsByReleaseArchitecture = (a, b) => {
+	const systemInfo = mainContainer.get(ISystemInfoId);
+	return Number(systemInfo.isSystemArchitecture(b.architecture)) - Number(systemInfo.isSystemArchitecture(a.architecture));
+};
+/**
+* Filters out the prerelease versions that match a promoted version, by branch.
+* Note that a branch is the part of the version that contains the major and minor version (e.g. 2023.3)
+*
+* @example
+* If 2022.1 has been promoted to Tech or Lts streams, then it should not appear in beta or alpha.
+* If 2023.3 has been promoted from alpha to beta, then it should not appear in alpha.
+*
+* @param releasesByStream An object containing arrays for each stream that contain the releases for that stream.
+* @returns An object containing arrays for each stream that contain the releases for that stream, filtered to only include releases that are not prereleases for promoted versions.
+*/
+var filterPromotedReleasesFromPrereleaseStreams = (releasesByStream) => {
+	const ltsBranches = /* @__PURE__ */ new Set();
+	releasesByStream[UnityReleaseStream.Lts].forEach((release) => {
+		ltsBranches.add(new e(release.version).branch);
+	});
+	const techBranches = /* @__PURE__ */ new Set();
+	releasesByStream[UnityReleaseStream.Tech].forEach((release) => {
+		techBranches.add(new e(release.version).branch);
+	});
+	const betaBranches = /* @__PURE__ */ new Set();
+	releasesByStream[UnityReleaseStream.Beta].forEach((release) => {
+		betaBranches.add(new e(release.version).branch);
+	});
+	return {
+		[UnityReleaseStream.Lts]: releasesByStream[UnityReleaseStream.Lts],
+		[UnityReleaseStream.Supported]: releasesByStream[UnityReleaseStream.Supported],
+		[UnityReleaseStream.Release]: releasesByStream[UnityReleaseStream.Release],
+		[UnityReleaseStream.Tech]: releasesByStream[UnityReleaseStream.Tech].filter((release) => {
+			const releaseBranch = new e(release.version).branch;
+			return !ltsBranches.has(releaseBranch);
+		}),
+		[UnityReleaseStream.Beta]: releasesByStream[UnityReleaseStream.Beta].filter((release) => {
+			const releaseBranch = new e(release.version).branch;
+			return !techBranches.has(releaseBranch) && !ltsBranches.has(releaseBranch);
+		}),
+		[UnityReleaseStream.Alpha]: releasesByStream[UnityReleaseStream.Alpha].filter((release) => {
+			const releaseBranch = new e(release.version).branch;
+			return !betaBranches.has(releaseBranch) && !techBranches.has(releaseBranch) && !ltsBranches.has(releaseBranch);
+		})
+	};
+};
+/**
+* Validates that the user has the correct entitlements to access the editor.
+* Note that if the editor has no entitlements, then it is available to all users.
+*
+* @param releaseEntitlements The entitlements required to access the editor.
+* @param userEntitlements The entitlements the user has.
+* @returns True if the user has the correct entitlements to access the editor, false otherwise.
+*/
+var validateEntitlements = (releaseEntitlements, userEntitlements) => {
+	if (!releaseEntitlements || releaseEntitlements.length === 0) return true;
+	if (!userEntitlements && releaseEntitlements.length !== 0) return false;
+	return releaseEntitlements.some((entitlement) => userEntitlements.includes(entitlement));
+};
+/**
+* Derives the Unity release download architectures based on the system architecture.
+* - mac arm - arm64
+* - windows arm - x64 and arm64
+* - windows, linux, mac intel - x64
+*
+* @returns The Unity release download architectures to query for.
+*/
+var getUnityReleaseDownloadArchitecture = () => {
+	const systemInfo = mainContainer.get(ISystemInfoId);
+	if (systemInfo.isAppleSilicon()) return [UnityReleaseDownloadArchitecture.Arm64];
+	if (systemInfo.isWindowsArm64()) return [UnityReleaseDownloadArchitecture.Arm64, UnityReleaseDownloadArchitecture.X86_64];
+	return [UnityReleaseDownloadArchitecture.X86_64];
+};
+var hasDownloadMatchingArchitecture = (releases, architecture) => {
+	return releases.some((release) => release.downloads.some((download) => download.architecture === architecture));
+};
+var filterReleasesWithDownloadsMatchingArchitecture = (releases, architecture) => {
+	return releases.reduce((unityReleases, release) => {
+		const matchingDownloads = release.downloads.filter((download) => download.architecture === architecture);
+		if (matchingDownloads.length > 0) unityReleases.push({
+			...release,
+			downloads: matchingDownloads
+		});
+		return unityReleases;
+	}, []);
+};
+//#endregion

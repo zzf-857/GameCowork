@@ -1,0 +1,8 @@
+//#region src/types/licenses/LicenseSdkStatus.ts
+var LICENSE_SDK_STATUSES = {
+	READY: "Ready",
+	INITIALIZING: "Initializing",
+	ERROR: "Error",
+	DISPOSED: "Disposed"
+};
+//#endregion

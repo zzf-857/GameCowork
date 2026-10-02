@@ -1,0 +1,1049 @@
+//#region src/main/services/downloadEngine/DownloadManager.ts
+var STATE_CHANGE_HANDLER_SUPPRESSING_STATES = [
+	DOWNLOAD_STATES.CLEANUP,
+	DOWNLOAD_STATES.FAILED,
+	DOWNLOAD_STATES.FINISHED
+];
+var BROADCAST_DEBOUNCE_TIME = 500;
+var downloadlogger = loggerFactory("Download Manager");
+var DownloadManager = class DownloadManager {
+	static activeDownloads = new ObservableArray(DownloadManager.onActiveDownloadChange);
+	static queuedDownloads = new DownloadQueue();
+	static inActiveDownloads = [];
+	static removedBacklog = [];
+	/**
+	* Tracks groups (by groupId) that have been paused.
+	* When a group is paused, queued items from that group should not be promoted to active.
+	* This prevents the issue where pausing an Editor+modules group causes queued modules
+	* to immediately start downloading.
+	*/
+	static pausedGroups = /* @__PURE__ */ new Set();
+	/**
+	* Global pause flag. Set to true when any download is paused, false when any is resumed.
+	*
+	* Note: This flag is tracked for state management but does NOT block promotions from
+	* non-paused groups. Items from paused groups are blocked by the pausedGroups Set instead.
+	* This allows Editor 2's downloads to continue even when Editor 1 is paused.
+	*/
+	static globalPauseActive = false;
+	/**
+	* Tracks downloads that are currently being processed (pause or resume in progress).
+	* Prevents rapid double-click spam from causing race conditions.
+	* The uid is added when pause/resume starts and removed when the operation completes.
+	*/
+	static operationsInProgress = /* @__PURE__ */ new Set();
+	/**
+	* Tracks pending persistence operations (removeDownload calls).
+	* These are stored so we can await them in cleanupOnAppClose() to ensure
+	* all persistence operations complete before the app closes.
+	* This prevents race conditions where a download that started (and should be
+	* removed from persistence) is still in the persistence file when the app closes.
+	*/
+	static pendingPersistenceOperations = [];
+	/**
+	* Track postal subscription to prevent duplicates if init() is called multiple times.
+	*/
+	static maxConcurrentDownloadsSubscription = null;
+	static get maxActive() {
+		return getUserSetting(USER_SETTINGS_KEYS.download.maxConcurrentDownloads);
+	}
+	/**
+	* Called when the maxConcurrentDownloads setting changes.
+	* If the limit increased, promotes queued items to fill available slots.
+	* This ensures that changing from 2 to 3 concurrent downloads immediately
+	* starts an additional download from the queue.
+	*/
+	static onMaxConcurrentDownloadsChanged() {
+		const currentActive = DownloadManager.activeDownloads.length;
+		const newMax = DownloadManager.maxActive;
+		downloadlogger.info(`maxConcurrentDownloads changed: currently ${currentActive} active, new limit is ${newMax}`);
+		if (currentActive < newMax) {
+			downloadlogger.info(`Promoting queued items to fill ${newMax - currentActive} available slot(s)`);
+			DownloadManager.promoteQueuedItemsToFillSlots();
+		}
+	}
+	/**
+	* Promote queued items to fill all available download slots.
+	* This is called after resuming a paused group or when maxConcurrentDownloads increases.
+	* Unlike promoteQueuedItems() which promotes one item, this fills ALL available slots.
+	*/
+	static promoteQueuedItemsToFillSlots() {
+		const maxActive = DownloadManager.maxActive;
+		while (DownloadManager.activeDownloads.length < maxActive && DownloadManager.queuedDownloads.getAllItems().length > 0) {
+			const prevActiveCount = DownloadManager.activeDownloads.length;
+			DownloadManager.promoteQueuedItems();
+			if (DownloadManager.activeDownloads.length === prevActiveCount) break;
+		}
+	}
+	static debouncedBroadcast = debounce(() => {
+		try {
+			windowManager_default.broadcastContent(RENDERER_EVENTS.DOWNLOAD_LIST_UPDATE, DownloadManager.getFrontendStreamingData());
+		} catch (error) {
+			downloadlogger.error(`Failed to broadcast download updates to frontend. Error: ${error}`);
+			windowManager_default.broadcastContent(RENDERER_EVENTS.DOWNLOAD_LIST_UPDATE, null);
+		}
+	}, BROADCAST_DEBOUNCE_TIME);
+	static {
+		DownloadManager.queuedDownloads.on(QUEUE_EVENTS.ADD, DownloadManager.onQueueItemAdded);
+		DownloadManager.queuedDownloads.on(QUEUE_EVENTS.REMOVE, DownloadManager.onQueueItemRemoved);
+	}
+	/** *********************
+	Public Functions
+	********************* */
+	/**
+	* Initialize the DownloadManager by restoring paused downloads from persistent storage.
+	* Restores paused downloads and queued downloads that belong to paused groups.
+	* Removes queued downloads that don't belong to any paused group.
+	* This ensures force-quit behaves the same as graceful quit with "cancel".
+	*/
+	static async init() {
+		if (!DownloadManager.maxConcurrentDownloadsSubscription) DownloadManager.maxConcurrentDownloadsSubscription = import_postal.default.subscribe({
+			channel: "app",
+			topic: POSTAL_TOPICS.MAX_CONCURRENT_DOWNLOADS_CHANGED,
+			callback: () => {
+				DownloadManager.onMaxConcurrentDownloadsChanged();
+			}
+		});
+		try {
+			const { validDownloads: persistedDownloads, lostDownloads } = await DownloadPersistence.loadValidDownloadsWithLostInfo();
+			if (lostDownloads.length > 0) {
+				downloadlogger.warn(`${lostDownloads.length} paused download(s) could not be restored`);
+				lostDownloads.forEach((lost) => {
+					downloadlogger.warn(`  Lost download: ${lost.name} (${lost.uid}) - ${lost.reason}`);
+				});
+			}
+			if (persistedDownloads.length === 0) return;
+			const queuedDownloads = persistedDownloads.filter((item) => item.status === PERSISTED_STATUSES.QUEUED);
+			const pausedDownloads = persistedDownloads.filter((item) => item.status === PERSISTED_STATUSES.PAUSED);
+			const installQueuedDownloads = persistedDownloads.filter((item) => item.status === PERSISTED_STATUSES.INSTALL_QUEUED);
+			const getVersion = (metadata) => {
+				if (metadata.type === DOWNLOAD_ITEM_TYPES.EDITOR) return metadata.release?.version;
+				if (metadata.type === DOWNLOAD_ITEM_TYPES.EDITOR_MODULE) return metadata.editorUniqueId?.version;
+			};
+			const pausedVersions = new Set(pausedDownloads.map((item) => getVersion(item.metadata)).filter((version) => !!version));
+			downloadlogger.info(`Paused versions: [${Array.from(pausedVersions).join(", ")}], pausedDownloads: ${pausedDownloads.length}, queuedDownloads: ${queuedDownloads.length}, installQueuedDownloads: ${installQueuedDownloads.length}`);
+			const queuedFromPausedGroups = [];
+			const orphanedQueued = [];
+			for (const queuedItem of queuedDownloads) {
+				const version = getVersion(queuedItem.metadata);
+				if (version && pausedVersions.has(version)) {
+					queuedFromPausedGroups.push(queuedItem);
+					downloadlogger.debug(`  Queued from paused group: ${queuedItem.metadata.itemName} (${version})`);
+				} else if (version) {
+					orphanedQueued.push(queuedItem);
+					downloadlogger.debug(`  Orphaned queued: ${queuedItem.metadata.itemName} (${version})`);
+				} else {
+					queuedFromPausedGroups.push(queuedItem);
+					downloadlogger.warn(`  Queued with unknown version (keeping): ${queuedItem.metadata.itemName}`);
+				}
+			}
+			if (orphanedQueued.length > 0) {
+				downloadlogger.info(`Removing ${orphanedQueued.length} orphaned queued download(s) and any associated files`);
+				await Promise.all(orphanedQueued.map(async (orphanedItem) => {
+					const { destination, destinationFilename } = orphanedItem.metadata;
+					if (destination && destinationFilename) {
+						const completedFilePath = path.join(destination, destinationFilename);
+						try {
+							await DownloadManagerUtilities.deleteFromDownloadFolder(completedFilePath);
+							downloadlogger.info(`Cleaned up orphaned completed file: ${destinationFilename}`);
+						} catch {}
+						const partialFilePath = `${completedFilePath}.download`;
+						try {
+							await DownloadManagerUtilities.deleteFromDownloadFolder(partialFilePath);
+							downloadlogger.info(`Cleaned up orphaned partial file: ${destinationFilename}.download`);
+						} catch {}
+					}
+					return DownloadPersistence.removeDownload(orphanedItem.metadata.uid);
+				}));
+			}
+			const orphanedInstallQueued = installQueuedDownloads.filter((installQueuedItem) => {
+				const version = getVersion(installQueuedItem.metadata);
+				return !version || !pausedVersions.has(version);
+			});
+			if (orphanedInstallQueued.length > 0) {
+				downloadlogger.info(`Removing ${orphanedInstallQueued.length} orphaned install-queued item(s) and their downloaded files`);
+				await Promise.all(orphanedInstallQueued.map(async (orphanedItem) => {
+					const { installerSourceDir, installerFilename } = orphanedItem.metadata;
+					if (installerSourceDir && installerFilename) {
+						const filePath = path.join(installerSourceDir, installerFilename);
+						try {
+							await DownloadManagerUtilities.deleteFromDownloadFolder(filePath);
+							downloadlogger.info(`Cleaned up orphaned file: ${installerFilename}`);
+						} catch (error) {
+							downloadlogger.warn(`Failed to clean up orphaned file ${filePath}: ${error}`);
+						}
+					} else downloadlogger.warn(`Cannot clean up orphaned file for ${orphanedItem.metadata.itemName}: missing path info`);
+					return DownloadPersistence.removeDownload(orphanedItem.metadata.uid);
+				}));
+			}
+			if (pausedDownloads.length > 0) {
+				downloadlogger.info(`Restoring ${pausedDownloads.length} paused download(s)`);
+				await Promise.all(pausedDownloads.map((pausedItem) => DownloadManager.restorePausedDownload(pausedItem)));
+			}
+			if (queuedFromPausedGroups.length > 0) {
+				downloadlogger.info(`Restoring ${queuedFromPausedGroups.length} queued download(s) from paused groups`);
+				await Promise.all(queuedFromPausedGroups.map((queuedItem) => DownloadManager.restoreQueuedDownload(queuedItem)));
+			}
+			DownloadManager.validatePausedGroups();
+			await DownloadManager.cleanupOrphanedDownloadFiles();
+			const downloadData = DownloadManager.getFrontendStreamingData();
+			windowManager_default.broadcastContent(RENDERER_EVENTS.DOWNLOAD_LIST_UPDATE, downloadData);
+		} catch (error) {
+			downloadlogger.error(`Failed to initialize DownloadManager: ${error}`);
+		}
+	}
+	/**
+	* Validate pausedGroups and remove any stale entries.
+	* A group should only be in pausedGroups if there's at least one paused item
+	* in inActiveDownloads with that groupId.
+	*/
+	static validatePausedGroups() {
+		const staleGroups = [];
+		for (const groupId of DownloadManager.pausedGroups) if (!DownloadManager.inActiveDownloads.some((download) => download.status === STATUSES.PAUSED && DownloadManager.getGroupId(download.item) === groupId)) staleGroups.push(groupId);
+		if (staleGroups.length > 0) {
+			downloadlogger.warn(`Removing ${staleGroups.length} stale group(s) from pausedGroups: [${staleGroups.join(", ")}]`);
+			for (const groupId of staleGroups) DownloadManager.pausedGroups.delete(groupId);
+		}
+	}
+	/**
+	* Clean up orphaned files in the download folder.
+	* This catches files from downloads that completed but weren't persisted before force-quit.
+	* Files are considered orphaned if they don't match any persisted download's expected filename.
+	*/
+	static async cleanupOrphanedDownloadFiles() {
+		try {
+			const downloadFolder = await DownloadManagerUtilities.getDownloadLocation();
+			if (!await hub_fs_default.pathExists(downloadFolder)) {
+				downloadlogger.info("Download folder does not exist, skipping orphan cleanup");
+				return;
+			}
+			const downloadFiles = (await import_lib.default.promises.readdir(downloadFolder, { withFileTypes: true })).filter((entry) => entry.isFile()).map((entry) => entry.name);
+			if (downloadFiles.length === 0) {
+				downloadlogger.info("No files in download folder, skipping orphan cleanup");
+				return;
+			}
+			const persistedData = await DownloadPersistence.loadAllDownloads();
+			const expectedFilenames = /* @__PURE__ */ new Set();
+			for (const item of persistedData.downloads) {
+				const metadataAny = item.metadata;
+				const filename = metadataAny.destinationFilename || metadataAny.installerFilename || (item.metadata.type === DOWNLOAD_ITEM_TYPES.LEARN_CONTENT ? `${item.metadata.uid}.unitypackage` : void 0);
+				if (filename) expectedFilenames.add(filename);
+			}
+			for (const download of DownloadManager.activeDownloads) if (download.metadata.destinationFilename) expectedFilenames.add(download.metadata.destinationFilename);
+			for (const download of DownloadManager.inActiveDownloads) if (download.item.metadata.destinationFilename) expectedFilenames.add(download.item.metadata.destinationFilename);
+			for (const download of DownloadManager.queuedDownloads.getAllItems()) if (download.metadata.destinationFilename) expectedFilenames.add(download.metadata.destinationFilename);
+			downloadlogger.info(`Checking download folder for orphans: ${downloadFiles.length} file(s), ${expectedFilenames.size} expected filename(s)`);
+			const orphanedFiles = downloadFiles.filter((filename) => !expectedFilenames.has(filename));
+			if (orphanedFiles.length === 0) {
+				downloadlogger.info("No orphaned files found in download folder");
+				return;
+			}
+			downloadlogger.info(`Found ${orphanedFiles.length} orphaned file(s) in download folder, cleaning up`);
+			await Promise.all(orphanedFiles.map(async (filename) => {
+				const filePath = path.join(downloadFolder, filename);
+				try {
+					await DownloadManagerUtilities.deleteFromDownloadFolder(filePath);
+					downloadlogger.info(`Cleaned up orphaned download file: ${filename}`);
+				} catch (error) {
+					downloadlogger.warn(`Failed to clean up orphaned file ${filename}: ${error}`);
+				}
+			}));
+		} catch (error) {
+			downloadlogger.error(`Failed to clean up orphaned download files: ${error}`);
+		}
+	}
+	/**
+	* Restore a paused download from persistence.
+	* Paused downloads go directly to inActiveDownloads with PAUSED status.
+	*/
+	static async restorePausedDownload(pausedDownload) {
+		try {
+			const uid = pausedDownload.metadata.uid;
+			const baseFileName = pausedDownload.metadata.type === DOWNLOAD_ITEM_TYPES.LEARN_CONTENT ? `${pausedDownload.metadata.uid}.unitypackage` : pausedDownload.metadata.destinationFilename;
+			let actualFileName = baseFileName;
+			try {
+				const partialFilePath = `${pausedDownload.metadata.destination}/${baseFileName}`;
+				const partialFilePathWithDownloadExt = `${partialFilePath}.download`;
+				const fileExists = await hub_fs_default.pathExists(partialFilePath);
+				const fileWithDownloadExtExists = !fileExists && await hub_fs_default.pathExists(partialFilePathWithDownloadExt);
+				if (fileExists || fileWithDownloadExtExists) {
+					actualFileName = baseFileName;
+					if (!fileExists && fileWithDownloadExtExists) {
+						downloadlogger.warn(`Found orphaned .download file, removing: ${baseFileName}.download`);
+						await import_lib.default.promises.unlink(partialFilePathWithDownloadExt);
+					} else downloadlogger.info(`Found partial file for ${uid}: ${baseFileName} (${fileExists ? "ready for resume" : "with .download extension"})`);
+				} else downloadlogger.warn(`Partial file not found for ${uid}: ${partialFilePath} (tried with and without .download extension)`);
+			} catch (error) {
+				downloadlogger.warn(`Failed to find partial file for ${uid}: ${error}. Download may start from 0%.`);
+			}
+			const sanitizedMetadata = { ...pausedDownload.metadata };
+			if (sanitizedMetadata.type === DOWNLOAD_ITEM_TYPES.EDITOR_MODULE && sanitizedMetadata.editorUniqueId) {
+				const { architecture, version } = sanitizedMetadata.editorUniqueId;
+				sanitizedMetadata.editorUniqueId = {
+					architecture,
+					version
+				};
+			}
+			const downloadItemData = {
+				metadata: sanitizedMetadata,
+				onStateChangeHandler: DownloadManager.getStateChangeHandlerForType(sanitizedMetadata)
+			};
+			downloadItemData.metadata.destinationFilename = actualFileName;
+			const downloadItem = new DownloadItem({
+				...downloadItemData,
+				onStateChangeHandler: DownloadManager.wrapStateChangeHandler(downloadItemData),
+				validationStrategy: downloadItemData.validationStrategy ?? new DownloadValidationStrategy(downloadItemData.metadata),
+				forceResume: true
+			});
+			await downloadItem.initHelperModule();
+			downloadItem.initializeAsPaused(pausedDownload.progress || void 0);
+			DownloadManager.inActiveDownloads.push({
+				item: downloadItem,
+				status: STATUSES.PAUSED
+			});
+			const groupId = DownloadManager.getGroupId(downloadItem);
+			if (groupId) DownloadManager.pausedGroups.add(groupId);
+			DownloadManager.globalPauseActive = true;
+			downloadlogger.info(`Successfully restored paused download: ${uid} (${Math.round(pausedDownload.progress?.progress ?? 0)}%)`);
+		} catch (error) {
+			downloadlogger.error(`Failed to restore paused download ${pausedDownload.metadata.uid}: ${error}`);
+			await DownloadPersistence.removeDownload(pausedDownload.metadata.uid);
+		}
+	}
+	/**
+	* Restore a queued download from persistence.
+	* Queued downloads from paused groups are restored as paused items (not queued) so they
+	* show "Download paused" in the UI. They never started downloading so they have no partial file.
+	*/
+	static async restoreQueuedDownload(queuedDownload) {
+		try {
+			const uid = queuedDownload.metadata.uid;
+			const sanitizedMetadata = { ...queuedDownload.metadata };
+			if (sanitizedMetadata.type === DOWNLOAD_ITEM_TYPES.EDITOR_MODULE && sanitizedMetadata.editorUniqueId) {
+				const { architecture, version } = sanitizedMetadata.editorUniqueId;
+				sanitizedMetadata.editorUniqueId = {
+					architecture,
+					version
+				};
+			}
+			const downloadItemData = {
+				metadata: sanitizedMetadata,
+				onStateChangeHandler: DownloadManager.getStateChangeHandlerForType(sanitizedMetadata)
+			};
+			const downloadItemInstance = new DownloadItem({
+				...downloadItemData,
+				onStateChangeHandler: DownloadManager.wrapStateChangeHandler(downloadItemData),
+				validationStrategy: new DownloadValidationStrategy(downloadItemData.metadata)
+			});
+			await downloadItemInstance.initHelperModule();
+			downloadItemInstance.initializeAsPaused(queuedDownload.progress || void 0);
+			DownloadManager.inActiveDownloads.push({
+				item: downloadItemInstance,
+				status: STATUSES.PAUSED
+			});
+			const groupId = DownloadManager.getGroupId(downloadItemInstance);
+			if (groupId) DownloadManager.pausedGroups.add(groupId);
+			DownloadManager.globalPauseActive = true;
+			downloadlogger.info(`Successfully restored queued download as paused: ${uid}`);
+		} catch (error) {
+			downloadlogger.error(`Failed to restore queued download ${queuedDownload.metadata.uid}: ${error}`);
+			await DownloadPersistence.removeDownload(queuedDownload.metadata.uid);
+		}
+	}
+	/**
+	* Get the appropriate state change handler for a download type.
+	* Used when restoring downloads from persistence where we already have the metadata.
+	*/
+	static getStateChangeHandlerForType(metadata) {
+		return ({ metadata: updatedMetadata, error, state }) => {
+			if (metadata.type === DOWNLOAD_ITEM_TYPES.TEMPLATE) {
+				let reportedError = error;
+				if (state === DOWNLOAD_STATES.CLEANUP) reportedError = /* @__PURE__ */ new Error("cancelled");
+				switch (state) {
+					case DOWNLOAD_STATES.FINISHED:
+						if (metadata.editorVersion && metadata.templateName && metadata.version) {
+							const escapedVersion = metadata.version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+							const displayName = typeof metadata.itemDisplayName === "string" && metadata.itemDisplayName.trim().length > 0 ? metadata.itemDisplayName.replace(new RegExp(` \\(${escapedVersion}\\)$`), "").trim() : metadata.templateName;
+							const template = {
+								name: metadata.templateName,
+								displayName,
+								version: metadata.version
+							};
+							unityTemplateService_default.replaceTemplate(metadata.editorVersion, template, metadata.isUpgrade ?? false);
+						}
+						break;
+					case DOWNLOAD_STATES.PAUSED:
+						if (metadata.editorVersion && metadata.templateName) unityTemplateService_default.updateTemplateStatus({
+							editorVersion: metadata.editorVersion,
+							templateName: metadata.templateName,
+							templateStatus: "PAUSED"
+						});
+						break;
+					case DOWNLOAD_STATES.DOWNLOADING:
+						if (metadata.editorVersion && metadata.templateName) unityTemplateService_default.updateTemplateStatus({
+							editorVersion: metadata.editorVersion,
+							templateName: metadata.templateName,
+							templateStatus: metadata.isUpgrade ? "UPGRADING" : "DOWNLOADING"
+						});
+						break;
+					case DOWNLOAD_STATES.CLEANUP:
+					case DOWNLOAD_STATES.FAILED:
+						if (metadata.editorVersion && metadata.templateName && metadata.version) unityTemplateService_default.reportTemplateDownloadError({
+							editorVersion: metadata.editorVersion,
+							templateName: metadata.templateName,
+							templateVersion: metadata.version,
+							wasUpgradeAttempt: metadata.isUpgrade ?? false,
+							errorMessage: reportedError?.message ?? "Unknown error"
+						});
+						break;
+					default:
+				}
+			} else if (state === DOWNLOAD_STATES.FINISHED) {
+				const groupId = DownloadManager.getGroupId({ metadata });
+				import_postal.default.publish({
+					channel: "app",
+					topic: POSTAL_TOPICS.DOWNLOAD_FINISHED,
+					data: {
+						metadata: updatedMetadata,
+						groupId
+					}
+				});
+			}
+		};
+	}
+	static async queue(downloadItem) {
+		try {
+			const enqueuedDownloadItem = {
+				...downloadItem,
+				onStateChangeHandler: DownloadManager.wrapStateChangeHandler(downloadItem),
+				validationStrategy: downloadItem.validationStrategy ?? new DownloadValidationStrategy(downloadItem.metadata)
+			};
+			const downloadItemInstance = new DownloadItem(enqueuedDownloadItem);
+			await downloadItemInstance.initHelperModule();
+			try {
+				await DownloadPersistence.saveDownload({
+					metadata: enqueuedDownloadItem.metadata,
+					timestamp: Date.now(),
+					status: PERSISTED_STATUSES.QUEUED
+				});
+			} catch (error) {
+				downloadlogger.error(`Failed to persist queued download ${enqueuedDownloadItem.metadata.uid}: ${error}`);
+			}
+			DownloadManager.queuedDownloads.enqueue(downloadItemInstance);
+			DownloadManager.debouncedBroadcast();
+			return enqueuedDownloadItem.metadata.uid;
+		} catch (error) {
+			downloadlogger.error(`Failed to enqueue item. ${error}`);
+			throw error;
+		}
+	}
+	/**
+	* Pause an active download. The download state and progress are persisted
+	* to storage so it can be resumed even after app restart.
+	* @param uid - The unique identifier of the download to pause
+	* @throws Error if the download is not found in active downloads
+	*/
+	static async pause(uid) {
+		if (DownloadManager.operationsInProgress.has(uid)) {
+			downloadlogger.warn(`Ignoring duplicate pause request for ${uid} - operation in progress`);
+			return;
+		}
+		DownloadManager.operationsInProgress.add(uid);
+		let groupId;
+		try {
+			const downloadItem = DownloadManager.activeDownloads.find((download) => download.metadata.uid === uid);
+			if (!downloadItem) {
+				if (DownloadManager.inActiveDownloads.find((inactiveItem) => inactiveItem.item.metadata.uid === uid && inactiveItem.status === STATUSES.PAUSED)) {
+					downloadlogger.info(`${uid} is already paused, ignoring pause request`);
+					return;
+				}
+				const queuedItem = DownloadManager.queuedDownloads.findItem(uid);
+				if (queuedItem) {
+					downloadlogger.info(`${uid} is queued - moving back to paused state`);
+					const existingProgress = queuedItem.getStatus().progress;
+					DownloadManager.queuedDownloads.removeItem(queuedItem);
+					const queuedGroupId = DownloadManager.getGroupId(queuedItem);
+					if (queuedGroupId) DownloadManager.pausedGroups.add(queuedGroupId);
+					DownloadManager.globalPauseActive = true;
+					DownloadManager.inActiveDownloads.push({
+						item: queuedItem,
+						status: STATUSES.PAUSED
+					});
+					queuedItem.initializeAsPaused(existingProgress);
+					const hasStartedDownload = !!queuedItem.metadata.destinationFilename;
+					await DownloadPersistence.saveDownload({
+						metadata: queuedItem.metadata,
+						timestamp: Date.now(),
+						status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+						progress: existingProgress
+					});
+					DownloadManager.debouncedBroadcast();
+					return;
+				}
+				throw new Error(`${uid} does not exist in activeDownloads Download list.`);
+			}
+			groupId = DownloadManager.getGroupId(downloadItem);
+			if (groupId) DownloadManager.pausedGroups.add(groupId);
+			DownloadManager.globalPauseActive = true;
+			if (!downloadItem.pause()) {
+				downloadlogger.info(`Cannot pause download ${uid} - download is not in DOWNLOADING state (likely in VALIDATION/CLEANUP). Group is marked as paused.`);
+				return;
+			}
+			if (groupId) {
+				const otherItemsInGroup = DownloadManager.activeDownloads.filter((activeItem) => activeItem.metadata.uid !== uid && DownloadManager.getGroupId(activeItem) === groupId);
+				for (const otherItem of otherItemsInGroup) if (otherItem.pause()) {
+					const siblingStatus = otherItem.getStatus();
+					DownloadPersistence.saveDownload({
+						metadata: otherItem.metadata,
+						timestamp: Date.now(),
+						status: PERSISTED_STATUSES.PAUSED,
+						progress: siblingStatus.progress
+					}).catch((err) => {
+						downloadlogger.error(`Failed to persist paused sibling ${otherItem.metadata.uid}: ${err}`);
+					});
+				}
+				const queuedItemsInGroup = DownloadManager.queuedDownloads.getAllItems().filter((qItem) => DownloadManager.getGroupId(qItem) === groupId);
+				for (const queuedItem of queuedItemsInGroup) {
+					const existingProgress = queuedItem.getStatus().progress;
+					DownloadManager.queuedDownloads.removeItem(queuedItem);
+					DownloadManager.inActiveDownloads.push({
+						item: queuedItem,
+						status: STATUSES.PAUSED
+					});
+					queuedItem.initializeAsPaused(existingProgress);
+					const hasStartedDownload = !!queuedItem.metadata.destinationFilename;
+					DownloadPersistence.saveDownload({
+						metadata: queuedItem.metadata,
+						timestamp: Date.now(),
+						status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+						progress: existingProgress
+					}).catch((err) => {
+						downloadlogger.error(`Failed to persist paused queued item ${queuedItem.metadata.uid}: ${err}`);
+					});
+				}
+			}
+			const status = downloadItem.getStatus();
+			await DownloadPersistence.saveDownload({
+				metadata: downloadItem.metadata,
+				timestamp: Date.now(),
+				status: PERSISTED_STATUSES.PAUSED,
+				progress: status.progress
+			});
+		} catch (e) {
+			downloadlogger.error(`Failed to PAUSE: ${uid} from Active Downloads. ${e}`);
+			throw e;
+		} finally {
+			DownloadManager.operationsInProgress.delete(uid);
+		}
+	}
+	/**
+	* Resume a paused download. Verifies the partial file still exists before resuming.
+	* Respects the maxActive concurrent download limit by enqueueing if no slots are available.
+	* @param uid - The unique identifier of the download to resume
+	* @throws Error if the download is not found or partial file is missing
+	*/
+	static async resume(uid) {
+		if (DownloadManager.operationsInProgress.has(uid)) {
+			downloadlogger.warn(`Ignoring duplicate resume request for ${uid} - operation in progress`);
+			return;
+		}
+		const downloadItem = DownloadManager.inActiveDownloads.find((download) => download.item.metadata.uid === uid);
+		if (!downloadItem) {
+			const alreadyActive = DownloadManager.activeDownloads.find((download) => download.metadata.uid === uid);
+			const alreadyQueued = DownloadManager.queuedDownloads.findItem(uid);
+			if (alreadyActive || alreadyQueued) {
+				downloadlogger.info(`${uid} is already active or queued, ignoring resume request`);
+				return;
+			}
+			throw new Error(`${uid} does not exist in inActive Download list.`);
+		}
+		DownloadManager.operationsInProgress.add(uid);
+		try {
+			const fileCheck = await DownloadPersistence.verifyPartialFileForResume(downloadItem.item.metadata);
+			if (!fileCheck.isValid) {
+				downloadlogger.warn(`Partial file not valid for ${uid}: ${fileCheck.reason}. Restarting download from 0%.`);
+				await downloadItem.item.resetForFreshStart();
+				await DownloadPersistence.removeDownload(uid);
+			} else if (fileCheck.isAlreadyComplete) {
+				downloadlogger.info(`File already complete for ${uid}: ${fileCheck.path}. Skipping download phase.`);
+				downloadItem.item.markAsAlreadyComplete();
+			} else downloadlogger.info(`Partial file verified for ${uid}: ${fileCheck.path}`);
+			DownloadManager.inActiveDownloads = DownloadManager.inActiveDownloads.filter((download) => download.item.metadata.uid !== uid);
+			const groupId = DownloadManager.getGroupId(downloadItem.item);
+			let groupIdRemovedFromPaused = null;
+			if (groupId && DownloadManager.pausedGroups.has(groupId)) {
+				if (!DownloadManager.hasPausedItemsInGroup(groupId)) {
+					DownloadManager.pausedGroups.delete(groupId);
+					groupIdRemovedFromPaused = groupId;
+					downloadlogger.info(`Removed group ${groupId} from paused groups - no more paused items`);
+				}
+			}
+			const wasGlobalPauseActive = DownloadManager.globalPauseActive;
+			DownloadManager.globalPauseActive = false;
+			downloadlogger.info("Global pause disabled - downloads can now be promoted from queue");
+			let itemPlacedIn = null;
+			try {
+				if (DownloadManager.activeDownloads.length < DownloadManager.maxActive) {
+					downloadlogger.info(`Resuming ${uid} to active downloads (${DownloadManager.activeDownloads.length + 1} / ${DownloadManager.maxActive})`);
+					DownloadManager.activeDownloads.push(downloadItem.item);
+					itemPlacedIn = "active";
+				} else {
+					downloadlogger.info(`No download slot available (${DownloadManager.activeDownloads.length} / ${DownloadManager.maxActive}). Enqueueing ${uid}`);
+					DownloadManager.queuedDownloads.enqueue(downloadItem.item);
+					itemPlacedIn = "queued";
+					try {
+						await DownloadPersistence.saveDownload({
+							metadata: downloadItem.item.metadata,
+							timestamp: Date.now(),
+							status: PERSISTED_STATUSES.QUEUED,
+							progress: downloadItem.item.getStatus().progress
+						});
+						downloadlogger.info(`Re-persisted resumed download as queued: ${uid}`);
+					} catch (error) {
+						downloadlogger.error(`Failed to re-persist queued download ${uid}: ${error}`);
+					}
+				}
+				if (itemPlacedIn === "active") await DownloadPersistence.removeDownload(uid);
+				DownloadManager.debouncedBroadcast();
+			} catch (innerError) {
+				if (itemPlacedIn === "active") DownloadManager.removeActiveDownloadItem(downloadItem.item);
+				else if (itemPlacedIn === "queued") DownloadManager.queuedDownloads.removeItem(downloadItem.item);
+				if (itemPlacedIn) DownloadManager.inActiveDownloads.push(downloadItem);
+				if (groupIdRemovedFromPaused) DownloadManager.pausedGroups.add(groupIdRemovedFromPaused);
+				DownloadManager.globalPauseActive = wasGlobalPauseActive;
+				throw innerError;
+			}
+		} catch (error) {
+			downloadlogger.error(`Failed to RESUME: ${uid} from inActive Downloads. Error: ${error}`);
+			throw error;
+		} finally {
+			DownloadManager.operationsInProgress.delete(uid);
+		}
+	}
+	static remove(uid) {
+		try {
+			const foundInActive = DownloadManager.activeDownloads.find((download) => download.metadata.uid === uid);
+			const foundInInactive = DownloadManager.inActiveDownloads.find((download) => download.item.metadata.uid === uid);
+			const downloadItem = foundInActive || foundInInactive?.item;
+			const queuedItem = DownloadManager.queuedDownloads.findItem(uid);
+			if (!downloadItem && !queuedItem) throw new Error(`${uid} does not exists in Active, inActive or Queued Download list.`);
+			let groupIdToCheck;
+			if (downloadItem) {
+				groupIdToCheck = DownloadManager.getGroupId(downloadItem);
+				const foundInInactiveIdx = DownloadManager.inActiveDownloads.findIndex((inactiveItem) => inactiveItem.item.metadata.uid === downloadItem.metadata.uid);
+				if (foundInInactiveIdx !== -1) DownloadManager.inActiveDownloads.splice(foundInInactiveIdx, 1);
+				if (!downloadItem.isMachineInFinalState()) {
+					if (!DownloadManager.removedBacklog.find((item) => item === downloadItem.metadata.uid)) DownloadManager.removedBacklog.push(downloadItem.metadata.uid);
+					downloadItem.remove();
+				}
+				if (groupIdToCheck && DownloadManager.pausedGroups.has(groupIdToCheck)) {
+					if (!DownloadManager.hasPausedItemsInGroup(groupIdToCheck)) DownloadManager.pausedGroups.delete(groupIdToCheck);
+				}
+				if (DownloadManager.globalPauseActive && !DownloadManager.hasAnyPausedItems()) {
+					DownloadManager.globalPauseActive = false;
+					downloadlogger.info("Global pause disabled after removal - no more paused items remain");
+				}
+			}
+			if (queuedItem) {
+				DownloadManager.queuedDownloads.removeItem(queuedItem);
+				if (queuedItem.metadata.type === DOWNLOAD_ITEM_TYPES.TEMPLATE) unityTemplateService_default.reportTemplateDownloadError({
+					editorVersion: queuedItem.metadata.editorVersion,
+					templateName: queuedItem.metadata.templateName,
+					templateVersion: queuedItem.metadata.version,
+					wasUpgradeAttempt: queuedItem.metadata.isUpgrade,
+					errorMessage: "Cancelled from queue"
+				});
+			}
+			const removePromise = DownloadPersistence.removeDownload(uid).catch((error) => {
+				downloadlogger.error(`Failed to remove persisted download ${uid}: ${error}`);
+			}).finally(() => {
+				const index = DownloadManager.pendingPersistenceOperations.indexOf(removePromise);
+				if (index > -1) DownloadManager.pendingPersistenceOperations.splice(index, 1);
+			});
+			DownloadManager.pendingPersistenceOperations.push(removePromise);
+			if (downloadItem || queuedItem) {
+				const item = downloadItem || queuedItem;
+				if (item.metadata.type === DOWNLOAD_ITEM_TYPES.EDITOR) {
+					windowManager_default.broadcastContent(RENDERER_EVENTS.EDITOR_DOWNLOAD_CANCEL, item.metadata.itemName);
+					import_postal.default.publish({
+						channel: "app",
+						topic: POSTAL_TOPICS.EDITOR_DOWNLOAD_CANCELLED,
+						data: { editorItemName: item.metadata.itemName }
+					});
+				}
+			}
+			DownloadManager.debouncedBroadcast();
+		} catch (e) {
+			downloadlogger.error(`Failed to REMOVE: ${uid} from Active or inActive Downloads. Error: ${e}`);
+			throw e;
+		}
+	}
+	static getItemsStatus() {
+		return DownloadManager.getFrontendStreamingData();
+	}
+	static isInProgress(criteria) {
+		return some(DownloadManager.activeDownloads.slice(), criteria) || some(DownloadManager.queuedDownloads.getAllItems(), criteria);
+	}
+	static isJobInProgress() {
+		if (DownloadManager.getFrontendStreamingData().activeItems.some((item) => item.state !== DOWNLOAD_STATES.PAUSED)) return true;
+		return DownloadManager.queuedDownloads.getAllItems().some((item) => {
+			const groupId = DownloadManager.getGroupId(item);
+			return !groupId || !DownloadManager.pausedGroups.has(groupId);
+		});
+	}
+	/**
+	* Clean up downloads when the app is closing.
+	* @param cancelActiveDownloads - If true, active downloads will NOT be persisted (user explicitly
+	*                                cancelled them via quit dialog). If false, active downloads will
+	*                                be persisted as 'queued' for restoration on next launch.
+	*/
+	static async cleanupOnAppClose(cancelActiveDownloads = false) {
+		if (DownloadManager.pendingPersistenceOperations.length > 0) {
+			downloadlogger.info(`Waiting for ${DownloadManager.pendingPersistenceOperations.length} pending persistence operation(s) to complete...`);
+			await Promise.allSettled(DownloadManager.pendingPersistenceOperations);
+			downloadlogger.info("All pending persistence operations completed");
+		}
+		const queuedDownloads = DownloadManager.queuedDownloads.getAllItems();
+		const pausedActiveDownloads = [];
+		const trulyActiveDownloads = [];
+		for (const item of DownloadManager.activeDownloads.slice()) if (item.getStatus().state === DOWNLOAD_STATES.PAUSED) pausedActiveDownloads.push(item);
+		else trulyActiveDownloads.push(item);
+		const itemsToPersist = [];
+		if (cancelActiveDownloads) {
+			downloadlogger.info(`User cancelled active downloads - will clear and selectively persist from ${queuedDownloads.length} queued and ${trulyActiveDownloads.length} active download(s)`);
+			await DownloadPersistence.clearAll();
+			const persistedUids = /* @__PURE__ */ new Set();
+			const pausedInActiveDownloads = DownloadManager.inActiveDownloads.filter((inactiveItem) => inactiveItem.status === STATUSES.PAUSED);
+			for (const { item } of pausedInActiveDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				const status = item.getStatus();
+				const hasStartedDownload = !!item.metadata.destinationFilename;
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+					progress: hasStartedDownload ? status.progress : void 0
+				});
+			}
+			for (const item of pausedActiveDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				const status = item.getStatus();
+				const hasStartedDownload = !!item.metadata.destinationFilename;
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+					progress: hasStartedDownload ? status.progress : void 0
+				});
+			}
+			let queuedFromPausedGroupsCount = 0;
+			for (const item of queuedDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				const groupId = DownloadManager.getGroupId(item);
+				if (groupId && DownloadManager.pausedGroups.has(groupId)) {
+					persistedUids.add(item.metadata.uid);
+					itemsToPersist.push({
+						metadata: item.metadata,
+						timestamp: Date.now(),
+						status: PERSISTED_STATUSES.QUEUED
+					});
+					queuedFromPausedGroupsCount++;
+				}
+			}
+			if (queuedFromPausedGroupsCount > 0) downloadlogger.info(`Also persisting ${queuedFromPausedGroupsCount} queued download(s) from paused groups`);
+			if (itemsToPersist.length > 0) {
+				downloadlogger.info(`Persisting ${itemsToPersist.length} download(s) after clearing (paused + queued from paused groups)`);
+				try {
+					await DownloadPersistence.saveDownload(itemsToPersist);
+				} catch (error) {
+					downloadlogger.error(`Failed to persist downloads: ${error}`);
+				}
+			}
+		} else {
+			const persistedUids = /* @__PURE__ */ new Set();
+			for (const item of queuedDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: PERSISTED_STATUSES.QUEUED
+				});
+			}
+			const pausedInActiveDownloads = DownloadManager.inActiveDownloads.filter((inactiveItem) => inactiveItem.status === STATUSES.PAUSED);
+			for (const { item } of pausedInActiveDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				const status = item.getStatus();
+				const hasStartedDownload = !!item.metadata.destinationFilename;
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+					progress: hasStartedDownload ? status.progress : void 0
+				});
+			}
+			for (const item of pausedActiveDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				const status = item.getStatus();
+				const hasStartedDownload = !!item.metadata.destinationFilename;
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: hasStartedDownload ? PERSISTED_STATUSES.PAUSED : PERSISTED_STATUSES.QUEUED,
+					progress: hasStartedDownload ? status.progress : void 0
+				});
+			}
+			for (const item of trulyActiveDownloads) {
+				if (persistedUids.has(item.metadata.uid)) continue;
+				persistedUids.add(item.metadata.uid);
+				itemsToPersist.push({
+					metadata: item.metadata,
+					timestamp: Date.now(),
+					status: PERSISTED_STATUSES.QUEUED
+				});
+			}
+			if (itemsToPersist.length > 0) {
+				downloadlogger.info(`Persisting ${itemsToPersist.length} download(s) in batch: ${queuedDownloads.length} queued, ${pausedActiveDownloads.length} paused, ${trulyActiveDownloads.length} active`);
+				try {
+					await DownloadPersistence.saveDownload(itemsToPersist);
+				} catch (error) {
+					downloadlogger.error(`Failed to persist downloads in batch: ${error}`);
+				}
+			}
+		}
+		const failedDownloads = DownloadManager.inActiveDownloads.filter((item) => item.status !== STATUSES.SUCCESS && item.status !== STATUSES.PAUSED);
+		const cleanupPromiseList = [...trulyActiveDownloads, ...failedDownloads.map((failedDownload) => failedDownload.item)].map((item) => item.cleanup());
+		await Promise.allSettled(cleanupPromiseList);
+	}
+	/** *********************
+	Event Listeners
+	********************* */
+	static async onDownloadItemUpdates(update) {
+		switch (update.state) {
+			case DOWNLOAD_STATES.FAILED:
+			case DOWNLOAD_STATES.PAUSED:
+			case DOWNLOAD_STATES.FINISHED: {
+				const itemFromActiveDownloads = DownloadManager.activeDownloads.find((activeItem) => activeItem.metadata.uid === update.metadata.uid && activeItem.getStatus().state === update.state);
+				const itemFromInactiveDownloads = DownloadManager.inActiveDownloads.find((download) => download.item.metadata.uid === update.metadata.uid && download.item.getStatus().state === update.state)?.item;
+				const downloadItem = itemFromActiveDownloads ?? itemFromInactiveDownloads;
+				if (downloadItem) {
+					const itemToRemove = DownloadManager.removedBacklog.find((removedItem) => removedItem === downloadItem.metadata.uid);
+					if (itemToRemove && update.state === DOWNLOAD_STATES.FINISHED) {
+						DownloadManager.removedBacklog = DownloadManager.removedBacklog.filter((removedItem) => removedItem !== itemToRemove);
+						DownloadManager.inActiveDownloads = DownloadManager.inActiveDownloads.filter((inactiveItem) => inactiveItem.item.metadata.uid !== update.metadata.uid);
+					} else {
+						let mappedItemStatus;
+						if (update.state === DOWNLOAD_STATES.FAILED) mappedItemStatus = STATUSES.FAILED;
+						else if (update.state === DOWNLOAD_STATES.PAUSED) mappedItemStatus = STATUSES.PAUSED;
+						else if (update.state === DOWNLOAD_STATES.FINISHED) mappedItemStatus = STATUSES.SUCCESS;
+						if (!itemFromInactiveDownloads) DownloadManager.inActiveDownloads.push({
+							item: downloadItem,
+							status: mappedItemStatus
+						});
+					}
+					DownloadManager.removeActiveDownloadItem(downloadItem);
+				} else downloadlogger.warn(`${update.metadata.uid} is ${update.state} but never found in Active or inActive list.`);
+				break;
+			}
+			case DOWNLOAD_STATES.VALIDATION:
+				DownloadManager.inActiveDownloads = DownloadManager.inActiveDownloads.filter((inactiveItem) => inactiveItem.item.metadata.uid !== update.metadata.uid);
+				break;
+			default: break;
+		}
+		DownloadManager.debouncedBroadcast();
+	}
+	static onQueueItemAdded(item) {
+		try {
+			downloadlogger.info(`Item: ${item.metadata.uid} added to Download Queue.`);
+			DownloadManager.debouncedBroadcast();
+			DownloadManager.promoteQueuedItems();
+		} catch (e) {
+			downloadlogger.error("Failed to broadcast download updates to frontend. Error:", e);
+			windowManager_default.broadcastContent(RENDERER_EVENTS.DOWNLOAD_LIST_UPDATE, null);
+		}
+	}
+	static onQueueItemRemoved(item) {
+		try {
+			if (item) {
+				downloadlogger.info(`Removed ${item.metadata.uid} from Download Queue.`);
+				DownloadManager.debouncedBroadcast();
+			}
+		} catch (e) {
+			downloadlogger.error("Failed to broadcast download updates to frontend. Error:", e);
+			windowManager_default.broadcastContent(RENDERER_EVENTS.DOWNLOAD_LIST_UPDATE, null);
+		}
+	}
+	static onActiveDownloadChange(event, promotedItem, allItems) {
+		switch (event) {
+			case OBSERVABLE_ARRAY_EVENTS.ADD:
+				downloadlogger.debug(`Added ${promotedItem.length} into ActiveDownload list.`);
+				promotedItem.forEach((item) => {
+					try {
+						downloadlogger.info(`Starting download of ${item.metadata.uid}`);
+						item.start();
+						const removePromise = DownloadPersistence.removeDownload(item.metadata.uid).catch((error) => {
+							downloadlogger.error(`Failed to remove started download from persistence ${item.metadata.uid}: ${error}`);
+						}).finally(() => {
+							const index = DownloadManager.pendingPersistenceOperations.indexOf(removePromise);
+							if (index > -1) DownloadManager.pendingPersistenceOperations.splice(index, 1);
+						});
+						DownloadManager.pendingPersistenceOperations.push(removePromise);
+					} catch (e) {
+						item.errorObj = /* @__PURE__ */ new Error("Internal Error: Failed to start the download machine.");
+						downloadlogger.error(`Failed to start the download of ${item.metadata.uid}. Error ${e}`);
+						DownloadManager.inActiveDownloads.push({
+							item,
+							status: STATUSES.FAILED
+						});
+						DownloadManager.removeActiveDownloadItem(item);
+					}
+				});
+				DownloadManager.promoteQueuedItemsToFillSlots();
+				break;
+			case OBSERVABLE_ARRAY_EVENTS.REMOVE:
+				try {
+					DownloadManager.activeDownloads = new ObservableArray(DownloadManager.onActiveDownloadChange, allItems);
+					downloadlogger.debug(`Removed ${promotedItem.length} from ActiveDownload list.`);
+					DownloadManager.promoteQueuedItems();
+				} catch (e) {
+					downloadlogger.error(e);
+				}
+				break;
+			default: break;
+		}
+		DownloadManager.debouncedBroadcast();
+	}
+	/** *********************
+	Private/Helper Functions
+	********************* */
+	/**
+	* Wrap an optionally-provided download state change callback provided for the download item with
+	* one that calls this `DownloadManager`'s `onDownloadItemUpdates` lifecycle callback so that
+	* download queue changes are made while still honouring side effects desired by the downloader.
+	*
+	* @param downloadItem download item data including the optionally-provided download state change
+	* callback
+	* @returns wrapper download state change callback that calls through to the downloader's
+	*/
+	static wrapStateChangeHandler(downloadItem) {
+		let shouldSuppressSubsequentStateChanges = false;
+		return (update) => {
+			DownloadManager.onDownloadItemUpdates(update);
+			const requestorStateChangeHandler = downloadItem.onStateChangeHandler;
+			if (!shouldSuppressSubsequentStateChanges && requestorStateChangeHandler) requestorStateChangeHandler(update);
+			const { state } = update;
+			if (STATE_CHANGE_HANDLER_SUPPRESSING_STATES.includes(state)) shouldSuppressSubsequentStateChanges = true;
+			else if (state === DOWNLOAD_STATES.VALIDATION) shouldSuppressSubsequentStateChanges = false;
+		};
+	}
+	static removeActiveDownloadItem(item) {
+		DownloadManager.activeDownloads.remove(item);
+	}
+	static formatFrontendUpdateStatus(item) {
+		const itemStatus = item.getStatus();
+		return {
+			...itemStatus,
+			error: itemStatus.error ? {
+				message: itemStatus.error.message,
+				name: itemStatus.error.name
+			} : null
+		};
+	}
+	static getFrontendStreamingData() {
+		try {
+			const rawQueueItems = DownloadManager.queuedDownloads.getAllItems();
+			const queuedItems = rawQueueItems ? rawQueueItems.map((item) => ({
+				...DownloadManager.formatFrontendUpdateStatus(item),
+				state: STATUSES.QUEUED
+			})) : [];
+			return {
+				activeItems: DownloadManager.activeDownloads.map(DownloadManager.formatFrontendUpdateStatus),
+				queuedItems,
+				inActiveItems: DownloadManager.inActiveDownloads.map(({ item, status }) => {
+					return {
+						...DownloadManager.formatFrontendUpdateStatus(item),
+						state: status
+					};
+				})
+			};
+		} catch (e) {
+			downloadlogger.error(`Failed to prepare download updates for frontend. Error: ${e}`);
+			return {
+				activeItems: [],
+				queuedItems: [],
+				inActiveItems: []
+			};
+		}
+	}
+	static promoteQueuedItems() {
+		let item;
+		try {
+			if (DownloadManager.activeDownloads.length < DownloadManager.maxActive) {
+				const queuedItems = DownloadManager.queuedDownloads.getAllItems();
+				let itemToPromote;
+				for (const queuedItem of queuedItems) {
+					const groupId = DownloadManager.getGroupId(queuedItem);
+					if (!groupId || !DownloadManager.pausedGroups.has(groupId)) {
+						itemToPromote = queuedItem;
+						break;
+					}
+				}
+				if (!itemToPromote) return;
+				DownloadManager.queuedDownloads.removeItem(itemToPromote);
+				item = itemToPromote;
+				downloadlogger.debug(`Available download slot found in active download list (${DownloadManager.activeDownloads.length} / ${DownloadManager.maxActive}).`);
+				DownloadManager.activeDownloads.push(item);
+			} else downloadlogger.debug(`Download slot not available (${DownloadManager.activeDownloads.length} / ${DownloadManager.maxActive}) to start a new download.`);
+		} catch (e) {
+			if (item) {
+				downloadlogger.info(`Failed to Promote: ${item.metadata.uid} to active download. Moving it back to the queue.`, e);
+				DownloadManager.queuedDownloads.enqueue(item);
+			}
+		}
+	}
+	/**
+	* Get the group ID for a download item.
+	* For editors, the groupId is the item's uid (itemName).
+	* For modules and other items, the groupId is the parentItemUid.
+	* This is used to track paused groups and prevent queued items from
+	* the same group from being promoted while the group is paused.
+	*/
+	static getGroupId(item) {
+		const { metadata } = item;
+		if (metadata.type === DOWNLOAD_ITEM_TYPES.EDITOR) return metadata.itemName;
+		return metadata.parentItemUid;
+	}
+	/**
+	* Check if there are any paused items remaining in a specific group.
+	* Used to determine when to remove a group from the pausedGroups set.
+	* @param groupId - The group ID to check
+	* @param excludeUid - Optional UID to exclude from the check (used when removing an item
+	*                     that hasn't been removed from inActiveDownloads yet)
+	*/
+	static hasPausedItemsInGroup(groupId, excludeUid) {
+		return DownloadManager.inActiveDownloads.some((download) => {
+			if (download.status !== STATUSES.PAUSED) return false;
+			if (excludeUid && download.item.metadata.uid === excludeUid) return false;
+			return DownloadManager.getGroupId(download.item) === groupId;
+		});
+	}
+	/**
+	* Check if there are ANY paused items across all groups.
+	* Used to determine if globalPauseActive should remain true.
+	*/
+	static hasAnyPausedItems() {
+		return DownloadManager.inActiveDownloads.some((download) => download.status === STATUSES.PAUSED);
+	}
+	/**
+	* Get the set of paused download groups.
+	* Used by InstallationManager to determine which install-queued items should be persisted.
+	*/
+	static getPausedGroups() {
+		return new Set(DownloadManager.pausedGroups);
+	}
+};
+//#endregion

@@ -1,0 +1,26 @@
+//#region src/types/projects/ProjectError.ts
+var ProjectError = class extends IpcError {
+	errorCode;
+	projectName;
+	projectVersion;
+	projectArchitecture;
+	projectPath;
+	constructor(errorCode, options) {
+		super(errorCode.toString());
+		this.name = "ProjectError";
+		this.errorCode = errorCode;
+		this.projectName = options?.projectName;
+		this.projectVersion = options?.projectVersion;
+		this.projectArchitecture = options?.projectArchitecture;
+		this.projectPath = options?.projectPath;
+	}
+	getSerializableData() {
+		return new SerializableProjectError(this.errorCode, {
+			projectName: this.projectName,
+			projectVersion: this.projectVersion,
+			projectArchitecture: this.projectArchitecture,
+			projectPath: this.projectPath
+		});
+	}
+};
+//#endregion

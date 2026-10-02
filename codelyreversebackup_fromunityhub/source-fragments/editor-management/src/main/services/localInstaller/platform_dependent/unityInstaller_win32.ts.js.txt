@@ -1,0 +1,258 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstaller_win32.ts
+var installerId = randomUUID();
+var logger = loggerFactory("UnityInstallerWindows");
+var ipcServerName = `hubInstallServer-${installerId}`;
+var timeouts = {
+	INSTALL_EDITOR: 18e5,
+	INSTALL_MODULE: 18e5,
+	VALIDATION: 12e4,
+	UNINSTALL_EDITOR: 18e5,
+	WRITE_MODULE_FILE: 3e4,
+	WRITE_METADATA_FILE: 3e4
+};
+var ipcServer = new UnityIPCServer(ipcServerName);
+/**
+* This class takes care of installing and uninstalling the editors and modules.
+* It queues the editor installations to avoid problems with concurrent installations.
+*/
+var unityInstallerWindows = {
+	prepareInstallService,
+	closeInstallService,
+	uninstall,
+	installEditor,
+	installModule,
+	runInstallerValidation,
+	createMetadataFile,
+	createModulesFile,
+	updateModulesFile
+};
+async function prepareInstallService() {
+	windowManager_default.broadcastContent("installer.freezeUACActions", true);
+	try {
+		await getIPCServer();
+	} catch (error) {
+		logger.warn("Error while preparing install service:", error);
+		if (error.message.includes("The operation was canceled by the user")) {
+			logger.info("Installation cancelled by the user during UAC prompt.");
+			return { cancelled: true };
+		}
+		if (error === INSTALLER_ERROR.PERMISSION_DENIED) return { cancelled: true };
+		throw error;
+	} finally {
+		windowManager_default.broadcastContent("installer.freezeUACActions", false);
+	}
+}
+/**
+* Closes the IPC server socket which emits a 'disconnect' event to any connected clients
+*/
+function closeInstallService() {
+	if (ipcServer.started) {
+		logger.info("closing install service");
+		ipcServer.closeSockets();
+	}
+}
+/**
+* Uninstall a Unity editor. Note that Windows uninstallation does not know how to differentiate
+* editors with the same version but a different architecture at this time.
+*
+* @param editor The editor to uninstall.
+* @param rootPath The editor path up to the version (e.g.
+* C:\Program Files\Unity\Hub\Editor\2017.1.2f1).
+* @returns Resolved or rejected depending on whether the uninstallation is
+* successful or failed.
+*/
+async function uninstall({ version }, rootPath) {
+	try {
+		await _request("uninstallEditor", [version, rootPath], timeouts.UNINSTALL_EDITOR);
+		return;
+	} catch (error) {
+		logger.warn("Error while uninstalling the Editor:", error);
+		throw new InstallerError(decodeError(error));
+	}
+}
+async function installEditor(currentInstaller) {
+	logger.debug(`Tell client to install the Editor ${currentInstaller.editor.version}`);
+	try {
+		return await _request("installEditor", [currentInstaller], timeouts.INSTALL_EDITOR);
+	} catch (error) {
+		if (error.code === "INVALID_DESTINATION") throw new InstallerError(INSTALLER_ERROR.INVALID_DESTINATION, { cause: error });
+		logger.warn("Error while installing the Editor:", error);
+		logger.info("Attempting to empty the installation folder:", currentInstaller.destinationPath);
+		return import_lib.default.emptyDir(currentInstaller.destinationPath).catch((err) => {
+			if (err.code === "ENOENT" || err.code === "EPERM") throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+			throw new Error("Could not clear failed installation folder", { cause: err });
+		}).then(() => {
+			if (error.code === "ENOENT") throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+			throw error;
+		});
+	}
+}
+async function installModule(install) {
+	try {
+		return await _request("installModule", [install], timeouts.INSTALL_MODULE);
+	} catch (error) {
+		logger.warn("Error while installing module:", error);
+		throw new InstallerError(decodeError(error));
+	}
+}
+async function runInstallerValidation(validationParams) {
+	logger.debug("Running Installer Validation Strategy in Elevated Process.");
+	try {
+		const data = await _request("runValidation", [validationParams], timeouts.VALIDATION);
+		logger.info("client process finished validating", data);
+		return data;
+	} catch (error) {
+		logger.warn("Error while validating.", error);
+		throw error;
+	}
+}
+async function createMetadataFile(destination, metadata) {
+	const metadataContent = {
+		productName: metadata.productName,
+		entitlements: metadata.entitlements,
+		architecture: metadata.editorUniqueId?.architecture ?? null,
+		releaseStream: "",
+		isLTS: null
+	};
+	try {
+		await _request("createMetadataFile", [destination, metadataContent], timeouts.WRITE_METADATA_FILE);
+	} catch (error) {
+		logger.warn("Error while creating metadata file", error);
+		return error;
+	}
+}
+async function createModulesFile(destination, modulesList) {
+	try {
+		await _request("createModulesFile", [destination, modulesList], timeouts.WRITE_MODULE_FILE);
+	} catch (error) {
+		logger.warn("Error while creating modules file", error);
+		throw error;
+	}
+}
+async function updateModulesFile(destination, updatedModuleUid, isSelected) {
+	try {
+		await _request("updateModulesFile", [
+			destination,
+			updatedModuleUid,
+			isSelected
+		], timeouts.WRITE_MODULE_FILE);
+	} catch (error) {
+		logger.warn("Error while updating modules file", error);
+		throw error;
+	}
+}
+/**
+* Get the IPC server handling communication with the installer child process. If the IPC server
+* has not yet been started, it is started at this time along with the installer child process.
+*
+* @param isDev If true, the child process is spawned in development mode. This
+* is used by the test suite to manually set the `isDev` flag.
+*
+* @returns A `Promise` resolving with the IPC server handling
+* communication with the installer child process.
+*/
+async function getIPCServer(isDev = void 0) {
+	if (isDev === void 0) isDev = app.isPackaged === false;
+	if (!ipcServer.started) {
+		await ipcServer.startIPCServer();
+		ipcServer.on("response", (message) => handleResponse(message));
+		await _spawnChildProcess(!mainContainer.get(ILocalConfigId).isElevateDisabled(), isDev);
+	}
+	return ipcServer;
+}
+/**
+* Spawn an installer process as a new Electron process. If an error occurs in the child process,
+* this module's IPC server will be shut down to start fresh for a future installation attempt.
+*
+* @param elevated If true, attempt to elevate as admin to spawn the installer process.
+* @param isDev Whether to run in development mode
+* @returns A `Promise` resolved when the child process has established an IPC
+* connection to this module's IPC server or exits gracefully. It is rejected if the child process
+* exits with an error, admin elevation fails, or the user does not agree to the admin elevation
+* UAC prompt.
+*/
+async function _spawnChildProcess(elevated, isDev = false) {
+	logger.info("spawn child process, elevated:", elevated);
+	return new Promise((resolve, reject) => {
+		/**
+		* Handle the exit of a child process.
+		* @param error The error that occurred in spawning or executing the child process.
+		* @param stderr Any `stderr` output written by the child process.
+		* @param stdout Any `stdout` output written by the child process.
+		*/
+		const handleExit = (error, stderr, stdout) => {
+			ipcServer.closeSockets();
+			if (error) logger.error(error, stderr, stdout);
+			reject(error);
+		};
+		const appPath = `${process.execPath}`;
+		let params = [
+			"--",
+			"--winInstaller",
+			installerId
+		];
+		if (isDev) params = [
+			app.getAppPath(),
+			"--",
+			"--winInstaller",
+			installerId
+		];
+		logger.info("executing", appPath, params);
+		if (elevated) {
+			logger.info("Using @unity-hub/elevate module");
+			elevate(appPath, params.join(" "), (error) => {
+				if (error) {
+					captureException(error);
+					handleExit(error);
+				}
+			});
+		} else execFile(appPath, params, (error, _stdout, stderr) => {
+			if (error) handleExit(error, stderr);
+		});
+		if (ipcServer.isSocketInitialized()) resolve();
+		else ipcServer.on("connect", () => resolve());
+		logger.debug("Installer process started");
+	});
+}
+function isResponseMessage(message) {
+	return typeof message === "object" && message !== null && "type" in message && message.type === "response" && "id" in message && typeof message.id === "string" && "channel" in message && typeof message.channel === "string";
+}
+function handleResponse(message) {
+	if (!isResponseMessage(message)) {
+		logger.warn("Received invalid response message:", message);
+		return;
+	}
+	const { id, result, error } = message;
+	const pending = pendingRequests.get(id);
+	if (pending) {
+		if (error) {
+			logger.warn(`Rejecting pending request on channel ${message.channel} with id ${id} due to error response`, error);
+			pending.reject(Object.assign(new Error(error.message), error));
+		} else {
+			logger.debug(`Resolving pending request on channel ${message.channel} with id ${id}`, result);
+			pending.resolve(result);
+		}
+		pendingRequests.delete(id);
+	} else logger.warn(`No pending request found for response with id ${id} and channel ${message.channel}`);
+}
+var pendingRequests = /* @__PURE__ */ new Map();
+function _request(channel, args, timeout) {
+	return new Promise((resolve, reject) => {
+		if (!ipcServer.started) return reject(/* @__PURE__ */ new Error("The Hub cannot proceed because the installation service is not running. Aborting."));
+		const request = createRequest(channel, ...args);
+		pendingRequests.set(request.id, {
+			resolve,
+			reject
+		});
+		logger.debug(`Emitting install request on channel ${channel} with id ${request.id}`, request);
+		ipcServer.emitAll("request", request);
+		if (timeout && timeout > 0) setTimeout(() => {
+			if (pendingRequests.has(request.id)) {
+				pendingRequests.delete(request.id);
+				logger.warn(`Request timed out after ${timeout}ms`, request);
+				reject(new InstallerError(INSTALLER_ERROR.TIMEOUT));
+			}
+		}, timeout);
+	});
+}
+//#endregion

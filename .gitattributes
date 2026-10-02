@@ -6,3 +6,12 @@
 /vendor/csharp-lsp/LICENSE -text
 /src/agent/resources/** -text
 /src/unity-insight/resources/** -text
+/codelyreversebackup_fromunityhub/source-fragments/** -text
+/codelyreversebackup_fromunityhub/reusable/** -text
+/src/frontend/bundle/codely-generator/** -text
+/src/frontend/bundle/codely-canvas/** -text
+# Host adapters also use exact byte hashes and reversible patch offsets.
+/src/frontend/bundle/assets/index-BRxZ4eG7.js -text
+/src/frontend/bundle/assets/index-DvRYaIVa.js -text
+/src/frontend/bundle/assets/RightSideBarPanel-JSPvAs5c.js -text
+/src/frontend/bundle/assets/RightSideBarPanel-B2OWNNNX.js -text

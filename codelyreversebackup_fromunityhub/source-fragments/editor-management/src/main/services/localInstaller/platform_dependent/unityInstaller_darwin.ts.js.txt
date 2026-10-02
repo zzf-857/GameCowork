@@ -1,0 +1,314 @@
+//#region src/main/services/localInstaller/platform_dependent/unityInstaller_darwin.ts
+var execFile$1 = util.promisify(child_process.execFile);
+var logger = loggerFactory("UnityInstallerMac");
+var unityInstallerMac = {
+	async uninstall(_editor, installationPath) {
+		try {
+			await fs.promises.rm(installationPath, {
+				recursive: true,
+				force: true
+			});
+			return;
+		} catch (error) {
+			logger.warn("Error while uninstalling Unity editor", error);
+			if (error.code !== "EPERM" && error.code !== "EACCES") throw error;
+			return new Promise((resolve, reject) => {
+				const command = `${hub_fs_default.RMRF_CMD} "${installationPath}"`;
+				logger.info(`Executing command: ${command}`);
+				import_sudo_prompt.default.exec(command, { name: "Unity uninstaller" }, (rdError) => {
+					if (rdError) {
+						logger.error("Execution error:", rdError);
+						if (rdError.message === INSTALLER_ERROR.PERMISSION_DENIED.code) return resolve({ cancelled: true });
+						else return reject(rdError);
+					}
+					return resolve({ cancelled: false });
+				});
+			});
+		}
+	},
+	async installEditor(install) {
+		const { installerPath, destinationPath: destination } = install;
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		const extension = path.extname(installerPath).toLowerCase();
+		if (extension === ".pkg") {
+			try {
+				await fs.promises.mkdir(destination, { recursive: true });
+				const tmpDestination = await fs.promises.mkdtemp(path.join(os.tmpdir(), "unity-editor-pkg-"));
+				await xarPkg(installerPath, tmpDestination);
+				await untarPkg(tmpDestination, destination, true);
+				await cleanupPkg(tmpDestination);
+			} catch (e) {
+				if (e.code === "EACCES") throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+				throw e;
+			}
+			return;
+		}
+		if (extension === ".zip") {
+			try {
+				await fs.promises.mkdir(destination, { recursive: true });
+				await deployZip(installerPath, destination);
+			} catch (err) {
+				logger.warn("Error while deploying zip", err);
+				throw err;
+			}
+			return;
+		}
+		throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+	},
+	async cleanupEditorInstallation(install) {
+		const { destinationPath: destination, editor: { version } } = install;
+		logger.info("Cleaning up editor", version);
+		if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+		try {
+			await fs.promises.rm(destination, {
+				recursive: true,
+				force: true
+			});
+			logger.info("Removed editor at", destination);
+			return true;
+		} catch (deleteError) {
+			logger.warn("Error while cleaning up editor", deleteError);
+			return false;
+		}
+	},
+	async installModule(installer) {
+		let { destination, installerPath } = installer;
+		logger.debug(`install module ${installerPath} to ${destination}`);
+		const fileExtension = path.extname(installerPath);
+		if (fileExtension === ".pkg") {
+			if (!destination) return execInstaller(installerPath);
+			try {
+				await fs.promises.mkdir(destination, { recursive: true });
+				const tmpDestination = await fs.promises.mkdtemp(path.join(os.tmpdir(), "unity-module-pkg-"));
+				await xarPkg(installerPath, tmpDestination);
+				await untarPkg(tmpDestination, destination);
+				await cleanupPkg(tmpDestination);
+			} catch (e) {
+				logger.warn("Error while installing module from pkg", e);
+				throw e;
+			}
+			return;
+		}
+		if (fileExtension === ".zip") {
+			if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+			try {
+				await fs.promises.mkdir(destination, { recursive: true });
+				await deployZip(installerPath, destination);
+			} catch (err) {
+				logger.warn("Error while installing module from zip", err);
+				throw err;
+			}
+			return;
+		}
+		if (fileExtension === ".po") {
+			if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+			destination = path.join(destination, path.basename(installerPath));
+			logger.debug(`Move ${installerPath} to ${destination}`);
+			try {
+				await fs.promises.cp(installerPath, destination, {
+					recursive: true,
+					force: true
+				});
+			} catch (error) {
+				logger.warn("Error while installing module from po", error);
+				throw error;
+			}
+			return;
+		}
+		if (fileExtension === ".dmg") {
+			destination ??= "/Applications";
+			try {
+				await mountDmg(installerPath, destination);
+			} catch (error) {
+				logger.warn("Error while installing module from dmg", error);
+				throw error;
+			}
+			return;
+		}
+		throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+	},
+	async cleanupModuleInstallation(installer) {
+		let { destination, installerPath } = installer;
+		logger.debug(`cleanup module ${destination}`);
+		const fileExtension = path.extname(installerPath);
+		if (fileExtension === ".pkg") {
+			if (!destination) return;
+			try {
+				await fs.promises.rm(destination, {
+					recursive: true,
+					force: true
+				});
+				return true;
+			} catch (deleteError) {
+				logger.warn("Error while cleaning up", deleteError);
+				return false;
+			}
+		}
+		if (fileExtension === ".zip") return true;
+		if (fileExtension === ".po") {
+			if (!destination) throw new InstallerError(INSTALLER_ERROR.MISSING_DESTINATION);
+			destination = path.join(destination, path.basename(installerPath));
+			logger.debug(`Removing ${destination} directory/file`);
+			try {
+				await fs.promises.rm(destination, {
+					recursive: true,
+					force: true
+				});
+				return true;
+			} catch (deleteError) {
+				logger.warn(`Error while cleaning up po in ${destination}`, deleteError);
+				return false;
+			}
+		}
+		if (fileExtension === ".dmg") try {
+			await unmount(installerPath);
+			return true;
+		} catch (error) {
+			logger.warn(`Error while cleaning up dmg in ${installerPath}`, error);
+			return false;
+		}
+		throw new InstallerError(INSTALLER_ERROR.WRONG_INSTALLER);
+	},
+	async afterModuleInstallation(module) {
+		logger.debug("afterModuleInstallation");
+		if (module.renameFrom && module.renameTo) {
+			let tempFolder;
+			try {
+				if (module.renameFrom.includes(module.renameTo)) {
+					const destinationParent = path.dirname(module.renameTo);
+					await fs.promises.mkdir(destinationParent, { recursive: true });
+					tempFolder = await fs.promises.mkdtemp(path.join(destinationParent, ".unity-module-rename-"));
+					await fs.promises.rename(module.renameFrom, tempFolder);
+					await fs.promises.rm(module.renameTo, {
+						recursive: true,
+						force: true
+					});
+					await fs.promises.rename(tempFolder, module.renameTo);
+				} else await fs.promises.rename(module.renameFrom, module.renameTo);
+			} catch (err) {
+				logger.warn("Could not rename folder", err);
+				throw new Error(`Module ${module.name} after installation step failed`, { cause: err });
+			} finally {
+				if (tempFolder) try {
+					await fs.promises.rm(tempFolder, {
+						recursive: true,
+						force: true
+					});
+				} catch (cleanupError) {
+					logger.warn("Could not cleanup temporary rename folder", cleanupError);
+				}
+			}
+		}
+		if (module.id === MODULE_IDS.VISUAL_STUDIO_CODE) try {
+			await mainContainer.get(IVisualStudioServiceId).afterModuleInstallation(module);
+		} catch (error) {
+			logger.error("Visual Studio Code was installed successfully, but a post installation step failed.", error);
+		}
+	}
+};
+async function cleanupPkg(tmpDestination) {
+	try {
+		await fs.promises.rm(tmpDestination, {
+			recursive: true,
+			force: true
+		});
+	} catch (err) {
+		logger.warn(`Error while cleanup Pkg`, err);
+	}
+}
+function execInstaller(installerPath) {
+	const command = `installer -package "${installerPath}" -target /`;
+	logger.info(`Executing command: ${command}`);
+	return new Promise((resolve, reject) => {
+		import_sudo_prompt.default.exec(command, { name: "Unity Hub Installer" }, (error) => {
+			if (error) {
+				logger.error("Exec installer error:", error);
+				if (error.message === INSTALLER_ERROR.PERMISSION_DENIED.code) resolve({ cancelled: true });
+				else reject(error);
+			} else resolve(void 0);
+		});
+	});
+}
+/**
+* We cannot use zipUtility here because it does not unzip the metadata of mac
+* and breaks the .app.
+* The unzip command works like a charm instead (and is very old).
+* @param installerPath
+* @param destination
+* @returns
+*/
+async function deployZip(installerPath, destination) {
+	try {
+		await execFile$1("/usr/bin/unzip", [
+			"-d",
+			destination,
+			installerPath
+		], { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		logger.warn(`Error while unzipping ${installerPath} to ${destination}`, error);
+		throw error;
+	}
+}
+async function mountDmg(installerPath, destination) {
+	logger.debug(`mount ${installerPath}`);
+	const mountInfo = await mount(installerPath);
+	try {
+		const filename = (await fs.promises.readdir(mountInfo.mountPath)).find((file) => file.endsWith(".app"));
+		logger.info(`copy ${mountInfo.mountPath}/${filename} to ${destination}`);
+		await copyFile(path.join(mountInfo.mountPath, filename), destination);
+	} finally {
+		try {
+			await unmount(mountInfo.mountPath);
+		} catch (error) {
+			logger.warn(`Failed to unmount ${mountInfo.mountPath}`, error);
+		}
+	}
+}
+async function copyFile(file, destination) {
+	let command;
+	if (file.match(/visual\s?studio.*\.app$/i)) command = [
+		`-a`,
+		path.normalize(file),
+		destination
+	];
+	else command = [
+		`-a`,
+		`${path.normalize(`${file}/`)}.`,
+		destination
+	];
+	try {
+		await execFile$1("/bin/cp", command, { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		logger.warn(`Error while copying the dmg file ${file} to ${destination}`, error);
+		throw error;
+	}
+}
+async function xarPkg(installerPath, destination) {
+	try {
+		await execFile$1(`/usr/bin/xar`, [
+			"-xf",
+			installerPath,
+			"-C",
+			destination
+		], { maxBuffer: MAX_BUFFER_SIZE });
+	} catch (error) {
+		logger.warn(`Error while extracting xar ${installerPath} to ${destination}`, error);
+		throw error;
+	}
+}
+async function untarPkg(basePayloadPath, destination, stripComponents = false) {
+	const tarArgs = [
+		"-C",
+		destination,
+		"-zmxf",
+		await getPayloadPath(basePayloadPath)
+	];
+	if (stripComponents) tarArgs.push("--strip-components=2");
+	await execFile$1("/usr/bin/tar", tarArgs, { maxBuffer: MAX_BUFFER_SIZE });
+}
+async function getPayloadPath(basePath) {
+	const payloadDirectory = (await fs.promises.readdir(basePath)).find((file) => file.match(/.pkg.tmp$/));
+	if (!payloadDirectory) throw new InstallerError(INSTALLER_ERROR.COULD_NOT_EXTRACT);
+	return path.join(basePath, payloadDirectory, "Payload");
+}
+//#endregion

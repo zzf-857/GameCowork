@@ -1,0 +1,73 @@
+//#region src/main/services/editorManager/lib/customInstallLocation.ts
+var logger$5 = loggerFactory("customInstallLocation");
+var CustomInstallLocation = class {
+	get editors() {
+		if (!this.#installedEditorLocation) return {};
+		return this.#installedEditorLocation.editors;
+	}
+	get installPath() {
+		return this.#installPath;
+	}
+	#installPathKey;
+	#installPath;
+	#installedEditorLocation;
+	constructor(_installPathKey) {
+		this.#installPathKey = _installPathKey;
+		this.#installPath = "";
+	}
+	initializeCustomLocation() {
+		return this.#fetchInstallPath().then(() => this.#updateInstallLocation());
+	}
+	#fetchInstallPath() {
+		return this.#getInstallPath().then((_installPath) => {
+			this.#installPath = _installPath;
+		}).catch((error) => {
+			if (error) logger$5.warn("Custom install path could not be retrieved: ", error);
+			logger$5.info("Custom install path not present.");
+			this.#setInstallPath("");
+		});
+	}
+	#getInstallPath() {
+		return mainContainer.get(IJsonStorageId).get(this.#installPathKey).then((_installPath) => {
+			if (this.#isInstallPathValid(_installPath)) return _installPath;
+			throw new Error("Custom install path is not a string");
+		});
+	}
+	#isInstallPathValid(_installPath) {
+		return _installPath !== void 0 && typeof _installPath === "string";
+	}
+	#setInstallPath(_installPath) {
+		return mainContainer.get(IJsonStorageId).set(this.#installPathKey, _installPath).then(() => {
+			this.#installPath = _installPath;
+		});
+	}
+	#updateInstallLocation() {
+		this.#installedEditorLocation = void 0;
+		if (this.#installPath) this.#installedEditorLocation = new InstalledEditorLocation(this.#installPath);
+	}
+	scanForInstallsAndGenerateEditors() {
+		if (!this.#installedEditorLocation) {
+			logger$5.info(`Cannot scan custom location ${this.#installPath || "(no path set)"}.`);
+			return Promise.resolve();
+		}
+		return this.#installedEditorLocation.scanForInstallsAndGenerateEditors();
+	}
+	updateEditor(editor) {
+		if (!this.#installedEditorLocation) {
+			logger$5.info("Secondary location not set. Cannot update the Editor", getUniqueIdentifier(editor));
+			return Promise.resolve();
+		}
+		return this.#installedEditorLocation.updateEditor(editor);
+	}
+	removeEditor(editor) {
+		if (!this.#installedEditorLocation) {
+			logger$5.info("Secondary location not set. Cannot remove the Editor", getUniqueIdentifier(editor));
+			return;
+		}
+		this.#installedEditorLocation.removeEditor(editor);
+	}
+	setInstallLocation(_installPath) {
+		return this.#setInstallPath(_installPath).then(() => this.#updateInstallLocation());
+	}
+};
+//#endregion

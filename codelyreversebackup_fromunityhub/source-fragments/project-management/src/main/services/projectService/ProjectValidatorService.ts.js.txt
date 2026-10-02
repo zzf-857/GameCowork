@@ -1,0 +1,78 @@
+//#region src/main/services/projectService/ProjectValidatorService.ts
+/**
+* Validates whether a given path is valid for use as a project folder
+* @param validationPath
+* @param shouldThrow
+* @returns a `Promise` resolving to whether the path is valid and exists. Rejected if `shouldThrow` is `true` and the path is invalid or does not exist
+*/
+async function validatePath(validationPath, shouldThrow = true) {
+	if (os.platform() === "darwin") {
+		if (validationPath.match(/^\/Users\/[^/]+\/?$/) || validationPath.match(/^\/Users\/[^/]+\/(Downloads|Library|Desktop|Documents)\/?$/)) {
+			if (shouldThrow) throw new ProjectError(PROJECT_ISSUES.INVALID_PROJECT_PATH);
+			return false;
+		}
+	}
+	if (await hub_fs_default.isFilePresentAsync(validationPath)) return true;
+	if (shouldThrow) throw new ProjectError(PROJECT_ISSUES.PROJECT_PATH_NOT_FOUND);
+	return false;
+}
+/**
+* Validates whether a project at a given path is already open in the editor
+* @param validationPath
+* @param shouldThrow
+* @returns a `Promise` resolving to when the project is not open. Rejected if `shouldThrow` is `true` and the project at the path is open
+*/
+async function validateProjectNotOpen(validationPath, shouldThrow = true) {
+	const lockFilePath = path.join(validationPath, LockFilePath);
+	if (!await hub_fs_default.isFilePresentAsync(lockFilePath)) return true;
+	try {
+		await hub_fs_default.isFileUnlocked(lockFilePath);
+	} catch {
+		if (shouldThrow) throw new ProjectError(PROJECT_ISSUES.ALREADY_OPEN);
+		return false;
+	}
+	return true;
+}
+/**
+* Validates whether a given path is a valid project folder and is not open.
+* @param validationPath
+* @param shouldThrow
+* @returns a `Promise` resolving to whether the path meets all the restrictions. Rejected if `shouldThrow` is `true` and the path fails any checks
+*/
+async function validateIsProjectPathAndNotOpen(validationPath, shouldThrow = true) {
+	try {
+		if (!await validatePath(validationPath, shouldThrow)) return false;
+		return await validateProjectNotOpen(validationPath, shouldThrow);
+	} catch (error) {
+		if (shouldThrow) throw error;
+		return false;
+	}
+}
+/**
+* Given a project path and a filename checks if the ProjectSettings folder constains file
+* @param projectPath
+* @param fileName
+* @returns a `Promise` resolving to true when the path exists.
+*/
+async function validateProjectSettingsFileExists(projectPath, fileName) {
+	const projectSettingsPath = path.join(projectPath, ProjectSettingsFolderPath);
+	return hub_fs_default.pathExists(projectSettingsPath, fileName);
+}
+/**
+* Ensures the Assets folder exists in the project directory.
+* Creates it if it doesn't exist.
+* @param projectPath The path to the Unity project directory
+* @returns Promise that resolves when the Assets folder is ensured to exist
+*/
+async function ensureAssetsFolder(projectPath) {
+	const assetsPath = path.join(projectPath, ProjectAssetsFolderPath);
+	if (!await hub_fs_default.isFilePresentAsync(assetsPath)) await hub_fs_default.mkdirRecursive(assetsPath);
+}
+var ProjectValidatorService = {
+	validatePath,
+	validateProjectNotOpen,
+	validateIsProjectPathAndNotOpen,
+	validateProjectSettingsFileExists,
+	ensureAssetsFolder
+};
+//#endregion

@@ -1,0 +1,10 @@
+//#region src/types/downloads/stateMachine/DownloadStates.ts
+var DOWNLOAD_STATES = {
+	VALIDATION: "download_validation",
+	DOWNLOADING: "downloading",
+	FAILED: "download_failed",
+	PAUSED: "download_paused",
+	CLEANUP: "download_cleanup",
+	FINISHED: "download_finished"
+};
+//#endregion

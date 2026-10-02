@@ -1,0 +1,98 @@
+//#region src/main/services/localInstaller/unityInstaller.ts
+var logger$10 = loggerFactory("Installer");
+var platformDependent;
+switch (os.platform()) {
+	case "darwin": {
+		const { unityInstallerMac } = await import("./unityInstaller_darwin-Dnbr7dgu.js");
+		platformDependent = unityInstallerMac;
+		break;
+	}
+	case "linux": {
+		const { unityInstallerLinux } = await import("./unityInstaller_linux-FrEWUP4P.js");
+		platformDependent = unityInstallerLinux;
+		break;
+	}
+	case "win32": {
+		const { unityInstallerWindows } = await import("./unityInstaller_win32-CmgAIy15.js");
+		platformDependent = unityInstallerWindows;
+		break;
+	}
+	default: throw new Error(`Platform ${os.platform()} not supported`);
+}
+var jobQueue = Promise.resolve(void 0);
+var modulesFileJobQueue = Promise.resolve();
+var unityInstaller = {
+	prepareInstallService() {
+		return Promise.resolve(void 0);
+	},
+	closeInstallService() {},
+	cleanupEditorInstallation() {
+		return Promise.resolve(void 0);
+	},
+	cleanupModuleInstallation() {
+		return Promise.resolve(true);
+	},
+	afterModuleInstallation() {
+		return Promise.resolve();
+	},
+	runInstallerValidation() {
+		return Promise.resolve(true);
+	},
+	async createMetadataFile(destination, itemMetadata) {
+		const metadataFile = Config$2.INSTALLS.METADATA_FILE;
+		const metadata = {
+			productName: itemMetadata.productName,
+			entitlements: itemMetadata.entitlements,
+			architecture: itemMetadata.editorUniqueId?.architecture ?? null,
+			revisionHash: itemMetadata.revisionHash ?? null,
+			releaseStream: "",
+			isLTS: null
+		};
+		try {
+			const metadataFilePath = path.join(destination, metadataFile);
+			if (await fs.promises.access(metadataFilePath, fs.constants.F_OK).then(() => true).catch(() => false)) await fs.promises.unlink(metadataFilePath);
+			await fs.promises.writeFile(metadataFilePath, JSON.stringify(metadata));
+		} catch (error) {
+			throw new Error(`Post Installation: Cannot create ${metadataFile} after editor installation`, { cause: error });
+		}
+	},
+	async createModulesFile(destination, modulesList) {
+		const modulesFile = Config$2.INSTALLS.MODULES_FILE;
+		try {
+			const modulesFilePath = path.join(destination, modulesFile);
+			if (await fs.promises.access(modulesFilePath, fs.constants.F_OK).then(() => true).catch(() => false)) await fs.promises.unlink(modulesFilePath);
+			await fs.promises.writeFile(modulesFilePath, JSON.stringify(modulesList));
+		} catch (error) {
+			throw new Error(`Post Installation: Cannot create ${modulesFile} after editor installation`, { cause: error });
+		}
+	},
+	updateModulesFile(editorPath, updatedModuleUid, isSelected) {
+		const modulesFile = Config$2.INSTALLS.MODULES_FILE;
+		const doUpdate = async () => {
+			try {
+				const modulesFilePath = path.join(editorPath, modulesFile);
+				const modulesData = JSON.parse(await fs.promises.readFile(modulesFilePath, "utf8"));
+				const selectedIndex = modulesData.findIndex((fileModule) => fileModule.id === updatedModuleUid);
+				if (selectedIndex !== -1) {
+					modulesData[selectedIndex] = {
+						...modulesData[selectedIndex],
+						selected: isSelected
+					};
+					await fs.promises.writeFile(modulesFilePath, JSON.stringify(modulesData, null, 2));
+				} else logger$10.warn(`Module "${updatedModuleUid}" not found in ${modulesFile}. This may be expected for newly added modules.`);
+			} catch (error) {
+				throw new Error(`Couldn't update ${modulesFile} after module install`, { cause: error });
+			}
+		};
+		modulesFileJobQueue = modulesFileJobQueue.then(doUpdate, doUpdate);
+		return modulesFileJobQueue;
+	},
+	...platformDependent,
+	uninstall(editor, installationPath) {
+		logger$10.info(`Uninstall the Editor from ${installationPath} started`);
+		const doUninstall = () => platformDependent.uninstall(editor, installationPath);
+		jobQueue = jobQueue.then(doUninstall, doUninstall);
+		return jobQueue;
+	}
+};
+//#endregion

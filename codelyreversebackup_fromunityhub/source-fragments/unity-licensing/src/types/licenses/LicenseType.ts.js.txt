@@ -1,0 +1,29 @@
+//#region src/types/licenses/LicenseType.ts
+var LICENSE_TYPES = {
+	Enterprise: "Unity Enterprise",
+	Personal: "Unity Personal",
+	Plus: "Unity Plus",
+	Pro: "Unity Pro",
+	Education: "Unity Education",
+	Trial: "Unity Trial",
+	Industry: "Unity Industry",
+	IndustryTrial: "Unity Industry Trial",
+	ASSET_STORE: "Asset Store",
+	Unknown: "Unknown"
+};
+/**
+* List of entitlement group types to exclude from Licenses page.
+* Add entitlement group types here that should not be shown in the UI.
+*/
+var IGNORED_ENTITLEMENT_GROUP_TYPES = ["upm-package"];
+/**
+* List of product names to exclude from UI displays (Licenses page and CSV outputs)
+* Add product names here that should not be shown in the UI.
+*/
+var IGNORED_LICENSE_PRODUCT_NAMES = [LICENSE_TYPES.ASSET_STORE];
+/**
+* List of product names to exclude from license revocation notifications.
+* These licenses can be revoked silently without notifying the user.
+*/
+var IGNORED_REVOKED_LICENSE_PRODUCT_NAMES = [LICENSE_TYPES.Personal, LICENSE_TYPES.ASSET_STORE];
+//#endregion

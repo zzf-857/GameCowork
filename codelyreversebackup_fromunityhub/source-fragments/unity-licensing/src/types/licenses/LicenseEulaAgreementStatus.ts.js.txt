@@ -1,0 +1,7 @@
+//#region src/types/licenses/LicenseEulaAgreementStatus.ts
+var LICENSE_EULA_AGREEMENT_STATUSES = {
+	PENDING: "Pending",
+	AGREED: "Agreed",
+	DISAGREED: "Disagreed"
+};
+//#endregion

@@ -1,0 +1,21 @@
+//#region src/main/services/editorApp/launchProcess.ts
+var logger$12 = loggerFactory("LaunchProcess");
+async function start(command, args, unityPath) {
+	await fs.promises.access(unityPath ?? "", fs.constants.F_OK);
+	const { NODE_OPTIONS, ...childEnvVarsWithoutNodeOptions } = Object.assign({}, process.env);
+	logger$12.info("Spawning editor instance with command: ", command, ", and arguments: ", args);
+	const handle = child_process.spawn(command, args, {
+		detached: true,
+		stdio: "ignore",
+		env: childEnvVarsWithoutNodeOptions
+	});
+	handle.unref();
+	handle.on("error", (data) => {
+		logger$12.error(`Launch process error: ${data}`);
+	});
+	handle.on("close", (code) => {
+		logger$12.info(`child process exited with code ${code}`);
+	});
+	return handle;
+}
+//#endregion

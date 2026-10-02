@@ -1,0 +1,1556 @@
+//#region src/main/services/localProject/localProject.ts
+/**
+* Path to the Unity project version file relative to the project root.
+* Contains Unity editor version information.
+*/
+var kProjectVersionPath = path.join(ProjectSettingsFolderPath, "ProjectVersion.txt");
+/**
+* Path to the custom project name file relative to the project root.
+* Contains the Unity project name information.
+*/
+var kUserProjectNamePath = path.join(ProjectUserSettingsFolderPath, "ProjectName.txt");
+var kProjectNamePath = path.join(ProjectSettingsFolderPath, "ProjectName.txt");
+/**
+* Path to the Unity project settings file relative to the project root.
+* Contains Unity project configuration including cloud settings.
+*/
+var kProjectSettingsPath = path.join(ProjectSettingsFolderPath, ProjectSettingsFileName);
+/**
+* Local storage key for projects information.
+*/
+var PROJECTS_INFO = "projectsInfo";
+/**
+* Local storage key for projects deeplink information.
+*/
+var DEEPLINK_INFO = "deeplinkInfo";
+/**
+* The oldest Unity editor version that supports side-by-side architecture detection.
+* Used for determining when to use architecture-specific logic.
+*/
+var OLDEST_EDITOR_WITH_SIDE_BY_SIDE = "2021.2.0f1";
+/**
+* Default user preferences for Unity Hub project management.
+* These values are used when no user-specific settings are found.
+*/
+var baseUserDefault = {
+	projectType: "3D",
+	defaultProjectName: "New Unity Project",
+	ShowNewProjectButton: true,
+	platformPathNameSeparator: path.sep,
+	isLaunching: "true",
+	showBackButtons: true
+};
+/**
+* Error handler callback for Unity editor launch failures.
+* Shows the main window when an editor fails to launch.
+*/
+function onLaunchError() {
+	windowManager_default.mainWindow.show();
+}
+var logger$28 = loggerFactory("LocalProject");
+var localProject = new class LocalProject {
+	#hubIPCState = mainContainer.get(IHubIPCStateId);
+	/** Recursive root watcher for all project file changes (settings, build target, render pipeline, VCS) */
+	projectRootWatcher;
+	/** VCS management service for handling version control operations */
+	vcsManagementService;
+	/** Data model for project persistence */
+	projectModel;
+	/** In-memory cache of all known projects */
+	projects;
+	/** In-memory cache of all known editor version in regards to their support of the deeplink feature */
+	deeplinkSupportEditorVersionCache;
+	/** In-memory cache of all known localProjectId available for deeplink consumption */
+	deeplinkEnabledLocalProjectIdSet;
+	/** In-memory cache of all available sockets mapped to opened projects ready for deeplink consumption */
+	deeplinkReadyAvailableIPCSockets;
+	/** In-memory cache of all connected editor sockets mapped by project path */
+	connectedEditorSockets;
+	/** Temporary storage for com.unity3d.kharma URL to be sent via IPC when editor connects */
+	pendingShowPackageManagerUrl;
+	/** Temporary storage for project path to be mapped when editor connects via getConfig */
+	pendingOpeningProjectPath;
+	/** Project path of the last disconnected socket. Used to map reconnecting editors to their project. */
+	lastDisconnectedProjectPath;
+	/** Current user default settings */
+	userDefault;
+	/** Current organization ID for cloud operations */
+	organizationId;
+	/** Promise that resolves to user default settings */
+	userDefaultPromise;
+	/** Cached list of available Unity packages */
+	cachedPackageList;
+	/** Cached list of project paths that are currently open (have active lock files) */
+	openProjectsCache;
+	/** Cached socket that connected before scanning completed. Used to map after scanning finishes. */
+	pendingSocketForMapping;
+	/** Flag indicating whether the open projects cache has been populated (scanning completed) */
+	openProjectsCacheScanned;
+	/**
+	* Debounced version of saveProjects + broadcastContent for file watcher callbacks.
+	* Collapses rapid successive watcher events (e.g., startup storm) into a single
+	* disk write and IPC broadcast. User-action methods (removeProject, setFavoriteProject, etc.)
+	* should call saveProjects() directly for immediate persistence.
+	*/
+	debouncedSaveAndBroadcast = debounce(() => {
+		this.saveProjects();
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+	}, 500);
+	static WATCHED_FILES = {
+		[`${ProjectSettingsFolderPath}/${ProjectSettingsFileName}`]: "settings",
+		[`${ProjectSettingsFolderPath}/${ProjectVersionFileName}`]: "settings",
+		[`${ProjectSettingsFolderPath}/${ProjectQualitySettingsFileName}`]: "renderPipeline",
+		[`${ProjectSettingsFolderPath}/${ProjectGraphicsSettingsFileName}`]: "renderPipeline",
+		[`${ProjectLibraryFolderPath}/${ProjectBuildSettingsFileName}`]: "buildTarget"
+	};
+	static VCS_DIR_PREFIXES = [".git/", ".plastic/"];
+	static VCS_EXACT_DIRS = new Set([".git", ".plastic"]);
+	constructor() {
+		this.projectRootWatcher = new ProjectRootWatcher(this.onProjectFileChange.bind(this));
+		this.projectModel = new ProjectModel();
+		this.projects = /* @__PURE__ */ new Map();
+		this.deeplinkSupportEditorVersionCache = /* @__PURE__ */ new Map();
+		this.deeplinkEnabledLocalProjectIdSet = /* @__PURE__ */ new Set();
+		this.deeplinkReadyAvailableIPCSockets = /* @__PURE__ */ new Map();
+		this.connectedEditorSockets = /* @__PURE__ */ new Map();
+		this.pendingShowPackageManagerUrl = null;
+		this.pendingOpeningProjectPath = null;
+		this.lastDisconnectedProjectPath = null;
+		this.openProjectsCache = /* @__PURE__ */ new Set();
+		this.pendingSocketForMapping = null;
+		this.openProjectsCacheScanned = false;
+		this.vcsManagementService = new SourceControlStateManagementService(this, (projectPath, vcsData) => this.updateProjectSettings(projectPath, { vcsData }), (vcsRoot) => this.projectRootWatcher.watch(vcsRoot));
+	}
+	/**
+	* Disposes the LocalProject service and its sub-services (e.g. VCS watchers).
+	* Call when the app is shutting down to release file watchers and timers.
+	*/
+	dispose() {
+		this.debouncedSaveAndBroadcast.cancel();
+		this.projectRootWatcher.close();
+		this.vcsManagementService.dispose();
+	}
+	/**
+	* Initializes the LocalProject service.
+	*
+	* This method performs the following initialization steps:
+	* 1. Loads existing projects from persistent storage
+	* 2. Refreshes project data from the file system
+	* 3. Saves updated project data back to storage
+	* 4. Sets up file system watchers for project changes
+	* 5. Initializes user default settings
+	* 6. Sets up Plastic SCM configuration monitoring
+	*
+	* @param span - Optional Sentry span for performance monitoring
+	* @returns Promise that resolves when initialization is complete
+	*/
+	async init(span = null) {
+		logger$28.info("Init");
+		return await startSpan$1({
+			parentSpan: span,
+			op: "LocalProject.init",
+			name: "Local Project Initialization"
+		}, async () => {
+			await this.loadProjects();
+			const projects = await this.getRecentProjects(true);
+			await this.watchAllProjectsSettings(projects);
+			await this.refreshUserDefault();
+			await this.refreshOpenProjectsCache();
+			this.vcsManagementService.watchAllProjectsVCSConfigurationFiles(projects);
+		});
+	}
+	/**
+	* Gets the default directory for creating new Unity projects.
+	*
+	* Returns the user's configured project directory if set,
+	* otherwise falls back to the user's home directory.
+	*
+	* @returns The absolute path to the default project directory
+	*/
+	get defaultProjectDirectory() {
+		return baseUserDefault.projectDirectory || os.homedir();
+	}
+	/**
+	* Selects a directory using OS dialog for projects to be saved in
+	*
+	* @returns {Promise<ProjectPath|ErrorResponse>} the new projects path, or the error with attached projectPath
+	*/
+	async chooseProjectPath() {
+		const updatedPath = await this.chooseDirectory();
+		const appRootPath = getAppRootPath();
+		if (updatedPath.toLowerCase().startsWith(appRootPath.toLowerCase())) return new ErrorResponse(new ProjectError(PROJECT_ISSUES.PROJECT_DEFAULT_LOCATION_IN_PROTECTED_PATH, { projectPath: updatedPath }));
+		if (!(await hub_fs_default.checkReadWriteAccess(updatedPath)).isValid) return new ErrorResponse(new ProjectError(PROJECT_ISSUES.INSUFFICIENT_PERMISSIONS, { projectPath: updatedPath }));
+		if (!isValidPath(updatedPath, false)) return new ErrorResponse(new ProjectError(PROJECT_ISSUES.INVALID_PROJECT_PATH, { projectPath: updatedPath }));
+		return updatedPath;
+	}
+	/**
+	* Selects a new default directory for projects to be saved in + saves it to localStorage
+	*
+	* @access public
+	* @returns {Promise<string | ErrorResponse>} the new projects path
+	*/
+	async chooseDefaultProjectDirectory(scanForProjects = false) {
+		const currentPath = this.defaultProjectDirectory;
+		const result = await this.chooseProjectPath();
+		if (result instanceof ErrorResponse) {
+			if (result.error.errorCode === PROJECT_ISSUES.PROJECT_DEFAULT_LOCATION_IN_PROTECTED_PATH) return result;
+			throw result.error;
+		}
+		const updatedPath = result;
+		if (!updatedPath) return currentPath;
+		const pathChanged = updatedPath !== currentPath;
+		if (pathChanged) try {
+			await mainContainer.get(IJsonStorageId).set(ProjectDirectoryLocalStorageKey, { directoryPath: updatedPath });
+		} catch (error) {
+			logger$28.error("Unable to store default project path:", error);
+		}
+		if (scanForProjects) {
+			logger$28.debug(`Scanning for projects in: ${updatedPath}`);
+			await this.scanProjectDirectory(updatedPath);
+		} else if (!pathChanged) return updatedPath;
+		if (pathChanged) {
+			await this.refreshUserDefault();
+			AmplitudeService_default.client?.yellowBucket.changePreference({
+				current_value: this.userDefault?.projectDirectory ?? os.homedir(),
+				new_value: updatedPath,
+				page_path: PREFERENCES_IDS.projectPreferences.page_path,
+				preference_id: PREFERENCES_IDS.projectPreferences.PROJECT_PREFERENCES_DEFAULT_PROJECT_LOCATION
+			});
+		}
+		return updatedPath;
+	}
+	/**
+	* Loads projects from json storage into memory when json storage exists
+	*
+	* @access private
+	*/
+	async loadProjects() {
+		try {
+			if (!await this.projectModel.fileExists()) return;
+			logger$28.debug("Projects storage file exists, loading projects");
+			const storedProjectList = await this.projectModel.getProjectList();
+			this.projects = new Map(Object.entries(storedProjectList));
+			logger$28.debug("Projects were loaded from storage.");
+		} catch (error) {
+			logger$28.warn("Failed to load projects from the file", error);
+		}
+	}
+	/**
+	* Scans the project directory for Unity projects and loads their data.
+	*
+	* This method:
+	* 1. Reads all directories in the specified project directory
+	* 2. Processes each directory as a Unity project
+	* 3. Extracts project metadata for valid projects
+	* 4. Adds new projects to the internal projects map
+	* 5. Saves updated project list and broadcasts changes to the UI
+	*
+	* @param projectDirectory - The directory path to scan for Unity projects
+	* @returns Promise that resolves when scanning is complete
+	*/
+	async scanProjectDirectory(projectDirectory) {
+		logger$28.debug(`Scanning directory for projects ${projectDirectory}`);
+		let projectFiles;
+		try {
+			projectFiles = await fs.promises.readdir(projectDirectory, { withFileTypes: true });
+		} catch (error) {
+			logger$28.error("Failed to read the directory for projects", error);
+			return;
+		}
+		const directories = projectFiles.filter((file) => file.isDirectory());
+		await this.getRecentProjects(true);
+		const filteredDirectories = directories.filter((file) => {
+			const projectPath = path.join(projectDirectory, file.name);
+			if (this.projects.has(projectPath)) return true;
+			if (file.name.startsWith(".")) return false;
+			return true;
+		});
+		if (filteredDirectories.length < directories.length) {
+			const skippedCount = directories.length - filteredDirectories.length;
+			logger$28.debug(`Skipping ${skippedCount} hidden/system directories`);
+		}
+		const validProjects = (await Promise.all(filteredDirectories.map(async (file) => {
+			const projectPath = path.join(projectDirectory, file.name);
+			if (await this.isCloudProjectParentDirectory(projectPath, file.name)) {
+				logger$28.info(`Skipping "${projectPath}" - it is a cloud project parent directory`);
+				return;
+			}
+			const versionPath = path.join(projectPath, kProjectVersionPath);
+			if (!await fs.promises.access(versionPath).then(() => true, () => false)) return;
+			let projectData;
+			try {
+				projectData = await this.getProjectData(projectPath);
+			} catch (error) {
+				logger$28.warn(`Failed to get project data for "${projectPath}"`, error);
+				return;
+			}
+			if (!projectData.version) {
+				logger$28.warn(`Skipping "${projectPath}" - no valid Unity version found`);
+				return;
+			}
+			logger$28.info(`Successfully loaded project data for "${projectPath}" with version "${projectData.version}"`);
+			return [projectPath, projectData];
+		}))).filter((item) => item !== void 0);
+		for (const [projectPath, projectData] of validProjects) this.projects.set(projectPath, projectData);
+		if (validProjects.length > 0) logger$28.info(`Added ${validProjects.length} projects to the Hub`);
+		else logger$28.warn(`No valid Unity projects found in "${projectDirectory}". Make sure the folder contains Unity project directories with ProjectSettings/ProjectVersion.txt files.`);
+		await this.saveProjects();
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_VCS_LOADING, true);
+		const vcsPromises = validProjects.map(async ([projectPath]) => {
+			try {
+				const data = await this.vcsManagementService.getProjectVCSData(projectPath);
+				const project = this.projects.get(projectPath);
+				if (project && data) {
+					project.organizationName = data.organizationName;
+					project.repositoryName = data.repositoryName;
+					project.projectPathInsideRepository = data.projectPathInsideRepository;
+					project.vcsConfigurationPath = data.vcsConfigurationPath;
+					project.vcsProvider = data.provider;
+					if (data.provider === "github" || data.provider === "gitlab") {
+						await this.saveProjects();
+						windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+					}
+				}
+			} catch (error) {
+				logger$28.debug("VCS detection failed for project", {
+					projectPath,
+					error
+				});
+			}
+		});
+		Promise.all(vcsPromises).then(async () => {
+			await this.saveProjects();
+			windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+		}).catch((error) => {
+			logger$28.debug("VCS detection failed:", error);
+		}).finally(() => {
+			windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_VCS_LOADING, false);
+		});
+	}
+	/**
+	* Extracts comprehensive metadata for a Unity project.
+	*
+	* This method collects all relevant information about a Unity project including:
+	* - Basic project information (title, path, last modified time)
+	* - Unity editor version and changeset from ProjectVersion.txt
+	* - Cloud project settings from PlayerSettings.asset
+	* - Custom editor configuration detection
+	* - Version control (Plastic SCM) integration data
+	* - Project architecture determination
+	* - Favorite status preservation
+	*
+	* The method handles missing or corrupted project files gracefully and returns
+	* partial data when possible.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves to a ProjectEntity containing all collected project metadata
+	*/
+	async getProjectData(projectPath) {
+		const versionPath = path.join(projectPath, kProjectVersionPath);
+		const settingsPath = path.join(projectPath, kProjectSettingsPath);
+		const projectNamePath = path.join(projectPath, kProjectNamePath);
+		const userProjectNamePath = path.join(projectPath, kUserProjectNamePath);
+		if (!await fs.promises.stat(projectPath).then((stats) => stats.isDirectory(), () => false)) {
+			logger$28.warn(`Project path "${projectPath}" does not exist.`);
+			const existingProject = this.projects.get(projectPath);
+			return {
+				title: path.basename(projectPath),
+				openInEditorUrl: existingProject?.openInEditorUrl,
+				lastModified: null,
+				isCustomEditor: existingProject?.isCustomEditor ?? false,
+				path: projectPath,
+				version: existingProject?.version ?? void 0,
+				architecture: existingProject?.architecture ?? CHIP_ARCHITECTURES.Unknown,
+				changeset: void 0,
+				isFavorite: existingProject?.isFavorite ?? false
+			};
+		}
+		const [userProjectName, projectName, lastModified, versionFileData, playerSettingsData, isCustomEditor, renderPipeline] = await Promise.all([
+			getProjectName(userProjectNamePath),
+			getProjectName(projectNamePath),
+			getModifiedTime(projectPath),
+			getVersionAndChangeset(versionPath),
+			getPlayerSettingsData(settingsPath),
+			projectCustomEditorHelper.checkForAndAddCustomEditorPath(projectPath),
+			detectRenderPipeline(projectPath)
+		]);
+		const existingProject = this.projects.get(projectPath);
+		const projectVersion = versionFileData.version ?? existingProject?.version;
+		const projectChangeset = versionFileData.changeset ?? existingProject?.changeset;
+		const resolvedCloudProjectId = existingProject?.genesisOrgId ? existingProject.cloudProjectId ?? playerSettingsData.cloudProjectId : playerSettingsData.cloudProjectId;
+		const resolvedOrganizationId = existingProject?.genesisOrgId ? existingProject.organizationId ?? playerSettingsData.organizationId : playerSettingsData.organizationId;
+		const projectArchitecture = !existingProject || existingProject.architecture === CHIP_ARCHITECTURES.Unknown ? this.deriveArchitecture(projectVersion) : existingProject.architecture;
+		let productName;
+		if (getUserSetting("projects.showProductNames") && "productName" in playerSettingsData && typeof playerSettingsData.productName === "string") productName = playerSettingsData.productName.trim() || void 0;
+		const title = userProjectName ?? projectName ?? productName ?? path.basename(projectPath);
+		const buildTarget = existingProject?.buildTarget ?? await this.getBuildTarget(projectPath);
+		return {
+			title,
+			openInEditorUrl: existingProject?.openInEditorUrl,
+			lastModified,
+			isCustomEditor,
+			path: projectPath,
+			containingFolderPath: path.dirname(projectPath),
+			version: projectVersion,
+			architecture: projectArchitecture,
+			changeset: projectChangeset,
+			isFavorite: existingProject?.isFavorite ?? false,
+			genesisOrgId: existingProject?.genesisOrgId,
+			cloudProjectId: resolvedCloudProjectId,
+			organizationId: resolvedOrganizationId,
+			localProjectId: playerSettingsData.localProjectId,
+			cloudEnabled: playerSettingsData.cloudEnabled,
+			projectName: playerSettingsData.projectName,
+			organizationName: existingProject?.organizationName,
+			repositoryName: existingProject?.repositoryName,
+			projectPathInsideRepository: existingProject?.projectPathInsideRepository,
+			vcsConfigurationPath: existingProject?.vcsConfigurationPath,
+			vcsProvider: existingProject?.vcsProvider,
+			hasCustomDisplayName: !!userProjectName,
+			buildTarget,
+			renderPipeline
+		};
+	}
+	/**
+	* Extracts Unity Cloud project settings from a project's PlayerSettings.asset file.
+	*
+	* This is a convenience method that constructs the full path to the PlayerSettings.asset
+	* file and delegates to the projectDataHelpers module for parsing.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves to an object containing cloud project settings:
+	*   - cloudEnabled: Whether Unity Cloud services are enabled
+	*   - localProjectId: The local Unity project GUID
+	*   - cloudProjectId: The Unity Cloud project ID (if connected)
+	*   - organizationId: The Unity organization ID (if connected)
+	*   - projectName: The project name as defined in player settings
+	*/
+	async getPlayerSettingsData(projectPath) {
+		return await getPlayerSettingsData(path.join(projectPath, kProjectSettingsPath));
+	}
+	/**
+	* Extracts the build target from a project's EditorUserBuildSettings.asset file.
+	*
+	* This method reads and parses the binary EditorUserBuildSettings.asset file from
+	* the project's Library directory to determine the active build target platform.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves to the build target string, or undefined if the file doesn't exist or cannot be parsed
+	*/
+	async getBuildTarget(projectPath) {
+		return getEditorBuildTarget(path.join(projectPath, "Library", "EditorUserBuildSettings.asset"));
+	}
+	/**
+	* Retrieves projects from memory
+	*
+	* @access public
+	*/
+	getProjectsFromMemory() {
+		return Array.from(this.projects.values());
+	}
+	/**
+	* Retrieves a project from memory
+	*
+	* @access public
+	* @param {ProjectPath} projectPath Path to the project
+	*/
+	getProjectFromMemory(projectPath) {
+		return this.projects.get(projectPath);
+	}
+	/**
+	* Gets the paths' array of known projects
+	* @access public
+	*/
+	getProjectPathsFromMemory() {
+		return Array.from(this.projects.keys());
+	}
+	/**
+	* Retrieves a list of recent Unity projects, optionally refreshing the data from disk.
+	*
+	* @param forceRefresh - When true, forces a refresh of project data from disk regardless of window focus state. Defaults to false.
+	* @param removeMissingProjects - When true, filters out projects that don't have a valid lastModified timestamp. Defaults to false.
+	* @returns A promise that resolves to an array of project objects containing project data.
+	*
+	* @remarks
+	* - If forceRefresh is false and the main window is not focused, returns cached projects from memory
+	* - Filters out invalid project paths and logs warnings for any invalid paths found
+	* - Updates the internal projects Map with the refreshed data
+	* - When removeMissingProjects is true, projects without lastModified timestamps are excluded from results
+	*/
+	async getRecentProjects(forceRefresh = false, removeMissingProjects = false) {
+		const projectsInMemory = this.getProjectsFromMemory();
+		if (!forceRefresh && !windowManager_default.mainWindow.isFocused()) return projectsInMemory;
+		logger$28.info("Forced refresh: Projects data will be re-collected");
+		const projectPaths = this.getProjectPathsFromMemory();
+		let projectList = await Promise.all(projectPaths.map((projectPath) => this.getProjectData(projectPath)));
+		if (removeMissingProjects) projectList = projectList.filter((project) => project.lastModified);
+		this.projects = new Map(projectList.map((p) => [p.path, p]));
+		await this.saveProjects();
+		return projectList;
+	}
+	/**
+	* Scans all known projects to identify which ones are currently open.
+	* Updates the openProjectsCache with current state.
+	* This is called at Hub startup to populate the cache for socket mapping.
+	*/
+	async refreshOpenProjectsCache() {
+		this.openProjectsCache.clear();
+		const allProjectPaths = Array.from(this.projects.keys());
+		(await Promise.all(allProjectPaths.map(async (projectPath) => ({
+			projectPath,
+			isNotOpen: await ProjectValidatorService.validateProjectNotOpen(projectPath, false)
+		})))).filter((check) => !check.isNotOpen).map((check) => check.projectPath).forEach((projectPath) => {
+			this.openProjectsCache.add(projectPath);
+		});
+		logger$28.info(`Found ${this.openProjectsCache.size} open project(s) in cache`);
+		this.openProjectsCacheScanned = true;
+		if (this.pendingSocketForMapping !== null && this.openProjectsCache.size === 1) {
+			const pendingSocket = this.pendingSocketForMapping;
+			this.pendingSocketForMapping = null;
+			await this.tryMapSocketToProjectPath(pendingSocket);
+		}
+	}
+	/**
+	* Attempts to map a socket to a project path using pending project path or last disconnected path.
+	* This should be called from getConfig when a socket connects.
+	* First checks for pendingOpeningProjectPath, then checks for lastDisconnectedProjectPath.
+	*
+	* @param socket The socket to map to a project path
+	*/
+	async tryMapSocketToPendingProjectPath(socket) {
+		if (Array.from(this.connectedEditorSockets.values()).includes(socket)) {
+			logger$28.info(`Socket is already mapped, skipping pending-based mapping attempt`);
+			return;
+		}
+		const pendingProjectPath = this.pendingOpeningProjectPath;
+		if (pendingProjectPath) {
+			if (await ProjectValidatorService.validateProjectNotOpen(pendingProjectPath, false)) logger$28.info(`Project at "${pendingProjectPath}" is not open in an editor, discarding socket mapping`);
+			else {
+				this.addConnectedEditorSocket(pendingProjectPath, socket);
+				logger$28.info(`Associated socket with new project path "${pendingProjectPath}" via getConfig`);
+			}
+			this.pendingOpeningProjectPath = null;
+			return;
+		}
+		const lastDisconnectedPath = this.lastDisconnectedProjectPath;
+		if (lastDisconnectedPath) {
+			if (await ProjectValidatorService.validateProjectNotOpen(lastDisconnectedPath, false)) logger$28.info(`Project at "${lastDisconnectedPath}" is not open in an editor, discarding socket mapping`);
+			else {
+				this.addConnectedEditorSocket(lastDisconnectedPath, socket);
+				logger$28.info(`Associated reconnecting socket with project path "${lastDisconnectedPath}" via getConfig`);
+			}
+			this.lastDisconnectedProjectPath = null;
+		}
+	}
+	/**
+	* Attempts to map a socket to a project path using the openProjectsCache.
+	* This should be called when a socket connects and when scanning completes.
+	* If scanning is not complete, the socket will be cached and mapped after scanning finishes.
+	*
+	* @param socket The socket to map to a project path
+	*/
+	async tryMapSocketToProjectPath(socket) {
+		if (Array.from(this.connectedEditorSockets.values()).includes(socket)) {
+			logger$28.info(`Socket is already mapped, skipping mapping attempt`);
+			return;
+		}
+		if (this.pendingOpeningProjectPath !== null || this.lastDisconnectedProjectPath !== null) {
+			logger$28.info(`Pending project path or last disconnected path is not null, skipping cache-based mapping`);
+			return;
+		}
+		if (!this.openProjectsCacheScanned) {
+			logger$28.info(`Scanning not complete yet, caching socket for mapping after scanning finishes`);
+			this.pendingSocketForMapping = socket;
+			return;
+		}
+		const openProjects = Array.from(this.openProjectsCache);
+		if (openProjects.length === 1) {
+			const singleOpenProjectPath = openProjects[0];
+			this.addConnectedEditorSocket(singleOpenProjectPath, socket);
+			logger$28.info(`Associated socket with single open project path "${singleOpenProjectPath}" on socket connection after Hub restart`);
+			const projectEntity = this.projects.get(singleOpenProjectPath);
+			if (projectEntity?.version && projectEntity?.architecture) {
+				if (await this.validateEditorHasIPCFeatureSupport(projectEntity.version, projectEntity.architecture, POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL)) {
+					this.addDeeplinkReadyAvailableIPCSockets(singleOpenProjectPath, socket);
+					logger$28.info(`Also added socket to deeplinkReadyAvailableIPCSockets for project "${singleOpenProjectPath}" (editor supports project.openInEditorUrl)`);
+				}
+			}
+			this.openProjectsCache.clear();
+		} else if (openProjects.length > 1) {
+			logger$28.warn(`Cannot determine which project to associate with incoming socket: ${openProjects.length} projects are currently open (${openProjects.join(", ")})`);
+			this.openProjectsCache.clear();
+		} else {
+			logger$28.info(`No open projects found in cache, discarding socket mapping`);
+			this.openProjectsCache.clear();
+		}
+	}
+	/**
+	* Rebuilds the list of local project linked to an Editor that supports deeplinking.
+	*
+	* @param forceRefresh - When true, forces a refresh of project data from disk regardless of window focus state. Defaults to false.
+	* @param postalTopic - The postal topic to validate support for. Defaults to PROJECT_OPEN_IN_EDITOR_URL for regular deeplinks.
+	*
+	*/
+	async refreshDeeplinkEnabledLocalProjects(forceRefresh = false, postalTopic = POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL) {
+		if (forceRefresh) await this.getRecentProjects(true);
+		this.deeplinkEnabledLocalProjectIdSet.clear();
+		await Promise.all(Array.from(this.projects.values()).map(async (projectEntity) => {
+			const versionArchTopicKey = `${projectEntity.version}-${projectEntity.architecture}-${postalTopic}`;
+			let projectEditorVersionValidated = this.deeplinkSupportEditorVersionCache.has(versionArchTopicKey);
+			if (!projectEditorVersionValidated) {
+				projectEditorVersionValidated = await this.validateEditorHasIPCFeatureSupport(projectEntity.version, projectEntity.architecture, postalTopic);
+				this.deeplinkSupportEditorVersionCache.set(versionArchTopicKey, projectEditorVersionValidated);
+			}
+		}));
+		for (const [_path, projectEntity] of this.projects) {
+			const versionArchTopicKey = `${projectEntity.version}-${projectEntity.architecture}-${postalTopic}`;
+			if (this.deeplinkSupportEditorVersionCache.get(versionArchTopicKey)) this.deeplinkEnabledLocalProjectIdSet.add(projectEntity.localProjectId);
+		}
+		windowManager_default.broadcastContent(RENDERER_EVENTS.DEEPLINK_ENABLED_PROJECT_LIST_UPDATE, [...this.deeplinkEnabledLocalProjectIdSet]);
+	}
+	/**
+	* Derives the architecture by looking to know/installed editors, supported OS architecture and
+	* editor version. Fallbacks to unknown.
+	*
+	* @access private
+	* @param {string} editorVersion
+	* @returns {ChipArchitecture}
+	*/
+	deriveArchitecture(editorVersion) {
+		if (os.arch() === "x64" || e$4.isValid(editorVersion) && compareEditorVersions(OLDEST_EDITOR_WITH_SIDE_BY_SIDE, editorVersion) < 0) return CHIP_ARCHITECTURES.X86_64;
+		const matchingEditors = editorManager_default.findEditorsByVersion(editorVersion);
+		if (matchingEditors.length === 1) return matchingEditors[0].architecture;
+		return CHIP_ARCHITECTURES.Unknown;
+	}
+	/**
+	* Displays a file picker dialog for selecting a Unity project directory.
+	*
+	* This method opens the native OS directory picker dialog and allows the user
+	* to select a Unity project folder. It returns project metadata including the
+	* selected directory path, Unity editor version, architecture, and project name.
+	*
+	* @param isOpen - Whether this is for opening (true) or adding (false) a project.
+	*                 Affects the dialog button label and title text.
+	* @returns Promise that resolves to project selection data or null if cancelled:
+	*   - projectDirectory: The selected project directory path
+	*   - editorVersion: Unity editor version extracted from the project
+	*   - editorArchitecture: Required architecture for the project
+	*   - projectName: The project folder name
+	*/
+	async chooseProjectDialog(isOpen = true) {
+		const userDefault = await this.getUserDefault();
+		try {
+			const translate = mainContainer.get(ITranslateId);
+			const projectDirectory = await windowManager_default.mainWindow.showOpenFileDialog({
+				buttonLabel: isOpen ? translate.t("project:OPEN") : translate.t("project:ADD_PROJECT"),
+				title: translate.t("project:SELECT_PROJECT"),
+				defaultPath: userDefault.projectDirectory || os.homedir(),
+				properties: ["openDirectory"]
+			});
+			const projectData = await this.getProjectData(projectDirectory);
+			return {
+				projectDirectory,
+				editorVersion: projectData.version,
+				editorArchitecture: projectData.architecture,
+				projectName: path.basename(projectDirectory)
+			};
+		} catch (e) {
+			logger$28.info(e);
+			return null;
+		}
+	}
+	/**
+	* Retrieves the persisted architecture for the project at given path
+	* @access public
+	* @param {ProjectPath} projectPath
+	*/
+	getProjectArchitecture(projectPath) {
+		return this.projects.get(projectPath)?.architecture;
+	}
+	/**
+	* Retrieves all associated architectures as path-to-architecture record.
+	* @access public
+	* @returns {Record<ProjectPath, ChipArchitecture>}
+	*/
+	getProjectsArchitecture() {
+		/** @type {Record<string, ChipArchitecture>} */
+		const projectsArchitecture = {};
+		this.projects.forEach(({ title, architecture }) => {
+			projectsArchitecture[title] = architecture;
+		});
+		return projectsArchitecture;
+	}
+	/**
+	* Saves provided architectures to memory
+	*
+	* @access public
+	* @param {Record<string, ChipArchitecture>} value
+	*/
+	setProjectsArchitecture(value) {
+		const projects = this.getProjectsFromMemory();
+		projects.forEach((project) => {
+			if (project.title in value) project.architecture = value[project.title];
+		});
+		this.projects = new Map(projects.map((p) => [p.path, p]));
+	}
+	/**
+	* Retrieves project information from local storage for advanced settings.
+	*
+	* This method loads project configuration data that is used by the advanced
+	* settings interface. The data structure matches the ProjectInfoSchema type
+	* and contains various project-related configuration options.
+	*
+	* @returns Promise that resolves to the project information schema from storage
+	*/
+	getProjectsInfo() {
+		return mainContainer.get(IJsonStorageId).get(PROJECTS_INFO);
+	}
+	/**
+	* Saves project information to local storage for advanced settings.
+	*
+	* This method persists project configuration data that is managed by the
+	* advanced settings interface. It handles storage errors by logging them
+	* and re-throwing the exception.
+	*
+	* @param value - The project information schema data to save
+	* @returns Promise that resolves when the save operation is complete
+	* @throws Will re-throw any storage errors after logging them
+	*/
+	async setProjectsInfo(value) {
+		try {
+			return await mainContainer.get(IJsonStorageId).set(PROJECTS_INFO, value);
+		} catch (error) {
+			logger$28.error("Unable to save projects info.", error);
+			throw error;
+		}
+	}
+	/**
+	* @returns {DeeplinkInfo}
+	*/
+	async getDeeplinkInfo() {
+		return mainContainer.get(IJsonStorageId).get(DEEPLINK_INFO);
+	}
+	async setDeeplinkInfo(value) {
+		try {
+			return await mainContainer.get(IJsonStorageId).set(DEEPLINK_INFO, value);
+		} catch (error) {
+			logger$28.error("Unable to save deeplink info.", error);
+			throw error;
+		}
+	}
+	async removeDeeplinkInfo() {
+		try {
+			const jsonStorage = mainContainer.get(IJsonStorageId);
+			if (await jsonStorage.has(DEEPLINK_INFO)) return await jsonStorage.remove(DEEPLINK_INFO);
+		} catch (error) {
+			logger$28.error("Unable to remove deeplink info.", error);
+			throw error;
+		}
+	}
+	getProjectDeeplinkInfo(projectPath) {
+		try {
+			const project = this.projects.get(projectPath);
+			return {
+				openInEditorUrl: project.openInEditorUrl,
+				cloudProjectId: project.cloudProjectId
+			};
+		} catch (error) {
+			logger$28.warn(`Failed to get project openInEditorUrl for "${projectPath}"`, error);
+			return;
+		}
+	}
+	setProjectDeeplinkInfo(projectPath, openInEditorURL) {
+		try {
+			const project = this.projects.get(projectPath);
+			project.openInEditorUrl = openInEditorURL;
+		} catch (error) {
+			logger$28.warn(`Failed to set project openInEditorUrl for "${projectPath}"`, error);
+		}
+	}
+	async clearProjectDeeplinkInfo(projectPath) {
+		try {
+			const project = this.projects.get(projectPath);
+			project.openInEditorUrl = void 0;
+		} catch (error) {
+			logger$28.warn(`Failed to clear project openInEditorUrl for "${projectPath}"`, error);
+		}
+	}
+	/**
+	* Validates that a project is open and adds the socket to deeplink ready available IPC sockets.
+	* This should be called from getProjectOpenInEditorUrl when a socket connects with a project path.
+	*
+	* @param projectPath The project path to validate and map
+	* @param socket The socket to map to the project path
+	* @returns true if the project is open and socket was mapped, false otherwise
+	*/
+	async tryAddDeeplinkReadySocket(projectPath, socket) {
+		const normalizedProjectPath = path.normalize(projectPath);
+		if (await ProjectValidatorService.validateProjectNotOpen(normalizedProjectPath, false)) {
+			logger$28.info(`Project at "${normalizedProjectPath}" is not open in an editor, discarding socket mapping`);
+			return false;
+		}
+		this.addConnectedEditorSocket(normalizedProjectPath, socket);
+		this.addDeeplinkReadyAvailableIPCSockets(normalizedProjectPath, socket);
+		return true;
+	}
+	/**
+	* Adds a Socket mapping to a local project path
+	* @param {string} projectPath
+	*  @param {Socket} socket
+	*/
+	addDeeplinkReadyAvailableIPCSockets(projectPath, socket) {
+		logger$28.info(`Adding socket for "${projectPath}"`);
+		this.deeplinkReadyAvailableIPCSockets.set(projectPath, socket);
+	}
+	removeDeeplinkReadyAvailableIPCSockets(socketToRemove) {
+		for (const [key, socket] of this.deeplinkReadyAvailableIPCSockets.entries()) if (socket === socketToRemove) {
+			logger$28.info(`Removing socket for "${key}"`);
+			this.deeplinkReadyAvailableIPCSockets.delete(key);
+		}
+		for (const [projectPath, socket] of this.connectedEditorSockets.entries()) if (socket === socketToRemove) {
+			logger$28.info(`Removing connected socket for "${projectPath}"`);
+			this.connectedEditorSockets.delete(projectPath);
+		}
+	}
+	/**
+	* Returns a Socket for a local project path that is opened and supports deeplinking
+	* @param {string} projectPath
+	* @returns {Socket} the socket mapped to a local project path that is opened and supports deeplinking
+	*/
+	getDeeplinkReadyAvailableIPCSockets(projectPath) {
+		return this.deeplinkReadyAvailableIPCSockets.get(projectPath);
+	}
+	/**
+	* Returns the first local project path that is opened and supports deeplinking
+	* @returns {string} the first local project path that is opened and supports deeplinking
+	*/
+	getSingleDeeplinkReadyAvailableIPCSocket() {
+		return this.deeplinkReadyAvailableIPCSockets.size === 1 ? this.deeplinkReadyAvailableIPCSockets.keys().next().value : null;
+	}
+	/**
+	* Adds a socket to the connected editor sockets map, mapped by project path.
+	* Called when a socket connects via getConfig.
+	* @param {string} projectPath the project path to map the socket to
+	* @param {Socket} socket the socket that connected
+	*/
+	addConnectedEditorSocket(projectPath, socket) {
+		this.connectedEditorSockets.set(projectPath, socket);
+	}
+	/**
+	* Removes a socket from the connected editor sockets map
+	* Stores the project path before removal to handle reconnection scenarios.
+	* @param {Socket} socketToRemove the socket to remove
+	*/
+	removeConnectedEditorSocket(socketToRemove) {
+		for (const [projectPath, socket] of this.connectedEditorSockets.entries()) if (socket === socketToRemove) {
+			logger$28.info(`Removing connected socket for "${projectPath}"`);
+			this.lastDisconnectedProjectPath = projectPath;
+			this.connectedEditorSockets.delete(projectPath);
+			break;
+		}
+		for (const [projectPath, socket] of this.deeplinkReadyAvailableIPCSockets.entries()) if (socket === socketToRemove) {
+			if (this.lastDisconnectedProjectPath === null) this.lastDisconnectedProjectPath = projectPath;
+			this.deeplinkReadyAvailableIPCSockets.delete(projectPath);
+			break;
+		}
+	}
+	/**
+	* Gets the socket for a specific project path
+	* @param {string} projectPath the project path
+	* @returns {Socket | undefined} the socket mapped to the project path, or undefined if not found
+	*/
+	getConnectedEditorSocket(projectPath) {
+		return this.connectedEditorSockets.get(projectPath);
+	}
+	/**
+	* Checks if there is a single opened editor.
+	* @returns {boolean} true if there is exactly one connected editor socket
+	*/
+	isSingleEditorOpened() {
+		return this.connectedEditorSockets.size === 1;
+	}
+	/**
+	* Gets the project path for the single opened editor
+	* @returns {string | undefined} ProjectPath of the single opened editor, or undefined if not found
+	*/
+	getSingleConnectedEditorPath() {
+		if (this.connectedEditorSockets.size !== 1) return void 0;
+		return this.connectedEditorSockets.keys().next().value;
+	}
+	/**
+	* Returns the all projects connected with cloud project id
+	* @param {string} cloudProjectId Id of cloud project
+	*/
+	getProjectsByCloudId(cloudProjectId) {
+		const projects = [];
+		for (const [_key, value] of this.projects) if (value.cloudProjectId === cloudProjectId) projects.push(value);
+		return projects;
+	}
+	/**
+	* Returns if an editor supports the specified IPC feature
+	*
+	* @access public
+	* @param {string} editorVersion the editor version
+	* @param {ChipArchitecture} editorArchitecture the editor chip architecture
+	* @param {PostalTopic} postalTopic the postal topic to validate (either POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL or POSTAL_TOPICS.SHOW_PROJECT_MANAGER)
+	* @returns {Promise<boolean>}
+	*/
+	async validateEditorHasIPCFeatureSupport(editorVersion, editorArchitecture, postalTopic) {
+		const editorApp = await editorManager_default.getEditorApp({
+			version: editorVersion,
+			architecture: editorArchitecture
+		});
+		if (editorApp.version !== editorVersion) return false;
+		const ipcFeaturesPath = editorApp.exec;
+		const ipcFeaturesJsonRelativePath = getUserOS() === PLATFORMS.MAC ? "../Resources/PackageManager/IPC/ipcFeatures.json" : "Data/Resources/PackageManager/IPC/ipcFeatures.json";
+		const combinedPath = path.resolve(path.dirname(ipcFeaturesPath), ipcFeaturesJsonRelativePath);
+		if (!await hub_fs_default.isFilePresentAsync(combinedPath)) {
+			logger$28.warn(`ipcFeatures.json does not exist: ${combinedPath}`);
+			return false;
+		}
+		let hasIPCFeature = false;
+		let canReadFile = false;
+		let content;
+		try {
+			content = await fs.promises.readFile(combinedPath, "utf8");
+			canReadFile = true;
+		} catch (err) {
+			logger$28.warn(`Failed to read file ${err}`);
+			return false;
+		}
+		if (canReadFile) try {
+			const json = JSON.parse(content);
+			if (Array.isArray(json.ipc) && json.ipc.includes(postalTopic)) {
+				logger$28.warn(`${postalTopic} ipc message is supported.`);
+				hasIPCFeature = true;
+			} else logger$28.warn(`${postalTopic} ipc message is not supported.`);
+		} catch (err) {
+			logger$28.warn(`Error parsing json ${err}`);
+		}
+		return hasIPCFeature;
+	}
+	/**
+	* Wrapper method to validate if an editor version supports the open in editor IPC feature.
+	* Uses the effective chip architecture from system info.
+	*
+	* @access public
+	* @param {string} editorVersion the editor version
+	* @returns {Promise<boolean>}
+	*/
+	async validateEditorHasOpenInEditorFeatureSupportWithSystemArchitecture(editorVersion) {
+		const editorArchitecture = mainContainer.get(ISystemInfoId).getEffectiveChipArchitecture();
+		return this.validateEditorHasIPCFeatureSupport(editorVersion, editorArchitecture, POSTAL_TOPICS.PROJECT_OPEN_IN_EDITOR_URL);
+	}
+	/**
+	* Retrieves array of paths of favorited projects
+	*
+	* @access public
+	* @returns {ProjectPath[]}
+	*/
+	getFavoriteProjects() {
+		return this.getProjectsFromMemory().filter(({ isFavorite }) => isFavorite).map((favoriteProject) => favoriteProject.path);
+	}
+	/**
+	* Sets the project's isFavorite value in memory and on disk
+	*
+	* @access public
+	* @param {ProjectPath} projectPath the path to the project that has the favorite value toggled
+	* @param {boolean} isFavorite a boolean of if the project is favored
+	* @returns {Promise<boolean>}
+	*/
+	async setFavoriteProject(projectPath, isFavorite) {
+		const projectData = this.projects.get(projectPath);
+		if (!projectData) return false;
+		if (projectData.isFavorite !== isFavorite) {
+			projectData.isFavorite = isFavorite;
+			this.projects.set(projectPath, projectData);
+			await this.saveProjects();
+		}
+		return true;
+	}
+	/**
+	* Displays a directory picker dialog for selecting any directory.
+	*
+	* This is a lower-level method used by other directory selection methods.
+	* It opens the native OS directory picker with the specified initial path
+	* and allows creation of new directories.
+	*
+	* @param initialPath - Optional initial directory to show in the picker.
+	*                      Defaults to user's configured project directory or home directory.
+	* @returns Promise that resolves to the selected directory path
+	*/
+	async chooseDirectory(initialPath = void 0) {
+		const userDefault = await this.getUserDefault();
+		const translate = mainContainer.get(ITranslateId);
+		return await windowManager_default.mainWindow.showOpenFileDialog({
+			title: translate.t("new-project:CHOOSE_PROJECT_LOCATION_TITLE"),
+			buttonLabel: translate.t("common:SELECT_FOLDER"),
+			defaultPath: initialPath ?? userDefault.projectDirectory ?? os.homedir(),
+			properties: ["openDirectory", "createDirectory"]
+		});
+	}
+	/**
+	* Removes project from memory and file storage. Notifies frontend.
+	*
+	* @access public
+	* @param {ProjectPath} projectPath
+	* @returns {Promise<ProjectEntity[]>}
+	*/
+	async removeProject(projectPath) {
+		const { vcsConfigurationPath } = this.projects.get(projectPath) || {};
+		if (this.projects.delete(projectPath)) {
+			await this.saveProjects();
+			windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+			this.stopWatchingProjectSettings(projectPath);
+			this.stopWatchingBuildTargetFile(projectPath);
+			this.stopWatchingRenderPipelineFiles(projectPath);
+			this.vcsManagementService.stopWatchingUnconnectedProjectVCSConfigurationFile(projectPath);
+			if (vcsConfigurationPath) this.vcsManagementService.stopWatchingConnectedProjectVCSConfigurationFile(vcsConfigurationPath);
+		}
+		return this.getProjectsFromMemory();
+	}
+	/**
+	* Hides the Unity Hub main window based on user preferences.
+	*
+	* This method checks the user's "hide Hub on editor open" preference
+	* and hides the main window if the setting is enabled. This is typically
+	* called when launching Unity projects to declutter the desktop.
+	*
+	* @returns Promise that resolves when the window hiding operation is complete
+	*/
+	async closeHomeWindow() {
+		if (await window$1.getHideHubOnEditorOpen()) windowManager_default.mainWindow.hide();
+	}
+	/**
+	* Sets the current Unity organization ID for cloud operations.
+	*
+	* This organization ID is used for various cloud-related operations including
+	* project creation, linking projects to Unity Cloud, and analytics tracking.
+	*
+	* @param organizationId - The Unity organization ID to set as current
+	*/
+	setOrganizationId(organizationId) {
+		this.organizationId = organizationId;
+	}
+	/**
+	* Create a temp project from a template using a specific editor version.
+	*
+	* @param {import('../../../types/projects/Project').CreateTempProjectPayload} payload Specifies the template and editor version to use.
+	* @returns {Promise<void>} A `Promise` resolved when a new or existing editor instance handles the request to create a temp project. Rejected if there is no
+	* valid license or an error occurs when creating the project.
+	*/
+	async createTempProject(payload) {
+		const { packages = [], templateId, version: editorVersion, architecture: editorArchitecture } = payload;
+		const isModalEditorDefined = !!this.#hubIPCState.connectedEditor;
+		if (!await licenseService_default.isLicenseValid()) throw new ProjectError(PROJECT_ISSUES.LICENSE_FILE_INVALID);
+		import_postal.default.publish({
+			channel: "app",
+			topic: POSTAL_TOPICS.PROJECT_CREATE_TEMP,
+			data: { packages }
+		});
+		if (isModalEditorDefined) return;
+		const analyticsEventMsg = {
+			editor_version: editorVersion,
+			editor_architecture: editorArchitecture,
+			template_id: templateId,
+			organizationid: this.organizationId,
+			localprojectid: void 0,
+			project_type: "temp",
+			packages: packages.map((selectedPackage) => path.basename(selectedPackage)),
+			enable_analytics: false
+		};
+		try {
+			await (await editorManager_default.getEditorApp({
+				version: editorVersion,
+				architecture: editorArchitecture
+			})).createTempProject(packages, unityTemplateService_default.defaultTemplateCode, onLaunchError);
+		} catch (error) {
+			cloudAnalytics.addEvent({
+				type: cloudAnalytics.eventTypes.NEW_PROJECT,
+				msg: {
+					...analyticsEventMsg,
+					status: "Error"
+				}
+			});
+			throw error;
+		}
+		if (await window$1.getHideHubOnEditorOpen()) windowManager_default.mainWindow.hide();
+		cloudAnalytics.addEvent({
+			type: cloudAnalytics.eventTypes.NEW_PROJECT,
+			msg: {
+				...analyticsEventMsg,
+				status: "Success"
+			}
+		});
+	}
+	/**
+	* Refreshes and loads user default settings from local storage.
+	*
+	* This method:
+	* 1. Resets to base defaults
+	* 2. Attempts to load saved settings from local storage
+	* 3. Handles both legacy (V2) string format and current (V3) object format
+	* 4. Falls back to home directory if no valid project directory is found
+	* 5. Caches the result as a promise for subsequent calls
+	*
+	* @returns Promise that resolves to the loaded user default settings
+	*/
+	refreshUserDefault() {
+		this.userDefault = baseUserDefault;
+		this.userDefaultPromise = mainContainer.get(IJsonStorageId).get(ProjectDirectoryLocalStorageKey).then((storedProjectDir) => {
+			const projectDirectoryFromStorage = typeof storedProjectDir === "object" && Object.entries(storedProjectDir).length === 0 ? os.homedir() : storedProjectDir;
+			this.userDefault.projectDirectory = typeof projectDirectoryFromStorage === "object" ? "directoryPath" in projectDirectoryFromStorage && projectDirectoryFromStorage.directoryPath ? projectDirectoryFromStorage.directoryPath : os.homedir() : projectDirectoryFromStorage;
+			return this.userDefault;
+		}).catch((error) => {
+			logger$28.warn("Failed to refresh user default", error);
+			this.userDefault.projectDirectory = os.homedir();
+			return this.userDefault;
+		});
+		return this.userDefaultPromise;
+	}
+	/**
+	* Gets the cached user default settings.
+	*
+	* Returns the promise created by refreshUserDefault() which resolves to
+	* the current user default settings. If refreshUserDefault() hasn't been
+	* called, this will return undefined.
+	*
+	* @returns Promise that resolves to user default settings
+	*/
+	getUserDefault() {
+		return this.userDefaultPromise;
+	}
+	/**
+	* Generates a unique project name by avoiding conflicts with existing directories.
+	*
+	* This method uses the Hub's file system utilities to ensure the project name
+	* doesn't conflict with existing directories in the target location. If conflicts
+	* exist, it appends a number suffix (e.g., "MyProject (1)", "MyProject (2)").
+	*
+	* @param projectDir - The directory where the project will be created
+	* @param projectName - The desired project name
+	* @returns A unique project name that won't conflict with existing directories
+	*/
+	getUniqueProjectName(projectDir, projectName) {
+		return path.basename(hub_fs_default.getUniquePath(path.join(projectDir, projectName)));
+	}
+	/**
+	* Adds or updates a project in the recent projects list.
+	*
+	* This method is called when a project is opened, created, or otherwise accessed.
+	* It updates the project's last modified time, refreshes project metadata,
+	* applies any provided cloud project information, and ensures the project
+	* appears at the top of the recent projects list.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param editorVersion - The Unity editor version associated with the project
+	* @param editorArchitecture - The required architecture for the project
+	* @param cloudProjectId - Optional Unity Cloud project ID
+	* @param organizationId - Optional Unity organization ID
+	* @param genesisOrgId - Optional Genesis organization ID
+	* @returns Promise that resolves to the updated project data
+	*/
+	async addToRecentProjects(projectPath, editorVersion, editorArchitecture, cloudProjectId, organizationId, genesisOrgId) {
+		let projectData = this.projects.get(projectPath);
+		const now = Date.now();
+		try {
+			await fs.promises.utimes(projectPath, now / 1e3, now / 1e3);
+		} catch (e) {
+			logger$28.warn(`Failed to update folder mtime for project at ${projectPath}:`, e);
+		}
+		if (projectData) projectData.lastModified = now;
+		else {
+			projectData = await this.getProjectData(projectPath);
+			try {
+				const vcsData = await this.vcsManagementService.getProjectVCSData(projectPath);
+				if (vcsData) {
+					projectData.organizationName = vcsData.organizationName;
+					projectData.repositoryName = vcsData.repositoryName;
+					projectData.projectPathInsideRepository = vcsData.projectPathInsideRepository;
+					projectData.vcsConfigurationPath = vcsData.vcsConfigurationPath;
+					projectData.vcsProvider = vcsData.provider;
+				}
+			} catch (error) {
+				logger$28.debug("VCS detection failed for newly added project", {
+					projectPath,
+					error
+				});
+			}
+			if (!projectData.lastModified) projectData.lastModified = now;
+		}
+		if (cloudProjectId) projectData.cloudProjectId = cloudProjectId;
+		if (editorVersion) {
+			projectData.version = editorVersion;
+			if (editorArchitecture) projectData.architecture = editorArchitecture === CHIP_ARCHITECTURES.Unknown ? this.deriveArchitecture(editorVersion) : editorArchitecture;
+		}
+		if (organizationId) projectData.organizationId = organizationId;
+		if (genesisOrgId) projectData.genesisOrgId = genesisOrgId;
+		this.projects.set(projectPath, projectData);
+		await this.saveProjects();
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+		return projectData;
+	}
+	/**
+	* Persists the current project data to local storage.
+	*
+	* This method converts the in-memory projects Map to a plain object and saves it
+	* to the project model's persistent storage. It handles errors gracefully by
+	* logging them without throwing exceptions.
+	*
+	* @returns Promise that resolves when the save operation is complete
+	* @internal This method is called automatically when project data changes
+	*/
+	async saveProjects() {
+		try {
+			await this.projectModel.saveProjectList(Object.fromEntries(this.projects));
+			logger$28.debug("Updated project data saved to storage successfully.");
+		} catch (error) {
+			logger$28.error("Failed to write projects to file storage.", error);
+		}
+	}
+	/**
+	* Watches all project's in the Hub's project list for changes in files in
+	* project's ProjectSettings folder. See projectConstants.ts for list of files.
+	* If change is observed, regrab that project's data so it is up to date in the Hub listing
+	*
+	* Used so that if a project is made Collab in the editor, the Hub regrabs that collab info for the project
+	* @param {ProjectEntity[]} projects list of all projects to watch
+	*/
+	async watchAllProjectsSettings(projects) {
+		for (const project of projects) this.projectRootWatcher.watch(project.path);
+	}
+	/**
+	* Watches a project's root directory recursively for changes to settings, build target,
+	* render pipeline, and VCS configuration files.
+	* @param {string} projectPath path to a project's root directory
+	*/
+	watchProjectSettings(projectPath) {
+		this.projectRootWatcher.watch(projectPath);
+	}
+	/**
+	* Watches a specific file in project's ProjectSettings folder for changes.
+	* With the recursive root watcher, this is idempotent — the directory watch covers all files.
+	* @param {string} projectPath path to a project's root directory
+	* @param {string} _fileName name of file to watch (unused — directory watch covers all files)
+	*/
+	watchProjectSettingsFile(projectPath, _fileName) {
+		this.projectRootWatcher.watch(projectPath);
+	}
+	/**
+	* Watches the EditorUserBuildSettings.asset file in a project's Library directory for changes.
+	* With the recursive root watcher, this is idempotent.
+	* @param {string} projectPath path to a project's root directory
+	*/
+	watchBuildTargetFile(projectPath) {
+		this.projectRootWatcher.watch(projectPath);
+	}
+	/**
+	* Watches QualitySettings.asset and GraphicsSettings.asset files in ProjectSettings directory.
+	* With the recursive root watcher, this is a no-op — ProjectSettings/ is already covered.
+	* @param {ProjectPath} _projectPath path to a project's root directory
+	*/
+	watchRenderPipelineFiles(_projectPath) {}
+	/**
+	* Stops watching a project's files for changes.
+	* @param {ProjectPath} projectPath path to a project's root directory
+	*/
+	stopWatchingProjectSettings(projectPath) {
+		this.projectRootWatcher.unwatch(projectPath);
+	}
+	/**
+	* Stops watching the EditorUserBuildSettings.asset file.
+	* With the recursive root watcher, removal is handled by stopWatchingProjectSettings.
+	* @param {ProjectPath} _projectPath path to a project's root directory
+	*/
+	stopWatchingBuildTargetFile(_projectPath) {}
+	/**
+	* Stops watching render pipeline files.
+	* With the recursive root watcher, removal is handled by stopWatchingProjectSettings.
+	* @param {ProjectPath} _projectPath path to a project's root directory
+	*/
+	stopWatchingRenderPipelineFiles(_projectPath) {}
+	/**
+	* Updates project metadata after file system changes are detected.
+	*
+	* This method refreshes a project's metadata by re-reading its configuration files
+	* and updating the in-memory project cache. It also saves the changes to persistent
+	* storage and broadcasts updates to the UI.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @returns Promise that resolves when the project data is updated
+	*/
+	async updateProjectSettings(projectPath, options) {
+		try {
+			const existingProjectData = this.projects.get(projectPath);
+			const newProjectData = await this.getProjectData(projectPath);
+			if (options?.skipVCSDetection) {
+				if (existingProjectData) {
+					newProjectData.organizationName = existingProjectData.organizationName;
+					newProjectData.repositoryName = existingProjectData.repositoryName;
+					newProjectData.projectPathInsideRepository = existingProjectData.projectPathInsideRepository;
+					newProjectData.vcsConfigurationPath = existingProjectData.vcsConfigurationPath;
+					newProjectData.vcsProvider = existingProjectData.vcsProvider;
+				}
+			} else if (options?.vcsData !== void 0) {
+				const vcsData = options.vcsData;
+				if (vcsData) {
+					newProjectData.organizationName = vcsData.organizationName;
+					newProjectData.repositoryName = vcsData.repositoryName;
+					newProjectData.projectPathInsideRepository = vcsData.projectPathInsideRepository;
+					newProjectData.vcsConfigurationPath = vcsData.vcsConfigurationPath;
+					newProjectData.vcsProvider = vcsData.provider;
+				} else {
+					newProjectData.organizationName = void 0;
+					newProjectData.repositoryName = void 0;
+					newProjectData.projectPathInsideRepository = void 0;
+					newProjectData.vcsConfigurationPath = void 0;
+					newProjectData.vcsProvider = void 0;
+				}
+			} else {
+				const vcsData = await this.vcsManagementService.getProjectVCSData(projectPath);
+				if (vcsData) {
+					newProjectData.organizationName = vcsData.organizationName;
+					newProjectData.repositoryName = vcsData.repositoryName;
+					newProjectData.projectPathInsideRepository = vcsData.projectPathInsideRepository;
+					newProjectData.vcsConfigurationPath = vcsData.vcsConfigurationPath;
+					newProjectData.vcsProvider = vcsData.provider;
+				} else {
+					newProjectData.organizationName = void 0;
+					newProjectData.repositoryName = void 0;
+					newProjectData.projectPathInsideRepository = void 0;
+					newProjectData.vcsConfigurationPath = void 0;
+					newProjectData.vcsProvider = void 0;
+				}
+			}
+			if (existingProjectData) {
+				if (!newProjectData.cloudProjectId && existingProjectData.cloudProjectId) newProjectData.cloudProjectId = existingProjectData.cloudProjectId;
+				if (!newProjectData.organizationId && existingProjectData.organizationId) newProjectData.organizationId = existingProjectData.organizationId;
+				if (!newProjectData.genesisOrgId && existingProjectData.genesisOrgId) newProjectData.genesisOrgId = existingProjectData.genesisOrgId;
+			}
+			this.projects.set(projectPath, newProjectData);
+			this.debouncedSaveAndBroadcast();
+		} catch (error) {
+			logger$28.warn("Failed to update project data on project file change", error);
+		}
+	}
+	/**
+	* Unified handler for all project file changes from the recursive root watcher.
+	* Routes events to the appropriate handler based on relative path.
+	*/
+	async onProjectFileChange(projectPath, relativePath) {
+		const normalized = relativePath.replaceAll("\\", "/");
+		const handler = LocalProject.WATCHED_FILES[normalized];
+		if (handler) {
+			const fullPath = path.join(projectPath, relativePath);
+			switch (handler) {
+				case "settings":
+					await this.onProjectSettingsChange(fullPath);
+					break;
+				case "renderPipeline":
+					await this.onRenderPipelineFileChange(fullPath);
+					break;
+				case "buildTarget":
+					await this.onBuildTargetFileChange(fullPath);
+					break;
+				default: break;
+			}
+			return;
+		}
+		if (LocalProject.VCS_EXACT_DIRS.has(normalized) || LocalProject.VCS_DIR_PREFIXES.some((p) => normalized.startsWith(p))) this.vcsManagementService.onVCSFileChanged(projectPath);
+	}
+	/**
+	* Handles file system changes in a project's ProjectSettings.asset file.
+	*
+	* This method is triggered when the file system watcher detects changes to a
+	* ProjectSettings.asset file. It extracts the project path from the file path
+	* and triggers a project metadata update.
+	*
+	* @param projectSettingsPath - The absolute path to the changed ProjectSettings.asset file
+	* @returns Promise that resolves when the project data is updated
+	*/
+	async onProjectSettingsChange(projectSettingsPath) {
+		const projectPath = path.dirname(path.dirname(projectSettingsPath));
+		await this.updateProjectSettings(projectPath, { skipVCSDetection: true });
+	}
+	/**
+	* Handles changes to the EditorUserBuildSettings.asset file in a project's Library directory.
+	* Extracts the build target and updates the project entity in memory.
+	* @param {string} buildTargetFilePath - The absolute path to the changed EditorUserBuildSettings.asset file
+	*/
+	async onBuildTargetFileChange(buildTargetFilePath) {
+		const projectPath = path.dirname(path.dirname(buildTargetFilePath));
+		logger$28.info(`Build target file changed for project: ${projectPath}`);
+		const buildTarget = await getEditorBuildTarget(buildTargetFilePath);
+		if (buildTarget) {
+			logger$28.info(`Extracted build target: ${buildTarget}`);
+			const existingProject = this.projects.get(projectPath);
+			if (existingProject && existingProject.buildTarget !== buildTarget) {
+				existingProject.buildTarget = buildTarget;
+				this.projects.set(projectPath, existingProject);
+				this.debouncedSaveAndBroadcast();
+				logger$28.info(`Updated build target for project ${projectPath}: ${buildTarget}`);
+			}
+		}
+	}
+	/**
+	* Handles changes to the QualitySettings.asset and GraphicsSettings.asset files in ProjectSettings directory.
+	* Extracts the render pipeline and updates the project entity in memory.
+	* @param {string} renderPipelineFilePath - The absolute path to the changed QualitySettings.asset
+	* or GraphicsSettings.asset file
+	*/
+	async onRenderPipelineFileChange(renderPipelineFilePath) {
+		const projectPath = path.dirname(path.dirname(renderPipelineFilePath));
+		const renderPipeline = await detectRenderPipeline(projectPath);
+		if (renderPipeline) {
+			const existingProject = this.projects.get(projectPath);
+			if (existingProject && existingProject.renderPipeline !== renderPipeline) {
+				existingProject.renderPipeline = renderPipeline;
+				this.projects.set(projectPath, existingProject);
+				this.debouncedSaveAndBroadcast();
+				logger$28.info(`Updated render pipeline for project ${projectPath}: ${renderPipeline}`);
+			}
+		}
+	}
+	/**
+	* Constructs the full path to a file within a project's ProjectSettings directory.
+	*
+	* This utility method builds the absolute path to any file within the ProjectSettings
+	* folder of a Unity project by combining the project path with the standard
+	* ProjectSettings directory name and the specified filename.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param fileName - The name of the file within the ProjectSettings directory
+	* @returns The absolute path to the specified file in the ProjectSettings directory
+	*/
+	getProjectSettingsFilePath(projectPath, fileName) {
+		return path.join(projectPath, ProjectSettingsFolderPath, fileName);
+	}
+	/**
+	* Updates Unity Cloud project settings in a project's configuration files.
+	*
+	* This method modifies the ProjectSettings.asset file to set new Unity Cloud
+	* project information including organization ID, cloud project ID, and project name.
+	* It also updates the in-memory project data and saves changes to persistent storage.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param unifiedProjectSettings - Object containing the new cloud project settings to apply
+	* @throws {Error} Throws an error if the project data cannot be read or settings cannot be updated
+	* @internal This method is used internally by cloud project linking operations
+	*/
+	async setUnifiedProjectSettings(projectPath, unifiedProjectSettings) {
+		const projectData = this.projects.get(projectPath);
+		if (!projectData) throw new Error("Could not read project data.");
+		const projectSettingsFilePath = this.getProjectSettingsFilePath(projectPath, ProjectSettingsFileName);
+		try {
+			await updateCloudProjectData(projectSettingsFilePath, unifiedProjectSettings);
+			projectData.cloudProjectId = unifiedProjectSettings.cloudProjectId;
+			projectData.organizationId = unifiedProjectSettings.organizationId;
+			projectData.genesisOrgId = unifiedProjectSettings.genesisOrgId;
+			if (unifiedProjectSettings.projectName !== void 0) projectData.projectName = unifiedProjectSettings.projectName;
+			this.projects.set(projectPath, projectData);
+			await this.saveProjects();
+		} catch (error) {
+			logger$28.error("Failed to configure cloud project link.", error);
+			throw new Error(`Failed to configure cloud project link. ${error}`);
+		}
+	}
+	/**
+	* Links a local Unity project to a Unity Cloud project.
+	*
+	* This method establishes a connection between a local Unity project and a Unity Cloud
+	* project by updating the project's settings with cloud information. It validates the
+	* cloud project ID format, updates the project configuration, sends analytics events,
+	* and refreshes the project data.
+	*
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param organizationData - Object containing organization ID and genesis organization ID
+	* @param cloudProjectId - The Unity Cloud project ID (must be a valid UUID)
+	* @param projectName - The name to set for the project
+	* @param existingCloudProjectFlag - Whether connecting to an existing cloud project (affects analytics)
+	* @returns Promise that resolves when the linking operation is complete
+	*/
+	async linkCloudProject(projectPath, organizationData, cloudProjectId, projectName, existingCloudProjectFlag) {
+		const { organizationId, genesisOrgId } = organizationData;
+		const projectConnectedEventMessage = {
+			organization_id: genesisOrgId,
+			cloud_project_id: cloudProjectId,
+			is_new_cloud_project: !existingCloudProjectFlag,
+			is_new_local_project: false
+		};
+		try {
+			if ((/* @__PURE__ */ new RegExp(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)).test(cloudProjectId) === false) throw new Error("Cloud project Id is not in valid uuid format");
+			await this.setUnifiedProjectSettings(projectPath, {
+				organizationId,
+				cloudProjectId,
+				projectName,
+				genesisOrgId
+			});
+			ProjectAnalyticsService.sendProjectConnectedEvent(projectConnectedEventMessage);
+		} catch {
+			ProjectAnalyticsService.sendProjectConnectionFailedEvent(projectConnectedEventMessage);
+		}
+		await this.onProjectSettingsChange(this.getProjectSettingsFilePath(projectPath, ProjectSettingsFileName));
+	}
+	/**
+	* Disconnects a Unity project from Unity Cloud services.
+	*
+	* This method removes the Unity Cloud connection from a local project by clearing
+	* cloud-related settings from the project configuration. It sends analytics events
+	* about the disconnection and refreshes the project data to reflect the changes.
+	*
+	* @param project - The project object containing cloud connection information
+	* @returns Promise that resolves when the unlinking operation is complete
+	*/
+	async unlinkCloudProject(project) {
+		const { cloudProjectId, path: projectPath, genesisOrgId } = project;
+		const projectDisconnectionEventMessage = {
+			cloud_project_id: cloudProjectId,
+			organization_id: genesisOrgId
+		};
+		try {
+			await this.setUnifiedProjectSettings(projectPath, {
+				organizationId: null,
+				cloudProjectId: null,
+				projectName: null,
+				genesisOrgId: null
+			});
+			if (project.vcsProvider === SOURCE_CONTROL_PROVIDERS.UNITY_VERSION_CONTROL) {
+				logger$28.info(`Disconnecting project from Unity Version Control: ${projectPath}`);
+				await this.vcsManagementService.disconnectVersionControl(projectPath, this.updateProjectSettings.bind(this));
+			}
+			ProjectAnalyticsService.sendProjectDisconnectedEvent(projectDisconnectionEventMessage);
+		} catch {
+			ProjectAnalyticsService.sendProjectDisconnectedEvent(projectDisconnectionEventMessage);
+		}
+		await this.onProjectSettingsChange(this.getProjectSettingsFilePath(projectPath, ProjectSettingsFileName));
+	}
+	/**
+	* Renames a Unity project.
+	* @param projectPath - The absolute path to the Unity project directory
+	* @param newProjectName - The new name for the Unity project
+	*/
+	async renameProject(projectPath, newProjectName) {
+		await renameProject(path.join(projectPath, kProjectNamePath), path.join(projectPath, kUserProjectNamePath), newProjectName);
+		const project = this.projects.get(projectPath);
+		if (project) if (newProjectName.length === 0) {
+			const refreshedProjectData = await this.getProjectData(projectPath);
+			project.title = refreshedProjectData.title;
+			project.hasCustomDisplayName = refreshedProjectData.hasCustomDisplayName;
+		} else {
+			project.title = newProjectName;
+			project.hasCustomDisplayName = true;
+		}
+		else logger$28.warn(`Project not found in memory for path: ${projectPath}`);
+		windowManager_default.broadcastContent(RENDERER_EVENTS.PROJECT_LIST_UPDATE, this.getProjectsFromMemory());
+	}
+	async isCloudProjectParentDirectory(projectPath, fileName) {
+		const suspectedNestedProjectPath = path.join(projectPath, fileName);
+		if (this.projects.get(suspectedNestedProjectPath)) {
+			logger$28.info(`Skipping outer directory "${projectPath}" because nested project exists at "${suspectedNestedProjectPath}"`);
+			return true;
+		}
+		return false;
+	}
+}();
+//#endregion
