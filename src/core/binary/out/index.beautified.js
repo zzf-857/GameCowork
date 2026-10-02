@@ -1,3 +1,7 @@
+var gcwAssetActors = new Map();
+function gcwLocalAssetService(core){const p=require("node:path"),r=process.env.GAMECOWORK_USER_DATA_DIR;if(!r||!p.isAbsolute(r))throw new Error("Asset runtime directory is not configured");const root=p.join(r,"generator");if(!gcwAssetActors.has(root))gcwAssetActors.set(root,require("./gamecowork-assets.js").createAssetService({root,onUpdate:task=>core.messenger.send("generator/taskUpdated",{task})}));return gcwAssetActors.get(root);}
+var gcwCodelyGeneratorActors = new Map();
+function gcwCodelyGeneratorApi(core){const service=gcwLocalAssetService(core);if(!gcwCodelyGeneratorActors.has(service.root))gcwCodelyGeneratorActors.set(service.root,require("./gamecowork-codely-generator.js").createCodelyGeneratorApi({assetService:service}));return gcwCodelyGeneratorActors.get(service.root);}
 if (typeof URL.canParse !== "function") {
   URL.canParse = function (input, base) {
     try {
@@ -288073,10 +288077,13 @@ var Uq = class {
     if (!this.connection) throw new ds("Not initialized");
     if (!this.sessions.get(e)) throw new sd("Session not found", e);
     try {
-      (console.log(`[ACPAgentManager] Refreshing available commands for session: ${e}`),
-        await this.connection.sendRequest("_gamecowork/commands/refresh", { sessionId: e }));
+      console.log(`[ACPAgentManager] Refreshing available commands for session: ${e}`);
+      const result = await this.connection.sendRequest("_gamecowork/commands/refresh", { sessionId: e });
+      if (result?.success !== true) throw new Error("Agent did not confirm the command refresh");
+      return result;
     } catch (r) {
       console.warn(`[ACPAgentManager] _gamecowork/commands/refresh failed: ${r instanceof Error ? r.message : String(r)}`);
+      throw r;
     }
   }
   async refreshSkills(e, n) {
@@ -288306,18 +288313,24 @@ async function den(t) {
   await e.sendPrompt(n, [{ type: "text", text: `/acp-history revert ${r} ${a}` }]);
 }
 async function uen(t) {
-  let { acpManager: e, acpSessionId: n, userInputIndex: r } = t;
-  await e.sendPrompt(n, [{ type: "text", text: `/rewind ${t.type} ${r}` }], (a) => {
+  let { acpManager: e, acpSessionId: n, userInputIndex: r } = t, text = "";
+  const response = await e.sendPrompt(n, [{ type: "text", text: `/rewind ${t.type} ${r}` }], (a) => {
+    if (a?.sessionUpdate === "agent_message_chunk" && a.content?.type === "text") text += a.content.text ?? "";
     t.callback?.(a);
   });
+  if (response?.stopReason !== "end_turn") throw new Error("Rewind request did not complete");
+  if (/^Error\b/i.test(text.trim())) throw new Error(`Rewind failed: ${text.trim().slice(0, 200)}`);
+  return { response, text };
 }
 async function pen(t) {
-  let { acpManager: e, acpSessionId: n, sessionId: r, messageId: a, newContinueSession: s } = t;
-  try {
-    return (await e.sendPrompt(n, [{ type: "text", text: `/fork ${r} ${a} ${s}` }]), null);
-  } catch (l) {
-    return (console.error("[ACPSlashCommandHandler] Error in resumeSessionCheckpoint:", l), null);
-  }
+  let { acpManager: e, acpSessionId: n, sessionId: r, messageId: a, newContinueSession: s } = t, text = "";
+  const response = await e.sendPrompt(n, [{ type: "text", text: `/fork ${r} ${a} ${s}` }], update => {
+    if (update?.sessionUpdate === "agent_message_chunk" && update.content?.type === "text") text += update.content.text ?? "";
+  });
+  if (response?.stopReason !== "end_turn") throw new Error("Fork request did not complete");
+  if (/^Error\b/i.test(text.trim())) throw new Error(`Fork failed: ${text.trim().slice(0, 200)}`);
+  if (text.trim() !== "Forked conversation seeded.") throw new Error("Agent did not confirm creation of the forked conversation");
+  return { forked: true };
 }
 async function BE(t) {
   let { acpManager: e, acpSessionId: n, sessionId: r } = t,
@@ -327399,6 +327412,7 @@ var EUt = 3,
   ],
   Vfi = 2 * 60 * 1e3;
 function nI(t, e, n) {
+  if (t.messenger?.disposed === true) return;
   let r = t.acpSessionRegistry.get(e);
   if (!(!r || r.manager !== n)) return r;
 }
@@ -327599,6 +327613,8 @@ async function Tma(t, e, n) {
     return I;
   }
   let c = (async () => {
+    const gcuHolder = t.getHolder(e);
+    if (gcuHolder.isDisposed()) throw new _b(e);
     (await t.sessionLifecycle.evictLruIfNeeded(), t.sessionLifecycle.startIdleReaper());
     let I = process.env.GAMECOWORK_CLI_PATH || void 0,
       u = process.env.GAMECOWORK_CLI_BASE_DIR || void 0,
@@ -328063,8 +328079,12 @@ async function Tma(t, e, n) {
         return A.queue.isBusy() || A.sideQueue.isBusy();
       },
     };
+    if (t.messenger?.disposed === true || gcuHolder.isDisposed() || t.acpSessionHolders.get(e) !== gcuHolder || t.acpInitializing.get(e) !== c) throw new _b(e);
+    t.acpSessionRegistry.set(e, v);
+    // CLI session/new may advertise commands before its result. The manager
+    // retains that real update while the Core has no registered owner yet.
+    if (Array.isArray(y.availableCommands)) y.onAvailableCommandsUpdate?.(y.availableCommands);
     return (
-      t.acpSessionRegistry.set(e, v),
       F !== e && !AP(e) && t.messenger.send("acp/sessionConflict", { sessionId: e, forkedSessionId: F }),
       console.debug(`[Core] ACP session initialized for Continue session: ${e}`),
       AP(e) ||
@@ -328187,9 +328207,10 @@ async function zma(t, e, n) {
   }
 }
 async function Kma(t, e) {
-  ((e.lastCommandSignature = void 0),
-    (await t.runRefreshWithTimeout("refreshCommands", () => e.manager.refreshAvailableCommands(e.acpSessionId))) &&
-      (e.needsCommandRefresh = !1));
+  e.lastCommandSignature = void 0;
+  const refreshed = await t.runRefreshWithTimeout("refreshCommands", () => e.manager.refreshAvailableCommands(e.acpSessionId));
+  if (refreshed) e.needsCommandRefresh = !1;
+  return refreshed;
 }
 async function Dma(t, e, n) {
   (await t.runRefreshWithTimeout("refreshSkills", () => e.manager.refreshSkills(e.acpSessionId, n))) &&
@@ -328200,13 +328221,28 @@ async function jma(t, e) {
     (e.needsAgentRefresh = !1);
 }
 async function Pma(t) {
-  let e = Array.from(t.acpSessionRegistry.values());
-  e.length !== 0 &&
-    (await Promise.all(
-      e.map(async (n) => {
-        ((n.needsCommandRefresh = !0), (n.lastUsedAt = Date.now()), await t.refreshCommandsForEntry(n));
-      }),
-    ));
+  const entries = new Map(t.acpSessionRegistry.entries());
+  const initializing = Array.from(t.acpInitializing.entries());
+  const pending = await Promise.allSettled(initializing.map(async ([id, promise]) => {
+    // Wait only for already-owned startup work, never spawn a session to refresh.
+    // This wait has a 60s ceiling; established-session refresh remains 8s.
+    const entry = await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error("ACP initialization for command refresh exceeded 60000ms")), 60000);
+      Promise.resolve(promise).then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
+    });
+    if (entry && t.acpSessionRegistry.get(id) === entry) entries.set(id, entry);
+  }));
+  const failures = pending.filter(result => result.status === "rejected").map(result => result.reason);
+  if (failures.length) throw new AggregateError(failures, "Command refresh initialization failed: " + failures.map(error => error?.message || String(error)).join("; "));
+  let refreshed = 0, skipped = 0;
+  await Promise.all(Array.from(entries.entries()).map(async ([id, entry]) => {
+    if (t.acpSessionRegistry.get(id) !== entry) { skipped++; return; }
+    entry.needsCommandRefresh = true; entry.lastUsedAt = Date.now();
+    if (await t.refreshCommandsForEntry(entry) === false) failures.push(new Error(`Command refresh failed for session ${id}`));
+    else refreshed++;
+  }));
+  if (failures.length) throw new AggregateError(failures, failures.map(error => error.message).join("; "));
+  return { refreshed, skipped, pendingInit: initializing.length };
 }
 async function qma(t, e) {
   let n = Array.from(t.acpSessionRegistry.values());
@@ -330690,6 +330726,9 @@ function eha() {
   }
   return t;
 }
+function gcwHubProjects(){return ["tuanjie","unity"].map(product=>({product,projects:Z2i(product,PUt(product)),editors:[]}));}
+function gcwHubEditors(){return ["tuanjie","unity"].map(product=>({product,projects:[],editors:qba(product)}));}
+
 m();
 Du();
 async function tha(t, e) {
@@ -334086,50 +334125,56 @@ function RZa(t, e) {
       await AGa(t, G.data);
     }),
     n("history/rewind", async (G) => {
-      let { id: b, sessionId: h, type: Z } = G.data,
-        N,
-        g = !1;
-      try {
-        await HOe(t, h, async (R) => {
-          await uen({
-            userInputIndex: b,
-            acpManager: R.manager,
-            acpSessionId: R.acpSessionId,
-            type: Z,
-            callback: (f) => {
-              let y = f?._meta?.gamecowork?.rewindPreview;
-              y && (N = y);
-            },
-          });
+      let { id: b, sessionId: h, type: Z } = G.data ?? {};
+      gcuHistorySessionId(h);
+      if (!Number.isSafeInteger(b) || b < 0) throw new Error("Invalid rewind user-input index");
+      if (Z !== "dryRun" && Z !== "code") throw new Error("Invalid rewind type");
+      return await HOe(t, h, async (R) => {
+        if (R.isStreaming || R.bgContinuationState?.isActive) throw new Error("Cannot rewind while the conversation is streaming");
+        let N;
+        const run = type => uen({
+          userInputIndex: b, acpManager: R.manager, acpSessionId: R.acpSessionId, type,
+          callback: f => { const preview = f?._meta?.gamecowork?.rewindPreview; if (preview !== undefined) N = preview; },
         });
-      } catch (R) {
-        ((g = !0), console.warn("[ACP] rewind with error: ", R));
-      }
-      return (
-        Z !== "dryRun" &&
-          (t.pushHistoryListChanged(),
-          g ||
-            (t.acpHistoryManager.clearSessionStreamError(h).catch((R) => {
-              console.warn(`[Core] Failed to clear stream error for session ${h} after rewind:`, R);
-            }),
-            t.messenger.send("stream/streamError", { sessionId: h, error: null }))),
-        N || {
-          canRewind: !0,
-          changedFiles: [],
-          totalLineAdded: 0,
-          totalLineDeleted: 0,
-          changedFileCount: 0,
-          effectiveChangedFileCount: 0,
-          fileDetails: [],
+        // A fresh preview and the write share the same ACP holder lease. Missing
+        // metadata means this Agent did not prove that a checkpoint is available.
+        await run("dryRun");
+        if (!N || typeof N.canRewind !== "boolean" || !Array.isArray(N.changedFiles) ||
+            !N.changedFiles.every(file => typeof file === "string") || !Array.isArray(N.fileDetails) ||
+            !["totalLineAdded", "totalLineDeleted", "changedFileCount", "effectiveChangedFileCount"]
+              .every(field => Number.isSafeInteger(N[field]) && N[field] >= 0)) {
+          throw new Error("Agent did not provide a valid rewind checkpoint preview");
         }
-      );
+        if (Z === "dryRun") return N;
+        if (!N.canRewind || N.effectiveChangedFileCount === 0) throw new Error("No restorable code checkpoint is available for this message");
+        const preview = N, result = await run("code");
+        // The maintained CLI reports code writes as plain text, unlike dryRun's
+        // metadata. Require its exact completed result rather than inventing one.
+        const completed = /^Code rewind success\. restored=(\d+), deleted=(\d+), skipped=(\d+), failed=(\d+)\s*$/.exec(result.text.trim());
+        if (!completed) throw new Error("Agent did not confirm code rewind completion");
+        const counts = completed.slice(1).map(Number);
+        if (!counts.every(Number.isSafeInteger) || counts[2] !== 0 || counts[3] !== 0 || counts[0] + counts[1] === 0) {
+          throw new Error(`Code rewind did not restore every checkpoint file (restored=${counts[0]}, deleted=${counts[1]}, skipped=${counts[2]}, failed=${counts[3]})`);
+        }
+        t.pushHistoryListChanged();
+        try {
+          await t.acpHistoryManager.clearSessionStreamError(h);
+          t.messenger.send("stream/streamError", { sessionId: h, error: null });
+        } catch (error) {
+          console.warn(`[Core] Code restored but could not clear the previous stream error for ${h}:`, error);
+        }
+        return { ...preview, applied: true, restoredCount: counts[0], deletedCount: counts[1], skippedCount: counts[2], failedFileCount: counts[3] };
+      });
     }),
     n("history/fork", async (G) => {
-      let { id: b, sessionId: h } = G.data,
-        Z = Al(),
+      let { id: b, sessionId: h } = G.data ?? {};
+      gcuHistorySessionId(h);
+      if (!Number.isSafeInteger(b) || b < 0) throw new Error("Invalid fork user-message index");
+      let Z = Al(),
         g = (await t.ide.getWorkspaceDirs())[0] || process.cwd();
       try {
         await HOe(t, h, async (w) => {
+          if (w.isStreaming || w.bgContinuationState?.isActive) throw new Error("Cannot fork while the conversation is streaming");
           await pen({
             acpSessionId: w.acpSessionId,
             messageId: b,
@@ -334137,6 +334182,11 @@ function RZa(t, e) {
             acpManager: w.manager,
             newContinueSession: Z,
           });
+          // Some legacy Agent paths swallow checkpoint write errors. A seeded
+          // response alone is insufficient: verify the branch is readable before
+          // returning an ID or advertising it to the GUI.
+          const saved = await t.acpHistoryManager.load(Z);
+          if (!saved || saved.sessionId !== Z || !Array.isArray(saved.history)) throw new Error("Forked conversation checkpoint was not persisted");
         });
         let R = await t.acpHistoryManager.loadSessionMetadata(h),
           f = R?.title ? `${R.title} (forked)` : Bf,
@@ -335197,6 +335247,8 @@ function RZa(t, e) {
         }
       }),
       n("unity/getHubProjectsAndEditors", () => eha()),
+      n("unity/getHubProjects", () => gcwHubProjects()),
+      n("unity/getHubEditors", () => gcwHubEditors()),
       n("unity/invokeTool", async (w) => {
         try {
           let { command: Y, toolParams: F, timeoutMs: v, sessionId: A } = w.data;
@@ -336350,7 +336402,25 @@ function RZa(t, e) {
         );
       }
     }),
-    n("generator/listTasks", async (G) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return {tasks:[],total:0,page:1,size:0,supported:false,reason:"An asset generation Provider is not configured"};
+    n("_gamecowork/codelyGeneratorApi",async(G)=>gcwCodelyGeneratorApi(t).dispatch(G.data??{})),
+n("_gamecowork/codelyGeneratorUpload",async(G)=>gcwCodelyGeneratorApi(t).upload(G.data??{})),
+n("_gamecowork/codelyRebaseMedia",async(G)=>gcwCodelyGeneratorApi(t).rebaseMedia(G.data??{})),
+n("generator/listProviders",async(G)=>gcwLocalAssetService(t).dispatch("generator/listProviders",G.data??{})),
+n("generator/saveProvider",async(G)=>gcwLocalAssetService(t).dispatch("generator/saveProvider",G.data??{})),
+n("generator/deleteProvider",async(G)=>gcwLocalAssetService(t).dispatch("generator/deleteProvider",G.data??{})),
+n("generator/createTask",async(G)=>gcwLocalAssetService(t).dispatch("generator/createTask",G.data??{})),
+n("generator/getTask",async(G)=>gcwLocalAssetService(t).dispatch("generator/getTask",G.data??{})),
+n("generator/cancelTask",async(G)=>gcwLocalAssetService(t).dispatch("generator/cancelTask",G.data??{})),
+n("generator/getResource",async(G)=>gcwLocalAssetService(t).dispatch("generator/getResource",G.data??{})),
+n("generator/getInputs",async(G)=>gcwLocalAssetService(t).dispatch("generator/getInputs",G.data??{})),
+n("generator/getInput",async(G)=>gcwLocalAssetService(t).dispatch("generator/getInput",G.data??{})),
+n("generator/deleteInput",async(G)=>gcwLocalAssetService(t).dispatch("generator/deleteInput",G.data??{})),
+n("_gamecowork/assetRegisterInput",async(G)=>gcwLocalAssetService(t).registerInput(G.data??{})),
+n("_gamecowork/assetInputPath",async(G)=>gcwLocalAssetService(t).getInputPath(G.data?.inputId,G.data?.workspaceKey)),
+n("generator/getCanvas",async(G)=>gcwLocalAssetService(t).dispatch("generator/getCanvas",G.data??{})),
+n("generator/saveCanvas",async(G)=>gcwLocalAssetService(t).dispatch("generator/saveCanvas",G.data??{})),
+n("_gamecowork/assetArtifactPath",async(G)=>gcwLocalAssetService(t).getArtifactPath(G.data?.taskId,G.data?.artifactId)),
+n("generator/listTasks", async (G) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return gcwLocalAssetService(t).dispatch("generator/listTasks",G.data??{});if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return {tasks:[],total:0,page:1,size:0,supported:false,reason:"An asset generation Provider is not configured"};
       let b = await t.configHandler.controlPlaneClient.getAccessToken();
       if (!b) throw new Error("Not logged in");
       let {
@@ -336411,7 +336481,7 @@ function RZa(t, e) {
         }));
       return { tasks: B, total: S, page: v, size: B.length };
     }),
-    n("generator/updateTasksDiscarded", async (G) => {
+    n("generator/updateTasksDiscarded", async (G) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return gcwLocalAssetService(t).dispatch("generator/updateTasksDiscarded",G.data??{});
       let b = Array.isArray(G.data?.taskIds)
           ? G.data.taskIds.filter((R) => typeof R == "string" && R.trim()).map((R) => R.trim())
           : [],
@@ -336435,7 +336505,7 @@ function RZa(t, e) {
       let g = await N.json();
       return { updated: typeof g.updated == "number" ? g.updated : b.length };
     }),
-    n("generator/resolveDownloadUrl", async (G) => {
+    n("generator/resolveDownloadUrl", async (G) => {if(process.env.GAMECOWORK_LOCAL_PROVIDER_MODE==="1")return gcwLocalAssetService(t).dispatch("generator/resolveDownloadUrl",G.data??{});
       let b = typeof G.data?.path == "string" ? G.data.path.trim() : "";
       if (!/^\/api\/editor\/[\w\-./]+$/i.test(b) || b.split("/").includes(".."))
         throw new Error("Invalid download path");
@@ -336473,7 +336543,7 @@ function RZa(t, e) {
     n("subagents/disable", async (G) => gamecoworkDefinitionAction("agents", "disable", G.data)),
     n("subagents/delete", async (G) => gamecoworkDeleteDefinition("agents", G.data)),
     n("acp/refreshCommands", async () => {
-      await t.refreshCommandsForAllSessions();
+      return await t.refreshCommandsForAllSessions();
     }),
     n("acp/enqueueSessionMessage", async (G) => {
       let { sessionId: b, message: h, inject: Z } = G.data,

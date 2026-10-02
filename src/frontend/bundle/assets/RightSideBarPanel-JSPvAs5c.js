@@ -123,6 +123,7 @@ import {
   A as Gg,
   B as qu,
   D as $g,
+  gamecoworkUsesLocalAssetPage as gamecoworkUsesLocalCanvas,
   E as Kg,
   g as Yg,
   G as Zg,
@@ -39256,13 +39257,14 @@ function fw({ error: e, onClose: t }) {
       })
     : null;
 }
-function pw({ isActive: e, workspaceRoot: t, title: r, iframeRef: n }) {
+function pw({ isActive: e, workspaceRoot: t, workspaceKey: gamecoworkWorkspaceKey, title: r, iframeRef: n }) {
   return f.jsx("div", {
     className: Lt("tauri-right-sidebar-panel__ai-canvas", !e && "tauri-right-sidebar-panel__ai-canvas--hidden"),
     "aria-hidden": !e,
     children: f.jsx("iframe", {
       ref: n,
-      src: $g(t),
+      src: $g(t, gamecoworkWorkspaceKey),
+      "data-testid": "right-sidebar-canvas-frame",
       title: r,
       sandbox: "allow-scripts allow-same-origin allow-popups allow-forms allow-downloads",
       style: { width: "100%", height: "100%", border: "none" },
@@ -43900,7 +43902,7 @@ function gT(e) {
           },
           ie != null ? ie : "",
         ),
-      Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, title: t("rightSidebar.aiCanvasTab"), iframeRef: i }),
+      Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, workspaceKey: e.previewWorkspaceKey, title: t("rightSidebar.aiCanvasTab"), iframeRef: i }),
       X &&
         be &&
         ue &&
@@ -45499,13 +45501,15 @@ function ip() {
   return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
 }
 function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, onRefreshWorkspaces: i }) {
-  const a = T.useRef(null),
+  const gamecoworkLocalCanvas = gamecoworkUsesLocalCanvas(),
+    a = T.useRef(null),
     s = T.useRef(!1),
     [o, l] = T.useState(null),
     [c, u] = T.useState(ip),
-    d = t !== void 0,
-    p = d ? (t != null ? t : null) : o,
+    d = gamecoworkLocalCanvas || t !== void 0,
+    p = gamecoworkLocalCanvas ? null : d ? (t != null ? t : null) : o,
     h = T.useCallback(() => {
+      if (gamecoworkLocalCanvas) return;
       ru("get_cowork_access_token")
         .then((v) =>
           l((m) => {
@@ -45536,13 +45540,13 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
           if (!(!y || typeof y != "object")) {
             if (y.type === "ai-canvas-ready")
               ((s.current = !0),
-                p && v({ type: "cowork-token", token: p }),
+                gamecoworkLocalCanvas ? v({ type: "gamecowork:local-session-changed" }) : p && v({ type: "cowork-token", token: p }),
                 v({ type: "embed-style", style: c }),
-                r && v({ type: "gamecowork:workspaces", workspaces: r }),
+                r && v({ type: "codely:workspaces", workspaces: r }),
                 d || h());
             else if (y.type === "add-to-chat" && (k = y.payload) != null && k.media)
               for (const E of y.payload.media) n == null || n(E);
-            else if (y.type === "gamecowork:refreshWorkspaces") i == null || i();
+            else if (y.type === "codely:refreshWorkspaces") i == null || i();
             else if (y.type === "openurl" && typeof y.url == "string") {
               const { url: E, filename: S } = y;
               fetch(`${window.location.origin}/api/tauri/download-url`, {
@@ -45558,6 +45562,7 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
   const b = T.useRef(p);
   return (
     T.useEffect(() => {
+      if (gamecoworkLocalCanvas) return;
       var m, g, y, x;
       const v = b.current;
       ((b.current = p),
@@ -45580,7 +45585,7 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
       !s.current ||
         !r ||
         (m = (v = a.current) == null ? void 0 : v.contentWindow) == null ||
-        m.postMessage({ type: "gamecowork:workspaces", workspaces: r }, qa);
+        m.postMessage({ type: "codely:workspaces", workspaces: r }, qa);
     }, [r]),
     a
   );

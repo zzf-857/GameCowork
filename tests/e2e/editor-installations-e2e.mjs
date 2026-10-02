@@ -123,7 +123,7 @@ try {
     if (!["127.0.0.1"].includes(url.hostname) && !["data:", "blob:"].includes(url.protocol)) { external.push(url.origin); return route.abort("blockedbyclient"); }
     if (injectScanError && url.pathname === "/api/tauri/invoke") {
       let call; try { call = JSON.parse(req.postData()); call = call.message || call; } catch {}
-      if (call?.messageType === "tjhub/getEditors") { injectScanError = false; return route.fulfill({ contentType: "application/json", body: JSON.stringify({ messageType: call.messageType, messageId: call.messageId,
+      if (call?.messageType === "tjhub/getEditorInstallations" && call.data?.refresh === true) { injectScanError = false; return route.fulfill({ contentType: "application/json", body: JSON.stringify({ messageType: call.messageType, messageId: call.messageId,
         data: { done: true, status: "error", error: "Owned editor scan unavailable" } }) }); }
     }
     return route.continue();
@@ -198,13 +198,15 @@ try {
   await gui.getByText("Owned Tuanjie", { exact: true }).first().waitFor();
   check("Other engine view-projects callback selects its own version", await gui.getByText("Owned Unity", { exact: true }).count() === 0);
   check("Tuanjie project filter keeps its displayed semver under shared technical versions", await gui.getByText("编辑器版本： " + displayVersions[1], { exact: true }).isVisible());
-  injectScanError = true; await installations();
+  await installations();
+  await poll(async () => await cards().count() === 2 && await gui.getByTestId("gamecowork-editors-refresh").isEnabled(), "warm cached Editor pane ready for explicit refresh");
+  injectScanError = true; await gui.getByTestId("gamecowork-editors-refresh").click();
   const scanError = gui.getByTestId("gamecowork-editors-error");
   await scanError.getByText("Owned editor scan unavailable", { exact: true }).waitFor({ timeout: 15000 });
-  check("Failed editor scan has its actual error instead of pretending nothing is installed", await gui.getByText("尚未安装", { exact: true }).count() === 0 && !injectScanError);
+  check("Failed explicit editor refresh shows its actual error and retains both installed identities", await gui.getByText("尚未安装", { exact: true }).count() === 0 && !injectScanError && await cards().count() === 2 && await card(identities[0]).count() === 1 && await card(identities[1]).count() === 1);
   await snapshot("05-scan-error");
   const priorIds = new Set(requests.map(record => record.body?.messageId).filter(Boolean));
-  const isNewScan = request => request.url().endsWith("/api/tauri/invoke") && requestCall(request)?.messageType === "tjhub/getEditors" &&
+  const isNewScan = request => request.url().endsWith("/api/tauri/invoke") && requestCall(request)?.messageType === "tjhub/getEditorInstallations" && requestCall(request)?.data?.refresh === true &&
     !!requestCall(request)?.messageId && !priorIds.has(requestCall(request).messageId);
   const retryRequest = page.waitForRequest(isNewScan);
   const retryResponse = page.waitForResponse(response => isNewScan(response.request()));
@@ -212,9 +214,10 @@ try {
   const [actualRetryRequest, actualRetryResponse] = await Promise.all([retryRequest, retryResponse]);
   const retryCall = requestCall(actualRetryRequest), retryReply = await actualRetryResponse.json();
   assert.equal(retryReply.messageId, retryCall.messageId, "Retry uses the new matching request's actual final callback");
-  assert.equal(retryReply.data.status, "success"); assert.equal(Object.values(retryReply.data.content).length, 2);
+  assert.equal(retryReply.data.status, "success"); assert.equal(Object.values(retryReply.data.content.editors).length, 2);
+  assert.equal(retryReply.data.content.cache.source, "scan"); assert.equal(retryReply.data.content.cache.stale, false);
   await poll(async () => await cards().count() === 2 && await scanError.count() === 0, "real matching retry callback restores rows and clears its error banner");
-  check("User retry obtains a new matching successful getEditors callback and restores both rows", Object.values(retryReply.data.content).some(editor => editor.product === "unity" && editor.version === technicalVersions[0]));
+  check("User retry obtains a new matching successful installation scan callback and restores both rows", Object.values(retryReply.data.content.editors).some(editor => editor.product === "unity" && editor.version === technicalVersions[0]));
   const unsafe = /tjhub\/(?:installEditor|uninstallEditor|removeEditor|installModules|downloadRelease|activateLicense|login)/;
   check("No install, uninstall, removal, activation, login, or external request was issued", !requests.some(request => unsafe.test(request.body?.messageType || "")) && external.length === 0);
   assert.deepEqual(pageErrors, []); check("No installation renderer error or uncaught browser exception during navigation and recovery", installationErrors().length === 0);

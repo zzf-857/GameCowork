@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <link rel="icon" type="image/svg+xml" href="/codely-canvas/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ai-workflow</title>
+    <style>
+      /* Loading screen styles — in <head> so they survive React mount.
+         Keyframes are duplicated in index.css for React-rendered loading screens. */
+      #app-loading {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #111111;
+        z-index: 9999;
+      }
+      .loading-glow {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(1, 167, 127, 0.15), transparent 70%);
+        animation: glow-pulse 2s ease-in-out infinite;
+      }
+      .loading-logo {
+        position: relative;
+        width: 56px;
+        height: 54px;
+        /* Theme-matched logo via --loading-logo (set by the script below and
+           by applyThemeCssVars); fallback = dark-mode (white) logo */
+        background: var(--loading-logo, url(/codely-canvas/logo_light.svg)) center / contain no-repeat;
+        animation: logo-bounce 1.8s ease-in-out infinite;
+      }
+      .loading-text {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #a8a8a8;
+        letter-spacing: 3px;
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+      }
+      .loading-dots {
+        display: inline-flex;
+        gap: 3px;
+        margin-left: 2px;
+        margin-bottom: 2px;
+      }
+      .loading-dots .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #3EC89E;
+        animation: dot-bounce 1.4s ease-in-out infinite;
+      }
+      .loading-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+      .loading-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes glow-pulse {
+        0%, 100% { opacity: 0.4; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1.1); }
+      }
+      @keyframes logo-bounce {
+        0%, 100% { opacity: 0.5; transform: scale(0.9) translateY(4px); }
+        50% { opacity: 1; transform: scale(1.05) translateY(-2px); }
+      }
+      @keyframes dot-bounce {
+        0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
+        40% { opacity: 1; transform: translateY(-5px); }
+      }
+    </style>
+    <!-- Apply the saved canvas theme (light/dark) synchronously before paint,
+         so the initial load matches the user's saved choice with no flash.
+         Mirrors data/settings.ts (key 'ai-workflow-settings', field 'theme.canvasTheme'). -->
+    <script>
+      (function () {
+        try {
+          var themeId = 'midnight-black';
+          var raw = localStorage.getItem('ai-workflow-settings');
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && parsed['theme.canvasTheme']) themeId = parsed['theme.canvasTheme'];
+          }
+          // In iframe (Codely embed) mode, default to light since the Codely host
+          // is typically light-themed. The actual style arrives via postMessage.
+          var inIframe = false;
+          try { inIframe = window.parent !== window; } catch (e) {}
+          var isLight = inIframe || themeId === 'eye-care';
+          var bg = isLight ? '#FCFCFC' : '#111111';
+          document.documentElement.style.background = bg;
+          /* Also set --color-bg so React's first paint (which uses var(--color-bg))
+             matches the inline loading screen — prevents a dark flash in light mode.
+             --loading-logo picks the theme-matched logo: black logo on light bg,
+             white logo on dark bg (mirrors applyThemeCssVars in useThemeColors.ts). */
+          document.documentElement.style.setProperty('--color-bg', bg);
+          document.documentElement.style.setProperty(
+            '--loading-logo',
+            isLight ? 'url(/codely-canvas/logo_black.svg)' : 'url(/codely-canvas/logo_light.svg)'
+          );
+          var s = document.createElement('style');
+          s.textContent = '#app-loading{background:' + bg + ' !important;}';
+          document.head.appendChild(s);
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/codely-canvas/assets/index-A8ll_iBT.js"></script>
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/rolldown-runtime-DAXXjFlN.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/react-BUD3sqOU.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/jsx-runtime-CFwixLRt.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/embedMode-Dfk7JHx0.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/factory-tgvWNlik.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/createLucideIcon-WbxVGt4j.js">
+    <link rel="modulepreload" crossorigin href="/codely-canvas/assets/three-2ticQzrp.js">
+    <link rel="stylesheet" crossorigin href="/codely-canvas/assets/index-BzoDPGcU.css">
+  </head>
+  <body>
+    <div id="root">
+      <!-- 内联加载动画：React 挂载后自动替换 -->
+      <div id="app-loading">
+        <div class="loading-glow"></div>
+        <div class="loading-logo" role="img" aria-label="loading"></div>
+        <div class="loading-text">
+          <span>加载中</span>
+          <span class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

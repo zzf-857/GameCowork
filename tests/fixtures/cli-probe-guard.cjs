@@ -29,15 +29,35 @@ function denied(operation, target, targetPath) {
 }
 const readable = value => inside(value, root) || inside(value, source)
   || (toolCaps && [toolCaps.shell, toolCaps.runner].some(executable => exactPath(String(value), executable)));
+// Rewind's path checks inspect each ancestor of the owned fixture. Admit only
+// metadata for these exact directories; this grants no content, enumeration,
+// write or sibling access outside the fixture.
+const metadataAncestors = new Set();
+for (let directory = root; ; directory = path.dirname(directory)) {
+  metadataAncestors.add(directory.toLowerCase());
+  if (path.dirname(directory) === directory) break;
+}
+const metadataReadable = value => {
+  if (readable(value)) return true;
+  if (value instanceof URL) value = require('node:url').fileURLToPath(value);
+  return metadataAncestors.has(path.resolve(String(value)).toLowerCase());
+};
 for (const [names, allowed] of [
-  [['readFile', 'readdir', 'stat', 'lstat', 'realpath', 'access'], readable],
+  [['readFile', 'readdir', 'access'], readable],
+  [['stat', 'lstat', 'realpath'], metadataReadable],
   [['writeFile', 'appendFile', 'mkdir', 'unlink', 'rm', 'rmdir', 'truncate', 'chmod'], value => inside(value, root)],
 ]) {
   for (const name of names) {
     for (const key of [name, `${name}Sync`]) {
       if (fs[key]) {
+        const native = fs[key].native;
         const original = fs[key].bind(fs);
-        fs[key] = (...args) => { if (!allowed(args[0])) throw denied(key, args[0]); return original(...args); };
+        const guarded = (...args) => { if (!allowed(args[0])) throw denied(key, args[0]); return original(...args); };
+        if (typeof native === 'function') guarded.native = (...args) => {
+          if (!allowed(args[0])) throw denied(`${key}.native`, args[0]);
+          return native.apply(fs, args);
+        };
+        fs[key] = guarded;
       }
     }
     if (fs.promises[name]) {

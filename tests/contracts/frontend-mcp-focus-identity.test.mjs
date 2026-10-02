@@ -32,6 +32,9 @@ for(const [label,mainFile,vscFile,modal,form]of variants){
   test(label+': changing an input selection cancels pending focus without requiring a key event',()=>{
     const h=harness({initialNameFocus:true});h.start();h.name.selectionStart=3;h.name.selectionEnd=8;h.fire('selectionchange');h.force();assert.equal(h.name.selected,0);assert.equal(h.name.selectionStart,3);assert.equal(h.name.selectionEnd,8);assert.equal(h.listeners.size,0);
   });
+  test(label+': rerendering an active text field does not schedule another select-all or steal the user selection',()=>{
+    const h=harness({initialNameFocus:true});h.name.selectionStart=3;h.name.selectionEnd=3;h.start();h.force();assert.equal(h.name.focused,0);assert.equal(h.name.selected,0);assert.equal(h.timers.size,0);assert.equal(h.listeners.size,0);assert.equal(h.name.selectionStart,3);
+  });
   test(label+': close, replaced modal/ref, disconnected/hidden/disabled target and navigation cannot reuse an old timer',()=>{
     for(const change of [(h,stop)=>stop(),h=>{h.ref.current={};},h=>{h.owner.isConnected=false;},h=>{h.name.isConnected=false;},h=>{h.name.hidden=true;},h=>{h.name.disabled=true;},h=>{h.name.rects=[];},h=>{h.name.style.visibility='hidden';},h=>{h.window.location.href+='#other';},h=>h.listeners.get('window:pagehide')?.()]){const h=harness();const stop=h.start();change(h,stop);h.force();assert.equal(h.name.focused,0);assert.equal(h.name.selected,0);assert.equal(h.listeners.size,0);}
   });

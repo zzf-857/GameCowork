@@ -4703,10 +4703,13 @@ function La(e) {
 function Ld() {
   return su() ? new iu() : new au();
 }
-let fe = La({ ideMessenger: Ld() });
+let gamecoworkDefaultStoreMessenger = Ld();
+export function gamecoworkGetStoreMessenger() { return gamecoworkDefaultStoreMessenger; }
+let fe = La({ ideMessenger: gamecoworkDefaultStoreMessenger });
 ou(fe);
 let la = ma(fe);
 function kd(e) {
+  gamecoworkDefaultStoreMessenger = e;
   return (
     (fe = La({ ideMessenger: e })),
     ou(fe),

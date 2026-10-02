@@ -58,6 +58,10 @@ import {
   A as Ss,
   d2 as Es,
 } from "./VscTheme-BExNMG_K.js";
+import { createGameCoworkUnityLicenseView, isGameCoworkLocalMode, workspaceLicenseAllowsOperation } from "./gamecowork-editor-licensing.js";
+import { projectStatusMessage as gamecoworkProjectStatusMessage, projectModifiedAt as gamecoworkProjectModifiedAt } from "./gamecowork-project-status.js";
+import { createEditorInstallationsController, editorInstallationCacheMessage } from "./gamecowork-editor-installations.js";
+const GameCoworkUnityLicenseView = createGameCoworkUnityLicenseView({ jsx: e, hooks: n, Button: A });
 import { S as Jt, a as Ps, A as Xt } from "./AddLicenseDialog-BYsLblOG.js";
 import { M as Ye, C as pe, D as Nt } from "./MoveUpRightIcon-FDLB66AF.js";
 import { T as De, C as Ms, b as It, c as Ts, s as Ls, d as Ds } from "./index-BRxZ4eG7.js";
@@ -1133,7 +1137,7 @@ function Ks({
         const T = await x.request("tjhub/getLicenses", void 0);
         if (T.status === "success" && T.content) {
           const _ = T.content;
-          K(_.isValid);
+          K(workspaceLicenseAllowsOperation(_));
         } else K(!1);
         let Y;
         if (a) Y = a;
@@ -1821,8 +1825,8 @@ function gamecoworkNormalizeEditor(value) {
     manual: typeof value.manual === "boolean" ? value.manual : !!window.GAMECOWORK_SHELL,
     gamecoworkModuleMetadataMissing: value.moduleInfoAvailable === !1 || !Array.isArray(value.modules) || !Array.isArray(value.buildPlatformShortNames) };
 }
-async function gamecoworkReadEditorRows(messenger) {
-  const response = await messenger.request("tjhub/getEditors", void 0);
+async function gamecoworkReadEditorRows(messenger, refresh = !1) {
+  const response = await messenger.request("tjhub/getEditors", refresh && window.GAMECOWORK_SHELL ? { refresh: !0 } : void 0);
   if (response?.status !== "success") throw new Error(typeof response?.error === "string" ? response.error : response?.error?.message || response?.message || "读取已安装编辑器失败");
   const content = response.content;
   if (!content || typeof content !== "object") throw new Error("已安装编辑器列表返回格式无效");
@@ -1980,6 +1984,7 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
             children: [
               ...(Array.isArray(s.buildPlatformShortNames) ? s.buildPlatformShortNames.filter(N => typeof N === "string").map((N) => e.jsx(Qs, { platform: N })) : []),
               (s.gamecoworkModuleMetadataMissing || s.moduleInfoWarning) && e.jsx("span", { "data-testid": "gamecowork-editor-modules-status", role: "status", children: s.moduleInfoWarning || c("tjhub.install.modulesUnavailable", { defaultValue: "模块信息暂不可用" }) }),
+              s.installationAvailable === !1 && e.jsx("span", { "data-testid": "gamecowork-editor-unavailable", role: "status", children: "安装文件已改变或暂不可用，请刷新后再使用。" }),
             ],
           }),
         ],
@@ -1988,7 +1993,8 @@ function so({ editor: s, projectCount: o, onAddModules: l, onViewProjects: r }) 
   });
 }
 let Te = null,
-  tt = null;
+  tt = null,
+  gamecoworkEditorInstallationCache = null;
 function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
   const { t: r } = q(),
     c = n.useContext(ue),
@@ -2002,6 +2008,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     [L, I] = n.useState(Te !== null),
     [gamecoworkInstalledError, gamecoworkSetInstalledError] = n.useState(null),
     [gamecoworkInstalledBusy, gamecoworkSetInstalledBusy] = n.useState(!1),
+    [gamecoworkInstalledCache, gamecoworkSetInstalledCache] = n.useState(gamecoworkEditorInstallationCache),
     gamecoworkInstalledGeneration = n.useRef(0),
     v = n.useRef(0),
     R = 240,
@@ -2011,6 +2018,16 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     H = ve(ds),
     W = n.useRef(H);
   W.current = H;
+  const gamecoworkInstalledController = n.useMemo(() => createEditorInstallationsController({ messenger: c,
+    normalize: gamecoworkNormalizeEditor, local: !!window.GAMECOWORK_SHELL, initialRows: Te, initialCache: gamecoworkEditorInstallationCache,
+    onUpdate: state => {
+      if (state.rows !== null) { Te = state.rows; x(state.rows); I(!0); }
+      gamecoworkEditorInstallationCache = state.cache; gamecoworkSetInstalledCache(state.cache);
+      gamecoworkSetInstalledError(state.error); gamecoworkSetInstalledBusy(state.busy); k(state.loading);
+    },
+  }), [c]);
+  n.useEffect(() => () => gamecoworkInstalledController.dispose(), [gamecoworkInstalledController]);
+  Ke("tjhub/editorInstallationsChanged", value => gamecoworkInstalledController.receive(value), [gamecoworkInstalledController]);
   n.useEffect(() => () => { gamecoworkInstalledGeneration.current++; }, []);
   const se = n.useCallback(() => {
     var M;
@@ -2084,21 +2101,9 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
           $ = !0;
           break;
         }
-    $ && ((K.current = M), Q());
+    $ && ((K.current = M), Q(!0));
   }, [ee]);
-  const Q = n.useCallback(async () => {
-    const generation = ++gamecoworkInstalledGeneration.current;
-    gamecoworkSetInstalledBusy(!0);
-    try {
-      const B = await gamecoworkReadEditorRows(c);
-      if (generation !== gamecoworkInstalledGeneration.current) return;
-      ((Te = B), x(B), gamecoworkSetInstalledError(null));
-    } catch (error) {
-      if (generation === gamecoworkInstalledGeneration.current) gamecoworkSetInstalledError(error instanceof Error ? error.message : String(error));
-    } finally {
-      if (generation === gamecoworkInstalledGeneration.current) gamecoworkSetInstalledBusy(!1);
-    }
-  }, [c]);
+  const Q = n.useCallback(refresh => gamecoworkInstalledController.read(refresh === !0), [gamecoworkInstalledController]);
   (n.useEffect(() => {
     let M = !1,
       B = null;
@@ -2118,7 +2123,7 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
     );
   }, [O, Q]),
     n.useEffect(() => {
-      const M = () => void Q();
+      const M = () => void Q(!0);
       return (
         window.addEventListener("tjhub:editorsChanged", M),
         () => window.removeEventListener("tjhub:editorsChanged", M)
@@ -2263,6 +2268,12 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
           e.jsxs("div", {
             className: t("flex flex-row items-center"),
             children: [
+              isGameCoworkLocalMode() && e.jsx(A, {
+                variant: "ghost", size: "sm", "data-testid": "gamecowork-editors-refresh",
+                className: t("ml-2 px-4 text-sm rounded-lg border border-solid border-gamecowork-color-border-subtle"),
+                disabled: gamecoworkInstalledBusy, onClick: () => void Q(!0),
+                children: gamecoworkInstalledBusy ? "扫描中…" : "刷新本机编辑器",
+              }),
               p
                 ? e.jsx(Je, {
                     className: t("ml-2 w-48"),
@@ -2307,12 +2318,13 @@ function oo({ onBack: s, onViewProjects: o, autoOpenInstallDialog: l = !1 }) {
       }),
       e.jsx("div", { className: t("mr-8"), children: e.jsx(St, { items: X, activeId: i, onSelect: N }) }),
       window.GAMECOWORK_SHELL && e.jsx("div", { "data-testid": "gamecowork-editors-local-boundary", role: "status", className: t("mr-8 mb-2 text-xs text-gamecowork-color-text-secondary"), children: "显示现有本地安装；下载安装、模块变更和移除暂未接通。" }),
+      window.GAMECOWORK_SHELL && editorInstallationCacheMessage(gamecoworkInstalledCache) && e.jsx("div", { "data-testid": "gamecowork-editors-cache-status", role: "status", className: t("mr-8 mb-2 text-xs text-gamecowork-color-text-secondary"), children: editorInstallationCacheMessage(gamecoworkInstalledCache) }),
       gamecoworkInstalledError && e.jsxs("div", {
         "data-testid": "gamecowork-editors-error", role: "alert",
         className: t("mr-8 mb-2 flex items-center gap-3 text-sm text-gamecowork-color-status-error-text"),
         children: [e.jsx("span", { children: gamecoworkInstalledError }), e.jsx(A, {
           "data-testid": "gamecowork-editors-retry", disabled: gamecoworkInstalledBusy,
-          onClick: () => void Q(), children: r("tjhub.install.retryScan", { defaultValue: "重新扫描" }),
+          onClick: () => void Q(!0), children: r("tjhub.install.retryScan", { defaultValue: "重新扫描" }),
         })],
       }),
       e.jsx(he, { "data-testid": "gamecowork-editors-list", className: t("flex-1 pr-8"), children: V }),
@@ -2338,6 +2350,12 @@ function Vt(s, o) {
 }
 let Le = null;
 function ro({ onBack: s }) {
+  const messenger = n.useContext(ue);
+  return isGameCoworkLocalMode()
+    ? e.jsx(GameCoworkUnityLicenseView, { onBack: s, messenger })
+    : e.jsx(gamecoworkOfficialLicensePage, { onBack: s });
+}
+function gamecoworkOfficialLicensePage({ onBack: s }) {
   const { t: o } = q(),
     l = n.useContext(ue),
     r = we(),
@@ -2926,6 +2944,7 @@ function jo({ onBack: s }) {
   const { t: o } = q(),
     l = n.useContext(ue),
     { ensureRosetta2: r } = ut(),
+    [gamecoworkSkippedTemplates, gamecoworkSetSkippedTemplates] = n.useState([]),
     [c, a] = n.useState([]),
     [u, x] = n.useState(!0),
     [d, b] = n.useState(null),
@@ -3005,12 +3024,13 @@ function jo({ onBack: s }) {
       let active = true;
       (async () => {
         var z;
-        (se(!0), w(null));
+        (se(!0), w(null), gamecoworkSetSkippedTemplates([]));
         try {
           const Z = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture, ...gamecoworkProjectEditor(d) });
           if (!active) return;
           if (Z.status === "success" && Z.content) {
             const oe = Z.content;
+            gamecoworkSetSkippedTemplates(Array.isArray(oe.skippedTemplates) ? oe.skippedTemplates : []);
             (N(oe.templates), w((z = oe.templates[0]) != null ? z : null));
           } else throw new Error(Z.error || "无法读取所选编辑器的本地模板");
         } catch (error) {
@@ -3029,6 +3049,7 @@ function jo({ onBack: s }) {
           const P = await l.request("tjhub/getTemplates", { version: d.version, architecture: d.architecture, ...gamecoworkProjectEditor(d) });
           if (P.status === "success" && P.content) {
             const z = P.content;
+            gamecoworkSetSkippedTemplates(Array.isArray(z.skippedTemplates) ? z.skippedTemplates : []);
             (N(z.templates),
               w((Z) => {
                 var oe;
@@ -3167,6 +3188,14 @@ function jo({ onBack: s }) {
                 ),
                 children: o("tjhub.newProject.title"),
               }),
+            ],
+          }),
+          window.GAMECOWORK_SHELL && gamecoworkSkippedTemplates.length > 0 && e.jsxs("details", {
+            "data-testid": "gamecowork-template-warnings", className: "mx-6 mt-3 text-xs text-gamecowork-color-text-secondary",
+            children: [
+              e.jsx("summary", { children: `有 ${gamecoworkSkippedTemplates.length} 个本地模板无法读取，已略过` }),
+              e.jsx("ul", { children: gamecoworkSkippedTemplates.map((item, index) =>
+                e.jsx("li", { children: `${item.archive || "未知模板"}：${item.error || "无法读取"}` }, index)) }),
             ],
           }),
           e.jsxs("div", {
@@ -5105,7 +5134,9 @@ function zo({
           e.jsx(ne, {
             size: "md",
             className: t("ml-2 w-8 flex-shrink-0 rounded-lg"),
-            tooltip: g("tjhub.licenses.title"),
+            tooltip: isGameCoworkLocalMode() ? "Unity 许可证" : g("tjhub.licenses.title"),
+            "aria-label": isGameCoworkLocalMode() ? "Unity 许可证" : g("tjhub.licenses.title"),
+            "data-testid": "gamecowork-unity-licenses-entry",
             onClick: c,
             children: e.jsx(es, { className: t("text-gamecowork-color-text-secondary") }),
           }),
@@ -5641,10 +5672,11 @@ function Vo({
   const { t: w } = q(),
     g = n.useContext(ue),
     S = ve(vs).includes(s.path),
-    k = b.some((K) => K.version === s.version && K.architecture === s.architecture),
+    k = b.some((K) => K.installationAvailable !== !1 && gamecoworkProjectMatchesEditor(s, K, !0)),
     L = Ho(),
     I = N ? ((v = L[N.status]) != null ? v : N.status) : "";
   return e.jsxs("div", {
+    "data-testid": "gamecowork-project-row", "data-project-path": s.path, "data-editor-installed": k,
     children: [
       e.jsxs("div", {
         className: t("flex flex-row h-[3.75rem] items-center justify-stretch"),
@@ -5676,6 +5708,9 @@ function Vo({
                     tooltip: s.isFavorite
                       ? w("tjhub.projects.removeFromFavorites")
                       : w("tjhub.projects.addToFavorites"),
+                    "data-testid": "gamecowork-project-favorite",
+                    "aria-pressed": !!s.isFavorite,
+                    "aria-label": w(s.isFavorite ? "tjhub.projects.removeFromFavorites" : "tjhub.projects.addToFavorites"),
                     onClick: () => u(s),
                     children: e.jsx(ss, {
                       className: t(
@@ -5756,6 +5791,11 @@ function Vo({
                         ),
                         children: s.path,
                       }),
+                      window.GAMECOWORK_SHELL && gamecoworkProjectStatusMessage(s) && e.jsx("div", {
+                        "data-testid": "gamecowork-project-status", role: "status",
+                        className: "text-xs text-gamecowork-color-text-secondary",
+                        children: gamecoworkProjectStatusMessage(s),
+                      }),
                     ],
                   }),
                   S &&
@@ -5802,7 +5842,7 @@ function Vo({
                         e.jsxs("div", {
                           className: t("flex flex-row items-center gap-1 min-w-0"),
                           children: [
-                            !b.some((K) => K.version === s.version && K.architecture === s.architecture) &&
+                            !k &&
                               e.jsx(bt, {
                                 text: w("tjhub.projects.missingEditorVersion"),
                                 children: e.jsx(Ds, {
@@ -5951,23 +5991,20 @@ function _o({
         const G = new Set(y);
         return (G.has(m) ? G.delete(m) : G.add(m), G);
       });
-    },
-    le = n.useCallback(async () => {
-      try {
-        const m = await b.request("tjhub/getEditors", void 0);
-        if (m.status === "success" && m.content) {
-          const y = Object.values(m.content);
-          ((rt = y), T(y));
-        }
-      } catch {}
-    }, [b]);
+    };
+  const gamecoworkProjectEditors = n.useMemo(() => createEditorInstallationsController({ messenger: b,
+    normalize: value => value, local: !!window.GAMECOWORK_SHELL, initialRows: rt,
+    onUpdate: state => { if (state.rows !== null) { rt = state.rows; T(state.rows); } },
+  }), [b]);
+  Ke("tjhub/editorInstallationsChanged", value => gamecoworkProjectEditors.receive(value), [gamecoworkProjectEditors]);
   n.useEffect(() => {
-    le();
-  }, [le]);
-  const _ = n.useCallback(async () => {
+    void gamecoworkProjectEditors.read();
+    return () => gamecoworkProjectEditors.dispose();
+  }, [gamecoworkProjectEditors]);
+  const _ = n.useCallback(async (refresh = !1) => {
     ((L.current = Date.now()), ke === null && C(!0));
     try {
-      const m = await b.request("tjhub/getRecentProjects", void 0);
+      const m = await b.request("tjhub/getRecentProjects", window.GAMECOWORK_SHELL && refresh === !0 ? { refresh: !0 } : void 0);
       if (m.status === "success" && Array.isArray(m.content)) {
         const G = m.content
           .map((F) => {
@@ -5984,11 +6021,17 @@ function _o({
               preferredEditorPath: typeof F.preferredEditorPath === "string" ? F.preferredEditorPath : void 0,
               title: String((Ve = F.title) != null ? Ve : ""),
               path: te,
+              pathExists: typeof F.pathExists === "boolean" ? F.pathExists : void 0,
+              lockFilePresent: F.lockFilePresent === !0,
+              metadataWarning: typeof F.metadataWarning === "string" ? F.metadataWarning : null,
               version: String(($e = F.version) != null ? $e : ""),
               architecture: String((_e = F.architecture) != null ? _e : ""),
               isFavorite: !!F.isFavorite,
               cloudConnected: !!F.plasticSCMEnabled,
               lastModified: ce,
+              lastModifiedUnixMs: Number.isFinite(F.lastModifiedUnixMs) ? F.lastModifiedUnixMs : null,
+              scanIncomplete: F.scanIncomplete === !0,
+              recencyWarning: typeof F.recencyWarning === "string" ? F.recencyWarning : null,
               editorVersion: String((qe = F.version) != null ? qe : ""),
               semver: (Ue = F.semver) != null ? Ue : null,
               cliArgs: (We = F.cliArgs) != null ? We : null,
@@ -5999,8 +6042,8 @@ function _o({
             };
           })
           .filter((F, te, ce) => ce.findIndex((fe) => fe.path === F.path) === te);
-        ((ke = G), w(G));
-      } else ((ke = []), w([]));
+        ((ke = G), w(G), R(null));
+      } else throw new Error(m.error || "无法刷新项目列表");
     } catch (m) {
       R(m instanceof Error ? m.message : String(m));
     } finally {
@@ -6025,7 +6068,7 @@ function _o({
               ? te.isFavorite
                 ? -1
                 : 1
-              : new Date(ce.lastModified).getTime() - new Date(te.lastModified).getTime();
+              : gamecoworkProjectModifiedAt(ce) - gamecoworkProjectModifiedAt(te);
           if (U === "badge") {
             const Ne =
                 (Be = m[(Oe = (Pe = Y[te.path]) == null ? void 0 : Pe.status) != null ? Oe : "unsupported"]) != null
@@ -6035,7 +6078,7 @@ function _o({
                 ($e = m[(Ve = (He = Y[ce.path]) == null ? void 0 : He.status) != null ? Ve : "unsupported"]) != null
                   ? $e
                   : 4;
-            return Ne !== Me ? Ne - Me : new Date(ce.lastModified).getTime() - new Date(te.lastModified).getTime();
+            return Ne !== Me ? Ne - Me : gamecoworkProjectModifiedAt(ce) - gamecoworkProjectModifiedAt(te);
           }
           if (U === "cloud") {
             const Ne = !!te.repositoryName,
@@ -6044,13 +6087,13 @@ function _o({
               ? Ne
                 ? -1
                 : 1
-              : new Date(ce.lastModified).getTime() - new Date(te.lastModified).getTime();
+              : gamecoworkProjectModifiedAt(ce) - gamecoworkProjectModifiedAt(te);
           }
           return (
             U === "name"
               ? (fe = te.title.localeCompare(ce.title))
               : U === "modified"
-                ? (fe = new Date(te.lastModified).getTime() - new Date(ce.lastModified).getTime())
+                ? (fe = gamecoworkProjectModifiedAt(te) - gamecoworkProjectModifiedAt(ce))
                 : U === "version"
                   ? (fe = ((_e = te.semver) != null ? _e : "").localeCompare((qe = ce.semver) != null ? qe : ""))
                   : U === "size" &&
@@ -6341,7 +6384,7 @@ function _o({
     },
     Ee = async () => {
       const m = await b.request("tjhub/getLicenses", void 0);
-      return m.status === "success" && m.content ? m.content.isValid : !1;
+      return m.status === "success" && workspaceLicenseAllowsOperation(m.content);
     },
     Fe = () => {
       (i(D(!0)),
@@ -6431,7 +6474,7 @@ function _o({
                         ).json();
                         if (ce.cancelled || !ce.path) return;
                         (await b.request("tjhub/locateEditor", { path: ce.path })).status === "success" &&
-                          (window.dispatchEvent(new CustomEvent("tjhub:editorsChanged")), await le(), s());
+                          (window.dispatchEvent(new CustomEvent("tjhub:editorsChanged")), await gamecoworkReadEditorRows(b, !0), s());
                       } catch {}
                   },
                   onInstall: () => {
@@ -6471,6 +6514,13 @@ function _o({
             : a
           : null,
         onClearVersionFilter: x,
+      }),
+      window.GAMECOWORK_SHELL && e.jsx("div", {
+        className: "flex justify-end pr-11 mb-2",
+        children: e.jsx(A, {
+          "data-testid": "gamecowork-projects-refresh", variant: "ghost", size: "sm",
+          onClick: () => void _(!0), children: "刷新本机项目",
+        }),
       }),
       g && !S
         ? e.jsxs(e.Fragment, {
@@ -6593,6 +6643,7 @@ function or() {
         ));
     }, [i, r]),
     p = n.useCallback(() => {
+      if (isGameCoworkLocalMode()) { a("licenses"); return; }
       (r(D(!0)),
         r(
           ie({

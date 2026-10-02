@@ -4,6 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
+import { createAssetGenerationComponents } from "../../src/frontend/bundle/assets/gamecowork-asset-generation.js";
 
 // Execute the shipped messenger class and desktop relay, with isolated host/window
 // fixtures. No app, core, Unity, provider, network, or user-data process is started.
@@ -51,10 +52,15 @@ function between(source, start, end) {
   assert.ok(a >= 0 && b > a, `Source markers found: ${start}`);
   return source.slice(a, b);
 }
+function namedFunction(source, name) {
+  const start = source.indexOf(`function ${name}(`), end = source.indexOf('\n}', start);
+  assert.ok(start >= 0 && end > start, 'Actual function ' + name);
+  return source.slice(start, end + 2);
+}
 
 const flush = () => new Promise((resolve) => setImmediate(resolve));
 
-function fixture(spec, { ready = true } = {}) {
+function fixture(spec, { ready = true, hostEnvironment = false } = {}) {
   const source = fs.readFileSync(path.join(root, "src/frontend/bundle/assets", spec.file), "utf8");
   const desktop = fs.readFileSync(path.join(root, "src/frontend/bundle", spec.desktop), "utf8");
   const classSource = between(source, `const ${spec.className} = class ${spec.className} {`, "\n};\n") + "\n};";
@@ -76,6 +82,7 @@ function fixture(spec, { ready = true } = {}) {
   const sent = [];
   const errors = [];
   const abortedStreams = new Set();
+  let hostAvailable = false;
   const state = {
     hub: {
       isHubMode: true,
@@ -114,8 +121,8 @@ function fixture(spec, { ready = true } = {}) {
     Ooe: class {},
     Roe: class {},
     nS: () => false,
-    As: () => true,
-    Is: () => true,
+    As: () => !hostEnvironment || hostAvailable,
+    Is: () => !hostEnvironment || hostAvailable,
     Lo: () => ({ getState: () => state }),
     Ng: (sessionId) => (store) => store.session.sessions[sessionId]?.workspaceId,
     V4e: () => ({ runOn: "local", workspaceDir: "F:/fixture/a" }),
@@ -123,6 +130,7 @@ function fixture(spec, { ready = true } = {}) {
     _Oe: (messageId) => abortedStreams.delete(messageId),
     bOe: (messageId) => abortedStreams.add(messageId),
   });
+  if (hostEnvironment) context.localStorage = {};
   context[spec.timeoutBase] = 60000;
   context[spec.streamSet] = new Set();
   context[spec.streamRecovery] = 60000;
@@ -153,6 +161,7 @@ function fixture(spec, { ready = true } = {}) {
     errors,
     timers,
     listeners,
+    setHostAvailable(value) { hostAvailable = value; },
     get now() { return now; },
     onSend(handler) { onSend = handler; },
     reply(messageId, data, messageType = sent.at(-1)?.messageType) {
@@ -189,8 +198,36 @@ function invoke(messenger, method) {
 }
 
 for (const spec of generations) {
+  test(`${spec.name}: the client created before native bootstrap resumes a real handshake without assuming readiness`, async () => {
+    const f = fixture(spec, { ready: false, hostEnvironment: true });
+    assert.equal(f.messenger.connectionReady, false); assert.equal(f.sent.length, 0);
+    f.setHostAvailable(true);
+    const request = f.messenger.request("history/list", { sessionId: "session-a" });
+    await flush(); assert.equal(f.sent.length, 0); assert.equal(f.messenger.connectionReadyCallbacks.length, 1);
+    f.onSend(message => f.reply(message.messageId, { status: "success", done: true, content: message.messageType === "ping" ? "pong" : ["owned"] }, message.messageType));
+    f.messenger.resumeHealthCheck(); f.messenger.resumeHealthCheck();
+    const value = await request; await flush();
+    assert.equal(value.status, "success"); assert.equal(f.messenger.connectionReady, true);
+    assert.equal(f.sent.filter(message => message.messageType === "ping").length, 1);
+    assert.equal(f.sent.filter(message => message.messageType === "history/list").length, 1); f.assertClean();
+  });
+  test(`${spec.name}: an obsolete health probe cannot mark a stopped and resumed generation ready`, async () => {
+    const f = fixture(spec, { ready: false, hostEnvironment: true }); f.setHostAvailable(true);
+    f.messenger.resumeHealthCheck(); const old = f.sent.at(-1); f.messenger.stopHealthCheck();
+    f.messenger.resumeHealthCheck(); const current = f.sent.at(-1); assert.notEqual(old.messageId, current.messageId);
+    f.reply(old.messageId, { status: "success", content: "pong" }, "ping"); await flush();
+    assert.equal(f.messenger.connectionReady, false);
+    f.reply(current.messageId, { status: "success", content: "pong" }, "ping"); await flush();
+    assert.equal(f.messenger.connectionReady, true); await f.advance(5000);
+    assert.equal(f.sent.filter(message => message.messageType === "ping").length, 2); f.assertClean();
+  });
+  test(`${spec.name}: unavailable non-native environments remain unready instead of being marked ready`, async () => {
+    const f = fixture(spec, { ready: false, hostEnvironment: true });
+    f.messenger.resumeHealthCheck(); await flush(); await f.advance(5000);
+    assert.equal(f.messenger.connectionReady, false); assert.equal(f.sent.length, 0); f.assertClean();
+  });
   for (const localMode of [true, false]) {
-    test(`${spec.name}: asset/Canvas entry ${localMode ? "uses a local pending page" : "preserves other hosts"}`, () => {
+    test(`${spec.name}: asset/Canvas entry ${localMode ? "mounts the original host components" : "preserves other hosts"}`, () => {
       const source = fs.readFileSync(path.join(root, "src/frontend/bundle/assets", spec.gui), "utf8");
       const helpers = between(source, "function gamecoworkUsesLocalAssetPage() {", `function ${spec.assetPanel}(`);
       const main = between(source, `function ${spec.assetPanel}(`, "function gamecoworkLegacyAssetPanel(");
@@ -199,31 +236,33 @@ for (const spec of generations) {
       const context = vm.createContext({
         window: { GAMECOWORK_SHELL: localMode, parent: {} },
         a: { jsx: (component, props) => ({ component: component.name, props }) },
+        createAssetGenerationComponents,
+        d: { createElement() {}, lazy: (load) => ({ load }) }, qt: () => localMode,
         gamecoworkLegacyAssetPanel() {}, gamecoworkLegacyCanvasFrame() {}, gamecoworkLegacyCanvasPanel() {},
       });
       vm.runInContext(`${helpers}\n${main}\n${frame}\n${canvas}\nglobalThis.entries = [${spec.assetPanel}, ${spec.assetFrame}, ${spec.assetCanvas}];`, context);
-      const expected = localMode ? ["gamecoworkAssetPending", "gamecoworkAssetPending", "gamecoworkAssetPending"]
-        : ["gamecoworkLegacyAssetPanel", "gamecoworkLegacyCanvasFrame", "gamecoworkLegacyCanvasPanel"];
+      const expected = ["gamecoworkLegacyAssetPanel", "gamecoworkLegacyCanvasFrame", "gamecoworkLegacyCanvasPanel"];
       assert.deepEqual([...context.entries].map((entry) => entry({}).component), expected);
       context.window.GAMECOWORK_SHELL = false;
       context.window.parent.GAMECOWORK_SHELL = true;
-      assert.equal(context.entries[0]({}).component, "gamecoworkAssetPending", "Same-origin child inherits its own local host boundary");
+      assert.deepEqual([...context.entries].map((entry) => entry({}).component), expected, "Same-origin child preserves the original host components");
     });
   }
 
-  test(`${spec.name}: shared asset bridge does not publish auth or project data in the local host`, () => {
+  test(`${spec.name}: original asset bridge synchronizes local theme and locale without ever reading or publishing credentials`, () => {
     const source = fs.readFileSync(path.join(root, "src/frontend/bundle/assets", spec.gui), "utf8");
-    const helper = between(source, "function gamecoworkUsesLocalAssetPage() {", "function gamecoworkAssetPending(");
+    const helper = between(source, "function gamecoworkUsesLocalAssetPage() {", "const { AssetPanel: gamecoworkLocalAssetPanel,");
     const bridge = between(source, `function ${spec.assetBridge}(`, spec.assetBridgeEnd);
     const sent = [];
     const listeners = [];
-    const frame = { postMessage: (message) => sent.push(message) };
+    const frame = { postMessage: (message, origin) => sent.push({message,origin}) };
+    const session = { get accessToken() { throw new Error('Native asset bridge must never read a token'); } };
     const i18n = { language: "zh", t: () => "https://ai-generator.tuanjie.cn/lab3d" };
     const context = vm.createContext({
-      URL, window: { GAMECOWORK_SHELL: true, parent: {}, addEventListener: (_type, handler) => listeners.push(handler), removeEventListener() {} },
+      URL, window: { GAMECOWORK_SHELL: true, location: {origin:'http://127.0.0.1:41234'}, parent: {}, addEventListener: (_type, handler) => listeners.push(handler), removeEventListener() {} },
       document: { documentElement: {}, body: {} }, MutationObserver: class { observe() {} disconnect() {} },
       d: { useCallback: (fn) => fn, useRef: (value) => ({ current: value }), useEffect: (fn) => fn() },
-      Ie: () => ({ i18n }), ke: () => ({ i18n }), yn: () => ({ session: { accessToken: "fixture-token" } }),
+      Ie: () => ({ i18n }), ke: () => ({ i18n }), yn: () => ({ session }),
       M: () => "chinese", h3: () => false, p3: "https://ai-generator.tuanjie.cn/lab3d", wo: () => false,
       g3: (url) => new URL(url).origin, ad: () => "dark", Ad: () => "dark", Xv: () => "zh", qv: () => "zh",
       fixtureRef: { current: { contentWindow: frame } },
@@ -234,8 +273,54 @@ for (const spec of generations) {
       context.f3 = () => false;
     }
     vm.runInContext(`${helper}\n${bridge}\n${spec.assetBridge}({iframeRef: fixtureRef});`, context);
-    for (const listener of listeners) listener({ source: frame, origin: "https://ai-generator.tuanjie.cn", data: { type: "gamecowork:ready" } });
-    assert.deepEqual(sent, [], "No auth/workspace/theme data is published to the old service");
+    assert.ok(sent.some(row=>row.message.type==='gamecowork:local-session-changed'));
+    assert.ok(sent.some(row=>row.message.type==='codely:theme'&&row.message.theme==='dark'));
+    assert.ok(sent.some(row=>row.message.type==='codely:locale'&&row.message.locale==='zh'));
+    const count=sent.length;
+    for (const listener of listeners) {
+      listener({ source: frame, origin: "https://ai-generator.tuanjie.cn", data: { type: "codely:ready" } });
+      listener({ source: {}, origin: "http://127.0.0.1:41234", data: { type: "codely:ready" } });
+      listener({ source: frame, origin: "null", data: { type: "codely:ready" } });
+    }
+    assert.equal(sent.length,count,'Wrong origin or frame cannot trigger identity/theme delivery');
+    for(const listener of listeners)listener({source:frame,origin:'http://127.0.0.1:41234',data:{type:'codely:ready'}});
+    assert.equal(sent.length,count+3);
+    assert.ok(sent.every(row=>row.origin==='http://127.0.0.1:41234'&&!('token' in row.message)&&row.message.type!=='codely:auth'));
+  });
+  test(`${spec.name}: native creator and Canvas URLs capture each render's workspace while preserving original remote hosts elsewhere`, () => {
+    const source=fs.readFileSync(path.join(root,'src/frontend/bundle/assets',spec.gui),'utf8'),old=spec.name==='previous';
+    const names={creator:old?'TG':'MG',history:old?'LG':'jG',canvas:old?'Zz':'nq',canvasBase:old?'yg':'bg'};
+    for(const local of [true,false]) {
+      const window={GAMECOWORK_SHELL:local,parent:{},location:{origin:'http://127.0.0.1:41234'},localStorage:{getItem(){assert.equal(local,false,'Native creator must not consult an external URL override');return'https://owned-other-host.invalid/lab3d';}}};
+      const context=vm.createContext({window,URL,URLSearchParams,ad:()=> 'dark',Ad:()=> 'dark',TG:'original-override',FG:'original-override',[names.canvasBase]:local?window.location.origin:'https://aicanvas.tuanjie.cn'});
+      vm.runInContext([namedFunction(source,'gamecoworkUsesLocalAssetPage'),namedFunction(source,'gamecoworkAssetLocalUrl'),namedFunction(source,names.creator),namedFunction(source,names.history),namedFunction(source,names.canvas)].join('\n')+`\nglobalThis.paths={creator:${names.creator},history:${names.history},canvas:${names.canvas}};`,context);
+      const creator=new URL(context.paths.creator('https://ai-generator.tuanjie.cn/lab3d','owned-A')),history=new URL(context.paths.history(creator.toString())),canvas=new URL(context.paths.canvas('F:/Owned/Project A','owned-A'));
+      assert.equal(creator.origin,local?window.location.origin:'https://owned-other-host.invalid');assert.equal(creator.pathname,'/lab3d');assert.equal(creator.searchParams.get('host'),'codely');assert.equal(history.pathname,'/generation-history');
+      assert.equal(canvas.origin,local?window.location.origin:'https://aicanvas.tuanjie.cn');assert.equal(canvas.searchParams.get('workspace_name'),'Project A');assert.match(canvas.searchParams.get('workspace_hash'),/^[a-f0-9]{8}$/);
+      if(local){assert.equal(creator.searchParams.get('gamecoworkWorkspace'),'owned-A');assert.equal(creator.searchParams.get('theme'),'dark');assert.equal(canvas.pathname,'/codely-canvas/home');assert.equal(canvas.searchParams.get('gamecoworkWorkspace'),'owned-A');assert.notEqual(context.paths.creator('', 'owned-B'),creator.toString());assert.equal(new URL(context.paths.creator('', '')).searchParams.get('gamecoworkWorkspace'),'');}
+    }
+  });
+  test(`${spec.name}: both actual Canvas hosts honor local source/origin and never consult a native token fallback`, () => {
+    const source=fs.readFileSync(path.join(root,'src/frontend/bundle/assets',spec.gui),'utf8'),old=spec.name==='previous';
+    for(const standalone of [false,true]) {
+      const sent=[],listeners=[],frame={postMessage:(message,origin)=>sent.push({message,origin})},session={get accessToken(){throw Error('Native Canvas must never read an access token');}};
+      const jsx=(_type,props)=>props,workspaces=[{workspaceKey:'owned-A',workspaceDir:'F:/Owned/Project A'}];
+      const context=vm.createContext({URL,URLSearchParams,window:{GAMECOWORK_SHELL:true,location:{origin:'http://127.0.0.1:41234'},parent:{},addEventListener:(_name,handler)=>listeners.push(handler),removeEventListener(){}},
+        document:{documentElement:{getAttribute:()=> 'dark'},body:{}},MutationObserver:class{observe(){}disconnect(){}},
+        d:{useRef:value=>({current:value===null?{contentWindow:frame}:value}),useState:value=>[typeof value==='function'?value():value,()=>{}],useCallback:value=>value,useEffect:callback=>callback()},
+        a:{jsx,jsxs:jsx},Z:()=>'',J:()=>'',Ie:()=>({t:(_key,fallback)=>fallback}),ke:()=>({t:(_key,fallback)=>fallback}),yn:()=>({session}),wo:()=>false,
+        ls:'workspaces',Ps:'active',vc:'modal',M:selector=>selector==='workspaces'?workspaces:selector==='active'?'owned-A':selector==='modal'?null:false,
+        Ge:()=>()=>{},ze:()=>()=>{},Ea:()=>({}),Zr:'header',f3:'icon',d3:'icon',ad:()=> 'dark',Ad:()=> 'dark',Ax:()=> 'dark',ix:()=> 'dark',kF(){throw Error('Native Canvas must not request a credential fallback');},
+        gamecoworkUsesLocalAssetPage:()=>true,
+      });
+      const origin=old?'qm':'Jm',home=old?'IG':'FG',check=old?'SG':'UG',base=old?'yg':'bg',canvasUrl=old?'Zz':'nq';
+      vm.runInContext(namedFunction(source,'gamecoworkAssetLocalUrl')+`\nconst ${origin}=window.location.origin,${home}=${origin}+"/codely-canvas/home",${check}=${origin},${base}=${origin},Di=${origin};\n`+namedFunction(source,canvasUrl)+'\n'+namedFunction(source,standalone?'gamecoworkLegacyCanvasPanel':'gamecoworkLegacyCanvasFrame')+`\n${standalone?'gamecoworkLegacyCanvasPanel({})':'gamecoworkLegacyCanvasFrame({src:"http://127.0.0.1:41234/codely-canvas/home",title:"Canvas"})'};`,context);
+      for(const listener of listeners){listener({source:frame,origin:'https://aicanvas.tuanjie.cn',data:{type:'ai-canvas-ready'}});listener({source:{},origin:'http://127.0.0.1:41234',data:{type:'ai-canvas-ready'}});}
+      assert.equal(sent.length,0,'Foreign origin/frame cannot trigger Canvas host responses');
+      for(const listener of listeners)listener({source:frame,origin:'http://127.0.0.1:41234',data:{type:'ai-canvas-ready'}});
+      assert.ok(sent.some(row=>row.message.type==='gamecowork:local-session-changed'));assert.ok(sent.some(row=>row.message.type==='embed-style'));assert.ok(sent.some(row=>row.message.type==='codely:workspaces'));
+      assert.ok(sent.every(row=>row.origin==='http://127.0.0.1:41234'&&!('token'in row.message)&&!['cowork-token','logout'].includes(row.message.type)));
+    }
   });
 
   for (const localMode of [true, false]) {

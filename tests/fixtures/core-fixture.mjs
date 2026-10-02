@@ -11,6 +11,16 @@ if (!dataDir.toLowerCase().startsWith(allowed.toLowerCase() + path.sep)) {
   throw new Error("Core fixture requires an isolated temp/GameCowork directory");
 }
 fs.mkdirSync(dataDir, { recursive: true });
+// The default advertised Editor paths are inert owned files, so the real
+// installation cache can inspect their metadata. Never overwrite a launch
+// fixture already compiled at one of these paths or materialize custom inputs.
+if (!process.env.GAMECOWORK_FIXTURE_HUB_SNAPSHOT && !process.env.GAMECOWORK_FIXTURE_TEMPLATE_EDITOR) {
+  for (const name of ["Unity.exe", "Tuanjie.exe"]) {
+    const file = path.join(dataDir, "fake-editors", name);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    if (!fs.existsSync(file)) fs.writeFileSync(file, "OWNED EDITOR METADATA FIXTURE - NEVER EXECUTED\n", { flag: "wx" });
+  }
+}
 const logFile = process.env.GAMECOWORK_FIXTURE_LOG || path.join(dataDir, "fixture-frames.jsonl");
 const projects = {
   a: process.env.GAMECOWORK_FIXTURE_PROJECT_A || path.join(dataDir, "projects", "A Unity 中文"),
@@ -55,8 +65,8 @@ function hub() {
   return [
     { product: "unity", projects: [{ path: projects.a, editor_version: "2022.3.1f1", last_modified_display: "2026-10-01T00:00:00Z" }],
       editors: [{ path: path.join(dataDir, "fake-editors", "Unity.exe"), version: "2022.3.1f1" }] },
-    { product: "tuanjie", projects: [{ path: projects.b, editor_version: "1.6.1", tuanjie_editor_version: "1.6.1", last_modified_display: "2026-10-01T00:00:00Z" }],
-      editors: [{ path: path.join(dataDir, "fake-editors", "Tuanjie.exe"), version: "1.6.1", tuanjie_editor_version: "1.6.1" }] },
+    { product: "tuanjie", projects: [{ path: projects.b, editor_version: "2022.3.2f1", tuanjie_editor_version: "1.6.1", last_modified_display: "2026-10-01T00:00:00Z" }],
+      editors: [{ path: path.join(dataDir, "fake-editors", "Tuanjie.exe"), version: "2022.3.2f1", tuanjie_editor_version: "1.6.1" }] },
   ];
 }
 
@@ -105,22 +115,29 @@ function receive(message) {
       return failure(message, "Fixture workspace initialization failed");
     }
     workspaces.set(workspaceId, workspace);
+    if (process.env.GAMECOWORK_FIXTURE_SLOW_INIT_MATCH && String(workspace).includes(process.env.GAMECOWORK_FIXTURE_SLOW_INIT_MATCH)) {
+      setTimeout(() => success(message, {ok:true}), 2500);
+      return;
+    }
     return success(message, { ok: true });
   }
   if (kind === "shutdownWorkspace") {
     workspaces.delete(message.data?.workspaceId);
     return success(message, { ok: true });
   }
-  if (kind === "unity/getHubProjectsAndEditors") {
+  if (["unity/getHubProjectsAndEditors", "unity/getHubProjects", "unity/getHubEditors"].includes(kind)) {
+    const selectedHub = () => hub().map(group => ({...group,
+      ...(kind === "unity/getHubProjects" ? {editors:[]} : {}),
+      ...(kind === "unity/getHubEditors" ? {projects:[]} : {})}));
     const hubDelay = Number(process.env.GAMECOWORK_FIXTURE_HUB_DELAY_MS || 0);
     if (hubDelay > 0 && counts.get(countKey) > 1) {
-      setTimeout(() => success(message,hub()),hubDelay);
+      setTimeout(() => success(message,selectedHub()),hubDelay);
       return;
     }
     const mode = process.env.GAMECOWORK_FIXTURE_HUB_MODE || "normal";
     if (mode === "error") return failure(message, "Fixture Hub scan failed");
     if (mode === "invalid") return success(message, { invalid: true });
-    return success(message, mode === "empty" ? [] : hub());
+    return success(message, mode === "empty" ? [] : selectedHub());
   }
   if (kind === "fixture/getStats") return success(message, { counts: Object.fromEntries(counts), workspaces: Object.fromEntries(workspaces) });
   if (!workspaces.has(message.workspaceId)) return failure(message, `Fixture workspace is not initialized: ${message.workspaceId}`);
@@ -162,6 +179,12 @@ function receive(message) {
   if (kind === "settings/getGameCoworkHome") return success(message, { path: process.env.GAMECOWORK_CLI_HOME || path.join(dataDir, "cli-state"), isConfigured: false });
   if (kind === "getHomedir") return success(message, dataDir);
   if (kind === "history/list") return success(message, []);
+  // The general UI fixture has no generation Providers, tasks or saved Canvas.
+  // Only read-only empty state is modelled here; media/CRUD tests use the owned
+  // asset-service Provider fixture and the real Core instead.
+  if (kind === "generator/listProviders") return success(message, { providers: [] });
+  if (kind === "generator/listTasks") return success(message, { tasks: [], total: 0, page: message.data?.page || 1, size: 0 });
+  if (kind === "generator/getCanvas") return success(message, { canvas: { version: 1, nodes: [], edges: [] }, workspaceKey: message.data?.workspaceKey || "default" });
   if (kind === "config/getSerializedProfileInfo") return success(message, {
     result: { config: { models: [], selectedModelByRole: { chat: null, apply: null, edit: null, summarize: null, rerank: null, embed: null },
       slashCommands: [], contextProviders: [], tools: [], mcpServerStatuses: [], language: "zh" }, errors: [], configLoadInterrupted: false },

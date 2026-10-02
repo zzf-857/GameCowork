@@ -1,5 +1,9 @@
+import { gamecoworkGetStoreMessenger } from "./store-c6kNGz30.js";
+import { createGameCoworkHistoryOperations } from "./gamecowork-history-operations.js";
+import { eQ as gamecoworkHistoryToast } from "./registry-BL-NPVNy.js";
 import { gamecoworkWorkspaceTransition, gamecoworkWorkspaceLive, gamecoworkWorkspaceLease, gamecoworkWorkspaceLeaseCurrent, gamecoworkWorkspaceOwnerEpoch } from "./VscTheme-BExNMG_K.js";
 import { gamecoworkWaitShellApproval, gamecoworkResolveShellApproval } from "./VscTheme-BExNMG_K.js";
+import { createAssetGenerationComponents } from "./gamecowork-asset-generation.js";
 const __vite__mapDeps = (
   i,
   m = __vite__mapDeps,
@@ -22649,6 +22653,7 @@ function hj() {
 function gamecoworkScheduleDialogFocus(ref, selectInput) {
   const owner = ref.current;
   if (!owner) return () => {};
+  if (document.activeElement !== owner && owner.contains(document.activeElement)) return () => {};
   const target = owner.querySelector('input:not([disabled]):not([type="hidden"]), textarea:not([disabled])') || owner,
     originalFocus = document.activeElement,
     href = window.location.href,
@@ -22697,11 +22702,12 @@ const Mm = (e) => {
       r = (i = e.selectInputOnFocus) != null ? i : !0;
     return (
       d.useEffect(() => {
-        if (e.showDialog) {
-          n.requestFocus("dialog", "high");
-          return gamecoworkScheduleDialogFocus(t, r);
-        }
-        n.releaseFocus("dialog");
+        if (!e.showDialog) return;
+        n.requestFocus("dialog", "high");
+        return () => n.releaseFocus("dialog");
+      }, [e.showDialog]),
+      d.useEffect(() => {
+        if (e.showDialog) return gamecoworkScheduleDialogFocus(t, r);
       }, [e.showDialog, r, e.message]),
       at("Escape", () => (e.onClose(), !0), {
         priority: it.DIALOG,
@@ -38749,14 +38755,14 @@ function g3(e) {
 function Jv(e, t, n) {
   var r;
   const s = (r = e.current) == null ? void 0 : r.contentWindow;
-  s && s.postMessage({ type: "gamecowork:prefill", prefill: n }, t);
+  s && s.postMessage({ type: "codely:prefill", prefill: n }, t);
 }
 function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
   const { i18n: s } = Ie(),
     { session: r } = yn(),
     o = M((p) => p.config.config.language),
-    i = g3(s.t("generation.creatorUrl", { defaultValue: p3 })),
-    A = h3(),
+    i = gamecoworkUsesLocalAssetPage() ? window.location.origin : g3(s.t("generation.creatorUrl", { defaultValue: p3 })),
+    A = gamecoworkUsesLocalAssetPage() ? !1 : h3(),
     c = A ? "*" : i,
     l = d.useCallback(
       () =>
@@ -38769,7 +38775,6 @@ function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
     ),
     u = d.useCallback(
       (p) => {
-        if (gamecoworkUsesLocalAssetPage()) return;
         l().forEach(({ key: m, frame: g }) => {
           g.contentWindow && p(g.contentWindow, m);
         });
@@ -38778,13 +38783,16 @@ function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
     ),
     f = d.useCallback(
       (p) => {
-        if (gamecoworkUsesLocalAssetPage() || !p) return;
-        const m = r && !wo(r) ? r.accessToken : null;
-        p.postMessage({ type: "gamecowork:auth", token: m }, c);
+        if (!p) return;
+        if (gamecoworkUsesLocalAssetPage()) p.postMessage({ type: "gamecowork:local-session-changed" }, c);
+        else {
+          const m = r && !wo(r) ? r.accessToken : null;
+          p.postMessage({ type: "codely:auth", token: m }, c);
+        }
         const g = ad();
-        p.postMessage({ type: "gamecowork:theme", theme: g }, c);
+        p.postMessage({ type: "codely:theme", theme: g }, c);
         const w = Xv(o, s.language);
-        p.postMessage({ type: "gamecowork:locale", locale: w }, c);
+        p.postMessage({ type: "codely:locale", locale: w }, c);
       },
       [r, c, o, s.language],
     ),
@@ -38798,7 +38806,7 @@ function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
       const p = (m) => {
         if (m.origin !== i && !(A && m.origin === "null")) return;
         const g = m.data;
-        if ((g == null ? void 0 : g.type) === "gamecowork:ready") {
+        if ((g == null ? void 0 : g.type) === "codely:ready") {
           const w = l().find(({ frame: y }) => y.contentWindow === m.source);
           if (!(w != null && w.frame.contentWindow)) return;
           (f(w.frame.contentWindow), n == null || n(w.key));
@@ -38808,7 +38816,7 @@ function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
     }, [i, A, f, l, n]),
     d.useEffect(() => {
       const p = () => {
-          u((w) => w.postMessage({ type: "gamecowork:theme", theme: ad() }, c));
+          u((w) => w.postMessage({ type: "codely:theme", theme: ad() }, c));
         },
         m = new MutationObserver(p);
       m.observe(document.documentElement, { attributes: !0, attributeFilter: ["data-theme"] });
@@ -38822,23 +38830,25 @@ function kG({ iframeRef: e, iframeRefs: t, onReady: n }) {
       );
     }, [c, u]),
     d.useEffect(() => {
+      if (gamecoworkUsesLocalAssetPage()) {
+        u((p) => p.postMessage({ type: "gamecowork:local-session-changed" }, c));
+        return;
+      }
       if (r === void 0) return;
       const p = r && !wo(r) ? r.accessToken : null;
-      u((m) => m.postMessage({ type: "gamecowork:auth", token: p }, c));
+      u((m) => m.postMessage({ type: "codely:auth", token: p }, c));
     }, [r, c, u]),
     d.useEffect(() => {
-      u((p) => p.postMessage({ type: "gamecowork:locale", locale: Xv(o, s.language) }, c));
+      u((p) => p.postMessage({ type: "codely:locale", locale: Xv(o, s.language) }, c));
     }, [o, s.language, c, u]),
     null
   );
 }
-const Jm = "https://aicanvas.tuanjie.cn",
-  FG = `${Jm}/home`,
+const Jm = gamecoworkUsesLocalAssetPage() ? window.location.origin : "https://aicanvas.tuanjie.cn",
+  FG = `${Jm}${gamecoworkUsesLocalAssetPage() ? "/codely-canvas/home" : "/home"}`,
   UG = new URL(Jm).origin;
 function QG({ src: e, title: t, testId: n = "canvas-frame" }) {
-  return gamecoworkUsesLocalAssetPage()
-    ? a.jsx(gamecoworkAssetPending, {})
-    : a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });
+  return a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });
 }
 function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-frame" }) {
   const { t: s } = Ie(),
@@ -38865,7 +38875,7 @@ function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-fra
         .pop() || w.workspaceKey,
     workspaceHash: w.workspaceKey,
   }));
-  const f = r && !wo(r) ? r.accessToken : null,
+  const f = !gamecoworkUsesLocalAssetPage() && r && !wo(r) ? r.accessToken : null,
     h = d.useCallback((w) => {
       var y, b;
       (b = (y = i.current) == null ? void 0 : y.contentWindow) == null || b.postMessage(w, Jm);
@@ -38891,9 +38901,9 @@ function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-fra
         if (!(!b || typeof b != "object")) {
           if (b.type === "ai-canvas-ready")
             ((A.current = !0),
-              f && h({ type: "cowork-token", token: f }),
+              gamecoworkUsesLocalAssetPage() ? h({ type: "gamecowork:local-session-changed" }) : f && h({ type: "cowork-token", token: f }),
               h({ type: "embed-style", style: p }),
-              h({ type: "gamecowork:workspaces", workspaces: u.current }));
+              h({ type: "codely:workspaces", workspaces: u.current }));
           else if (b.type === "openurl" && typeof b.url == "string") {
             const { url: x, filename: E } = b;
             fetch(`${window.location.origin}/api/tauri/download-url`, {
@@ -38909,6 +38919,7 @@ function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-fra
   const g = d.useRef(f);
   return (
     d.useEffect(() => {
+      if (gamecoworkUsesLocalAssetPage()) return;
       const w = g.current;
       ((g.current = f), A.current && (f ? h({ type: "cowork-token", token: f }) : w !== null && h({ type: "logout" })));
     }, [f, h]),
@@ -38976,7 +38987,8 @@ async function NG(e) {
     return;
   }
 }
-function MG(e) {
+function MG(e, gamecoworkWorkspaceKey = "") {
+  if (gamecoworkUsesLocalAssetPage()) return gamecoworkAssetLocalUrl("/lab3d", gamecoworkWorkspaceKey);
   let t = e;
   try {
     const n = window.localStorage.getItem(TG);
@@ -38984,7 +38996,7 @@ function MG(e) {
   } catch {}
   try {
     const n = new URL(t);
-    return (n.searchParams.set("embed", "1"), n.searchParams.set("host", "gamecowork"), n.toString());
+    return (n.searchParams.set("embed", "1"), n.searchParams.set("host", "codely"), n.toString());
   } catch {
     return t;
   }
@@ -38995,17 +39007,25 @@ function jG(e) {
     return (
       (t.pathname = "/generation-history"),
       t.searchParams.set("embed", "1"),
-      t.searchParams.set("host", "gamecowork"),
+      t.searchParams.set("host", "codely"),
       t.toString()
     );
   } catch {
-    return e.replace(/\/lab3d(?:\?.*)?$/, "/generation-history?embed=1&host=gamecowork");
+    return e.replace(/\/lab3d(?:\?.*)?$/, "/generation-history?embed=1&host=codely");
   }
 }
 const Yv = { key: "creator", labelKey: "generation.tabCreator", defaultLabel: "Quick Generate" },
   RG = { key: "canvas", labelKey: "generation.tabCanvas", defaultLabel: "Canvas" },
   Zv = { key: "history", labelKey: "generation.tabHistory", defaultLabel: "Generation History" },
   HG = { creator: hc, canvas: f3, history: d3 };
+function gamecoworkAssetLocalUrl(route, workspaceKey = "") {
+  const url = new URL(route, window.location.origin);
+  url.searchParams.set("embed", "1");
+  url.searchParams.set("host", "codely");
+  url.searchParams.set("theme", ad());
+  url.searchParams.set("gamecoworkWorkspace", workspaceKey || "");
+  return url.toString();
+}
 function gamecoworkUsesLocalAssetPage() {
   if (window.GAMECOWORK_SHELL) return !0;
   try {
@@ -39014,6 +39034,13 @@ function gamecoworkUsesLocalAssetPage() {
     return !1;
   }
 }
+const { AssetPanel: gamecoworkLocalAssetPanel, CanvasPanel: gamecoworkLocalCanvasPanel } = createAssetGenerationComponents({
+  React: d,
+  useMessenger: () => d.useContext(tt),
+  useWorkspace: () => { const workspaces = M(ls), active = M(Ps); return workspaces.find(workspace => workspace.workspaceKey === active) || {}; },
+  ModelViewer: d.lazy(() => import("./GenerationModelViewer-DgHJ_Htv.js").then(module => ({ default: module.default }))),
+  isNative: qt,
+});
 function gamecoworkAssetPending({ headerExtra: extra } = {}) {
   const chinese = (Ie().i18n.language || "").startsWith("zh");
   return a.jsxs("section", {
@@ -39043,9 +39070,7 @@ function gamecoworkAssetPending({ headerExtra: extra } = {}) {
   });
 }
 function PG({ headerExtra: e }) {
-  return gamecoworkUsesLocalAssetPage()
-    ? a.jsx(gamecoworkAssetPending, { headerExtra: e })
-    : a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });
+  return a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });
 }
 function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
   var Ee, Pe, qe, At, st, je, J, Se;
@@ -39053,6 +39078,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
     s = d.useContext(tt),
     r = zI(),
     o = M(er),
+    gamecoworkAssetWorkspaceKey = M(Ps),
     [i, A] = d.useState("creator"),
     [c, l] = d.useState(() => new Set(["creator"])),
     [u, f] = d.useState("loading"),
@@ -39063,11 +39089,11 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
     b = d.useMemo(() => ({ creator: w, history: y }), []),
     _ = d.useRef(null),
     E = qt() ? [Yv, RG, Zv] : [Yv, Zv],
-    B = MG(t("generation.creatorUrl", LG)),
+    B = MG(t("generation.creatorUrl", LG), gamecoworkAssetWorkspaceKey),
     I = g3(B),
     U = jG(B),
     R = d.useRef(i),
-    Q = h3(),
+    Q = gamecoworkUsesLocalAssetPage() ? !1 : h3(),
     K = Q ? "*" : I,
     G = Q ? qv(B, "fullscreen; autoplay; clipboard-write; camera; microphone") : B,
     D = Q ? qv(U, "fullscreen; autoplay; clipboard-write") : U;
@@ -39079,7 +39105,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
         ue !== "history" &&
         h === "ready" &&
         ((ve = (he = y.current) == null ? void 0 : he.contentWindow) == null ||
-          ve.postMessage({ type: "gamecowork:history-active" }, K)));
+          ve.postMessage({ type: "codely:history-active" }, K)));
   }, [i, h, K]);
   const k = d.useCallback((ue) => {
       l((he) => {
@@ -39150,11 +39176,11 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
           if (!P || !Y) return;
           if (rt === "external-drag-enter") {
             if (Zg()) return;
-            ve({ type: "gamecowork:drag-state", active: !0 });
+            ve({ type: "codely:drag-state", active: !0 });
             return;
           }
           if (rt === "external-drag-leave") {
-            ve({ type: "gamecowork:drag-state", active: !1 });
+            ve({ type: "codely:drag-state", active: !1 });
             return;
           }
           const pe = ke.data.data,
@@ -39169,8 +39195,8 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
             const Rt = await NG(Ne);
             Rt && Et.push(Rt);
           }
-          (ve({ type: "gamecowork:drag-state", active: !1 }),
-            Et.length > 0 && ve({ type: "gamecowork:drop-files", files: Et }));
+          (ve({ type: "codely:drag-state", active: !1 }),
+            Et.length > 0 && ve({ type: "codely:drop-files", files: Et }));
         };
       return (window.addEventListener("message", Re), () => window.removeEventListener("message", Re));
     }, [w]));
@@ -39266,13 +39292,13 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
     var ue, he;
     h === "ready" &&
       ((he = (ue = y.current) == null ? void 0 : ue.contentWindow) == null ||
-        he.postMessage({ type: "gamecowork:local-artifacts-changed" }, K));
+        he.postMessage({ type: "codely:local-artifacts-changed" }, K));
   }, [oe, h, se, K]),
     d.useEffect(() => {
       const ue = async (he) => {
         const ve = he.data;
         if (
-          (ve == null ? void 0 : ve.type) !== "gamecowork:download" ||
+          (ve == null ? void 0 : ve.type) !== "codely:download" ||
           !ve.url ||
           (he.origin !== X.current.targetOrigin && !(X.current.relayMode && he.origin === "null")) ||
           !C(he.source)
@@ -39316,7 +39342,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
         var Re;
         const ve = he.data;
         if (
-          (ve == null ? void 0 : ve.type) !== "gamecowork:open-url" ||
+          (ve == null ? void 0 : ve.type) !== "codely:open-url" ||
           (he.origin !== X.current.targetOrigin && !(X.current.relayMode && he.origin === "null")) ||
           !C(he.source) ||
           typeof ve.url != "string" ||
@@ -39326,7 +39352,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
         s.post("openUrl", ve.url);
         const _e = [w.current, y.current].find((ke) => (ke == null ? void 0 : ke.contentWindow) === he.source);
         (Re = _e == null ? void 0 : _e.contentWindow) == null ||
-          Re.postMessage({ type: "gamecowork:open-url-ack" }, X.current.postOrigin);
+          Re.postMessage({ type: "codely:open-url-ack" }, X.current.postOrigin);
       };
       return (window.addEventListener("message", ue), () => window.removeEventListener("message", ue));
     }, [s, C]),
@@ -39339,24 +39365,24 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
           )
             return;
           const _e = ve.data;
-          if ((_e == null ? void 0 : _e.type) === "gamecowork:history-modal-state") {
+          if ((_e == null ? void 0 : _e.type) === "codely:history-modal-state") {
             g(_e.open === !0);
             return;
           }
-          if ((_e == null ? void 0 : _e.type) === "gamecowork:create-now") {
+          if ((_e == null ? void 0 : _e.type) === "codely:create-now") {
             (k("creator"), A("creator"));
             return;
           }
-          if ((_e == null ? void 0 : _e.type) === "gamecowork:regenerate" && _e.prefill) {
+          if ((_e == null ? void 0 : _e.type) === "codely:regenerate" && _e.prefill) {
             S(_e.prefill);
             return;
           }
-          if ((_e == null ? void 0 : _e.type) === "gamecowork:use-reference" && _e.payload) {
+          if ((_e == null ? void 0 : _e.type) === "codely:use-reference" && _e.payload) {
             ob(_e.payload);
             return;
           }
           if (
-            (_e == null ? void 0 : _e.type) === "gamecowork:local-artifact-request" &&
+            (_e == null ? void 0 : _e.type) === "codely:local-artifact-request" &&
             _e.payload &&
             Hl(_e.payload.requestId) &&
             Hl(_e.payload.taskId)
@@ -39364,7 +39390,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
             (rt = (ke = y.current) == null ? void 0 : ke.contentWindow) == null ||
               rt.postMessage(
                 {
-                  type: "gamecowork:local-artifact-result",
+                  type: "codely:local-artifact-result",
                   result: { requestId: _e.payload.requestId, artifact: ie(_e.payload.taskId) },
                 },
                 K,
@@ -39372,7 +39398,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
             return;
           }
           if (
-            (_e == null ? void 0 : _e.type) === "gamecowork:reveal-artifact" &&
+            (_e == null ? void 0 : _e.type) === "codely:reveal-artifact" &&
             _e.payload &&
             Hl(_e.payload.requestId) &&
             Hl(_e.payload.taskId)
@@ -39383,12 +39409,12 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
               .then(() => {
                 var pe, Fe;
                 (Fe = (pe = y.current) == null ? void 0 : pe.contentWindow) == null ||
-                  Fe.postMessage({ type: "gamecowork:reveal-artifact-result", result: { requestId: P, ok: !0 } }, K);
+                  Fe.postMessage({ type: "codely:reveal-artifact-result", result: { requestId: P, ok: !0 } }, K);
               })
               .catch(() => {
                 var pe, Fe;
                 (Fe = (pe = y.current) == null ? void 0 : pe.contentWindow) == null ||
-                  Fe.postMessage({ type: "gamecowork:reveal-artifact-result", result: { requestId: P, ok: !1 } }, K);
+                  Fe.postMessage({ type: "codely:reveal-artifact-result", result: { requestId: P, ok: !1 } }, K);
               });
           }
         },
@@ -39397,7 +39423,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
           ve.source === window &&
             ((_e = ve.data) == null ? void 0 : _e.messageType) === qI &&
             ((ke = (Re = y.current) == null ? void 0 : Re.contentWindow) == null ||
-              ke.postMessage({ type: "gamecowork:use-reference-result", result: ve.data.data }, K));
+              ke.postMessage({ type: "codely:use-reference-result", result: ve.data.data }, K));
         };
       return (
         window.addEventListener("message", ue),
@@ -39613,7 +39639,7 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
                   ? "visible translate-y-0 opacity-100"
                   : "invisible pointer-events-none translate-y-1.5 opacity-0",
               ),
-              children: a.jsx(QG, { src: FG, title: t("generation.tabCanvas", "Canvas") }),
+              children: a.jsx(QG, { src: gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl("/codely-canvas/home", gamecoworkAssetWorkspaceKey) : FG, title: t("generation.tabCanvas", "Canvas") }),
             }),
           c.has("history") &&
             a.jsxs("div", {
@@ -43874,12 +43900,13 @@ function zz() {
     ],
   });
 }
-const ox = "https://aicanvas.tuanjie.cn",
+const ox = gamecoworkUsesLocalAssetPage() ? window.location.origin : "https://aicanvas.tuanjie.cn",
   aJ = "7.75rem",
   qz = "3.25rem",
   Xz = "84px";
-function cJ(e) {
-  if (!e) return ox;
+function cJ(e, gamecoworkWorkspaceKey = "") {
+  const gamecoworkSidebarCanvasUrl = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl("/codely-canvas/home", gamecoworkWorkspaceKey) : ox;
+  if (!e) return gamecoworkSidebarCanvasUrl;
   const t =
     e
       .replace(/[\\/]+$/, "")
@@ -43889,7 +43916,7 @@ function cJ(e) {
   for (let o = 0; o < e.length; o++) n = ((n << 5) - n + e.charCodeAt(o)) | 0;
   const s = Math.abs(n).toString(16).padStart(8, "0"),
     r = new URLSearchParams({ workspace_name: t, workspace_hash: s });
-  return `${ox}?${r.toString()}`;
+  return `${gamecoworkSidebarCanvasUrl}${gamecoworkSidebarCanvasUrl.includes("?") ? "&" : "?"}${r.toString()}`;
 }
 function Jz(e, t) {
   var n;
@@ -44213,10 +44240,11 @@ function tq(e) {
     "*",
   );
 }
-const bg = "https://aicanvas.tuanjie.cn",
+const bg = gamecoworkUsesLocalAssetPage() ? window.location.origin : "https://aicanvas.tuanjie.cn",
   Di = bg;
-function nq(e) {
-  if (!e) return bg;
+function nq(e, gamecoworkWorkspaceKey = "") {
+  const gamecoworkCanvasBase = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl("/codely-canvas/home", gamecoworkWorkspaceKey) : bg;
+  if (!e) return gamecoworkCanvasBase;
   const t =
     e
       .replace(/[\\/]+$/, "")
@@ -44226,15 +44254,13 @@ function nq(e) {
   for (let o = 0; o < e.length; o++) n = ((n << 5) - n + e.charCodeAt(o)) | 0;
   const s = Math.abs(n).toString(16).padStart(8, "0"),
     r = new URLSearchParams({ workspace_name: t, workspace_hash: s });
-  return `${bg}?${r.toString()}`;
+  return `${gamecoworkCanvasBase}${gamecoworkCanvasBase.includes("?") ? "&" : "?"}${r.toString()}`;
 }
 function Ax() {
   return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
 }
 function sq({ headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n }) {
-  return gamecoworkUsesLocalAssetPage()
-    ? a.jsx(gamecoworkAssetPending, { headerExtra: e })
-    : a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });
+  return a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });
 }
 function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n }) {
   var D, k;
@@ -44262,7 +44288,7 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
         .pop() || S.workspaceKey,
     workspaceHash: S.workspaceKey,
   }));
-  const u = nq(c),
+  const u = nq(c, o),
     [f, h] = d.useState(null),
     p = d.useRef(null),
     m = d.useRef(!1),
@@ -44270,9 +44296,10 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
     x = M(vc) !== null || f !== u,
     { session: E } = yn(),
     B = E !== void 0,
-    I = E && !wo(E) ? E.accessToken : null,
+    I = !gamecoworkUsesLocalAssetPage() && E && !wo(E) ? E.accessToken : null,
     [U, R] = d.useState(null),
     Q = d.useCallback(() => {
+      if (gamecoworkUsesLocalAssetPage()) return;
       kF("get_cowork_access_token")
         .then((S) =>
           R((C) => {
@@ -44305,11 +44332,11 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
             typeof O != "object" ||
             (O.type === "ai-canvas-ready"
               ? ((m.current = !0),
-                K && S({ type: "cowork-token", token: K }),
+                gamecoworkUsesLocalAssetPage() ? S({ type: "gamecowork:local-session-changed" }) : K && S({ type: "cowork-token", token: K }),
                 S({ type: "embed-style", style: g }),
-                S({ type: "gamecowork:workspaces", workspaces: l.current }),
+                S({ type: "codely:workspaces", workspaces: l.current }),
                 B || Q())
-              : O.type === "gamecowork:refreshWorkspaces" && s(Ea()));
+              : O.type === "codely:refreshWorkspaces" && s(Ea()));
         };
       return (window.addEventListener("message", C), () => window.removeEventListener("message", C));
     }, [K, g, B, Q, s]));
@@ -44317,6 +44344,7 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
   return (
     d.useEffect(() => {
       var C, F, O, V;
+      if (gamecoworkUsesLocalAssetPage()) return;
       const S = G.current;
       ((G.current = K),
         m.current &&
@@ -44331,7 +44359,7 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
       var S, C;
       m.current &&
         ((C = (S = p.current) == null ? void 0 : S.contentWindow) == null ||
-          C.postMessage({ type: "gamecowork:workspaces", workspaces: l.current }, Di));
+          C.postMessage({ type: "codely:workspaces", workspaces: l.current }, Di));
     }, [r]),
     d.useEffect(() => {
       var S, C;
@@ -49550,184 +49578,34 @@ function hX(e, t) {
   return (!n && t && (n = gc(t)), n);
 }
 function pX(e) {
-  const { t } = Ie(),
-    n = d.useContext(tt),
-    s = Ge(),
-    r = M(_t),
-    o = d.useRef(r);
-  o.current = r;
-  const i = M(pc),
-    A = e || i,
-    c = M(Ps),
-    l = M((_) => (A ? Tg(A, c)(_) : c)),
-    u = M(ls),
-    f = d.useCallback(() => {
-      const _ = o.current;
-      return _ ? (_.isInChatRound ? (n.ide.showToast("warning", t("userInput.rewindErrorStreaming")), !1) : !0) : !1;
-    }, [n, t]),
-    h = d.useCallback(
-      (_, x, E) => {
-        const B = hX(x, E);
-        B && s(Jg({ sessionId: _, content: B }));
-      },
-      [s],
-    ),
-    p = d.useCallback(
-      async (_) => {
-        const x = vk(_);
-        x && (await n.request("history/save", x), s($s({})));
-      },
-      [s, n],
-    ),
-    m = d.useCallback(
-      async (_, x, E, B) => {
-        var R;
-        const I = o.current;
-        if (!I || x === void 0) {
-          (s(Ct(!1)), s(Tn(void 0)), n.ide.showToast("error", t("userInput.rewindErrorFailed")));
-          return;
-        }
-        if ((await n.request("history/rewind", { id: x, sessionId: A, type: "code" })).status !== "error")
-          if (_) {
-            const Q = I.history.filter((G) => G.message.role === "user").length,
-              K = await n.request("history/fork", { id: Q - x, sessionId: A });
-            K.status !== "error" &&
-              (B && ((K.content.history = B), s(_a(K.content))),
-              await p({
-                sessionId: K.content.sessionId,
-                title: K.content.title,
-                workspaceDirectory: K.content.workspaceDirectory,
-                messageCount: (R = B == null ? void 0 : B.length) != null ? R : 0,
-                useUppercaseProjectHash: K.content.useUppercaseProjectHash,
-              }),
-              h(Y0(A, K.content.sessionId), E.editorState, E.textContent));
-          } else n.ide.showToast("info", t("userInput.rewindSuccess"));
-        (s(Ct(!1)), s(Tn(void 0)));
-      },
-      [s, n, A, p, h, t],
-    ),
-    g = d.useCallback(
-      async (_, x, E, B) => {
-        const I = await n.request("history/rewind", { id: E, sessionId: A, type: "dryRun" });
-        if (I.status !== "error") {
-          (s(
-            Tn(
-              a.jsx(xk, {
-                preview: I.content,
-                fork: x,
-                rewindUserIndex: E,
-                slicedHistory: B,
-                onConfirm: (U, R, Q) => {
-                  m(U, R, _, Q);
-                },
-                onCancel: () => {
-                  (s(Ct(!1)), s(Tn(void 0)));
-                },
-              }),
-            ),
-          ),
-            s(Ct(!0)));
-          return;
-        }
-        n.ide.showToast("info", t("userInput.rewindErrorFailed"));
-      },
-      [s, m, n, A, t],
-    ),
-    w = d.useCallback(
-      async (_) => {
-        var Q, K;
-        const x = o.current;
-        if (!x) return;
-        const { userMessageIndexFromLast: E, slicedHistory: B } = mh(x.history, _.messageId),
-          I = await n.request("history/fork", { id: E, sessionId: A });
-        if (I.status === "error") return;
-        I.content.history = B;
-        const U = new Date().toISOString(),
-          R =
-            (K = I.content.workspaceDirectory) != null
-              ? K
-              : l
-                ? (Q = u.find((G) => G.workspaceKey === l)) == null
-                  ? void 0
-                  : Q.workspaceDir
-                : void 0;
-        (l
-          ? (s(_a({ session: I.content, workspaceKey: l })),
-            s(
-              zg({
-                workspaceKey: l,
-                metadata: {
-                  sessionId: I.content.sessionId,
-                  title: I.content.title || An,
-                  dateCreated: U,
-                  dateUpdated: U,
-                  workspaceDirectory: R,
-                  messageCount: B.length,
-                  state: "active",
-                  unread: !1,
-                },
-                position: "start",
-              }),
-            ))
-          : s(_a(I.content)),
-          await p({
-            sessionId: I.content.sessionId,
-            title: I.content.title,
-            workspaceDirectory: R,
-            messageCount: B.length,
-            useUppercaseProjectHash: I.content.useUppercaseProjectHash,
-            nowIso: U,
-          }),
-          h(Y0(A, I.content.sessionId), _.editorState, _.textContent));
-      },
-      [s, u, n, A, p, h, l],
-    ),
-    y = d.useCallback(
-      async (_) => {
-        const x = o.current;
-        if (!f() || !x) return;
-        const { userInputIndex: E } = mh(x.history, _.messageId);
-        await g(_, !1, E);
-      },
-      [f, g],
-    ),
-    b = d.useCallback(
-      async (_) => {
-        const x = o.current;
-        if (!f() || !x) return;
-        const { userInputIndex: E, slicedHistory: B } = mh(x.history, _.messageId);
-        await g(_, !0, E, B);
-      },
-      [f, g],
-    );
-  return d.useMemo(() => {
-    const _ = new Map();
-    return (x) => {
-      const E = _.get(x.messageId);
-      if (E && E.editorState === x.editorState && E.textContent === x.textContent) return E.items;
-      const B = [
-        {
-          label: t("userInput.forkConversation"),
-          onClick: () => {
-            w(x);
-          },
-        },
-        {
-          label: t("userInput.rewindCode"),
-          onClick: () => {
-            y(x);
-          },
-        },
-        {
-          label: t("userInput.forkAndRewind"),
-          onClick: () => {
-            b(x);
-          },
-        },
-      ];
-      return (_.set(x.messageId, { editorState: x.editorState, textContent: x.textContent, items: B }), B);
-    };
-  }, [b, w, y, t]);
+  const { t } = Ie(), messenger = d.useContext(tt), dispatch = Ge(),
+    selected = M(_t), activeId = M(pc), sessionId = e || activeId,
+    activeWorkspace = M(Ps), workspaceKey = M(state => sessionId ? Tg(sessionId, activeWorkspace)(state) : activeWorkspace),
+    contextRef = d.useRef(), operationsRef = d.useRef();
+  contextRef.current = {
+    sessionId, workspaceKey, messenger, translate: t, getState: () => ot.getState(),
+    toast: (level, message) => gamecoworkHistoryToast[level](message, { position: "top-right", duration: 5000 }),
+    lease: gamecoworkWorkspaceLease, leaseCurrent: gamecoworkWorkspaceLeaseCurrent,
+    makeHistorySave: vk,
+    hidePreview: () => { dispatch(Ct(!1)); dispatch(Tn(void 0)); },
+    showPreview: props => { dispatch(Tn(a.jsx(xk, props))); dispatch(Ct(!0)); },
+    publishBranch: (branch, scope) => {
+      if (scope.activate) dispatch(_a(scope.workspaceKey ? { session: branch, workspaceKey: scope.workspaceKey } : branch));
+      if (scope.workspaceKey) dispatch(zg({ workspaceKey: scope.workspaceKey, metadata: {
+        sessionId: branch.sessionId, title: branch.title || An, dateCreated: scope.nowIso,
+        dateUpdated: scope.nowIso, workspaceDirectory: branch.workspaceDirectory,
+        messageCount: branch.history.length, state: "active", unread: !1,
+      }, position: "start" }));
+      dispatch($s({}));
+    },
+    restoreDraft: (sourceId, branchId, payload) => {
+      const content = hX(payload.editorState, payload.textContent);
+      if (content) dispatch(Jg({ sessionId: Y0(sourceId, branchId), content }));
+    },
+  };
+  if (!operationsRef.current) operationsRef.current = createGameCoworkHistoryOperations(() => contextRef.current);
+  d.useEffect(() => operationsRef.current.refresh(), [sessionId, workspaceKey, selected]);
+  return d.useMemo(() => payload => operationsRef.current.items(payload), [t]);
 }
 function gX(e) {
   if (e.startsWith("local:"))
@@ -50972,8 +50850,10 @@ window.addEventListener("error", (e) => {
     } catch {}
   Ab();
   const e = document.getElementById("root"),
-    t = Rn() ? new dF() : void 0,
-    { store: n, persistor: s } = t ? mF(t) : { store: ot, persistor: wF };
+    gamecoworkCloudBoot = Rn(),
+    t = gamecoworkCloudBoot ? new dF() : gamecoworkGetStoreMessenger(),
+    { store: n, persistor: s } = gamecoworkCloudBoot ? mF(t) : { store: ot, persistor: wF };
+  if (qt() && typeof t.resumeHealthCheck === "function") t.resumeHealthCheck();
   v5.createRoot(e).render(
     a.jsx(is.StrictMode, {
       children: a.jsx(LF, {
@@ -50987,6 +50867,7 @@ window.addEventListener("error", (e) => {
   );
 })();
 export {
+  gamecoworkUsesLocalAssetPage,
   lJ as $,
   HR as A,
   KR as B,

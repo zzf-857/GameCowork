@@ -1,0 +1,1 @@
+import{i as e,r as t,t as n}from"./tslib.es6-CEe6CtF2.js";import{Z as r}from"./esm-Chahng9b.js";import{DateControlRenderer as i}from"./InputDate-BbbWelXX.js";var a=function(a){e(o,a);function o(){return a!==null&&a.apply(this,arguments)||this}return o.defaultProps=n(n({},i.defaultProps),{embed:!0}),o=t([r({type:`calendar`})],o),o}(i);export{a as CalendarRenderer};

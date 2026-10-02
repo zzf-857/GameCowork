@@ -16,7 +16,7 @@ const base = path.resolve(project, "../../temp/GameCowork");
 const root = path.resolve(option("--output", path.join(base, "chat-e2e-" + randomUUID())));
 assert.ok(root.toLowerCase().startsWith(base.toLowerCase() + path.sep), "Chat fixtures must stay under temp/GameCowork");
 const packaged = args.includes("--packaged");
-const app = path.join(project, "app");
+const app = path.resolve(option("--app-root", path.join(project, "app")));
 const binary = path.resolve(option("--binary", packaged ? path.join(app, "GameCowork.exe") : path.join(project, "src/shell/target/debug/GameCowork.exe")));
 const agent = path.resolve(option("--agent", path.join(base, "cli-guarded-20261001-08/gamecowork.exe")));
 const agentSource = path.dirname(agent);
@@ -343,6 +343,33 @@ async function verifyMarketplaceUI() {
   checks.push("Actual marketplace source metadata shows a clear pending state while preserving the local management entry");
   await snapshot("15-marketplace-pending");
 }
+async function verifyDraftRestoreUI(sessionId) {
+  const sentinel = "GCW_SHARED_NATIVE_UNSENT_DRAFT", workspaceA = (await state()).activeWorkspaceKey;
+  let savedTitle;
+  await gui.locator('[contenteditable="true"]').first().fill(sentinel);
+  await openWorkspaceUI(workspaces.b, "draft-B");
+  await gui.getByRole("button", { name: "Workspace A", exact: true }).first().click();
+  await poll(async () => (await state()).sessionId === sessionId, "same A session after capturing its unsent draft");
+  await poll(async () => (await gui.locator('[contenteditable="true"]').first().textContent()).trim() === sentinel, "real composer draft retained across workspace switching");
+  await poll(async () => {
+    const history = await fetch(new URL("/api/tauri/invoke", origin), { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ messageType: "history/list", messageId: "draft-persisted-" + randomUUID(), workspaceKey: workspaceA, data: {} }) }).then(response => response.json());
+    assert.equal(history.data.status, "success");
+    const metadata = history.data.content.find(item => (item.sessionId || item.id) === sessionId);
+    if (metadata) savedTitle = metadata.title;
+    return JSON.stringify(metadata?.draftInput || "").includes(sentinel);
+  }, "unsent input stored in the actual Core session metadata");
+  checks.push("The existing Redux store retains A's unsent draft across A/B switching and persists it through its shared messenger");
+  await snapshot("draft-01-workspace-switch");
+  await context.close(); context = undefined; await stopShell(); origin = await launch(); await startBrowser("profile-draft-fresh");
+  await gui.getByRole("button", { name: "Workspace A", exact: true }).first().click();
+  await gui.getByText(savedTitle, { exact: true }).first().click();
+  await poll(async () => (await state()).sessionId === sessionId, "actual server session selected after cold restart");
+  await poll(async () => (await gui.locator('[contenteditable="true"]').first().textContent()).trim() === sentinel, "Core-backed unsent draft restored in a fresh browser profile");
+  await poll(async () => (await state()).historyText.includes("GCW_REPLY_A_COMPLETE"), "the actual transcript finishes loading alongside the restored draft");
+  checks.push("A fresh browser profile plus restarted Rust/Core restores the same transcript and unsent draft without replacing its store/persistor during native boot");
+  await snapshot("draft-02-cold-restored");
+}
 
 try {
   origin = await launch();
@@ -357,7 +384,8 @@ try {
     const aSession = (await state()).sessionId;
     assert.ok(mock.requests.some((request) => request.scenario === "workspace-a" && request.chunksSent >= 3 && request.completed));
     checks.push("Real GUI -> core -> guarded compiled CLI -> loopback Provider delivers multiple chunks and a final frame");
-    if (option("--until") !== "chat") {
+    if (option("--until") === "drafts") await verifyDraftRestoreUI(aSession);
+    else if (option("--until") !== "chat") {
       await prompt("GCW_E2E_SLOW: slow fixture to test cancellation.", undefined);
       await gui.getByText("GCW_SLOW_STARTED", { exact: false }).last().waitFor({ state: "visible" });
       await gui.locator('[data-telemetry-id="stop_generation"]').first().click();

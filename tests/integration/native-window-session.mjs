@@ -22,7 +22,7 @@ Object.assign(env,{GAMECOWORK_TEST_MODE:'1',GAMECOWORK_APP_ROOT:path.join(repo,'
  GAMECOWORK_FRONTEND_DIR:path.join(repo,packaged?'app/frontend':'src/frontend/bundle'),
  GAMECOWORK_CORE_DIR:path.join(repo,'tests'),GAMECOWORK_CORE_ENTRY:path.join(repo,'tests/fixtures/core-fixture.mjs'),
  GAMECOWORK_FIXTURE_DATA_DIR:run,GAMECOWORK_FIXTURE_LOG:path.join(run,'core-frames.jsonl')});
-const owned=spawn(binary,['--native-test-owner='+run],{cwd:run,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
+const owned=spawn(binary,['--workspace',run],{cwd:run,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
 let log='',origin,timer,error;
 for(const output of[owned.stdout,owned.stderr])output.on('data',bytes=>{log+=bytes.toString();const match=log.match(/HTTP: (http:\/\/127\.0\.0\.1:\d+\/)/);if(match&&!origin){origin=match[1];fs.writeFileSync(path.join(run,'session.json'),JSON.stringify({run,binary,packaged,pid:owned.pid,origin,started:true},null,2));console.log(JSON.stringify({run,binary,packaged,pid:owned.pid,origin}));}});
 try{await new Promise((resolve,reject)=>{owned.once('error',reject);owned.once('exit',(code,signal)=>resolve({code,signal}));timer=setTimeout(()=>reject(Error('Native window observation deadline reached')),240000);});}

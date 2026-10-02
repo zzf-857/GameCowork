@@ -17,7 +17,8 @@ const base = path.resolve(project, "../../temp/GameCowork");
 const root = path.resolve(option("--output", path.join(base, "agent-actions-e2e-" + randomUUID())));
 assert.ok(root.toLowerCase().startsWith(base.toLowerCase() + path.sep), "Chat fixtures must stay under temp/GameCowork");
 const packaged = args.includes("--packaged");
-const app = path.join(project, "app");
+const previous = args.includes("--previous");
+const app = path.resolve(option("--app-root", path.join(project, "app")));
 const binary = path.resolve(option("--binary", packaged ? path.join(app, "GameCowork.exe") : path.join(project, "src/shell/target/debug/GameCowork.exe")));
 const agent = path.resolve(option("--agent", path.join(base, "cli-guarded-20261001-12/gamecowork.exe")));
 const agentSource = path.dirname(agent);
@@ -70,6 +71,7 @@ const toolPlans = {
   GCW_UI_COMMAND_CANCEL: { toolName: "run_shell_command", arguments: { command: commandFor("slow"), directory: workspaces.a }, verify: () => false },
 };
 const actionResultEvidence = [];
+const historyOperationEvidence = [];
 for (const [marker, plan] of Object.entries(toolPlans)) {
   for (const step of plan.steps || [plan]) {
   const verify = step.verify;
@@ -84,6 +86,7 @@ for (const [marker, plan] of Object.entries(toolPlans)) {
 const mock = await startMockProvider({ toolPlans, chunkDelayMs: 150 });
 const checks = [];
 const browserErrors = [];
+const consoleErrors = [];
 const blocked = [];
 const rpcObserved = [];
 const rpcErrors = [];
@@ -188,8 +191,11 @@ async function startBrowser(profile) {
     blocked.push(url.origin); return route.abort("blockedbyclient");
   });
   await context.addInitScript(() => { window.GAMECOWORK_SHELL = true; window.workspacePaths = []; window.vscMediaUrl = ""; });
+  if (previous) await context.route("**/gui.html*", route => route.fulfill({ contentType: "text/html", body: fs.readFileSync(path.join(frontendDir, "gui.html"), "utf8")
+    .replaceAll("index-BRxZ4eG7.js", "index-DvRYaIVa.js").replaceAll("VscTheme-BExNMG_K.js", "VscTheme-B-CSeuv5.js").replaceAll("store-c6kNGz30.js", "store-0rGrUshb.js") }));
   page = context.pages()[0] || await context.newPage();
   page.on("pageerror", (error) => browserErrors.push(error.stack || String(error)));
+  page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text().slice(0, 6000)); });
   page.on("request", (request) => {
     if (!request.url().includes("/api/tauri/invoke")) return;
     try {
@@ -199,6 +205,7 @@ async function startBrowser(profile) {
       for (const key of ["USERPROFILE", "APPDATA", "LOCALAPPDATA"]) if (pathHint && process.env[key])
         pathHint = pathHint.replaceAll(process.env[key], `<${key.toLowerCase()}>`).replaceAll(process.env[key].replaceAll("\\", "/"), `<${key.toLowerCase()}>`);
       rpcObserved.push({ type: message.messageType, method: message.data?.method, workspaceKey: body.workspaceKey || message.workspaceKey,
+        sessionId: message.data?.sessionId, historyId: message.data?.id, rewindType: message.data?.type,
         ...(pathHint ? { pathHint } : {}), outcome: message.data?.outcome,
         ...(["config/updateSelectMode", "llm/streamChat"].includes(message.messageType)
           ? { approvalMode: message.data?.approvalMode, collaborationMode: message.data?.collaborationMode,
@@ -221,6 +228,9 @@ async function startBrowser(profile) {
     try {
       const body = response.request().postDataJSON(); const request = body.message || body;
       const frame = await response.json();
+      if (["history/rewind", "history/fork"].includes(request.messageType)) historyOperationEvidence.push({ type: request.messageType,
+        sessionId: request.data?.sessionId, id: request.data?.id, rewindType: request.data?.type,
+        workspaceKey: body.workspaceKey || request.workspaceKey, status: frame?.data?.status, content: frame?.data?.content, error: frame?.data?.error });
       const error = frame?.data?.status === "error" ? frame.data.error : frame?.data?.content?.error;
       if (error) rpcErrors.push({ type: request.messageType, error: String(error).slice(0, 400),
         pathHint: rpcObserved.findLast((entry) => entry.type === request.messageType && entry.pathHint)?.pathHint });
@@ -238,8 +248,8 @@ async function snapshot(name) {
   await page.screenshot({ path: path.join(root, name + ".png"), fullPage: true, animations: "disabled" });
 }
 async function state() {
-  return gui.evaluate(async () => {
-    const { s: store } = await import("/assets/store-c6kNGz30.js");
+  return gui.evaluate(async previous => {
+    const { s: store } = await import(previous ? "/assets/store-0rGrUshb.js" : "/assets/store-c6kNGz30.js");
     const value = store.getState();
     const session = value.session.sessions[value.session.activeSessionId];
     function text(content) { return typeof content === "string" ? content : Array.isArray(content) ? content.map((item) => item.text || "").join("") : ""; }
@@ -252,7 +262,7 @@ async function state() {
       approvalMode: session?.approvalMode, collaborationMode: session?.collaborationMode,
       pending: Object.values(value.session.sessions).map(item => ({ id:item.id, workspaceId:item.workspaceId, isStreaming:item.isStreaming, permissions:item.pendingAcpPermissionRequests?.length || 0, shell:item.pendingAcpShellConfirmationRequests?.length || 0 })),
     };
-  });
+  }, previous);
 }
 async function openWorkspaceUI(directory, label) {
   await context.route(/\/api\/tauri\/pick-folder(?:-modal)?$/, (route) => route.fulfill({ contentType: "application/json", body: JSON.stringify({ path: directory, cancelled: false }) }), { times: 1 });
@@ -342,10 +352,10 @@ async function cancelUI() {
   await poll(async () => !(await state()).isStreaming, "cancel ends the actual GUI stream");
   await poll(async () => (await state()).pending.every(item => !item.permissions && !item.shell), "cancel clears pending UI approvals");
 }
-async function historyList() {
+async function historyList(workspaceKey) {
   const current = await state();
   const result = await fetch(new URL("/api/tauri/invoke", origin), { method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messageType: "history/list", messageId: "actions-history-" + randomUUID(), workspaceKey: current.activeWorkspaceKey, data: {} }) }).then(response => response.json());
+    body: JSON.stringify({ messageType: "history/list", messageId: "actions-history-" + randomUUID(), workspaceKey: workspaceKey || current.activeWorkspaceKey, data: {} }) }).then(response => response.json());
   assert.equal(result.data.status, "success");
   return result.data.content;
 }
@@ -415,6 +425,132 @@ async function sessionCrudUI(sessionId) {
   checks.push("UI delete removes the actual history row and does not retain the deleted active session");
   await snapshot("17-deleted-session");
 }
+async function userHistoryAction(marker, label) {
+  const message = gui.locator('[data-chat-user-input]').filter({ hasText: marker }).last();
+  await message.hover();
+  await message.getByRole("button").last().click();
+  await gui.getByText(label, { exact: true }).last().click();
+}
+async function sessionBranchesUI() {
+  const first = "GCW_E2E_A_BRANCH_FIRST", second = "GCW_E2E_A_BRANCH_SECOND";
+  await prompt(first + ": owned first branch turn.", "GCW_REPLY_A_COMPLETE", "branches-01-first-turn");
+  await manualMode();
+  await actionPrompt("GCW_UI_WRITE_ALLOW"); await choosePermission("allow_once");
+  await actionDone("GCW_UI_WRITE_ALLOW", "branches-01b-tracked-original-file");
+  await prompt(second + ": owned second branch turn.", "GCW_REPLY_A_COMPLETE", "branches-02-second-turn");
+  await actionPrompt("GCW_UI_REPLACE_ALLOW"); await choosePermission("allow_once");
+  await actionDone("GCW_UI_REPLACE_ALLOW", "branches-02b-tracked-replaced-file");
+  assert.equal(fs.readFileSync(targets.write, "utf8"), replaced);
+  const source = (await state()).sessionId, workspaceA = (await state()).activeWorkspaceKey;
+  const sourceRow = (await historyList()).find(item => (item.sessionId || item.id) === source);
+  assert.ok(sourceRow);
+  await openWorkspaceUI(workspaces.b, "B"); await selectModelUI();
+  await prompt("GCW_E2E_B: preserve B while A's history operation completes.", "GCW_REPLY_B_COMPLETE", "branches-03-b-turn");
+  const sessionB = (await state()).sessionId;
+  async function sourceUI() {
+    await gui.getByRole("button", { name: "Workspace A", exact: true }).first().click();
+    const row = gui.locator('[data-telemetry-id="history_session"]').filter({ hasText: sourceRow.title }).filter({ hasNotText: "(forked)" }).first();
+    await row.click(); await poll(async () => (await state()).sessionId === source, "original A session selected");
+  }
+  await sourceUI();
+  await prompt("GCW_E2E_SLOW: keep the original A turn streaming.");
+  await gui.getByText("GCW_SLOW_STARTED", { exact: false }).last().waitFor({ state: "visible" });
+  assert.equal((await state()).isStreaming, true);
+  const operationsBefore = rpcObserved.filter(call => ["history/fork", "history/rewind"].includes(call.type)).length;
+  await userHistoryAction(second, "从此处分支对话");
+  await gui.getByText("流式输出时无法分支对话", { exact: false }).last().waitFor({ state: "visible" });
+  await userHistoryAction(second, "回退代码至此处");
+  await gui.getByText("流式输出时无法回退代码", { exact: false }).last().waitFor({ state: "visible" });
+  assert.equal(rpcObserved.filter(call => ["history/fork", "history/rewind"].includes(call.type)).length, operationsBefore);
+  checks.push("Actual user-message fork and rewind controls reject streaming without calling Core");
+  await cancelUI(); await snapshot("branches-04-streaming-blocked");
+
+  let failSave = true, holdKind, held, release;
+  await context.route(/\/api\/tauri\/invoke$/, async route => {
+    const body = route.request().postDataJSON(), message = body.message || body;
+    if (failSave && message.messageType === "history/save" && message.data?.sessionId !== source) {
+      failSave = false;
+      return route.fulfill({ contentType: "application/json", body: JSON.stringify({ messageId: message.messageId, messageType: message.messageType,
+        data: { done: true, status: "error", error: "Owned branch persistence failure" } }) });
+    }
+    if (holdKind && message.messageType === holdKind) {
+      holdKind = undefined;
+      const response = await route.fetch();
+      const result = await response.json();
+      held = { body, message, result };
+      await new Promise(resolve => { release = resolve; });
+      return route.fulfill({ response, body: JSON.stringify(result) });
+    }
+    return route.fallback();
+  });
+  const beforeFailed = (await historyList()).map(item => item.sessionId || item.id).sort();
+  await userHistoryAction(second, "从此处分支对话");
+  await gui.getByText("Owned branch persistence failure", { exact: false }).last().waitFor({ state: "visible", timeout: 30000 });
+  await poll(async () => JSON.stringify((await historyList()).map(item => item.sessionId || item.id).sort()) === JSON.stringify(beforeFailed), "failed branch was compensated in real history");
+  assert.equal((await state()).sessionId, source);
+  checks.push("A failed real branch save removes its new checkpoint and preserves the source without a ghost row");
+  await snapshot("branches-05-save-failure");
+
+  await userHistoryAction(second, "从此处分支对话");
+  await poll(async () => (await state()).sessionId !== source, "persisted fork becomes active");
+  const branch = (await state()).sessionId;
+  assert.ok((await historyList()).some(item => (item.sessionId || item.id) === branch));
+  assert.ok((await state()).historyText.includes(first));
+  assert.ok(!(await state()).historyText.includes(second));
+  checks.push("Actual Core/CLI fork persists the sliced transcript before the GUI selects its new conversation");
+  await snapshot("branches-06-saved-fork");
+  await sourceUI();
+
+  const previewCount = historyOperationEvidence.length;
+  await userHistoryAction(second, "回退代码至此处");
+  await poll(() => historyOperationEvidence.slice(previewCount).some(item => item.type === "history/rewind" && item.rewindType === "dryRun"), "actual rewind preview response");
+  const previewResult = historyOperationEvidence.slice(previewCount).find(item => item.type === "history/rewind" && item.rewindType === "dryRun");
+  assert.equal(previewResult.status, "success", JSON.stringify(previewResult));
+  assert.equal(previewResult.content.canRewind, true, JSON.stringify(previewResult.content));
+  const rewindButton = gui.getByText("Rewind", { exact: true }).last();
+  await rewindButton.waitFor({ state: "visible", timeout: 30000 });
+  await gui.getByText(/This action will revert all changes/).waitFor({ state: "visible" });
+  await snapshot("branches-07-rewind-preview");
+  await rewindButton.click();
+  await gui.getByText("代码回退成功", { exact: false }).last().waitFor({ state: "visible", timeout: 30000 });
+  assert.equal(fs.readFileSync(targets.write, "utf8"), written, "actual checkpoint restores the original owned bytes");
+  assert.equal((await state()).sessionId, source);
+  assert.ok(rpcObserved.some(call => call.type === "history/rewind" && call.sessionId === source && call.rewindType === "dryRun" && call.workspaceKey === workspaceA));
+  assert.ok(rpcObserved.some(call => call.type === "history/rewind" && call.sessionId === source && call.rewindType === "code" && call.workspaceKey === workspaceA));
+  checks.push("The actual checkpoint preview and confirmed rewind restore the owned edited file under the source workspace");
+
+  holdKind = "history/fork"; held = undefined; release = undefined;
+  await userHistoryAction(second, "从此处分支对话");
+  await poll(() => !!held && !!release, "A's real fork reply held after CLI completion");
+  assert.equal(held.result.data.status, "success");
+  const backgroundBranch = held.result.data.content.sessionId;
+  await gui.getByRole("button", { name: "Workspace B", exact: true }).first().click();
+  await poll(async () => (await state()).sessionId === sessionB, "B active before A fork reply");
+  release();
+  await poll(async () => (await historyList(workspaceA)).some(item => (item.sessionId || item.id) === backgroundBranch), "A branch saved after switch to B");
+  assert.equal((await state()).sessionId, sessionB);
+  assert.ok(rpcObserved.some(call => call.type === "history/save" && call.sessionId === backgroundBranch && call.workspaceKey === workspaceA));
+  checks.push("A fork finishing over B saves to A and leaves B's current transcript selected");
+  await snapshot("branches-08-switch-keeps-b");
+  await sourceUI();
+
+  holdKind = "history/fork"; held = undefined; release = undefined;
+  await userHistoryAction(second, "从此处分支对话");
+  await poll(() => !!held && !!release, "real fork held before closing source workspace");
+  assert.equal(held.result.data.status, "success");
+  const closedBranch = held.result.data.content.sessionId;
+  await gui.getByRole("button", { name: "Workspace A", exact: true }).first().hover();
+  await gui.locator('[data-telemetry-id="workspace_menu"]:visible').first().click();
+  await gui.locator('[data-telemetry-id="remove_workspace"]').click();
+  await poll(async () => !(await state()).workspaces.some(item => item.workspaceKey === workspaceA), "A closed before its reply");
+  release();
+  await poll(async () => (await state()).sessionId === sessionB, "B survives closed A history operation");
+  await new Promise(resolve => setTimeout(resolve, 700));
+  assert.ok(!rpcObserved.some(call => ["history/save", "history/delete"].includes(call.type) && (call.sessionId === closedBranch || call.historyId === closedBranch)));
+  assert.equal(await gui.locator('[data-telemetry-id="history_session"]').filter({ hasText: "(forked)" }).count(), 0);
+  checks.push("Closing A discards its late fork UI result and sends no follow-up writes through the closed workspace");
+  await snapshot("branches-09-closed-a-late-reply");
+}
 let failure;
 try {
   origin = await launch();
@@ -422,7 +558,9 @@ try {
   await openWorkspaceUI(workspaces.a,"A");
   await configureProviderUI();
   await selectModelUI();
-  if (option("--until") === "history") {
+  if (option("--until") === "branches") {
+    await sessionBranchesUI();
+  } else if (option("--until") === "history") {
     await openWorkspaceUI(workspaces.b,"B"); await selectModelUI();
     await prompt("GCW_E2E_B: session CRUD fixture.","GCW_REPLY_B_COMPLETE","history-fixture-created");
     await sessionCrudUI((await state()).sessionId);
@@ -496,6 +634,7 @@ try {
   }
   }
   assert.deepEqual(browserErrors,[]);
+  assert.ok(!consoleErrors.some(message => /Minified React error|React Router caught the following error/.test(message)), "React errors caught by the route boundary must still fail the GUI gate");
   assert.deepEqual(guardNetworkAttempts(),[]);
   assert.deepEqual([...new Set(blocked)],[]);
   console.log(JSON.stringify({status:"passed",checks,root,providerRequests:mock.requests.length,guardNetworkAttempts:[],blockedExternalOrigins:[]},null,2));
@@ -505,7 +644,7 @@ try {
 } finally {
   await context?.close(); await stopShell(); await mock.close();
   fs.writeFileSync(path.join(root,"shell.log"),shellLog);
-  fs.writeFileSync(path.join(root,"actions-report.json"),JSON.stringify({checks,failure,browserErrors,providerRequests:mock.requests,rpcObserved,rpcErrors,actionResultEvidence,
-    guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],agent,packaged,binary,frontendDir,coreDir,packagedAgentSourceVerified,
+  fs.writeFileSync(path.join(root,"actions-report.json"),JSON.stringify({checks,failure,browserErrors,consoleErrors,providerRequests:mock.requests,rpcObserved,rpcErrors,actionResultEvidence,historyOperationEvidence,
+    guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],agent,packaged,previous,binary,frontendDir,coreDir,packagedAgentSourceVerified,
     browserMode:"headless Chromium against actual Release HTTP host; native Wry geometry is not exercised",commands:commands.scripts.map(({name,sha256})=>({name,sha256}))},null,2));
 }

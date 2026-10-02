@@ -18,7 +18,7 @@ const base = path.resolve(project, "../../temp/GameCowork");
 const root = path.resolve(option("--output", path.join(base, "command-subagent-e2e-" + randomUUID())));
 assert.ok(root.toLowerCase().startsWith(base.toLowerCase() + path.sep), "Chat fixtures must stay under temp/GameCowork");
 const packaged = args.includes("--packaged");
-const app = path.join(project, "app");
+const app = path.resolve(option("--app-root", path.join(project, "app")));
 const binary = path.resolve(option("--binary", packaged ? path.join(app, "GameCowork.exe") : path.join(project, "src/shell/target/debug/GameCowork.exe")));
 const agent = path.resolve(option("--agent", path.join(base, "cli-guarded-20261001-12/gamecowork.exe")));
 const agentSource = path.dirname(agent);
@@ -88,6 +88,59 @@ let page;
 let gui;
 let origin;
 let shellLog = "";
+const refreshTraceSync = args.includes("--refresh-sync"), refreshTraceLight = args.includes("--refresh-light"),
+  refreshTraceEnabled = args.includes("--refresh-trace") || refreshTraceLight || refreshTraceSync,
+  refreshTrace = { stages: [], frames: [], network: [] };
+refreshTrace.instrumentedSource = [];
+refreshTrace.syncEvents = [];
+function instrumentNativeRefresh(source) {
+  const label = /\n\(Vt\(([$\w]+), "DEFAULT_REQUEST_TIMEOUT_MS"/.exec(source)?.[1];
+  const begin = source.indexOf(`const ${label} = class ${label} {`), finish = source.indexOf(`\n(Vt(${label}, "DEFAULT_REQUEST_TIMEOUT_MS"`, begin);
+  assert.ok(begin >= 0 && finish > begin, "The actual Native Messenger class is identified before observational injection");
+  let body = source.slice(begin, finish);
+  function replace(marker, next) { assert.equal(body.split(marker).length, 2, "Unique observational hook: " + marker.slice(0, 60)); body = body.replace(marker, next); }
+  replace('    Vt(this, "errorHandler", null);\n', '    Vt(this, "errorHandler", null);\n    window.__refreshSyncPush("client-created", this, {ready:this.connectionReady,shouldSchedule:this.shouldScheduleHealthCheck(),ide:typeof localStorage==="undefined"?null:localStorage.getItem("ide")});\n');
+  replace('  startHealthCheck() {\n', '  startHealthCheck() {\n    window.__refreshSyncPush("health-start-decision", this, {ready:this.connectionReady,active:this.healthCheckActive,shouldSchedule:this.shouldScheduleHealthCheck()});\n');
+  replace('  markConnectionReady() {\n', '  markConnectionReady() {\n    window.__refreshSyncPush("mark-ready", this, {ready:this.connectionReady,source:new Error().stack?.split("\\n").slice(1,4)});\n');
+  replace('  waitForConnection(t) {\n', '  waitForConnection(t) {\n    window.__refreshSyncPush("wait-enter", this, {ready:this.connectionReady,aborted:!!t?.aborted});\n');
+  replace('          n();\n        },\n        i = () => {', '          window.__refreshSyncPush("wait-resolved", this, {ready:this.connectionReady});\n          n();\n        },\n        i = () => {');
+  replace('          r(t.reason || new Error("Request cancelled"));', '          window.__refreshSyncPush("wait-cancelled", this, {ready:this.connectionReady});\n          r(t.reason || new Error("Request cancelled"));');
+  replace('  async _postToIdeInternal(t, n, r = qn(), a = !1, signal) {\n', '  async _postToIdeInternal(t, n, r = qn(), a = !1, signal) {\n    window.__refreshSyncPush("post-enter", this, {type:t,id:r,ready:this.connectionReady,skipWait:a,aborted:!!signal?.aborted});\n');
+  replace('        window.parent.postMessage({ source: "iframe", messageType: t, data: n, messageId: r, ...o }, "*");', '        window.__refreshSyncPush("iframe-send", this, {type:t,id:r,ready:this.connectionReady});\n        window.parent.postMessage({ source: "iframe", messageType: t, data: n, messageId: r, ...o }, "*");');
+  replace('              });\n            this._postToIdeInternal("ping", "ping", i, !0);', '              });\n            this._postToIdeInternal("ping", "ping", i, !0);');
+  replace('            const s = await o;\n', '            const s = await o;\n            window.__refreshSyncPush("ping-resolved", this, {type:"ping",id:i,status:s?.status,pong:s?.content==="pong"});\n');
+  replace('    const a = String(t);\n    return new Promise((resolve, reject) => {', '    const a = String(t);\n    window.__refreshSyncPush("request-start", this, {type:a,id:r,ready:this.connectionReady,timeoutMs});\n    return new Promise((resolve, reject) => {');
+  replace('          if (settled) return;\n          settled = !0;', '          if (settled) return;\n          window.__refreshSyncPush("request-settle", this, {type:a,id:r,ready:this.connectionReady,status:value?.status,code:value?.code});\n          settled = !0;');
+  return source.slice(0, begin) + body + source.slice(finish);
+}
+const transientSettingsReads = [];
+refreshTrace.transientSettingsReads = transientSettingsReads;
+function readCompletedSettings(file) {
+  let bytes;
+  try { bytes = fs.readFileSync(file, "utf8"); }
+  catch (error) { if (error.code !== "ENOENT") throw error; transientSettingsReads.push({ time: Date.now(), file, reason: "ENOENT" }); return null; }
+  try { return JSON.parse(bytes); }
+  catch (error) { if (!(error instanceof SyntaxError)) throw error; transientSettingsReads.push({ time: Date.now(), file, reason: "JSON-not-complete", byteLength: Buffer.byteLength(bytes) }); return null; }
+}
+let refreshCdp;
+async function captureRefreshTrace(stage) {
+  if (!refreshTraceEnabled || !context) return;
+  if (refreshTraceSync) return;
+  if (refreshTraceLight && !stage.startsWith("GUI-start") && stage !== "final") return;
+  if (gui) refreshTrace.stages.push(await gui.evaluate(async ({ stage, previous }) => {
+    const store = (await import(previous ? "/assets/store-0rGrUshb.js" : "/assets/store-c6kNGz30.js")).s;
+    let messenger; store.dispatch((_dispatch, _state, extra) => { messenger = extra.ideMessenger; });
+    return { stage, time: Date.now(), instance: window.__refreshInstanceId(messenger), ready: messenger.connectionReady,
+      healthCheckTimeout: messenger.healthCheckTimeout, healthCheckInterval: messenger.healthCheckInterval,
+      pending: [...(messenger.pendingRequests?.entries() || [])].map(([id, value]) => ({ id, type: value.messageType, at: value.timestamp })),
+      workspace: store.getState().hub.activeWorkspaceKey, sessionId: store.getState().session.activeSessionId };
+  }, { stage, previous: args.includes("--previous") }));
+  for (const frame of page.frames()) refreshTrace.frames.push(await frame.evaluate(stage => ({ stage, time: Date.now(), url: location.href,
+    trace: window.__refreshTrace || [], sources: (window.__refreshSources || []).map(source => ({ ...source, readyState: source.closed ? 2 : source.ref.readyState, ref: undefined })),
+    resources: performance.getEntriesByType("resource").filter(resource => resource.name.includes("/api/")).map(resource => ({ name: resource.name,
+      startTime: resource.startTime, requestStart: resource.requestStart, responseStart: resource.responseStart, duration: resource.duration,
+      connectStart: resource.connectStart, connectEnd: resource.connectEnd, nextHopProtocol: resource.nextHopProtocol })) }), stage).catch(error => ({ stage, error: String(error) })));
+}
 const samePath = (a, b) => String(a || "").replaceAll("\\", "/").toLowerCase() === String(b || "").replaceAll("\\", "/").toLowerCase();
 function cleanEnvironment() {
   const env = { ...process.env };
@@ -168,8 +221,72 @@ async function startBrowser(profile) {
     blocked.push(url.origin); return route.abort("blockedbyclient");
   });
   await context.addInitScript(() => { window.GAMECOWORK_SHELL = true; window.workspacePaths = []; window.vscMediaUrl = ""; });
+  if (refreshTraceSync) {
+    await context.addInitScript(() => {
+      const ids = new WeakMap(); let sequence = 0;
+      window.__refreshSyncPush = (event, instance, metadata = {}) => {
+        if (metadata.type && !["acp/refreshCommands", "acp/initSession", "ping", "coreReady"].includes(metadata.type)) return;
+        const pending = [...(instance.pendingRequests?.entries() || [])].filter(([, value]) => ["acp/refreshCommands", "acp/initSession", "ping"].includes(value.messageType)).map(([id, value]) => ({ id, type: value.messageType, at: value.timestamp }));
+        if ((event.startsWith("wait") || event === "mark-ready") && !pending.length && event !== "mark-ready") return;
+        if (!ids.has(instance)) ids.set(instance, ++sequence);
+        console.debug("GAMECOWORK_REFRESH_SYNC " + JSON.stringify({ event, time: Date.now(), frame: location.pathname, instance: ids.get(instance),
+          callbacks: instance.connectionReadyCallbacks?.length, pending, ...metadata }));
+      };
+      window.addEventListener("message", event => {
+        if (!["acp/refreshCommands", "acp/initSession", "ping", "coreReady"].includes(event.data?.messageType)) return;
+        window.__refreshSyncPush("window-message", window, { type: event.data.messageType, id: event.data.messageId, source: event.data.source,
+          fromParent: event.source === window.parent, originMatches: event.origin === location.origin });
+      });
+      const baseFetch = window.fetch; window.fetch = function (url, options) {
+        if (String(url).includes("/api/tauri/invoke") && typeof options?.body === "string" && /"acp\/(refreshCommands|initSession)"/.test(options.body)) {
+          const body = JSON.parse(options.body), message = body.message || body;
+          window.__refreshSyncPush("fetch-call", window, { type: message.messageType, id: message.messageId });
+        }
+        return baseFetch.apply(this, arguments);
+      };
+    });
+    const asset = args.includes("--previous") ? "VscTheme-B-CSeuv5.js" : "VscTheme-BExNMG_K.js", file = path.join(frontendDir, "assets", asset), source = fs.readFileSync(file, "utf8"), sha256 = createHash("sha256").update(source).digest("hex");
+    const injected = instrumentNativeRefresh(source);
+    refreshTrace.instrumentedSource.push({ file, sha256, injectedSha256: createHash("sha256").update(injected).digest("hex"), hooks: "synchronous metadata only; original await/Promise/parent-post unchanged" });
+    await context.route("**/assets/" + asset, route => {
+      assert.equal(createHash("sha256").update(fs.readFileSync(file)).digest("hex"), sha256, "The source asset did not change during diagnostic interception");
+      return route.fulfill({ contentType: "text/javascript", body: injected });
+    });
+  }
+  if (refreshTraceEnabled && !refreshTraceSync) await context.addInitScript(({ light }) => {
+    window.__refreshTrace = []; window.__refreshSources = [];
+    const describe = (url, options) => { let message; try { const body = JSON.parse(options?.body || "{}"); message = body.message || body; } catch {}
+      const parsed = new URL(String(url), location.href); return { url: parsed.origin + parsed.pathname, type: message?.messageType, id: message?.messageId, workspaceKey: message?.workspaceKey }; };
+    const baseFetch = window.fetch; window.fetch = function (url, options) {
+      if (light && (!String(url).includes("/api/tauri/invoke") || typeof options?.body !== "string" || !/"acp\/(refreshCommands|initSession)"/.test(options.body))) return baseFetch.apply(this, arguments);
+      const meta = describe(url, options);
+      window.__refreshTrace.push({ event: "fetch-call", time: Date.now(), ...meta }); const result = baseFetch.apply(this, arguments);
+      result.then(response => window.__refreshTrace.push({ event: "fetch-response", time: Date.now(), status: response.status, ...meta }),
+        error => window.__refreshTrace.push({ event: "fetch-error", time: Date.now(), error: String(error), ...meta })); return result; };
+    window.addEventListener("message", event => { if ((event.data?.source === "iframe" || event.data?.messageType === "ping") &&
+      (!light || ["acp/refreshCommands", "acp/initSession", "ping", "coreReady"].includes(event.data?.messageType)))
+      window.__refreshTrace.push({ event: "window-message", time: Date.now(), type: event.data.messageType, id: event.data.messageId, source: event.data.source }); });
+    if (light) return;
+    const baseSource = window.EventSource; window.EventSource = class extends baseSource { constructor(url, options) { super(url, options);
+      this.__refreshSourceId = window.__refreshSources.length; window.__refreshSources.push({ ref: this, url: String(url), openedAt: Date.now(), closed: false });
+      window.__refreshTrace.push({ event: "sse-created", time: Date.now(), url: String(url), id: this.__refreshSourceId }); }
+      close() { window.__refreshSources[this.__refreshSourceId].closed = true; window.__refreshTrace.push({ event: "sse-closed", time: Date.now(), id: this.__refreshSourceId }); return super.close(); } };
+  }, { light: refreshTraceLight });
   page = context.pages()[0] || await context.newPage();
+  if (refreshTraceEnabled && !refreshTraceLight && !refreshTraceSync) {
+    refreshCdp = await context.newCDPSession(page); await refreshCdp.send("Network.enable");
+    refreshCdp.on("Network.requestWillBeSent", event => { let message; try { const body = JSON.parse(event.request.postData || "{}"); message = body.message || body; } catch {}
+      const url = new URL(event.request.url); refreshTrace.network.push({ event: "request", at: event.timestamp, wall: event.wallTime, id: event.requestId,
+        url: url.origin + url.pathname, type: event.type, messageType: message?.messageType, messageId: message?.messageId }); });
+    refreshCdp.on("Network.requestWillBeSentExtraInfo", event => refreshTrace.network.push({ event: "request-extra", id: event.requestId, connectTiming: event.connectTiming }));
+    refreshCdp.on("Network.responseReceived", event => { const url = new URL(event.response.url); refreshTrace.network.push({ event: "response", at: event.timestamp,
+      id: event.requestId, url: url.origin + url.pathname, status: event.response.status, protocol: event.response.protocol, timing: event.response.timing,
+      connectionId: event.response.connectionId, connectionReused: event.response.connectionReused }); });
+    refreshCdp.on("Network.loadingFinished", event => refreshTrace.network.push({ event: "finished", at: event.timestamp, id: event.requestId }));
+    refreshCdp.on("Network.loadingFailed", event => refreshTrace.network.push({ event: "failed", at: event.timestamp, id: event.requestId, error: event.errorText }));
+  }
   page.on("pageerror", (error) => browserErrors.push(error.stack || String(error)));
+  if (refreshTraceSync) page.on("console", message => { const text = message.text(); if (text.startsWith("GAMECOWORK_REFRESH_SYNC ")) refreshTrace.syncEvents.push(JSON.parse(text.slice("GAMECOWORK_REFRESH_SYNC ".length))); });
   page.on("request", (request) => {
     if (!request.url().includes("/api/tauri/invoke")) return;
     try {
@@ -209,6 +326,31 @@ async function startBrowser(profile) {
   await page.goto(origin, { waitUntil: "domcontentloaded" });
   await poll(() => page.frames().some((frame) => frame.url().includes("/gui.html")), "real GUI frame");
   gui = page.frames().find((frame) => frame.url().includes("/gui.html"));
+  if (refreshTraceEnabled && !refreshTraceSync) {
+    await gui.evaluate(async ({ previous, light }) => {
+      const module = await import(previous ? "/assets/VscTheme-B-CSeuv5.js" : "/assets/VscTheme-BExNMG_K.js");
+      const ids = new WeakMap(); let sequence = 0; window.__refreshInstanceId = instance => { if (!ids.has(instance)) ids.set(instance, ++sequence); return ids.get(instance); };
+      let currentPost;
+      for (const constructor of [module.dV, module.dZ]) for (const name of (light ? ["_requestResponse", "_postToIdeInternal", "markConnectionReady", "waitForConnection"] : ["_requestResponse", "_postToIdeInternal", "markConnectionReady", "waitForConnection", "requestWithExplicitMessageId", "fetchEnvelope"])) {
+        const base = constructor.prototype[name]; if (typeof base !== "function") continue;
+        constructor.prototype[name] = function (...values) { const instance = window.__refreshInstanceId(this), type = name === "fetchEnvelope" ? values[1] : values[0],
+          id = name === "fetchEnvelope" ? values[3] : values[2],
+          relevant = ["acp/refreshCommands", "acp/initSession"].includes(type), post = name === "waitForConnection" ? currentPost : undefined;
+          if (light && !relevant && name !== "markConnectionReady" && !post) return base.apply(this, values);
+          const tracedType = post?.type || type, tracedId = post?.id || id;
+          window.__refreshTrace.push({ event: "messenger-call", time: Date.now(), instance, constructor: constructor.name, method: name, ready: this.connectionReady,
+            type: typeof tracedType === "string" ? tracedType : undefined, id: typeof tracedId === "string" ? tracedId : undefined });
+          const savedPost = currentPost; if (light && name === "_postToIdeInternal") currentPost = { type, id, instance };
+          let result; try { result = base.apply(this, values); } finally { currentPost = savedPost; }
+          if (result?.then) result.then(value => window.__refreshTrace.push({ event: "messenger-resolve", time: Date.now(), instance, method: name,
+            type: typeof tracedType === "string" ? tracedType : undefined, id: typeof tracedId === "string" ? tracedId : undefined, ready: this.connectionReady, status: value?.status }),
+            error => window.__refreshTrace.push({ event: "messenger-reject", time: Date.now(), instance, method: name, type: typeof tracedType === "string" ? tracedType : undefined,
+              id: typeof tracedId === "string" ? tracedId : undefined, ready: this.connectionReady, error: String(error) })); return result;
+        };
+      }
+    }, { previous: args.includes("--previous"), light: refreshTraceLight });
+    await captureRefreshTrace("GUI-start-" + profile);
+  }
   await gui.evaluate(async previous => {
     const { s: store } = await import(previous ? "/assets/store-0rGrUshb.js" : "/assets/store-c6kNGz30.js");
     let before = store.getState().ui.showSettings; window.__gamecoworkSettingsTrace = [];
@@ -245,6 +387,7 @@ async function openWorkspaceUI(directory, label) {
   await poll(async () => (await state()).workspaces.some((workspace) => samePath(workspace.workspaceDir, directory)), "opened workspace " + label);
 }
 async function configureProviderUI() {
+  if (!refreshTraceSync) await captureRefreshTrace("before-provider-config");
   if (!await gui.locator('[data-telemetry-id="settings_nav_models"]').isVisible()) await gui.locator('[data-telemetry-id="open_settings"]').first().click();
   await gui.locator('[data-telemetry-id="settings_nav_models"]').click();
   await snapshot("01-model-settings");
@@ -279,6 +422,7 @@ async function selectModelUI() {
   await poll(async () => (await state()).modelTitle === "Fixture Local Model", "selected local model");
 }
 async function prompt(text, expected, name) {
+  if (!refreshTraceSync) await captureRefreshTrace("before-prompt-" + name);
   const requestsBefore = mock.requests.filter((item) => item.url === "/v1/chat/completions").length;
   await gui.locator('[contenteditable="true"]').first().fill(text);
   await gui.locator('[data-telemetry-id="send_message"]').first().click();
@@ -326,7 +470,7 @@ async function editProjectSkill(){
 async function toggle(kind,name,enabled,global=false){
  const control=row(kind,name).getByRole("switch");await control.click();
  await poll(()=>{
- const settingsFile=global?path.join(root,"data/cli-state/settings.json"):path.join(workspaces.a,".gamecowork-cli/settings.json");if(!fs.existsSync(settingsFile))return false;const config=JSON.parse(fs.readFileSync(settingsFile,"utf8"));
+ const settingsFile=global?path.join(root,"data/cli-state/settings.json"):path.join(workspaces.a,".gamecowork-cli/settings.json");const config=readCompletedSettings(settingsFile);if(!config)return false;
  const disabled=kind==="command"?config.commands?.disabled:kind==="subagent"?config.agents?.disabled:kind==="skill"?config.skills?.disabled:config.disabledExtensions;
  return !disabled?.includes(name)===enabled;
  },"capability toggle persisted");
@@ -427,10 +571,11 @@ try{
  checks.push("Global subagent editing and toggling use the isolated global storage");await snapshot("subagents-managed");
  await gui.locator('[data-telemetry-id="settings_back"]').click();await openWorkspaceUI(workspaces.b,"B");await capabilityPage("commands");assert.equal(await row("command","owned-command-renamed").count(),0);await row("command","global-command").waitFor({state:"visible"});assert.equal(await row("command","global-command").getByRole("switch").isChecked(),false);
  await capabilityPage("subagents");assert.equal(await row("subagent","owned-agent-renamed").count(),0);await row("subagent","global-agent").waitFor({state:"visible"});checks.push("Two workspaces keep project definitions separate and share the true global disabled state");
- await context.close();context=null;await stopShell();origin=await launch();await startBrowser("definition-restarted");await gui.getByRole("button",{name:"Workspace A",exact:true}).first().click();await capabilityPage("commands");await row("command","owned-command-renamed").waitFor({state:"visible"});assert.equal(await row("command","owned-command-renamed").getByRole("switch").isChecked(),false);await toggle("command","owned-command-renamed",true);
+ if (!refreshTraceSync) await captureRefreshTrace("before-definition-restart");await context.close();context=null;await stopShell();origin=await launch();await startBrowser("definition-restarted");await gui.getByRole("button",{name:"Workspace A",exact:true}).first().click();await capabilityPage("commands");await row("command","owned-command-renamed").waitFor({state:"visible"});assert.equal(await row("command","owned-command-renamed").getByRole("switch").isChecked(),false);await toggle("command","owned-command-renamed",true);
  await capabilityPage("subagents");await row("subagent","owned-agent-renamed").waitFor({state:"visible"});assert.equal(await row("subagent","owned-agent-renamed").getByRole("switch").isChecked(),false);await toggle("subagent","owned-agent-renamed",true);checks.push("A fresh host/Core/CLI/browser restores renamed files and their persisted toggles");
  await configureProviderUI();await gui.getByRole("button",{name:/^新建会话/}).first().click();await selectModelUI();
  await prompt("/owned-command-renamed","GCW_E2E_COMMAND_CONFIRMED","command-expanded");assert.ok(mock.requests.some(record=>record.scenario==="GCW_E2E_COMMAND"));checks.push("The actual saved slash command expands and reaches the loopback model through compiled Agent");
+ if (!refreshTraceEnabled || args.includes("--refresh-race") || refreshTraceSync) {
  if(args.includes('--refresh-race')){
   for(let round=0;round<6;round++){
    await gui.getByRole('button',{name:/^新建会话/}).first().click();await selectModelUI();
@@ -444,8 +589,9 @@ try{
  assert.ok(mock.requests.some(record=>record.scenario==="GCW_E2E_SUBAGENT"&&record.toolResultVerified));assert.ok(mock.requests.some(record=>record.scenario==="GCW_SUBAGENT_CHILD"&&record.systemPromptContainsSentinel));checks.push("Compiled Agent loads the saved specialization, executes the configured subagent and returns its real issued task result to the parent model");await snapshot("subagent-executed");
  await capabilityPage("commands");await remove("command","global-command");await remove("command","owned-command-renamed");assert.equal(fs.existsSync(renamedCommand),false);assert.equal(fs.existsSync(definitionFile("command","global-command",true)),false);
  await capabilityPage("subagents");await remove("subagent","global-agent");await remove("subagent","owned-agent-renamed");assert.equal(fs.existsSync(renamedAgent),false);assert.equal(fs.existsSync(definitionFile("subagent","global-agent",true)),false);checks.push("Project/global command and subagent deletion removes the intended files and visible rows");
+ }
  const unexpectedRpcErrors=rpcErrors.filter(call=>!(call.type==="custom/create"&&/EEXIST/.test(call.error))&&!(call.type==="custom/update"&&(/changed on disk|unterminated|Invalid TOML|Unexpected|TOML|parse|end of/i.test(call.error))));assert.deepEqual(unexpectedRpcErrors,[]);
  assert.deepEqual(browserErrors,[]);assert.deepEqual(guardNetworkAttempts(),[]);assert.deepEqual([...new Set(blocked)],[]);
  settingsRouteTrace=await gui.evaluate(()=>window.__gamecoworkSettingsTrace || []);console.log(JSON.stringify({status:"passed",root,checks,browserErrors,rpcErrors},null,2));
 }catch(error){failure={message:error.message,stack:error.stack};process.exitCode=1;console.error(error);if(gui) { settingsRouteTrace = await gui.evaluate(() => window.__gamecoworkSettingsTrace || []).catch(()=>[]); await snapshot("failure").catch(()=>{}); }}
-finally{await context?.close();await stopShell();await mock.close();await mcp.close();fs.writeFileSync(path.join(root,"shell.log"),shellLog);fs.writeFileSync(path.join(root,"command-subagent-report.json"),JSON.stringify({checks,failure,settingsRouteTrace,browserErrors,rpcErrors,rpcObserved,rpcCompleted,providerRequests:mock.requests,mcpRequests:mcp.requests,guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],frontendGeneration:args.includes("--previous")?"previous":"current",packaged,binary,coreDir,frontendDir,agent,agentGuarded:manifest.testGuardIncluded,packagedAgentSourceVerified,browserMode:"headless Chromium actual Rust/Core/frontend; native Wry geometry is not exercised"},null,2));}
+finally{await captureRefreshTrace("final").catch(()=>{});await refreshCdp?.detach().catch(()=>{});await context?.close();await stopShell();await mock.close();await mcp.close();if(refreshTraceEnabled)fs.writeFileSync(path.join(root,"refresh-trace.json"),JSON.stringify(refreshTrace,null,2));fs.writeFileSync(path.join(root,"shell.log"),shellLog);fs.writeFileSync(path.join(root,"command-subagent-report.json"),JSON.stringify({checks,failure,settingsRouteTrace,browserErrors,rpcErrors,rpcObserved,rpcCompleted,providerRequests:mock.requests,mcpRequests:mcp.requests,guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],frontendGeneration:args.includes("--previous")?"previous":"current",packaged,binary,coreDir,frontendDir,agent,agentGuarded:manifest.testGuardIncluded,packagedAgentSourceVerified,browserMode:"headless Chromium actual Rust/Core/frontend; native Wry geometry is not exercised"},null,2));}

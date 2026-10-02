@@ -38,6 +38,7 @@ namespace GameCowork.EditorBridge
             if (tcp != null || Volatile.Read(ref stopping) != 0) return;
             projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
             EditorControl.Initialize();
+            EditorSceneMutations.Initialize();
             configPath = Path.Combine(projectRoot, "Temp", ".com-unity-gamecowork.json");
             try
             {
@@ -173,9 +174,9 @@ namespace GameCowork.EditorBridge
                         }
                     }
                     catch (OperationCanceledException error)
-                    { reply = Reply(id, false, "{\"cancelled\":true,\"applied\":false}", error.Message); }
+                    { EditorCancellation.Finish(identity, "cancelled_or_failed"); reply = Reply(id, false, EditorCancellation.FailureJson(identity, error.Message, true), error.Message); }
                     catch (Exception error)
-                    { EditorCancellation.Finish(identity, "failed"); reply = Reply(id, false, null, error.Message); }
+                    { EditorCancellation.Finish(identity, "failed"); reply = Reply(id, false, EditorCancellation.FailureJson(identity, error.Message, false), error.Message); }
                 }
                 byte[] payload = Encoding.UTF8.GetBytes(reply);
                 for (int i = 0; i < 8; i++) header[7 - i] = (byte)((ulong)payload.Length >> (i * 8));
@@ -197,8 +198,18 @@ namespace GameCowork.EditorBridge
                     string action = request.@params == null ? null : request.@params.action;
                     bool control = request.type == "manage_editor" &&
                         (action == "play" || action == "pause" || action == "resume" || action == "stop" || action == "refresh");
-                    return Reply(id, true, control ? EditorControl.Invoke(request.@params, identity) : EditorReadOnly.Invoke(request.type, action), null);
+                    return Reply(id, true, control ? EditorControl.Invoke(request.@params, identity) :
+                        request.type == "manage_editor" && EditorContextQueries.Handles(action) ? EditorContextQueries.Invoke(action) : EditorReadOnly.Invoke(request.type, action), null);
                 }
+                if (request.type == "manage_scene" || request.type == "manage_gameobject")
+                    return Reply(id, true, EditorSceneMutations.Handles(request.type, request.@params == null ? null : request.@params.action) ?
+                        EditorSceneMutations.Invoke(request.type, raw, identity) : EditorSceneQueries.Invoke(request.type, raw), null);
+                if (request.type == "manage_asset")
+                    return Reply(id, true, EditorAssetQueries.Invoke(raw), null);
+                if (request.type == "manage_package")
+                    return Reply(id, true, EditorPackageQueries.Invoke(raw), null);
+                if (request.type == "read_console")
+                    return Reply(id, true, EditorConsole.Invoke(raw, identity), null);
                 if (request.type != "manage_window_bridge") return Reply(id, false, null, "Unsupported editor command: " + request.type);
                 var parameters = request.@params ?? new PreviewRequest();
                 switch (parameters.action)
@@ -215,7 +226,7 @@ namespace GameCowork.EditorBridge
                     default: return Reply(id, false, null, "Unsupported manage_window_bridge action: " + parameters.action);
                 }
             }
-            catch (Exception error) { EditorCancellation.Finish(identity, "failed"); return Reply(id, false, null, error.Message); }
+            catch (Exception error) { EditorCancellation.Finish(identity, "failed"); return Reply(id, false, EditorCancellation.FailureJson(identity, error.Message, error is OperationCanceledException), error.Message); }
         }
 
         static void EnsureHttp(int port)

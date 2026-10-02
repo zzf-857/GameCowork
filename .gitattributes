@@ -10,6 +10,11 @@
 /codelyreversebackup_fromunityhub/reusable/** -text
 /src/frontend/bundle/codely-generator/** -text
 /src/frontend/bundle/codely-canvas/** -text
+# Preserve whitespace inside original templates and bundled dependencies.
+# Their exact bytes are checked by the source ledgers instead of whitespace lint.
+/src/frontend/bundle/codely-canvas/assets/** -whitespace
+/src/frontend/bundle/codely-generator/assets/** -whitespace
+/src/frontend/bundle/codely-generator/index.html -whitespace
 # Host adapters also use exact byte hashes and reversible patch offsets.
 /src/frontend/bundle/assets/index-BRxZ4eG7.js -text
 /src/frontend/bundle/assets/index-DvRYaIVa.js -text

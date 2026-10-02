@@ -1,0 +1,1 @@
+import{i as e,r as t}from"./tslib.es6-CEe6CtF2.js";import{Z as n}from"./esm-Chahng9b.js";import{t as r}from"./ButtonGroupSelect-AbaHow3c.js";var i=function(r){e(i,r);function i(){return r!==null&&r.apply(this,arguments)||this}return i=t([n({type:`button-group`})],i),i}(r);export{i as ButtonGroupRenderer,r as default};

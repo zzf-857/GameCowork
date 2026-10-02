@@ -1,0 +1,3548 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Source-grounded adapter contract for the original cached Codely Quick Generate and History client. Not a replacement UI, a server schema, or proof of official service access.",
+  "source": {
+    "rawFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
+    "rawSha256": "10e0e9c2a6771c22eb65c205fab910a1779794c689e8523f97d8f831eed19d9d",
+    "rawBytes": 2400014,
+    "originalUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/index-DZWJHC3S.js",
+    "sourceLayer": "anonymous remote client referenced by original packaged GUI; captured 2026-10-02, not embedded in cowork.exe",
+    "formattedFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\pretty-public\\index-DZWJHC3S.js",
+    "formattedSha256": "1c1953090b6f84861aaec1319814e56765023fcaf32d15d2f664f6844e903f66",
+    "modelExtractionSource": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public-provider-model-registry.json",
+    "modelExtractionSha256": "f9871940d13503bca8a5b585b517a4b25acc8e5fb1bd542c44ecc7e5b9bc2007"
+  },
+  "method": {
+    "applicationJavaScriptExecuted": false,
+    "originalExecutableExecuted": false,
+    "apiRequests": 0,
+    "credentialFilesRead": false,
+    "functionsAreReferenceTextOnly": true,
+    "all45ModelByteRangesVerified": true
+  },
+  "transport": {
+    "symbol": "Mn",
+    "originalBaseUrl": "https://ai-generator.tuanjie.cn/api",
+    "httpResponseEnvelope": "Axios response interceptor returns response.data; endpoint bodies below are the direct values consumed by components. Do not add a generic status/content or task wrapper.",
+    "errorConsumption": "Response interceptor rejects Error(JSON.stringify(response.data || fallback)); generation awe reads error/message/msg/target from that JSON.",
+    "originalHeaders": [
+      "X-Csrf-Token",
+      "isMobile",
+      "Authorization when embed token exists"
+    ],
+    "localPolicy": "Local compatibility routes must not copy original account cookies or token values. Keep the original request/payload/response shapes while binding only owned local storage and explicitly configured Providers.",
+    "evidence": {
+      "symbol": "Mn / Zue",
+      "formattedLineStart": 20352,
+      "formattedLineEnd": 20388,
+      "formattedSliceSha256": "5c7553eff29f6196ce840a8829176fb0c3c5047d56bbafe6558a2227a4787038",
+      "lineNumbersAreDerived": true
+    }
+  },
+  "identityAndQuota": {
+    "anonymousIsSufficientForStudio": false,
+    "reason": "HNe calls za.isLoggedIn() and returns studio-login-page when no user exists. UIe in embed mode loads only when vs.authStatus === authed; its pending state suppresses loading.",
+    "userMeShape": "Direct user object, not {data:user}; za.fetchUser directly reads n.id and sets user=n. Anonymous HTTP failure sets fetchStatus=failure. A successful null value is invalid for this consumer.",
+    "localIdentityRecommendation": {
+      "kind": "explicit-local-adapter",
+      "requiredChanges": "Use an explicit local identity/capability state in the small host/auth compatibility seam; do not manufacture a codely:auth token or claim official SSO login. Keep original HNe/UIe component trees.",
+      "fieldsIfLocalUserObjectIsUsed": {
+        "id": "stable own local identity",
+        "name": "clearly marked GameCowork local identity",
+        "accountMode": "local"
+      },
+      "doNotSupply": [
+        "fake @unity.cn email",
+        "fake paid/internal paidType",
+        "fictional credits",
+        "fictional official subscription",
+        "fake role/admin entitlement"
+      ]
+    },
+    "unknownQuotaRecommendation": {
+      "currentCredits": null,
+      "credits": null,
+      "paidType": null,
+      "productCode": "",
+      "fingerprint": null,
+      "reason": "Official balances, paid status and price quotes are unavailable. Null is unknown; 0 would claim a measured zero/free price."
+    },
+    "originalConsumption": {
+      "credits": "Only typeof currentCredits === number updates balance. Only typeof credits === number accepts a quote.",
+      "subscription": "paidType string is interpreted by C1e; internal or paid and internal email affect capabilities. Missing paidType marks paid-status request unavailable.",
+      "embedBootstrap": "s1e requires a real token and GET /editor/sso/bootstrap; local mode needs an explicit separate path, not a fake successful official bootstrap."
+    },
+    "evidence": [
+      {
+        "symbol": "za",
+        "formattedLineStart": 21007,
+        "formattedLineEnd": 21045,
+        "formattedSliceSha256": "96fcd4d1663a992600d200e999e56635cfad0b74cbe2fbf4e16e2ed9764b3f36",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "vs / s1e / o1e",
+        "formattedLineStart": 38530,
+        "formattedLineEnd": 38615,
+        "formattedSliceSha256": "8e8b976e68d66c68d20818ba3af9d069a484dca8610b8222a284042c4bcebffb",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "HNe identity",
+        "formattedLineStart": 75491,
+        "formattedLineEnd": 75510,
+        "formattedSliceSha256": "b917c8317d1fd558488f6ef5ea73a3fcc767f464a0072b0a53647460cad98e47",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "HNe quota",
+        "formattedLineStart": 75701,
+        "formattedLineEnd": 75808,
+        "formattedSliceSha256": "be6c24d1dc07e2de72a95f7ffe3a32477134c3b4e1ddfc3960a7dfca67f22727",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "HNe anonymous return",
+        "formattedLineStart": 76406,
+        "formattedLineEnd": 76448,
+        "formattedSliceSha256": "193c01fd4ea3c8fe275c821aa5e7c76bb11dca5ae9949808d7608a6b4bd92c2d",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "UIe authentication",
+        "formattedLineStart": 82792,
+        "formattedLineEnd": 82882,
+        "formattedSliceSha256": "93da711a317e7e7a24fb9e60c7c62bc1b6e6cf445845a33a302f718a21201e54",
+        "lineNumbersAreDerived": true
+      }
+    ]
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/user/me"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Direct user object only when representing the actual local/official identity in its corresponding mode; otherwise explicit unavailable/auth failure.",
+      "evidence": {
+        "symbol": "Zue / za",
+        "formattedLineStart": 20377,
+        "formattedLineEnd": 20379,
+        "formattedSliceSha256": "6277171ebea764fc84cf00f0ed4aaf473b3118e4f10d93588b62cebf2ed5ff63",
+        "lineNumbersAreDerived": true
+      }
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/editor/sso/bootstrap"
+      ],
+      "request": {
+        "originalAuthorization": "official embed Bearer token"
+      },
+      "responseConsumedByOriginalClient": "Local adapter must not fabricate successful official SSO bootstrap.",
+      "evidence": {
+        "symbol": "s1e",
+        "formattedLineStart": 38565,
+        "formattedLineEnd": 38576,
+        "formattedSliceSha256": "ff33cf148583873fb47b0ea0cebe349d60a5c81a65040036c378d51e4ffb3acf",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "explicitly unsupported in local mode; bootstrap local identity in its separate seam"
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/credit/my-credits"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Optional direct or data-wrapped {currentCredits:number}; keep unknown as null/unavailable.",
+      "evidence": {
+        "symbol": "HNe balance effect",
+        "formattedLineStart": 75701,
+        "formattedLineEnd": 75717,
+        "formattedSliceSha256": "2b21ed48fb3d15fa351e676f51f091fcca6e53b0158934e8eeca43c47df82f1f",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "unavailable, never invent a balance"
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/credit/my-paid-status"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Optional direct or data-wrapped {paidType:string,productCode:string}.",
+      "evidence": {
+        "symbol": "HNe paid-status effect",
+        "formattedLineStart": 75718,
+        "formattedLineEnd": 75755,
+        "formattedSliceSha256": "ea12a149daf7aaa50c67fae99dabc016d52379e3040cbb8fbacc6b30824f5c23",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "unavailable, never manufacture paid/internal"
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/credit/cost-preview"
+      ],
+      "request": {
+        "query": [
+          "taskType",
+          "model-specific creditParams"
+        ]
+      },
+      "responseConsumedByOriginalClient": "Optional direct or data-wrapped {credits:number}.",
+      "evidence": {
+        "symbol": "HNe quote effect",
+        "formattedLineStart": 75756,
+        "formattedLineEnd": 75809,
+        "formattedSliceSha256": "5b1657d6af10caf322eda9a2af291acc82884529367875aeabc0672a645e6be0",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "unavailable without actual price source"
+    },
+    {
+      "method": "POST",
+      "originalPaths": [
+        "/credit/viggle-video-quote"
+      ],
+      "request": {
+        "json": {
+          "videoUrl": "selected video URL",
+          "type": "glb or descriptor value"
+        }
+      },
+      "responseConsumedByOriginalClient": "Optional direct or data-wrapped {credits:number,fingerprint:string}.",
+      "evidence": {
+        "symbol": "HNe quote effect",
+        "formattedLineStart": 75776,
+        "formattedLineEnd": 75809,
+        "formattedSliceSha256": "8db5b364fc61f5c247e8c0e7e06d2d16020046fd9884aee2a0d88bf55df5e203",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "unavailable without actual quote service"
+    },
+    {
+      "method": "POST",
+      "originalPaths": [
+        "/sso/upload/image",
+        "/sso/upload/video",
+        "/sso/upload/audio",
+        "/sso/upload/model",
+        "/sso/upload/model-conversion",
+        "/sso/upload/splat"
+      ],
+      "request": {
+        "query": {
+          "entry": "studio or grid"
+        },
+        "body": "multipart FormData",
+        "fileField": "image/video/audio/model/splat matching the operation; model-conversion uses model"
+      },
+      "responseConsumedByOriginalClient": "Direct or data-wrapped {url:string}; downloadUrl and imageUrl are accepted aliases. The original uploader stores the returned URL, not a native inputId.",
+      "evidence": {
+        "symbol": "VK / mp / GK / Mr",
+        "formattedLineStart": 41034,
+        "formattedLineEnd": 41062,
+        "formattedSliceSha256": "15374ca7449aa953ba13deab7c3393f03ec07ded4fbbfd95c8b51b526e0d245f",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Register real owned bytes; return an absolute loopback resource URL with actual extension. Unsupported source media must return a real failure, not an invented URL."
+    },
+    {
+      "method": "POST",
+      "originalPaths": [
+        "/sso/generate"
+      ],
+      "request": {
+        "json": {
+          "kind": "selected original descriptor model.id",
+          "data": "exact original model.build(state, refs) result"
+        },
+        "headers": {
+          "source": "codely",
+          "fromMethod": "web"
+        }
+      },
+      "responseConsumedByOriginalClient": "Immediate actual output recognized by wN, or taskId/task_id/id/data.taskId/data.id for polling.",
+      "evidence": {
+        "symbol": "hwe.c / hne / Tne",
+        "formattedLineStart": 40680,
+        "formattedLineEnd": 40706,
+        "formattedSliceSha256": "dd0857ff388856f604e415ef2b813cae6345759c82288e2a7d09ea81278fb89e",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Map the original model ID only to an explicit configured local backend; preserve original data and resolve owned reference URLs. Return an honest not-configured error otherwise."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/task/:id/status"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Direct task or data-wrapped task with status, error/errorCode and output.data actual media fields. hwe reads status at top/data; wN/k5 extract actual output.",
+      "evidence": {
+        "symbol": "X1e / hwe.l",
+        "formattedLineStart": 40621,
+        "formattedLineEnd": 40678,
+        "formattedSliceSha256": "6279a8e93ca13b10beae1d72d8f2ae54b5f3ce0b506f363860434edd598eb5f7",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Query the same owned task; no second generation on poll. Map local interrupted to a terminal failed response with its real reason, rather than an unknown status that the client would poll forever."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/tasks",
+        "/editor/tasks"
+      ],
+      "request": {
+        "query": [
+          "status",
+          "page",
+          "pageSize",
+          "discarded",
+          "category",
+          "query",
+          "startTime",
+          "endTime",
+          "excludeBase64",
+          "historyScope",
+          "historyEmail",
+          "workspaceName",
+          "workspaceMissing",
+          "tagIds comma-separated"
+        ]
+      },
+      "responseConsumedByOriginalClient": "{tasks:TaskRow[],total:number,page:number,size:number}; UI directly reads tasks/total and actual list length.",
+      "evidence": {
+        "symbol": "kL / GZ / UIe.xi",
+        "formattedLineStart": 83059,
+        "formattedLineEnd": 83108,
+        "formattedSliceSha256": "9ee21e2e5a66a17926a71428848e61fb620fd028c0a50460a13e8d24ac68d298",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Adapt owned task history without changing the original history layout, category/date/tag filters or pagination."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/editor/task/:id/id-status",
+        "/task/:id/status",
+        "/generation-history/task/:id",
+        "/editor/generation-history/task/:id"
+      ],
+      "request": {
+        "query": [
+          "excludeBase64",
+          "historyScope",
+          "historyEmail"
+        ]
+      },
+      "responseConsumedByOriginalClient": "Direct TaskRow; /task status wrapper tIe adds id and createdTime from createTime*1000 if absent.",
+      "evidence": {
+        "symbol": "tIe",
+        "formattedLineStart": 78267,
+        "formattedLineEnd": 78278,
+        "formattedSliceSha256": "a700d0f2fa671f1dda8c9df0f4bfb717dd5d6df1ee0e13f2f53f7b54e3e7147d",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Owned task detail only; deny unavailable global/email scopes rather than return someone else or a synthetic empty detail."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/generation-history/access",
+        "/editor/generation-history/access"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "{globalHistoryView:boolean}; true enables all/email history ownership controls.",
+      "evidence": {
+        "symbol": "nIe / UIe access",
+        "formattedLineStart": 82858,
+        "formattedLineEnd": 82889,
+        "formattedSliceSha256": "cd983a128215acab2e4f2623c8c2dde37dceff68c9fa3c6fb96476c5c887c565",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Return globalHistoryView:false for local single-user scope; do not invent organization access."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/generation-history/workspaces",
+        "/editor/generation-history/workspaces"
+      ],
+      "request": {
+        "query": [
+          "historyScope",
+          "historyEmail",
+          "discarded",
+          "query",
+          "page"
+        ]
+      },
+      "responseConsumedByOriginalClient": "{workspaces:string[],page:number,hasMore:boolean}; original infinite list flattens string names.",
+      "evidence": {
+        "symbol": "iIe / workspace control",
+        "formattedLineStart": 80103,
+        "formattedLineEnd": 80118,
+        "formattedSliceSha256": "a9b295e03ef174fe9bb33f48574ca4f2359e0be8faf2ada7104884b06041dc02",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "List actual own workspace names present in owned history; never query original Hub/account history."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/upload/records",
+        "/editor/upload/records"
+      ],
+      "request": {
+        "query": [
+          "page",
+          "pageSize",
+          "startTime",
+          "endTime"
+        ]
+      },
+      "responseConsumedByOriginalClient": "{records:UploadRecord[]}; original caller requests page=1,pageSize=500 and constructs the input material view itself.",
+      "evidence": {
+        "symbol": "lIe / UIe.rs",
+        "formattedLineStart": 83005,
+        "formattedLineEnd": 83018,
+        "formattedSliceSha256": "cb9c37f7bdc9dcc56922b5f71be69b283b19023308b0a6804a6d542c590b65c9",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Return actual registered local input URLs, kind and createdTime."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/tags",
+        "/editor/tags"
+      ],
+      "request": {
+        "query": [
+          "status",
+          "discarded",
+          "category",
+          "query",
+          "startTime",
+          "endTime",
+          "workspaceName",
+          "workspaceMissing",
+          "tagIds comma-separated"
+        ]
+      },
+      "responseConsumedByOriginalClient": "{tags:Tag[]}; each tag requires id/name, with optional aliases/description/scope/count.",
+      "evidence": {
+        "symbol": "_M / rIe / PIe / YZ",
+        "formattedLineStart": 78289,
+        "formattedLineEnd": 78304,
+        "formattedSliceSha256": "1a902d9b4457b06dd817e3b46c5c59575dd1c595ba8142d5849ad5144514a2d6",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Use a real own tag store; an initially empty tags array is honest only when that own store is empty."
+    },
+    {
+      "method": "POST",
+      "originalPaths": [
+        "/tags",
+        "/editor/tags"
+      ],
+      "request": {
+        "json": {
+          "name": "string",
+          "description": "string"
+        }
+      },
+      "responseConsumedByOriginalClient": "Direct created Tag object; FL passes it to onSaved, which reads tag.id.",
+      "evidence": {
+        "symbol": "sIe / FL",
+        "formattedLineStart": 78775,
+        "formattedLineEnd": 78783,
+        "formattedSliceSha256": "94355aa281900488a73d5861952bd1f5d64d4fac21747a9c0b2dde386b369579",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Persist local definition before successful response; if unimplemented return failure rather than synthetic tag."
+    },
+    {
+      "method": "PATCH",
+      "originalPaths": [
+        "/tags/:id",
+        "/editor/tags/:id"
+      ],
+      "request": {
+        "json": {
+          "name": "string",
+          "description": "string"
+        }
+      },
+      "responseConsumedByOriginalClient": "Direct updated Tag object.",
+      "evidence": {
+        "symbol": "oIe / FL",
+        "formattedLineStart": 78775,
+        "formattedLineEnd": 78783,
+        "formattedSliceSha256": "94355aa281900488a73d5861952bd1f5d64d4fac21747a9c0b2dde386b369579",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Persist real local metadata."
+    },
+    {
+      "method": "DELETE",
+      "originalPaths": [
+        "/tags/:id",
+        "/editor/tags/:id"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Response value ignored on success; real failure must reject. Deletion removes tag metadata, not files or task rows.",
+      "evidence": {
+        "symbol": "aIe / ZZ",
+        "formattedLineStart": 78878,
+        "formattedLineEnd": 78891,
+        "formattedSliceSha256": "1c2629e29a567d5564f908b57359c8d774e1737b4dfa2d87be6662f64ac8b3ce",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Remove actual local definition and associations only."
+    },
+    {
+      "method": "PATCH",
+      "originalPaths": [
+        "/tasks/tags",
+        "/editor/tasks/tags"
+      ],
+      "request": {
+        "json": {
+          "taskIds": "string[]",
+          "addTagIds": "string[]",
+          "removeTagIds": "string[]"
+        },
+        "clientBatchSize": 100
+      },
+      "responseConsumedByOriginalClient": "{results:[{taskId:string,updated:boolean,error?:string}]}; zZ accepts only each row with updated=true and no error. {updated:N} alone is NOT sufficient.",
+      "evidence": {
+        "symbol": "$Z / zZ",
+        "formattedLineStart": 78152,
+        "formattedLineEnd": 78174,
+        "formattedSliceSha256": "86a87d7357f615fb69cc911cd37facf20573702a00e0b10e8ee3d82dbae89aea",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Return exact per-task mutation outcomes after persistence."
+    },
+    {
+      "method": "PUT",
+      "originalPaths": [
+        "/tasks/discarded",
+        "/editor/tasks/discarded"
+      ],
+      "request": {
+        "json": {
+          "taskIds": "string[]",
+          "discarded": "boolean"
+        },
+        "clientBatchSize": 200
+      },
+      "responseConsumedByOriginalClient": "{updated:number}; absent updated falls back to submitted batch count in Tz, so local adapter must report true counts/errors.",
+      "evidence": {
+        "symbol": "Tz",
+        "formattedLineStart": 78310,
+        "formattedLineEnd": 78318,
+        "formattedSliceSha256": "c8afa76b00f1bd18c236ca5eb1476faecd7411363e39176babccbd0c1f8d9966",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Change discarded metadata only; never equate with remote cancellation or file deletion."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/user/ui-prefs",
+        "/editor/user/ui-prefs"
+      ],
+      "request": {},
+      "responseConsumedByOriginalClient": "Flat prefs object, e.g. generationViewMode:grid|list; NOT {prefs:{...}} on read.",
+      "evidence": {
+        "symbol": "cIe / UIe prefs",
+        "formattedLineStart": 83364,
+        "formattedLineEnd": 83387,
+        "formattedSliceSha256": "0bed0dbaf17ede435d80defd415f70f44f2e5dae3dd21cd1aad52cee167662cf",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Read own persisted user UI preference."
+    },
+    {
+      "method": "PUT",
+      "originalPaths": [
+        "/user/ui-prefs",
+        "/editor/user/ui-prefs"
+      ],
+      "request": {
+        "json": {
+          "prefs": "partial preferences object"
+        }
+      },
+      "responseConsumedByOriginalClient": "Return shape not consumed by caller; persistence must actually succeed.",
+      "evidence": {
+        "symbol": "Mz / UIe prefs",
+        "formattedLineStart": 83352,
+        "formattedLineEnd": 83363,
+        "formattedSliceSha256": "362b9965220fc5b74ad38f53bbfd49734f9efdfdeef86601e92b98b0bd5d019a",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Merge own preferences without changing unrelated values."
+    },
+    {
+      "method": "GET",
+      "originalPaths": [
+        "/sso/attachment/download-url"
+      ],
+      "request": {
+        "query": [
+          "url",
+          "filename"
+        ]
+      },
+      "responseConsumedByOriginalClient": "Direct or data-wrapped {url:string}.",
+      "evidence": {
+        "symbol": "mwe",
+        "formattedLineStart": 40923,
+        "formattedLineEnd": 40931,
+        "formattedSliceSha256": "e29da1ccee06e7984cac06fe3ed0212092917a887d3bd72180cfda58f1966767",
+        "lineNumbersAreDerived": true
+      },
+      "localAction": "Accept only an owned resource identity/URL and return its actual local download endpoint. No arbitrary remote download proxy."
+    }
+  ],
+  "taskRow": {
+    "observedFields": {
+      "taskId": "string alias of id",
+      "id": "stable task identity",
+      "type": "original task type or explicitly marked local model ID",
+      "name": "actual task/model title",
+      "category": "image|3d|video|audio|other",
+      "status": "actual state",
+      "createdTime": "ISO datetime string",
+      "discarded": "boolean",
+      "sessionId": "optional real own chat/session identity",
+      "input": {
+        "data": "exact original builder payload; preserve all model-specific fields and owned URL references",
+        "param": "optional original parameter payload"
+      },
+      "output": {
+        "data": "actual output tree; Eo/TN traverse this field for history previews/downloads"
+      },
+      "tags": "optional actual Tag[]",
+      "modelThumbnail": "optional actual {modelUrl,url}"
+    },
+    "outputFieldsRecognized": [
+      "imageUrl",
+      "image_url",
+      "images",
+      "videoUrl",
+      "video_url",
+      "audioUrl",
+      "audio_url",
+      "glb_url",
+      "modelUrl",
+      "modelURL",
+      "url",
+      "previewUrl",
+      "thumbnailUrl",
+      "downloadUrl",
+      "atlasUrl",
+      "skybox_basic",
+      "skybox_high",
+      "layers",
+      "motionAssets",
+      "texture_diffuse",
+      "texture_normal",
+      "texture_metallic",
+      "texture_roughness",
+      "text"
+    ],
+    "absoluteMediaUrlRequired": "History TN, iL/MN, Pwe and Iwe mostly require absolute http(s) URLs. Preserve real extensions in owned loopback paths. Relative /api/editor paths work only in the narrow download-key branch; relative /api/tauri paths will not populate ordinary original thumbnails/assets.",
+    "regeneration": "jwe merges input.param then input.data. studioKind/studioModelId, when genuinely recorded at generation, identifies the exact original descriptor; otherwise jwe maps actual task type. wF restores original fields conditional on selected descriptor support. Do not truncate history to prompt/model alone.",
+    "evidence": [
+      {
+        "symbol": "si / TN / Eo",
+        "formattedLineStart": 41082,
+        "formattedLineEnd": 41316,
+        "formattedSliceSha256": "cc806ea5c638e6079a91974eb3e7ad5aba1f2b34cbecf9ea6183f2c39dea1fef",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "iL / Pwe / Iwe / U5",
+        "formattedLineStart": 41411,
+        "formattedLineEnd": 41596,
+        "formattedSliceSha256": "7fa36ac3c89715547d7200236d47d28f7afd7466e93615d496f1020c0f4c5a39",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "jwe / Bwe",
+        "formattedLineStart": 41622,
+        "formattedLineEnd": 41726,
+        "formattedSliceSha256": "06b59354b34fb1a52f4cad4b3ec6441e618af599feb47cfdefaa5f8b207d2509",
+        "lineNumbersAreDerived": true
+      },
+      {
+        "symbol": "wF",
+        "formattedLineStart": 76524,
+        "formattedLineEnd": 76630,
+        "formattedSliceSha256": "5f4c11abb82d4f62f0ea1e0ab45b5a348724fc1edac4a1f6d6a09bdba5acd9d7",
+        "lineNumbersAreDerived": true
+      }
+    ]
+  },
+  "uploadRecord": {
+    "observedFields": {
+      "url": "absolute http(s) actual owned file URL",
+      "kind": "image|video|audio|model|file|splat; splat maps to model in view",
+      "createdTime": "ISO datetime"
+    },
+    "clientConstruction": "U5 merges output and input URLs from tasks with Iwe(upload records), creates roles/input/output and deduplicates. There is no independent required /assets history API in the observed view.",
+    "evidence": {
+      "symbol": "Iwe / U5",
+      "formattedLineStart": 41502,
+      "formattedLineEnd": 41596,
+      "formattedSliceSha256": "36c9bce349136db9574070951203e0d0b6a9adcf3aa4f8cbe46eab4daff5dbc9",
+      "lineNumbersAreDerived": true
+    }
+  },
+  "tag": {
+    "observedFields": [
+      "id",
+      "name",
+      "description",
+      "aliases",
+      "scope",
+      "count",
+      "source"
+    ],
+    "scopeUserMeans": "locally editable private tag in this original UI",
+    "sourceValuesObserved": [
+      "manual",
+      "ai",
+      "both"
+    ],
+    "doNotInvent": "AI tags or counts without actual data; the UI filters an empty name and the built-in name 游戏资产.",
+    "evidence": {
+      "symbol": "RL / NL / QNe / zZ",
+      "formattedLineStart": 78117,
+      "formattedLineEnd": 78174,
+      "formattedSliceSha256": "80a8d5fbd1d4232f210e970d1d0c4e3eb2823fb2c26a56e15b37982cb8ff7c25",
+      "lineNumbersAreDerived": true
+    }
+  },
+  "historyConstants": {
+    "taskPageSize": 40,
+    "uploadedRecordFetchLimit": 500,
+    "assetViewInitialVisible": 60,
+    "categories": [
+      "all",
+      "3d",
+      "image",
+      "audio",
+      "video",
+      "other"
+    ],
+    "views": [
+      "tasks",
+      "assets"
+    ],
+    "assetScopes": [
+      "all",
+      "output",
+      "input"
+    ],
+    "layouts": [
+      "grid",
+      "list"
+    ],
+    "dateBoundaries": "Dp(start) uses Asia/Shanghai-like +08:00 midnight string; end boundary is next day +08:00 midnight. Preserve exclusive end semantics.",
+    "evidence": {
+      "symbol": "NIe / IIe / kIe / Dp",
+      "formattedLineStart": 82337,
+      "formattedLineEnd": 82382,
+      "formattedSliceSha256": "69e30f11719cf6781a72bb81c67d733043c3fd6ff2aec54e173d991e545928b0",
+      "lineNumbersAreDerived": true
+    }
+  },
+  "generationLifecycle": {
+    "create": "hwe.c POST /sso/generate",
+    "pollPath": "/task/:serverTaskId/status",
+    "intervalMs": 3000,
+    "maximumConsecutivePollErrors": 10,
+    "defaultTimeoutMs": 600000,
+    "skyboxTimeoutMs": 14400000,
+    "states": {
+      "failed": [
+        "failed",
+        "error",
+        "cancelled"
+      ],
+      "pending": [
+        "pending",
+        "queued",
+        "running",
+        "retrying"
+      ],
+      "completeRule": "completed OR actual recognized preview/output while not in a pending state"
+    },
+    "cancelBoundary": "Observed discardTask stops local timers/card and changes discarded metadata; no original remote cancel endpoint is established.",
+    "evidence": {
+      "symbol": "ewe / constants / hwe",
+      "formattedLineStart": 40346,
+      "formattedLineEnd": 40761,
+      "formattedSliceSha256": "04754d7eb79c2b12ec177dee9809ba3e761a0a8c8a4770d54e2230e0489c04fc",
+      "lineNumbersAreDerived": true
+    }
+  },
+  "registry": {
+    "modelDefinitionsCount": 45,
+    "runtimeVisibleCountNotInferred": true,
+    "catalogCompositionSource": "{image:[...OK,q1e,P5[0],iw,...P5.slice(1),...F1e.filter(t=>t.id!==\"sprite-atlas\"),...G1e,...z1e,$1e].filter(Boolean),video:[...j1e,...V1e,...H1e],audio:B1e,\"3d\":[...U1e,...W1e]}",
+    "models": [
+      {
+        "id": "material",
+        "sourceByteRange": {
+          "startInclusive": 878272,
+          "endExclusive": 878630,
+          "sha256": "36056eb8f4fb04d04db189ff0593d39109f56f559c71e424b59064b00d769c09"
+        },
+        "fields": {
+          "id": "material",
+          "label": "PBR 材质",
+          "endpoint": "/editor/task/huoshan-seedream-45-async",
+          "kind": "image",
+          "sizeKey": "size",
+          "sizeOptions": {
+            "expression": "$v(3686400,16777216)"
+          },
+          "pixelMin": 3686400,
+          "pixelMax": 16777216,
+          "info": {
+            "size": "无缝 PBR 表面材质（走 Seedream）；支持 2K / 4K 与常用比例，可自定义 W×H"
+          },
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,size:t.size,isSegmentation:t.segmentation===!0})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size",
+              "t.segmentation"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "size",
+              "isSegmentation"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Excluded from P5 by original expression; literal definition is not a visible model count."
+      },
+      {
+        "id": "seedream-lite",
+        "sourceByteRange": {
+          "startInclusive": 878631,
+          "endExclusive": 879181,
+          "sha256": "cc4897a03f20789efd497239fb6e322bfdc521504d9d84fb08b84a4d0925c246"
+        },
+        "fields": {
+          "id": "seedream-lite",
+          "maxCount": 4,
+          "creditTaskType": "huoshan_seedream",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.size})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 10,
+          "supportsSegmentation": true,
+          "label": "Seedream 5.0 Lite",
+          "endpoint": "/editor/task/huoshan-seedream-45-async",
+          "kind": "image",
+          "sizeKey": "size",
+          "sizeOptions": {
+            "expression": "$v(3686400,16777216)"
+          },
+          "pixelMin": 3686400,
+          "pixelMax": 16777216,
+          "ratioMin": 0.0625,
+          "ratioMax": 16,
+          "info": {
+            "size": "官方总像素 ≥2560×1440（3,686,400）。已按 1:1/4:3/3:4/16:9/9:16/3:2/2:3/21:9 生成常用档，可自定义 W×H"
+          },
+          "build": {
+            "functionSource": "t=>Wv(t,{prompt:t.prompt,size:t.size,isSegmentation:t.segmentation===!0})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size",
+              "t.segmentation"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "size",
+              "isSegmentation"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "seedream-pro",
+        "sourceByteRange": {
+          "startInclusive": 879182,
+          "endExclusive": 879943,
+          "sha256": "47c8dce557aefe27655c506e3dfd90d9e5efde9e082ec2d70b8908d0779e93f5"
+        },
+        "fields": {
+          "id": "seedream-pro",
+          "maxCount": 4,
+          "creditTaskType": "huoshan_seedream_pro",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.size})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 10,
+          "supportsSegmentation": true,
+          "supportsLayerDecomposition": true,
+          "label": "Seedream 5.0 Pro",
+          "endpoint": "/editor/task/huoshan-seedream-pro-async",
+          "kind": "image",
+          "sizeKey": "size",
+          "sizeOptions": {
+            "expression": "$v(921600,4194304)"
+          },
+          "pixelMin": 921600,
+          "pixelMax": 4194304,
+          "ratioMin": 0.0625,
+          "ratioMax": 16,
+          "info": {
+            "size": "官方像素 1280×720~2048×2048（后端上限 4,194,304）。已按 1:1/4:3/3:4/16:9/9:16/3:2/2:3/21:9 生成常用档，可自定义 W×H",
+            "layer": "开启「图层拆分」：1 张图拆为 1 张底图 + 最多 16 个透明 PNG 图层（含层级/名称/边界框），可独立编辑前景/背景/物件"
+          },
+          "build": {
+            "functionSource": "t=>Wv(t,{prompt:t.prompt,size:t.size,isSegmentation:t.segmentation===!0})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size",
+              "t.segmentation"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "size",
+              "isSegmentation"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "frontier",
+        "sourceByteRange": {
+          "startInclusive": 879944,
+          "endExclusive": 880374,
+          "sha256": "56878e5ba92aec3301e470bc3848923e696c312d3286814b0719c62d709dc89e"
+        },
+        "fields": {
+          "id": "frontier",
+          "maxCount": 4,
+          "creditTaskType": "fal_nano_banana",
+          "creditParams": {
+            "functionSource": "()=>({resolution:\"1K\"})",
+            "parameterReads": [],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "label": "Frontier",
+          "endpoint": "/editor/task/frontier-effect",
+          "kind": "image",
+          "sizeKey": "aspectRatio",
+          "sizeOptions": [
+            "1:1",
+            "16:9",
+            "4:3",
+            "3:4",
+            "9:16",
+            "21:9"
+          ],
+          "info": {
+            "size": "后端允许：auto/21:9/16:9/3:2/4:3/5:4/1:1/4:5/3:4/2:3/9:16（页面未列 auto/3:2/5:4/4:5/2:3）"
+          },
+          "build": {
+            "functionSource": "t=>Wv(t,{prompt:t.prompt,aspectRatio:t.size,resolution:\"1K\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "aspectRatio",
+              "resolution"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "frontier-lite",
+        "sourceByteRange": {
+          "startInclusive": 880375,
+          "endExclusive": 880880,
+          "sha256": "7b1ffbeeb22fda4363a7582c36a8f29d0e55a4c212621a2d2f9268e5e1d19102"
+        },
+        "fields": {
+          "id": "frontier-lite",
+          "maxCount": 4,
+          "creditTaskType": "fal_frontier_lite",
+          "creditParams": {
+            "functionSource": "()=>({resolution:\"1K\"})",
+            "parameterReads": [],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "supportsSegmentation": true,
+          "label": "Frontier-Lite",
+          "endpoint": "/editor/task/frontier-lite",
+          "kind": "image",
+          "sizeKey": "aspectRatio",
+          "sizeOptions": [
+            "1:1",
+            "16:9",
+            "4:3",
+            "3:4",
+            "9:16",
+            "21:9"
+          ],
+          "info": {
+            "size": "后端允许合法：auto/21:9/16:9/3:2/4:3/5:4/1:1/4:5/3:4/2:3/9:16（页面未列 auto/3:2/5:4/4:5/2:3）"
+          },
+          "build": {
+            "functionSource": "t=>Wv(t,{prompt:t.prompt,aspectRatio:t.size,resolution:\"1K\",isSegmentation:t.segmentation===!0})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size",
+              "t.segmentation"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "aspectRatio",
+              "resolution",
+              "isSegmentation"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "frontier-game-design",
+        "sourceByteRange": {
+          "startInclusive": 880881,
+          "endExclusive": 882101,
+          "sha256": "02522050812539fd0e04c632cde6e434e14e1c33d8e2ae3b3a8789829f76c917"
+        },
+        "fields": {
+          "id": "frontier-game-design",
+          "frontierImage": true,
+          "qualityOptions": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "maxCount": 4,
+          "creditTaskType": "fal_frontier_game_design",
+          "creditParams": {
+            "functionSource": "t=>{if(t.resolution===\"2K\"||t.resolution===\"4K\"){const e=yN(t.resolution,vN[t.size]||\"1:1\");if(e)return{resolution:e}}return{resolution:t.size}}",
+            "parameterReads": [
+              "t.resolution",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "supportsSegmentation": true,
+          "label": "Frontier Game Design",
+          "endpoint": "/editor/task/frontier-game-design",
+          "kind": "image",
+          "formats": [
+            "png",
+            "jpeg",
+            "webp"
+          ],
+          "sizeKey": "imageSize",
+          "sizeOptions": [
+            "square_hd",
+            "square",
+            "portrait_4_3",
+            "portrait_16_9",
+            "landscape_4_3",
+            "landscape_16_9",
+            "auto"
+          ],
+          "opts": {
+            "resolutions": [
+              "1K",
+              "2K",
+              "4K"
+            ]
+          },
+          "build": {
+            "functionSource": "t=>{const e=Wv(t,{prompt:t.prompt,quality:t.quality||\"medium\",outputFormat:t.segMode===\"native\"?\"png\":t.format||\"png\",isSegmentation:t.segMode===\"smart\",nativeSegmentation:t.segMode===\"native\"});if(t.resolution===\"2K\"||t.resolution===\"4K\"){const n=yN(t.resolution,vN[t.size]||\"1:1\");if(n){const[i,r]=n.split(\"x\").map(Number);return e.imageSize={width:i,height:r},e}}return e.imageSize=t.size,e}",
+            "parameterReads": [
+              "t.prompt",
+              "t.quality",
+              "t.segMode",
+              "t.format",
+              "t.resolution",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "quality",
+              "outputFormat",
+              "isSegmentation",
+              "nativeSegmentation",
+              "width",
+              "height"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "size": "标准档支持常用画面比例；2K/4K 按所选比例生成，最长边 3840、总像素不超过 8,294,400",
+            "quality": "质量 low/medium/high；数量走并发任务（1–4），格式 jpeg/png/webp"
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "hy-image-v3",
+        "sourceByteRange": {
+          "startInclusive": 882102,
+          "endExclusive": 882837,
+          "sha256": "f3c412735bb4ceb36829ea69da4d3c10766d651466e22e9dd0e3ac070d6c049b"
+        },
+        "fields": {
+          "id": "hy-image-v3",
+          "maxCount": 5,
+          "creditTaskType": "hy_image_v3",
+          "creditParams": {
+            "functionSource": "()=>({resolution:\"1k\"})",
+            "parameterReads": [],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 3,
+          "label": "混元生图3.0",
+          "endpoint": "/editor/task/hy-image-v3",
+          "kind": "image",
+          "sizeKey": "size",
+          "sizeOptions": {
+            "expression": "$v(262144,1048576)"
+          },
+          "pixelMin": 262144,
+          "pixelMax": 1048576,
+          "ratioMin": 0.25,
+          "ratioMax": 4,
+          "info": {
+            "size": "腾讯云 TokenHub hy-image-v3：宽高 [512,2048]、面积 ≤ 1024×1024。可按 1:1/4:3/3:4/16:9/9:16 生成常用档，可自定义 W×H"
+          },
+          "build": {
+            "functionSource": "t=>{var r,s;const e=!!((r=t.images)!=null&&r.length)||!!t.imageUrl,n={prompt:t.prompt,size:t.size,revise:t.hyRevise===!0,mode:String(t.mode)===\"image_to_image\"||e?\"image_to_image\":\"text_to_image\"},i=(s=t.images)!=null&&s.length?t.images:t.imageUrl?[t.imageUrl]:[];return i.length&&(n.images=i),n}",
+            "parameterReads": [
+              "t.images",
+              "t.imageUrl",
+              "t.prompt",
+              "t.size",
+              "t.hyRevise",
+              "t.mode"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "size",
+              "revise",
+              "mode"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "qwen-image",
+        "sourceByteRange": {
+          "startInclusive": 882838,
+          "endExclusive": 883468,
+          "sha256": "5a9b23c90e180cf45eecb758ae307d4cda18045a9b94bf2268a3c144c70f213c"
+        },
+        "fields": {
+          "id": "qwen-image",
+          "maxCount": 4,
+          "creditTaskType": "qwen_image",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.size})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 3,
+          "label": "千问生图3.0 Pro",
+          "endpoint": "/editor/task/qwen-image",
+          "kind": "image",
+          "sizeKey": "size",
+          "sizeOptions": {
+            "expression": "$v(262144,4194304)"
+          },
+          "pixelMin": 262144,
+          "pixelMax": 4194304,
+          "ratioMin": 0.125,
+          "ratioMax": 8,
+          "info": {
+            "size": "阿里云百炼 qwen-image-3.0-pro：像素 512×512~2048×2048、宽高比 1:8~8:1。可按常用比例生成档位，可自定义 W×H"
+          },
+          "build": {
+            "functionSource": "t=>{var i;const e=(i=t.images)!=null&&i.length?t.images:t.imageUrl?[t.imageUrl]:[],n={prompt:t.prompt,mode:e.length?\"image_to_image\":\"text_to_image\",size:t.size};return e.length&&(n.images=e),n}",
+            "parameterReads": [
+              "t.images",
+              "t.imageUrl",
+              "t.prompt",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "mode",
+              "size"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "eL",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "upscale-image",
+        "sourceByteRange": {
+          "startInclusive": 883601,
+          "endExclusive": 884043,
+          "sha256": "2faa171a3bda639fee4c2fd7f78d983da81d56f4af1a29cb4f0e8929158cd3bf"
+        },
+        "fields": {
+          "id": "upscale-image",
+          "creditTaskType": "fal_esrgan",
+          "creditParams": {
+            "functionSource": "t=>({scale:String(t.scale||4)})",
+            "parameterReads": [
+              "t.scale"
+            ],
+            "objectOutputKeys": [
+              "scale"
+            ],
+            "referenceOnly": true
+          },
+          "label": "图像超分",
+          "kind": "image",
+          "imageEndpoint": "/editor/task/upscale-image",
+          "textEndpoint": "/editor/task/upscale-image",
+          "needs": [
+            "image"
+          ],
+          "scales": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "build": {
+            "functionSource": "t=>({imageUrl:t.imageUrl||t.modelUrl,scale:t.scale||4,model:\"RealESRGAN_x4plus_anime_6B\",outputFormat:\"png\"})",
+            "parameterReads": [
+              "t.imageUrl",
+              "t.modelUrl",
+              "t.scale"
+            ],
+            "objectOutputKeys": [
+              "imageUrl",
+              "scale",
+              "model",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "AI 超分辨率放大 1x-8x；动漫/2D 用 anime 模型；需上传放大的图"
+          }
+        },
+        "originalGroup": "F1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "sprite-atlas",
+        "sourceByteRange": {
+          "startInclusive": 884044,
+          "endExclusive": 884379,
+          "sha256": "9c291b83b790cbd149f17af1ae0a9909653d18ecbcc6a556e61bcb9ebd3dc901"
+        },
+        "fields": {
+          "id": "sprite-atlas",
+          "label": "精灵图图集",
+          "kind": "atlas",
+          "endpoint": "/editor/task/sprite-atlas",
+          "needs": [
+            "image"
+          ],
+          "formats": [
+            "png",
+            "jpeg"
+          ],
+          "build": {
+            "functionSource": "t=>({imageUrls:[t.imageUrl],outputFormat:t.format||\"png\",padding:2,powerOfTwo:!0,maxSize:2048})",
+            "parameterReads": [
+              "t.imageUrl",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "imageUrls",
+              "outputFormat",
+              "padding",
+              "powerOfTwo",
+              "maxSize"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "把多张精灵图打包成一张图集（同步，即时返回；单次可由图集合入）"
+          }
+        },
+        "originalGroup": "F1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Excluded from xN.image by original F1e.filter."
+      },
+      {
+        "id": "sprite-animation",
+        "sourceByteRange": {
+          "startInclusive": 884380,
+          "endExclusive": 884989,
+          "sha256": "dea4fe1e1c0fdbcec07e322619378e94516635d6f411301fa0c71125c9bb9553"
+        },
+        "fields": {
+          "id": "sprite-animation",
+          "creditTaskType": "fal_frontier_flare",
+          "creditParams": {
+            "functionSource": "t=>I5.creditParams({...t,size:t.size||\"square_hd\",resolution:\"1K\",quality:\"medium\"})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "size",
+              "resolution",
+              "quality"
+            ],
+            "referenceOnly": true
+          },
+          "requiresFrontierSubscription": true,
+          "maxImages": 16,
+          "defaultQuality": "medium",
+          "qualityOptions": [
+            "medium"
+          ],
+          "label": "精灵图动画",
+          "kind": "image",
+          "endpoint": "/editor/task/sprite-animation",
+          "sizeKey": "imageSize",
+          "sizeOptions": [
+            "square_hd",
+            "square"
+          ],
+          "build": {
+            "functionSource": "t=>I5.build({...t,size:t.size||\"square_hd\",resolution:\"1K\",quality:\"medium\",segMode:\"native\"})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "size",
+              "resolution",
+              "quality",
+              "segMode"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "全能耀斑生成 4×4 透明背景精灵图（16 帧序列），自带原生抠图，按格子裁切做 2D 动画"
+          }
+        },
+        "originalGroup": "F1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "game-ui-kit",
+        "sourceByteRange": {
+          "startInclusive": 884990,
+          "endExclusive": 885424,
+          "sha256": "1dd5051aaa8bae6ea94caf10c22eaebb1eb1d3f06ef6f3b0993a3f65362f2ea7"
+        },
+        "fields": {
+          "id": "game-ui-kit",
+          "creditTaskType": "fal_frontier_game_design",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.size})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "label": "游戏 UI 套件",
+          "kind": "image",
+          "endpoint": "/editor/task/game-ui-kit",
+          "sizeKey": "imageSize",
+          "sizeOptions": [
+            "square_hd",
+            "landscape_16_9"
+          ],
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,imageSize:t.size,quality:t.quality||\"medium\",isSegmentation:!1,outputFormat:\"png\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.size",
+              "t.quality"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "imageSize",
+              "quality",
+              "isSegmentation",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "生成完整游戏 UI 截图（含 HUD/血条/按钮等），供提取 UI 元素"
+          }
+        },
+        "originalGroup": "F1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "seedance2",
+        "sourceByteRange": {
+          "startInclusive": 885468,
+          "endExclusive": 886667,
+          "sha256": "710bd728359aa437ff4f928141a487263dad124940291612bc578fa38bd4ca91"
+        },
+        "fields": {
+          "id": "seedance2",
+          "maxCount": 2,
+          "creditTaskType": "huoshan_seedance2",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration),model:t.seedanceModel||yA})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration",
+              "t.seedanceModel"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration",
+              "model"
+            ],
+            "referenceOnly": true
+          },
+          "variants": [
+            {
+              "id": "doubao-seedance-2-0-mini-260615",
+              "label": "Mini"
+            },
+            {
+              "id": "doubao-seedance-2-0-fast-260128",
+              "label": "Fast"
+            },
+            {
+              "id": "doubao-seedance-2-0-260128",
+              "label": "标准"
+            }
+          ],
+          "maxImages": 9,
+          "maxVideos": 3,
+          "maxAudios": 3,
+          "label": "Seedance 2",
+          "endpoint": "/editor/task/huoshan-seedance2",
+          "kind": "video",
+          "promptMax": 4000,
+          "opts": {
+            "ratios": [
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "21:9",
+              "adaptive"
+            ],
+            "resolutions": [
+              "480p",
+              "720p"
+            ],
+            "durations": [
+              4,
+              5,
+              8,
+              12,
+              15,
+              20,
+              30,
+              40,
+              50,
+              60
+            ],
+            "longDurationThreshold": 15
+          },
+          "info": {
+            "resolution": "官方仅 480p / 720p（2.0 各版本均不支持 1080p）",
+            "ratio": "比例：16:9 / 4:3 / 1:1 / 3:4 / 9:16 / 21:9 / adaptive",
+            "duration": "时长 4–15s；>15s 为长时长模式（AI 拆分多段 ≤15s 串行生成后拼接，上限 60s）；多模态参考：图≤9、视频≤3、音频≤3"
+          },
+          "build": {
+            "functionSource": "(t,e)=>({model:t.seedanceModel||yA,mode:M5(t.mode,e),prompt:t.prompt,images:t.mode===\"first_last_frame\"&&e.last?[...e.images||[],e.last]:e.images||void 0,videos:t.mode===\"multimodal\"?e.videos:void 0,audios:t.mode===\"multimodal\"?e.audios:void 0,ratio:t.ratio,resolution:t.resolution,duration:t.duration,seed:-1})",
+            "parameterReads": [
+              "t.seedanceModel",
+              "t.mode",
+              "t.prompt",
+              "e.last",
+              "e.images",
+              "e.videos",
+              "e.audios",
+              "t.ratio",
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "mode",
+              "prompt",
+              "images",
+              "videos",
+              "audios",
+              "ratio",
+              "resolution",
+              "duration",
+              "seed"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "seedance25",
+        "sourceByteRange": {
+          "startInclusive": 886668,
+          "endExclusive": 887746,
+          "sha256": "989ed8fb061984895eb21458deb3d8583fc9a6cd2186e79f80040d9c299101db"
+        },
+        "fields": {
+          "id": "seedance25",
+          "maxCount": 2,
+          "creditTaskType": "huoshan_seedance2",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration),model:\"doubao-seedance-2-5-260628\"})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration",
+              "model"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 30,
+          "maxVideos": 10,
+          "maxAudios": 10,
+          "label": "Seedance 2.5",
+          "endpoint": "/editor/task/huoshan-seedance2",
+          "kind": "video",
+          "promptMax": 4000,
+          "opts": {
+            "ratios": [
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "21:9",
+              "adaptive"
+            ],
+            "resolutions": [
+              "480p",
+              "720p"
+            ],
+            "durations": [
+              4,
+              5,
+              8,
+              12,
+              15,
+              20,
+              25,
+              30
+            ]
+          },
+          "info": {
+            "resolution": "官方 480p / 720p（Seedance 2.5 暂不支持 1080p）",
+            "ratio": "比例：16:9 / 4:3 / 1:1 / 3:4 / 9:16 / 21:9 / adaptive",
+            "duration": "生成时长 4–30s；编辑已有视频时跟随源视频时长，请选择不短于源视频的时长档位；多模态参考：图≤30、视频≤10、音频≤10"
+          },
+          "build": {
+            "functionSource": "(t,e)=>({model:\"doubao-seedance-2-5-260628\",mode:M5(t.mode,e),prompt:t.prompt,images:t.mode===\"first_last_frame\"&&e.last?[...e.images||[],e.last]:e.images||void 0,videos:t.mode===\"multimodal\"?e.videos:void 0,audios:t.mode===\"multimodal\"?e.audios:void 0,ratio:t.ratio,resolution:t.resolution,duration:t.duration,output_format:\"mp4\"})",
+            "parameterReads": [
+              "t.mode",
+              "t.prompt",
+              "e.last",
+              "e.images",
+              "e.videos",
+              "e.audios",
+              "t.ratio",
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "mode",
+              "prompt",
+              "images",
+              "videos",
+              "audios",
+              "ratio",
+              "resolution",
+              "duration",
+              "output_format"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "minimax-h3",
+        "sourceByteRange": {
+          "startInclusive": 887747,
+          "endExclusive": 888738,
+          "sha256": "3876b9e67fa09c9519f66a19a41d4350e726636a63929c385df667f15891a141"
+        },
+        "fields": {
+          "id": "minimax-h3",
+          "maxCount": 2,
+          "creditTaskType": "minimax_h3_video",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration),model:\"MiniMax-H3\"})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration",
+              "model"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "maxVideos": 1,
+          "maxAudios": 1,
+          "label": "MiniMax H3",
+          "endpoint": "/editor/task/minimax-h3-video",
+          "kind": "video",
+          "opts": {
+            "ratios": [
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "21:9",
+              "adaptive"
+            ],
+            "resolutions": [
+              "768P",
+              "2K"
+            ],
+            "durations": [
+              4,
+              8,
+              12,
+              15,
+              20,
+              30,
+              40,
+              50,
+              60
+            ],
+            "longDurationThreshold": 15
+          },
+          "info": {
+            "resolution": "官方仅 768P / 2K（无 1080P）",
+            "ratio": "比例：adaptive/16:9/9:16/4:3/1:1/3:4/21:9；文生模式不可用 adaptive",
+            "duration": "时长 4–15s（整数秒）；>15s 为长时长模式（AI 拆分多段 ≤15s 串行生成后拼接，上限 60s）"
+          },
+          "build": {
+            "functionSource": "(t,e)=>({model:\"MiniMax-H3\",mode:t.mode===\"reference\"||t.mode===\"multimodal\"?\"reference\":t.mode,prompt:t.prompt,images:t.mode===\"first_last_frame\"&&e.last?[...e.images||[],e.last]:e.images||void 0,videos:e.videos||void 0,audios:e.audios||void 0,ratio:t.ratio,resolution:t.resolution,duration:t.duration})",
+            "parameterReads": [
+              "t.mode",
+              "t.prompt",
+              "e.last",
+              "e.images",
+              "e.videos",
+              "e.audios",
+              "t.ratio",
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "mode",
+              "prompt",
+              "images",
+              "videos",
+              "audios",
+              "ratio",
+              "resolution",
+              "duration"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "minimax-h3-max",
+        "sourceByteRange": {
+          "startInclusive": 888739,
+          "endExclusive": 889774,
+          "sha256": "f9d9acf959a367a5aac41a60d8ccbfaa61d77eff31a097e1516e4f96065794a7"
+        },
+        "fields": {
+          "id": "minimax-h3-max",
+          "maxCount": 2,
+          "creditTaskType": "minimax_h3_video",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration),model:\"MiniMax-H3-Max\"})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration",
+              "model"
+            ],
+            "referenceOnly": true
+          },
+          "refModes": [
+            "text_to_video",
+            "first_frame",
+            "first_last_frame"
+          ],
+          "maxImages": 1,
+          "label": "MiniMax H3 Max",
+          "endpoint": "/editor/task/minimax-h3-video",
+          "kind": "video",
+          "opts": {
+            "ratios": [
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "21:9",
+              "adaptive"
+            ],
+            "resolutions": [
+              "480P",
+              "768P"
+            ],
+            "durations": [
+              5,
+              8,
+              12,
+              15
+            ]
+          },
+          "info": {
+            "resolution": "官方仅 480P / 768P（Max 不支持 2K）",
+            "ratio": "比例：adaptive/16:9/9:16/4:3/1:1/3:4/21:9；文生模式不可用 adaptive",
+            "duration": "时长 5–15s（整数秒，不支持长时长多段模式）",
+            "modes": "仅文生/首帧/首尾帧（不支持参考图与多模态参考）"
+          },
+          "build": {
+            "functionSource": "(t,e)=>({model:\"MiniMax-H3-Max\",mode:t.mode===\"reference\"||t.mode===\"multimodal\"?\"reference\":t.mode,prompt:t.prompt,images:t.mode===\"first_last_frame\"&&e.last?[...e.images||[],e.last]:e.images||void 0,videos:e.videos||void 0,audios:e.audios||void 0,ratio:t.ratio,resolution:t.resolution,duration:t.duration})",
+            "parameterReads": [
+              "t.mode",
+              "t.prompt",
+              "e.last",
+              "e.images",
+              "e.videos",
+              "e.audios",
+              "t.ratio",
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "mode",
+              "prompt",
+              "images",
+              "videos",
+              "audios",
+              "ratio",
+              "resolution",
+              "duration"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "wan3",
+        "sourceByteRange": {
+          "startInclusive": 889775,
+          "endExclusive": 890821,
+          "sha256": "ea77e375e09355b33bb9b213c1692b055971f48e4793f477623cb7f911f282a3"
+        },
+        "fields": {
+          "id": "wan3",
+          "maxCount": 2,
+          "creditTaskType": "wan3_video",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration)})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "maxVideos": 1,
+          "maxAudios": 1,
+          "label": "Wan 3",
+          "endpoint": "/editor/task/wan3-video",
+          "kind": "video",
+          "opts": {
+            "ratios": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "resolutions": [
+              "480P",
+              "720P",
+              "1080P"
+            ],
+            "durations": [
+              5,
+              8,
+              12,
+              20,
+              30
+            ]
+          },
+          "info": {
+            "resolution": "后端支持 480P / 720P / 1080P（默认 1080P）",
+            "ratio": "比例：adaptive/16:9/4:3/1:1/3:4/9:16",
+            "duration": "时长 2–30s（页面档位均为合法值）"
+          },
+          "build": {
+            "functionSource": "(t,e)=>{var n;return{mode:t.mode===\"multimodal\"?\"reference\":t.mode,prompt:t.prompt,first_frame:t.mode===\"first_frame\"||t.mode===\"first_last_frame\"?(n=e.images)==null?void 0:n[0]:void 0,last_frame:t.mode===\"first_last_frame\"?e.last:void 0,reference_images:t.mode===\"reference\"||t.mode===\"multimodal\"?e.images:void 0,reference_videos:t.mode===\"reference\"||t.mode===\"multimodal\"?e.videos:void 0,reference_audios:t.mode===\"reference\"||t.mode===\"multimodal\"?e.audios:void 0,ratio:t.ratio,resolution:t.resolution,duration:t.duration}}",
+            "parameterReads": [
+              "t.mode",
+              "t.prompt",
+              "e.images",
+              "e.last",
+              "e.videos",
+              "e.audios",
+              "t.ratio",
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "mode",
+              "prompt",
+              "first_frame",
+              "last_frame",
+              "reference_images",
+              "reference_videos",
+              "reference_audios",
+              "ratio",
+              "resolution",
+              "duration"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "happyhorse-11",
+        "sourceByteRange": {
+          "startInclusive": 890822,
+          "endExclusive": 891853,
+          "sha256": "cf9a38c4fd3866e2b44cddc0bc70eb957caca42f2f1c193c7656a257d297b099"
+        },
+        "fields": {
+          "id": "happyhorse-11",
+          "maxCount": 2,
+          "creditTaskType": "happyhorse_video",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution,duration:String(t.duration)})",
+            "parameterReads": [
+              "t.resolution",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "maxImages": 9,
+          "maxVideos": 1,
+          "maxAudios": 1,
+          "label": "HappyHorse 1.1",
+          "endpoint": "/editor/task/happyhorse-video",
+          "kind": "video",
+          "opts": {
+            "ratios": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4"
+            ],
+            "resolutions": [
+              "720P",
+              "1080P"
+            ],
+            "durations": [
+              3,
+              5,
+              8,
+              12,
+              15,
+              20,
+              30,
+              40,
+              50,
+              60
+            ],
+            "longDurationThreshold": 15
+          },
+          "info": {
+            "resolution": "720P / 1080P",
+            "ratio": "比例：16:9 / 9:16 / 1:1 / 4:3 / 3:4（仅文生 / 图参考模式）",
+            "duration": "时长 3–15s；>15s 为长时长模式（AI 拆分多段 ≤15s 串行生成后拼接，上限 60s）"
+          },
+          "build": {
+            "functionSource": "(t,e)=>{var n;return{mode:t.mode===\"text_to_video\"?\"text_to_video\":t.mode===\"first_frame\"||t.mode===\"first_last_frame\"?\"first_frame\":\"reference_image\",prompt:t.prompt,first_frame:t.mode===\"first_frame\"||t.mode===\"first_last_frame\"?(n=e.images)==null?void 0:n[0]:void 0,references:t.mode===\"reference\"||t.mode===\"multimodal\"?e.images:void 0,resolution:t.resolution,ratio:t.ratio,duration:t.duration,watermark:!1}}",
+            "parameterReads": [
+              "t.mode",
+              "t.prompt",
+              "e.images",
+              "t.resolution",
+              "t.ratio",
+              "t.duration"
+            ],
+            "objectOutputKeys": [
+              "mode",
+              "prompt",
+              "first_frame",
+              "references",
+              "resolution",
+              "ratio",
+              "duration",
+              "watermark"
+            ],
+            "referenceOnly": true
+          }
+        },
+        "originalGroup": "j1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "rodin-25",
+        "sourceByteRange": {
+          "startInclusive": 891947,
+          "endExclusive": 892512,
+          "sha256": "a88029cc2f888efd15827f79fd8c73e6027e357f8e3eb9de17dcd9d0789f342d"
+        },
+        "fields": {
+          "id": "rodin-25",
+          "creditTaskType": "rodin_generation",
+          "label": "Rodin 2.5",
+          "kind": "3d",
+          "imageEndpoint": "/editor/task/rodin-generation",
+          "textEndpoint": "/editor/task/rodin-generation",
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,imageUrls:t.imageUrl?[t.imageUrl]:void 0,tier:t.rodinTier||\"Gen-2.5-Medium\",qualityOverride:t.rodinFaceLimit||void 0,textureMode:\"medium\",geometryFormat:\"fbx\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.imageUrl",
+              "t.rodinTier",
+              "t.rodinFaceLimit"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "imageUrls",
+              "tier",
+              "qualityOverride",
+              "textureMode",
+              "geometryFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "Rodin tier：Extreme-Low/Low/Medium(默认)/High/Extreme-High；面数上限（quality_override）默认 2 万；geometryInstruct 的 creative 仅在 Medium/High/Extreme-High 可用；isMicro 仅 Extreme-High"
+          }
+        },
+        "originalGroup": "U1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "tripo-p2",
+        "sourceByteRange": {
+          "startInclusive": 892513,
+          "endExclusive": 893269,
+          "sha256": "aeba6cd27539850d9c50aa0794c6689393b075a1f02e2366cc69c2f08da30ac6"
+        },
+        "fields": {
+          "id": "tripo-p2",
+          "creditTaskType": {
+            "functionSource": "t=>t.imageUrl?\"tripo_image_to_model\":\"tripo_text_to_model\"",
+            "parameterReads": [
+              "t.imageUrl"
+            ],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "creditParams": {
+            "functionSource": "t=>({model:\"P2-20260801\",textureQuality:Nu[t.textureQuality]||\"standard\",texture:!0,pbr:t.pbr,quad:!0})",
+            "parameterReads": [
+              "t.textureQuality",
+              "t.pbr"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "textureQuality",
+              "texture",
+              "pbr",
+              "quad"
+            ],
+            "referenceOnly": true
+          },
+          "label": "Tripo P2",
+          "kind": "3d",
+          "textEndpoint": "/editor/task/tripo-text-to-model",
+          "imageEndpoint": "/editor/task/tripo-image-to-model",
+          "paidGated": true,
+          "build": {
+            "functionSource": "t=>{const e={modelVersion:\"P2-20260801\",textureVersion:Xy,textureQuality:Nu[t.textureQuality]||\"standard\",texture:!0,pbr:t.pbr,quad:!0,faceLimit:t.faceLimit||void 0,exportUv:!0,withFbx:!0};return t.imageUrl?{...e,imageUrl:t.imageUrl}:{...e,prompt:t.prompt}}",
+            "parameterReads": [
+              "t.textureQuality",
+              "t.pbr",
+              "t.faceLimit",
+              "t.imageUrl",
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "modelVersion",
+              "textureVersion",
+              "textureQuality",
+              "texture",
+              "pbr",
+              "quad",
+              "faceLimit",
+              "exportUv",
+              "withFbx",
+              "imageUrl",
+              "prompt"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "Tripo P2 新一代 P 系列，支持四边面输出（quad 默认 true）；面数范围三角面 48–50000、quad 时 48–25000；preview 版本"
+          }
+        },
+        "originalGroup": "U1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "tripo-p1",
+        "sourceByteRange": {
+          "startInclusive": 893270,
+          "endExclusive": 893965,
+          "sha256": "3d0d897a7e007cd4ab71994968b3733f30afebbfc385f21eeb925998765cff4a"
+        },
+        "fields": {
+          "id": "tripo-p1",
+          "creditTaskType": {
+            "functionSource": "t=>t.imageUrl?\"tripo_image_to_model\":\"tripo_text_to_model\"",
+            "parameterReads": [
+              "t.imageUrl"
+            ],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "creditParams": {
+            "functionSource": "t=>({model:\"P1-20260311\",textureQuality:Nu[t.textureQuality]||\"standard\",texture:!0,pbr:t.pbr,quad:void 0})",
+            "parameterReads": [
+              "t.textureQuality",
+              "t.pbr"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "textureQuality",
+              "texture",
+              "pbr",
+              "quad"
+            ],
+            "referenceOnly": true
+          },
+          "label": "Tripo P1",
+          "kind": "3d",
+          "textEndpoint": "/editor/task/tripo-text-to-model",
+          "imageEndpoint": "/editor/task/tripo-image-to-model",
+          "build": {
+            "functionSource": "t=>{const e={modelVersion:\"P1-20260311\",textureVersion:Xy,textureQuality:Nu[t.textureQuality]||\"standard\",texture:!0,pbr:t.pbr,faceLimit:t.faceLimit||void 0,exportUv:!0,withFbx:!0};return t.imageUrl?{...e,imageUrl:t.imageUrl}:{...e,prompt:t.prompt}}",
+            "parameterReads": [
+              "t.textureQuality",
+              "t.pbr",
+              "t.faceLimit",
+              "t.imageUrl",
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "modelVersion",
+              "textureVersion",
+              "textureQuality",
+              "texture",
+              "pbr",
+              "faceLimit",
+              "exportUv",
+              "withFbx",
+              "imageUrl",
+              "prompt"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "默认 Texture 3.5；P1 面数范围 48–20000。注意：P1 不支持 quad/smartLowPoly/generateParts"
+          }
+        },
+        "originalGroup": "U1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "tripo-31",
+        "sourceByteRange": {
+          "startInclusive": 893966,
+          "endExclusive": 894674,
+          "sha256": "4518bc89f4154ec2ac93a3f73905dd8dd84ae47816b77f6cf7a5bfc36ae0997e"
+        },
+        "fields": {
+          "id": "tripo-31",
+          "creditTaskType": {
+            "functionSource": "t=>t.imageUrl?\"tripo_image_to_model\":\"tripo_text_to_model\"",
+            "parameterReads": [
+              "t.imageUrl"
+            ],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "creditParams": {
+            "functionSource": "t=>({model:\"v3.1-20260211\",textureQuality:Nu[t.textureQuality]||\"standard\",texture:!0,pbr:t.pbr,quad:t.quad})",
+            "parameterReads": [
+              "t.textureQuality",
+              "t.pbr",
+              "t.quad"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "textureQuality",
+              "texture",
+              "pbr",
+              "quad"
+            ],
+            "referenceOnly": true
+          },
+          "label": "Tripo 3.1",
+          "kind": "3d",
+          "textEndpoint": "/editor/task/tripo-text-to-model",
+          "imageEndpoint": "/editor/task/tripo-image-to-model",
+          "build": {
+            "functionSource": "t=>{const e={modelVersion:\"v3.1-20260211\",textureVersion:Xy,texture:!0,pbr:t.pbr,quad:t.quad,faceLimit:t.faceLimit||void 0,textureQuality:Nu[t.textureQuality]||void 0,exportUv:!0,withFbx:!0};return t.imageUrl?{...e,imageUrl:t.imageUrl}:{...e,prompt:t.prompt}}",
+            "parameterReads": [
+              "t.pbr",
+              "t.quad",
+              "t.faceLimit",
+              "t.textureQuality",
+              "t.imageUrl",
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "modelVersion",
+              "textureVersion",
+              "texture",
+              "pbr",
+              "quad",
+              "faceLimit",
+              "textureQuality",
+              "exportUv",
+              "withFbx",
+              "imageUrl",
+              "prompt"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "Tripo H(3.x) 面数可到 50万–200万；Quad 上限约 15 万；textureQuality 还支持 extreme(8K)"
+          }
+        },
+        "originalGroup": "U1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "hy-31",
+        "sourceByteRange": {
+          "startInclusive": 894675,
+          "endExclusive": 895160,
+          "sha256": "c26ad7391c030937ed098c58c5435b107d5db7f9d662e2b6bffc164f24f82726"
+        },
+        "fields": {
+          "id": "hy-31",
+          "creditTaskType": "tencent_generation",
+          "label": "Hy 3.1",
+          "kind": "3d",
+          "imageEndpoint": "/editor/task/tencent-generation",
+          "textEndpoint": "/editor/task/tencent-generation",
+          "build": {
+            "functionSource": "t=>{const e={model:\"3.1\",enablePBR:t.pbr,faceCount:t.faceCount||void 0,resultFormat:t.resultFormat||\"FBX\"};return t.imageUrl?{...e,imageUrl:t.imageUrl}:{...e,prompt:(t.prompt||\"\").trim()}}",
+            "parameterReads": [
+              "t.pbr",
+              "t.faceCount",
+              "t.resultFormat",
+              "t.imageUrl",
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "enablePBR",
+              "faceCount",
+              "resultFormat",
+              "imageUrl",
+              "prompt"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "混元3.1 WF 面数 5万–150万；PBR 默认 false（开启更真实）；输入图需 jpeg/jpg/png、>128×128、<10MB"
+          }
+        },
+        "originalGroup": "U1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "sonilo-sfx",
+        "sourceByteRange": {
+          "startInclusive": 895167,
+          "endExclusive": 895778,
+          "sha256": "1d2c09d901616909882364dc1c54b889f4a4cb928022fae955f126c0ecbfe29b"
+        },
+        "fields": {
+          "id": "sonilo-sfx",
+          "maxCount": 4,
+          "creditTaskType": "fal_sonilo_sfx",
+          "creditParams": {
+            "functionSource": "t=>({duration:String(Math.round(t.durationSeconds))})",
+            "parameterReads": [
+              "t.durationSeconds"
+            ],
+            "objectOutputKeys": [
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "label": "生音效 SFX",
+          "endpoint": "/editor/task/sonilo-sfx",
+          "kind": "audio",
+          "supportsVideo": true,
+          "durations": [
+            1,
+            2,
+            5,
+            8,
+            15,
+            30,
+            60
+          ],
+          "durationRange": [
+            1,
+            180
+          ],
+          "formats": [
+            "wav",
+            "mp3",
+            "aac",
+            "flac"
+          ],
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,videoUrl:t.videoUrl,durationSeconds:t.durationSeconds,outputFormat:t.format})",
+            "parameterReads": [
+              "t.prompt",
+              "t.videoUrl",
+              "t.durationSeconds",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "videoUrl",
+              "durationSeconds",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "duration": "音效时长 1–180s（文本默认 8s）；视频输入则时长=视频长度",
+            "note": "格式 wav/mp3/aac/flac（默认 wav）；视频→自动切 video-to-sfx，prompt 可留空自动配画面"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "sonilo-music",
+        "sourceByteRange": {
+          "startInclusive": 895779,
+          "endExclusive": 896430,
+          "sha256": "794c415b1a9c4e98749fd549034fb0f4303ccc6bf490ccca6802b87098b480f6"
+        },
+        "fields": {
+          "id": "sonilo-music",
+          "maxCount": 4,
+          "creditTaskType": "fal_sonilo_music",
+          "creditParams": {
+            "functionSource": "t=>({duration:String(Math.round(t.durationSeconds))})",
+            "parameterReads": [
+              "t.durationSeconds"
+            ],
+            "objectOutputKeys": [
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "label": "生BGM 音乐",
+          "endpoint": "/editor/task/sonilo-music",
+          "kind": "audio",
+          "supportsVideo": true,
+          "durations": [
+            5,
+            8,
+            15,
+            30,
+            60,
+            90
+          ],
+          "durationRange": [
+            1,
+            180
+          ],
+          "formats": [
+            "wav",
+            "mp3",
+            "aac",
+            "flac"
+          ],
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,durationSeconds:t.durationSeconds,videoUrl:t.videoUrl,outputFormat:t.format})",
+            "parameterReads": [
+              "t.prompt",
+              "t.durationSeconds",
+              "t.videoUrl",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "durationSeconds",
+              "videoUrl",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "duration": "音乐时长 1–180s（文本默认 90s）；视频输入则时长=视频长度，不设 durationSeconds",
+            "note": "输出格式 wav/mp3/aac/flac（默认 wav）；视频→音乐配乐；建议 prompt 带 bgm/背景音乐 关键词"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "eleven-sfx",
+        "sourceByteRange": {
+          "startInclusive": 896431,
+          "endExclusive": 896927,
+          "sha256": "0971f5869e76ba1285259afa1f26442a85d00fdc6eeb392c1500d1caf0b0a454"
+        },
+        "fields": {
+          "id": "eleven-sfx",
+          "maxCount": 4,
+          "creditTaskType": "fal_sound_effect",
+          "creditParams": {
+            "functionSource": "t=>({duration:String(Math.round(t.durationSeconds))})",
+            "parameterReads": [
+              "t.durationSeconds"
+            ],
+            "objectOutputKeys": [
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "label": "11音效",
+          "endpoint": "/editor/task/sound-effect",
+          "kind": "audio",
+          "durations": [
+            0.5,
+            1,
+            2,
+            3,
+            5
+          ],
+          "durationRange": [
+            0.5,
+            5
+          ],
+          "formatOptions": [
+            {
+              "value": "pcm_44100",
+              "label": "WAV"
+            },
+            {
+              "value": "mp3_44100_128",
+              "label": "MP3"
+            }
+          ],
+          "promptMax": 450,
+          "build": {
+            "functionSource": "t=>({text:t.prompt,durationSeconds:t.durationSeconds,outputFormat:t.format})",
+            "parameterReads": [
+              "t.prompt",
+              "t.durationSeconds",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "text",
+              "durationSeconds",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "提示词最长 450 字符；音效时长 0.5–5s；输出 wav/mp3"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "eleven-music",
+        "sourceByteRange": {
+          "startInclusive": 896928,
+          "endExclusive": 897526,
+          "sha256": "4f67117551ef3584e6a768aca9620df125683bca61b5ee34481128f38aa675bd"
+        },
+        "fields": {
+          "id": "eleven-music",
+          "maxCount": 4,
+          "creditTaskType": "fal_11music",
+          "creditParams": {
+            "functionSource": "t=>({duration:String(Math.round(t.durationSeconds))})",
+            "parameterReads": [
+              "t.durationSeconds"
+            ],
+            "objectOutputKeys": [
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "label": "11音乐",
+          "endpoint": "/editor/task/fal-11music",
+          "kind": "audio",
+          "durations": [
+            5,
+            15,
+            30,
+            60,
+            90,
+            120
+          ],
+          "durationRange": [
+            3,
+            600
+          ],
+          "formatOptions": [
+            {
+              "value": "mp3_44100_128",
+              "label": "MP3"
+            },
+            {
+              "value": "mp3_44100_192",
+              "label": "MP3 HQ"
+            },
+            {
+              "value": "pcm_44100",
+              "label": "WAV"
+            },
+            {
+              "value": "opus_48000_128",
+              "label": "OPUS"
+            }
+          ],
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,musicLengthMs:Math.round(t.durationSeconds*1e3),outputFormat:t.format})",
+            "parameterReads": [
+              "t.prompt",
+              "t.durationSeconds",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "musicLengthMs",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "纯音乐（自动去人声歌词）；时长 3s–10min；提示词最长 2000 字符"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "huoshan-music",
+        "sourceByteRange": {
+          "startInclusive": 897527,
+          "endExclusive": 898004,
+          "sha256": "61b6cec5c9e9b72c9c8d19793c67d42de9f561f1f1425afe3fd3669e225234e6"
+        },
+        "fields": {
+          "id": "huoshan-music",
+          "maxCount": 4,
+          "creditTaskType": "huoshan_music",
+          "creditParams": {
+            "functionSource": "t=>({duration:String(Math.round(t.durationSeconds))})",
+            "parameterReads": [
+              "t.durationSeconds"
+            ],
+            "objectOutputKeys": [
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "label": "火山纯音乐",
+          "endpoint": "/editor/task/huoshan-music",
+          "kind": "audio",
+          "durations": [
+            30,
+            60,
+            90,
+            120
+          ],
+          "durationRange": [
+            30,
+            300
+          ],
+          "formats": [
+            "mp3",
+            "wav",
+            "flac",
+            "aac"
+          ],
+          "build": {
+            "functionSource": "t=>({text:t.prompt,duration:Math.round(t.durationSeconds),version:\"v5.0\",format:t.format})",
+            "parameterReads": [
+              "t.prompt",
+              "t.durationSeconds",
+              "t.format"
+            ],
+            "objectOutputKeys": [
+              "text",
+              "duration",
+              "version",
+              "format"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "火山引擎 BGM 生成，纯音乐无人声；描述风格/情绪/乐器效果最佳"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "minimax-tts",
+        "sourceByteRange": {
+          "startInclusive": 898005,
+          "endExclusive": 898327,
+          "sha256": "2528f6b14cb1811d3a67ee7d496f47e078f143865598b5d94d90441e4ab05275"
+        },
+        "fields": {
+          "id": "minimax-tts",
+          "creditTaskType": "fal_minimax_tts",
+          "label": "MiniMax TTS",
+          "endpoint": "/editor/task/fal-minimax-tts",
+          "kind": "tts",
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,voiceSetting:{voiceId:t.voiceId,speed:t.speed,vol:t.vol},outputFormat:\"url\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.voiceId",
+              "t.speed",
+              "t.vol"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "voiceSetting",
+              "voiceId",
+              "speed",
+              "vol",
+              "outputFormat"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "正文最长 5000 字符；语速 0.5–2.0；音量 0–10；输出格式 mp3/flac/pcm"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "minimax-voice",
+        "sourceByteRange": {
+          "startInclusive": 898328,
+          "endExclusive": 898580,
+          "sha256": "b429acca0af5813fa145b0ed02a32178213aa9cb1cab2f56ce25b3c2302db924"
+        },
+        "fields": {
+          "id": "minimax-voice",
+          "creditTaskType": "fal_voice_clone",
+          "label": "MiniMax 声音克隆",
+          "endpoint": "/editor/task/fal-voice-clone",
+          "kind": "voice-clone",
+          "build": {
+            "functionSource": "t=>({audioUrl:t.audioUrl})",
+            "parameterReads": [
+              "t.audioUrl"
+            ],
+            "objectOutputKeys": [
+              "audioUrl"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "采样音频≥10 秒；克隆音色需 7 天内至少用于一次 TTS"
+          }
+        },
+        "originalGroup": "B1e",
+        "uiMode": "audio",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "qwen-layer",
+        "sourceByteRange": {
+          "startInclusive": 898587,
+          "endExclusive": 898942,
+          "sha256": "590f85865f1a12111000bb4bdcfa6ab01d3cc7bdf4e76d7535899a5b37753b63"
+        },
+        "fields": {
+          "id": "qwen-layer",
+          "creditTaskType": "fal_image_layering",
+          "creditParams": {
+            "functionSource": "t=>({numLayers:String(t.numLayers)})",
+            "parameterReads": [
+              "t.numLayers"
+            ],
+            "objectOutputKeys": [
+              "numLayers"
+            ],
+            "referenceOnly": true
+          },
+          "label": "图片分层",
+          "endpoint": "/editor/task/image-layering",
+          "kind": "layering",
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,imageUrl:t.imageUrl,numLayers:t.numLayers})",
+            "parameterReads": [
+              "t.prompt",
+              "t.imageUrl",
+              "t.numLayers"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "imageUrl",
+              "numLayers"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "Qwen-Image-Layered 官方支持可变图层，范例为 3 层或 8 层（不建议连续 1–8）"
+          }
+        },
+        "originalGroup": "z1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "seedream-layer",
+        "sourceByteRange": {
+          "startInclusive": 898947,
+          "endExclusive": 899471,
+          "sha256": "e9e1c7462355e0cf97eedd050c6089b3dd01e0cdf4241be2afe5e88d94cccc0a"
+        },
+        "fields": {
+          "id": "seedream-layer",
+          "creditTaskType": "huoshan_seedream_layer",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.size||\"auto\",numImages:\"17\"})",
+            "parameterReads": [
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "resolution",
+              "numImages"
+            ],
+            "referenceOnly": true
+          },
+          "label": "Seedream 图片分层",
+          "endpoint": "/editor/task/seedream-image-layering",
+          "kind": "seedream-layering",
+          "sizeOptions": [
+            "auto",
+            "1K",
+            "1.5K",
+            "2K"
+          ],
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,imageUrl:t.imageUrl,size:t.size||\"auto\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.imageUrl",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "imageUrl",
+              "size"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "Seedream 5.0 Pro 图层拆分：自动拆分为 1 张底图 + 最多 16 个透明 PNG 图层（含层级/名称/边界框元数据）；提示词可选，留空自动拆分全部主体"
+          }
+        },
+        "originalGroup": "R5",
+        "uiMode": "image",
+        "catalogMembershipNote": "Alternative descriptor R5 selected by original layering mode; not directly in xN."
+      },
+      {
+        "id": "effect-video",
+        "sourceByteRange": {
+          "startInclusive": 899477,
+          "endExclusive": 899896,
+          "sha256": "1f5fc089dbfd4709ed7d8e18be456b0e9fccffb482db1422304643cccd745e2b"
+        },
+        "fields": {
+          "id": "effect-video",
+          "creditTaskType": "effect_video_wf",
+          "label": "特效视频",
+          "endpoint": "/editor/task/effect-video-wf",
+          "kind": "effect",
+          "opts": {
+            "ratios": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3"
+            ],
+            "resolutions": [
+              "480p",
+              "720p"
+            ],
+            "durations": [
+              5,
+              8,
+              12,
+              15
+            ]
+          },
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,videoDuration:t.duration,videoRatio:t.ratio,videoResolution:t.resolution,imageSize:t.size})",
+            "parameterReads": [
+              "t.prompt",
+              "t.duration",
+              "t.ratio",
+              "t.resolution",
+              "t.size"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "videoDuration",
+              "videoRatio",
+              "videoResolution",
+              "imageSize"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "duration": "视频时长 4–15s；比例 16:9/9:16/1:1/4:3；分辨率 480p/720p"
+          }
+        },
+        "originalGroup": "V1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "enhance-video",
+        "sourceByteRange": {
+          "startInclusive": 899903,
+          "endExclusive": 900276,
+          "sha256": "cafd5686786859f3fcc5d5b3c75a4d40f3f519b310bd555085eb03d1ca13a74e"
+        },
+        "fields": {
+          "id": "enhance-video",
+          "creditTaskType": "huoshan_video_enhance",
+          "creditParams": {
+            "functionSource": "t=>({resolution:t.resolution||\"1080P\"})",
+            "parameterReads": [
+              "t.resolution"
+            ],
+            "objectOutputKeys": [
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "label": "视频超分",
+          "kind": "video-enhance",
+          "internalOnly": true,
+          "needs": [
+            "video"
+          ],
+          "build": {
+            "functionSource": "t=>({videoUrl:t.videoUrl,resolution:String(t.resolution||\"1080P\").toLowerCase()})",
+            "parameterReads": [
+              "t.videoUrl",
+              "t.resolution"
+            ],
+            "objectOutputKeys": [
+              "videoUrl",
+              "resolution"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "火山 MediaKit 画质增强：把视频提升到 720P/1080P/2K；需上传源视频"
+          }
+        },
+        "originalGroup": "H1e",
+        "uiMode": "video",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "flare-skybox",
+        "sourceByteRange": {
+          "startInclusive": 900283,
+          "endExclusive": 900744,
+          "sha256": "8247bb517d16ff3d139d7326651c1a8b28855701fecd5413905acec18fe630be"
+        },
+        "fields": {
+          "id": "flare-skybox",
+          "creditTaskType": "flare_skybox",
+          "creditParams": {
+            "functionSource": "()=>({})",
+            "parameterReads": [],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "label": "全能耀斑天空盒",
+          "kind": "skybox",
+          "endpoint": "/editor/task/flare-skybox",
+          "maxImages": 16,
+          "agentAvailable": true,
+          "build": {
+            "functionSource": "(t,e={})=>({prompt:t.prompt,imageUrls:e.images||[],sceneMode:t.sceneMode||\"full\",nadirCorrection:t.nadirCorrection||\"off\"})",
+            "parameterReads": [
+              "t.prompt",
+              "t.sceneMode",
+              "t.nadirCorrection"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "imageUrls",
+              "sceneMode",
+              "nadirCorrection"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "360° 全景，默认完整街景与脚下地面，可选远景背景和脚下局部平滑；固定包含 2K/8K PNG、EXR 与相对深度图"
+          }
+        },
+        "originalGroup": "G1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "skybox",
+        "sourceByteRange": {
+          "startInclusive": 900745,
+          "endExclusive": 900982,
+          "sha256": "c743ac93478bacc6d3b0e711313464ac604c24a1a9df9903ec37c9c037383f20"
+        },
+        "fields": {
+          "id": "skybox",
+          "creditTaskType": "rodin_skybox",
+          "label": "Rodin 天空盒",
+          "kind": "skybox",
+          "endpoint": "/editor/task/skybox",
+          "build": {
+            "functionSource": "t=>({prompt:t.prompt,high_res:t.highRes||!1})",
+            "parameterReads": [
+              "t.prompt",
+              "t.highRes"
+            ],
+            "objectOutputKeys": [
+              "prompt",
+              "high_res"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "生成游戏天空盒（Rodin）；描述场景或上传参考图"
+          }
+        },
+        "originalGroup": "G1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "doubao-prompt",
+        "sourceByteRange": {
+          "startInclusive": 900988,
+          "endExclusive": 901384,
+          "sha256": "64f027754432fb07817dfed4598aa96ca5ea1bcd455ebd5c80414f6e3bf94c42"
+        },
+        "fields": {
+          "id": "doubao-prompt",
+          "maxCount": 1,
+          "creditTaskType": "doubao_multimodal",
+          "label": "多模态→提示词",
+          "kind": "prompt",
+          "maxImages": 10,
+          "build": {
+            "functionSource": "(t,e)=>({styleHint:t.prompt||void 0,images:e.images||void 0,videos:e.videos||void 0,audios:e.audios||void 0})",
+            "parameterReads": [
+              "t.prompt",
+              "e.images",
+              "e.videos",
+              "e.audios"
+            ],
+            "objectOutputKeys": [
+              "styleHint",
+              "images",
+              "videos",
+              "audios"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "上传图片/视频/音频，豆包多模态识别解析后生成可复刻该素材的提示词，直接用于后续生图/生视频/生音效"
+          }
+        },
+        "originalGroup": "$1e",
+        "uiMode": "image",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "blender-convert",
+        "sourceByteRange": {
+          "startInclusive": 901390,
+          "endExclusive": 901784,
+          "sha256": "0dbe8d4f5a4c77b4f6829e0c9ed73f294505399a469658c65b548cec9a9727e7"
+        },
+        "fields": {
+          "id": "blender-convert",
+          "creditTaskType": "blender_convert",
+          "creditParams": {
+            "functionSource": "()=>({})",
+            "parameterReads": [],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "label": "模型格式转换",
+          "kind": "model",
+          "agentAvailable": true,
+          "maxCount": 1,
+          "formats": [
+            "auto",
+            "glb",
+            "fbx"
+          ],
+          "pollTimeoutMs": 1800000,
+          "build": {
+            "expression": "P1e"
+          },
+          "info": {
+            "note": "FBX ↔ GLB，保留可映射的贴图、骨骼及动画。外部贴图请与模型打成 ZIP；格式差异见转换报告，下载包包含原文件。最大 512 MiB。"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "mesh-seg",
+        "sourceByteRange": {
+          "startInclusive": 901785,
+          "endExclusive": 902206,
+          "sha256": "5bd4cf36f88e37f03982efaeeec89066fbddaca904c5dbefe33201b7ebc1d811"
+        },
+        "fields": {
+          "id": "mesh-seg",
+          "creditTaskType": "tripo_mesh_segmentation",
+          "label": "3D 网格分割",
+          "kind": "model",
+          "endpoint": "/editor/task/tripo-mesh-segmentation",
+          "build": {
+            "functionSource": "t=>({url:t.modelUrl,modelVersion:\"v2.0-20260430\",segmentationGranularity:t.segmentationGranularity||\"balanced\",splitByConnectivity:t.splitByConnectivity??void 0,withFbx:!0})",
+            "parameterReads": [
+              "t.modelUrl",
+              "t.segmentationGranularity",
+              "t.splitByConnectivity"
+            ],
+            "objectOutputKeys": [
+              "url",
+              "modelVersion",
+              "segmentationGranularity",
+              "splitByConnectivity",
+              "withFbx"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "把 3D 模型分割成语义部件（v2 语义分割，自动命名）；需提供模型 URL"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "texture-model",
+        "sourceByteRange": {
+          "startInclusive": 902207,
+          "endExclusive": 902648,
+          "sha256": "d4467ad447d839ec590ee33a84bd526816ce0da8aa261417b6a99fe40e5559ad"
+        },
+        "fields": {
+          "id": "texture-model",
+          "creditTaskType": "tripo_texture_model",
+          "creditParams": {
+            "functionSource": "t=>({model:Xy,textureQuality:Nu[t.textureQuality]||\"standard\"})",
+            "parameterReads": [
+              "t.textureQuality"
+            ],
+            "objectOutputKeys": [
+              "model",
+              "textureQuality"
+            ],
+            "referenceOnly": true
+          },
+          "label": "3D 重贴图",
+          "kind": "model",
+          "endpoint": "/editor/task/tripo-texture-model",
+          "build": {
+            "functionSource": "t=>({url:t.modelUrl,modelVersion:Xy,textureQuality:Nu[t.textureQuality]||\"standard\",texturePromptText:t.texturePrompt||t.prompt,withFbx:!0})",
+            "parameterReads": [
+              "t.modelUrl",
+              "t.textureQuality",
+              "t.texturePrompt",
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "url",
+              "modelVersion",
+              "textureQuality",
+              "texturePromptText",
+              "withFbx"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "使用 Tripo Texture 3.5 按提示词重生成纹理；需提供模型 URL"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "decimate",
+        "sourceByteRange": {
+          "startInclusive": 902649,
+          "endExclusive": 902917,
+          "sha256": "92f54015b4d6c925c459552b831e11046b403200ded0ad1f04544a4e113ec03b"
+        },
+        "fields": {
+          "id": "decimate",
+          "creditTaskType": "tripo_highpoly_to_lowpoly",
+          "label": "3D 智能减面",
+          "kind": "model",
+          "endpoint": "/editor/task/tripo-highpoly-to-lowpoly",
+          "build": {
+            "functionSource": "t=>({url:t.modelUrl,faceLimit:t.faceLimit||void 0,withFbx:!0})",
+            "parameterReads": [
+              "t.modelUrl",
+              "t.faceLimit"
+            ],
+            "objectOutputKeys": [
+              "url",
+              "faceLimit",
+              "withFbx"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "将高模减面为低模；需提供模型 URL"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "unirig",
+        "sourceByteRange": {
+          "startInclusive": 902918,
+          "endExclusive": 903141,
+          "sha256": "87dc8d048345aa2f85d6a869b0c6554758353a4e80ae00ac8a173f1057266c7b"
+        },
+        "fields": {
+          "id": "unirig",
+          "creditTaskType": "unirig_rig",
+          "label": "通用绑骨",
+          "kind": "model",
+          "endpoint": "/editor/task/unirig",
+          "build": {
+            "functionSource": "t=>({modelUrl:t.modelUrl})",
+            "parameterReads": [
+              "t.modelUrl"
+            ],
+            "objectOutputKeys": [
+              "modelUrl"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "对 GLB/FBX/OBJ 模型自动绑骨并输出 rigged FBX；需提供模型 URL"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "mia",
+        "sourceByteRange": {
+          "startInclusive": 903142,
+          "endExclusive": 903403,
+          "sha256": "bde3c1140ca3686afa60df93969e579106d6abb79e54056016faccfdb5def866"
+        },
+        "fields": {
+          "id": "mia",
+          "creditTaskType": "mia_rig",
+          "label": "人形绑骨",
+          "kind": "model",
+          "endpoint": "/editor/task/mia-rig",
+          "build": {
+            "functionSource": "t=>({modelUrl:t.modelUrl})",
+            "parameterReads": [
+              "t.modelUrl"
+            ],
+            "objectOutputKeys": [
+              "modelUrl"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "MIA 标准人形绑骨（Mixamo 22 骨、T-pose FBX）；长袍/披风类建议改用通用绑骨；需提供模型 URL"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "motion",
+        "sourceByteRange": {
+          "startInclusive": 903404,
+          "endExclusive": 903628,
+          "sha256": "272e0c6b3d9594a803698d34814ff2266309393e379a83cad9cb6b6b086d7a89"
+        },
+        "fields": {
+          "id": "motion",
+          "creditTaskType": "hy_motion_generate",
+          "label": "混元角色动作",
+          "kind": "model",
+          "endpoint": "/editor/task/motion",
+          "build": {
+            "functionSource": "t=>({inputText:t.prompt})",
+            "parameterReads": [
+              "t.prompt"
+            ],
+            "objectOutputKeys": [
+              "inputText"
+            ],
+            "referenceOnly": true
+          },
+          "info": {
+            "note": "用文字生成角色动画，如 walk forward / wave right hand"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      },
+      {
+        "id": "viggle-motion",
+        "sourceByteRange": {
+          "startInclusive": 903629,
+          "endExclusive": 904066,
+          "sha256": "cdbfe5ad649a3623634cebda88ed758615987bc423c40e5f8a0d2d317090159d"
+        },
+        "fields": {
+          "id": "viggle-motion",
+          "agentAvailable": false,
+          "label": "V角色动作",
+          "kind": "model",
+          "internalOnly": true,
+          "promptMax": 400,
+          "endpoint": "/editor/task/viggle-motion",
+          "creditTaskType": {
+            "functionSource": "t=>t.viggleVideo?\"viggle_video_motion\":\"viggle_text_motion\"",
+            "parameterReads": [
+              "t.viggleVideo"
+            ],
+            "objectOutputKeys": [],
+            "referenceOnly": true
+          },
+          "creditParams": {
+            "functionSource": "t=>{var e;return t.viggleVideo?{type:\"glb\"}:{duration:Math.trunc(Number(((e=t.viggleOptions)==null?void 0:e.durationSeconds)??5))}}",
+            "parameterReads": [
+              "t.viggleVideo",
+              "t.viggleOptions"
+            ],
+            "objectOutputKeys": [
+              "type",
+              "duration"
+            ],
+            "referenceOnly": true
+          },
+          "build": {
+            "expression": "l1e"
+          },
+          "info": {
+            "note": "用文字或视频生成动作，提供三种骨架的 FBX"
+          }
+        },
+        "originalGroup": "W1e",
+        "uiMode": "3d",
+        "catalogMembershipNote": "Original xN group membership still subject to internalOnly/paidGated and model-specific original UI gates."
+      }
+    ],
+    "generatedVariants": {
+      "source": "OK = kK.map(...) inherits frontier-game-design descriptor iw and wraps its build. Do not evaluate here or pretend these are among the 45 literal definitions.",
+      "variants": [
+        {
+          "id": "frontier_flare",
+          "taskType": "fal_frontier_flare",
+          "label": "全能耀斑模型"
+        },
+        {
+          "id": "frontier_sunburst",
+          "taskType": "fal_frontier_sunburst",
+          "label": "全能日辉模型"
+        }
+      ],
+      "evidence": [
+        {
+          "symbol": "kK",
+          "formattedLineStart": 39122,
+          "formattedLineEnd": 39125,
+          "lineNumbersAreDerived": true
+        },
+        {
+          "symbol": "kK / OK",
+          "formattedLineStart": 40235,
+          "formattedLineEnd": 40265,
+          "formattedSliceSha256": "24f47dbd1b177e3806f13a21bca8d4ac910cfb71f4268987fee8c871e25a3f38",
+          "lineNumbersAreDerived": true
+        }
+      ],
+      "buildSource": "}\nconst OK = kK.map((t) => ({\n    ...iw,\n    id: t.id,\n    defaultSelected: t.id === \"frontier_flare\",\n    label: t.label.replace(/模型$/, \"\"),\n    endpoint: `${un}/${t.id}`,\n    creditTaskType: t.taskType,\n    maxImages: 16,\n    extendedImageParams: !0,\n    agentAvailable: !0,\n    requiresFrontierSubscription: !0,\n    defaultQuality: \"medium\",\n    qualityOptions: [\"medium\"],\n    internalQualityOptions: DK,\n    creditParams: (e) => ({ ...iw.creditParams(e), quality: N5(e) }),\n    build: (e) => {\n      const n = iw.build({ ...e, quality: N5(e) });\n      return (\n        (n.background = e.segMode === \"native\" ? \"transparent\" : e.background === \"opaque\" ? \"opaque\" : \"auto\"),\n        [\"jpeg\", \"webp\"].includes(n.outputFormat) &&\n          e.outputCompression !== \"\" &&\n          e.outputCompression != null &&\n          (n.outputCompression = Number(e.outputCompression)),\n        n\n      );\n    },\n    info: { size: \"支持常用画面比例和 1K / 2K / 4K；最多 16 张参考图\" },\n  })),\n  I5 = OK.find((t) => t.id === \"frontier_flare\"),\n  xN = {"
+    },
+    "preserve": "Keep original xN descriptors, model.build functions, helper dependencies and VNe controls in the original client. The fixture is evidence, not a substitute model UI or executable dynamic schema.",
+    "staticDescriptorGroups": [
+      {
+        "symbol": "eL",
+        "ids": [
+          "material",
+          "seedream-lite",
+          "seedream-pro",
+          "frontier",
+          "frontier-lite",
+          "frontier-game-design",
+          "hy-image-v3",
+          "qwen-image"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 878271,
+          "endExclusive": 883469,
+          "sha256": "c595ee7caa824d803f7568f101455394ac7a9d04a7b8888c254f685942ee493b"
+        },
+        "uiMode": "image"
+      },
+      {
+        "symbol": "F1e",
+        "ids": [
+          "upscale-image",
+          "sprite-atlas",
+          "sprite-animation",
+          "game-ui-kit"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 883600,
+          "endExclusive": 885425,
+          "sha256": "dbcb5bdd8acf861f2fb5730726728dc513957a43bbac8f1c98351e44d03f7508"
+        },
+        "uiMode": "image"
+      },
+      {
+        "symbol": "j1e",
+        "ids": [
+          "seedance2",
+          "seedance25",
+          "minimax-h3",
+          "minimax-h3-max",
+          "wan3",
+          "happyhorse-11"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 885467,
+          "endExclusive": 891854,
+          "sha256": "5c4f736bb412aef7993e01dac2ccb6dfe63cdb00a88cac85b305777a26c7ff92"
+        },
+        "uiMode": "video"
+      },
+      {
+        "symbol": "U1e",
+        "ids": [
+          "rodin-25",
+          "tripo-p2",
+          "tripo-p1",
+          "tripo-31",
+          "hy-31"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 891946,
+          "endExclusive": 895161,
+          "sha256": "015e70185b8fada7ae731a9158fce7ae42c26e90c5008a3dc8ae93b0499d88bc"
+        },
+        "uiMode": "3d"
+      },
+      {
+        "symbol": "B1e",
+        "ids": [
+          "sonilo-sfx",
+          "sonilo-music",
+          "eleven-sfx",
+          "eleven-music",
+          "huoshan-music",
+          "minimax-tts",
+          "minimax-voice"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 895166,
+          "endExclusive": 898581,
+          "sha256": "49aa01aa69fd7cd254271f2399e5094dff845a7fb51b859c5193aaf0fe838948"
+        },
+        "uiMode": "audio"
+      },
+      {
+        "symbol": "z1e",
+        "ids": [
+          "qwen-layer"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 898586,
+          "endExclusive": 898943,
+          "sha256": "2bd7e323e1a15d9b678476cb845c48f19ce7adabbf31aa886fdd08933a114d6f"
+        },
+        "uiMode": "image"
+      },
+      {
+        "symbol": "V1e",
+        "ids": [
+          "effect-video"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 899476,
+          "endExclusive": 899897,
+          "sha256": "d23854659ce096ef0fcb3479610fce90840e0037027f1ab8f80e1db4183c3215"
+        },
+        "uiMode": "video"
+      },
+      {
+        "symbol": "H1e",
+        "ids": [
+          "enhance-video"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 899902,
+          "endExclusive": 900277,
+          "sha256": "e045b1d7c5bf1cf7d1a842784bddcef74cf9be7b1e4ed5a799b0a388d121e564"
+        },
+        "uiMode": "video"
+      },
+      {
+        "symbol": "G1e",
+        "ids": [
+          "flare-skybox",
+          "skybox"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 900282,
+          "endExclusive": 900983,
+          "sha256": "96bdf093372ff435afa186a83f2f3f12f5a0c4301d822277ee3af901bfa719eb"
+        },
+        "uiMode": "image"
+      },
+      {
+        "symbol": "W1e",
+        "ids": [
+          "blender-convert",
+          "mesh-seg",
+          "texture-model",
+          "decimate",
+          "unirig",
+          "mia",
+          "motion",
+          "viggle-motion"
+        ],
+        "sourceByteRange": {
+          "startInclusive": 901389,
+          "endExclusive": 904067,
+          "sha256": "ee89c70b653ff90ecfb0ac07d21840f6162db239b110558f5f19c9ea55d69a56"
+        },
+        "uiMode": "3d"
+      }
+    ],
+    "payloadToModeWarning": "descriptor.kind is not the four-way UI mode: use proven xN grouping; prompt, skybox, layering, effect and model are auxiliary kinds."
+  },
+  "remainingUnknowns": [
+    "Official service implementation and actual upstream Provider secrets are not present.",
+    "Official account entitlements, credits and prices are not present.",
+    "Audio, FBX/ZIP/EXR/HDR/GIF/splat inputs or outputs exceeding own backend capability must fail explicitly; do not claim the original broad formats already work.",
+    "Mapping a visible original descriptor to an owned configurable Provider must be explicit. Never silently send an original model request to an arbitrary configured provider.",
+    "Core cannot infer original builder payload or exact model from prompt alone; preserve them at the compatibility boundary."
+  ]
+}

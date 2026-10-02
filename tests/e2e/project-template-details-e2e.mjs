@@ -17,7 +17,14 @@ const run=path.resolve(option('--output',path.join(temp,'template-details-'+rand
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep),'Output stays in own temp');
 assert.ok(!fs.existsSync(run),'Each audit uses a new output directory');
 const identity=readEditorIdentity(path.resolve(option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe')));
-const previous=args.includes('--previous'),packaged=args.includes('--packaged');
+const previous=args.includes('--previous'),packaged=args.includes('--packaged'),warningFixture=args.includes('--warning-fixture');
+// Presentation fixture only: native Rust corrupt-archive behavior is covered by
+// project_templates unit tests. Preserve every real native template unchanged.
+const warningPresentationFixture=[
+ {archive:'presentation-fixture-broken.tgz',error:'Invalid template metadata: unexpected EOF <fixture>'},
+ {archive:'presentation-fixture-missing-metadata.TGZ',error:'Template has no package.json'},
+];
+const warningCatalogResponses=[];let showWarningFixture=warningFixture;
 const binary=path.resolve(option('--binary',path.join(repo,packaged?'app/GameCowork.exe':'src/shell/target/debug/GameCowork.exe')));
 const frontend=path.resolve(option('--frontend',path.join(repo,packaged?'app/frontend':'src/frontend/bundle')));
 const archiveDirectory=path.join(path.dirname(identity.editor),'Data/Resources/PackageManager/ProjectTemplates');
@@ -62,6 +69,16 @@ try{
  const {chromium:browserType}=await import(pathToFileURL(playwright()).href);
  context=await browserType.launchPersistentContext(path.join(run,'browser'),{headless:true,executablePath:chromium(),viewport:{width:1440,height:960},locale:'zh-CN',colorScheme:'dark',serviceWorkers:'block',args:['--disable-background-networking','--disable-component-update','--no-first-run']});
  await context.route('**/*',route=>{const url=new URL(route.request().url());if(['127.0.0.1','localhost'].includes(url.hostname)||['data:','blob:'].includes(url.protocol))return route.continue();external.push(url.origin);return route.abort('blockedbyclient');});
+ if(warningFixture)await context.route('**/api/tauri/invoke',async route=>{
+  const body=route.request().postDataJSON(),message=body.message||body;
+  if(message.messageType!=='tjhub/getTemplates')return route.fallback();
+  const response=await route.fetch(),reply=await response.json();
+  assert.equal(response.status(),200);assert.equal(reply.data.status,'success');
+  assert.deepEqual(reply.data.content.templates,list.content.templates,'Presentation fixture preserves the actual native catalog');
+  warningCatalogResponses.push({messageId:message.messageId,nativeSkippedTemplates:reply.data.content.skippedTemplates,templateCount:reply.data.content.templates.length,fixtureInjected:showWarningFixture});
+  if(showWarningFixture)reply.data.content.skippedTemplates=warningPresentationFixture;
+  await route.fulfill({response,json:reply});
+ });
  if(previous)await context.route('**/gui.html*',route=>route.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(frontend,'gui.html'),'utf8').replaceAll('index-BRxZ4eG7.js','index-DvRYaIVa.js').replaceAll('VscTheme-BExNMG_K.js','VscTheme-B-CSeuv5.js').replaceAll('store-c6kNGz30.js','store-0rGrUshb.js')}));
  await context.addInitScript(()=>{window.GAMECOWORK_SHELL=true;window.vscMediaUrl='';window.workspacePaths=[];localStorage.setItem('gamecowork-version-update-seen-features',JSON.stringify(['multi-workspace','remote-access','unity-streaming','remote-workspace','unity-window-streaming']));});
  page=context.pages()[0];page.on('pageerror',error=>errors.push(String(error)));
@@ -73,6 +90,21 @@ try{
  for(let step=0;step<4&&await intro.count()&&await intro.first().isVisible();step++)await intro.first().click();
  await gui.getByText('项目',{exact:true}).first().click();await gui.getByRole('button',{name:/新项目/}).click();
  await gui.getByText(actual.displayName,{exact:true}).first().waitFor();await gui.getByText(actual.displayName,{exact:true}).first().click();
+ if(warningFixture){
+  const warnings=gui.getByTestId('gamecowork-template-warnings');await warnings.waitFor();
+  assert.equal(await warnings.locator('summary').innerText(),'有 2 个本地模板无法读取，已略过');
+  await warnings.locator('summary').click();assert.equal(await warnings.locator('li').count(),2);
+  for(const diagnostic of warningPresentationFixture)assert.ok((await warnings.innerText()).includes(`${diagnostic.archive}：${diagnostic.error}`));
+  assert.equal(await warnings.locator('script').count(),0);
+  check('Presentation fixture displays skipped count, exact archive and reason while real native templates remain usable',true);await snapshot('00-warning-presentation-fixture');
+  showWarningFixture=false;
+  await gui.getByText('新项目',{exact:true}).first().click();await gui.getByRole('button',{name:/新项目/}).click();
+  await gui.getByText(actual.displayName,{exact:true}).first().waitFor();
+  await poll(()=>warningCatalogResponses.some(response=>!response.fixtureInjected),'real catalog after reopening');
+  assert.equal(await warnings.count(),0);assert.ok(warningCatalogResponses.every(response=>Array.isArray(response.nativeSkippedTemplates)&&response.nativeSkippedTemplates.length===0));
+  await gui.getByText(actual.displayName,{exact:true}).first().click();
+  check('Reopening with the actual empty skippedTemplates removes stale warning presentation',true);
+ }
  await gui.getByText('查看详情',{exact:true}).click();
  const details=gui.getByTestId('gamecowork-template-details');await details.waitFor();assert.equal(await details.getAttribute('data-template-name'),actual.name);
  const information=details.getByTestId('gamecowork-template-information');await information.waitFor();
@@ -121,6 +153,6 @@ finally{
  if(cleanupErrors.length){failure ||= cleanupErrors.join('\n');process.exitCode=1;}
  const expectedFixtureUnsupported=responses.filter(reply=>reply.messageType==='history/markAsRead'&&reply.data?.status==='error'&&reply.data?.error==='Fixture operation is not implemented: history/markAsRead');
  const expectedHostUnsupported=networkErrors.filter(entry=>entry.status===501&&entry.pathname==='/api/tauri/pending-update'&&entry.reply?.ok===false&&entry.reply?.error==='Host route is not implemented yet');
- fs.writeFileSync(path.join(run,'shell.log'),log);fs.writeFileSync(path.join(run,'result.json'),JSON.stringify({status:failure?'failed':'passed',checks,workflowChecks:checks.slice(0,8),errors,consoleErrors,networkErrors,expectedFixtureUnsupported,expectedHostUnsupported,external,cleanupErrors,failure,requests,responses,resources,run,binary,frontend,previous,packaged,identity,actual,packageMetadata,archiveHashes:originalHashes,hostPid:shell?.pid,ownPids:[...ownPids],ownPidsGone:[...ownPids].every(pid=>!alive(pid)),boundary:'Read-only template detail gate. Native zoom injection and VS Code boot are unavailable in Chromium; own Core fixture rejects history/markAsRead; native pending-update remains honestly HTTP 501. These exact unrelated boundaries remain in console/network evidence; eight checks verify template workflow and the ninth verifies its scoped error boundary, not all application features.'},null,2));
+ fs.writeFileSync(path.join(run,'shell.log'),log);fs.writeFileSync(path.join(run,'result.json'),JSON.stringify({status:failure?'failed':'passed',checks,workflowChecks:checks.slice(0,-1),errors,consoleErrors,networkErrors,expectedFixtureUnsupported,expectedHostUnsupported,external,cleanupErrors,failure,requests,responses,resources,run,binary,frontend,previous,packaged,warningFixture,warningPresentationFixture:warningFixture?warningPresentationFixture:undefined,warningCatalogResponses,identity,actual,packageMetadata,archiveHashes:originalHashes,hostPid:shell?.pid,ownPids:[...ownPids],ownPidsGone:[...ownPids].every(pid=>!alive(pid)),boundary:'Read-only template detail gate. Optional --warning-fixture injects only diagnostic presentation entries into successful native catalog replies; actual templates remain unchanged and Rust bad-archive behavior is separately covered by its unit tests. Native zoom injection and VS Code boot are unavailable in Chromium; own Core fixture rejects history/markAsRead; native pending-update remains honestly HTTP 501. These exact unrelated boundaries remain in console/network evidence; the final check verifies the scoped error boundary, not all application features.'},null,2));
 }
-console.log(JSON.stringify({passed:checks.length,status:failure?'failed':'passed',run,previous,identity,ownPids:[...ownPids],ownPidsGone:[...ownPids].every(pid=>!alive(pid))},null,2));
+console.log(JSON.stringify({passed:checks.length,status:failure?'failed':'passed',run,previous,warningFixture,identity,ownPids:[...ownPids],ownPidsGone:[...ownPids].every(pid=>!alive(pid))},null,2));

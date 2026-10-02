@@ -1,15 +1,22 @@
 // GameCowork local desktop host. HTTP, core stdio and workspace state share one contract.
+mod codely_canvas;
+mod codely_http;
 mod editor_bridge;
 mod editor_installations;
+mod editor_installations_cache;
+mod editor_licensing;
 mod file_events;
 mod files;
+mod generated_assets;
 mod git;
 mod insight;
+mod keep_awake;
 mod lsp;
 mod mutations;
 mod native_window;
 mod process_lifetime;
 mod project_templates;
+mod single_instance;
 mod stream_layout;
 mod terminals;
 mod transport;
@@ -55,6 +62,7 @@ enum ShellEvent {
     MinimizeWindow,
     ToggleMaximize,
     FocusWindow,
+    ActivateWindow(tokio::sync::oneshot::Sender<Value>),
     CloseWindow,
 }
 
@@ -66,9 +74,12 @@ struct CoreHandle {
     store: Arc<Mutex<Store>>,
     lifecycle: Arc<Mutex<()>>,
     hub_cache: Arc<Mutex<Option<(Instant, Value)>>>,
+    editor_cache: editor_installations_cache::InstallationCache,
+    codely_canvas: codely_canvas::LocalCanvasService,
     host_pending: Arc<StdMutex<HashMap<String, (String, Option<String>)>>>,
     host_finished: Arc<StdMutex<HashMap<String, (String, Instant)>>>,
     local_settings: Arc<Mutex<()>>,
+    keep_awake: keep_awake::KeepAwake,
     project_creations: Arc<StdMutex<HashMap<String, Arc<std::sync::atomic::AtomicU8>>>>,
     insight: insight::InsightService,
     lsp: Option<lsp::LspService>,
@@ -83,6 +94,7 @@ struct CoreHandle {
 
 #[derive(Clone)]
 struct RuntimePaths {
+    instance: Option<Arc<single_instance::SingleInstance>>,
     root: PathBuf,
     frontend: PathBuf,
     core: PathBuf,
@@ -161,6 +173,7 @@ impl RuntimePaths {
             .map(PathBuf::from)
             .unwrap_or_else(|| root.join("lsp-csharp"));
         Ok(Self {
+            instance: None,
             root,
             frontend,
             core,
@@ -1192,6 +1205,15 @@ async fn spawn_core(
         Ok(service) => (Some(service), None),
         Err(error) => (None, Some(error)),
     };
+    let keep_awake = keep_awake::KeepAwake::new(
+        paths.data.join("keep-awake.json"),
+        paths.headless || paths.test_mode,
+        events_tx.clone(),
+    )?;
+    let editor_cache = editor_installations_cache::InstallationCache::new(
+        paths.data.join("installed-editors.json"),
+        events_tx.clone(),
+    );
     let core = CoreHandle {
         transport,
         stdin_tx,
@@ -1199,9 +1221,12 @@ async fn spawn_core(
         store,
         lifecycle: Arc::new(Mutex::new(())),
         hub_cache: Arc::new(Mutex::new(None)),
+        editor_cache,
+        codely_canvas: codely_canvas::LocalCanvasService::new(paths.data.join("codely-canvas"))?,
         host_pending: Arc::new(StdMutex::new(HashMap::new())),
         host_finished: Arc::new(StdMutex::new(HashMap::new())),
         local_settings: Arc::new(Mutex::new(())),
+        keep_awake,
         project_creations: Arc::new(StdMutex::new(HashMap::new())),
         insight,
         lsp,
@@ -1301,19 +1326,56 @@ fn basename(p: &str) -> String {
 }
 
 async fn hub_snapshot(core: &CoreHandle) -> Result<Value, String> {
+    // Template selection needs current registered installations, not a project
+    // scan. Do not publish this separate response over an in-flight pane scan.
+    let fresh = core_call(core, "unity/getHubEditors", json!({}), Some("default")).await?;
+    if !fresh.is_array() {
+        return Err("Invalid Hub editor response".into());
+    }
+    Ok(fresh)
+}
+
+fn hub_refresh_requested(data: &Value) -> Result<bool, String> {
+    match data.get("refresh") {
+        None => Ok(false),
+        Some(Value::Bool(value)) => Ok(*value),
+        Some(_) => Err("Hub refresh must be a boolean".into()),
+    }
+}
+
+async fn hub_snapshot_request(core: &CoreHandle, data: &Value) -> Result<Value, String> {
+    hub_snapshot_refresh(core, hub_refresh_requested(data)?).await
+}
+
+#[cfg(test)]
+mod hub_refresh_tests {
+    use super::*;
+
+    #[test]
+    fn refresh_is_opt_in_and_validated_before_core_discovery() {
+        assert!(!hub_refresh_requested(&Value::Null).unwrap());
+        assert!(!hub_refresh_requested(&json!({})).unwrap());
+        assert!(!hub_refresh_requested(&json!({"refresh":false})).unwrap());
+        assert!(hub_refresh_requested(&json!({"refresh":true})).unwrap());
+        for value in [Value::Null, json!("true"), json!(1), json!([])] {
+            assert!(hub_refresh_requested(&json!({"refresh":value})).is_err());
+        }
+    }
+}
+
+// Project discovery is separate from installed Editor discovery. Refreshing
+// recency must never trigger the expensive installed-version/PE scanner.
+async fn hub_snapshot_refresh(core: &CoreHandle, refresh: bool) -> Result<Value, String> {
     let mut cache = core.hub_cache.lock().await;
+    if refresh {
+        *cache = None;
+    }
     if let Some((at, data)) = &*cache {
         if at.elapsed() < Duration::from_secs(60) {
             return Ok(data.clone());
         }
     }
-    let fresh = core_call(
-        core,
-        "unity/getHubProjectsAndEditors",
-        json!({}),
-        Some("default"),
-    )
-    .await?;
+    let fresh = core_call(core, "unity/getHubProjects", json!({}), Some("default")).await?;
     if !fresh.is_array() {
         return Err("Invalid Hub project/editor response".into());
     }
@@ -1447,6 +1509,17 @@ async fn local_message(
         "getIdeInfo" => Ok(ide_info()),
         "getIdeSettings" => Ok(ide_settings()),
         "ping" => Ok(json!("pong")),
+        "tauri/bringToFront" => {
+            let result = window_event(core, ShellEvent::FocusWindow).0;
+            if result["ok"] == true {
+                Ok(result)
+            } else {
+                Err(result["error"]
+                    .as_str()
+                    .unwrap_or("Cannot focus desktop window")
+                    .into())
+            }
+        }
         "read_unity_streaming_layout" | "save_unity_streaming_layout" => {
             let _guard = core.local_settings.lock().await;
             let path = core.paths.data.join("unity-streaming-layout.json");
@@ -1480,8 +1553,8 @@ async fn local_message(
             json!({"available":false,"enabled":false,"reason":"Remote access is not configured"}),
         ),
         "tauri/setTunnelEnabled" => Err("Remote access is not configured".into()),
-        "tauri/getKeepAwake" => Ok(json!(false)),
-        "tauri/setKeepAwake" => Err("Windows keep-awake is not connected yet".into()),
+        "tauri/getKeepAwake" => core.keep_awake.get().await,
+        "tauri/setKeepAwake" => core.keep_awake.set(data).await,
         "versionUpdate/getSeenFeatures" | "versionUpdate/markFeatureSeen" => {
             seen_features(core, kind, data).await
         }
@@ -1489,9 +1562,14 @@ async fn local_message(
         "tjhub/getUserInfo" => Ok(
             json!({"id":"gamecowork-local","label":"GameCowork 本地用户","name":"GameCowork 本地用户","mode":"local"}),
         ),
-        "tjhub/getLicenses" => {
-            Ok(json!({"isValid":true,"licenses":[],"mode":"local","scope":"gamecowork-workspace"}))
-        }
+        "tjhub/getLicenses" => Ok(editor_licensing::status()),
+        "tjhub/activateLicense"
+        | "tjhub/activatePersonalLicense"
+        | "tjhub/generateLicenseRequest"
+        | "tjhub/importLicenseFile"
+        | "tjhub/returnLicense"
+        | "tjhub/getServerConfig"
+        | "tjhub/updateServerConfig" => editor_licensing::reject_mutation(kind),
         "tjhub/getTemplates" | "tjhub/createProject" => {
             local_project_templates(core, kind, data).await
         }
@@ -1514,7 +1592,7 @@ async fn local_message(
         }
         "tjhub/getRecentProjects" => {
             let mut rows: HashMap<String, Value> = HashMap::new();
-            let snapshot = hub_snapshot(core).await;
+            let snapshot = hub_snapshot_request(core, data).await;
             if let Ok(snapshot) = &snapshot {
                 let store = core.store.lock().await;
                 for product in snapshot.as_array().into_iter().flatten() {
@@ -1525,10 +1603,12 @@ async fn local_message(
                         if store.is_hidden(path) {
                             continue;
                         }
-                        rows.insert(path.replace('\\',"/").to_lowercase(),json!({"localProjectId":path,"title":basename(path),
+                        let mut row = json!({"localProjectId":path,"title":basename(path),
                             "path":path,"lastModified":p["last_modified_display"],"version":p["editor_version"],
                             "editorVersion":p["editor_version"],"semver":p.get("tuanjie_editor_version").filter(|v|v.as_str().is_some_and(|s|!s.is_empty())).unwrap_or(&p["editor_version"]),
-                            "architecture":"x86_64","product":product["product"],"isRemote":false}));
+                            "architecture":"x86_64","product":product["product"],"isRemote":false});
+                        workspaces::refresh_project_metadata(&mut row);
+                        rows.insert(path.replace('\\', "/").to_lowercase(), row);
                     }
                 }
             }
@@ -1542,14 +1622,43 @@ async fn local_message(
                 Err(snapshot.err().unwrap())
             } else {
                 let mut rows: Vec<_> = rows.into_values().collect();
-                rows.sort_by_key(|p| p["path"].as_str().unwrap_or("").to_lowercase());
+                rows.sort_by(|a, b| {
+                    b["lastModifiedUnixMs"]
+                        .as_u64()
+                        .unwrap_or(0)
+                        .cmp(&a["lastModifiedUnixMs"].as_u64().unwrap_or(0))
+                        .then_with(|| {
+                            a["path"]
+                                .as_str()
+                                .unwrap_or("")
+                                .to_lowercase()
+                                .cmp(&b["path"].as_str().unwrap_or("").to_lowercase())
+                        })
+                });
                 Ok(json!(rows))
             }
         }
-        "tjhub/getEditors" => match hub_snapshot(core).await {
-            Ok(snapshot) => editor_installations::from_snapshot(&snapshot),
-            Err(e) => Err(e),
-        },
+        "tjhub/getEditors" | "tjhub/getEditorInstallations" => {
+            async {
+                let refresh = hub_refresh_requested(data)?;
+                let scanner = core.clone();
+                let result = core
+                    .editor_cache
+                    .request(refresh, move || async move {
+                        let snapshot =
+                            core_call(&scanner, "unity/getHubEditors", json!({}), Some("default"))
+                                .await?;
+                        editor_installations::from_snapshot(&snapshot)
+                    })
+                    .await?;
+                Ok(if kind == "tjhub/getEditors" {
+                    result["editors"].clone()
+                } else {
+                    result
+                })
+            }
+            .await
+        }
         "tjhub/addProject" | "tjhub/addFromDisk" => {
             let result = core
                 .store
@@ -1562,14 +1671,15 @@ async fn local_message(
             remove_project(core, data["projectPath"].as_str().unwrap_or("")).await
         }
         "tjhub/toggleFavorite" => {
+            let Some(favorite) = data["isFavorite"].as_bool() else {
+                return Some(Err("isFavorite must be a boolean".into()));
+            };
             let path = data["projectPath"].as_str().unwrap_or("");
-            let mut store = core.store.lock().await;
-            match store.add_project(path) {
-                Ok(_) => store
-                    .favorite(path, data["isFavorite"].as_bool().unwrap_or(false))
-                    .map(|p| serde_json::to_value(p).unwrap()),
-                Err(e) => Err(e),
-            }
+            core.store
+                .lock()
+                .await
+                .set_favorite(path, favorite)
+                .map(|p| serde_json::to_value(p).unwrap())
         }
         "initWorkspace" => open_local_workspace(core, data["path"].as_str().unwrap_or(""))
             .await
@@ -1757,11 +1867,158 @@ async fn seen_features(core: &CoreHandle, kind: &str, data: &Value) -> Result<Va
     Ok(json!({"features":state.get(platform).cloned().unwrap_or_default()}))
 }
 
+async fn asset_workspace_scope(core: &CoreHandle, data: &Value) -> Result<String, String> {
+    let key = match data.get("workspaceKey") {
+        None => "",
+        Some(Value::String(key)) => key.as_str(),
+        _ => return Err("workspaceKey must be a string when provided".into()),
+    };
+    if !key.is_empty() {
+        // Validate the same field consumed by the asset service; a messenger
+        // envelope cannot validate A while its payload actually addresses B.
+        let route = json!({"workspaceKey":key});
+        route_workspace(core, &route, &route).await?;
+    }
+    Ok(key.to_owned())
+}
+
 async fn invoke(State(core): State<CoreHandle>, Json(body): Json<Value>) -> Response {
     let message = body.get("message").unwrap_or(&body);
     let kind = message["messageType"].as_str().unwrap_or("");
     let id = message.get("messageId").cloned().unwrap_or(Value::Null);
     let data = message.get("data").cloned().unwrap_or(Value::Null);
+    if matches!(
+        kind,
+        "_gamecowork/assetArtifactPath"
+            | "_gamecowork/assetRegisterInput"
+            | "_gamecowork/assetInputPath"
+            | "_gamecowork/codelyGeneratorApi"
+            | "_gamecowork/codelyGeneratorUpload"
+            | "_gamecowork/codelyRebaseMedia"
+    ) {
+        return Json(error_reply(kind, &id, "Artifact paths are native-only")).into_response();
+    }
+    if kind == "generator/getInputResource" {
+        let result = async {
+            let workspace_key = asset_workspace_scope(&core, &data).await?;
+            let metadata = core_call(
+                &core,
+                "_gamecowork/assetInputPath",
+                json!({"inputId":data["inputId"],"workspaceKey":workspace_key}),
+                Some("default"),
+            )
+            .await?;
+            let home = core.paths.core_home.clone();
+            let mut resource = tokio::task::spawn_blocking(move || {
+                generated_assets::read_input_resource(&home, &metadata)
+            })
+            .await
+            .map_err(|e| e.to_string())??;
+            resource["inputId"] = data["inputId"].clone();
+            Ok::<Value, String>(resource)
+        }
+        .await;
+        return Json(match result {
+            Ok(value) => reply(kind, &id, value),
+            Err(error) => error_reply(kind, &id, error),
+        })
+        .into_response();
+    }
+    if kind == "generator/getResource" {
+        let result = async {
+            asset_workspace_scope(&core, &data).await?;
+            let metadata = core_call(
+                &core,
+                "_gamecowork/assetArtifactPath",
+                json!({"taskId":data["taskId"],"artifactId":data["artifactId"]}),
+                Some("default"),
+            )
+            .await?;
+            let home = core.paths.core_home.clone();
+            // Media bodies can exceed the bounded Core stdio frame size.
+            // Keep that transport limit and read only Core-owned, verified bytes.
+            let mut resource = tokio::task::spawn_blocking(move || {
+                generated_assets::read_resource(&home, &metadata)
+            })
+            .await
+            .map_err(|e| e.to_string())??;
+            resource["taskId"] = data["taskId"].clone();
+            resource["artifactId"] = data["artifactId"].clone();
+            Ok::<Value, String>(resource)
+        }
+        .await;
+        return Json(match result {
+            Ok(value) => reply(kind, &id, value),
+            Err(error) => error_reply(kind, &id, error),
+        })
+        .into_response();
+    }
+    if kind == "generator/saveOutput" {
+        let result = async {
+            let workspace = asset_workspace_scope(&core, &data).await?;
+            if workspace.is_empty() {
+                return Err("Choose an open workspace for export".to_owned());
+            }
+            let metadata = core_call(
+                &core,
+                "_gamecowork/assetArtifactPath",
+                json!({"taskId":data["taskId"],"artifactId":data["artifactId"]}),
+                Some("default"),
+            )
+            .await?;
+            let _guard = core.lifecycle.lock().await;
+            let mutations =
+                mutations_for_workspace(&core, &workspace)
+                    .await
+                    .map_err(|(_, v)| {
+                        v["error"]
+                            .as_str()
+                            .unwrap_or("Workspace unavailable")
+                            .to_owned()
+                    })?;
+            let home = core.paths.core_home.clone();
+            let relative = data["relativePath"]
+                .as_str()
+                .ok_or("relativePath is required")?
+                .to_owned();
+            let overwrite = match data.get("overwrite") {
+                None => false,
+                Some(Value::Bool(value)) => *value,
+                _ => return Err("overwrite must be a boolean".into()),
+            };
+            let expected = data["expectedSha256"].as_str().map(str::to_owned);
+            tokio::task::spawn_blocking(move || {
+                generated_assets::export(
+                    &home,
+                    &metadata,
+                    mutations,
+                    &relative,
+                    overwrite,
+                    expected.as_deref(),
+                )
+            })
+            .await
+            .map_err(|e| e.to_string())?
+        }
+        .await;
+        return Json(match result {
+            Ok(value) => reply(kind, &id, value),
+            Err(error) => error_reply(kind, &id, error),
+        })
+        .into_response();
+    }
+    if kind.starts_with("generator/") {
+        let result = async {
+            asset_workspace_scope(&core, &data).await?;
+            core_call(&core, kind, data.clone(), Some("default")).await
+        }
+        .await;
+        return Json(match result {
+            Ok(value) => reply(kind, &id, value),
+            Err(error) => error_reply(kind, &id, error),
+        })
+        .into_response();
+    }
     if kind.starts_with("lsp/") {
         let workspace = match route_workspace(&core, &body, message).await {
             Ok(workspace) => workspace,
@@ -2925,10 +3182,233 @@ fn insight_response(result: Result<Value, insight::InsightError>) -> Response {
     }
 }
 
+fn local_asset_upload_origin(headers: &HeaderMap) -> bool {
+    let Some(host) = headers.get("host").and_then(|value| value.to_str().ok()) else {
+        return false;
+    };
+    let Ok(authority) = host.parse::<axum::http::uri::Authority>() else {
+        return false;
+    };
+    if !matches!(
+        authority.host(),
+        "127.0.0.1" | "localhost" | "[::1]" | "::1"
+    ) {
+        return false;
+    }
+    headers.get("origin").and_then(|value| value.to_str().ok())
+        == Some(format!("http://{host}").as_str())
+}
+
+#[cfg(test)]
+mod asset_upload_origin_tests {
+    use super::*;
+    #[test]
+    fn binary_upload_requires_its_exact_loopback_origin() {
+        for host in ["127.0.0.1:43210", "localhost:43210", "[::1]:43210"] {
+            let mut headers = HeaderMap::new();
+            headers.insert("host", host.parse().unwrap());
+            assert!(!local_asset_upload_origin(&headers));
+            headers.insert("origin", format!("http://{host}").parse().unwrap());
+            assert!(local_asset_upload_origin(&headers));
+            for origin in ["null", "https://example.invalid", "http://127.0.0.1:43211"] {
+                headers.insert("origin", origin.parse().unwrap());
+                assert!(!local_asset_upload_origin(&headers));
+            }
+        }
+        let mut headers = HeaderMap::new();
+        headers.insert("host", "untrusted.invalid:43210".parse().unwrap());
+        headers.insert("origin", "http://untrusted.invalid:43210".parse().unwrap());
+        assert!(!local_asset_upload_origin(&headers));
+    }
+}
+
+async fn asset_input_upload(
+    State(core): State<CoreHandle>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+    request: axum::extract::Request,
+) -> Response {
+    if !local_asset_upload_origin(&headers) {
+        return (
+            StatusCode::FORBIDDEN,
+            Json(json!({"error":"Reference upload requires the local application origin"})),
+        )
+            .into_response();
+    }
+    let filename = query.get("filename").cloned().unwrap_or_default();
+    if filename.is_empty()
+        || filename.len() > 1024
+        || filename.chars().count() > 255
+        || filename
+            .chars()
+            .any(|character| character.is_control() || character == '/' || character == '\\')
+        || matches!(filename.as_str(), "." | "..")
+    {
+        return (
+            StatusCode::BAD_REQUEST,
+            Json(json!({"error":"A plain reference filename is required"})),
+        )
+            .into_response();
+    }
+    let workspace_key = query.get("workspaceKey").cloned().unwrap_or_default();
+    if workspace_key.len() > 8192 {
+        return (
+            StatusCode::BAD_REQUEST,
+            Json(json!({"error":"Workspace key is too long"})),
+        )
+            .into_response();
+    }
+    let route = json!({"workspaceKey":workspace_key});
+    if !workspace_key.is_empty() {
+        if let Err(error) = route_workspace(&core, &route, &route).await {
+            return (StatusCode::BAD_REQUEST, Json(json!({"error":error}))).into_response();
+        }
+    }
+    if headers
+        .get("content-length")
+        .and_then(|value| value.to_str().ok())
+        .and_then(|value| value.parse::<u64>().ok())
+        .is_some_and(|length| length > generated_assets::LIMIT)
+    {
+        return (
+            StatusCode::PAYLOAD_TOO_LARGE,
+            Json(json!({"error":"Reference file exceeds 64 MiB"})),
+        )
+            .into_response();
+    }
+    static UPLOADS: OnceLock<Arc<tokio::sync::Semaphore>> = OnceLock::new();
+    let semaphore = UPLOADS
+        .get_or_init(|| Arc::new(tokio::sync::Semaphore::new(2)))
+        .clone();
+    let Ok(Ok(_permit)) =
+        tokio::time::timeout(Duration::from_secs(120), semaphore.acquire_owned()).await
+    else {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({"error":"Reference upload queue is busy; retry"})),
+        )
+            .into_response();
+    };
+    let bytes = match tokio::time::timeout(
+        Duration::from_secs(120),
+        axum::body::to_bytes(request.into_body(), generated_assets::LIMIT as usize),
+    )
+    .await
+    {
+        Ok(Ok(bytes)) if !bytes.is_empty() => bytes,
+        Ok(Ok(_)) => {
+            return (
+                StatusCode::BAD_REQUEST,
+                Json(json!({"error":"Reference file is empty"})),
+            )
+                .into_response()
+        }
+        Ok(Err(_)) => {
+            return (
+                StatusCode::PAYLOAD_TOO_LARGE,
+                Json(json!({"error":"Reference body was interrupted or exceeds 64 MiB"})),
+            )
+                .into_response()
+        }
+        Err(_) => {
+            return (
+                StatusCode::REQUEST_TIMEOUT,
+                Json(json!({"error":"Reference upload timed out"})),
+            )
+                .into_response()
+        }
+    };
+    let home = core.paths.core_home.clone();
+    let result = async {
+        let staged = tokio::task::spawn_blocking(move || {
+            generated_assets::stage_input(&home, &filename, &bytes)
+        })
+        .await
+        .map_err(|error| error.to_string())??;
+        if !workspace_key.is_empty() {
+            route_workspace(&core, &route, &route).await?;
+        }
+        // Only this host creates the staging identity. Neither an HTTP caller
+        // nor a Provider supplies a filesystem path to the registration handler.
+        let result = core_call(
+            &core,
+            "_gamecowork/assetRegisterInput",
+            staged.registration(&workspace_key),
+            Some("default"),
+        )
+        .await;
+        drop(staged);
+        result
+    }
+    .await;
+    match result {
+        Ok(value) => (StatusCode::CREATED, Json(value)).into_response(),
+        Err(error) => (StatusCode::BAD_REQUEST, Json(json!({"error":error}))).into_response(),
+    }
+}
+
 fn build_router(core: CoreHandle) -> Router {
     let dist = core.paths.frontend.clone();
+    let local_api = Router::<CoreHandle>::new()
+        .route(
+            "/api/codely-generator/*operation",
+            any(codely_http::generator),
+        )
+        .route("/codely-canvas/api/*operation", any(codely_http::canvas))
+        .layer(axum::middleware::map_response(
+            |mut response: Response| async move {
+                response
+                    .headers_mut()
+                    .insert("Cache-Control", "no-store".parse().unwrap());
+                response
+            },
+        ));
+    let original_pages = Router::<CoreHandle>::new()
+        .route_service(
+            "/lab3d",
+            tower_http::services::ServeFile::new(dist.join("codely-generator/index.html")),
+        )
+        .route_service(
+            "/generation-history",
+            tower_http::services::ServeFile::new(dist.join("codely-generator/index.html")),
+        )
+        .route_service(
+            "/codely-canvas/home",
+            tower_http::services::ServeFile::new(dist.join("codely-canvas/index.html")),
+        )
+        .route_service(
+            "/codely-canvas/explore",
+            tower_http::services::ServeFile::new(dist.join("codely-canvas/index.html")),
+        )
+        .route_service(
+            "/codely-canvas/login",
+            tower_http::services::ServeFile::new(dist.join("codely-canvas/index.html")),
+        )
+        .route_service(
+            "/codely-canvas/canvas",
+            tower_http::services::ServeFile::new(dist.join("codely-canvas/index.html")),
+        )
+        .route_service(
+            "/codely-canvas/canvas/*path",
+            tower_http::services::ServeFile::new(dist.join("codely-canvas/index.html")),
+        )
+        .layer(axum::middleware::map_response(
+            |mut response: Response| async move {
+                response.headers_mut().insert(
+                    "Content-Security-Policy",
+                    "frame-ancestors 'self'".parse().unwrap(),
+                );
+                response
+                    .headers_mut()
+                    .insert("Cache-Control", "no-store".parse().unwrap());
+                response
+            },
+        ));
     Router::new()
+        .merge(original_pages)
+        .merge(local_api)
         .route("/api/tauri/invoke",post(invoke))
+        .route("/api/tauri/generator/inputs",post(asset_input_upload))
         .route("/api/tauri/file-explorer",get(file_explorer_get).post(file_explorer_post))
         .route("/api/tauri/file-explorer/events",get(file_explorer_events))
         .route("/api/tauri/terminal",get(terminal_upgrade))
@@ -2945,10 +3425,15 @@ fn build_router(core: CoreHandle) -> Router {
                 }
             });Sse::new(stream).keep_alive(KeepAlive::default())
         }))
-        .route("/api/tauri/status",get(||async{Json(json!({"status":"ok","embed_mode":false,"product":"GameCowork",
-            "version":env!("CARGO_PKG_VERSION"),"mode":"local"}))}))
+        .route("/api/tauri/status",get(|State(c):State<CoreHandle>|async move{
+            let mut status=c.paths.instance.as_ref().map(|instance|instance.status()).unwrap_or(json!({}));
+            status["status"]=json!("ok");status["embed_mode"]=json!(false);status["product"]=json!("GameCowork");
+            status["version"]=json!(env!("CARGO_PKG_VERSION"));status["mode"]=json!("local");
+            status["desktopWindow"]=json!(c.proxy.is_some());Json(status)
+        }))
+        .route("/api/tauri/activate-instance",post(activate_instance))
         .route("/api/tauri/capabilities",get(||async{Json(json!({"localWorkspaces":true,"localAccount":true,"fileExplorer":true,"interactiveTerminal":true,
-            "remoteWorkspaces":false,"editorTemplates":true,"editorTemplateSource":"installed-editor","editorStreaming":false,"editorRenderedViews":true,"editorRenderedViewTypes":["SceneView","GameView"],"editorFrameTransport":"image-frames","fullEditorWindowStreaming":false,"mediaProviders":"planned"}))}))
+            "remoteWorkspaces":false,"editorTemplates":true,"editorTemplateSource":"installed-editor","editorStreaming":false,"editorRenderedViews":true,"editorRenderedViewTypes":["SceneView","GameView"],"editorFrameTransport":"image-frames","fullEditorWindowStreaming":false,"mediaProviders":"custom-rest","mediaProviderKinds":["image","video","model"]}))}))
         .route("/api/tauri/hub/workspaces",get(|State(c):State<CoreHandle>|async move {
             let store=c.store.lock().await;Json(workspace_snapshot(&c,&store))
         }))
@@ -2992,6 +3477,57 @@ fn window_event(c: &CoreHandle, event: ShellEvent) -> Json<Value> {
         Some(proxy) => Json(json!({"ok":proxy.send_event(event).is_ok()})),
         None => Json(json!({"ok":false,"error":"No desktop window in headless mode"})),
     }
+}
+
+async fn activate_instance(State(core): State<CoreHandle>, Json(body): Json<Value>) -> Response {
+    if !core
+        .paths
+        .instance
+        .as_ref()
+        .is_some_and(|instance| instance.matches(&body["instanceId"]))
+    {
+        return (
+            StatusCode::CONFLICT,
+            Json(json!({"ok":false,"error":"Application instance changed"})),
+        )
+            .into_response();
+    }
+    let workspace = match body.get("workspace") {
+        None | Some(Value::Null) => None,
+        Some(Value::String(path)) if !path.is_empty() => {
+            match open_local_workspace(&core, path).await {
+                Ok(workspace) => Some(workspace),
+                Err(error) => {
+                    return (
+                        StatusCode::BAD_REQUEST,
+                        Json(json!({"ok":false,"error":error})),
+                    )
+                        .into_response()
+                }
+            }
+        }
+        _ => {
+            return (
+                StatusCode::BAD_REQUEST,
+                Json(json!({"ok":false,"error":"Launch workspace must be a directory path"})),
+            )
+                .into_response()
+        }
+    };
+    let activation = if let Some(proxy) = &core.proxy {
+        let (send, receive) = tokio::sync::oneshot::channel();
+        if proxy.send_event(ShellEvent::ActivateWindow(send)).is_ok() {
+            match tokio::time::timeout(Duration::from_secs(2), receive).await {
+                Ok(Ok(value)) => value,
+                _ => json!({"focusRequested":true,"focused":false}),
+            }
+        } else {
+            json!({"focusRequested":false,"focused":false})
+        }
+    } else {
+        json!({"focusRequested":false,"focused":false})
+    };
+    Json(json!({"ok":true,"focusRequested":activation["focusRequested"],"focused":activation["focused"],"workspace":workspace})).into_response()
 }
 
 async fn prepare_core(
@@ -3098,10 +3634,28 @@ mod mutation_scope_tests {
 }
 
 fn main() {
-    let paths = Arc::new(RuntimePaths::load().unwrap_or_else(|e| {
+    let startup_workspace = single_instance::workspace_argument(std::env::args_os().skip(1))
+        .unwrap_or_else(|error| {
+            eprintln!("{error}");
+            std::process::exit(1)
+        });
+    let mut paths = RuntimePaths::load().unwrap_or_else(|e| {
         eprintln!("{e}");
         std::process::exit(1)
-    }));
+    });
+    let instance = match single_instance::launch(&paths.data, startup_workspace.as_deref()) {
+        Ok(single_instance::Launch::Primary(instance)) => Arc::new(instance),
+        Ok(single_instance::Launch::Forwarded(result)) => {
+            println!("[shell] Activated running instance: {result}");
+            return;
+        }
+        Err(error) => {
+            eprintln!("{error}");
+            std::process::exit(1)
+        }
+    };
+    paths.instance = Some(instance.clone());
+    let paths = Arc::new(paths);
     let legacy = if std::env::var_os("GAMECOWORK_DATA_DIR").is_none() {
         Some(paths.root.join("workspace.txt"))
     } else {
@@ -3120,10 +3674,19 @@ fn main() {
     if paths.headless {
         runtime.block_on(async move {
             let (core,mut child)=prepare_core(paths,store,None).await.expect("prepare core");
+            if let Some(workspace)=&startup_workspace {
+                if let Err(error)=open_local_workspace(&core,workspace).await {
+                    eprintln!("Cannot open launch workspace: {error}");core.keep_awake.shutdown();
+                    core.insight.shutdown().await;if let Some(lsp)=&core.lsp{lsp.shutdown().await;}
+                    let _=child.kill().await;std::process::exit(1);
+                }
+            }
             let listener=tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            instance.publish(listener.local_addr().unwrap().port()).expect("publish application instance");
             println!("[shell] HTTP: http://{}/",listener.local_addr().unwrap());
             let server=axum::serve(listener,build_router(core.clone()));
             tokio::select! {result=server=>{let _=result;},_=tokio::signal::ctrl_c()=>{},_=child.wait()=>{core.transport.fail_pending("core exited").await;}}
+            core.keep_awake.shutdown();
             core.insight.shutdown().await;
             if let Some(lsp)=&core.lsp{lsp.shutdown().await;}
             let _=child.kill().await;
@@ -3133,13 +3696,27 @@ fn main() {
     let event_loop = tao::event_loop::EventLoopBuilder::<ShellEvent>::with_user_event().build();
     let proxy = event_loop.create_proxy();
     let server_paths = paths.clone();
+    let server_instance = instance.clone();
     runtime.spawn(async move {
         match prepare_core(server_paths,store,Some(proxy)).await {
             Ok((core,mut child))=>{
+                if let Some(workspace)=&startup_workspace {
+                    if let Err(error)=open_local_workspace(&core,workspace).await {
+                        let _=START_URL.set(Err(format!("Cannot open launch workspace: {error}")));
+                        core.keep_awake.shutdown();core.insight.shutdown().await;
+                        if let Some(lsp)=&core.lsp{lsp.shutdown().await;}let _=child.kill().await;return;
+                    }
+                }
                 let listener=match tokio::net::TcpListener::bind("127.0.0.1:0").await{Ok(v)=>v,Err(e)=>{let _=START_URL.set(Err(e.to_string()));return;}};
+                if let Err(error)=server_instance.publish(listener.local_addr().unwrap().port()) {
+                    let _=START_URL.set(Err(error));core.keep_awake.shutdown();
+                    core.insight.shutdown().await;if let Some(lsp)=&core.lsp{lsp.shutdown().await;}
+                    let _=child.kill().await;return;
+                }
                 let addr=listener.local_addr().unwrap();println!("[shell] HTTP: http://{addr}/");
                 let _=START_URL.set(Ok(format!("http://{addr}/")));
                 tokio::select!{_=axum::serve(listener,build_router(core.clone()))=>{},_=child.wait()=>{core.transport.fail_pending("core exited").await;}}
+                core.keep_awake.shutdown();
                 core.insight.shutdown().await;
                 if let Some(lsp)=&core.lsp{lsp.shutdown().await;}
             },Err(e)=>{let _=START_URL.set(Err(e));}
@@ -3205,13 +3782,14 @@ fn main() {
         .expect("webview");
     event_loop.run(move |event, _, control_flow| {
         let _ = &webview;
+        let _ = &instance;
         *control_flow = ControlFlow::Wait;
         match event {
             Event::UserEvent(ShellEvent::WindowState(reply)) => {
                 let size=window.inner_size();
                 let position=window.outer_position().ok();
                 let _=reply.send(json!({"ok":true,"maximized":window.is_maximized(),"minimized":window.is_minimized(),
-                    "width":size.width,"height":size.height,"scaleFactor":window.scale_factor(),
+                    "width":size.width,"height":size.height,"scaleFactor":window.scale_factor(),"focused":window.is_focused(),
                     "x":position.map(|p|p.x),"y":position.map(|p|p.y)}));
             }
             Event::UserEvent(ShellEvent::StartDragging) => {
@@ -3223,7 +3801,13 @@ fn main() {
             Event::UserEvent(ShellEvent::ToggleMaximize) => {
                 window.set_maximized(!window.is_maximized())
             }
-            Event::UserEvent(ShellEvent::FocusWindow) => window.set_focus(),
+            Event::UserEvent(ShellEvent::FocusWindow) => {
+                window.set_visible(true);window.set_minimized(false);window.set_focus();
+            },
+            Event::UserEvent(ShellEvent::ActivateWindow(reply)) => {
+                window.set_visible(true);window.set_minimized(false);window.set_focus();
+                let _=reply.send(json!({"focusRequested":true,"focused":window.is_focused()}));
+            },
             Event::UserEvent(ShellEvent::CloseWindow) => *control_flow = ControlFlow::Exit,
             Event::WindowEvent {
                 event: WindowEvent::CloseRequested,

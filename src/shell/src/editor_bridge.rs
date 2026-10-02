@@ -119,7 +119,22 @@ pub async fn invoke_local_tool(
         return Ok(json!({"status":"success","response":{"success":true,"data":data}}));
     }
     if !((command == "manage_editor"
-        && matches!(action, "get_state" | "get_project_root" | "get_selection"))
+        && matches!(
+            action,
+            "get_state"
+                | "get_project_root"
+                | "get_selection"
+                | "get_windows"
+                | "get_tags"
+                | "get_layers"
+                | "get_active_tool"
+        ))
+        || (command == "manage_scene" && action == "get_hierarchy")
+        || (command == "manage_gameobject"
+            && matches!(action, "find" | "list_children" | "get_components"))
+        || (command == "read_console" && action == "get")
+        || (command == "manage_asset" && matches!(action, "search" | "get_info"))
+        || (command == "manage_package" && action == "list_packages")
         || (command == "_internal_asset_listening" && action == "status"))
     {
         return Err("This local Editor bridge command is not implemented yet".into());
@@ -475,6 +490,74 @@ mod tests {
             .unwrap();
         assert_eq!(reply["content"]["windows"][0]["title"], "Scene");
         server.await.unwrap();
+        cleanup(&root);
+    }
+    #[tokio::test]
+    async fn scene_queries_preserve_nested_rows_and_refuse_unimplemented_writes() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let root = fixture(listener.local_addr().unwrap().port());
+        let banner = encoded(&root);
+        let server = tokio::spawn(async move {
+            for (kind, action) in [
+                ("manage_scene", "get_hierarchy"),
+                ("manage_gameobject", "find"),
+                ("manage_gameobject", "list_children"),
+                ("manage_gameobject", "get_components"),
+            ] {
+                let (mut stream, _) = listener.accept().await.unwrap();
+                stream
+                    .write_all(
+                        format!(
+                            "WELCOME UNITY-TCP FRAMING=1 SERVER_VERSION=2 PROJECT_ROOT={banner}\n"
+                        )
+                        .as_bytes(),
+                    )
+                    .await
+                    .unwrap();
+                let mut req = Value::Null;
+                for index in 0..3 {
+                    let size = stream.read_u64().await.unwrap();
+                    let mut bytes = vec![0; size as usize];
+                    stream.read_exact(&mut bytes).await.unwrap();
+                    if index == 2 {
+                        req = serde_json::from_slice(&bytes).unwrap();
+                    }
+                }
+                assert_eq!(req["type"], kind);
+                assert_eq!(req["params"]["action"], action);
+                let reply = json!({"request_id":req["request_id"],"result":{"success":true,"data":{"success":true,"data":[{"name":"Own Query Row","instanceID":-17}]}}}).to_string();
+                stream
+                    .write_all(&(reply.len() as u64).to_be_bytes())
+                    .await
+                    .unwrap();
+                stream.write_all(reply.as_bytes()).await.unwrap();
+            }
+        });
+        for (kind, action) in [
+            ("manage_scene", "get_hierarchy"),
+            ("manage_gameobject", "find"),
+            ("manage_gameobject", "list_children"),
+            ("manage_gameobject", "get_components"),
+        ] {
+            let reply = invoke_local_tool(root.clone(), kind, &json!({"action":action}))
+                .await
+                .unwrap();
+            assert_eq!(reply["response"]["data"]["success"], true);
+            assert_eq!(reply["response"]["data"]["data"][0]["instanceID"], -17);
+        }
+        server.await.unwrap();
+        for (kind, action) in [
+            ("manage_scene", "save"),
+            ("manage_gameobject", "delete"),
+            ("manage_gameobject", "unknown"),
+        ] {
+            assert!(
+                invoke_local_tool(root.clone(), kind, &json!({"action":action}))
+                    .await
+                    .unwrap_err()
+                    .contains("not implemented")
+            );
+        }
         cleanup(&root);
     }
     #[tokio::test]

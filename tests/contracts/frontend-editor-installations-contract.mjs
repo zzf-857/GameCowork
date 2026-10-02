@@ -16,11 +16,15 @@ function runtime(source,shell=true){
 }
 function walk(node){if(!node||typeof node!=='object')return [];return [node,...Object.values(node).flatMap(value=>Array.isArray(value)?value.flatMap(walk):walk(value))];}
 function actualScanner(source,context,{request,previous=[editor]}={}){
- const start=source.indexOf('  const Q = n.useCallback(async () => {',source.indexOf('function oo('));
- const end=source.indexOf('\n  }, [c]);',start),code=source.slice(start+'  const Q = n.useCallback('.length,end+4);
+ const start=source.indexOf('  const Q = n.useCallback(refresh =>',source.indexOf('function oo('));
+ const end=source.indexOf(', [gamecoworkInstalledController]);',start),code=source.slice(start+'  const Q = n.useCallback('.length,end);
  assert.ok(start>=0&&end>start,'Actual installed-editor scan callback exists');
- const rows=[],errors=[],busy=[];Object.assign(context,{c:{request},Te:previous,gamecoworkInstalledGeneration:{current:0},x:value=>rows.push(value),gamecoworkSetInstalledError:value=>errors.push(value),gamecoworkSetInstalledBusy:value=>busy.push(value)});
- const run=vm.runInContext('('+code+')',context);return {run,rows,errors,busy};
+ vm.runInContext(fs.readFileSync(directory+'gamecowork-editor-installations.js','utf8').replaceAll('export ',''),context);
+ const rows=[],errors=[],busy=[];let state,lastRows=previous,lastError=null,lastBusy=false;context.Te=previous;
+ context.gamecoworkInstalledController=context.createEditorInstallationsController({local:true,initialRows:previous,normalize:context.gamecoworkNormalizeEditor,
+  messenger:{request:async(kind,data)=>{const value=await request(kind,data);return value.status==='success'?{...value,content:{editors:value.content,cache:{hasSnapshot:true,stale:false,refreshing:false,source:'scan'}}}:value;}},
+  onUpdate:value=>{state=value;if(value.rows!==lastRows){lastRows=value.rows;rows.push(value.rows);context.Te=value.rows;}if(value.error!==lastError){lastError=value.error;errors.push(value.error);}if(value.busy!==lastBusy){lastBusy=value.busy;busy.push(value.busy);}}});
+ const run=vm.runInContext('('+code+')',context);return {run,rows,errors,busy,current:()=>state};
 }
 
 for(const name of ['TJHubRoute-DN1YDDd-.js','TJHubRoute-D42CgVct.js']){
@@ -72,6 +76,30 @@ for(const name of ['TJHubRoute-DN1YDDd-.js','TJHubRoute-D42CgVct.js']){
   const ctx=runtime(source),key=ctx.gamecoworkEditorRowKey(editor);
   assert.equal(key,ctx.gamecoworkEditorRowKey({...editor,version:'different registry label'}));
   assert.notEqual(key,ctx.gamecoworkEditorRowKey({...editor,product:'unity'}));assert.notEqual(key,ctx.gamecoworkEditorRowKey({...editor,path:'E:/Other Editor/Tuanjie.exe',location:[]}));
+ });
+ test(name+': project-row installed status requires an available matching engine and bound path',()=>{
+  const ctx=runtime(source),start=source.indexOf('function Vo('),end=source.indexOf('    L = Ho()',start);
+  const expression=source.slice(start,end).match(/k = (b\.some\([^\n]+\)),/)[1];
+  const installed=vm.runInContext('(s,b)=>'+expression,ctx),project={version:editor.version,architecture:editor.architecture,product:'tuanjie',editorPath:editor.path};
+  assert.equal(installed(project,[editor]),true);
+  assert.equal(installed(project,[{...editor,product:'unity'}]),false);
+  assert.equal(installed(project,[{...editor,path:'F:/Another/Editor/Tuanjie.exe'}]),false);
+  assert.equal(installed(project,[{...editor,installationAvailable:false}]),false);
+ });
+ test(name+': successful locate waits for the real refreshed Editor request before opening project creation',async()=>{
+  const ctx=runtime(source),calls=[],events=[],opened=[];let finish;
+  const pending=new Promise(resolve=>{finish=resolve;});
+  ctx.window.dispatchEvent=event=>events.push(event.type);ctx.CustomEvent=class{constructor(type){this.type=type;}};
+  Object.assign(ctx,{ce:{path:editor.path},s:()=>opened.push(true),b:{request:async(kind,data)=>{calls.push({kind,data});return kind==='tjhub/locateEditor'?{status:'success'}:pending;}}});
+  const start=source.indexOf('(await b.request("tjhub/locateEditor", { path: ce.path }))');
+  const end=source.indexOf(';',start);assert.ok(start>0&&end>start,'actual located-Editor success expression exists');
+  const run=vm.runInContext('(async()=>{'+source.slice(start,end+1)+'})',ctx);
+  const task=run();await new Promise(setImmediate);
+  assert.deepEqual(calls.map(call=>call.kind),['tjhub/locateEditor','tjhub/getEditors']);
+  assert.equal(calls[1].data.refresh,true);assert.deepEqual(events,['tjhub:editorsChanged']);assert.equal(opened.length,0);
+  finish({status:'success',content:{own:editor}});await task;assert.equal(opened.length,1);
+  opened.length=0;ctx.b.request=async kind=>kind==='tjhub/locateEditor'?{status:'success'}:{status:'error',error:'owned refresh failed'};
+  await assert.rejects(run(),/owned refresh failed/);assert.equal(opened.length,0,'A failed refreshed list never opens creation with stale rows');
  });
  test(name+': exact local editor choices separate equal technical versions and never guess a project path',()=>{
   const ctx=runtime(source),unity={...editor,product:'unity',path:'F:/Unity/Editor/Unity.exe'},rows=[editor,unity];
@@ -141,16 +169,16 @@ for(const name of ['TJHubRoute-DN1YDDd-.js','TJHubRoute-D42CgVct.js']){
   await scan.run();assert.equal(ctx.Te,previous);assert.deepEqual(scan.rows,[]);assert.deepEqual(scan.errors,['own editor registry unavailable']);assert.deepEqual(scan.busy,[true,false]);
  });
  test(name+': actual successful empty scan is distinct from malformed or failed responses',async()=>{
-  const ctx=runtime(source),scan=actualScanner(source,ctx,{request:async()=>({status:'success',content:{}})});await scan.run();assert.deepEqual(plain(scan.rows),[[]]);assert.deepEqual(scan.errors,[null]);
+  const ctx=runtime(source),scan=actualScanner(source,ctx,{request:async()=>({status:'success',content:{}})});await scan.run();assert.deepEqual(plain(scan.rows),[[]]);assert.equal(scan.current().error,null);
   for(const content of [null,'wrong DTO',{bad:null}])await assert.rejects(ctx.gamecoworkReadEditorRows({request:async()=>({status:'success',content})}));
  });
  test(name+': latest scan owns rows and stale failures cannot replace its state',async()=>{
   const ctx=runtime(source),pending=[];const scan=actualScanner(source,ctx,{request:()=>new Promise(resolve=>pending.push(resolve))});const first=scan.run(),second=scan.run();
   pending[1]({status:'success',content:{actual:editor}});await second;pending[0]({status:'error',error:'late old scan failure'});await first;
-  assert.equal(scan.rows.length,1);assert.deepEqual(scan.errors,[null]);assert.deepEqual(scan.busy,[true,true,false]);
+  assert.equal(scan.rows.length,1);assert.equal(scan.current().error,null);assert.deepEqual(scan.busy,[true,false]);
  });
  test(name+': visible retry, navigation identity and local action boundaries are wired',()=>{
-  assert.match(source,/"data-testid": "gamecowork-editors-error", role: "alert"/);assert.match(source,/"data-testid": "gamecowork-editors-retry"[\s\S]{0,150}onClick: \(\) => void Q\(\)/);
+  assert.match(source,/"data-testid": "gamecowork-editors-error", role: "alert"/);assert.match(source,/"data-testid": "gamecowork-editors-retry"[\s\S]{0,150}onClick: \(\) => void Q\(!0\)/);
   assert.match(source,/editorIdentityFilter: gamecoworkInstallationFilter/);assert.match(source,/onViewProjects: \(w, g, identity\)/);
   assert.match(source,/"data-testid": "gamecowork-editor-installations-entry"/);assert.match(source,/"data-testid": "gamecowork-editor-reveal"/);
   assert.match(source,/l && !H && !window.GAMECOWORK_SHELL && se\(\)/);

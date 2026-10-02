@@ -1,4 +1,5 @@
 import { GameCoworkUnityConnector, GameCoworkUnityDiscovery, unityOwner } from "./gamecowork-unity-connectors.js";
+import { keepAwakeFailureMessage } from "./gamecowork-settings-errors.js";
 // Local Cowork 2.1.3-canary.1 compatibility fix: supply missing custom-model effort metadata.
 // Keep native selection, persistence, and reasoningEffort request handling.
 function coworkCustomReasoningConfig(config) {
@@ -169385,7 +169386,10 @@ function zdn({ autoEnabledKeepAwake: e, tunnelEnabled: t }) {
 function $dn({ tunnelEnabled: e, setTunnelEnabled: t, tunnelPreferenceTouchedRef: n, keepAwake: r, setKeepAwake: a }) {
   const { t: i } = Rt(),
     o = E.useContext(Ft),
-    [s, l] = E.useState(!1);
+    [s, l] = E.useState(!1),
+    [gamecoworkKeepAwakeBusy, gamecoworkSetKeepAwakeBusy] = E.useState(!1),
+    [gamecoworkKeepAwakeError, gamecoworkSetKeepAwakeError] = E.useState(""),
+    gamecoworkKeepAwakeLock = E.useRef(!1);
   return p.jsxs("div", {
     className: "flex h-full flex-col bg-gamecowork-color-surface-primary",
     children: [
@@ -169412,9 +169416,6 @@ function $dn({ tunnelEnabled: e, setTunnelEnabled: t, tunnelPreferenceTouchedRef
                       const c = !e;
                       (c$(c),
                         t(c),
-                        c
-                          ? (a(!0), l(!0), o.request("tauri/setKeepAwake", { enabled: !0 }))
-                          : (a(!1), l(!1), o.request("tauri/setKeepAwake", { enabled: !1 })),
                         o
                           .request("tauri/setTunnelEnabled", { enabled: c })
                           .then((d) => {
@@ -169464,11 +169465,33 @@ function $dn({ tunnelEnabled: e, setTunnelEnabled: t, tunnelPreferenceTouchedRef
                     title: i("settings.devices.keepAwake"),
                     description: i("settings.devices.keepAwakeDescription"),
                     value: r,
-                    disabled: !e,
-                    bottomComponent: p.jsx(zdn, { autoEnabledKeepAwake: s, tunnelEnabled: e }),
-                    onToggle: () => {
-                      const c = !r;
-                      (a(c), l(!1), o.request("tauri/setKeepAwake", { enabled: c }));
+                    disabled: gamecoworkKeepAwakeBusy,
+                    bottomComponent: p.jsxs(p.Fragment, { children: [
+                      p.jsx(zdn, { autoEnabledKeepAwake: s, tunnelEnabled: e }),
+                      gamecoworkKeepAwakeError && p.jsx("div", {
+                        "data-testid": "gamecowork-keep-awake-error", role: "alert",
+                        className: "px-3 pb-3 text-xs text-gamecowork-color-status-danger-text",
+                        children: gamecoworkKeepAwakeError,
+                      }),
+                    ] }),
+                    onToggle: async () => {
+                      if (gamecoworkKeepAwakeLock.current) return;
+                      gamecoworkKeepAwakeLock.current = !0;
+                      gamecoworkSetKeepAwakeBusy(!0);
+                      gamecoworkSetKeepAwakeError("");
+                      try {
+                        const response = await o.request("tauri/setKeepAwake", { enabled: !r });
+                        const result = response?.content ?? response;
+                        if (response?.status === "error" || result?.status === "error" || typeof result?.enabled !== "boolean")
+                          throw new Error(response?.error || result?.error || "Unable to change sleep prevention");
+                        a(result.enabled);
+                        l(!1);
+                      } catch (failure) {
+                        gamecoworkSetKeepAwakeError(keepAwakeFailureMessage(failure));
+                      } finally {
+                        gamecoworkKeepAwakeLock.current = !1;
+                        gamecoworkSetKeepAwakeBusy(!1);
+                      }
                     },
                   },
                 ],
@@ -187278,6 +187301,8 @@ const Yl = class Yl {
     Vt(this, "connectionReadyCallbacks", []);
     Vt(this, "healthCheckInterval", null);
     Vt(this, "healthCheckTimeout", null);
+    Vt(this, "healthCheckActive", !1);
+    Vt(this, "healthCheckGeneration", 0);
     Vt(this, "errorHandler", null);
     ((this.ide = new Roe(
       async (t, n) => {
@@ -187332,8 +187357,13 @@ const Yl = class Yl {
       (this.connectionReadyCallbacks = []));
   }
   stopHealthCheck() {
+    this.healthCheckActive = !1;
+    this.healthCheckGeneration++;
     (this.healthCheckInterval && (clearInterval(this.healthCheckInterval), (this.healthCheckInterval = null)),
       this.healthCheckTimeout && (clearTimeout(this.healthCheckTimeout), (this.healthCheckTimeout = null)));
+  }
+  resumeHealthCheck() {
+    if (!this.connectionReady) this.startHealthCheck();
   }
   canRunHealthCheckInEnvironment() {
     return typeof window < "u" && typeof localStorage < "u";
@@ -187360,7 +187390,12 @@ const Yl = class Yl {
       window.addEventListener("message", this.messageHandler));
   }
   startHealthCheck() {
+    if (this.healthCheckActive || !this.shouldScheduleHealthCheck()) return;
+    this.healthCheckActive = !0;
+    const generation = ++this.healthCheckGeneration,
+      current = () => this.healthCheckActive && this.healthCheckGeneration === generation;
     const t = async () => {
+        if (!current()) return;
         if (!this.shouldScheduleHealthCheck()) {
           this.stopHealthCheck();
           return;
@@ -187385,22 +187420,23 @@ const Yl = class Yl {
               });
             this._postToIdeInternal("ping", "ping", i, !0);
             const s = await o;
-            s && s.status === "success" && s.content === "pong" && this.markConnectionReady();
+            current() && s && s.status === "success" && s.content === "pong" && this.markConnectionReady();
           } catch {}
       },
       a = (i) => {
+        if (!current()) return;
         if (!this.shouldScheduleHealthCheck()) {
           this.stopHealthCheck();
           return;
         }
         this.healthCheckTimeout = setTimeout(() => {
           t().finally(() => {
-            this.shouldScheduleHealthCheck() ? a(Math.min(i * 2, 1e3)) : this.stopHealthCheck();
+            if (current()) this.shouldScheduleHealthCheck() ? a(Math.min(i * 2, 1e3)) : this.stopHealthCheck();
           });
         }, i);
       };
     t().finally(() => {
-      this.shouldScheduleHealthCheck() && a(50);
+      current() && this.shouldScheduleHealthCheck() && a(50);
     });
   }
   isConnected() {

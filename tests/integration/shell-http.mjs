@@ -252,6 +252,25 @@ test("real Rust shell HTTP contract with isolated fake core", async (t) => {
     }finally {await stop(local);}
   });
 
+  await t.test("original-client private RPCs and foreign HTTP writes cannot reach Core", async () => {
+    const methods = ['_gamecowork/codelyGeneratorApi', '_gamecowork/codelyGeneratorUpload', '_gamecowork/codelyRebaseMedia'];
+    for (const messageType of methods) {
+      for (const nested of [false, true]) {
+        const result = await invoke(server, messageType, {origin:new URL(server.url).origin, urls:[]}, {nested});
+        assert.equal(result.frame.data.status, 'error');
+        assert.match(result.frame.data.error, /native-only/);
+      }
+      assert.equal(frames(server).filter(entry => entry.frame?.messageType === messageType).length, 0);
+    }
+    for (const route of ['/api/codely-generator/sso/upload/image', '/codely-canvas/api/v1/assets']) {
+      for (const origin of [undefined, 'https://foreign.invalid']) {
+        const response = await fetch(new URL(route,server.url), {method:'POST',headers:{'Content-Type':'application/json',...(origin?{Origin:origin}:{})},body:'{}'});
+        assert.equal(response.status,403);
+        assert.equal((await response.json()).error,'local_origin_required');
+      }
+    }
+  });
+
   await t.test("original IDs, single core send, actionable errors, honest capabilities", async () => {
     const status = await http(server, "/api/tauri/status");
     assert.equal(status.body.mode, "local");
@@ -286,14 +305,55 @@ test("real Rust shell HTTP contract with isolated fake core", async (t) => {
     assert.deepEqual((await invoke(server, "versionUpdate/getSeenFeatures", { platform: "unity" })).frame.data.content.features, []);
     assert.equal((await invoke(server, "versionUpdate/markFeatureSeen", { platform: "desktop", featureId: "" })).frame.data.status, "error");
     const keepAwake=await invoke(server,'tauri/getKeepAwake');
-    assert.equal(keepAwake.frame.data.content,false);
-    assert.equal((await invoke(server,'tauri/setKeepAwake',{enabled:true})).frame.data.status,'error');
+    assert.equal(keepAwake.frame.data.content.enabled,false);
+    assert.equal(keepAwake.frame.data.content.active,false);
+    assert.equal(keepAwake.frame.data.content.suppressed,true);
+    assert.equal((await invoke(server,'tauri/setKeepAwake',{enabled:'true'})).frame.data.status,'error');
     assert.equal((await invoke(server,'read_unity_streaming_layout')).frame.data.content,null);
     assert.equal((await invoke(server,'save_unity_streaming_layout',{contents:'{"invalid":true}'})).frame.data.status,'error');
     const layout={kind:'gamecowork.unity-composite-layout',version:1,tabs:[{viewType:'scene',label:'Scene'}],slots:[{viewType:'scene',rect:{x:0,y:0,w:1,h:1}}],signalingUrl:'must-not-persist'};
     assert.equal((await invoke(server,'save_unity_streaming_layout',{contents:JSON.stringify(layout)})).frame.data.status,'success');
     const savedLayout=JSON.parse((await invoke(server,'read_unity_streaming_layout')).frame.data.content);
     assert.equal(savedLayout.tabs[0].viewType,'scene');assert.ok(!JSON.stringify(savedLayout).includes('must-not-persist'));
+  });
+
+  await t.test("keep-awake preference survives isolated restarts, emits state and rolls back failed saves", async () => {
+    let local=await start('keep-awake');
+    const preference=path.join(local.dataDir,'keep-awake.json');
+    const sse=await listen(local);
+    try {
+      const enabled=await invoke(local,'tauri/setKeepAwake',{enabled:true});
+      assert.equal(enabled.frame.data.status,'success');
+      assert.equal(enabled.frame.data.content.enabled,true);
+      assert.equal(enabled.frame.data.content.active,false,'headless tests do not request real power changes');
+      assert.equal(enabled.frame.data.content.suppressed,true);
+      await until(()=>sse.messages.some(message=>message.messageType==='tauri/keepAwakeChanged'&&message.data.enabled===true),'keep-awake state reaches SSE');
+      assert.deepEqual(JSON.parse(fs.readFileSync(preference,'utf8')),{version:1,enabled:true});
+    }finally {await sse.close();}
+    const isolatedData=local.dataDir;
+    await stop(local);
+    local=await start('keep-awake-restart',{dataDir:isolatedData});
+    try {
+      const restored=await invoke(local,'tauri/getKeepAwake');
+      assert.equal(restored.frame.data.content.enabled,true);
+      assert.equal(restored.frame.data.content.active,false);
+      assert.equal((await invoke(local,'tauri/setKeepAwake',{enabled:false})).frame.data.status,'success');
+      assert.equal(JSON.parse(fs.readFileSync(preference,'utf8')).enabled,false);
+      // Only this test's fixture path is replaced with a directory to force an
+      // atomic replacement failure without changing user ACLs or power settings.
+      fs.renameSync(preference,`${preference}.fixture-backup`);
+      fs.mkdirSync(preference);
+      const failed=await invoke(local,'tauri/setKeepAwake',{enabled:true});
+      assert.equal(failed.frame.data.status,'error');
+      assert.match(failed.frame.data.error,/persist keep-awake/);
+      assert.equal((await invoke(local,'tauri/getKeepAwake')).frame.data.content.enabled,false);
+      fs.rmdirSync(preference);
+      fs.renameSync(`${preference}.fixture-backup`,preference);
+      assert.equal(JSON.parse(fs.readFileSync(preference,'utf8')).enabled,false);
+    }finally {await stop(local);}
+    local=await start('keep-awake-disabled-restart',{dataDir:isolatedData});
+    try {assert.equal((await invoke(local,'tauri/getKeepAwake')).frame.data.content.enabled,false);}
+    finally {await stop(local);}
   });
 
   await t.test("register A/B and a plain directory, open, switch and reject invalid paths", async () => {

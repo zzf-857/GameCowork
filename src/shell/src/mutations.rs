@@ -331,12 +331,34 @@ impl Mutations {
         bytes: &[u8],
         expected_sha256: Option<&str>,
     ) -> Result<Value, MutationError> {
+        self.write_owned_bytes(input, bytes, expected_sha256, MAX_BINARY_BYTES)
+    }
+
+    /// Export an owned generated artifact through the same conflict/backup and
+    /// directory-lease boundary. Large existing targets still require the
+    /// established bounded backup contract; this never changes text saves.
+    pub fn write_generated_bytes(
+        &self,
+        input: &str,
+        bytes: &[u8],
+        expected_sha256: Option<&str>,
+    ) -> Result<Value, MutationError> {
+        self.write_owned_bytes(input, bytes, expected_sha256, 64 * 1024 * 1024)
+    }
+
+    fn write_owned_bytes(
+        &self,
+        input: &str,
+        bytes: &[u8],
+        expected_sha256: Option<&str>,
+        max_bytes: u64,
+    ) -> Result<Value, MutationError> {
         let _operation = operation()?;
-        if bytes.len() as u64 > MAX_BINARY_BYTES {
+        if bytes.len() as u64 > max_bytes {
             return Err(MutationError::new(
                 413,
                 "backup_too_large",
-                "Git restore exceeds the 8 MiB safe mutation limit",
+                format!("Binary write exceeds the {max_bytes} byte mutation limit"),
             ));
         }
         let target = self.target(input, true)?;
@@ -347,7 +369,7 @@ impl Mutations {
             return Err(MutationError::new(
                 409,
                 "file_changed",
-                "Git file appeared after the discard snapshot; the new version was preserved",
+                "Target file already exists; its current version was preserved",
             ));
         }
         expected(before.as_ref().map(|s| s.sha.as_str()), expected_sha256)?;
@@ -355,7 +377,7 @@ impl Mutations {
             return Err(MutationError::new(
                 409,
                 "file_changed",
-                "Git file disappeared before discard",
+                "Target file disappeared before the write",
             ));
         }
         let after = hash(bytes);
@@ -371,18 +393,18 @@ impl Mutations {
             return Err(MutationError::new(
                 409,
                 "file_changed",
-                "File changed while preparing Git discard; the new version was preserved",
+                "File changed while preparing the write; the new version was preserved",
             ));
         }
         self.restore_bytes(&target, bytes, current.as_ref(), &directory, &mut manifest)?;
         let final_version = self
-            .snapshot_optional(&target)
+            .snapshot_optional_with_limit(&target, max_bytes)
             .map_err(|e| e.applied(&manifest.change_id))?;
         if final_version.as_ref().map(|s| s.sha.as_str()) != Some(after.as_str()) {
             manifest.state = "applied-conflict".into();
             self.save_manifest(&directory, &manifest)
                 .map_err(|e| e.applied(&manifest.change_id))?;
-            return Err(MutationError::new(409,"file_changed_after_apply","File changed after Git discard; the external version was left in place and the original was backed up").applied(&manifest.change_id));
+            return Err(MutationError::new(409,"file_changed_after_apply","File changed after the write; the external version was left in place and the original was backed up").applied(&manifest.change_id));
         }
         manifest.state = "committed".into();
         self.save_manifest(&directory, &manifest)
@@ -805,6 +827,51 @@ impl Mutations {
     fn snapshot_optional(&self, path: &Path) -> Result<Option<Snapshot>, MutationError> {
         match fs::symlink_metadata(path) {
             Ok(_) => self.snapshot(path).map(Some),
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(error) => Err(io(error)),
+        }
+    }
+    fn snapshot_optional_with_limit(
+        &self,
+        path: &Path,
+        limit: u64,
+    ) -> Result<Option<Snapshot>, MutationError> {
+        match fs::symlink_metadata(path) {
+            Ok(_) => {
+                let actual = fs::canonicalize(path).map_err(io)?;
+                self.inside(&actual)?;
+                let mut options = OpenOptions::new();
+                options.read(true);
+                #[cfg(windows)]
+                {
+                    use std::os::windows::fs::OpenOptionsExt;
+                    use windows_sys::Win32::Storage::FileSystem::{
+                        FILE_SHARE_DELETE, FILE_SHARE_READ,
+                    };
+                    options.share_mode(FILE_SHARE_READ | FILE_SHARE_DELETE);
+                }
+                let mut file = options.open(&actual).map_err(io)?;
+                check_handle(&file, &self.primary)?;
+                let info = file.metadata().map_err(io)?;
+                if !info.is_file() || info.len() > limit {
+                    return Err(MutationError::new(
+                        413,
+                        "generated_asset_too_large",
+                        "Generated output exceeds its verification limit",
+                    ));
+                }
+                let mut bytes = Vec::new();
+                file.take(limit + 1).read_to_end(&mut bytes).map_err(io)?;
+                if bytes.len() as u64 > limit {
+                    return Err(MutationError::new(
+                        413,
+                        "generated_asset_too_large",
+                        "Generated output grew during verification",
+                    ));
+                }
+                let sha = hash(&bytes);
+                Ok(Some(Snapshot { bytes, sha }))
+            }
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
             Err(error) => Err(io(error)),
         }
@@ -1321,6 +1388,29 @@ mod tests {
             fs::write(&path, bytes).unwrap();
             path
         }
+    }
+    #[test]
+    fn generated_large_asset_verifies_beyond_text_limit_and_refuses_unconfirmed_overwrite() {
+        let f = Fixture::new();
+        let m = f.mutations();
+        let bytes = vec![0x57; 10 * 1024 * 1024];
+        let result = m
+            .write_generated_bytes("large-generated.webm", &bytes, None)
+            .unwrap();
+        assert_eq!(result["afterSha256"], hash(&bytes));
+        assert_eq!(
+            fs::read(f.project.join("large-generated.webm")).unwrap(),
+            bytes
+        );
+        assert!(m
+            .write_generated_bytes("large-generated.webm", &[1, 2, 3], None)
+            .is_err());
+        assert_eq!(
+            fs::metadata(f.project.join("large-generated.webm"))
+                .unwrap()
+                .len(),
+            10 * 1024 * 1024
+        );
     }
     impl Drop for Fixture {
         fn drop(&mut self) {

@@ -1,0 +1,1579 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Original Codely Quick Generate and History client reuse; UI/model/parameter components remain original",
+  "sourceLedger": {
+    "path": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public-ledger.json",
+    "sha256": "8a421d5a512cd39d0716ce0cb187fc71214fd9661883580a633b782b72e835d7"
+  },
+  "staticDependencyLedger": {
+    "path": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ledger.json",
+    "sha256": "f26c3cc432c48d39caeb97904ac51f8a4d11a0c969ab391f7352c6049f343cea"
+  },
+  "sourceLayer": "Anonymous public client referenced by the original installed Codely host; not an executable-embedded client or a proven historical screenshot version",
+  "routes": [
+    "/lab3d",
+    "/generation-history"
+  ],
+  "staticBase": "/codely-generator",
+  "apiBase": "/api/codely-generator",
+  "authentication": "Original UI consumes an explicitly identified own GameCowork local user. Official token, subscription and credit state remain absent/unknown; no official account or entitlements are fabricated",
+  "localAdapters": [
+    {
+      "path": "local-identity.js",
+      "role": "Own local-session identity and lifecycle only; not original Codely source",
+      "sha256": "939df8842d6b02085934c4f5d0a0b19a90ce544500be224665ca9a7809d7911f"
+    },
+    {
+      "path": "local-generation.js",
+      "role": "Own local generation readiness and labels; does not create platform entitlements or modify original model builders",
+      "sha256": "0315ed5c553336699373db22620b1e518f5a9bb5718ddaf79bf00d61a4f8ccf6"
+    },
+    {
+      "path": "local-models.js",
+      "role": "Explicitly named CPA GPT Image 2 extension; preserves all original model descriptors and parameter components",
+      "sha256": "bbdcf4cdfa4d60900e7715804a3632a850b6a8d52197572570cd2e80b079d9a9"
+    }
+  ],
+  "hostAdapter": {
+    "purpose": "Original Codely asset host wiring in both maintained GUI generations; native same-origin without official credentials",
+    "files": [
+      {
+        "path": "../assets/index-BRxZ4eG7.js",
+        "sourceReference": {
+          "file": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\app\\resource\\dist\\assets\\index-BRxZ4eG7.js",
+          "sha256": "6cb34283488c0a2bc348ea6f43769cccf810c5eb852b15fafbb78f40cab20707",
+          "components": [
+            "PG",
+            "QG",
+            "sq",
+            "kG"
+          ],
+          "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
+        },
+        "beforeSha256": "e1b6cff816cd4b8e36457b2d50437b880b122edb535348d677d0312066febfe0",
+        "currentSha256": "3550817782421dbe72e42bde148eef192c02add587892f5cee6cf0e0f2d92724",
+        "patches": [
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1423094,
+            "before": "\"gamecowork:use-reference-result\"",
+            "after": "\"codely:use-reference-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1422699,
+            "before": "\"gamecowork:reveal-artifact-result\"",
+            "after": "\"codely:reveal-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1422420,
+            "before": "\"gamecowork:reveal-artifact-result\"",
+            "after": "\"codely:reveal-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421991,
+            "before": "\"gamecowork:reveal-artifact\"",
+            "after": "\"codely:reveal-artifact\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421709,
+            "before": "\"gamecowork:local-artifact-result\"",
+            "after": "\"codely:local-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421401,
+            "before": "\"gamecowork:local-artifact-request\"",
+            "after": "\"codely:local-artifact-request\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421234,
+            "before": "\"gamecowork:use-reference\"",
+            "after": "\"codely:use-reference\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421084,
+            "before": "\"gamecowork:regenerate\"",
+            "after": "\"codely:regenerate\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420933,
+            "before": "\"gamecowork:create-now\"",
+            "after": "\"codely:create-now\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420784,
+            "before": "\"gamecowork:history-modal-state\"",
+            "after": "\"codely:history-modal-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420253,
+            "before": "\"gamecowork:open-url-ack\"",
+            "after": "\"codely:open-url-ack\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1419748,
+            "before": "\"gamecowork:open-url\"",
+            "after": "\"codely:open-url\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1418172,
+            "before": "\"gamecowork:download\"",
+            "after": "\"codely:download\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1417961,
+            "before": "\"gamecowork:local-artifacts-changed\"",
+            "after": "\"codely:local-artifacts-changed\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1414533,
+            "before": "\"gamecowork:drop-files\"",
+            "after": "\"codely:drop-files\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1414453,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1413919,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1413778,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1411589,
+            "before": "\"gamecowork:history-active\"",
+            "after": "\"codely:history-active\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1403611,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1401421,
+            "before": "\"gamecowork:locale\"",
+            "after": "\"codely:locale\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1401305,
+            "before": "\"gamecowork:auth\"",
+            "after": "\"codely:auth\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1400713,
+            "before": "\"gamecowork:theme\"",
+            "after": "\"codely:theme\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1400256,
+            "before": "\"gamecowork:ready\"",
+            "after": "\"codely:ready\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1399867,
+            "before": "\"gamecowork:locale\"",
+            "after": "\"codely:locale\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1399764,
+            "before": "\"gamecowork:theme\"",
+            "after": "\"codely:theme\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1399675,
+            "before": "\"gamecowork:auth\"",
+            "after": "\"codely:auth\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1398681,
+            "before": "\"gamecowork:prefill\"",
+            "after": "\"codely:prefill\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1599986,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1599136,
+            "before": "\"gamecowork:refreshWorkspaces\"",
+            "after": "\"codely:refreshWorkspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1599032,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Use the existing original three-tab host for the local runtime",
+            "charOffset": 1410294,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalAssetPanel, { headerExtra: e })\n    : a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });",
+            "after": "  return a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });"
+          },
+          {
+            "reason": "Use the existing original Canvas iframe host",
+            "charOffset": 1401645,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalCanvasPanel, {})\n    : a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });",
+            "after": "  return a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });"
+          },
+          {
+            "reason": "Use the existing original standalone Canvas host",
+            "charOffset": 1596338,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n })\n    : a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });",
+            "after": "  return a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });"
+          },
+          {
+            "reason": "Capture the original local client URL with explicit render-owned workspace",
+            "charOffset": 1407791,
+            "before": "function gamecoworkUsesLocalAssetPage() {",
+            "after": "function gamecoworkAssetLocalUrl(route, workspaceKey = \"\") {\n  const url = new URL(route, window.location.origin);\n  url.searchParams.set(\"embed\", \"1\");\n  url.searchParams.set(\"host\", \"codely\");\n  url.searchParams.set(\"theme\", ad());\n  url.searchParams.set(\"gamecoworkWorkspace\", workspaceKey || \"\");\n  return url.toString();\n}\nfunction gamecoworkUsesLocalAssetPage() {"
+          },
+          {
+            "reason": "Native creator bypasses remote override and uses the owned local route",
+            "charOffset": 1406821,
+            "before": "function MG(e) {\n  let t = e;",
+            "after": "function MG(e, gamecoworkWorkspaceKey = \"\") {\n  if (gamecoworkUsesLocalAssetPage()) return gamecoworkAssetLocalUrl(\"/lab3d\", gamecoworkWorkspaceKey);\n  let t = e;"
+          },
+          {
+            "reason": "Restore original creator host protocol name",
+            "charOffset": 1407176,
+            "before": "n.searchParams.set(\"host\", \"gamecowork\")",
+            "after": "n.searchParams.set(\"host\", \"codely\")"
+          },
+          {
+            "reason": "Restore original History host protocol name",
+            "charOffset": 1407415,
+            "before": "t.searchParams.set(\"host\", \"gamecowork\")",
+            "after": "t.searchParams.set(\"host\", \"codely\")"
+          },
+          {
+            "reason": "Restore original History fallback host name",
+            "charOffset": 1407534,
+            "before": "/generation-history?embed=1&host=gamecowork",
+            "after": "/generation-history?embed=1&host=codely"
+          },
+          {
+            "reason": "Subscribe the original panel to the workspace captured by its iframe URL",
+            "charOffset": 1410894,
+            "before": "    o = M(er),",
+            "after": "    o = M(er),\n    gamecoworkAssetWorkspaceKey = M(Ps),"
+          },
+          {
+            "reason": "Freeze creator scope from this panel render",
+            "charOffset": 1411319,
+            "before": "MG(t(\"generation.creatorUrl\", LG))",
+            "after": "MG(t(\"generation.creatorUrl\", LG), gamecoworkAssetWorkspaceKey)"
+          },
+          {
+            "reason": "Local creator and history never use a null-origin data relay",
+            "charOffset": 1411441,
+            "before": "= h3(),",
+            "after": "= gamecoworkUsesLocalAssetPage() ? !1 : h3(),"
+          },
+          {
+            "reason": "Retain Canvas tab while binding its local URL to the same workspace",
+            "charOffset": 1432496,
+            "before": "{ src: FG, title: t(\"generation.tabCanvas\", \"Canvas\") }",
+            "after": "{ src: gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkAssetWorkspaceKey) : FG, title: t(\"generation.tabCanvas\", \"Canvas\") }"
+          },
+          {
+            "reason": "Match creator/history messages against the exact local origin",
+            "charOffset": 1398881,
+            "before": "i = g3(s.t(\"generation.creatorUrl\", { defaultValue: p3 })),",
+            "after": "i = gamecoworkUsesLocalAssetPage() ? window.location.origin : g3(s.t(\"generation.creatorUrl\", { defaultValue: p3 })),"
+          },
+          {
+            "reason": "Never accept null-origin creator/history relays in native mode",
+            "charOffset": 1399003,
+            "before": "A = h3(),",
+            "after": "A = gamecoworkUsesLocalAssetPage() ? !1 : h3(),"
+          },
+          {
+            "reason": "Allow original local theme/locale/prefill delivery",
+            "charOffset": 1399396,
+            "before": "        if (gamecoworkUsesLocalAssetPage()) return;\n",
+            "after": ""
+          },
+          {
+            "reason": "Native readiness invalidates only the owned identity and never reads an official token",
+            "charOffset": 1399573,
+            "before": "        if (gamecoworkUsesLocalAssetPage() || !p) return;\n        const m = r && !wo(r) ? r.accessToken : null;\n        p.postMessage({ type: \"codely:auth\", token: m }, c);",
+            "after": "        if (!p) return;\n        if (gamecoworkUsesLocalAssetPage()) p.postMessage({ type: \"gamecowork:local-session-changed\" }, c);\n        else {\n          const m = r && !wo(r) ? r.accessToken : null;\n          p.postMessage({ type: \"codely:auth\", token: m }, c);\n        }"
+          },
+          {
+            "reason": "Native session updates never read or transmit accessToken",
+            "charOffset": 1401307,
+            "before": "      if (r === void 0) return;\n      const p = r && !wo(r) ? r.accessToken : null;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        u((p) => p.postMessage({ type: \"gamecowork:local-session-changed\" }, c));\n        return;\n      }\n      if (r === void 0) return;\n      const p = r && !wo(r) ? r.accessToken : null;"
+          },
+          {
+            "reason": "Use the local Canvas origin and original remote origin only outside native mode",
+            "charOffset": 1401788,
+            "before": "const Jm = \"https://aicanvas.tuanjie.cn\",\n  FG = `${Jm}/home`,",
+            "after": "const Jm = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\",\n  FG = `${Jm}${gamecoworkUsesLocalAssetPage() ? \"/codely-canvas/home\" : \"/home\"}`,"
+          },
+          {
+            "reason": "Native Canvas frame never reads session tokens",
+            "charOffset": 1402824,
+            "before": "const f = r && !wo(r) ? r.accessToken : null,",
+            "after": "const f = !gamecoworkUsesLocalAssetPage() && r && !wo(r) ? r.accessToken : null,"
+          },
+          {
+            "reason": "Canvas ready uses an owned identity notification locally",
+            "charOffset": 1403816,
+            "before": "              f && h({ type: \"cowork-token\", token: f }),",
+            "after": "              gamecoworkUsesLocalAssetPage() ? h({ type: \"gamecowork:local-session-changed\" }) : f && h({ type: \"cowork-token\", token: f }),"
+          },
+          {
+            "reason": "Never send Canvas token or logout in native mode",
+            "charOffset": 1404716,
+            "before": "      const w = g.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const w = g.current;"
+          },
+          {
+            "reason": "Standalone Canvas postMessage origin is local in native mode",
+            "charOffset": 1596971,
+            "before": "const bg = \"https://aicanvas.tuanjie.cn\",",
+            "after": "const bg = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\","
+          },
+          {
+            "reason": "Preserve standalone Canvas workspace-name/hash queries on its local route",
+            "charOffset": 1597082,
+            "before": "function nq(e) {\n  if (!e) return bg;",
+            "after": "function nq(e, gamecoworkWorkspaceKey = \"\") {\n  const gamecoworkCanvasBase = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkWorkspaceKey) : bg;\n  if (!e) return gamecoworkCanvasBase;"
+          },
+          {
+            "reason": "Append original Canvas workspace query without losing local scope",
+            "charOffset": 1597617,
+            "before": "return `${bg}?${r.toString()}`;",
+            "after": "return `${gamecoworkCanvasBase}${gamecoworkCanvasBase.includes(\"?\") ? \"&\" : \"?\"}${r.toString()}`;"
+          },
+          {
+            "reason": "Capture standalone Canvas active workspace in iframe URL",
+            "charOffset": 1598796,
+            "before": "const u = nq(c),",
+            "after": "const u = nq(c, o),"
+          },
+          {
+            "reason": "Native standalone Canvas never reads accessToken",
+            "charOffset": 1599010,
+            "before": "I = E && !wo(E) ? E.accessToken : null,",
+            "after": "I = !gamecoworkUsesLocalAssetPage() && E && !wo(E) ? E.accessToken : null,"
+          },
+          {
+            "reason": "Disable native fallback credential lookup",
+            "charOffset": 1599120,
+            "before": "Q = d.useCallback(() => {",
+            "after": "Q = d.useCallback(() => {\n      if (gamecoworkUsesLocalAssetPage()) return;"
+          },
+          {
+            "reason": "Standalone Canvas readiness never sends a native token",
+            "charOffset": 1600230,
+            "before": "                K && S({ type: \"cowork-token\", token: K }),",
+            "after": "                gamecoworkUsesLocalAssetPage() ? S({ type: \"gamecowork:local-session-changed\" }) : K && S({ type: \"cowork-token\", token: K }),"
+          },
+          {
+            "reason": "Native standalone Canvas never sends token/logout updates",
+            "charOffset": 1600814,
+            "before": "      const S = G.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const S = G.current;"
+          },
+          {
+            "reason": "Localize only the original default right-sidebar Canvas origin export",
+            "charOffset": 1585372,
+            "before": "const ox = \"https://aicanvas.tuanjie.cn\",",
+            "after": "const ox = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\","
+          },
+          {
+            "reason": "Retain original sidebar workspace association while carrying the actual host workspace key to the local iframe",
+            "charOffset": 1585523,
+            "before": "function cJ(e) {\n  if (!e) return ox;",
+            "after": "function cJ(e, gamecoworkWorkspaceKey = \"\") {\n  const gamecoworkSidebarCanvasUrl = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkWorkspaceKey) : ox;\n  if (!e) return gamecoworkSidebarCanvasUrl;"
+          },
+          {
+            "reason": "Preserve local iframe query parameters when appending the original workspace-name/hash association",
+            "charOffset": 1586070,
+            "before": "return `${ox}?${r.toString()}`;",
+            "after": "return `${gamecoworkSidebarCanvasUrl}${gamecoworkSidebarCanvasUrl.includes(\"?\") ? \"&\" : \"?\"}${r.toString()}`;"
+          },
+          {
+            "reason": "Share the existing native/local mode predicate with the original sidebar message bridge",
+            "charOffset": 1834753,
+            "before": "export {\n",
+            "after": "export {\n  gamecoworkUsesLocalAssetPage,\n"
+          }
+        ]
+      },
+      {
+        "path": "../assets/index-DvRYaIVa.js",
+        "sourceReference": {
+          "file": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\app\\resource\\dist\\assets\\index-DvRYaIVa.js",
+          "sha256": "276fab96b38daf81d3c32334f1df842daf1385f88a25bbb5706e04c1236cfeb7",
+          "components": [
+            "jG",
+            "kG",
+            "eq",
+            "EG"
+          ],
+          "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
+        },
+        "beforeSha256": "4db18044d56bd18d11d5a37e5d5a8ce85e191468dc9fd35bf1143b4eae19c4a2",
+        "currentSha256": "4e4da11b94c1c7b06c7cb055d3a69252a3ed9f12f9aee0521868242d31351653",
+        "patches": [
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421718,
+            "before": "\"gamecowork:use-reference-result\"",
+            "after": "\"codely:use-reference-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421323,
+            "before": "\"gamecowork:reveal-artifact-result\"",
+            "after": "\"codely:reveal-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1421044,
+            "before": "\"gamecowork:reveal-artifact-result\"",
+            "after": "\"codely:reveal-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420615,
+            "before": "\"gamecowork:reveal-artifact\"",
+            "after": "\"codely:reveal-artifact\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420333,
+            "before": "\"gamecowork:local-artifact-result\"",
+            "after": "\"codely:local-artifact-result\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1420025,
+            "before": "\"gamecowork:local-artifact-request\"",
+            "after": "\"codely:local-artifact-request\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1419858,
+            "before": "\"gamecowork:use-reference\"",
+            "after": "\"codely:use-reference\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1419708,
+            "before": "\"gamecowork:regenerate\"",
+            "after": "\"codely:regenerate\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1419557,
+            "before": "\"gamecowork:create-now\"",
+            "after": "\"codely:create-now\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1419408,
+            "before": "\"gamecowork:history-modal-state\"",
+            "after": "\"codely:history-modal-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1418877,
+            "before": "\"gamecowork:open-url-ack\"",
+            "after": "\"codely:open-url-ack\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1418372,
+            "before": "\"gamecowork:open-url\"",
+            "after": "\"codely:open-url\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1416796,
+            "before": "\"gamecowork:download\"",
+            "after": "\"codely:download\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1416585,
+            "before": "\"gamecowork:local-artifacts-changed\"",
+            "after": "\"codely:local-artifacts-changed\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1413161,
+            "before": "\"gamecowork:drop-files\"",
+            "after": "\"codely:drop-files\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1413081,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1412547,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1412406,
+            "before": "\"gamecowork:drag-state\"",
+            "after": "\"codely:drag-state\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1410217,
+            "before": "\"gamecowork:history-active\"",
+            "after": "\"codely:history-active\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1402238,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1400048,
+            "before": "\"gamecowork:locale\"",
+            "after": "\"codely:locale\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1399932,
+            "before": "\"gamecowork:auth\"",
+            "after": "\"codely:auth\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1399340,
+            "before": "\"gamecowork:theme\"",
+            "after": "\"codely:theme\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1398883,
+            "before": "\"gamecowork:ready\"",
+            "after": "\"codely:ready\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1398494,
+            "before": "\"gamecowork:locale\"",
+            "after": "\"codely:locale\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1398391,
+            "before": "\"gamecowork:theme\"",
+            "after": "\"codely:theme\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1398302,
+            "before": "\"gamecowork:auth\"",
+            "after": "\"codely:auth\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1397308,
+            "before": "\"gamecowork:prefill\"",
+            "after": "\"codely:prefill\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1598652,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1597802,
+            "before": "\"gamecowork:refreshWorkspaces\"",
+            "after": "\"codely:refreshWorkspaces\""
+          },
+          {
+            "reason": "Restore original Codely asset host message protocol",
+            "charOffset": 1597698,
+            "before": "\"gamecowork:workspaces\"",
+            "after": "\"codely:workspaces\""
+          },
+          {
+            "reason": "Use the existing original three-tab host for the local runtime",
+            "charOffset": 1408921,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalAssetPanel, { headerExtra: e })\n    : a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });",
+            "after": "  return a.jsx(gamecoworkLegacyAssetPanel, { headerExtra: e });"
+          },
+          {
+            "reason": "Use the existing original Canvas iframe host",
+            "charOffset": 1400272,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalCanvasPanel, {})\n    : a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });",
+            "after": "  return a.jsx(gamecoworkLegacyCanvasFrame, { src: e, title: t, testId: n });"
+          },
+          {
+            "reason": "Use the existing original standalone Canvas host",
+            "charOffset": 1595004,
+            "before": "  return gamecoworkUsesLocalAssetPage()\n    ? a.jsx(gamecoworkLocalCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n })\n    : a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });",
+            "after": "  return a.jsx(gamecoworkLegacyCanvasPanel, { headerExtra: e, headerLeftExtra: t, reserveLeftSpace: n });"
+          },
+          {
+            "reason": "Capture the original local client URL with explicit render-owned workspace",
+            "charOffset": 1406418,
+            "before": "function gamecoworkUsesLocalAssetPage() {",
+            "after": "function gamecoworkAssetLocalUrl(route, workspaceKey = \"\") {\n  const url = new URL(route, window.location.origin);\n  url.searchParams.set(\"embed\", \"1\");\n  url.searchParams.set(\"host\", \"codely\");\n  url.searchParams.set(\"theme\", Ad());\n  url.searchParams.set(\"gamecoworkWorkspace\", workspaceKey || \"\");\n  return url.toString();\n}\nfunction gamecoworkUsesLocalAssetPage() {"
+          },
+          {
+            "reason": "Native creator bypasses remote override and uses the owned local route",
+            "charOffset": 1405448,
+            "before": "function TG(e) {\n  let t = e;",
+            "after": "function TG(e, gamecoworkWorkspaceKey = \"\") {\n  if (gamecoworkUsesLocalAssetPage()) return gamecoworkAssetLocalUrl(\"/lab3d\", gamecoworkWorkspaceKey);\n  let t = e;"
+          },
+          {
+            "reason": "Restore original creator host protocol name",
+            "charOffset": 1405803,
+            "before": "n.searchParams.set(\"host\", \"gamecowork\")",
+            "after": "n.searchParams.set(\"host\", \"codely\")"
+          },
+          {
+            "reason": "Restore original History host protocol name",
+            "charOffset": 1406042,
+            "before": "t.searchParams.set(\"host\", \"gamecowork\")",
+            "after": "t.searchParams.set(\"host\", \"codely\")"
+          },
+          {
+            "reason": "Restore original History fallback host name",
+            "charOffset": 1406161,
+            "before": "/generation-history?embed=1&host=gamecowork",
+            "after": "/generation-history?embed=1&host=codely"
+          },
+          {
+            "reason": "Subscribe the original panel to the workspace captured by its iframe URL",
+            "charOffset": 1409522,
+            "before": "    o = M(er),",
+            "after": "    o = M(er),\n    gamecoworkAssetWorkspaceKey = M(Ps),"
+          },
+          {
+            "reason": "Freeze creator scope from this panel render",
+            "charOffset": 1409947,
+            "before": "TG(t(\"generation.creatorUrl\", UG))",
+            "after": "TG(t(\"generation.creatorUrl\", UG), gamecoworkAssetWorkspaceKey)"
+          },
+          {
+            "reason": "Local creator and history never use a null-origin data relay",
+            "charOffset": 1410069,
+            "before": "= f3(),",
+            "after": "= gamecoworkUsesLocalAssetPage() ? !1 : f3(),"
+          },
+          {
+            "reason": "Retain Canvas tab while binding its local URL to the same workspace",
+            "charOffset": 1431122,
+            "before": "{ src: IG, title: t(\"generation.tabCanvas\", \"Canvas\") }",
+            "after": "{ src: gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkAssetWorkspaceKey) : IG, title: t(\"generation.tabCanvas\", \"Canvas\") }"
+          },
+          {
+            "reason": "Match creator/history messages against the exact local origin",
+            "charOffset": 1397508,
+            "before": "i = p3(s.t(\"generation.creatorUrl\", { defaultValue: h3 })),",
+            "after": "i = gamecoworkUsesLocalAssetPage() ? window.location.origin : p3(s.t(\"generation.creatorUrl\", { defaultValue: h3 })),"
+          },
+          {
+            "reason": "Never accept null-origin creator/history relays in native mode",
+            "charOffset": 1397630,
+            "before": "A = f3(),",
+            "after": "A = gamecoworkUsesLocalAssetPage() ? !1 : f3(),"
+          },
+          {
+            "reason": "Allow original local theme/locale/prefill delivery",
+            "charOffset": 1398023,
+            "before": "        if (gamecoworkUsesLocalAssetPage()) return;\n",
+            "after": ""
+          },
+          {
+            "reason": "Native readiness invalidates only the owned identity and never reads an official token",
+            "charOffset": 1398200,
+            "before": "        if (gamecoworkUsesLocalAssetPage() || !p) return;\n        const m = r && !wo(r) ? r.accessToken : null;\n        p.postMessage({ type: \"codely:auth\", token: m }, c);",
+            "after": "        if (!p) return;\n        if (gamecoworkUsesLocalAssetPage()) p.postMessage({ type: \"gamecowork:local-session-changed\" }, c);\n        else {\n          const m = r && !wo(r) ? r.accessToken : null;\n          p.postMessage({ type: \"codely:auth\", token: m }, c);\n        }"
+          },
+          {
+            "reason": "Native session updates never read or transmit accessToken",
+            "charOffset": 1399934,
+            "before": "      if (r === void 0) return;\n      const p = r && !wo(r) ? r.accessToken : null;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        u((p) => p.postMessage({ type: \"gamecowork:local-session-changed\" }, c));\n        return;\n      }\n      if (r === void 0) return;\n      const p = r && !wo(r) ? r.accessToken : null;"
+          },
+          {
+            "reason": "Use the local Canvas origin and original remote origin only outside native mode",
+            "charOffset": 1400415,
+            "before": "const qm = \"https://aicanvas.tuanjie.cn\",\n  IG = `${qm}/home`,",
+            "after": "const qm = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\",\n  IG = `${qm}${gamecoworkUsesLocalAssetPage() ? \"/codely-canvas/home\" : \"/home\"}`,"
+          },
+          {
+            "reason": "Native Canvas frame never reads session tokens",
+            "charOffset": 1401451,
+            "before": "const f = r && !wo(r) ? r.accessToken : null,",
+            "after": "const f = !gamecoworkUsesLocalAssetPage() && r && !wo(r) ? r.accessToken : null,"
+          },
+          {
+            "reason": "Canvas ready uses an owned identity notification locally",
+            "charOffset": 1402443,
+            "before": "              f && h({ type: \"cowork-token\", token: f }),",
+            "after": "              gamecoworkUsesLocalAssetPage() ? h({ type: \"gamecowork:local-session-changed\" }) : f && h({ type: \"cowork-token\", token: f }),"
+          },
+          {
+            "reason": "Never send Canvas token or logout in native mode",
+            "charOffset": 1403343,
+            "before": "      const w = g.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const w = g.current;"
+          },
+          {
+            "reason": "Standalone Canvas postMessage origin is local in native mode",
+            "charOffset": 1595637,
+            "before": "const yg = \"https://aicanvas.tuanjie.cn\",",
+            "after": "const yg = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\","
+          },
+          {
+            "reason": "Preserve standalone Canvas workspace-name/hash queries on its local route",
+            "charOffset": 1595748,
+            "before": "function Zz(e) {\n  if (!e) return yg;",
+            "after": "function Zz(e, gamecoworkWorkspaceKey = \"\") {\n  const gamecoworkCanvasBase = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkWorkspaceKey) : yg;\n  if (!e) return gamecoworkCanvasBase;"
+          },
+          {
+            "reason": "Append original Canvas workspace query without losing local scope",
+            "charOffset": 1596283,
+            "before": "return `${yg}?${r.toString()}`;",
+            "after": "return `${gamecoworkCanvasBase}${gamecoworkCanvasBase.includes(\"?\") ? \"&\" : \"?\"}${r.toString()}`;"
+          },
+          {
+            "reason": "Capture standalone Canvas active workspace in iframe URL",
+            "charOffset": 1597462,
+            "before": "const u = Zz(c),",
+            "after": "const u = Zz(c, o),"
+          },
+          {
+            "reason": "Native standalone Canvas never reads accessToken",
+            "charOffset": 1597676,
+            "before": "I = E && !wo(E) ? E.accessToken : null,",
+            "after": "I = !gamecoworkUsesLocalAssetPage() && E && !wo(E) ? E.accessToken : null,"
+          },
+          {
+            "reason": "Disable native fallback credential lookup",
+            "charOffset": 1597786,
+            "before": "T = d.useCallback(() => {",
+            "after": "T = d.useCallback(() => {\n      if (gamecoworkUsesLocalAssetPage()) return;"
+          },
+          {
+            "reason": "Standalone Canvas readiness never sends a native token",
+            "charOffset": 1598896,
+            "before": "                K && S({ type: \"cowork-token\", token: K }),",
+            "after": "                gamecoworkUsesLocalAssetPage() ? S({ type: \"gamecowork:local-session-changed\" }) : K && S({ type: \"cowork-token\", token: K }),"
+          },
+          {
+            "reason": "Native standalone Canvas never sends token/logout updates",
+            "charOffset": 1599480,
+            "before": "      const S = z.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const S = z.current;"
+          },
+          {
+            "reason": "Localize only the original default right-sidebar Canvas origin export",
+            "charOffset": 1584038,
+            "before": "const rx = \"https://aicanvas.tuanjie.cn\",",
+            "after": "const rx = gamecoworkUsesLocalAssetPage() ? window.location.origin : \"https://aicanvas.tuanjie.cn\","
+          },
+          {
+            "reason": "Retain original sidebar workspace association while carrying the actual host workspace key to the local iframe",
+            "charOffset": 1584189,
+            "before": "function iJ(e) {\n  if (!e) return rx;",
+            "after": "function iJ(e, gamecoworkWorkspaceKey = \"\") {\n  const gamecoworkSidebarCanvasUrl = gamecoworkUsesLocalAssetPage() ? gamecoworkAssetLocalUrl(\"/codely-canvas/home\", gamecoworkWorkspaceKey) : rx;\n  if (!e) return gamecoworkSidebarCanvasUrl;"
+          },
+          {
+            "reason": "Preserve local iframe query parameters when appending the original workspace-name/hash association",
+            "charOffset": 1584736,
+            "before": "return `${rx}?${r.toString()}`;",
+            "after": "return `${gamecoworkSidebarCanvasUrl}${gamecoworkSidebarCanvasUrl.includes(\"?\") ? \"&\" : \"?\"}${r.toString()}`;"
+          },
+          {
+            "reason": "Share the existing native/local mode predicate with the original sidebar message bridge",
+            "charOffset": 1833411,
+            "before": "export {\n",
+            "after": "export {\n  gamecoworkUsesLocalAssetPage,\n"
+          }
+        ]
+      },
+      {
+        "path": "../assets/RightSideBarPanel-JSPvAs5c.js",
+        "sourceReference": {
+          "path": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\app\\resource\\dist\\assets\\RightSideBarPanel-JSPvAs5c.js",
+          "sha256": "0eb9fe1739b9a66213075dbc34c1568a5d749d24dd032751db2f8217b5d44fc8"
+        },
+        "beforeSha256": "d809b3060cf52b86d9abf3adb201269b8578654cf65a6d0380471b8a083580bd",
+        "currentSha256": "1863d38e1dc16cf0e1109783787241fd364b17bda741eac7e8219bb3eb546c66",
+        "patches": [
+          {
+            "reason": "Use the same native Canvas mode boundary as the retained host entry points",
+            "charOffset": 2976,
+            "before": "  D as $g,\n",
+            "after": "  D as $g,\n  gamecoworkUsesLocalAssetPage as gamecoworkUsesLocalCanvas,\n"
+          },
+          {
+            "reason": "Pass the owned host workspace identity through the existing sidebar iframe component",
+            "charOffset": 1295747,
+            "before": "function pw({ isActive: e, workspaceRoot: t, title: r, iframeRef: n }) {",
+            "after": "function pw({ isActive: e, workspaceRoot: t, workspaceKey: gamecoworkWorkspaceKey, title: r, iframeRef: n }) {"
+          },
+          {
+            "reason": "Load the original cached Canvas with its captured native workspace; preserve iframe UI and sandbox",
+            "charOffset": 1296064,
+            "before": "      src: $g(t),",
+            "after": "      src: $g(t, gamecoworkWorkspaceKey),\n      \"data-testid\": \"right-sidebar-canvas-frame\","
+          },
+          {
+            "reason": "Use the existing actual preview workspace key rather than inferring permissions from a display/path hash",
+            "charOffset": 1480717,
+            "before": "Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, title: t(\"rightSidebar.aiCanvasTab\"), iframeRef: i }),",
+            "after": "Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, workspaceKey: e.previewWorkspaceKey, title: t(\"rightSidebar.aiCanvasTab\"), iframeRef: i }),"
+          },
+          {
+            "reason": "Scope the original right-sidebar auth/bridge hook to the actual local client mode",
+            "charOffset": 1536667,
+            "before": "function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, onRefreshWorkspaces: i }) {\n  const a = T.useRef(null),",
+            "after": "function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, onRefreshWorkspaces: i }) {\n  const gamecoworkLocalCanvas = gamecoworkUsesLocalCanvas(),\n    a = T.useRef(null),"
+          },
+          {
+            "reason": "Never consume a platform token as local Canvas authentication",
+            "charOffset": 1536940,
+            "before": "    d = t !== void 0,\n    p = d ? (t != null ? t : null) : o,",
+            "after": "    d = gamecoworkLocalCanvas || t !== void 0,\n    p = gamecoworkLocalCanvas ? null : d ? (t != null ? t : null) : o,"
+          },
+          {
+            "reason": "Never invoke original account-token retrieval for the native local Canvas",
+            "charOffset": 1537058,
+            "before": "    h = T.useCallback(() => {\n      ru(\"get_cowork_access_token\")",
+            "after": "    h = T.useCallback(() => {\n      if (gamecoworkLocalCanvas) return;\n      ru(\"get_cowork_access_token\")"
+          },
+          {
+            "reason": "Notify the original iframe of local session availability without manufacturing or forwarding a platform token",
+            "charOffset": 1538153,
+            "before": "                p && v({ type: \"cowork-token\", token: p }),",
+            "after": "                gamecoworkLocalCanvas ? v({ type: \"gamecowork:local-session-changed\" }) : p && v({ type: \"cowork-token\", token: p }),"
+          },
+          {
+            "reason": "Restore the exact workspace-list message consumed by the preserved original Canvas client",
+            "charOffset": 1538341,
+            "before": "                r && v({ type: \"gamecowork:workspaces\", workspaces: r }),",
+            "after": "                r && v({ type: \"codely:workspaces\", workspaces: r }),"
+          },
+          {
+            "reason": "Restore the original Canvas workspace refresh request protocol",
+            "charOffset": 1538601,
+            "before": "else if (y.type === \"gamecowork:refreshWorkspaces\")",
+            "after": "else if (y.type === \"codely:refreshWorkspaces\")"
+          },
+          {
+            "reason": "Do not send original platform token/logout lifecycle messages to a local Canvas",
+            "charOffset": 1539310,
+            "before": "    T.useEffect(() => {\n      var m, g, y, x;\n      const v = b.current;",
+            "after": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) return;\n      var m, g, y, x;\n      const v = b.current;"
+          },
+          {
+            "reason": "Keep later workspace updates on the same original codely:workspaces contract",
+            "charOffset": 1540186,
+            "before": "m.postMessage({ type: \"gamecowork:workspaces\", workspaces: r }, qa);",
+            "after": "m.postMessage({ type: \"codely:workspaces\", workspaces: r }, qa);"
+          }
+        ]
+      },
+      {
+        "path": "../assets/RightSideBarPanel-B2OWNNNX.js",
+        "sourceReference": {
+          "path": "E:\\TuanjieCodely\\EXE\\Tuanjie Cowork\\app\\resource\\dist\\assets\\RightSideBarPanel-B2OWNNNX.js",
+          "sha256": "8a189ec855741f9f21be5a6192d0a79f5c84ac499dea04f61e4d1a10aea42601"
+        },
+        "beforeSha256": "ef7fd65a71b83b9cff1f33fa47598130db2b7edbb61888381501532a13dbcf4e",
+        "currentSha256": "102ba3ff448f26a3150acde2053816f48a0445e2721c77904d2d3d21bd4145cb",
+        "patches": [
+          {
+            "reason": "Use the same native Canvas mode boundary as the retained host entry points",
+            "charOffset": 2976,
+            "before": "  D as $g,\n",
+            "after": "  D as $g,\n  gamecoworkUsesLocalAssetPage as gamecoworkUsesLocalCanvas,\n"
+          },
+          {
+            "reason": "Pass the owned host workspace identity through the existing sidebar iframe component",
+            "charOffset": 1295747,
+            "before": "function pw({ isActive: e, workspaceRoot: t, title: r, iframeRef: n }) {",
+            "after": "function pw({ isActive: e, workspaceRoot: t, workspaceKey: gamecoworkWorkspaceKey, title: r, iframeRef: n }) {"
+          },
+          {
+            "reason": "Load the original cached Canvas with its captured native workspace; preserve iframe UI and sandbox",
+            "charOffset": 1296064,
+            "before": "      src: $g(t),",
+            "after": "      src: $g(t, gamecoworkWorkspaceKey),\n      \"data-testid\": \"right-sidebar-canvas-frame\","
+          },
+          {
+            "reason": "Use the existing actual preview workspace key rather than inferring permissions from a display/path hash",
+            "charOffset": 1480717,
+            "before": "Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, title: t(\"rightSidebar.aiCanvasTab\"), iframeRef: i }),",
+            "after": "Ee && f.jsx(pw, { isActive: De, workspaceRoot: l, workspaceKey: e.previewWorkspaceKey, title: t(\"rightSidebar.aiCanvasTab\"), iframeRef: i }),"
+          },
+          {
+            "reason": "Scope the original right-sidebar auth/bridge hook to the actual local client mode",
+            "charOffset": 1536667,
+            "before": "function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, onRefreshWorkspaces: i }) {\n  const a = T.useRef(null),",
+            "after": "function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, onRefreshWorkspaces: i }) {\n  const gamecoworkLocalCanvas = gamecoworkUsesLocalCanvas(),\n    a = T.useRef(null),"
+          },
+          {
+            "reason": "Never consume a platform token as local Canvas authentication",
+            "charOffset": 1536940,
+            "before": "    d = t !== void 0,\n    p = d ? (t != null ? t : null) : o,",
+            "after": "    d = gamecoworkLocalCanvas || t !== void 0,\n    p = gamecoworkLocalCanvas ? null : d ? (t != null ? t : null) : o,"
+          },
+          {
+            "reason": "Never invoke original account-token retrieval for the native local Canvas",
+            "charOffset": 1537058,
+            "before": "    h = T.useCallback(() => {\n      ru(\"get_cowork_access_token\")",
+            "after": "    h = T.useCallback(() => {\n      if (gamecoworkLocalCanvas) return;\n      ru(\"get_cowork_access_token\")"
+          },
+          {
+            "reason": "Notify the original iframe of local session availability without manufacturing or forwarding a platform token",
+            "charOffset": 1538153,
+            "before": "                p && v({ type: \"cowork-token\", token: p }),",
+            "after": "                gamecoworkLocalCanvas ? v({ type: \"gamecowork:local-session-changed\" }) : p && v({ type: \"cowork-token\", token: p }),"
+          },
+          {
+            "reason": "Restore the exact workspace-list message consumed by the preserved original Canvas client",
+            "charOffset": 1538341,
+            "before": "                r && v({ type: \"gamecowork:workspaces\", workspaces: r }),",
+            "after": "                r && v({ type: \"codely:workspaces\", workspaces: r }),"
+          },
+          {
+            "reason": "Restore the original Canvas workspace refresh request protocol",
+            "charOffset": 1538601,
+            "before": "else if (y.type === \"gamecowork:refreshWorkspaces\")",
+            "after": "else if (y.type === \"codely:refreshWorkspaces\")"
+          },
+          {
+            "reason": "Do not send original platform token/logout lifecycle messages to a local Canvas",
+            "charOffset": 1539310,
+            "before": "    T.useEffect(() => {\n      var m, g, y, x;\n      const v = b.current;",
+            "after": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) return;\n      var m, g, y, x;\n      const v = b.current;"
+          },
+          {
+            "reason": "Keep later workspace updates on the same original codely:workspaces contract",
+            "charOffset": 1540186,
+            "before": "m.postMessage({ type: \"gamecowork:workspaces\", workspaces: r }, qa);",
+            "after": "m.postMessage({ type: \"codely:workspaces\", workspaces: r }, qa);"
+          }
+        ]
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "sourceUrl": "https://ai-generator.tuanjie.cn/lab3d?embed=1&host=codely",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\6450c3a2ae8e-lab3d.html",
+      "sourceBytes": 2785,
+      "sourceSha256": "22db7818aa29e2ccb1a852f6e17bc182f8bb6ad5385c790555a941dd33316d35",
+      "currentBytes": 2443,
+      "currentSha256": "96d12deaf0b1b53b36d7cfa9ed1f6fe2b488d4674cdff9c2db53eb6203f87b5b",
+      "patches": [
+        {
+          "reason": "Remove original analytics script 3",
+          "charOffset": 2079,
+          "byteOffsetBeforePatch": 2165,
+          "before": "<script>\n      window.collectEvent(\"init\", {\n        app_id: 20004903,\n        channel_domain: \"https://gator.volces.com\",\n        autotrack: true,\n        log: true,\n        enable_stay_duration: true,\n        disable_sdk_monitor: true,\n        cross_subdomain: true,\n      });\n      window.collectEvent(\"start\");\n    </script>",
+          "after": "<!-- Original analytics block 3 removed for the local host. -->"
+        },
+        {
+          "reason": "Remove original analytics script 2",
+          "charOffset": 1938,
+          "byteOffsetBeforePatch": 2024,
+          "before": "<script\n      async\n      src=\"https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/collect-autotrack-rangers.js\"\n    ></script>",
+          "after": "<!-- Original analytics block 2 removed for the local host. -->"
+        },
+        {
+          "reason": "Remove original analytics script 1",
+          "charOffset": 1547,
+          "byteOffsetBeforePatch": 1633,
+          "before": "<script>\n      (function (win, export_obj) {\n        win[\"TeaAnalyticsObject\"] = export_obj;\n        if (!win[export_obj]) {\n          function _collect() {\n            _collect.q.push(arguments);\n          }\n          _collect.q = _collect.q || [];\n          win[export_obj] = _collect;\n        }\n        win[export_obj].l = +new Date();\n      })(window, \"collectEvent\");\n    </script>",
+          "after": "<!-- Original analytics block 1 removed for the local host. -->"
+        },
+        {
+          "reason": "Constrain every client resource and request to the local host",
+          "charOffset": 46,
+          "byteOffsetBeforePatch": 46,
+          "before": "<meta charset=\"UTF-8\" />",
+          "after": "<meta charset=\"UTF-8\" />\n    <meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'\" />"
+        },
+        {
+          "reason": "Localize original HTML asset references",
+          "charOffset": 2288,
+          "byteOffsetBeforePatch": 2374,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original HTML asset references",
+          "charOffset": 2169,
+          "byteOffsetBeforePatch": 2255,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original HTML asset references",
+          "charOffset": 498,
+          "byteOffsetBeforePatch": 498,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        }
+      ]
+    },
+    {
+      "path": "assets/index-DZWJHC3S.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/index-DZWJHC3S.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
+      "sourceBytes": 2400014,
+      "sourceSha256": "10e0e9c2a6771c22eb65c205fab910a1779794c689e8523f97d8f831eed19d9d",
+      "currentBytes": 2401210,
+      "currentSha256": "925894042e14a97404a912a845b719a2450016ac2cb7b2613236c07d3f5ff7f5",
+      "patches": [
+        {
+          "reason": "Import the owned local identity boundary and freeze this iframe URL workspace without replacing original UI components",
+          "charOffset": 0,
+          "byteOffsetBeforePatch": 0,
+          "before": "",
+          "after": "import { bindGameCoworkLocalIdentity } from \"../local-identity.js\";\nimport { gamecoworkGenerationPresentation } from \"../local-generation.js\";\nconst gamecoworkGeneratorWorkspace = new URLSearchParams(window.location.search).get(\"gamecoworkWorkspace\") || \"\";\n"
+        },
+        {
+          "reason": "Bind the original identity stores to the actual own local session; authed is local readiness only",
+          "charOffset": 838629,
+          "byteOffsetBeforePatch": 862014,
+          "before": "function o1e(){y.useEffect(()=>{const t=()=>{",
+          "after": "function o1e(){y.useEffect(()=>{const gcwIdentityCleanup=bindGameCoworkLocalIdentity({onIdentity:e=>{Yue(null);za.setState({user:e.user,fetchStatus:e.status===\"ready\"?\"success\":\"failure\",gamecoworkGeneration:e.generation});vs.getState().setAuthStatus(e.status===\"ready\"?\"authed\":\"anonymous\",!0)}});const t=()=>{"
+        },
+        {
+          "reason": "Ignore official token messages in the local derivative; theme, locale, prefill and file-drop branches remain original",
+          "charOffset": 839228,
+          "byteOffsetBeforePatch": 862613,
+          "before": "if(vs.getState().setHostOrigin(n.origin),i.type===\"codely:auth\"){const r=i.token||null,s=r!==kl();Yue(r),vs.getState().setAuthStatus(r?\"authed\":\"anonymous\",s),s1e(i.token);return}",
+          "after": "if(vs.getState().setHostOrigin(n.origin),i.type===\"codely:auth\"){return}"
+        },
+        {
+          "reason": "Release the owned local identity request and listeners with the original host bridge lifecycle",
+          "charOffset": 840001,
+          "byteOffsetBeforePatch": 863386,
+          "before": "return window.addEventListener(\"message\",e),()=>{document.removeEventListener(\"visibilitychange\",t),window.removeEventListener(\"message\",e)}},[])}",
+          "after": "return window.addEventListener(\"message\",e),()=>{gcwIdentityCleanup();document.removeEventListener(\"visibilitychange\",t),window.removeEventListener(\"message\",e)}},[])}"
+        },
+        {
+          "reason": "Read the independent own local generation readiness without changing model builders or platform entitlement fields",
+          "charOffset": 1717616,
+          "byteOffsetBeforePatch": 1744440,
+          "before": "function HNe(){var CF,AF,RF,PF,NF,IF,kF,DF,LF,OF,FF,jF,UF,BF,zF;const{t}=an()",
+          "after": "function HNe(){var CF,AF,RF,PF,NF,IF,kF,DF,LF,OF,FF,jF,UF,BF,zF;const gcwGeneration=gamecoworkGenerationPresentation(za(e=>e.gamecoworkGeneration),Er.resolvedLanguage||Er.language);const{t}=an()"
+        },
+        {
+          "reason": "Reject original submit shortcuts while the local model service is unconfigured or unverified",
+          "charOffset": 1738822,
+          "byteOffsetBeforePatch": 1765702,
+          "before": "Tne=()=>{if(R(\"\"),$l)",
+          "after": "Tne=()=>{if(gcwGeneration.blocked){R(gcwGeneration.message);return}if(R(\"\"),$l)"
+        },
+        {
+          "reason": "Keep the original action button but disable unavailable local generation and never route it to an official purchase action",
+          "charOffset": 1765776,
+          "byteOffsetBeforePatch": 1792660,
+          "before": "disabled:tp?!1:$l||au||tf||ep||wi!==\"\"||!!ef,onClick:tp?gne:Tne,title:tp?void 0:",
+          "after": "disabled:gcwGeneration.blocked||(tp?!1:$l||au||tf||ep||wi!==\"\"||!!ef),onClick:gcwGeneration.blocked?Tne:tp?gne:Tne,title:gcwGeneration.blocked?gcwGeneration.message:tp?void 0:"
+        },
+        {
+          "reason": "Display the real local service state in the original primary button",
+          "charOffset": 1766145,
+          "byteOffsetBeforePatch": 1793029,
+          "before": "f.jsx(\"strong\",{children:t(tp?$l?",
+          "after": "f.jsx(\"strong\",{children:gcwGeneration.blocked?gcwGeneration.label:t(tp?$l?"
+        },
+        {
+          "reason": "Reuse the existing status area for the local service reason instead of an official subscription claim",
+          "charOffset": 1766681,
+          "byteOffsetBeforePatch": 1793565,
+          "before": "$l&&f.jsxs(\"div\",{className:\"studio-paid-note\",role:\"status\",children:[f.jsx(io,{size:14}),KM]})",
+          "after": "(gcwGeneration.blocked||$l)&&f.jsxs(\"div\",{className:\"studio-paid-note\",role:\"status\",children:[f.jsx(io,{size:14}),gcwGeneration.blocked?gcwGeneration.message:KM]})"
+        },
+        {
+          "reason": "Do not present official subscription messages as the cause of missing local service",
+          "charOffset": 1766847,
+          "byteOffsetBeforePatch": 1793731,
+          "before": "au&&f.jsxs(\"div\",{className:\"studio-paid-note\"",
+          "after": "!gcwGeneration.blocked&&au&&f.jsxs(\"div\",{className:\"studio-paid-note\""
+        },
+        {
+          "reason": "Do not present official subscription messages as the cause of missing local service",
+          "charOffset": 1766998,
+          "byteOffsetBeforePatch": 1793882,
+          "before": "tf&&!au&&!$l&&f.jsxs(\"div\",{className:\"studio-paid-note\"",
+          "after": "!gcwGeneration.blocked&&tf&&!au&&!$l&&f.jsxs(\"div\",{className:\"studio-paid-note\""
+        },
+        {
+          "reason": "Do not present official subscription messages as the cause of missing local service",
+          "charOffset": 1767159,
+          "byteOffsetBeforePatch": 1794043,
+          "before": "ep&&!au&&!tf&&f.jsxs(\"div\",{className:\"studio-paid-note\"",
+          "after": "!gcwGeneration.blocked&&ep&&!au&&!tf&&f.jsxs(\"div\",{className:\"studio-paid-note\""
+        },
+        {
+          "reason": "Point the original API client and environment descriptors at the local compatibility service",
+          "charOffset": 431803,
+          "byteOffsetBeforePatch": 447853,
+          "before": "https://ai-generator.tuanjie.cn/api",
+          "after": "/api/codely-generator"
+        },
+        {
+          "reason": "Point the original API client and environment descriptors at the local compatibility service",
+          "charOffset": 428695,
+          "byteOffsetBeforePatch": 444745,
+          "before": "https://ai-generator.tuanjie.cn/api",
+          "after": "/api/codely-generator"
+        },
+        {
+          "reason": "Point the original API client and environment descriptors at the local compatibility service",
+          "charOffset": 427863,
+          "byteOffsetBeforePatch": 443913,
+          "before": "https://ai-generator.tuanjie.cn/api",
+          "after": "/api/codely-generator"
+        },
+        {
+          "reason": "Never enable original cross-origin credentials",
+          "charOffset": 427834,
+          "byteOffsetBeforePatch": 443884,
+          "before": "const Mn=Di.create({baseURL:\"/api/codely-generator\",withCredentials:!0});",
+          "after": "const Mn=Di.create({baseURL:\"/api/codely-generator\",withCredentials:!1});"
+        },
+        {
+          "reason": "Keep original request shapes, reject remote URLs and credential headers, and bind only generation/upload mutations to the captured iframe workspace",
+          "charOffset": 427907,
+          "byteOffsetBeforePatch": 443957,
+          "before": "Mn.interceptors.request.use(t=>(t.headers[\"X-Csrf-Token\"]=I7.get(\"_csrf\"),t.headers.isMobile=String(Ba(window.location.search)),bS&&(t.headers.Authorization=`Bearer ${bS}`),t),t=>t);",
+          "after": "Mn.interceptors.request.use(t=>{if(typeof t.url!==\"string\"||!t.url.startsWith(\"/\")||t.url.startsWith(\"//\")||t.url.includes(\"\\\\\"))throw new Error(\"Only local Codely compatibility routes are available\");t.baseURL=\"/api/codely-generator\";t.withCredentials=!1;for(const e of Object.keys(t.headers||{}))if([\"authorization\",\"x-csrf-token\",\"cookie\",\"x-gamecowork-workspace\"].includes(e.toLowerCase()))delete t.headers[e];if(![\"get\",\"head\",\"options\"].includes(String(t.method||\"get\").toLowerCase())&&(t.url.split(\"?\")[0]===\"/sso/generate\"||t.url.startsWith(\"/sso/upload/\")))t.headers[\"X-GameCowork-Workspace\"]=gamecoworkGeneratorWorkspace;t.headers.isMobile=String(Ba(window.location.search));return t},t=>t);"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 2236553,
+          "byteOffsetBeforePatch": 2263941,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 2235605,
+          "byteOffsetBeforePatch": 2262905,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 2228922,
+          "byteOffsetBeforePatch": 2255932,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 2111984,
+          "byteOffsetBeforePatch": 2138944,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1862796,
+          "byteOffsetBeforePatch": 1889754,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1756450,
+          "byteOffsetBeforePatch": 1783330,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1645286,
+          "byteOffsetBeforePatch": 1671765,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1639209,
+          "byteOffsetBeforePatch": 1665685,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1639127,
+          "byteOffsetBeforePatch": 1665603,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1587510,
+          "byteOffsetBeforePatch": 1613986,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1587396,
+          "byteOffsetBeforePatch": 1613872,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1587287,
+          "byteOffsetBeforePatch": 1613763,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1587169,
+          "byteOffsetBeforePatch": 1613645,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 1587054,
+          "byteOffsetBeforePatch": 1613530,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 806336,
+          "byteOffsetBeforePatch": 823506,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 791260,
+          "byteOffsetBeforePatch": 807772,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 637217,
+          "byteOffsetBeforePatch": 653311,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 432429,
+          "byteOffsetBeforePatch": 448479,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 432333,
+          "byteOffsetBeforePatch": 448383,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 429335,
+          "byteOffsetBeforePatch": 445385,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original static asset bases and decoder URLs",
+          "charOffset": 429239,
+          "byteOffsetBeforePatch": 445289,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Import the explicitly named owned CPA descriptor without changing original descriptors",
+          "charOffset": 0,
+          "byteOffsetBeforePatch": 0,
+          "before": "",
+          "after": "import { extendGameCoworkModelRegistry, gamecoworkModelAcceptsReferences } from \"../local-models.js\";\n"
+        },
+        {
+          "reason": "Extend original xN at its registry composition boundary",
+          "charOffset": 879551,
+          "byteOffsetBeforePatch": 906000,
+          "before": "xN={image:[",
+          "after": "xN=extendGameCoworkModelRegistry({image:["
+        },
+        {
+          "reason": "Close owned registry extension before original derived lookup maps are created",
+          "charOffset": 879740,
+          "byteOffsetBeforePatch": 906189,
+          "before": "\"3d\":[...U1e,...W1e]};function rw",
+          "after": "\"3d\":[...U1e,...W1e]});function rw"
+        },
+        {
+          "reason": "Keep the verified text-only CPA model out of original reference-image controls; all original model capabilities remain unchanged",
+          "charOffset": 880230,
+          "byteOffsetBeforePatch": 906679,
+          "before": "function jK(t,e){return e?",
+          "after": "function jK(t,e){if(!gamecoworkModelAcceptsReferences(e))return!1;return e?"
+        },
+        {
+          "reason": "Subscribe to local capability state without treating it as a global model grant",
+          "charOffset": 1718039,
+          "byteOffsetBeforePatch": 1744863,
+          "before": "const gcwGeneration=gamecoworkGenerationPresentation(za(e=>e.gamecoworkGeneration),Er.resolvedLanguage||Er.language);",
+          "after": "const gcwGenerationReadiness=za(e=>e.gamecoworkGeneration);"
+        },
+        {
+          "reason": "Resolve local readiness for the actual selected original menu descriptor",
+          "charOffset": 1719789,
+          "byteOffsetBeforePatch": 1746613,
+          "before": "?R5:Pe,[Fe,oe]",
+          "after": "?R5:Pe,gcwGeneration=gamecoworkGenerationPresentation(gcwGenerationReadiness,Er.resolvedLanguage||Er.language,Z==null?void 0:Z.id),[Fe,oe]"
+        }
+      ]
+    },
+    {
+      "path": "assets/index-Vko6F7IJ.css",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/index-Vko6F7IJ.css",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\28683fb8e3a5-index-Vko6F7IJ.css",
+      "sourceBytes": 353138,
+      "sourceSha256": "da9008625ae42226ced4663a7688f3c733019e35922833a413779f8c840545b1",
+      "currentBytes": 353058,
+      "currentSha256": "300eb2d37313e16d3702a75956748e8a3ac62c8ac2576198a82526db3b70b95a",
+      "patches": [
+        {
+          "reason": "Localize original stylesheet font and background URLs",
+          "charOffset": 65793,
+          "byteOffsetBeforePatch": 65793,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original stylesheet font and background URLs",
+          "charOffset": 65474,
+          "byteOffsetBeforePatch": 65474,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original stylesheet font and background URLs",
+          "charOffset": 65246,
+          "byteOffsetBeforePatch": 65246,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        },
+        {
+          "reason": "Localize original stylesheet font and background URLs",
+          "charOffset": 8404,
+          "byteOffsetBeforePatch": 8404,
+          "before": "https://ai.cdn.tuanjie.cn/static/dist",
+          "after": "/codely-generator"
+        }
+      ]
+    },
+    {
+      "path": "assets/ImmersiveSkyboxViewer-D6N4xxgP.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/ImmersiveSkyboxViewer-D6N4xxgP.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\bb4420e15487-ImmersiveSkyboxViewer-D6N4xxgP.js",
+      "sourceBytes": 3263,
+      "sourceSha256": "879dc73ba1b8c20ef813462dc8ee6530aee06d4d3ca7a287642129ddf4ab607b",
+      "currentBytes": 3263,
+      "currentSha256": "879dc73ba1b8c20ef813462dc8ee6530aee06d4d3ca7a287642129ddf4ab607b",
+      "patches": []
+    },
+    {
+      "path": "assets/GenerationModelViewer-ZZck5_Yz.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/GenerationModelViewer-ZZck5_Yz.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\6ef93903e57a-GenerationModelViewer-ZZck5_Yz.js",
+      "sourceBytes": 8524,
+      "sourceSha256": "294b288602e3f4fa999e508697683ed0463db650e3d86ee33feeaab790c5a252",
+      "currentBytes": 8524,
+      "currentSha256": "294b288602e3f4fa999e508697683ed0463db650e3d86ee33feeaab790c5a252",
+      "patches": []
+    },
+    {
+      "path": "assets/GenerationSkyboxViewer-VzxTuMyL.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/GenerationSkyboxViewer-VzxTuMyL.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\b23f1de8b11e-GenerationSkyboxViewer-VzxTuMyL.js",
+      "sourceBytes": 3325,
+      "sourceSha256": "cd18f81d220c2a48dc5fbcebef0c5db920fd2d9897c209ea8d0b41445ed2a96a",
+      "currentBytes": 3325,
+      "currentSha256": "cd18f81d220c2a48dc5fbcebef0c5db920fd2d9897c209ea8d0b41445ed2a96a",
+      "patches": []
+    },
+    {
+      "path": "fonts/JetBrains_Mono/JetBrainsMono-variable.woff2",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/fonts/JetBrains_Mono/JetBrainsMono-variable.woff2",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-JetBrainsMono-variable.woff2",
+      "sourceBytes": 113672,
+      "sourceSha256": "31ec365b93e4bad6f202ce23352a56d01ca4462b2afc782ed2cf6fa42ca9ac0e",
+      "currentBytes": 113672,
+      "currentSha256": "31ec365b93e4bad6f202ce23352a56d01ca4462b2afc782ed2cf6fa42ca9ac0e",
+      "patches": []
+    },
+    {
+      "path": "images/ai-generation/perspective-grid.png",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/images/ai-generation/perspective-grid.png",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-perspective-grid.png",
+      "sourceBytes": 292363,
+      "sourceSha256": "43113738d4765e11cd4402d77f708694ec7261cfe63bc2c857d33c8bd0e49b2a",
+      "currentBytes": 292363,
+      "currentSha256": "43113738d4765e11cd4402d77f708694ec7261cfe63bc2c857d33c8bd0e49b2a",
+      "patches": []
+    },
+    {
+      "path": "images/ai-generation/asset-empty.png",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/images/ai-generation/asset-empty.png",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-asset-empty.png",
+      "sourceBytes": 37626,
+      "sourceSha256": "09159222c8ddf46a5864a3961117692b06564f3bcb9c73798136b68e8573d9f4",
+      "currentBytes": 37626,
+      "currentSha256": "09159222c8ddf46a5864a3961117692b06564f3bcb9c73798136b68e8573d9f4",
+      "patches": []
+    },
+    {
+      "path": "fonts/Inter/Inter-VariableFont_opsz_wght.woff2",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/fonts/Inter/Inter-VariableFont_opsz_wght.woff2",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-Inter-VariableFont_opsz_wght.woff2",
+      "sourceBytes": 350408,
+      "sourceSha256": "612bfc3fe1183edad19f0ab6147935faedce8e0d1076d5dbb5b47d3bac5227b9",
+      "currentBytes": 350408,
+      "currentSha256": "612bfc3fe1183edad19f0ab6147935faedce8e0d1076d5dbb5b47d3bac5227b9",
+      "patches": []
+    },
+    {
+      "path": "favicon.svg",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/favicon.svg",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-favicon.svg",
+      "sourceBytes": 389,
+      "sourceSha256": "db2d0702331d98bafb5c6c800c52e5ce1e890c2822028cd1b15a02633ad1e182",
+      "currentBytes": 389,
+      "currentSha256": "db2d0702331d98bafb5c6c800c52e5ce1e890c2822028cd1b15a02633ad1e182",
+      "patches": []
+    },
+    {
+      "path": "assets/draco_wasm_wrapper-fZCQGLGb.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/draco_wasm_wrapper-fZCQGLGb.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-draco_wasm_wrapper-fZCQGLGb.js",
+      "sourceBytes": 58456,
+      "sourceSha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "currentBytes": 58456,
+      "currentSha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "patches": []
+    },
+    {
+      "path": "fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght.woff2",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght.woff2",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-NotoSansSC-VariableFont_wght.woff2",
+      "sourceBytes": 7792484,
+      "sourceSha256": "16606936122ff8885eb4eaae0ec5dc38a37ba1c509a7f85eb4fd2dfe7784e10f",
+      "currentBytes": 7792484,
+      "currentSha256": "16606936122ff8885eb4eaae0ec5dc38a37ba1c509a7f85eb4fd2dfe7784e10f",
+      "patches": []
+    },
+    {
+      "path": "assets/draco_decoder-Z1_iN-Ht.wasm",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/draco_decoder-Z1_iN-Ht.wasm",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-draco_decoder-Z1_iN-Ht.wasm",
+      "sourceBytes": 192420,
+      "sourceSha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac",
+      "currentBytes": 192420,
+      "currentSha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac",
+      "patches": []
+    },
+    {
+      "path": "assets/draco_decoder-C32yEggz.wasm",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/draco_decoder-C32yEggz.wasm",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-draco_decoder-C32yEggz.wasm",
+      "sourceBytes": 285747,
+      "sourceSha256": "c55a594e8ffd18426d36b27fea9618af3df5e173640a3e56d46f09d76f0574f2",
+      "currentBytes": 285747,
+      "currentSha256": "c55a594e8ffd18426d36b27fea9618af3df5e173640a3e56d46f09d76f0574f2",
+      "patches": []
+    },
+    {
+      "path": "assets/draco_wasm_wrapper-DxJM36Ib.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/draco_wasm_wrapper-DxJM36Ib.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-draco_wasm_wrapper-DxJM36Ib.js",
+      "sourceBytes": 58763,
+      "sourceSha256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "currentBytes": 58763,
+      "currentSha256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "patches": []
+    },
+    {
+      "path": "assets/draco_decoder-fzg4nYZr.js",
+      "sourceUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/draco_decoder-fzg4nYZr.js",
+      "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-source-reuse-20261002\\static-dependencies\\ai.cdn.tuanjie.cn-draco_decoder-fzg4nYZr.js",
+      "sourceBytes": 719410,
+      "sourceSha256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+      "currentBytes": 719410,
+      "currentSha256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+      "patches": []
+    }
+  ],
+  "missingDependencies": [
+    {
+      "url": "https://ai.cdn.tuanjie.cn/static/distimages/generation/filter.svg",
+      "status": 404,
+      "reason": "No verified successful byte download"
+    }
+  ]
+}

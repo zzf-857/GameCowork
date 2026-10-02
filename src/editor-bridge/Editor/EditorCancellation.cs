@@ -30,6 +30,8 @@ namespace GameCowork.EditorBridge
         static string Key(string client, string request) { return client + ":" + request; }
         internal static bool IsControl(string action)
         { return action == "play" || action == "pause" || action == "resume" || action == "stop" || action == "refresh"; }
+        internal static bool IsMutation(string command, string action)
+        { return command == "manage_gameobject" && (action == "create" || action == "modify") || command == "manage_scene" && action == "save"; }
         static string Text(Dictionary<string, object> value, string key)
         { object result; return value != null && value.TryGetValue(key, out result) ? result as string : null; }
         static Dictionary<string, object> Object(Dictionary<string, object> value, string key)
@@ -56,9 +58,16 @@ namespace GameCowork.EditorBridge
         {
             lock (Gate) {
             if (frozen) throw new IOException("Editor bridge is reloading");
-            if (Text(envelope, "type") != "manage_editor" || !IsControl(Text(Object(envelope, "params"), "action"))) return null;
+            string command = Text(envelope, "type"), action = Text(Object(envelope, "params"), "action");
+            bool clear = command == "read_console" && action == "clear";
+            bool mutation = IsMutation(command, action);
+            if (!clear && !mutation && (command != "manage_editor" || !IsControl(action))) return null;
             var identity = Object(envelope, "gamecowork_control");
-            if (identity == null) return null; // Existing native UI requests remain compatible, without claiming cancellability.
+            if (identity == null) {
+                if (clear) throw new ArgumentException("Console clear requires an originating secure request identity");
+                if (mutation) throw new ArgumentException("Scene mutation requires an originating secure request identity");
+                return null; // Existing native UI requests remain compatible, without claiming cancellability.
+            }
             string client = Text(identity, "clientId"), token = Text(identity, "cancelToken"), request = Text(envelope, "request_id"), root = Text(identity, "projectRoot"), domain = Text(identity, "domainId");
             Validate(client, token, request, root, domain);
             if (domain != Bridge.EditorDomain) throw new ArgumentException("Editor control targets an obsolete domain");
@@ -134,6 +143,14 @@ namespace GameCowork.EditorBridge
         { if (lease == null) return false; lock (lease.Sync) return lease.Cancelled; }
         internal static void Finish(Lease lease, string phase)
         { if (lease == null) return; lock (lease.Sync) { lease.Phase = phase; lease.FinishedAt = DateTime.UtcNow.Ticks; } }
+        internal static string FailureJson(Lease lease, string message, bool cancellation)
+        {
+            if (lease == null) return cancellation ? "{\"success\":false,\"cancelled\":true,\"applied\":false}" : null;
+            lock (lease.Sync)
+                return "{\"success\":false,\"cancelled\":" + (cancellation && !lease.Applied ? "true" : "false") +
+                    ",\"applied\":" + (lease.Applied ? "true" : "false") + ",\"cancellationSupported\":true,\"operationId\":" + Bridge.Json(lease.OperationId) +
+                    ",\"projectRoot\":" + Bridge.Json(lease.Root) + ",\"state\":" + Bridge.Json(lease.Phase) + ",\"message\":" + Bridge.Json(message) + "}";
+        }
         internal static bool HasOwner(Lease lease)
         { if (lease == null) return true; lock (lease.Sync) return lease.Owners.Count > 0; }
         internal static Lease Renew(Dictionary<string, object> envelope, string owner)

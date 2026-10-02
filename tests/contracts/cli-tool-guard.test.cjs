@@ -9,6 +9,32 @@ const test = require('node:test');
 // Extract the actual subprocess admission code, with inert process handles.
 // This tests denied shapes without starting any command or touching profiles.
 const source = fs.readFileSync(path.join(__dirname, '../fixtures/cli-probe-guard.cjs'), 'utf8');
+test('path validation may inspect exact fixture ancestors but never read content, enumerate, write or inspect siblings', async () => {
+  const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/guard-contract-owned');
+  const base = path.dirname(root), calls = [], denied = [];
+  const fakeFs = { promises: {} };
+  for (const name of ['readFile','readdir','access','stat','lstat','realpath','writeFile','mkdir','rm']) {
+    fakeFs[name] = fakeFs[name+'Sync'] = value => { calls.push({name,value}); return value; };
+    fakeFs.promises[name] = async value => { calls.push({name,value}); return value; };
+  }
+  fakeFs.realpathSync.native = value => { calls.push({name:'realpathSync.native',value});return value; };
+  fakeFs.realpath.native = value => { calls.push({name:'realpath.native',value});return value; };
+  const context = vm.createContext({ fs:fakeFs,path,root,source:path.resolve('F:/isolated-runtime'),toolCaps:null,URL,
+    exactPath:()=>false,inside:(value,boundary)=>{ const relative=path.relative(boundary,String(value));return relative===''||(!relative.startsWith('..')&&!path.isAbsolute(relative)); },
+    denied:(operation,target)=>{denied.push({operation,target});return Error('Denied '+operation);},require });
+  vm.runInContext(source.slice(source.indexOf('const readable ='),source.indexOf('const exists =')),context);
+  assert.equal(fakeFs.lstatSync(base),base);
+  assert.equal(await fakeFs.promises.realpath(base),base);
+  assert.equal(fakeFs.realpathSync.native(base),base);
+  assert.equal(fakeFs.realpath.native(base),base);
+  for (const operation of ['readFileSync','readdirSync','writeFileSync','mkdirSync','rmSync'])
+    assert.throws(()=>fakeFs[operation](base),/Denied/);
+  assert.throws(()=>fakeFs.statSync(path.join(base,'sibling')),/Denied/);
+  await assert.rejects(fakeFs.promises.lstat(path.join(base,'sibling')),/Denied/);
+  assert.throws(()=>fakeFs.realpathSync.native(path.join(base,'sibling')),/Denied/);
+  assert.throws(()=>fakeFs.realpath.native(path.join(base,'sibling')),/Denied/);
+  assert.equal(calls.length,4);assert.equal(denied.length,9);
+});
 const left = source.indexOf("const cp = require('node:child_process');");
 const right = source.indexOf('function loopback(', left);
 assert.ok(left >= 0 && right > left);

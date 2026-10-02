@@ -39,11 +39,23 @@ for(const file of ['index.js','index.beautified.js']) {
   const result=await vm.runInContext(`(async(G,b)=>${prefix[0].slice(prefix[0].indexOf('{'))}throw Error('remote fetch');})('skill',{})`,ctx);
   assert.equal(result.supported,false);assert.equal(result.total,0);assert.equal(result.items.length,0);
  });
- test(`${file}: local asset task polling reports an unconfigured Provider before any cloud authentication`,async()=>{
-  const pattern=/n\("generator\/listTasks",\s*async\s*(?:\(G\)|G)\s*=>\s*\{(if\(process\.env\.GAMECOWORK_LOCAL_PROVIDER_MODE==="1"\)return \{tasks:\[\],total:0,page:1,size:0,supported:false,reason:"An asset generation Provider is not configured"\};)/;
-  const matched=source.match(pattern);assert.ok(matched,'actual listTasks local gate');
-  const ctx=vm.createContext({process:{env:{GAMECOWORK_LOCAL_PROVIDER_MODE:'1'}}});
-  const result=await vm.runInContext(`(async()=>{${matched[1]}throw Error('original cloud auth');})()`,ctx);
-  assert.equal(result.supported,false);assert.equal(result.tasks.length,0);
+ test(`${file}: local asset task polling uses the real owned service before any cloud authentication`,async()=>{
+  const pattern=/n\("generator\/listTasks",\s*async\s*(?:\(G\)|G)\s*=>\s*\{(if\(process\.env\.GAMECOWORK_LOCAL_PROVIDER_MODE==="1"\)return gcwLocalAssetService\(t\)\.dispatch\("generator\/listTasks",G\.data\?\?\{\}\);)/;
+  const matched=source.match(pattern);assert.ok(matched,'actual listTasks own-service route');
+  const root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/local-asset-route-'+require('node:crypto').randomUUID());
+  const owner={messenger:{send(){throw Error('Unconfigured task polling must not publish synthetic updates');}}};
+  const ctx=vm.createContext({process:{env:{GAMECOWORK_LOCAL_PROVIDER_MODE:'1',GAMECOWORK_USER_DATA_DIR:root}},t:owner,
+   require(name){if(name==='node:path')return path;if(name==='./gamecowork-assets.js')return require(path.join(base,name));throw Error('Unexpected external dependency: '+name);}});
+  vm.runInContext(section('var gcwAssetActors = new Map();','if (typeof URL.canParse'),ctx);
+  const service=ctx.gcwLocalAssetService(owner);
+  try{
+   assert.equal(ctx.gcwLocalAssetService(owner),service,'The actual Core factory reuses its one asset runtime owner');
+   const result=await vm.runInContext(`(async(G)=>{${matched[1]}throw Error('original cloud auth');})({data:{}})`,ctx);
+   assert.equal(result.total,0);assert.equal(result.tasks.length,0);assert.equal((await service.dispatch('generator/listProviders')).providers.length,0);
+   await assert.rejects(()=>service.dispatch('generator/createTask',{providerId:'missing',kind:'image',prompt:'must not reach a provider'}),/unavailable/);
+   assert.equal(fs.existsSync(path.join(root,'generator','providers.json')),false,'Read-only discovery does not invent a Provider');
+  }finally{await service.close();}
+  delete ctx.process.env.GAMECOWORK_USER_DATA_DIR;
+  assert.throws(()=>ctx.gcwLocalAssetService(owner),/directory is not configured/,'A missing own runtime never falls back to original credentials');
  });
 }

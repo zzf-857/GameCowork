@@ -154,7 +154,10 @@ fn metadata(bytes: &[u8]) -> Result<Value, String> {
         }
         let mut entry = item.map_err(|e| e.to_string())?;
         if entry.path().map_err(|e| e.to_string())?.as_ref() == Path::new("package/package.json") {
-            if !entry.header().entry_type().is_file() || entry.size() > 1024 * 1024 {
+            if package.is_some()
+                || !entry.header().entry_type().is_file()
+                || entry.size() > 1024 * 1024
+            {
                 return Err("Invalid template metadata".into());
             }
             let mut text = String::new();
@@ -166,7 +169,7 @@ fn metadata(bytes: &[u8]) -> Result<Value, String> {
         }
     }
     let package = package.ok_or("Template has no package.json")?;
-    if package["type"] != "template"
+    if template_type(&package).is_none()
         || !package["name"].as_str().is_some_and(|s| {
             s.len() <= 160
                 && s.contains('.')
@@ -177,10 +180,38 @@ fn metadata(bytes: &[u8]) -> Result<Value, String> {
                         })
                 })
         })
+        || !["displayName", "version"].iter().all(|key| {
+            package[key]
+                .as_str()
+                .is_some_and(|value| !value.trim().is_empty())
+        })
     {
         return Err("Invalid template identity".into());
     }
     Ok(package)
+}
+
+// Unity Hub's _mapLocalTemplate keeps the three category identities and maps
+// the UPM "template" type to CORE. It never invents a remote category locally.
+fn template_type(package: &Value) -> Option<&str> {
+    match package["type"].as_str()? {
+        "template" | "CORE" => Some("CORE"),
+        "SAMPLE" => Some("SAMPLE"),
+        "LEARNING" => Some("LEARNING"),
+        _ => None,
+    }
+}
+
+fn local_archive(path: &Path) -> Result<(Vec<u8>, Value), String> {
+    let bytes = archive_bytes(path)?;
+    let package = metadata(&bytes)?;
+    Ok((bytes, package))
+}
+
+fn is_template_archive(path: &Path) -> bool {
+    path.extension()
+        .and_then(|extension| extension.to_str())
+        .is_some_and(|extension| extension.eq_ignore_ascii_case("tgz"))
 }
 
 fn dependency_packages(package: &Value) -> Value {
@@ -202,25 +233,36 @@ fn dependency_packages(package: &Value) -> Value {
 pub fn catalog(editor: &Editor) -> Result<Value, String> {
     let directory = template_directory(editor)?;
     let mut templates = Vec::new();
+    let mut skipped_templates = Vec::new();
     for item in fs::read_dir(&directory)
         .map_err(|e| e.to_string())?
         .take(128)
     {
         let path = item.map_err(|e| e.to_string())?.path();
-        if path.extension().and_then(|s| s.to_str()) != Some("tgz") {
+        if !is_template_archive(&path) {
             continue;
         }
-        let bytes = archive_bytes(&path)?;
-        let package = metadata(&bytes)?;
+        // Match Hub scanTemplates' per-archive failure isolation. Keep the
+        // reason in the response, so missing/corrupt archives remain visible.
+        let (bytes, package) = match local_archive(&path) {
+            Ok(template) => template,
+            Err(error) => {
+                skipped_templates.push(json!({"archive":path.file_name().map(|name| name.to_string_lossy()),"error":error}));
+                continue;
+            }
+        };
         let name = package["name"].as_str().unwrap();
-        templates.push(json!({"name":name,"displayName":package["displayName"],"description":package["description"],
-            "version":package["version"],"type":"CORE","status":"READY","source":"installed-editor",
+        let display_name = package["displayName"].as_str().unwrap();
+        let is_preview = display_name.contains("(Preview)");
+        let display_name = display_name.replacen("(Preview)", "", 1).trim().to_owned();
+        templates.push(json!({"name":name,"displayName":display_name,"description":package["description"],
+            "version":package["version"],"type":template_type(&package),"isPreview":is_preview,"status":"READY","source":"installed-editor",
             "packages":dependency_packages(&package),"size":bytes.len(),"buildPlatforms":null,"renderPipeline":null,
             "archiveSha256":format!("{:x}", Sha256::digest(&bytes)),"editorPath":editor.executable,"product":editor.product}));
     }
     templates.sort_by_key(|v| v["name"].as_str().unwrap_or("").to_owned());
     Ok(
-        json!({"templates":templates,"supported":true,"source":"installed-editor","editorPath":editor.executable,"product":editor.product}),
+        json!({"templates":templates,"skippedTemplates":skipped_templates,"supported":true,"source":"installed-editor","editorPath":editor.executable,"product":editor.product}),
     )
 }
 
@@ -364,11 +406,15 @@ pub fn create(
     {
         check_cancel(token)?;
         let path = item.map_err(|e| e.to_string())?.path();
-        if path.extension().and_then(|s| s.to_str()) != Some("tgz") {
+        if !is_template_archive(&path) {
             continue;
         }
-        let bytes = archive_bytes(&path)?;
-        if metadata(&bytes)?["name"] == desired {
+        // Catalog and creation share identity validation and corrupt-archive
+        // isolation; a damaged unrelated template must not block this one.
+        let Ok((bytes, package)) = local_archive(&path) else {
+            continue;
+        };
+        if package["name"] == desired {
             if selected.is_some() {
                 return Err("Ambiguous local template identity".into());
             }
@@ -579,6 +625,102 @@ mod tests {
         assert!(details["renderPipeline"].is_null());
     }
     #[test]
+    fn corrupt_unrelated_archives_do_not_block_valid_catalog_or_creation() {
+        let (root, editor) = fixture();
+        valid(&editor);
+        let directory = template_directory(&editor).unwrap();
+        fs::write(directory.join("corrupt.tgz"), b"incomplete download").unwrap();
+        fs::write(directory.join("README.txt"), b"not a template").unwrap();
+        let list = catalog(&editor).unwrap();
+        assert_eq!(list["templates"].as_array().unwrap().len(), 1);
+        assert_eq!(list["skippedTemplates"].as_array().unwrap().len(), 1);
+        assert_eq!(list["skippedTemplates"][0]["archive"], "corrupt.tgz");
+        assert!(!list["skippedTemplates"][0]["error"]
+            .as_str()
+            .unwrap()
+            .is_empty());
+        let result = create(&editor, &data(&root), &AtomicU8::new(RUNNING), |_, _| {}).unwrap();
+        assert_eq!(result["created"], true);
+        assert_eq!(
+            fs::read(root.join("Owned Project/Packages/manifest.json")).unwrap(),
+            br#"{"dependencies":{}}"#
+        );
+    }
+    #[test]
+    fn hub_local_categories_preview_and_case_insensitive_extension_are_preserved() {
+        for (package_type, category) in [
+            ("template", "CORE"),
+            ("CORE", "CORE"),
+            ("SAMPLE", "SAMPLE"),
+            ("LEARNING", "LEARNING"),
+        ] {
+            let (root, editor) = fixture();
+            let metadata = json!({"name":"com.gamecowork.owned","type":package_type,"displayName":"Owned (Preview)","version":"1.2.3"});
+            let bytes = serde_json::to_vec(&metadata).unwrap();
+            package(&editor, &[
+                ("package/package.json", &bytes),
+                ("package/ProjectData~/Assets/Scene.txt", b"unchanged sample"),
+                ("package/ProjectData~/Packages/manifest.json", br#"{"dependencies":{"com.gamecowork.sample":"1.0.0"},"scopedRegistries":[]}"#),
+            ]);
+            let directory = template_directory(&editor).unwrap();
+            fs::rename(directory.join("owned.tgz"), directory.join("owned.TGZ")).unwrap();
+            let list = catalog(&editor).unwrap();
+            let row = &list["templates"][0];
+            assert_eq!(row["type"], category);
+            assert_eq!(row["displayName"], "Owned");
+            assert_eq!(row["isPreview"], true);
+            assert_eq!(list["skippedTemplates"], json!([]));
+            create(&editor, &data(&root), &AtomicU8::new(RUNNING), |_, _| {}).unwrap();
+            assert_eq!(
+                fs::read(root.join("Owned Project/Packages/manifest.json")).unwrap(),
+                br#"{"dependencies":{"com.gamecowork.sample":"1.0.0"},"scopedRegistries":[]}"#
+            );
+            assert_eq!(
+                fs::read(root.join("Owned Project/Assets/Scene.txt")).unwrap(),
+                b"unchanged sample"
+            );
+        }
+    }
+    #[test]
+    fn incomplete_and_duplicate_metadata_never_becomes_a_ready_template() {
+        let (root, editor) = fixture();
+        for incomplete in [
+            json!({"name":"com.gamecowork.owned","type":"template","version":"1.0"}),
+            json!({"name":"com.gamecowork.owned","type":"template","displayName":"Owned"}),
+            json!({"name":"com.gamecowork.owned","type":"template","displayName":" ","version":"1.0"}),
+            json!({"name":"com.gamecowork.owned","type":"package","displayName":"Owned","version":"1.0"}),
+        ] {
+            let bytes = serde_json::to_vec(&incomplete).unwrap();
+            package(&editor, &[("package/package.json", &bytes)]);
+            let list = catalog(&editor).unwrap();
+            assert_eq!(list["templates"], json!([]));
+            assert_eq!(list["skippedTemplates"].as_array().unwrap().len(), 1);
+            assert_eq!(
+                create(&editor, &data(&root), &AtomicU8::new(RUNNING), |_, _| {}).unwrap_err(),
+                "TEMPLATE_NOT_FOUND"
+            );
+        }
+        let bytes = br#"{"name":"com.gamecowork.owned","type":"template","displayName":"Owned","version":"1.0"}"#;
+        package(
+            &editor,
+            &[
+                ("package/package.json", bytes),
+                ("package/package.json", bytes),
+            ],
+        );
+        assert_eq!(catalog(&editor).unwrap()["templates"], json!([]));
+        assert_eq!(
+            create(&editor, &data(&root), &AtomicU8::new(RUNNING), |_, _| {}).unwrap_err(),
+            "TEMPLATE_NOT_FOUND"
+        );
+        assert!(!root.join("Owned Project").exists());
+        assert!(!fs::read_dir(&root).unwrap().any(|entry| entry
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .starts_with(".gamecowork-create-")));
+    }
+    #[test]
     fn missing_dependency_metadata_is_distinct_from_an_explicit_empty_map() {
         assert_eq!(dependency_packages(&json!({"dependencies":{}})), json!([]));
         for package in [
@@ -644,7 +786,7 @@ mod tests {
             &[
                 (
                     "package/package.json",
-                    br#"{"name":"com.gamecowork.owned","type":"template"}"#,
+                    br#"{"name":"com.gamecowork.owned","type":"template","displayName":"Owned","version":"1.0"}"#,
                 ),
                 ("package/ProjectData~/Assets/a", b"one"),
                 ("package/ProjectData~/Assets/A", b"two"),

@@ -9,6 +9,10 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 & node (Join-Path $PSScriptRoot 'check-layout.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'Repository layout checks failed' }
+& node (Join-Path $PSScriptRoot 'import-codely-generator.mjs') --check
+if ($LASTEXITCODE -ne 0) { throw 'Preserved Quick/History source integrity checks failed.' }
+& node (Join-Path $PSScriptRoot 'verify-codely-canvas-source.mjs')
+if ($LASTEXITCODE -ne 0) { throw 'Preserved Canvas source integrity checks failed.' }
 $shellRoot = Join-Path $projectRoot 'src\shell'
 $lspSource = Join-Path $projectRoot 'vendor\csharp-lsp'
 $lspResourceContract = Join-Path $projectRoot 'tests\contracts\lsp-resource-contract.mjs'

@@ -5,6 +5,8 @@ if ($TuanjieEditor -and (-not $Editor -or $SkipBrowser)) { throw '-TuanjieEditor
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 & node (Join-Path $PSScriptRoot 'check-layout.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'Repository layout checks failed' }
+& node (Join-Path $PSScriptRoot 'import-codely-generator.mjs') --check
+if ($LASTEXITCODE -ne 0) { throw 'Preserved Quick/History client source and host boundary verification failed' }
 $shellRoot = Join-Path $projectRoot 'src\shell'
 Push-Location $shellRoot
 try {
@@ -42,6 +44,13 @@ $testScripts = @('contracts/frontend-git-scope.test.mjs', 'contracts/frontend-wo
     'contracts/core-host-errors.test.cjs', 'contracts/local-model-profiles.test.cjs', 'contracts/acp-model-startup.test.cjs',
     'contracts/local-cloud-services.test.cjs', 'contracts/cli-recovery.test.cjs', 'contracts/cli-settings-merge-contract.test.cjs', 'contracts/cli-editor-control-contract.mjs', 'contracts/editor-cancel-review-contract.mjs', 'contracts/editor-cancel-state-review.mjs', 'contracts/frontend-lsp-contract.mjs', 'contracts/frontend-lsp-lifecycle-contract.mjs', 'contracts/frontend-lsp-shortcuts.test.mjs', 'contracts/frontend-approval-shortcuts.test.mjs', 'contracts/mock-provider.test.mjs', 'contracts/insight-resource-contract.test.mjs', 'contracts/insight-max-turns.test.cjs', 'integration/insight-worker-smoke.mjs',
     'integration/shell-http.mjs', 'integration/process-lifetime.mjs', 'integration/editor-lifetime.mjs', 'e2e/terminal-e2e.mjs')
+$testScripts += @('contracts/frontend-history-operations-contract.mjs', 'contracts/core-history-rewind.test.cjs', 'contracts/cli-rewind-preview.test.cjs', 'contracts/editor-scene-query-contract.mjs', 'contracts/core-command-bootstrap.test.cjs', 'contracts/frontend-startup-messenger-contract.mjs', 'contracts/editor-console-contract.mjs', 'integration/single-instance.mjs')
+$testScripts += @('contracts/frontend-editor-licensing-contract.mjs', 'contracts/frontend-template-warnings-contract.mjs', 'contracts/unity-hub-reference-extraction.test.mjs', 'integration/hub-refresh.mjs')
+$testScripts += @('contracts/cli-unity-operations.test.mjs', 'contracts/editor-context-contract.mjs', 'contracts/editor-context-implementation-contract.mjs', 'contracts/editor-asset-package-contract.mjs', 'contracts/editor-scene-mutation-contract.mjs')
+# The owned REST service still backs real cached tasks and media. Keep its
+# contracts; the inactive generic-only frontend is not the product UI gate.
+$testScripts += @('contracts/core-hub-discovery.test.cjs', 'contracts/frontend-project-recency.test.mjs', 'contracts/frontend-editor-installations-cache.test.mjs', 'contracts/asset-generation-auth.test.mjs', 'contracts/asset-generation-adapter.test.mjs', 'contracts/asset-generation-lifecycle.test.mjs', 'contracts/asset-generation-idempotency.test.mjs', 'contracts/asset-generation-large-output.test.mjs', 'contracts/asset-generation-inputs.test.mjs', 'contracts/asset-generation-policy.test.mjs', 'contracts/asset-generation-owner.test.cjs', 'integration/editor-installations-cache.mjs', 'integration/asset-generation-service-smoke.mjs')
+$testScripts += @('contracts/codely-generator-local-identity.test.mjs', 'contracts/codely-canvas-source-contract.mjs', 'contracts/codely-sidebar-canvas-contract.mjs', 'contracts/codely-generator-api.test.mjs', 'contracts/codely-generator-upload.test.mjs', 'contracts/codely-media-rebase.test.mjs', 'contracts/codely-local-models.test.mjs', 'contracts/codely-cpa-generation.test.mjs')
 foreach ($script in $testScripts) {
     $arguments = @((Join-Path $projectRoot "tests\$script"))
     if ($script -eq 'e2e/terminal-e2e.mjs' -and $SkipBrowser) { $arguments += '--skip-browser' }
@@ -50,6 +59,10 @@ foreach ($script in $testScripts) {
     if ($LASTEXITCODE -ne 0) { throw "Verification failed: $script" }
 }
 if (-not $SkipBrowser) {
+    & node (Join-Path $projectRoot 'tests\integration\editor-installations-cache.mjs') --browser
+    if ($LASTEXITCODE -ne 0) { throw 'Editor cache/restart browser verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-installations-cache.mjs') --browser --previous
+    if ($LASTEXITCODE -ne 0) { throw 'Previous Editor cache/restart browser verification failed' }
     & node (Join-Path $projectRoot 'tests\e2e\monaco-menu-e2e.mjs')
     if ($LASTEXITCODE -ne 0) { throw 'Actual Monaco menu activation verification failed' }
     & node (Join-Path $projectRoot 'tests\e2e\project-panel-e2e.mjs')
@@ -64,6 +77,12 @@ if (-not $SkipBrowser) {
     if ($LASTEXITCODE -ne 0) { throw 'Previous Unity unidentified-project streaming discovery failed' }
     & node (Join-Path $projectRoot 'tests\e2e\editor-installations-e2e.mjs') --same-version
     if ($LASTEXITCODE -ne 0) { throw 'Installed Editor panel browser verification failed' }
+    foreach ($hubBrowserScript in @('e2e/editor-licensing-e2e.mjs', 'e2e/hub-project-status-e2e.mjs')) {
+        & node (Join-Path $projectRoot "tests\$hubBrowserScript")
+        if ($LASTEXITCODE -ne 0) { throw "Unity Hub local browser verification failed: $hubBrowserScript" }
+        & node (Join-Path $projectRoot "tests\$hubBrowserScript") --previous
+        if ($LASTEXITCODE -ne 0) { throw "Previous Unity Hub local browser verification failed: $hubBrowserScript" }
+    }
 }
 $gitArguments = @((Join-Path $projectRoot 'tests\e2e\git-e2e.mjs'))
 if ($SkipBrowser) { $gitArguments += '--skip-browser' }
@@ -84,6 +103,20 @@ if ($RealCore) {
         & node (Join-Path $projectRoot 'tests\e2e\insight-e2e.mjs') --binary (Join-Path $shellRoot 'target\debug\GameCowork.exe') --package $AgentTestPackage
         if ($LASTEXITCODE -ne 0) { throw 'Actual local index HTTP/GUI verification failed' }
     }
+}
+if ($RealCore -or $Chat) {
+    if (-not $SkipBrowser) {
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Preserved Quick/History/ReactFlow client browser verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous GUI preserved Quick/History/ReactFlow client browser verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --cpa-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Original Quick CPA image protocol verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --previous --cpa-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous original Quick CPA image protocol verification failed' }
+    }
+    & node (Join-Path $projectRoot 'tests\integration\core-command-bootstrap.mjs') --package $AgentTestPackage
+    if ($LASTEXITCODE -ne 0) { throw 'Actual Core/Agent command bootstrap and workspace ownership verification failed' }
 }
 if ($Chat) {
     & node (Join-Path $projectRoot 'tests\integration\cli-runtime-smoke.mjs') --package $AgentTestPackage --prewarm
@@ -110,6 +143,18 @@ if ($Chat) {
     }
 }
 if ($Editor) {
+    & node (Join-Path $projectRoot 'tests\integration\editor-context-smoke.mjs') --package $AgentTestPackage --extra-queries
+    if ($LASTEXITCODE -ne 0) { throw 'Actual Editor context and model query verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-asset-package-smoke.mjs') --graphics
+    if ($LASTEXITCODE -ne 0) { throw 'Actual native asset preview and loaded package verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-scene-mutations-smoke.mjs')
+    if ($LASTEXITCODE -ne 0) { throw 'Actual scene/object mutation, Undo, save and cancellation verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-scene-mutations-agent-smoke.mjs') --package $AgentTestPackage
+    if ($LASTEXITCODE -ne 0) { throw 'Actual model-issued scene/object edit approval and effect verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-console-smoke.mjs') --package $AgentTestPackage
+    if ($LASTEXITCODE -ne 0) { throw 'Actual Unity Console read/approval/cancellation verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\editor-scene-queries-smoke.mjs') --package $AgentTestPackage --issued-tools
+    if ($LASTEXITCODE -ne 0) { throw 'Actual Unity scene/object query and Agent consumer verification failed' }
     & node (Join-Path $projectRoot 'tests\e2e\lsp-unity-e2e.mjs')
     if ($LASTEXITCODE -ne 0) { throw 'Actual Unity-generated classic C# project LSP verification failed' }
     $genericArguments = @((Join-Path $projectRoot 'tests\e2e\editor-generic-host-e2e.mjs'))

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <link rel="icon" type="image/svg+xml" href="/codely-generator/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tuanjie AI</title>
+    <meta name="keywords" content="Tuanjie AI, Tuanjie引擎"/>
+    <meta name="description" content="通过 Tuanjie 引擎的强大功能，我们助力游戏开发者全球推广，连接玩家与创意作品，释放游戏潜力。"/>
+    <script>
+      
+      
+      
+      (function () {
+        try {
+          var path = window.location.pathname;
+          var t;
+          if (path.indexOf("/admin") === 0) {
+            t = "light";
+          } else {
+            t = new URLSearchParams(window.location.search).get("theme");
+            if (!t) t = localStorage.getItem("vite-ui-theme") || "light";
+            if (t === "system") {
+              t = window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+            }
+            if (t !== "dark") t = "light";
+          }
+          document.documentElement.classList.add(t);
+          document.documentElement.classList.toggle(
+            "generation-theme",
+            /^\/(lab3d|generation-history)\/?$/.test(path)
+          );
+          
+          
+          if (new URLSearchParams(window.location.search).get("embed") === "1") {
+            document.documentElement.classList.add("embed-mode");
+          }
+        } catch (e) {
+          document.documentElement.classList.add("light");
+        }
+      })();
+    </script>
+    <!-- Original analytics block 1 removed for the local host. -->
+    <!-- Original analytics block 2 removed for the local host. -->
+    <!-- Original analytics block 3 removed for the local host. -->
+    <script type="module" crossorigin src="/codely-generator/assets/index-DZWJHC3S.js"></script>
+    <link rel="stylesheet" crossorigin href="/codely-generator/assets/index-Vko6F7IJ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

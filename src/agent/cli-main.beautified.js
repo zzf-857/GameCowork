@@ -280252,7 +280252,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
         case "manage_scene":
           return r === "get_hierarchy";
         case "manage_editor":
-          return r === "get_state";
+          return ["get_state", "get_project_root", "get_selection", "get_windows", "get_tags", "get_layers", "get_active_tool"].includes(r);
         case "manage_package":
           return r === "list_packages";
         case "manage_bake":
@@ -280343,6 +280343,9 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
     var gcwEditorControlClientId;
     function gcwIsEditorControl(command, params) {
       return command === "manage_editor" && ["play", "pause", "resume", "stop", "refresh"].includes(params?.action);
+    }
+    function gcwIsSceneMutation(command, params) {
+      return command === "manage_gameobject" && ["create", "modify"].includes(params?.action) || command === "manage_scene" && params?.action === "save";
     }
     function gcwEditorControlContext(params, client, signal) {
       const crypto = require("node:crypto"), seconds = params.timeoutSeconds ?? (params.action === "refresh" ? 180 : 60);
@@ -280447,6 +280450,34 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
       return outcome?.cancelled === true && outcome.applied === false ? "Editor request cancelled before its effect was applied" :
         outcome?.applied === true ? "Editor effect was already submitted/applied; stopped waiting without rollback" : "Editor effect state is unknown; cancellation was not confirmed";
     }
+    function gcwVerifyConsoleClear(context, result) {
+      gcwEditorControlGuard(context);
+      if (result?.success !== true || result.cleared !== true || result.applied !== true || result.cancellationSupported !== true || result.scope !== "all" ||
+          !/^[a-f0-9]{32}$/.test(result.operationId || "") || context.client.normalizeProjectRootPath(result.projectRoot || "") !== context.canonicalRoot)
+        throw Error("Console clear response lacks its completed originating effect identity");
+      context.operationId = result.operationId;
+      return result;
+    }
+    function gcwVerifySceneMutation(context, result, command) {
+      gcwEditorControlGuard(context);
+      if (result?.success !== true || result.applied !== true || result.cancellationSupported !== true || result.command !== command || result.action !== context.action ||
+          !/^[a-f0-9]{32}$/.test(result.operationId || "") || context.client.normalizeProjectRootPath(result.projectRoot || "") !== context.canonicalRoot)
+        throw Error("Scene mutation response lacks its completed originating effect identity");
+      if (command === "manage_scene" && (result.saved !== true || result.dirty !== false || typeof result.scenePath !== "string" || !/^Assets\/.+\.(unity|scene)$/i.test(result.scenePath)))
+        throw Error("Scene save did not confirm its loaded scene file and clean saved state");
+      if (command === "manage_gameobject" && (!result.target || !Number.isInteger(result.target.instanceID)))
+        throw Error("GameObject mutation did not confirm its actual target instance");
+      context.operationId = result.operationId;
+      return result;
+    }
+    function gcwEditorCancellationReason(invocation, result) {
+      if (!(invocation instanceof mQ) || !(gcwIsEditorControl(invocation.command, invocation.params) || gcwIsSceneMutation(invocation.command, invocation.params) || invocation.command === "read_console" && invocation.params?.action === "clear"))
+        return "User cancelled tool execution.";
+      const state = result?.data;
+      if (state?.applied === true) return "The originating Editor effect was already submitted/applied (applied:true); cancellation did not roll it back. Inspect the original project before retrying.";
+      if (state?.applied === false && state.cancelled === true) return "The owning Editor confirmed cancellation before the originating effect (applied:false); no effect was submitted.";
+      return "Cancellation was requested, but the owning Editor's final effect outcome is unconfirmed. Do not infer rollback or automatically repeat the write.";
+    }
     async function gcwAwaitEditorControl(context, state) {
       if (!context.operationId && state?.operationId) context.operationId = state.operationId;
       for (;;) {
@@ -280489,6 +280520,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
           (mQ = class extends a_e {
             constructor(e, t, r) {
               (super(r), (this.command = e), (this.displayName = t));
+              if (gcwIsSceneMutation(e, r)) this.originatingProjectRoot = ks.getProjectRoot();
             }
             getDescription() {
               return `Execute Unity ${this.displayName}: ${this.command}`;
@@ -280502,7 +280534,14 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                   message: `Unity ${this.command} aborted before start`,
                   error: { message: "aborted" },
                 };
-              let r = ks.getInstance(), gcwControl = gcwIsEditorControl(this.command, this.params) ? gcwEditorControlContext(this.params, r, e) : null;
+              let r = ks.getInstance(), gcwConsoleClear = this.command === "read_console" && this.params?.action === "clear",
+                gcwSceneMutation = gcwIsSceneMutation(this.command, this.params), gcwImmediateEffect = gcwConsoleClear || gcwSceneMutation,
+                gcwControl = gcwIsEditorControl(this.command, this.params) || gcwImmediateEffect ? gcwEditorControlContext(this.params, r, e) : null;
+              if (gcwSceneMutation && r.normalizeProjectRootPath(this.originatingProjectRoot || "") !== gcwControl.canonicalRoot) {
+                gcwControl.dispose();
+                const message = "Originating scene project changed while awaiting approval; mutation was not submitted";
+                return {success:false,llmContent:message,returnDisplay:message,error:{message}};
+              }
               try {
               if (e?.aborted)
                 return {
@@ -280575,7 +280614,7 @@ When in doubt, use this tool. Being proactive with task management demonstrates 
                     h = p?.data ?? p,
                     m = this.command === "manage_shader" && o === "compile";
                   if (gcwControl && p?.success !== false && h?.success !== false)
-                    h = await gcwAwaitEditorControl(gcwControl, h);
+                    h = gcwConsoleClear ? gcwVerifyConsoleClear(gcwControl, h) : gcwSceneMutation ? gcwVerifySceneMutation(gcwControl, h, this.command) : await gcwAwaitEditorControl(gcwControl, h);
                   if (h && typeof h == "object" && h.success === !1 && !(m && (xvn(h) || xvn(p)))) {
                     let y = h.error || h.message || "Unity command failed",
                       S = typeof h.code == "string" ? h.code : void 0,
@@ -280709,7 +280748,7 @@ ${_}
                         ...(cancellation ? { data: cancellation } : {}),
                       };
                   }
-                  if (gcwControl && gcwControl.requestId && !gcwControl.operationId && !gcwControl.expired && gcwEditorTransient(p)) {
+                  if (gcwControl && !gcwImmediateEffect && gcwControl.requestId && !gcwControl.operationId && !gcwControl.expired && gcwEditorTransient(p)) {
                     try { const completed = await gcwAwaitEditorControl(gcwControl, null); return { success: true, data: completed, llmContent: "Unity manage_editor completed successfully\n" + JSON.stringify(completed, null, 2), returnDisplay: "Unity Editor reached " + completed.playMode }; }
                     catch (outcome) { l = outcome; }
                   }
@@ -281758,13 +281797,13 @@ return path;`,
               super(
                 e.Name,
                 "Unity Editor Controller",
-                "Controls Unity Editor state (play/pause/resume/stop), synchronously imports changed project files with refresh, and retrieves current state. Refresh compiles code changes when required, clears Console, and returns the resulting Console errors and warnings. Use get_state whenever a decision requires a comprehensive current-state snapshot.",
+                "Reads the current Editor state, selection, project root, open windows, tags, named layers and active tool. Also controls play/pause/resume/stop and synchronously refreshes changed project files. Read queries never select objects, focus/open windows, change tools or import assets. Refresh stops Play Mode, compiles when required, clears Console and returns resulting errors and warnings.",
                 {
                   type: "object",
                   properties: {
                     action: {
                       type: "string",
-                      enum: ["get_state", "refresh", "play", "pause", "resume", "stop"],
+                      enum: ["get_state", "get_project_root", "get_selection", "get_windows", "get_tags", "get_layers", "get_active_tool", "refresh", "play", "pause", "resume", "stop"],
                       description:
                         'Action to perform. Use "get_state" for full state and "refresh" once per batch after changing project files outside Unity. Refresh automatically stops Play Mode (including paused play) \u2014 this discards all live runtime state \u2014 waits for Edit Mode before importing, and remains in Edit Mode afterward; tell the user before refreshing while they may be testing. Refresh synchronously imports changed assets, compiles code changes when required, clears Console, and returns the resulting Console errors and warnings. Use "pause" to pause and "resume" to resume play mode. Refresh and play/pause/resume/stop return only after the editor reaches the requested state.',
                     },
@@ -281787,8 +281826,9 @@ return path;`,
               return t.action === "pause" ? { ...t, targetPaused: !0 } : t;
             }
             validateToolParams(t) {
+              if (t.command !== undefined || t.operation !== undefined) return "Unity tools use action; command/operation selector aliases are not supported";
               if (!t.action) return "action parameter is required";
-              let r = ["get_state", "refresh", "play", "pause", "resume", "stop"];
+              let r = ["get_state", "get_project_root", "get_selection", "get_windows", "get_tags", "get_layers", "get_active_tool", "refresh", "play", "pause", "resume", "stop"];
               if (!r.includes(t.action)) return `Unknown action: ${t.action}. Valid actions are: ${r.join(", ")}`;
               if (t.action === "resume") {
                 if (t.singleFrame === void 0) return "singleFrame is required for resume action";
@@ -281923,42 +281963,31 @@ return path;`,
               super(
                 e.Name,
                 "Unity Package Manager",
-                "Manages Unity packages via UPM. install_package and remove_package return when the operation is finished. Can also list installed packages.",
+                "Lists the actual packages currently registered and loaded by this Editor, including their resolved versions and sources. This local query does not call online UPM, edit manifest.json or install/remove packages. Unresolved manifest entries and remotely available packages are not claimed to be loaded.",
                 {
                   type: "object",
                   properties: {
                     action: {
                       type: "string",
-                      enum: ["install_package", "remove_package", "list_packages"],
+                      enum: ["list_packages"],
                       description: "Package operation to perform",
                     },
-                    id_or_url: {
-                      type: "string",
-                      description:
-                        'Package identifier (e.g., "com.unity.textmeshpro") or Git URL for install_package action',
-                      minLength: 1,
-                    },
-                    version: {
-                      type: "string",
-                      description:
-                        'Optional version to install (e.g., "1.2.3"). Can also use format "package@version" in id_or_url.',
-                    },
-                    package_name: { type: "string", description: "Package name for remove_package action" },
                     timeoutSeconds: {
                       type: "integer",
-                      description: "Timeout in seconds for the operation (default: 300)",
+                      description: "Response budget for the bounded loaded-package query (default: 300)",
                       minimum: 1,
+                      maximum: 300,
                       default: 300,
                     },
                   },
                   required: ["action"],
                 },
-                "manage_package",
+                "manage_package", qk.Read,
               );
             }
             validateToolParams(t) {
               if (!t.action) return "action parameter is required";
-              let r = ["install_package", "remove_package", "list_packages"];
+              let r = ["list_packages"];
               if (!r.includes(t.action)) return `Unknown action: ${t.action}. Valid actions are: ${r.join(", ")}`;
               switch (t.action) {
                 case "install_package":
@@ -281976,13 +282005,7 @@ return path;`,
                 default:
                   break;
               }
-              if (t.timeoutSeconds !== void 0)
-                try {
-                  let n = zu.parseInteger(t.timeoutSeconds, "timeoutSeconds");
-                  if (n !== void 0 && n < 1) return "timeoutSeconds must be at least 1";
-                } catch (n) {
-                  return n instanceof Error ? n.message : "Invalid timeoutSeconds parameter";
-                }
+              if (t.timeoutSeconds !== undefined && (!Number.isInteger(t.timeoutSeconds) || t.timeoutSeconds < 1 || t.timeoutSeconds > 300)) return "timeoutSeconds must be an integer in 1..300";
               return null;
             }
           }),
@@ -282575,6 +282598,7 @@ return path;`,
               );
             }
             validateToolParams(t) {
+              if (t.command !== undefined || t.operation !== undefined) return "Unity tools use action; command/operation selector aliases are not supported";
               if (
                 ((t.action = t.action || "get"),
                 (t.types = t.types || ["error", "warning", "log"]),
@@ -283091,6 +283115,9 @@ Log: Player spawned at position (0, 0, 0)`,
           (i6.loadPromise = null),
           (i6.loadGeneration = 0));
       }),
+      gcwSceneQueryTool,
+      gcwGameObjectQueryTool,
+      gcwAssetQueryTool,
       n6n,
       Yp,
       emu = Y(() => {
@@ -283132,6 +283159,100 @@ Log: Player spawned at position (0, 0, 0)`,
           Jvn(),
           Xvn(),
           r6n(),
+          (gcwSceneQueryTool = class e extends zu {
+            constructor() {
+              super(e.Name, "Unity Scene Operations", "Reads currently loaded ordinary scene hierarchies or saves an already saved, loaded scene to its own existing file after approval. Save never opens another scene or performs SaveAs, and refuses Play Mode, unsaved/preview scenes, linked paths and outside-project targets. A disk save is not automatically rolled back on later cancellation.", {
+                type: "object", properties: { action: { type: "string", enum: ["get_hierarchy", "save"] }, path: {type:"string",description:"Existing loaded Assets/... scene file for save"}, sceneHandle: {type:"integer",description:"Exact loaded scene handle for save; path and handle must refer to the same scene"}, timeoutSeconds:{type:"integer",minimum:1,maximum:180} }, required: ["action"], additionalProperties:false,
+              }, pF.manage_scene, qk.Other);
+            }
+            validateToolParams(t) {
+              if (!["get_hierarchy","save"].includes(t.action)) return "action must be get_hierarchy or save";
+              if (t.sceneHandle !== undefined && (!Number.isInteger(t.sceneHandle) || t.sceneHandle < -2147483648 || t.sceneHandle > 2147483647)) return "sceneHandle must be an exact signed 32-bit integer";
+              if (t.path !== undefined && (typeof t.path !== "string" || !t.path || t.path.length > 2048 || !/^Assets\//.test(t.path) || t.path.includes("\\") || t.path.split("/").some(x=>x==="."||x===".."||!x) || !/\.(unity|scene)$/i.test(t.path))) return "path must be a normalized existing Assets scene file";
+              if (t.timeoutSeconds !== undefined && (!Number.isInteger(t.timeoutSeconds) || t.timeoutSeconds < 1 || t.timeoutSeconds > 180)) return "timeoutSeconds must be an integer in 1..180";
+              if (t.action === "get_hierarchy" && (t.path !== undefined || t.sceneHandle !== undefined)) return "Scene selectors are only valid for save";
+              return null;
+            }
+          }),
+          (gcwSceneQueryTool.Name = "unity_scene"),
+          (gcwGameObjectQueryTool = class e extends zu {
+            constructor() {
+              super(e.Name, "Unity GameObject Operations", "Finds loaded scene objects, reads their children/serialized components, or creates an empty object and modifies its local position/rotation/scale or active state after approval. Create/modify use Undo in Edit Mode and mark the actual scene dirty; they do not save it, instantiate prefabs or add arbitrary components. Queries never load prefab assets or closed scenes. Prefer returned instance IDs; ambiguous names/paths fail.", {
+                type: "object", properties: {
+                  action: { type: "string", enum: ["find", "list_children", "get_components", "create", "modify"] },
+                  name: {type:"string", minLength:1,maxLength:256,description:"Name of the new empty object for create"},
+                  parent: {type:"object",properties:{id:{type:"integer"},name:{type:"string"},hierarchy_path:{type:"string"}},additionalProperties:false,description:"Optional exact loaded parent selector for create"},
+                  position: {type:"array",items:{type:"number",minimum:-1000000,maximum:1000000},minItems:3,maxItems:3,description:"Local position [x,y,z]"},
+                  rotation: {type:"array",items:{type:"number",minimum:-1000000,maximum:1000000},minItems:3,maxItems:3,description:"Local Euler angles in degrees [x,y,z]"},
+                  scale: {type:"array",items:{type:"number",minimum:-1000000,maximum:1000000},minItems:3,maxItems:3,description:"Local scale [x,y,z]"},
+                  setActive: {type:"boolean",description:"Set the object's own activeSelf state"},
+                  timeoutSeconds: {type:"integer",minimum:1,maximum:180},
+                  searchTerm: { type: "string", description: "Exact name, hierarchy path or signed integer instance ID for find" },
+                  searchMethod: { type: "string", enum: ["by_name", "by_path", "by_id"], default: "by_name" },
+                  findAll: { type: "boolean", default: false }, searchInactive: { type: "boolean", default: false },
+                  target: { type: "object", properties: { id: { type: "integer", minimum: -2147483648, maximum: 2147483647 }, name: { type: "string" }, hierarchy_path: { type: "string" } }, additionalProperties: false, description: "Target for list_children/get_components: exactly one selector {id}, {name} or {hierarchy_path}. Prefer its signed instance ID; ambiguous names/paths fail." },
+                  includeNonPublicSerialized: { type: "boolean", default: false, description: "Include hidden serialized fields; never invokes arbitrary C# property getters" },
+                }, required: ["action"], additionalProperties:false,
+              }, pF.manage_gameobject, qk.Other);
+            }
+            validateToolParams(t) {
+              if (!["find", "list_children", "get_components", "create", "modify"].includes(t.action)) return "action must be find, list_children, get_components, create or modify";
+              const mutable = ["create", "modify"].includes(t.action);
+              for (const key of ["position","rotation","scale"]) if (t[key] !== undefined && (!mutable || !Array.isArray(t[key]) || t[key].length !== 3 || t[key].some(x=>typeof x!=="number"||!Number.isFinite(x)||Math.abs(x)>1000000))) return key + " must be three finite numbers in -1000000..1000000 for create/modify";
+              if (t.setActive !== undefined && (!mutable || typeof t.setActive !== "boolean")) return "setActive must be a boolean for create/modify";
+              if (t.timeoutSeconds !== undefined && (!Number.isInteger(t.timeoutSeconds) || t.timeoutSeconds < 1 || t.timeoutSeconds > 180)) return "timeoutSeconds must be an integer in 1..180";
+              if (t.action === "modify" && !["position","rotation","scale","setActive"].some(key=>t[key]!==undefined)) return "modify requires a transform or active-state change";
+              if (t.name !== undefined && t.action !== "create") return "name is only valid for create";
+              if (t.parent !== undefined && t.action !== "create") return "parent is only valid for create";
+              if (t.action === "create") {
+                if (typeof t.name !== "string" || !t.name.trim() || t.name.length > 256 || /[\u0000-\u001f\u007f]/.test(t.name)) return "create requires a name of 1..256 characters without control characters";
+                if (t.target !== undefined) return "create uses parent, not target";
+                if (t.parent !== undefined) { const error = this.validateToolParams({action:"get_components",target:t.parent}); if (error) return "Invalid parent: " + error; }
+                return null;
+              }
+              if (t.searchMethod !== void 0 && !["by_name", "by_path", "by_id"].includes(t.searchMethod)) return "searchMethod must be by_name, by_path or by_id";
+              for (const key of ["findAll", "searchInactive", "includeNonPublicSerialized"]) if (t[key] !== void 0 && typeof t[key] !== "boolean") return key + " must be a boolean";
+              if (t.action === "find") {
+                if (typeof t.searchTerm !== "string" || !t.searchTerm || t.searchTerm.length > 2048) return "searchTerm must be a non-empty string of at most 2048 characters";
+                if (t.searchMethod === "by_id" && (!/^-?\d+$/.test(t.searchTerm) || Number(t.searchTerm) < -2147483648 || Number(t.searchTerm) > 2147483647)) return "by_id requires an exact signed 32-bit integer";
+              } else {
+                if (t.target === null || t.target === void 0) return "target is required";
+                if (typeof t.target === "number" && (!Number.isInteger(t.target) || t.target < -2147483648 || t.target > 2147483647)) return "target instance ID must be a signed 32-bit integer";
+                if (!["string", "number", "object"].includes(typeof t.target) || Array.isArray(t.target)) return "target must be a name, instance ID or selector object";
+                if (typeof t.target === "object") {
+                  const keys = Object.keys(t.target); if (keys.length !== 1 || !["id", "name", "hierarchy_path"].includes(keys[0])) return "target requires exactly one of id, name or hierarchy_path";
+                  if (keys[0] === "id" && ((typeof t.target.id !== "number" && typeof t.target.id !== "string") || !/^-?\d+$/.test(String(t.target.id)) || Number(t.target.id) < -2147483648 || Number(t.target.id) > 2147483647)) return "target.id must be an exact signed 32-bit integer";
+                  if (keys[0] !== "id" && (typeof t.target[keys[0]] !== "string" || !t.target[keys[0]] || t.target[keys[0]].length > 2048)) return "target selector must be a non-empty string of at most 2048 characters";
+                }
+                if (typeof t.target === "string" && (!t.target || t.target.length > 2048)) return "target must be a non-empty string of at most 2048 characters";
+              }
+              return null;
+            }
+          }),
+          (gcwGameObjectQueryTool.Name = "unity_gameobject"),
+          (gcwAssetQueryTool = class e extends zu {
+            constructor() {
+              super(e.Name, "Unity Asset Query", "Searches the real Editor AssetDatabase or reads an asset's actual imported metadata. Queries Assets and registered Packages mounts, with page/completeness limits. Optional previews use actual AssetPreview output and may be pending or unavailable; metadata success is not a fake preview. Does not edit assets, select objects, import files or install packages.", {
+                type:"object",properties:{
+                  action:{type:"string",enum:["search","get_info"]},path:{type:"string",description:"Asset file for get_info; optional folder scope for search"},
+                  searchPattern:{type:"string",maxLength:512,description:"Asset name search text"},filterType:{type:"string",maxLength:128,description:"Unity asset type name"},filterDateAfter:{type:"string",maxLength:128,description:"UTC/ISO last-modified lower bound"},
+                  pageSize:{type:"integer",minimum:1,maximum:100,default:50},pageNumber:{type:"integer",minimum:1,maximum:100000,default:1},generatePreview:{type:"boolean",default:false},
+                },required:["action"],additionalProperties:false,
+              }, "manage_asset", qk.Read);
+            }
+            validateToolParams(t) {
+              if (!["search","get_info"].includes(t.action)) return "action must be search or get_info";
+              if (t.action === "get_info" && (typeof t.path !== "string" || !t.path)) return "get_info requires path";
+              for (const [key,limit] of [["path",2048],["searchPattern",512],["filterType",128],["filterDateAfter",128]]) if (t[key] !== undefined && (typeof t[key] !== "string" || t[key].length > limit || /[\u0000-\u001f\u007f]/.test(t[key]))) return key + " must be bounded text without control characters";
+              if (t.path !== undefined && (t.path.includes("\\") || t.path.startsWith("/") || t.path.includes(":") || t.path.split("/").some(x=>x==="."||x===".."))) return "path must be a normalized Assets or Packages asset path";
+              if (t.pageSize !== undefined && (!Number.isInteger(t.pageSize) || t.pageSize < 1 || t.pageSize > 100)) return "pageSize must be an integer in 1..100";
+              if (t.pageNumber !== undefined && (!Number.isInteger(t.pageNumber) || t.pageNumber < 1 || t.pageNumber > 100000)) return "pageNumber must be an integer in 1..100000";
+              if (t.generatePreview !== undefined && typeof t.generatePreview !== "boolean") return "generatePreview must be a boolean";
+              if (t.filterDateAfter !== undefined && t.filterDateAfter !== "" && (!/^\d{4}-\d{2}-\d{2}(?:$|T)/.test(t.filterDateAfter) || !Number.isFinite(Date.parse(t.filterDateAfter)))) return "filterDateAfter must be a UTC/ISO date or date-time";
+              return null;
+            }
+          }),
+          (gcwAssetQueryTool.Name = "unity_asset"),
           (Yp = class {
             static normalizeExcludedToolSet(e) {
               let t = new Set((e ?? []).map((r) => String(r ?? "").trim()).filter(Boolean));
@@ -283217,7 +283338,7 @@ Log: Player spawned at position (0, 0, 0)`,
                     ),
                 n.has("exec_editor_script") &&
                   u.push(
-                    "**1. Prefer `exec_editor_script` for Editor object and asset writes**\n- Create or configure GameObjects, components, scenes, prefabs, and materials through `exec_editor_script` (or file tools for on-disk assets).\n- Make writes idempotent when you can: read current state before creating or assigning.",
+                    "**1. Prefer implemented local operations for Editor writes**\n- Use unity_gameobject create/modify for supported empty-object, local-transform and active-state edits, and unity_scene save for an already saved loaded scene. Read exact object identities first. Arbitrary script/component/prefab execution requires a separate supported bridge lifecycle; do not claim an unavailable script command completed.",
                   ));
               let a = [];
               if (
@@ -283230,11 +283351,11 @@ Log: Player spawned at position (0, 0, 0)`,
                   (a.push("- Baking: `unity_bake.bake_navmesh` / `bake_lighting` return when the bake has finished"),
                   n.has("unity_package") &&
                     a.push(
-                      "- Before `unity_bake.bake_navmesh`, call `unity_package.list_packages`; if `com.unity.ai.navigation` is missing, call `unity_package.install_package` for `com.unity.ai.navigation`, then bake",
+                      "- Before `unity_bake.bake_navmesh`, inspect actually loaded dependencies with `unity_package.list_packages`. Local installation/removal is not offered; missing navigation dependencies cannot be treated as installed.",
                     )),
                 n.has("unity_package") &&
                   a.push(
-                    "- UPM: `unity_package.install_package` / `remove_package` return when the package is resolved and the editor has reloaded",
+                    "- Local UPM: `unity_package.list_packages` returns the Editor's currently loaded registered packages. It does not resolve manifest entries, contact online UPM or install/remove packages.",
                   ),
                 a.length > 0 &&
                   u.push(`**3. Long-running operations already run to completion \u2014 never poll them**
@@ -283447,6 +283568,9 @@ ${p}`
           (n6n = Yp),
           (Yp.tools = [
             new Vpe(),
+            new gcwSceneQueryTool(),
+            new gcwGameObjectQueryTool(),
+            new gcwAssetQueryTool(),
             new RW(),
             new Ype(),
             new qpe(),
@@ -283546,6 +283670,8 @@ ${p}`
       let r = e === "all" ? "Unity Console" : `Unity Console (${e})`;
       try {
         let n = await new RW().build({ types: [e] }).execute(t);
+        if (n.success !== true)
+          return { success: false, content: lJr(n.llmContent) || "", displayName: r, error: n.error?.message || n.message || "Failed to read Unity Console" };
         return { success: !0, content: lJr(n.llmContent) || `Unity Console: no ${e} messages found.`, displayName: r };
       } catch (n) {
         return { success: !1, content: "", displayName: r, error: `Failed to read Unity Console: ${k3r(n)}` };
@@ -290207,7 +290333,7 @@ ${t.map(([n, s]) => `  ${this.params.questions[Number.parseInt(n, 10)]?.header ?
       if (j0u.has(e)) return !0;
       let r = $0u[e];
       if (!r || r.size === 0) return !1;
-      let n = t?.command ?? t?.action ?? t?.operation;
+      let n = t?.action ?? t?.command ?? t?.operation;
       return n ? r.has(n) : !1;
     }
     function F$a(e) {
@@ -290273,6 +290399,7 @@ ${t.map(([n, s]) => `  ${this.params.questions[Number.parseInt(n, 10)]?.header ?
           ($0u = {
             unity_editor: new Set([
               "get_state",
+              "get_project_root", "get_selection", "get_windows", "get_tags", "get_layers", "get_active_tool",
               "get_current_state",
               "wait_for_idle",
               "wait_for_compile",
@@ -290287,11 +290414,12 @@ ${t.map(([n, s]) => `  ${this.params.questions[Number.parseInt(n, 10)]?.header ?
             unity_script: new Set(["read", "validate", "get", "list"]),
             unity_scene: new Set(["get_hierarchy", "get_open_scenes", "is_scene_loaded"]),
             unity_gameview: new Set(["get", "capture"]),
-            unity_asset: new Set(["get", "list", "exists", "find"]),
+            unity_asset: new Set(["get", "list", "exists", "find", "search", "get_info"]),
+            unity_package: new Set(["list_packages"]),
             unity_menu: new Set(["get"]),
             unity_bake: new Set([]),
             unity_ui_toolkit: new Set([]),
-            unity_gameobject: new Set(["get", "find", "list"]),
+            unity_gameobject: new Set(["get", "find", "list", "list_children", "get_components"]),
             execute_csharp_script: new Set([]),
             execute_custom_tool: new Set([]),
           }),
@@ -291956,6 +292084,8 @@ Please provide all required parameters for the "${p}" tool.`);
               );
             }
             isSerialMutatorCall(e) {
+              const invocation = e.invocation;
+              if (invocation instanceof mQ && (gcwIsEditorControl(invocation.command, invocation.params) || gcwIsSceneMutation(invocation.command, invocation.params) || invocation.command === "read_console" && invocation.params?.action === "clear")) return true;
               return ZJr(e.request.name, e.tool.kind);
             }
             nextExecutableBatch(e) {
@@ -292075,13 +292205,14 @@ Please provide all required parameters for the "${p}" tool.`);
                       _ = u.startTime ? E - u.startTime : void 0,
                       C = E - A;
                     if (p.aborted) {
+                      const cancellationReason = gcwEditorCancellationReason(c, g);
                       (this.finishToolExecutionSpan(a, {
                         status: "cancelled",
                         execution_duration_ms: C,
                         lifecycle_duration_ms: _,
-                        error: "User cancelled tool execution.",
+                        error: cancellationReason,
                       }),
-                        this.setStatusInternal(a, "cancelled", "User cancelled tool execution.", E),
+                        this.setStatusInternal(a, "cancelled", cancellationReason, E),
                         this.checkAndNotifyCompletion());
                       return;
                     }
@@ -324631,6 +324762,93 @@ Next steps:
                 (this.projectTempDir = t?.projectTempDir
                   ? ha.default.resolve(t.projectTempDir)
                   : Y8(this.projectRoot)));
+              this.initializeRewindPathGuards();
+            }
+            initializeRewindPathGuards() {
+              this.rewindGuardError = null;
+              try {
+                this.rewindRootAnchors = {
+                  project: { root: this.projectRoot, expected: this.inspectRewindPath(this.projectRoot, true, false) },
+                  backup: { root: this.projectTempDir, expected: this.inspectRewindPath(this.projectTempDir, true, true) },
+                };
+              } catch (error) {
+                // Other chat features can still run; only checkpoint read/write
+                // refuses a root whose real identity could not be established.
+                this.rewindGuardError = String(error);
+              }
+            }
+            rewindPathKey(file) {
+              const resolved = ha.default.resolve(file);
+              return process.platform === "win32" ? resolved.toLowerCase() : resolved;
+            }
+            inspectRewindPath(file, directory, allowMissing) {
+              const fs = require("node:fs"), resolved = ha.default.resolve(file), root = ha.default.parse(resolved).root;
+              const components = ha.default.relative(root, resolved).split(ha.default.sep).filter(Boolean);
+              const nodes = new Map();
+              let current = root;
+              for (let index = -1; index < components.length; index++) {
+                if (index >= 0) current = ha.default.join(current, components[index]);
+                let stat;
+                try { stat = fs.lstatSync(current, { bigint: true }); }
+                catch (error) {
+                  if (error.code === "ENOENT" && allowMissing) return { exists: false, nodes };
+                  throw error;
+                }
+                if (stat.isSymbolicLink()) throw Error(`Rewind does not support reparse or symbolic-link paths: ${current}`);
+                const last = index === components.length - 1;
+                if (!last || directory) {
+                  if (!stat.isDirectory()) throw Error(`Rewind parent is not a directory: ${current}`);
+                } else if (!stat.isFile() || stat.nlink > 1n) {
+                  throw Error(`Rewind requires a regular file without hard-link aliases: ${current}`);
+                }
+                const real = fs.realpathSync.native(current);
+                if (this.rewindPathKey(real) !== this.rewindPathKey(current)) throw Error(`Rewind path was redirected: ${current}`);
+                nodes.set(this.rewindPathKey(current), [stat.dev, stat.ino, stat.birthtimeNs].map(String).join(":"));
+              }
+              return { exists: true, nodes };
+            }
+            compareRewindPaths(previous, current, allowCreatedRoot = false) {
+              for (const [file, identity] of previous.nodes) {
+                if (current.nodes.get(file) !== identity) throw Error(`Rewind path identity changed: ${file}`);
+              }
+              if (!allowCreatedRoot && previous.exists !== current.exists) throw Error("Rewind file existence changed after its plan was checked");
+            }
+            assertRewindRoot(kind) {
+              if (this.rewindGuardError) throw Error(this.rewindGuardError);
+              const anchor = this.rewindRootAnchors?.[kind];
+              if (!anchor) throw Error("Rewind root identity is unavailable");
+              const current = this.inspectRewindPath(anchor.root, true, false);
+              this.compareRewindPaths(anchor.expected, current, !anchor.expected.exists);
+              if (!anchor.expected.exists) anchor.expected = current;
+              return anchor;
+            }
+            checkRewindFile(file, kind, previous) {
+              try {
+                const anchor = this.assertRewindRoot(kind), resolved = ha.default.resolve(file);
+                if (this.rewindPathKey(resolved) === this.rewindPathKey(anchor.root) || !xh(resolved, anchor.root)) throw Error("Rewind file is outside its fixed root");
+                const current = this.inspectRewindPath(resolved, false, true);
+                if (previous) this.compareRewindPaths(previous, current);
+                return current;
+              } catch (error) {
+                error.code = "GAMECOWORK_REWIND_UNSAFE";
+                throw error;
+              }
+            }
+            validateRewindPlan(plan) {
+              if (plan.invalidRecords.length) throw Error(`Unsafe rewind plan: ${plan.invalidRecords[0].error}`);
+              const checked = new Map();
+              for (const action of plan.actionByPath.values()) {
+                const target = ha.default.resolve(this.projectRoot, action.relativePath);
+                const targetIdentity = this.checkRewindFile(target, "project");
+                let backupIdentity;
+                if (action.kind === "restore") {
+                  const backup = this.backupPath(action.backupSnapshotId, action.backupName);
+                  backupIdentity = this.checkRewindFile(backup, "backup");
+                  if (!backupIdentity.exists) throw Error(`Restore backup file is missing: ${action.relativePath}`);
+                }
+                checked.set(action.relativePath, { targetIdentity, backupIdentity });
+              }
+              return checked;
             }
             getCurrentSnapshotId() {
               return this.currentSnapshotId;
@@ -324963,6 +325181,7 @@ Next steps:
                 return {
                   canRewind: !1,
                   invalidRecords: [{ relativePath: "", error: `Invalid point index: ${e.pointIndex}` }],
+                  fileDetails: [],
                   point: {
                     pointIndex: e.pointIndex,
                     snapshotId: "",
@@ -324975,9 +325194,37 @@ Next steps:
                 };
               let r = this.collectCodeRestoreSnapshotsNewestToOldestAtPointIndex(e.pointIndex),
                 n = this.buildCodeRestorePlan(null, r),
-                s = n.actionByPath.size > 0,
+                details = [], summary = {};
+              // Restoring this point also undoes later turns. Preview exactly the
+              // same cumulative plan that restoreCodeAtPointIndex will apply,
+              // rather than just this turn's optional changeSummary.
+              for (const action of [...n.actionByPath.values()].sort((a, b) => a.relativePath.localeCompare(b.relativePath))) {
+                const current = ha.default.resolve(this.projectRoot, action.relativePath);
+                let backupExists = false, currentExists = false;
+                try {
+                  currentExists = this.checkRewindFile(current, "project").exists;
+                  let before = "";
+                  if (action.kind === "restore") {
+                    const backup = this.backupPath(action.backupSnapshotId, action.backupName);
+                    backupExists = this.checkRewindFile(backup, "backup").exists;
+                    if (!backupExists) throw Error("Restore backup file is missing");
+                    before = (await pa.default.readFile(backup)).toString("utf8");
+                  }
+                  const after = currentExists ? (await pa.default.readFile(current)).toString("utf8") : "";
+                  const delta = PEe(action.relativePath, before, after, after);
+                  const lineAdded = delta.ai_added_lines, lineDeleted = delta.ai_removed_lines;
+                  summary[action.relativePath] = { lineAdded, lineDeleted };
+                  details.push({ relativePath: action.relativePath, action: action.kind,
+                    lineAdded, lineDeleted, backupExists, currentExists });
+                } catch (error) {
+                  n.invalidRecords.push({ relativePath: action.relativePath, error: String(error) });
+                  details.push({ relativePath: action.relativePath, action: action.kind,
+                    lineAdded: 0, lineDeleted: 0, backupExists, currentExists });
+                }
+              }
+              let s = n.actionByPath.size > 0,
                 o = n.invalidRecords.length > 0,
-                u = t.files.length,
+                u = n.actionByPath.size,
                 a = n.actionByPath.size,
                 l = {
                   pointIndex: e.pointIndex,
@@ -324988,9 +325235,9 @@ Next steps:
                   hasCodeChanges: a > 0,
                   changedFileCount: u,
                   effectiveChangedFileCount: a,
-                  codeSummary: t.changeSummary,
+                  codeSummary: summary,
                 };
-              return { canRewind: s && !o, invalidRecords: n.invalidRecords, point: l };
+              return { canRewind: s && !o, invalidRecords: n.invalidRecords, point: l, fileDetails: details };
             }
             async restoreConversationByPointIndex(e) {
               if (!Number.isInteger(e.pointIndex) || e.pointIndex < 0)
@@ -325229,12 +325476,17 @@ Next steps:
                 s = 0,
                 o = 0,
                 u = 0;
+              // Reject any unsafe target or backup before the first write. The
+              // final checks below reduce path replacement races; path-based
+              // Node APIs cannot make this a native handle-relative transaction.
+              const checked = this.validateRewindPlan(r);
               for (let l of r.actionByPath.values())
                 try {
-                  let c = ha.default.resolve(this.projectRoot, l.relativePath);
+                  let c = ha.default.resolve(this.projectRoot, l.relativePath), guard = checked.get(l.relativePath);
+                  this.checkRewindFile(c, "project", guard.targetIdentity);
                   if (l.kind === "restore") {
                     let f = this.backupPath(l.backupSnapshotId, l.backupName);
-                    if (!(await this.exists(f))) {
+                    if (!this.checkRewindFile(f, "backup", guard.backupIdentity).exists) {
                       (console.warn("Rewind restore backup file not found, skipping restore", {
                         relativePath: l.relativePath,
                         backupName: l.backupName,
@@ -325244,19 +325496,22 @@ Next steps:
                         n.push({ relativePath: l.relativePath, status: "skipped" }));
                       continue;
                     }
-                    (await pa.default.mkdir(ha.default.dirname(c), { recursive: !0 }),
-                      await pa.default.copyFile(f, c),
+                    await pa.default.mkdir(ha.default.dirname(c), { recursive: !0 });
+                    this.checkRewindFile(c, "project", guard.targetIdentity);
+                    this.checkRewindFile(f, "backup", guard.backupIdentity);
+                    (await pa.default.copyFile(f, c, guard.targetIdentity.exists ? 0 : require("node:fs").constants.COPYFILE_EXCL),
                       (s += 1),
                       n.push({ relativePath: l.relativePath, status: "restored" }));
                     continue;
                   }
-                  (await this.exists(c))
+                  this.checkRewindFile(c, "project", guard.targetIdentity).exists
                     ? (await pa.default.unlink(c),
                       (o += 1),
                       n.push({ relativePath: l.relativePath, status: "deleted" }))
                     : ((u += 1), n.push({ relativePath: l.relativePath, status: "skipped" }));
                 } catch (c) {
                   n.push({ relativePath: l.relativePath, status: "failed", error: String(c) });
+                  if (c.code === "GAMECOWORK_REWIND_UNSAFE" || c.code === "EEXIST") break;
                 }
               for (let l of r.invalidRecords)
                 n.push({ relativePath: l.relativePath, status: "failed", error: l.error });
@@ -341555,6 +341810,7 @@ ${Array.from(this.agents.entries()).map(([e, t]) => `- **${e}**: ${t.description
             }
             getStorages(u) {
               let a = [];
+              if (n.has("unity_gameobject") && n.has("unity_scene")) u.push("**Local scene operations**\n- Prefer unity_gameobject create/modify for empty objects, local transform and active-state changes. These operations use approval and Undo in Edit Mode. Read exact IDs before modifying. Use unity_scene save only for an already saved, loaded scene's own file; a disk save is not Undoable and is never automatically rolled back. Unsupported components/prefab/SaveAs operations must not be claimed as implemented.");
               for (let c of this._sharedRegistry.values()) a = a.concat(c);
               let l = this._perCollectorRegistry.get(u);
               if (l != null) for (let c of l.values()) a = a.concat(c);
@@ -515274,31 +515530,11 @@ ${n.join(`
         let s = await n.previewCodeRestoreByPointIndex({ pointIndex: t }),
           o = s.canRewind ?? !1,
           u = s.invalidRecords ?? [],
-          a = [],
-          l = [],
+          a = s.fileDetails ?? [],
+          l = a.map(detail => detail.relativePath),
           c = 0,
           f = 0;
-        if (s.point.codeSummary) {
-          let A = s.point.codeSummary;
-          for (let d of Object.keys(A)) {
-            let p = A[d];
-            if (!p) continue;
-            let h = p.lineAdded ?? 0,
-              m = p.lineDeleted ?? 0;
-            (h > 0 || m > 0) &&
-              (l.push(d),
-              (c += h),
-              (f += m),
-              a.push({
-                relativePath: d,
-                action: "restore",
-                lineAdded: h,
-                lineDeleted: m,
-                backupExists: !0,
-                currentExists: !0,
-              }));
-          }
-        }
+        for (const detail of a) { c += detail.lineAdded; f += detail.lineDeleted; }
         return {
           type: "message_with_meta",
           messageType: "info",

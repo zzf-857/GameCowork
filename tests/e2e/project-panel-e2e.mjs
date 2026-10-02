@@ -5,6 +5,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { dismissToastStack } from "../support/dismiss-toast-stack.mjs";
 
 // A real Chromium renders the shipped desktop + GUI against the Rust host and a
 // fake stdio core. All data, logs, browser profiles, and screenshots stay in temp.
@@ -113,6 +114,9 @@ async function poll(predicate, description, timeout = 15000) {
     assert.ok(Date.now() < deadline, `Timed out waiting for ${description}`);
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
+}
+async function dismissActiveToasts() {
+  await dismissToastStack(gui, poll);
 }
 
 async function request(endpoint, body) {
@@ -246,7 +250,8 @@ try {
   assert.equal((await uiState()).activeSessionId, bSessionId, "Failed switch preserves B's session");
   checks.push("Independent arrows do not select a workspace; failed switch has a visible error and preserves B");
   await snapshot("07b-failed-switch");
-  for (const close of await gui.getByRole("button", { name: "Close toast", exact: true }).all()) await close.click();
+  await dismissActiveToasts();
+  await gui.getByText("fixture switch unavailable", { exact: true }).first().waitFor({ state: "hidden" });
 
   const section = gui.locator('[class*="group/workspace-section"]').filter({ has: gui.getByRole("button", { name: "A", exact: true }) });
   await section.hover();
@@ -276,14 +281,24 @@ try {
   assert.ok(!(await hostProjects()).some((entry) => samePath(entry.path, invalidPath)), "Invalid path was not persisted");
   checks.push("Invalid folder has a visible error and is absent from persisted projects");
   await snapshot("11-invalid-project-error");
-  for (const close of await gui.getByRole("button", { name: "Close toast", exact: true }).all()) await close.click();
+  await dismissActiveToasts();
   await gui.getByRole("button", { name: /^(AI资产生成|AI 资产生成|AI Asset Generation)$/ }).click();
-  await gui.getByTestId("gamecowork-assets-pending").waitFor({ state: "visible", timeout: 5000 });
-  await gui.getByText("生成 Provider 尚未配置", { exact: true }).waitFor({ state: "visible" });
-  assert.equal(await gui.locator("iframe").count(), 0, "No official asset iframe is mounted");
+  const assets = gui.getByTestId("ai-creation-panel");
+  await assets.waitFor({ state: "visible", timeout: 5000 });
+  for (const name of [/^(快速生成|Quick Generate)$/, /^(画布|Canvas)$/, /^(生成记录|生成历史|Generation History)$/]) {
+    assert.ok(await assets.getByRole("tab", { name }).isVisible(), "Original asset navigation remains reachable after project errors");
+  }
+  const creatorFrame = assets.locator('iframe');
+  await creatorFrame.first().waitFor({state:'attached'});
+  const creatorUrl = new URL(await creatorFrame.first().getAttribute('src'));
+  assert.equal(creatorUrl.origin, new URL(baseUrl).origin);
+  assert.equal(creatorUrl.pathname, '/lab3d');
+  assert.equal(await gui.getByTestId('gamecowork-assets').count(), 0, 'The earlier custom asset panel is no longer mounted');
   assert.deepEqual(originalAssetRequests, [], "The original asset/Canvas service was never requested");
-  checks.push("AI Asset Generation has a visible local pending page and never loads the original service");
-  await snapshot("12-assets-pending");
+  // This project fixture does not implement the preserved client's APIs. The
+  // real Core asset E2E owns identity, forms, media and graph interaction proof.
+  checks.push("Project navigation reaches the original asset tabs and same-origin Creator iframe without loading the original service");
+  await snapshot("12-assets-unconfigured");
   cleanErrors();
   console.log(JSON.stringify({ status: "passed", checks, runDir, screenshots, blockedExternalOrigins: [...new Set(blocked)] }, null, 2));
 } catch (error) {

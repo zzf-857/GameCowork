@@ -205,6 +205,19 @@ async function startBrowser(profile) {
     if(controlledMcpFocus){
       const originalTimer=window.setTimeout.bind(window),originalClear=window.clearTimeout.bind(window);
       window.__gamecoworkHeldMcpFocus=[];
+      window.__gamecoworkSkippedMcpFocus=[];
+      const originalContains=Node.prototype.contains;
+      Node.prototype.contains=function(element){
+        const contains=originalContains.call(this,element),id=element?.getAttribute?.("data-telemetry-id");
+        if(contains&&this!==element&&id?.startsWith("mcp_")&&this.querySelector?.('[data-telemetry-id="mcp_name"]')){
+          const stack=new Error().stack||"";
+          if(stack.includes("gamecoworkScheduleDialogFocus")){
+            window.__gamecoworkSkippedMcpFocus.push({owner:this,active:element,href:window.location.href,stack});
+            window.__gamecoworkMcpFocusTrace.push({event:"actual-modal-owned-focus-preserved",at:performance.now(),active:describe(element),fields:fields(),stack});
+          }
+        }
+        return contains;
+      };
       window.setTimeout=(callback,delay,...values)=>{
         const source=typeof callback==="function"?callback.toString():"";
         if(delay===50&&source.includes("focus(")&&source.includes("select(")&&document.querySelector('[data-telemetry-id="mcp_name"]')){
@@ -390,12 +403,18 @@ async function mcpDialog(name,editing=false){
    await gui.locator('[data-telemetry-id="mcp_command"]').fill(mcp.command);
    if(args.includes("--mcp-focus-probe")){
      await gui.locator('[data-telemetry-id="mcp_arguments"]').evaluate(element=>{
-       element.focus();element.select();const timer=window.__gamecoworkHeldMcpFocus?.at(-1);if(!timer)throw Error("No actual scheduled 50ms MCP modal callback was captured");
-       window.__gamecoworkMcpFocusTrace.push({event:"controlled-actual-modal-timer",cancelled:timer.cancelled,source:timer.source});timer.callback();
+       element.focus();element.select();const timer=window.__gamecoworkHeldMcpFocus?.at(-1);
+       if(timer){
+         window.__gamecoworkMcpFocusTrace.push({event:"controlled-actual-modal-timer",cancelled:timer.cancelled,source:timer.source});timer.callback();
+       }else{
+         const preserved=window.__gamecoworkSkippedMcpFocus?.findLast(value=>value.owner.isConnected&&value.owner.contains(element)&&value.active.isConnected&&value.href===window.location.href);
+         if(!preserved)throw Error("Neither an actual scheduled modal callback nor the current modal's owned-focus guard was observed");
+         window.__gamecoworkMcpFocusTrace.push({event:"controlled-actual-modal-skip",active:preserved.active.getAttribute("data-telemetry-id"),href:preserved.href});
+       }
      });
      await page.keyboard.insertText(JSON.stringify(mcp.args));
      assert.equal(await gui.locator('[data-telemetry-id="mcp_name"]').inputValue(),name,"Actual late dialog callback cannot redirect argv typing into the server name");
-     checks.push("Actual scheduled modal callback preserves a user's chosen MCP argument input");
+     checks.push("The actual modal timer or observed owned-focus guard preserves a user's chosen MCP argument input");
    }
    await gui.locator('[data-telemetry-id="mcp_arguments"]').fill(JSON.stringify(mcp.args));
    if(!editing){
