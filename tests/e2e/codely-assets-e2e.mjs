@@ -14,7 +14,8 @@ import { probeDefaultSidebarCanvas } from '../support/codely-sidebar-probe.mjs';
 
 const repo = fileURLToPath(new URL('../../', import.meta.url));
 const option = (key, fallback) => process.argv.includes(key) ? process.argv[process.argv.indexOf(key) + 1] : fallback;
-const previous = process.argv.includes('--previous'), packaged = process.argv.includes('--packaged'), inspect = process.argv.includes('--inspect'), cpaOnly = process.argv.includes('--cpa-only');
+const previous = process.argv.includes('--previous'), packaged = process.argv.includes('--packaged'), inspect = process.argv.includes('--inspect'), cpaOnly = process.argv.includes('--cpa-only'), downloadOnly = process.argv.includes('--download-only');
+assert.ok(!downloadOnly || !inspect && !cpaOnly, '--download-only is an independent full download interaction probe');
 const temp = path.resolve('F:/AI/AgentMake/temp/GameCowork'), run = path.resolve(option('--output', path.join(temp, 'codely-assets-ui-' + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep), 'Owned outputs stay in the unified temp directory');
 const app = path.resolve(option('--app-root', path.join(repo, 'app')));
@@ -36,7 +37,9 @@ const chatProvider = await startMockProvider({chunkDelayMs:30});
 let shell, context, page, gui, creator, history, canvas, origin, failure, canvasSaved, historyTag, referenceEvidence, textEditingComplete = false, shellLog = '', browserGeneration = 0;
 const checks = [], pageErrors = [], external = [], apiEvents = [], actors = [], seeds = {}, artifacts = [], leaseEvents = [], responseReads = [], graphEvents = [];
 const frameIds = new WeakMap(), frameOwners = new WeakMap(); let frameSequence = 0, leaseEvidence, sidebarLeaseEvidence;
-let cpaEvidence;
+let cpaEvidence, downloadEvidence;
+const downloadChoices = [], downloadEvents = [], browserDownloads = [], downloadChoiceFile = path.join(run,'owned-download-choices.json');
+if (downloadOnly) { fs.mkdirSync(path.join(run,'downloads'),{recursive:true}); fs.writeFileSync(downloadChoiceFile,'[]'); }
 function frameId(frame) { if (!frameIds.has(frame)) frameIds.set(frame, ++frameSequence); return frameIds.get(frame); }
 function observeCanvasGraph(response) {
   const request=response.request(),url=new URL(response.url());
@@ -57,6 +60,7 @@ function chrome() { const root = path.join(process.env.LOCALAPPDATA, 'ms-playwri
 function cleanEnv() { const env = {...process.env}; for (const key of Object.keys(env)) if (/^(OPENAI|ANTHROPIC|GEMINI|GOOGLE|AZURE|AWS|VERTEX|GITHUB|CODELY_|GAMECOWORK_)/.test(key) || /^(HTTP|HTTPS|ALL|NO)_PROXY$/.test(key) || key === 'NODE_OPTIONS') delete env[key]; return env; }
 async function launch() {
   const env = {...cleanEnv(), GAMECOWORK_APP_ROOT:run, GAMECOWORK_FRONTEND_DIR:frontend, GAMECOWORK_CORE_DIR:coreDir, GAMECOWORK_CORE_ENTRY:path.join(coreDir,'index.js'), GAMECOWORK_DATA_DIR:path.join(run,'data'), GAMECOWORK_AGENT_PATH:agent, GAMECOWORK_AGENT_RESOURCE_DIR:path.join(agentSource,'resources'), GAMECOWORK_HEADLESS:'1', GAMECOWORK_TEST_MODE:'1', GAMECOWORK_PICK_FOLDER:workspace, GAMECOWORK_CHAT_ROOT:run, GAMECOWORK_CHAT_CORE:core, GAMECOWORK_CHAT_AGENT:agent, GAMECOWORK_CLI_PROBE_ROOT:run, GAMECOWORK_CLI_PROBE_SOURCE:agentSource, CUSTOM_AUTH:'1', BUN_RUNTIME_TRANSPILER_CACHE_PATH:path.join(run,'bun-cache'), NODE_OPTIONS:'--require '+JSON.stringify(path.join(repo,'tests/fixtures/chat-core-guard.cjs'))};
+  if(downloadOnly){env.GAMECOWORK_TEST_DOWNLOAD_CHOICES=downloadChoiceFile;downloadChoices.length=0;fs.writeFileSync(downloadChoiceFile,'[]');}
   shell = spawn(binary, [], {cwd:run, env, windowsHide:true, stdio:['ignore','pipe','pipe']});
   const actor = {pid:shell.pid,exited:false}; actors.push(actor); shell.once('exit',(code,signal)=>Object.assign(actor,{exitCode:code,signalCode:signal,exited:true}));
   return new Promise((resolve,reject)=>{let output='';const timer=setTimeout(()=>reject(Error('Owned Rust/Core startup timeout')),60000);const consume=chunk=>{shellLog+=chunk.toString();output+=chunk.toString();const match=output.match(/HTTP: (http:\/\/127\.0\.0\.1:\d+\/)/);if(match){clearTimeout(timer);resolve(match[1]);}};shell.stdout.on('data',consume);shell.stderr.on('data',consume);shell.once('error',reject);shell.once('exit',code=>{clearTimeout(timer);reject(Error('Owned shell exited '+code));});});
@@ -75,6 +79,8 @@ async function startBrowser() {
   if(previous)await context.route('**/gui.html*',route=>route.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(frontend,'gui.html'),'utf8').replaceAll('index-BRxZ4eG7.js','index-DvRYaIVa.js').replaceAll('VscTheme-BExNMG_K.js','VscTheme-B-CSeuv5.js').replaceAll('store-c6kNGz30.js','store-0rGrUshb.js')}));
   await context.addInitScript(()=>{window.GAMECOWORK_SHELL=true;window.workspacePaths=[];window.vscMediaUrl='';});page=context.pages()[0]||await context.newPage();page.on('pageerror',error=>pageErrors.push(error.stack||String(error)));page.on('response',response=>{const url=new URL(response.url()),request=response.request();if(url.pathname.startsWith('/api/codely-generator/')||url.pathname.startsWith('/codely-canvas/api/'))apiEvents.push({path:url.pathname,query:url.search,method:request.method(),status:response.status(),authorizationPresent:!!request.headers().authorization,workspace:request.headers()['x-gamecowork-workspace']});if(url.pathname.includes('/canvas-locks/')){const event={path:url.pathname,method:request.method(),status:response.status(),browserGeneration,frameId:frameId(request.frame())};try{const owner=request.postDataJSON()?.session_id;event.ownerHash=owner?sha(owner):null;if(owner)frameOwners.set(request.frame(),owner);}catch{}leaseEvents.push(event);if(request.method()!=='DELETE')responseReads.push(response.json().then(body=>{event.data=body.data;}).catch(error=>{event.readError=error.message;}));}});
   page.on('response',observeCanvasGraph);
+  page.on('download',download=>browserDownloads.push({filename:download.suggestedFilename(),url:download.url()}));
+  page.on('response',response=>{if(new URL(response.url()).pathname==='/api/tauri/download-url'){const event={status:response.status(),request:response.request().postDataJSON()};downloadEvents.push(event);responseReads.push(response.json().then(body=>event.body=body).catch(error=>event.error=error.message));}});
   await page.goto(origin,{waitUntil:'domcontentloaded'});await poll(()=>page.frames().some(frame=>frame.url().includes('/gui.html')),'real GUI frame');gui=page.frames().find(frame=>frame.url().includes('/gui.html'));
   const next=gui.getByRole('button',{name:/^(下一步|Next|知道了|Got it)$/});await next.first().waitFor({state:'visible',timeout:3500}).catch(()=>{});for(let i=0;i<4&&await next.count()&&await next.first().isVisible();i++)await next.first().click();
   if(!(await state()).workspaces.some(value=>path.resolve(value.workspaceDir)===workspace)){await gui.getByRole('button',{name:/^(打开工作区|Open Workspace)$/}).last().click();await gui.getByText(/^(打开文件夹|Open Folder)$/).first().click();await poll(async()=>(await state()).workspaces.some(value=>path.resolve(value.workspaceDir)===workspace),'owned workspace opened');}
@@ -98,7 +104,9 @@ async function exerciseCpaQuick() {
   const pixels=await decodedPixels(image),calls=provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST');
   check('One original submit reaches the configured image endpoint once with the requested model and bounded parameters',calls.length===1&&calls[0].authorized&&calls[0].body.model==='gpt-image-2'&&calls[0].body.n===1&&calls[0].body.output_format==='png');
   check('Actual image dimensions come from generated PNG bytes rather than the requested 1024 size',task.output.data.artifacts[0].width===48&&task.output.data.artifacts[0].height===32&&pixels.width===48&&pixels.height===32);
-  await snapshot('cpa-02-generated',creator);await openHistory();await history.locator('.generation-card').first().click();await history.getByRole('dialog').waitFor({state:'visible'});
+  await snapshot('cpa-02-generated',creator);
+  if(downloadOnly)await exerciseQuickDownload(image);
+  await openHistory();await history.locator('.generation-card').first().click();await history.getByRole('dialog').waitFor({state:'visible'});
   const regenerate=history.getByRole('dialog').getByRole('button',{name:/再次生成/});await regenerate.click();
   await poll(async()=>(await creator.locator('.studio-model-select').textContent()).includes('GPT Image 2 · CPA')&&(await creator.locator('textarea').first().inputValue())===prompt,'original History regenerates the exact CPA descriptor and prompt draft');
   check('Original History regeneration restores CPA parameters without silently creating another task',provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST').length===1);
@@ -108,6 +116,122 @@ async function exerciseCpaQuick() {
   check('CPA mapping, original task parameters and generated bytes survive a real host restart without resubmission',restored.status==='completed'&&restored.input.data.studioModelId==='cpa-gpt-image-2'&&cap.models['cpa-gpt-image-2']?.providerId===saved.provider.id&&provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST').length===1);
   cpaEvidence={taskId,providerId:saved.provider.id,pixels,actualDimensions:{width:48,height:32},requestedSize:'1024x1024',requests:calls,restoredModel:restored.input.data.studioModelId,liveService:false};
   await snapshot('cpa-04-restarted',history);
+}
+
+function chooseDownload(choice){
+  downloadChoices.push(choice);
+  const staged=downloadChoiceFile+'.next';fs.writeFileSync(staged,JSON.stringify(downloadChoices));fs.renameSync(staged,downloadChoiceFile);
+}
+async function downloadButton(button,choice,{expectedSha,status=200,label}={}){
+  const before=downloadEvents.length;chooseDownload(choice);
+  await button.click();await poll(()=>downloadEvents.length>before&&downloadEvents[before].body,'original '+label+' download reaches a final native response');
+  const event=downloadEvents[before];assert.equal(event.status,status,label+': '+JSON.stringify(event.body));
+  if(choice.action==='cancel')assert.equal(event.body.cancelled,true);
+  else if(status===200){assert.equal(event.body.ok,true);assert.equal(sha(fs.readFileSync(choice.path)),expectedSha);assert.equal(event.body.sha256,expectedSha);assert.equal(event.body.byteLength,fs.statSync(choice.path).size);await gui.getByText('文件已保存。',{exact:true}).last().waitFor({state:'visible'});}
+  else assert.equal(event.body.ok,false);
+  await page.waitForTimeout(150);
+  assert.equal(downloadEvents.length,before+1,'An original click issues exactly one native save request');
+  assert.equal(browserDownloads.length,0,'Native outcome does not trigger a browser fallback download');
+  return event;
+}
+async function exerciseQuickDownload(image){
+  await image.click();const original=creator.locator('.studio-asset-list button').first();await original.waitFor({state:'visible'});
+  const saved=await downloadButton(original,{action:'save',path:path.join(run,'downloads/quick.png')},{expectedSha:provider.media.png.sha256,label:'Quick result'});
+  const cancelled=await downloadButton(original,{action:'cancel'},{label:'Quick cancellation'});
+  check('Original Quick result download saves the exact generated PNG and cancellation has no fallback',saved.body.ok&&cancelled.body.cancelled&&fs.readdirSync(path.join(run,'downloads')).length===1);
+  downloadEvidence={quick:{saved,cancelled},actualButtons:true};await snapshot('download-01-quick',creator);
+  await creator.locator('body').press('Escape');
+}
+async function exerciseDownloads(){
+  // The CPA helper generates through the preserved Quick controls, downloads
+  // through its original result button, and already performs a cold restart.
+  await exerciseCpaQuick();
+  const historyButton=history.locator('.generation-card-download-primary').first();await historyButton.waitFor({state:'visible'});
+  const target=path.join(run,'downloads/history.png');
+  const saved=await downloadButton(historyButton,{action:'save',path:target},{expectedSha:provider.media.png.sha256,label:'History card'});
+  const repeated=await downloadButton(historyButton,{action:'save',path:target},{status:409,label:'History duplicate filename'});
+  await gui.getByText('目标文件已存在，请换一个文件名保存。',{exact:true}).last().waitFor({state:'visible'});
+  assert.equal(sha(fs.readFileSync(target)),provider.media.png.sha256);
+  const cancelled=await downloadButton(historyButton,{action:'cancel'},{label:'History cancellation'});
+  downloadEvidence.history={saved,repeated,cancelled};
+  check('Original History download writes identical bytes, rejects a duplicate destination and honors cancellation',saved.body.ok&&repeated.body.ok===false&&cancelled.body.cancelled);
+  await snapshot('download-02-history',history);
+
+  await openCanvas();await canvas.getByRole('button',{name:'新建无限画布',exact:true}).click();await canvas.locator('.react-flow__pane').waitFor({state:'visible'});
+  await poll(()=>Object.keys(canvasStore().assets).length===1,'download fixture canvas is actually persisted');
+  const canvasId=Object.keys(canvasStore().assets)[0],canvasName='OWNED_DOWNLOAD_CANVAS';
+  await canvas.getByTitle('点击编辑画布名称',{exact:true}).click();await canvas.getByPlaceholder('输入画布名称',{exact:true}).fill(canvasName);await canvas.getByPlaceholder('输入画布名称',{exact:true}).press('Enter');
+  const pane=canvas.locator('.react-flow__pane');await pane.click({button:'right',position:{x:350,y:240}});await canvas.getByRole('button',{name:'添加节点',exact:true}).click();
+  const [chooser]=await Promise.all([page.waitForEvent('filechooser'),canvas.getByText('媒体上传',{exact:true}).click()]);await chooser.setFiles([provider.media.png.file,provider.media.webm.file]);
+  let imageNode,videoNode;await poll(()=>{const graph=JSON.parse(canvasStore().assets[canvasId].graph);imageNode=graph.nodes.find(node=>node.data.nodeType==='image'&&node.data.images?.length);videoNode=graph.nodes.find(node=>node.data.nodeType==='video'&&node.data.videos?.length);return !!imageNode&&!!videoNode;},'original Canvas upload creates registered image/video references');
+  await canvas.getByRole('button',{name:'适应画布',exact:true}).click();
+  const card=id=>canvas.locator('.react-flow__node[data-id="'+id+'"]');
+  await poll(()=>card(imageNode.id).locator('img').first().evaluate(image=>image.complete&&image.naturalWidth===48),'uploaded Canvas image decodes');
+  await poll(()=>card(videoNode.id).locator('video').evaluate(video=>video.readyState>=2&&video.videoWidth===32),'uploaded Canvas video decodes');
+  await card(imageNode.id).getByText(provider.media.png.fileName,{exact:true}).click();
+  const imageSaved=await downloadButton(canvas.locator('[data-tooltip="下载"] button'),{action:'save',path:path.join(run,'downloads/canvas.png')},{expectedSha:provider.media.png.sha256,label:'Canvas image'});
+  const canvasCancelled=await downloadButton(canvas.locator('[data-tooltip="下载"] button'),{action:'cancel'},{label:'Canvas cancellation'});
+  await card(videoNode.id).getByText(provider.media.webm.fileName,{exact:true}).click();
+  const videoSaved=await downloadButton(canvas.locator('[data-tooltip="下载"] button'),{action:'save',path:path.join(run,'downloads/canvas.webm')},{expectedSha:provider.media.webm.sha256,label:'Canvas video'});
+  check('Original Canvas image and video buttons save their real bytes through openurl and honor cancellation',imageSaved.body.ok&&videoSaved.body.ok&&canvasCancelled.body.cancelled);
+  downloadEvidence.canvas={canvasId,imageNodeId:imageNode.id,videoNodeId:videoNode.id,imageSaved,videoSaved,cancelled:canvasCancelled};
+  await snapshot('download-03-canvas',canvas);
+
+  const imageUrl=imageNode.data.images[0],workspaceKey=(await state()).workspaceKey;
+  const badScope=new URL(imageUrl);badScope.searchParams.set('workspaceKey',workspaceKey+'-foreign');
+  const probes=[
+    {label:'external source',body:{url:'https://external.invalid/owned.png',filename:'owned.png'}},
+    {label:'local non-media route',body:{url:new URL('/api/tauri/health',origin).href,filename:'owned.png'}},
+    {label:'foreign input scope',body:{url:badScope.href,filename:'owned.png'}},
+    {label:'traversal filename',body:{url:imageUrl,filename:'../outside.png'}},
+    {label:'client-selected path',body:{url:imageUrl,filename:'owned.png',path:path.join(run,'downloads/untrusted.png')}},
+    {label:'blob source',body:{url:'blob:'+new URL(origin).origin+'/owned-unregistered',filename:'owned.png'}},
+  ];
+  const beforeFiles=fs.readdirSync(path.join(run,'downloads')).sort(),negative=[];
+  for(const probe of probes){const result=await api('/api/tauri/download-url',{method:'POST',body:probe.body});assert.ok(result.status>=400,probe.label+': '+JSON.stringify(result));assert.equal(result.body.ok,false);negative.push({label:probe.label,...result});}
+  const originRejected=await api('/api/tauri/download-url',{method:'POST',headers:{Origin:'https://external.invalid'},body:{url:imageUrl,filename:'owned.png'}});assert.ok(originRejected.status>=400);negative.push({label:'foreign Origin',...originRejected});
+  const inputs=JSON.parse(fs.readFileSync(path.join(run,'data/core-state/generator/inputs.json'),'utf8')),inputId=decodeURIComponent(new URL(imageUrl).pathname.split('/').at(-2)),input=inputs[inputId];assert.ok(input);
+  const mediaFile=path.join(run,'data/core-state/generator',input._file),originalBytes=fs.readFileSync(mediaFile),changedBytes=Buffer.from(originalBytes);changedBytes[changedBytes.length-1]^=1;
+  try{fs.writeFileSync(mediaFile,changedBytes);const result=await api('/api/tauri/download-url',{method:'POST',body:{url:imageUrl,filename:'owned.png'}});assert.ok(result.status>=400);assert.equal(result.body.ok,false);negative.push({label:'changed registered SHA',...result});}finally{fs.writeFileSync(mediaFile,originalBytes);}
+  assert.deepEqual(fs.readdirSync(path.join(run,'downloads')).sort(),beforeFiles);
+  check('Real native HTTP rejects external, unregistered, wrong-scope, path-injected and changed media before any save',negative.every(value=>value.status>=400));downloadEvidence.negative=negative;
+
+  const oldOrigin=new URL(origin).origin,requests=provider.requests.filter(value=>value.method==='POST').length;
+  await context.close();context=undefined;await stopShell();origin=await launch();assert.notEqual(new URL(origin).origin,oldOrigin);await startBrowser();
+  const stale=await api('/api/tauri/download-url',{method:'POST',body:{url:imageUrl,filename:'owned.png'}});assert.ok(stale.status>=400);assert.equal(stale.body.ok,false);
+  await openCanvas();await canvas.getByText(canvasName,{exact:true}).click();await canvas.locator('.react-flow__node').first().waitFor({state:'visible'});await canvas.getByRole('button',{name:'适应画布',exact:true}).click();
+  // Restored tall video nodes can fit at 155%, placing the image's original
+  // floating toolbar behind the fixed header. Use the shipped zoom controls.
+  await canvas.getByRole('button',{name:'缩小',exact:true}).click();await canvas.getByRole('button',{name:'缩小',exact:true}).click();
+  const restored=card(imageNode.id),restoredImage=restored.locator('img').first();await poll(()=>restoredImage.evaluate(image=>image.complete&&image.naturalWidth===48),'new-port Canvas image actually decodes');
+  assert.equal(new URL(await restoredImage.getAttribute('src'),origin).origin,new URL(origin).origin);await restored.getByText(provider.media.png.fileName,{exact:true}).click();
+  const restarted=await downloadButton(canvas.locator('[data-tooltip="下载"] button'),{action:'save',path:path.join(run,'downloads/canvas-restarted.png')},{expectedSha:provider.media.png.sha256,label:'restarted Canvas'});
+  assert.equal(provider.requests.filter(value=>value.method==='POST').length,requests);
+  check('Cold restart rejects stale URLs while the original Canvas button saves the rebased media without regeneration',restarted.body.ok&&stale.status>=400);
+  downloadEvidence.restart={oldOrigin,newOrigin:new URL(origin).origin,stale,restarted};
+  await snapshot('download-04-restarted',canvas);
+  await exerciseSidebarDownload({canvasId,canvasName,imageNodeId:imageNode.id});
+  downloadEvidence.files=fs.readdirSync(path.join(run,'downloads')).sort().map(filename=>({filename,sha256:sha(fs.readFileSync(path.join(run,'downloads',filename)))}));
+}
+async function exerciseSidebarDownload({canvasId,canvasName,imageNodeId}){
+  await prepareOwnedChat();
+  // Release the actual Assets document's lease before opening the same graph
+  // through the normal chat sidebar. No Redux state or owner is fabricated.
+  await gui.getByRole('tab',{name:/^(画布|Canvas)$/}).click();
+  await canvas.getByRole('button',{name:'返回',exact:true}).click();await canvas.getByRole('button',{name:'返回工作区',exact:true}).click();
+  await canvas.getByRole('button',{name:'新建无限画布',exact:true}).waitFor({state:'visible'});
+  await gui.locator('[data-telemetry-id="history_session"]').first().click();await gui.locator('main').getByText('Hello fixture',{exact:false}).waitFor({state:'visible'});
+  const visible=async locator=>{for(let i=0;i<await locator.count();i++)if(await locator.nth(i).isVisible())return locator.nth(i);return null;};
+  let extension=await visible(gui.locator('[data-telemetry-id="right_sidebar_extension_menu"]'));
+  if(!extension){const toggle=await visible(gui.locator('[data-telemetry-id="toggle_right_sidebar"]'));assert.ok(toggle);await toggle.click();await poll(async()=>!!await visible(gui.locator('[data-telemetry-id="right_sidebar_extension_menu"]')),'real default sidebar opens');extension=await visible(gui.locator('[data-telemetry-id="right_sidebar_extension_menu"]'));}
+  await extension.click();await gui.getByRole('menuitem',{name:/^(AI\s*画布|AI\s*Canvas|画布)$/i}).click();
+  const iframe=gui.getByTestId('right-sidebar-canvas-frame');await iframe.waitFor({state:'visible'});const handle=await iframe.elementHandle();let sidebar;try{sidebar=await handle.contentFrame();}finally{await handle.dispose();}assert.ok(sidebar);
+  await poll(async()=>!!await visible(sidebar.getByRole('button',{name:'返回',exact:true}))||!!await visible(sidebar.getByText(canvasName,{exact:true})),'original default sidebar Canvas entry settles');
+  if(await visible(sidebar.getByRole('button',{name:'返回',exact:true}))){await sidebar.getByRole('button',{name:'返回',exact:true}).click();await sidebar.getByRole('button',{name:'返回工作区',exact:true}).click();}
+  await sidebar.getByText(canvasName,{exact:true}).click();const node=sidebar.locator('.react-flow__node[data-id="'+imageNodeId+'"]');await node.waitFor({state:'visible'});await sidebar.getByRole('button',{name:'适应画布',exact:true}).click();await poll(()=>node.locator('img').first().evaluate(image=>image.complete&&image.naturalWidth===48),'original sidebar image decodes');await node.getByText(provider.media.png.fileName,{exact:true}).click();
+  const result=await downloadButton(sidebar.locator('[data-tooltip="下载"] button'),{action:'save',path:path.join(run,'downloads/sidebar.png')},{expectedSha:provider.media.png.sha256,label:'default sidebar Canvas'});
+  check('Default right-sidebar Canvas original download button saves actual registered image bytes',result.body.ok&&new URL(gui.url()).searchParams.get('flexibleLayout')!=='1');
+  downloadEvidence.sidebar={entry:'default-right-sidebar-extension-menu',canvasId,result};canvas=sidebar;await snapshot('download-05-default-sidebar',sidebar);
 }
 
 // The welcome page has no layout chooser. Prepare one actual guarded local chat,
@@ -290,7 +414,8 @@ try {
   for(const name of [/^2D\s*生成$/,/^3D\s*生成$/,/^音乐音效$/,/^视频生成$/])assert.ok(await creator.getByRole('button',{name}).isVisible());
   check('Real two-level GUI mounts the original three Host tabs and four Quick Generate modes',await gui.getByRole('tab').count()===3&&new URL(creator.url()).origin===new URL(origin).origin&&new URL(creator.url()).searchParams.get('gamecoworkWorkspace')===(await state()).workspaceKey);
   const unavailableButton=creator.getByRole('button',{name:'服务未配置',exact:true});await unavailableButton.waitFor({state:'visible'});check('Original Quick button honestly shows the local service is unconfigured without an official subscription claim',await unavailableButton.isDisabled()&&await creator.getByText('此模型尚未连接生成服务',{exact:true}).isVisible()&&await creator.getByText('需付费订阅',{exact:true}).count()===0);
-  if(cpaOnly){await exerciseCpaQuick();check('Preserved CPA client uses no external request and produces no fatal browser error',external.length===0&&pageErrors.length===0);}
+  if(downloadOnly){await exerciseDownloads();check('Original download clients avoid external traffic, browser fallback and fatal errors',external.length===0&&browserDownloads.length===0&&pageErrors.length===0);}
+  else if(cpaOnly){await exerciseCpaQuick();check('Preserved CPA client uses no external request and produces no fatal browser error',external.length===0&&pageErrors.length===0);}
   else {
   await snapshot('01-original-quick',creator);await seedHistory();if(!inspect)await prepareOwnedChat();await openHistory();await poll(()=>history.locator('.generation-card,.generation-list-row').count().then(count=>count===3),'three actual original History rows');await snapshot('02-original-history',history);
   await openCanvas();await snapshot('03-original-canvas-home',canvas);
@@ -302,4 +427,4 @@ try {
   }
   }
 } catch(error) {failure={message:error.message,stack:error.stack};process.exitCode=1;console.error(error.stack);if(page){await snapshot('failure',canvas||history||creator||gui).catch(()=>{});if(gui)fs.writeFileSync(path.join(run,'failure-gui.aria.txt'),await gui.locator('body').ariaSnapshot().catch(()=>''));}}
-finally {await context?.close();await Promise.allSettled(responseReads);await stopShell();await provider.close();await chatProvider.close();fs.writeFileSync(path.join(run,'shell.log'),shellLog);fs.writeFileSync(path.join(run,'result.json'),JSON.stringify({passed:!failure,fullInteractionValidation:!inspect&&!failure&&(cpaOnly?!!cpaEvidence:textEditingComplete),previous,packaged,inspect,binary,binarySha256,checks,failure,pageErrors,external,apiEvents,leaseEvents,leaseEvidence,sidebarLeaseEvidence,graphEvents,actors,ownProcessesExited:actors.every(actor=>actor.exited&&actor.gone),artifacts,seedTasks:seeds,cpaOnly,cpaEvidence,canvasSaved,historyTag,referenceEvidence,textEditingComplete,chatRequests:chatProvider.requests,realCore:true,realProvider:false,originalComponentSourceReused:true,originalModelGenerationMapped:false,expectedGenerateUnavailable:503,remainingOriginalTextEditorEntry:!textEditingComplete},null,2));console.log('Artifacts: '+run);}
+finally {await context?.close();await Promise.allSettled(responseReads);await stopShell();await provider.close();await chatProvider.close();fs.writeFileSync(path.join(run,'shell.log'),shellLog);fs.writeFileSync(path.join(run,'result.json'),JSON.stringify({passed:!failure,fullInteractionValidation:!inspect&&!failure&&(downloadOnly?!!downloadEvidence?.restart:cpaOnly?!!cpaEvidence:textEditingComplete),previous,packaged,inspect,binary,binarySha256,checks,failure,pageErrors,external,apiEvents,leaseEvents,leaseEvidence,sidebarLeaseEvidence,graphEvents,actors,ownProcessesExited:actors.every(actor=>actor.exited&&actor.gone),artifacts,seedTasks:seeds,cpaOnly,cpaEvidence,downloadOnly,downloadEvidence,downloadEvents,browserDownloads,canvasSaved,historyTag,referenceEvidence,textEditingComplete,chatRequests:chatProvider.requests,realCore:true,realProvider:false,originalComponentSourceReused:true,originalModelGenerationMapped:false,expectedGenerateUnavailable:503,remainingOriginalTextEditorEntry:!textEditingComplete},null,2));console.log('Artifacts: '+run);}

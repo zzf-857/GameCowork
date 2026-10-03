@@ -12,8 +12,39 @@
     return process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1"
       && ["openai", "anthropic", "gemini-api-key", "vertex-ai"].includes(authType);
   }
+  // Only the owning Core can mint this loopback capability. It contains no
+  // official account/CLI key, and is frozen to this process's workspace/model.
+  function gcuCliOfficialContext(workspace) {
+    const endpoint = process.env.GAMECOWORK_OFFICIAL_LOOPBACK;
+    if (!endpoint) return;
+    workspace ??= process.cwd();
+    if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") throw Error("Official programming requires the local Core broker");
+    const url = new URL(endpoint), token = process.env.GAMECOWORK_OFFICIAL_CAPABILITY;
+    const model = process.env.GAMECOWORK_OFFICIAL_MODEL, auth = process.env.GAMECOWORK_OFFICIAL_AUTH, wire = process.env.GAMECOWORK_OFFICIAL_WIRE_API;
+    if (url.protocol !== "http:" || url.hostname !== "127.0.0.1" || !url.port || url.pathname !== "/v1" || url.username || url.password || url.search || url.hash ||
+        !/^[A-Za-z0-9_-]{43}$/.test(token || "") || !model || model.length > 256 || !["chat", "responses", "messages"].includes(wire) ||
+        auth !== (wire === "messages" ? "anthropic" : "openai") ||
+        require("node:path").resolve(workspace).toLowerCase() !== require("node:path").resolve(process.env.GAMECOWORK_OFFICIAL_WORKSPACE || "").toLowerCase())
+      throw Error("Official programming capability is invalid for this workspace");
+    return { endpoint, token, model, authType: auth, wireApi: wire };
+  }
+  function gcuCliOfficialSettings(settings, workspace) {
+    const context = gcuCliOfficialContext(workspace);
+    if (!context) return settings;
+    const slots = ["model", "flashModel", "multimodalModel", "defaultAgentModel", "loopDetectionModel", "loopDetectionDoubleCheckModel"];
+    const locked = { ...settings, selectedAuthType: context.authType,
+      contentGenerator: { authType: context.authType, wireApi: context.wireApi, overrides: {} },
+      enableOpenAILogging: false };
+    for (const slot of slots) {
+      locked[slot] = context.model;
+      locked.contentGenerator.overrides[slot] = { authType: context.authType, wireApi: context.wireApi };
+    }
+    return locked;
+  }
   function gcuCliLocalAuth(settings) {
     if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return;
+    const official = gcuCliOfficialContext();
+    if (official) return official.authType;
     let candidate = settings?.contentGenerator?.overrides?.model?.authType
       || settings?.contentGenerator?.authType || settings?.selectedAuthType;
     return gcuCliOwnProvider(candidate) ? candidate : void 0;
@@ -459718,6 +459749,10 @@ The plan is stored at: ${cn.planPath}`;
                   messageType: "error",
                   content: "Please specify a model name. Usage: /model use <model_name>",
                 };
+              const official = gcuCliOfficialContext();
+              if (official) return n === official.model
+                ? { type: "message", messageType: "info", content: `Successfully switched to model: ${official.model}` }
+                : { type: "message", messageType: "error", content: "Select another official model in the GameCowork model menu." };
               let s = await Zfe(e);
               if (s.error)
                 return {
@@ -488508,6 +488543,22 @@ ${t}`
       );
     }
     async function MMr(e, t, r, n, s = Tu.default.cwd(), o) {
+      e = gcuCliOfficialSettings(e, s);
+      const officialContext = gcuCliOfficialContext(s);
+      if (officialContext) {
+        n = { ...n, authType: officialContext.authType, model: officialContext.model,
+          flash: officialContext.model, multimodal: officialContext.model,
+          defaultAgentModel: officialContext.model, wireApi: officialContext.wireApi, openaiLogging: false,
+          openaiApiKey: void 0, openaiBaseUrl: void 0, proxy: void 0 };
+        if (officialContext.authType === "anthropic") {
+          process.env.ANTHROPIC_AUTH_TOKEN = officialContext.token;
+          process.env.ANTHROPIC_API_KEY = "";
+          process.env.ANTHROPIC_BASE_URL = officialContext.endpoint;
+        } else {
+          process.env.OPENAI_API_KEY = officialContext.token;
+          process.env.OPENAI_BASE_URL = officialContext.endpoint;
+        }
+      }
       let u =
           n.debug || [Tu.default.env.DEBUG, Tu.default.env.DEBUG_MODE].some((ue) => ue === "true" || ue === "1") || !1,
         a = e.memoryImportFormat || "tree",
@@ -488755,7 +488806,7 @@ ${t}`
           memoryImportFormat: a,
           checkpointing: n.checkpointing || e.checkpointing?.enabled,
           proxy:
-            n.proxy ||
+            officialContext ? void 0 : n.proxy ||
             Tu.default.env.HTTPS_PROXY ||
             Tu.default.env.https_proxy ||
             Tu.default.env.HTTP_PROXY ||

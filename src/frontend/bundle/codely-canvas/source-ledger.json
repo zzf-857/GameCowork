@@ -4337,8 +4337,10 @@
     },
     {
       "file": "canvas-local-auth.js",
-      "sha256": "16e2fdd3d92237248e76f966a30edf0041cdfacf6147a4c48b9d9521e01b70e2",
-      "role": "Validated local identity provider using only /codely-canvas/api/local/session; no platform credentials or credits"
+      "sha256": "f4841e2d758261aae69157b7a982273ca81a384aeed5150065e9da4ff61418ad",
+      "role": "Validated local identity provider using only /codely-canvas/api/local/session; no platform credentials or credits",
+      "currentSha256": "f4841e2d758261aae69157b7a982273ca81a384aeed5150065e9da4ff61418ad",
+      "currentDescription": "Adds the strictly validated codely-official identity/points overlay; no Canvas token may appear"
     }
   ],
   "knownMissing": [],

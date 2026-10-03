@@ -323839,7 +323839,7 @@ async function Nua(t) {
         roles: G,
         apiBase: o.baseUrl,
         extras: {
-          customModelId: c,
+          ...(o.officialModelId ? { officialModelId:o.officialModelId } : {customModelId:c}),
           displayLabel: u,
           ...(o.providerId ? { providerId: o.providerId } : {}),
           ...(d ? { providerName: d } : {}),
@@ -325989,7 +325989,7 @@ var w9e = class t {
   }
 };
 m();
-async function fpa(t) {
+async function gcuLocalProfiles(t) {
   let e = oV();
   return e.length === 0
     ? null
@@ -326016,6 +326016,7 @@ async function fpa(t) {
           }),
       };
 }
+async function fpa(t){const local=await gcuLocalProfiles(t);const official=require("./gamecowork-official-llm.js").profiles(t);return official.length?{profiles:[...(local?.profiles||[]),...official]}:local;}
 S0();
 m();
 var kp = T(require("node:fs"), 1),
@@ -327432,7 +327433,7 @@ function Afi(t, e, n, r = {}) {
 function Cfi(t, e) {
   return t ? sUt(t.model, t.extras) : (e ?? "chat");
 }
-function wUt(t, e) {
+function wUt(t, e) {if(e?.extras?.officialModelId)return require("./gamecowork-official-llm.js").selectionEnvironment(t.ide,e);
   let n = t.activeCustomModel
     ? spa([t.activeCustomModel, t.activeFlashCustomModel, t.activeMultimodalCustomModel])
     : {};
@@ -327556,6 +327557,9 @@ async function Bma(t, e) {
   };
 }
 function gcuPersistedSessionModel(t, selected, title) {
+  const official = require("./gamecowork-official-llm.js").selectedModel(t.ide, title || selected?.extras?.officialModelId);
+  if (official) return official;
+  if (selected?.extras?.officialModelId || String(title || "").includes("Codely 官方 · Pro")) throw new Error("官方模型尚未启用或账号已经变化，请在模型菜单重新启用");
   let local = oV();
   let requested = selected?.extras?.customModelId;
   let record = title ? local.find(model => model.id === title || model.displayName === title || model.model === title) : void 0;
@@ -327600,7 +327604,7 @@ async function Tma(t, e, n) {
   let o = t.acpInitializing.get(e);
   if (o) {
     let I;
-    try { I = await o; } catch (gcuError) {
+    try { I = await o; } catch (gcuError) {t._gamecoworkOfficialLlm?.revoke(e);
       if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" && n?.currentSelectedModel && !n._gcuInitRetried) {
         if (t.acpInitializing.get(e) === o) t.acpInitializing.delete(e);
         return Tma(t, e, { ...n, _gcuInitRetried: true });
@@ -327644,7 +327648,7 @@ async function Tma(t, e, n) {
     if ((Object.assign(d, s), b)) d.CUSTOM_AUTH = "1";
     else for (let A of Yfi) d[A] = "";
     let h = await t.ide.getWorkspaceDirs(),
-      Z = Bpa(n?.cwdOverride, h),
+      Z=n?.currentSelectedModel?.extras?.officialModelId ? await require("./gamecowork-official-llm.js").prepareAcpEnvironment(t,e,n.currentSelectedModel,Bpa(n?.cwdOverride,h),d,gcuHolder) : Bpa(n?.cwdOverride,h),
       N = AP(e) ? await yUt(t.ide, Z) : await Yma(t.ide, Z, t.defaultMemoryRWMode),
       g = nUt({
         requestedMemoryRWMode: n?.memoryRWMode,
@@ -327658,10 +327662,10 @@ async function Tma(t, e, n) {
         configHandler: t.configHandler,
         gamecoworkCliPath: I,
         gamecoworkCliBaseDir: u,
-        gamecoworkCliArgs: p ? [...p, ...R, ...f, "--wire_api", r] : [...R, ...f],
+        gamecoworkCliArgs:p?[...p,...R,...f,"--wire_api",r,...(n?.currentSelectedModel?.extras?.officialModelId?["--auth-type",d.GAMECOWORK_OFFICIAL_AUTH,"--model",n.currentSelectedModel.model]:[])]:[...R,...f],
         cwd: Z,
         env: d,
-        onProcessExit: (A, Q) => {
+        onProcessExit: (A, Q) => {t._gamecoworkOfficialLlm?.revoke(e);
           (console.warn(`[Core] gamecowork-cli process exited: code=${A}, signal=${Q}`),
             nI(t, e, y) && t.acpSessionRegistry.delete(e),
             t.acpInitializing.get(e) === c && t.acpInitializing.delete(e));
@@ -328062,7 +328066,7 @@ async function Tma(t, e, n) {
       manager: y,
       acpSessionId: F,
       continueSessionId: e,
-      model: G,
+      model:n?.currentSelectedModel?.extras?.officialModelId?n.currentSelectedModel.model:G,
       modelTitle: n?.currentSelectedModel?.title,
       lastUsedAt: Date.now(),
       cwd: Z,
@@ -328397,10 +328401,10 @@ async function sGa(t, e) {
   }
   await t.saveCheckpointSerialized(e);
 }
-async function lGa(t, e) {
+async function lGa(t, e) {t._gamecoworkOfficialLlm?.revoke(e);
   await t.sessionLifecycle.shutdownSession(e);
 }
-async function iGa(t, options) {
+async function iGa(t, options) {t._gamecoworkOfficialLlm?.revoke();
   (t.stopStreamingStateCleanup(), await t.sessionLifecycle.shutdownAll(options));
 }
 function oGa(t, e, n) {
@@ -328530,7 +328534,7 @@ function WGa(t, e) {
   let n = t.acpSessionRegistry.get(e);
   n?.streamingState && ((n.streamingState = void 0), (n.isStreaming = !1));
 }
-function NGa(t) {
+function NGa(t) {t._gamecoworkOfficialLlm?.close();
   for (let e of t.acpSessionRegistry.values())
     try {
       e.manager.process?.kill();
@@ -334632,10 +334636,12 @@ function RZa(t, e) {
           options: { reuseTerminal: !1, terminalName: "gamecowork", icon: "gamecowork", extraPathEntries: b },
         }));
     }),
+    require("./gamecowork-codely-account.js").registerCoreWiring({ messenger: t.messenger, core: t, logger: console }),
+    require("./gamecowork-official-llm.js").registerCoreWiring({messenger:t.messenger,core:t}),
     n("controlPlane/getFreeTrialStatus", async (G) => t.configHandler.controlPlaneClient.getFreeTrialStatus()),
     n("controlPlane/getUserPlan", async (G) => {
       let b = G.data.orgId,
-        h = await t.configHandler.controlPlaneClient.getUserPlan(b);
+        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserPlan", b)) ?? (await t.configHandler.controlPlaneClient.getUserPlan(b));
       return h
         ? {
             planType: h.plan_type,
@@ -334656,7 +334662,7 @@ function RZa(t, e) {
     }),
     n("controlPlane/getUserUsageSummary", async (G) => {
       let b = G.data.orgId,
-        h = await t.configHandler.controlPlaneClient.getUserUsageSummary(b);
+        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserUsageSummary", b)) ?? (await t.configHandler.controlPlaneClient.getUserUsageSummary(b));
       if (!h) return null;
       let N = (Array.isArray(h.details) ? h.details : []).find((R) => R.type === "coding_plan"),
         g = Array.isArray(N?.windows) ? N.windows : [];
@@ -334675,7 +334681,7 @@ function RZa(t, e) {
     }),
     n("controlPlane/getUserExhaustion", async (G) => {
       let b = G.data.orgId,
-        h = await t.configHandler.controlPlaneClient.getUserExhaustion(b);
+        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserExhaustion", b)) ?? (await t.configHandler.controlPlaneClient.getUserExhaustion(b));
       return h
         ? { isExhausted: h.is_exhausted, exhaustedSource: h.exhausted_source, nextAvailableAt: h.next_available_at }
         : null;
@@ -335515,6 +335521,8 @@ function RZa(t, e) {
         await t.configHandler.loadConfig());
     }),
     n("refreshOrgList", async () => {
+      const codelyOrgSnapshot = await require("./gamecowork-codely-account.js").codelyAccountOrgSnapshot(t).catch(() => null);
+      if (codelyOrgSnapshot) return codelyOrgSnapshot;
       if (!t._acpOrgSupported)
         return { organizations: [], currentOrgId: null, currentOrgName: null, multiTeamEnabled: !1 };
       try {
@@ -335532,6 +335540,13 @@ function RZa(t, e) {
     }),
     n("switchOrg", async (G) => {
       let { orgId: b } = G.data;
+      if ((await require("./gamecowork-codely-account.js").codelyAccountPhase()) === "authenticated") {
+        try {
+          return await require("./gamecowork-codely-account.js").codelyAccountSwitchOrg(t, b);
+        } catch (h) {
+          return (En.error(h, { context: "switchOrg:codely" }), { success: !1, error: String(h?.message || h), organizations: t.orgManager.getOrganizations() });
+        }
+      }
       if (!t._acpOrgSupported)
         return {
           success: !1,
@@ -339281,6 +339296,8 @@ function cya(t) {
 m();
 async function Iya(t, e) {
   if (!e) return;
+  if(e.extras?.officialModelId){require("./gamecowork-official-llm.js").selectionEnvironment(t.ide,e);t.activeOfficialModel=e.extras.officialModelId;t.activeCustomModel=void 0;t.resolveActiveSlotCustomModels(void 0);return;}
+  t.activeOfficialModel=void 0;
   let n = e.extras?.customModelId;
   if (typeof n == "string" && n) {
     if (n === t.activeCustomModel?.id) return;
@@ -339379,7 +339396,7 @@ var Cje = class {
           this.configHandler.setGameCoworkModelProfilesListGetter(() => fpa(this.ide)),
           this.configHandler.onConfigUpdate((u, d) => {
             if ((this.updateIdeNotificationsEnabledFromConfig(u.config), u.config?.selectedModelByRole?.chat)) {
-              let p = u.config.selectedModelByRole.chat,
+              this.activeOfficialModel=u.config.selectedModelByRole.chat.extras?.officialModelId;let p = u.config.selectedModelByRole.chat,
                 G = p.title ?? "",
                 b = p.extras?.customModelId,
                 h = b ? q2(b) : G ? (q2(G) ?? oV().find((Z) => Z.displayName === G || Z.model === G)) : void 0;
@@ -340352,7 +340369,7 @@ var Cje = class {
       let n = lpa(e);
       ((this.activeMultimodalCustomModel = n.multimodalModel), (this.activeFlashCustomModel = n.flashModel));
     }
-    applyActiveCustomModelsToProject(e) {
+    applyActiveCustomModelsToProject(e) {if(this.activeOfficialModel)return;
       (this.activeCustomModel
         ? W9e(e, this.activeCustomModel)
         : apa(e, {

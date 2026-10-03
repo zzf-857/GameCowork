@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param([switch]$SkipBrowser, [switch]$RealCore, [switch]$Chat, [switch]$Editor, [string]$AgentTestPackage, [string]$TuanjieEditor)
 $ErrorActionPreference = 'Stop'
 if ($TuanjieEditor -and (-not $Editor -or $SkipBrowser)) { throw '-TuanjieEditor requires -Editor with browser verification enabled.' }
@@ -50,7 +50,9 @@ $testScripts += @('contracts/cli-unity-operations.test.mjs', 'contracts/editor-c
 # The owned REST service still backs real cached tasks and media. Keep its
 # contracts; the inactive generic-only frontend is not the product UI gate.
 $testScripts += @('contracts/core-hub-discovery.test.cjs', 'contracts/frontend-project-recency.test.mjs', 'contracts/frontend-editor-installations-cache.test.mjs', 'contracts/asset-generation-auth.test.mjs', 'contracts/asset-generation-adapter.test.mjs', 'contracts/asset-generation-lifecycle.test.mjs', 'contracts/asset-generation-idempotency.test.mjs', 'contracts/asset-generation-large-output.test.mjs', 'contracts/asset-generation-inputs.test.mjs', 'contracts/asset-generation-policy.test.mjs', 'contracts/asset-generation-owner.test.cjs', 'integration/editor-installations-cache.mjs', 'integration/asset-generation-service-smoke.mjs')
-$testScripts += @('contracts/codely-generator-local-identity.test.mjs', 'contracts/codely-canvas-source-contract.mjs', 'contracts/codely-sidebar-canvas-contract.mjs', 'contracts/codely-generator-api.test.mjs', 'contracts/codely-generator-upload.test.mjs', 'contracts/codely-media-rebase.test.mjs', 'contracts/codely-local-models.test.mjs', 'contracts/codely-cpa-generation.test.mjs')
+$testScripts += @('contracts/codely-generator-local-identity.test.mjs', 'contracts/codely-canvas-source-contract.mjs', 'contracts/codely-sidebar-canvas-contract.mjs', 'contracts/codely-download-contract.mjs', 'contracts/codely-generator-api.test.mjs', 'contracts/codely-generator-upload.test.mjs', 'contracts/codely-media-rebase.test.mjs', 'contracts/codely-local-models.test.mjs', 'contracts/codely-cpa-generation.test.mjs')
+$testScripts += @('contracts/codely-account-broker.test.mjs', 'contracts/codely-account-wiring.test.mjs', 'contracts/codely-account-official-surface.test.mjs', 'contracts/codely-account-frontend.test.mjs', 'contracts/codely-account-timeout.test.mjs')
+$testScripts += @('contracts/codely-official-generator-broker.test.mjs', 'contracts/codely-official-assets.test.mjs', 'contracts/codely-official-generator-api.test.mjs', 'contracts/codely-official-generator-validation.test.mjs', 'contracts/codely-official-programming.test.cjs')
 foreach ($script in $testScripts) {
     $arguments = @((Join-Path $projectRoot "tests\$script"))
     if ($script -eq 'e2e/terminal-e2e.mjs' -and $SkipBrowser) { $arguments += '--skip-browser' }
@@ -99,7 +101,13 @@ if ($RealCore) {
     if ($LASTEXITCODE -ne 0) { throw 'Actual Core index settings scope/persistence verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\real-core-smoke.mjs')
     if ($LASTEXITCODE -ne 0) { throw 'Isolated real core verification failed' }
+    & node (Join-Path $projectRoot 'tests\e2e\codely-account-login-e2e.mjs')
+    if ($LASTEXITCODE -ne 0) { throw 'Codely official account device-login verification failed' }
     if (-not $SkipBrowser) {
+        & node (Join-Path $projectRoot 'tests\e2e\codely-account-login-e2e.mjs') --browser --images
+        if ($LASTEXITCODE -ne 0) { throw 'Codely account original login UI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-account-login-e2e.mjs') --browser --images --previous
+        if ($LASTEXITCODE -ne 0) { throw 'Previous Codely account original login UI verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\insight-e2e.mjs') --binary (Join-Path $shellRoot 'target\debug\GameCowork.exe') --package $AgentTestPackage
         if ($LASTEXITCODE -ne 0) { throw 'Actual local index HTTP/GUI verification failed' }
     }
@@ -114,11 +122,19 @@ if ($RealCore -or $Chat) {
         if ($LASTEXITCODE -ne 0) { throw 'Original Quick CPA image protocol verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --previous --cpa-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Previous original Quick CPA image protocol verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --download-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Original asset native download verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-assets-e2e.mjs') --previous --download-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous original asset native download verification failed' }
     }
     & node (Join-Path $projectRoot 'tests\integration\core-command-bootstrap.mjs') --package $AgentTestPackage
     if ($LASTEXITCODE -ne 0) { throw 'Actual Core/Agent command bootstrap and workspace ownership verification failed' }
 }
 if ($Chat) {
+    & node (Join-Path $projectRoot 'tests\e2e\codely-official-programming-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+    if ($LASTEXITCODE -ne 0) { throw 'Official Pro programming GUI/Agent verification failed' }
+    & node (Join-Path $projectRoot 'tests\e2e\codely-official-programming-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+    if ($LASTEXITCODE -ne 0) { throw 'Previous official Pro programming GUI/Agent verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\cli-runtime-smoke.mjs') --package $AgentTestPackage --prewarm
     if ($LASTEXITCODE -ne 0) { throw 'Actual CLI ACP verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\core-chat-smoke.mjs') --package $AgentTestPackage

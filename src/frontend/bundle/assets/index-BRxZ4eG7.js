@@ -1,3 +1,6 @@
+import { officialProgrammingMenu } from "./gamecowork-official-models.js";
+import { downloadGameCoworkMedia } from "../codely-generator/local-download.js";
+const gamecoworkNotifyDownload = (level, message) => gamecoworkHistoryToast[level](message, { position: "top-right", duration: 5000 });
 import { gamecoworkGetStoreMessenger } from "./store-c6kNGz30.js";
 import { createGameCoworkHistoryOperations } from "./gamecowork-history-operations.js";
 import { eQ as gamecoworkHistoryToast } from "./registry-BL-NPVNy.js";
@@ -9275,9 +9278,9 @@ function dL(e) {
             key: "no-models",
             items: [{ key: "no-model", label: o("models.noModelsConfigured"), disabled: !0 }],
           }),
-        he
+        officialProgrammingMenu(he, n, Ba, () => s(f))
       );
-    }, [ne, t, z, ye, se == null ? void 0 : se.title, r, s, f, o, Ae, ce, W, H]),
+    }, [ne, t, z, ye, se == null ? void 0 : se.title, r, s, f, o, Ae, ce, W, H, n]),
     be = d.useCallback(
       async (J) => {
         var _e;
@@ -38906,6 +38909,10 @@ function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-fra
               h({ type: "codely:workspaces", workspaces: u.current }));
           else if (b.type === "openurl" && typeof b.url == "string") {
             const { url: x, filename: E } = b;
+            if (gamecoworkUsesLocalAssetPage()) {
+              void downloadGameCoworkMedia(x, E, gamecoworkNotifyDownload);
+              return;
+            }
             fetch(`${window.location.origin}/api/tauri/download-url`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -38919,10 +38926,13 @@ function gamecoworkLegacyCanvasFrame({ src: e, title: t, testId: n = "canvas-fra
   const g = d.useRef(f);
   return (
     d.useEffect(() => {
-      if (gamecoworkUsesLocalAssetPage()) return;
+      if (gamecoworkUsesLocalAssetPage()) {
+        A.current && h({ type: "gamecowork:local-session-changed" });
+        return;
+      }
       const w = g.current;
       ((g.current = f), A.current && (f ? h({ type: "cowork-token", token: f }) : w !== null && h({ type: "logout" })));
-    }, [f, h]),
+    }, [r, f, h]),
     d.useEffect(() => {
       A.current && h({ type: "embed-style", style: p });
     }, [p, h]),
@@ -39304,6 +39314,10 @@ function gamecoworkLegacyAssetPanel({ headerExtra: e }) {
           !C(he.source)
         )
           return;
+        if (gamecoworkUsesLocalAssetPage()) {
+          await downloadGameCoworkMedia(ve.url, ve.filename, gamecoworkNotifyDownload);
+          return;
+        }
         const _e = await G2(s, ve.url);
         if (_e) {
           try {
@@ -44344,7 +44358,11 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
   return (
     d.useEffect(() => {
       var C, F, O, V;
-      if (gamecoworkUsesLocalAssetPage()) return;
+      if (gamecoworkUsesLocalAssetPage()) {
+        if (m.current && p.current?.contentWindow)
+          p.current.contentWindow.postMessage({ type: "gamecowork:local-session-changed" }, Di);
+        return;
+      }
       const S = G.current;
       ((G.current = K),
         m.current &&
@@ -44354,7 +44372,7 @@ function gamecoworkLegacyCanvasPanel({ headerExtra: e, headerLeftExtra: t, reser
             : S !== null &&
               ((V = (O = p.current) == null ? void 0 : O.contentWindow) == null ||
                 V.postMessage({ type: "logout" }, Di))));
-    }, [K]),
+    }, [E, K]),
     d.useEffect(() => {
       var S, C;
       m.current &&

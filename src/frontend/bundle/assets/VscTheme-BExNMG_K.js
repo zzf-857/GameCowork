@@ -187292,6 +187292,7 @@ const QSn = yr([ede], (e) => {
   Tgn = 6e4,
   Mgn = {
     "history/load": Tgn,
+    "getControlPlaneSessionInfo": 4e4,
     "unity/invokeTool": 12e4,
     "unity/getProjectStatus": 3e4,
     "unity/getStatus": 3e4,
@@ -187967,38 +187968,33 @@ const i4n = ({ children: e }) => {
       [u, h] = E.useState(null),
       [m, f] = E.useState(null),
       g = E.useRef(null),
+      gamecoworkSessionUpdateGeneration = E.useRef(0),
       y = ze((O) => O.profiles.organizations),
       x = lS(y),
       b = ze(Bkt),
       C = ze(Fkt),
-      S = (O) => (
-        f(null),
-        new Promise(async (B) => {
-          l(!0);
-          let $ = !1;
-          await n
-            .request("getControlPlaneSessionInfo", { silent: !1, useOnboarding: O })
-            .then((q) => {
-              if (q.status === "error") {
-                B(!1);
-                return;
-              }
-              if (s5e(q.content)) {
-                (($ = !0), B(!1));
-                return;
-              }
-              const j = Mx(q.content);
-              if (!j || y$(j) || !j.accessToken) {
-                B(!1);
-                return;
-              }
-              (o(j), B(!0));
-            })
-            .finally(() => {
-              $ || (l(!1), h(null));
-            });
-        })
-      ),
+      S = async (O) => {
+        f(null);
+        l(!0);
+        let $ = !1;
+        try {
+          const q = await n.request("getControlPlaneSessionInfo", { silent: !1, useOnboarding: O });
+          if (q.status === "error") return !1;
+          if (s5e(q.content)) {
+            $ = !0;
+            return !1;
+          }
+          const j = Mx(q.content);
+          if (!j || y$(j) || !j.accessToken) return !1;
+          o(j);
+          return !0;
+        } catch (q) {
+          f(q instanceof Error ? q.message : "登录请求失败，请重试");
+          return !1;
+        } finally {
+          $ || (l(!1), h(null));
+        }
+      },
       T = async () => {
         (await t(Cce({ shouldCreateInterrupteMessage: !1 })).unwrap(),
           n.post("logoutOfControlPlane", void 0),
@@ -188009,7 +188005,7 @@ const i4n = ({ children: e }) => {
           a(to.ConfigPolling));
       },
       w =
-        i && !y$(i)
+        i && i.mode !== "local" && !y$(i)
           ? (F = (L = i.account) == null ? void 0 : L.id) != null
             ? F
             : (I = i.account) == null
@@ -188043,7 +188039,13 @@ const i4n = ({ children: e }) => {
       ma(
         "sessionUpdate",
         async (O) => {
+          const sessionUpdateGeneration = ++gamecoworkSessionUpdateGeneration.current;
           const B = Mx(O.sessionInfo);
+          if (!B || B.mode === "local") {
+            (t(O9e(x.filter(($) => $.id === "personal"))),
+              t(L9e("personal")), t(V9e()),
+              a(to.ConfigPolling), a(to.ActivityPolling));
+          }
           if (B) {
             (o(B), (g.current = null), l(!1), h(null), f(null));
             return;
@@ -188052,10 +188054,16 @@ const i4n = ({ children: e }) => {
             o(void 0);
             return;
           }
-          const $ = await n.request("getControlPlaneSessionInfo", { silent: !0, useOnboarding: !1 });
-          $.status === "success" && o(Mx($.content));
+          ((g.current = null), l(!1), h(null), f(null));
+          try {
+            const $ = await n.request("getControlPlaneSessionInfo", { silent: !0, useOnboarding: !1 });
+            if (sessionUpdateGeneration === gamecoworkSessionUpdateGeneration.current)
+              o($.status === "success" ? Mx($.content) : void 0);
+          } catch {
+            sessionUpdateGeneration === gamecoworkSessionUpdateGeneration.current && o(void 0);
+          }
         },
-        [n, i],
+        [n, i, t, a, x],
       ),
       ma(
         "device-flow-started",

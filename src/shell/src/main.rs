@@ -1,4 +1,5 @@
 // GameCowork local desktop host. HTTP, core stdio and workspace state share one contract.
+mod codely_account;
 mod codely_canvas;
 mod codely_http;
 mod editor_bridge;
@@ -315,6 +316,13 @@ async fn host_response(core: &CoreHandle, frame: &Value) -> Value {
     let data = &frame["data"];
     let root = workspace_root(core, frame["workspaceId"].as_str()).await;
     match kind {
+        "gamecoworkAccount/vaultSeal" | "gamecoworkAccount/vaultUnseal" => {
+            codely_account::vault_host_response(kind, data)
+        }
+        "openUrl" => codely_account::open_url_host_response(
+            data,
+            core.paths.headless || core.paths.test_mode,
+        ),
         "getWorkspaceDirs" => root.map(|p| json!([p])).unwrap_or(json!([])),
         "getProjectRoot" => root.map(Value::String).unwrap_or(Value::Null),
         "getIdeInfo" => ide_info(),
@@ -1076,6 +1084,8 @@ async fn handle_core_line(line: &str, core: &CoreHandle) {
     );
     if !gui_callback
         && (kind.starts_with("get")
+            || codely_account::is_vault_request(kind)
+            || kind == "openUrl"
             || matches!(
                 kind,
                 "readFile"
@@ -1505,7 +1515,39 @@ async fn local_message(
 ) -> Option<Result<Value, String>> {
     Some(match kind {
         "get_cowork_access_token" => Ok(json!("gamecowork-local-session")),
-        "getControlPlaneSessionInfo" => Ok(local_session()),
+        "getControlPlaneSessionInfo" => {
+            // The Core account broker owns login state; the local identity is
+            // the honest fallback when Core answers "logged out" or is down.
+            let interactive = data["silent"] == false;
+            match core
+                .transport
+                .request(
+                    kind,
+                    data.clone(),
+                    Some("default"),
+                    None,
+                    false,
+                    Duration::from_secs(if interactive { 35 } else { 3 }),
+                )
+                .await
+            {
+                Ok(reply) if reply["data"]["status"] == "success" => {
+                    let content = reply["data"]["content"].clone();
+                    if content.is_null() {
+                        Ok(local_session())
+                    } else {
+                        Ok(content)
+                    }
+                }
+                Ok(reply) if interactive => Err(reply["data"]["error"]
+                    .as_str()
+                    .or_else(|| reply["data"]["error"]["message"].as_str())
+                    .unwrap_or("Official account login failed; please retry")
+                    .to_owned()),
+                Err(error) if interactive => Err(error),
+                _ => Ok(local_session()),
+            }
+        }
         "getIdeInfo" => Ok(ide_info()),
         "getIdeSettings" => Ok(ide_settings()),
         "ping" => Ok(json!("pong")),
@@ -2317,6 +2359,42 @@ async fn invoke(State(core): State<CoreHandle>, Json(body): Json<Value>) -> Resp
             return Json(response).into_response();
         }
         return Json(reply(kind, &id, content)).into_response();
+    }
+    // The account broker belongs to the default Core owner for this app.
+    // Account operations must keep reaching that owner after a workspace opens;
+    // especially logout must revoke every official inference capability.
+    if matches!(
+        kind,
+        "logoutOfControlPlane"
+            | "cancelLogin"
+            | "notifyDeviceFlowExpired"
+            | "codelyAccount/status"
+            | "codelyAccount/start"
+            | "codelyAccount/poll"
+            | "codelyAccount/cancel"
+            | "codelyAccount/expire"
+            | "codelyAccount/logout"
+            | "codelyAccount/refresh"
+            | "codelyAccount/canvasSnapshot"
+    ) {
+        return Json(
+            match core
+                .transport
+                .request(
+                    kind,
+                    data,
+                    Some("default"),
+                    id.as_str(),
+                    false,
+                    Duration::from_secs(180),
+                )
+                .await
+            {
+                Ok(frame) => frame,
+                Err(error) => error_reply(kind, &id, error),
+            },
+        )
+        .into_response();
     }
     if let Some(result) = local_message(&core, kind, &data).await {
         return Json(match result {
@@ -3355,6 +3433,7 @@ fn build_router(core: CoreHandle) -> Router {
             any(codely_http::generator),
         )
         .route("/codely-canvas/api/*operation", any(codely_http::canvas))
+        .route("/api/tauri/download-url", post(codely_http::download_url))
         .layer(axum::middleware::map_response(
             |mut response: Response| async move {
                 response
@@ -3760,6 +3839,36 @@ fn main() {
         .to_owned();
     let webview = wry::WebViewBuilder::new(window.as_ref())
         .with_url(&url)
+        .with_navigation_handler({
+            let app_origin = ipc_origin.clone();
+            move |uri: String| {
+                let same_origin = uri.strip_prefix("http://").is_some_and(|rest| {
+                    rest.split(['/', '?', '#']).next().unwrap_or("") == app_origin
+                });
+                if same_origin || uri == "about:blank" {
+                    return true;
+                }
+                if codely_account::is_external_http_https(&uri) {
+                    codely_account::open_external_https(&uri);
+                }
+                false
+            }
+        })
+        .with_new_window_req_handler({
+            let app_origin = ipc_origin.clone();
+            move |uri: String| {
+                let same_origin = uri.strip_prefix("http://").is_some_and(|rest| {
+                    rest.split(['/', '?', '#']).next().unwrap_or("") == app_origin
+                });
+                if same_origin {
+                    return true;
+                }
+                if codely_account::is_external_http_https(&uri) {
+                    codely_account::open_external_https(&uri);
+                }
+                false
+            }
+        })
         .with_initialization_script(&format!(
             "window.GAMECOWORK_FRAMELESS_WINDOW={frameless};\n{}",
             include_str!("native_window.js")

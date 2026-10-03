@@ -243,6 +243,155 @@ pub fn read_http_resource(
     Ok((asset.bytes, mime.to_owned()))
 }
 
+// A save-dialog selection grants only this new local file. Keep directory
+// handles open on Windows so an ancestor cannot be renamed into a junction
+// between checking the path and creating the destination.
+struct DownloadDestination {
+    path: PathBuf,
+    _ancestors: Vec<fs::File>,
+}
+
+fn download_destination(path: &Path) -> Result<DownloadDestination, String> {
+    if !path.is_absolute()
+        || path.components().any(|part| {
+            matches!(
+                part,
+                std::path::Component::ParentDir | std::path::Component::CurDir
+            )
+        })
+    {
+        return Err("Download destination must be an absolute local file".into());
+    }
+    #[cfg(windows)]
+    if !matches!(path.components().next(), Some(std::path::Component::Prefix(prefix))
+        if matches!(prefix.kind(), std::path::Prefix::Disk(_) | std::path::Prefix::VerbatimDisk(_)))
+    {
+        return Err("Download destination must use a local drive".into());
+    }
+    let name = path
+        .file_name()
+        .and_then(|value| value.to_str())
+        .ok_or("Download filename is missing")?;
+    validate_download_filename(name)?;
+    let parent = path.parent().ok_or("Download directory is missing")?;
+    plain_tree(parent)?;
+    if !parent.is_dir() {
+        return Err("Download directory does not exist".into());
+    }
+    let mut ancestors = Vec::new();
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::{
+            FILE_FLAG_BACKUP_SEMANTICS, FILE_FLAG_OPEN_REPARSE_POINT, FILE_SHARE_READ,
+            FILE_SHARE_WRITE,
+        };
+        for directory in parent.ancestors() {
+            let mut options = fs::OpenOptions::new();
+            options
+                .read(true)
+                .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE)
+                .custom_flags(FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT);
+            let handle = options.open(directory).map_err(|error| error.to_string())?;
+            let metadata = handle.metadata().map_err(|error| error.to_string())?;
+            use std::os::windows::fs::MetadataExt;
+            if !metadata.is_dir() || metadata.file_attributes() & 0x400 != 0 {
+                return Err("Download directory cannot use reparse points".into());
+            }
+            ancestors.push(handle);
+        }
+    }
+    let canonical = parent.canonicalize().map_err(|error| error.to_string())?;
+    plain_tree(&canonical)?;
+    Ok(DownloadDestination {
+        path: canonical.join(name),
+        _ancestors: ancestors,
+    })
+}
+
+pub fn validate_download_filename(name: &str) -> Result<(), String> {
+    let stem = name.split('.').next().unwrap_or("").to_ascii_uppercase();
+    if name.is_empty()
+        || name.chars().count() > 255
+        || name.len() > 1024
+        || name.chars().any(|c| {
+            c.is_control() || matches!(c, '/' | '\\' | ':' | '*' | '?' | '"' | '<' | '>' | '|')
+        })
+        || name.ends_with(['.', ' '])
+        || matches!(name, "." | "..")
+        || matches!(stem.as_str(), "CON" | "PRN" | "AUX" | "NUL")
+        || (stem.starts_with("COM") || stem.starts_with("LPT"))
+            && stem.len() == 4
+            && matches!(stem.as_bytes()[3], b'1'..=b'9')
+    {
+        return Err("Download filename must be a bounded plain filename".into());
+    }
+    Ok(())
+}
+
+// Tests may choose a dialog result only within their explicit isolated tree.
+// This does not create a directory or grant renderer-supplied path access.
+pub fn check_download_test_path(path: &Path, test_root: &Path) -> Result<(), String> {
+    plain_tree(test_root)?;
+    let target = download_destination(path)?;
+    let root = test_root
+        .canonicalize()
+        .map_err(|error| error.to_string())?;
+    if !target.path.starts_with(&root) {
+        return Err("Download fixture must stay inside the isolated test tree".into());
+    }
+    if path.exists() {
+        plain_tree(path)?;
+    }
+    Ok(())
+}
+
+pub fn save_native_resource(
+    core_home: &Path,
+    metadata: &Value,
+    input: bool,
+    path: &Path,
+) -> Result<Value, (&'static str, String)> {
+    // Re-read the verified bytes after the user finishes the dialog. A stale
+    // preview or a previously checked hash never authorizes changed content.
+    let (bytes, _) = read_http_resource(core_home, metadata, input)
+        .map_err(|error| ("download_source_changed", error))?;
+    let destination =
+        download_destination(path).map_err(|error| ("download_write_failed", error))?;
+    let mut options = fs::OpenOptions::new();
+    options.write(true).create_new(true);
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::FILE_FLAG_OPEN_REPARSE_POINT;
+        options
+            .share_mode(0)
+            .custom_flags(FILE_FLAG_OPEN_REPARSE_POINT);
+    }
+    let mut file = options.open(&destination.path).map_err(|error| {
+        (
+            if error.kind() == std::io::ErrorKind::AlreadyExists {
+                "download_destination_exists"
+            } else {
+                "download_write_failed"
+            },
+            error.to_string(),
+        )
+    })?;
+    file.write_all(&bytes)
+        .and_then(|_| file.sync_all())
+        .map_err(|error| {
+            (
+                "download_write_failed",
+                format!("Download was not completed; a partial selected file may remain: {error}"),
+            )
+        })?;
+    Ok(
+        json!({"ok":true,"path":path.to_string_lossy(),"byteLength":bytes.len(),
+        "sha256":format!("{:x}", Sha256::digest(&bytes))}),
+    )
+}
+
 fn resource_value(asset: VerifiedAsset, metadata: &Value) -> Result<Value, String> {
     let mime = metadata["mime"]
         .as_str()
@@ -325,6 +474,92 @@ mod tests {
             fs::create_dir_all(&project).unwrap();
             crate::mutations::Mutations::new(&project, &self.root.join("changes")).unwrap()
         }
+    }
+
+    #[test]
+    fn native_download_writes_exact_artifact_and_never_overwrites_existing_files() {
+        let fixture = Fixture::new();
+        let bytes = b"actual owned media bytes";
+        fs::write(&fixture.file, bytes).unwrap();
+        let metadata = fixture.metadata(bytes);
+        let destination = fixture.root.join("native-download.png");
+        let result = save_native_resource(&fixture.home, &metadata, false, &destination).unwrap();
+        assert_eq!(result["ok"], true);
+        assert_eq!(result["byteLength"], bytes.len());
+        assert_eq!(result["sha256"], metadata["sha256"]);
+        assert_eq!(fs::read(&destination).unwrap(), bytes);
+        fs::write(&destination, b"user's existing file").unwrap();
+        let error =
+            save_native_resource(&fixture.home, &metadata, false, &destination).unwrap_err();
+        assert_eq!(error.0, "download_destination_exists");
+        assert_eq!(fs::read(&destination).unwrap(), b"user's existing file");
+        let hardlink = fixture.root.join("existing-alias.png");
+        fs::hard_link(&destination, &hardlink).unwrap();
+        assert_eq!(
+            save_native_resource(&fixture.home, &metadata, false, &hardlink)
+                .unwrap_err()
+                .0,
+            "download_destination_exists"
+        );
+        assert_eq!(fs::read(&destination).unwrap(), b"user's existing file");
+    }
+
+    #[test]
+    fn native_download_rechecks_source_integrity_and_input_area_before_creation() {
+        let fixture = Fixture::new();
+        let bytes = b"owned input bytes";
+        let input = fixture.home.join("generator/inputs/input.png");
+        fs::create_dir_all(input.parent().unwrap()).unwrap();
+        fs::write(&input, bytes).unwrap();
+        let mut metadata = fixture.metadata(bytes);
+        metadata["path"] = json!(input);
+        let target = fixture.root.join("downloaded-input.png");
+        assert_eq!(
+            save_native_resource(&fixture.home, &metadata, false, &target)
+                .unwrap_err()
+                .0,
+            "download_source_changed"
+        );
+        assert!(!target.exists());
+        fs::write(&input, b"tampered content").unwrap();
+        assert_eq!(
+            save_native_resource(&fixture.home, &metadata, true, &target)
+                .unwrap_err()
+                .0,
+            "download_source_changed"
+        );
+        assert!(!target.exists());
+        fs::write(&input, bytes).unwrap();
+        save_native_resource(&fixture.home, &metadata, true, &target).unwrap();
+        assert_eq!(fs::read(&target).unwrap(), bytes);
+    }
+
+    #[test]
+    fn download_fixture_paths_and_suggestions_cannot_escape_their_boundaries() {
+        let fixture = Fixture::new();
+        let inside = fixture.root.join("safe-output.png");
+        assert!(check_download_test_path(&inside, &fixture.root).is_ok());
+        assert!(check_download_test_path(
+            &fixture.root.parent().unwrap().join("outside.png"),
+            &fixture.root
+        )
+        .is_err());
+        assert!(
+            check_download_test_path(&fixture.root.join("../outside.png"), &fixture.root).is_err()
+        );
+        assert!(check_download_test_path(Path::new("relative.png"), &fixture.root).is_err());
+        for name in [
+            "../file.png",
+            "CON.png",
+            "LPT1.webm",
+            "a.png:secret",
+            "file.",
+            "file ",
+            "a\\b.png",
+        ] {
+            assert!(validate_download_filename(name).is_err(), "{name}");
+        }
+        assert!(validate_download_filename("参考图.png").is_ok());
     }
 
     #[test]

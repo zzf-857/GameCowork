@@ -1,5 +1,108 @@
 # RESTORE_STATUS — GameCowork 功能、验收与交接
 
+<a id="codely-live-login-20261003"></a>
+
+## 本人真实官方登录与 Pro 权益交付（2026-10-03，正式 app 已更新，图片与文字真实验证通过）
+
+用户已经在官方页面完成真实设备授权，并提供正式 GameCowork 展示账号、Pro、积分与使用窗口的截图。13:56 的只读宿主检查确认 `phase:authenticated`、`restored:false`，会话、套餐与使用量数据均存在；证据 `temp/GameCowork/codely-login-live-20261003/live-session-proof.json` 只保存状态布尔值，没有收集账号令牌、个人标识或余额。随后通过本应用 Quick 接口只读确认官方身份、有效积分字段及 `paidType:paid / productCode:personal-pro`。主账号与 Quick 的真实身份/付费读取已经验收；Canvas 实际站面仍另行验证。
+
+先前官网白屏同时出现在直接访问和授权跳转，公开首页与设备码页可返回200，部分大静态资源下载缓慢；没有证据据此断定整站宕机，也没有取得用户带票据页面的完整网络记录。独立未登录设备请求已确认官方接受 `client_name:GameCowork`，并正常跳转 Unity 授权入口。后续用户授权成功发生在原正式包，不能归因于尚未装配的超时补丁。
+
+程序侧确实存在响应头已到而响应体停住时丢失超时的问题，已用真实回环半截响应体先复现再修复。主账号和两站面请求现在使用覆盖整个读取过程的预算；Core 独立处理设备码到期，退出/取消/关闭会中止旧请求并清理监听器和定时器。账号五组契约 **61/61**，同源码 GUI **19/19**，当时的候选两代账号 GUI 各 **19/19**；日志与报告均在 `temp/GameCowork/codely-login-live-20261003/`。该阶段候选 **1546/1546** 资源、**1542/1542** 维护输入匹配，正常 Agent guard=false。超时修复已随下述 Pro 包进入正式 app；后续完整门禁与包内图片/编程验收单列，不把早期候选数当作现包资源数。
+
+用户已要求下一步正常使用 Pro 权益。当前源码已接原 Quick 的 `frontier_flare`（全能耀斑）和 `frontier_sunburst`（全能日辉）普通图片：原参数、真实生成站付费状态/报价、最多16张已登记参考图、原 `/sso/generate` 提交和官方任务查询、媒体字节核验后的自有缓存、原历史参数恢复与原生保存/取消。原其它模型、分层输出和 Canvas 生成 schema 仍未一并接通。不得把主域 Pro 标签代替生成站实际回执，未知状态或预览URL不会被判完成，创建结果不明时不会自动重发扣额请求。
+
+官方编程新增原聊天模型菜单的明确动作“启用 Codely 官方 · Pro 模型”：点击后由 Core 获取本人所选真实团队的 CLI Key 和官方模型目录，前端只接模型元数据，Agent 仅接绑定工程/会话/模型的私有回环能力。Core 对固定官方推理端点使用原已取证的签名协议，按实际 wire 转发并检查最终帧；退出、权限/组织变化或会话关闭会撤销能力和中断在途请求。真实 Key 不进入 Agent、前端、设置或日志；CPA模型及设置保持独立。已有工程里的账号RPC现在固定送全局broker，修复实际退出时的No handler。
+
+本阶段新broker契约 **40/40**（含秘密原文拒绝）与旧账号 **61/61**、官方资产 **20/20**、原API/执行器 **6/6**、独立边界 **8/8**均通过；官方编程最后补上非2xx诊断秘密脱敏，当前 **27/27**。图片两代真实Rust/Core/原GUI各 **22项** 的最终数量以 `codely-pro-entitlements-20261003/images-current-v4/result.json`、`images-previous-v4/result.json` 为准；编程两代 `official-programming-e2e-tail-checked-20261003` 与 `official-programming-e2e-tail-checked-previous-20261003` 已验证真实guarded Agent工具调用、CPA切换和退出断流，全部仅回环fixture。源码还修了历史 `studioKind` 的模型身份投影；先前新driver的空iframe等待和错误再生成按钮定位失败保留于v1–v3目录，没有隐藏。
+
+用户明确保存工作、关闭程序并授权原位更新及真实服务检查后，已通过 `build-local.ps1` 更新唯一正式 `app/`。没有修改用户工程、导入原版凭据、提交或推送；真实服务手动验收与自动回环门禁分别记账。新维护入口为 `gamecowork-codely-official-generator.js`、`gamecowork-official-llm.js` 和 `assets/gamecowork-official-models.js`，测试Agent为 `cli-official-programming-20261003-v3`。以下证据根为 `F:/AI/AgentMake/temp/GameCowork/codely-pro-entitlements-20261003/`。
+
+| 本阶段最终交付 / 验收 | 实际结果与证据 |
+| --- | --- |
+| 完整源码门禁 | `verify-pro-v2.log` / `verify-pro-v2-exit.txt`：`tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage .../cli-official-programming-20261003-v3` **完整 exit 0**，Rust **159/159**。包括两代账号/图片/编程、真实Core/guarded Agent与既有聊天、文件、MCP等隔离门禁；未运行真实Editor。该完整门禁在最后的推理请求头和诊断补丁之前；其后补跑编程27契约、正式包编程GUI与手动真实请求，不冒称完整大门禁再次执行 |
+| 候选双代包内流程 | `packaged-verification-summary.json`：图片 current / previous 各 **22/22**，编程各 **5/5**；实际包内Host/Core/原GUI、同源码guarded Agent、外网阻断。记录的10个自有Host/Core PID已退出；编程driver不记录Core PID，此限制保留 |
+| 正式 app 原位装配 | `build-app-upstream-headers.log` / `build-app-upstream-headers-exit.txt` **exit 0**，Release **2.1.3-canary.2 / 1549资源**，`builtAtUtc=2026-10-03T08:35:32.2509487Z`（北京时间16:35:32）。旧程序及暂存保留在 `temp/GameCowork/build/f13e820316df4fcd91cebd0ce19c70fe/`；`-SkipTests`仅复用已完成验收 |
+| 正式 app 资源复核 | `installed-integrity-final.json`：**1549/1549** size/SHA、**1545/1545** 可映射维护输入匹配，漏装/漂移/未登记资源为0，正常Agent guard=false。manifest SHA `85680B31DACE6DD9F54DADD762237F5018DD28BDC32FC50D9884D59314A532F3`；主EXE SHA `020EF28C3CBF817A82DAECC1CEDAAFEFD2E90CA7F2868889467AFCF6C2250D74`；正常Agent SHA `38FC34945797F25B36B87B9D39B058843AA95F928747D2DA687AA5D1D5AE343F`，Agent维护源SHA `9B08B24808D0FB9690B38AB01DD3E8CB78979E36BED23E56EB7F588985B353D3` |
+| 最后补丁后正式 app 编程GUI | `installed-programming-final-current/result.json` / `installed-programming-final-previous/result.json` 各 **5/5、exit 0**；实际正式包Host/Core/双代原GUI与同源码guarded Agent。显式启用、真实工具读取并反馈、成功终帧、CPA往返切换且设置不改、实际退出断流通过；浏览器错误和外站请求断言为0，driver等待自有Host退出，未独立记录Core PID |
+| 本人真实官方图片 | `manual-live/image-live-proof.json`：读取实际报价 **135积分**，只提交 **1张**全能耀斑普通PNG，真实任务完成；实际 **1024×1024 / 906,619 bytes**，SHA `e2aaaeae30d9ffaf57f0238bfed1276fe6f6af4f18fd7cef4cc0d468da86bab0`，缓存与返回SHA一致，保留在自有生成历史。报价是实际读取值，未以余额差额推定最终结算；全能日辉线上生成及参考图付费上传未另行收费验证 |
+| 本人真实官方编程 | `manual-live/result.json`：实际模型目录 **8个**，正常编译Agent的 **GLM-5.3-FLASH** 短文字请求 **9帧 / success最终帧**，无失败；没有调用其它模型或执行用户工程工具。真实Key留Core，证据不收集凭据/个人标识/余额。自有临时工作区已关闭移除注册，自有Host PID21812已退出；未重复生成图片 |
+
+真实编程首轮模型目录成功而推理返回HTTP400，安全诊断回执为官方欢迎文案。核对原CLI字节后发现代理漏掉原SDK的 `User-Agent` 和 `x-litellm-session-id`，现保留固定兼容版本并另带 `X-GameCowork-Client` 自有桥标识，会话头由宿主冻结，签名协议不变。补丁后的同模型短请求实际成功；这证明本次兼容修复解决该请求的400，不推定官方全部模型均已线上验证。原失败回执保留于 `manual-live/first-attempt.json`、`image-live-proof.json` 和 `text-before-header-fix.json`。
+
+仍未支持分层图片、其它原生成模型、Canvas官方生成schema/云协作；官方8个模型的全部协议与长任务须按实际用户使用继续验证。日常入口仍是 `app/启动GameCowork.bat`；聊天从原模型菜单显式启用/刷新 **Codely 官方 · Pro 模型**，资产页使用 **全能耀斑 / 全能日辉**普通模式。
+
+用户随后要求将当前版本整理并提交、推送GitHub。提交前修正最新验收链接、现行功能矩阵以及Quick来源台账的认证/适配器说明，运行逻辑与已验SHA条目未改。正式app仍是16:35装配；其Quick台账说明保留装配时文字，源码台账说明将在下次正常构建同步，不把这次文档整理计为新的包内完整性复验。提交包含维护源码、测试、取证说明与开发文档，`app/`、本机数据、凭据及统一temp产物不进入Git，版本保持 `2.1.3-canary.2`。
+
+<a id="zcode-resume-20261003"></a>
+
+## Zcode 会话接续与正式 app 更新（2026-10-03 10:44，北京时间）
+
+已只读恢复 `sess_b086b35f-2dac-487d-918e-1a2c2bf1b5da` 的 372 条历史消息。用户给出的 `.zcode-session` 文件不在工作区，会话实际保存在本机 Zcode 数据库。最后停止原因是模型额度耗尽；其最终默认门禁 `GATE-EXIT=0`、1546 资源装配和包内账号协议 E2E 13 项已经完成，截图待办未及时结算。没有真实官方授权或真实额度消费的验收证据。
+
+接手时核对 09:45 日常 app 的 1546 个文件均与自身清单一致，1542 个可映射维护输入与源码一致；基线报告为 `zcode-resume-delivery-audit-20261003/report.json`。随后修复真实流程缺口，已经通过 `tools/build-local.ps1` 原位更新正式 `app/`，仍为 **2.1.3-canary.2 / 1546 资源**。未修改用户配置和工作区数据，没有提交或推送。以下证据均位于 `F:/AI/AgentMake/temp/GameCowork/zcode-resume-20261003/`。
+
+本次新增修复：
+
+- broker 冻结请求所属账号及代次，拒绝退出、重新登录和刷新后的旧 Quick/Canvas/主域回包；站点交换单飞，刷新凭据先密封持久化再发布，旧 seal 不覆盖新会话。补齐 initiate 取消、交换期间并发、slow_down 单位、额度数值白名单和禁止跨源重定向。
+- 原登录链接实际走 `controlPlane/openBrowser → openUrl`，此前没有宿主处理器；现在已接系统浏览器并验证协议。交互登录错误不再伪装本地成功，宿主等待 35 秒、两代前端 40 秒；网络失败会结束登录状态并显示错误。
+- 两代主 Canvas 与默认 Sidebar 发送无凭据的身份失效通知；Canvas 只接受可信 parent/origin，再从本机服务读取身份。退出后立即清旧组织、Pro/订阅和额度、停止官方轮询；等待本地身份期间保持原资产 iframe，旧查询不能覆盖新会话。未知积分保持不可用。
+- 补两代原登录组件 Chromium 验证、真实函数/Redux 契约，并把遗漏的官方站面及新增前端契约、两代账号浏览器 E2E 加入统一门禁。MCP 测试只对并发写入期间的 JSON 解析失败做有界等待，保留真实文件错误、业务断言和超时诊断。
+
+| 本次最终验证 | 结果与证据 |
+| --- | --- |
+| 完整源码门禁 | `verify-final.log` / `verify-final-exit.txt`：`tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage .../guarded-cli-v4` **exit 0**，Rust **159/159**，包括两代原资产/账号 GUI、Core/Agent、聊天、文件、MCP 与命令/子代理；没有运行真实 Editor 或真实 Provider |
+| 最终账号契约 | `account-contracts-final.log`：broker、wiring、official-surface、frontend 四组 **45/45**；最后的前端请求拒绝、权益清理与迟到 fallback 契约均执行真实两代函数/Redux reducer。Canvas 来源/生命周期契约 **13/13**，Quick/Canvas 来源与可逆补丁检查通过 |
+| 最终候选账号 GUI | `final-account-current-v3/result.json` / `final-account-previous-v3/result.json` 各 **19/19**：原按钮、503 错误、3.5 秒 initiate、验证码/验证链接 RPC、实际等待中取消、登录/登出、同一 Quick/Canvas iframe 刷新、无旧 Pro/组织残留、Windows DPAPI 冷重启。两代外站请求/页面错误为 0，自有进程已退出 |
+| 最终候选资产回归 | `final-assets-current-v3/result.json` 默认 **26/26**、`final-download-previous-v3/result.json` 下载 **16/16**；`final-assets-v3-summary.json` 核对十个自有 Host/Core PID 全部退出。更早 v1 双代默认各26、双代下载各16的结果保留在 `packaged-assets-summary.json`，不冒充最终 v3 全套包内重跑 |
+| 正式 app 装配与完整性 | `build-app.log` / `build-app-exit.txt` **exit 0**；`installed-integrity.json`：**1546/1546** 清单文件、**1542/1542** 维护输入匹配，与最终 candidate-v3 的全部资源 SHA 一致，正常 CLI guard=false。保留原有 `core/error.log`，不读内容、不作为程序资源、不删除；首次严格额外文件检查保留于 `installed-integrity-initial.json` |
+| 正式 app GUI 复验 | `installed-account-current/result.json` **19/19**，实际包内 Host/Core/前端/runtime、独立测试数据和回环服务；四个自有 Host/Core PID 已核实退出，外站请求/页面错误为0。系统浏览器启动在测试模式明确 suppressed，不能计为真实官方网页登录 |
+
+正式 `builtAtUtc=2026-10-03T02:44:17.2275263Z`；manifest SHA `5372368B3A8E8DAED7D01BF8426FA4F78667CA366CFF3CD2C12B3CB529258261`，主 EXE SHA `9EC8F17E067BF6063520ADB7C91C011C93D0A71B2F139804468AC1E086037BDE`，正常 Agent SHA `CDCCB41EA2754651EF80C865803E6B0885CF9E728F9F1817706B9856F48F2969`。Agent 源 SHA 仍为 `6B2A3C5F8FC961B16B1756B07AF5A667CA9832CA1E22E9D83F9FEC8DA65AEA08`，本轮未改 Agent 源码。安装备份为 `temp/GameCowork/build/688b9dd4d58a40cbab9c3e171e8b025e/`；装配的 `-SkipTests` 仅复用已完成的源码/候选验收。日常入口仍是 `app/启动GameCowork.bat`。
+
+**失败记录保留。** 首轮 `verify-full.log` 实际 exit 1：MCP E2E 的同步 JSON 读取失败。其自有 fixture 最终文件有效，真实 CLI 使用原位写入，但当时中间字节未留存，不能倒推具体长度；检查与修复见 `custom-settings-failure-review.json` / `custom-retry-summary.json`。原 v1 账号18项漏掉 Pro/组织残留，新负例 `account-stale-entitlement-negative` 已复现；v2 的失效通知又会卸载资产 iframe，诊断结果不计最终通过。最终 v3 使用严格的19项断言。以上失败没有删除或覆盖。
+
+**仍需本人操作的边界：** 真实设备授权需用户在官方页面完成；当前原界面入口为左下角本地用户 → 退出登录/确认登出 → 登录/注册。fixture 中的身份、套餐与积分均为自有模拟数据。官方生成提交与模型绑定、Canvas 生成 schema / 云协作、`/api/orgs` 双通道仍未实现，不得以账号读取或装配成功宣称能够消费官方额度。Canvas 原积分栏展示仍待完善，本轮只核对 Canvas AuthProvider 的身份/积分 overlay；默认 Sidebar 的账号通知有真实函数契约，账号 GUI 生命周期验收使用原独立 Canvas 页面。官方响应体的完整读取时限仍是后续加固项。旧章节的“尚无账号模块”等说法是当时状态，当前实现以本节和下方账号章节为准。
+
+## 本轮覆盖交付（2026-10-03 09:45，北京时间）
+
+用户明确要求把这轮修改覆盖现有安装。已通过 `tools/build-local.ps1` 完成完整 Release 候选与日常 `app/` 原位更新，**2.1.3-canary.2 / 1546 资源**；正式 `builtAtUtc=2026-10-03T01:45:07.4973966Z`，包清单 SHA `E2DC0DE2AE8E95F63D69C06D26A230D9E24F9C2A47671FF668DF40B0B781F751`。安装时无目标 app 进程，脚本只更新程序资源，保留用户配置与工作区数据。正常 Agent guard=false，EXE SHA `AD0A0F06A2FA76D11EA7C275F24E307224FEC06F8EBAB8C0E7D613F3E5C9EFF0`、维护源 SHA `6B2A3C5F8FC961B16B1756B07AF5A667CA9832CA1E22E9D83F9FEC8DA65AEA08`；主 EXE SHA `E23047ABF624AABB174CFC4712C0A75FC51FCA07CD20007A10C42A202021C520`。
+
+证据根为 `F:/AI/AgentMake/temp/GameCowork/original-download-delivery-20261003/`。候选构建 `build-candidate.log` 执行 Rust/前端必要检查；原位装配 `build-app.log` exit0，`-SkipTests` 仅表示复用已完成候选验收。旧二进制和暂存保存在 `temp/GameCowork/build/0ee91b5351294a9aaae85985a8e10ba6/`。没有建立第二个日常安装、改版本、提交或推送；入口继续是 `app/启动GameCowork.bat`。
+
+| 此次实际验证 | 结果 |
+| --- | --- |
+| 完整候选资源审计 | `candidate-integrity.json`：**1546/1546** size/SHA、**1542/1542** 可映射维护/冻结输入一致，无漏装或未登记资源。壳EXE、CLI manifest/EXE、Node runtime四项单列验证；CLI正常入口与29资源、冻结LSP 298 runtime均一致，不用源码SHA冒充二进制SHA |
+| 正式 app 覆盖后复验 | 同一完整性报告 `installedApp`：正式 **1546/1546** 资源与自身manifest及候选实际字节一致，`deliveryResourcesReady=true`。`app-downloads-current/result.json` 使用实际安装包再验 **16/16**、六个保存文件SHA一致；外站/浏览器错误/兜底0，三轮自有Host/Core全部退出。清单时间独立记录，不要求候选和正式manifest整文件相等 |
+| 候选两代下载 | `packaged-downloads-current/result.json` / `packaged-downloads-previous/result.json` 各 **16/16**；使用完整包内壳/Core/前端，同源guarded测试Agent，每代实际六文件SHA一致，取消/重名/损坏/scope/换端口及默认右栏通过 |
+| 候选两代原资产回归 | `packaged-default-current/result.json` / `packaged-default-previous/result.json` 各 **26/26**；原手绘、历史过滤/标签/丢弃恢复、PNG/WebM/GLB、视频真实截帧、Markdown、重启及默认双文档租约通过。下载专项内已跑CPA全部fixture流程，未重复算作另一套CPA测试。四份报告外站/pageErrors/浏览器兜底为0，十轮自有Host/Core均退出 |
+| 真实 Windows 保存/取消补验 | `native-r1/result.json` **3/3**：computer-use实际操作完整候选的原生“另存为”，写出PNG的SHA与源一致；取消回执为200/`cancelled:true`且无文件；发起HTTP已断开时仍保留原框并实际保存，同时新请求409 busy。不是模拟选择，也没有调用官方额度。自有Host/Core全部退出，上轮权限超时未完成项至此补验完成 |
+| 包内账号隔离fixture | `packaged-account/result.json` **13/13**；全部资源指向候选，仅回环模拟设备授权/组织/订阅/Quick/Canvas/DPAPI重启。修正测试guard退出时才记日志且日志缺失可空集合通过的盲点：初始化/阻断改为同步记录，driver逐次核对实际Core/父Host PID、入口与隔离数据根，缺记录失败。两个Core均有初始化证据、外站阻断0、四PID退出；独立 `account-guard-negative/events.jsonl` 确认fetch/http/https三个外域调用均被本地阻断且同步记录，不落合成秘密。只改测试文件，业务包未改变 |
+
+本包包含当前维护树已合并的账号实现，但本轮没有执行用户真实官方登录或消费额度；其线上接受规则和生成服务边界仍按账号章节记录。原下载功能限登记的本地媒体，blob/文本/外站导出仍未接入。上轮源码阶段的“未装配/原生点击未验”是历史状态，以下保留原因与证据。
+
+## 非账号功能完善：原客户端下载链（2026-10-03，源码恢复阶段）
+
+本次按用户要求避开并行账号登录工作，优先读取实际 Codely EXE 加载的源码，再补现有功能断链。未编辑账号模块、两份 Core 入口或 Cargo；共享工作树中的这些修改归并行任务，完整保留。没有运行原版程序、读取原版凭据、调用真实生成服务或修改用户工程，也未提交/推送或替换日常 `app/`。
+
+**原始证据与缺陷。** 只读核对 `E:/TuanjieCodely/EXE/Tuanjie Cowork/cowork.exe` SHA `55EA13A9707774DF61A707AC55179E94ABB9690583DE986C528DA056A69B8C3B`；实际 host `app/resource/dist/assets/index-BRxZ4eG7.js` SHA `6CB34283488C0A2BC348EA6F43769CCCF810C5EB852B15FAFBB78F40CAB20707`，原 `QG/openurl` 与 `kG/codely:download` 均 POST `{url,filename}` 到 `/api/tauri/download-url`。Sidebar `zT` 同样如此，其原文件 SHA `0EB9FE1739B9A66213075DBC34C1568A5D749D24DD032751DB2F8217B5D44FC8`。原 Quick `hb/zK`、Canvas `Sy/Cy` 按钮及消息继续复用。旧壳实际点击 Quick 下载返回 **501 Host route is not implemented yet**，证据 `temp/GameCowork/codely-download-current-probe-01/`，不是只有静态推测。
+
+**实现。** `codely_http.rs::download_url` 接通原路由，只解析当前本机 origin 下的登记 artifact/input 身份，不把 URL 当远端抓取入口；输入精确校验登记 scope，历史保持原全部自有记录范围。原生保存对话框选择目的路径，JSON 不接受 path；`generated_assets.rs::save_native_resource` 再核源身份/长度/SHA，Windows 持有父目录句柄、防链接与重解析点、create-new 拒绝覆盖，实际写入并同步成功才返回 `ok:true`。原视频菜单建议 mp4 时，默认扩展名按真实 MIME 改为 webm。两代主界面和默认 Sidebar 共用 `local-download.js`，显示原 toast，取消不触发下载兜底；连接断开或回执未知提示先检查目标文件。Host 精确补丁及 adapter SHA 已进入来源台账，可逆验证保持原客户端字节。
+
+**生命周期修复。** 审查本机 rfd 实现后确认其原生线程不随 HTTP future 取消；下载现在由独立任务持有对话框及后续保存锁。页面刷新/HTTP 断开不能提前开放第二个保存框，用户仍须在原框中保存或取消；新请求返回 busy。受控屏障测试验证断开等待者后，选择与写入两个阶段都保持锁，完成/取消才释放。
+
+| 本次验证 | 结果与准确范围 |
+| --- | --- |
+| Rust 完整测试 | **158/158**，`temp/GameCowork/original-download-20261003/rust-tests-v2.log`；下载新增 6 项，包含真实文件/SHA/重名保护、URL/query/scope、扩展名、输入区域与 owner 任务生命周期 |
+| 统一后端门禁 | `tools/verify-local.ps1 -SkipBrowser` **完整 exit 0**，`temp/GameCowork/original-download-20261003/verify-backend.log`；目录/来源、Rust fmt/test/build、全部登记契约、隔离HTTP/生命周期/终端后端/索引等通过。此命令按共享树执行，包含并行账号任务已登记的契约；不把它称作账号真实登录或全量浏览器/Editor验收 |
+| 前端与来源契约 | 下载、Sidebar、身份、Canvas 来源合计 **34/34**；最后文案调整后下载+Sidebar **15/15**；`tools/import-codely-generator.mjs --check` 可逆来源/SHA通过 |
+| 实际 Rust/Core/两代 GUI | 固定候选 v2 的 `codely-assets-e2e.mjs --download-only [--previous]` 各 **16/16**，报告 `original-download-20261003/e2e-current/result.json` / `e2e-previous/result.json`。各保存6个真实文件并核SHA：Quick、History、主Canvas图片/WebM、换端口重启、默认右栏。取消3次、重名1次、错scope/外站/未登记/注入path/blob/篡改等HTTP负例及旧端口拒绝；外站/pageErrors/browser fallback为0，自有宿主/Core全部退出。文件选择使用隔离fixture，不能据此宣称已点击真实保存框 |
+| 真实 Windows 对话框 | 自有 native Wry 启动，确实出现“另存为”，HTTP断连后第二请求实际 **409 download_busy**。随后 Computer Use app approval timed out，未执行保存/取消点击；该部分**未完成验收**。`temp/GameCowork/codely-download-native-20261003/result.json` 保留失败/范围及自有进程已退出记录，不将模拟文件选择计为原生点击通过 |
+
+固定候选仅为测试 EXE：`temp/GameCowork/original-download-20261003/candidate-v2/GameCowork.exe`，SHA `9DE4F5BC878C5152AD2C7449E5E2B3DBE8061D15B65C38A123B889CEA33E8216`；配合维护前端/Core及同源码 guarded Agent，不是完整交付包。两代下载专项已登记进统一 `-RealCore` / `-Chat` 门禁；本轮统一后端门禁及专项浏览器结果分别记账。
+
+范围仍明确：只支持已登记 PNG/JPEG/WebP/MP4/WebM/GLB；原临时 blob/data 导出、文本导出、远端官方下载尚不支持。写入失败可能保留未完成的新文件并返回失败，不自动覆盖或删除它。原生保存/取消点击与正式 app 装配仍待后续；其它优先缺口是原 Canvas 模型 schema/执行、通用 Provider 参数模板保存和音频上传节点，均继续按下方计划先核实原逻辑。
+
 <a id="handoff-20261003"></a>
 
 ## 本轮收尾交接（2026-10-03）
@@ -40,11 +143,66 @@
 - 可选 `flexibleLayout=1` 的链式探针存在失败记录（`e2e-final3-optional-current`）；它不属于默认入口，本轮不宣称其最终完整通过，作为后续专项。默认右栏的多文档锁/接手/保存已分别实测。
 - 账号研究与后续合同：[来源审计](codelyreversebackup/api/asset-generation-and-canvas-source-audit.md)第6节。没有新增账号broker或读取原凭据。用户私有配置不进入Git或包；接手时保留本应用已有private目录与模型设置，不重复索要或输出密钥。
 
+<a id="codely-account-20261003"></a>
+
+## 官方账号接入第一段：broker、设备授权登录与订阅读取（2026-10-03）
+
+本轮实施审计"交接实施合同"的 P0-1（独立主账号 broker）与 P0-2（组织与订阅读取）的实施层与隔离验收。所有账号行为先经注入式 fixture 验证；**真实官方设备授权仍未执行**，需要用户本人在官方返回页面完成一次登录来确认 `client_name:"GameCowork"` 被接受——在此之前不宣称官方登录/订阅/额度可用。
+
+### 协议取证
+
+子代理对原 CLI 明文载荷、原 Core 解包、原 GUI/Quick/Canvas 客户端做了只读字节级取证，产出 [research/codely-account-protocol.md](research/codely-account-protocol.md)（507 行，每条结论带文件+字节偏移/行号+代码摘录）。要点：设备流三接口的精确请求/响应字段、poll 状态机全集（pending/slow_down/authorized/completed/denied/expired）、refresh 轮换规则（仅返回新值才轮换；400/401 清凭据；无 Authorization 头）、`/api/teams` vs `/api/orgs` 双通道、桌面 exchange 回执可能带 Unity 令牌子对象、legacy 本地回调的 `code` 是 Base64 JSON（不得当标准 OAuth code 转发）、Canvas 无独立 refresh 端点。
+
+### 本轮交付
+
+| 部分 | 实际内容 |
+| --- | --- |
+| `src/core/binary/out/gamecowork-codely-account.js`（新增） | `createCodelyAccountBroker({root,vault,fetch,now,...})`：设备授权 start/poll/cancel/expire、exchange 后强制 `auth/external/me` 核实身份、refresh 单飞+先持久化后查询+400/401 进 requires-login、登出先原子落无凭据墓碑标记再删密文、sealed 记录同目录临时文件+rename 原子提交并拒绝符号链接/多硬链接目标、验证页 URL 强制官方 host、数据面（teams/switch/plan/usage/exhaustion）原样透传 snake_case 供既有 Core handler 映射。官方 token 只存在于本模块内存与 vault 密文；`registerCoreWiring` 的 renderer 面只发白名单展示会话（`accessToken` 为非敏感本地句柄 `gamecowork-codely-session`），事件仅含验证 URI/userCode/到期/attemptId。`GAMECOWORK_CODELY_ACCOUNT_BASE_URL` 仅接受官方 origin 或显式回环 fixture（测试缝隙，生产不受影响） |
+| 两份 Core 入口 | `registerCoreWiring({messenger,core})` 一行注册（位于 controlPlane 区之前、core-custom-runner 沙箱切片之外）；新增 RPC：`codelyAccount/status|start|poll|cancel|expire|logout|refresh`、`getControlPlaneSessionInfo`（GUI 方向：已登录→白名单会话，silent:false→joinedInProgress+启动设备流）、`cancelLogin`、`notifyDeviceFlowExpired`、`logoutOfControlPlane`；`controlPlane/getUserPlan|getUserUsageSummary|getUserExhaustion`、`refreshOrgList`、`switchOrg` 增加 broker 优先分支——未认证时行为与原先完全一致 |
+| Rust 壳 `src/shell/src/codely_account.rs`（新增） | DPAPI vault（`GCWK`+版本前缀封装、大小上限、hex 框架、CryptProtectData/UnprotectData，UI_FORBIDDEN）；`host_response` 新增 `gamecoworkAccount/vaultSeal|vaultUnseal`（仅 Core→host 方向可达，renderer 不可触）；`local_message` 的 `getControlPlaneSessionInfo` 改为中继 Core（3 秒超时/失败回退本地身份）；WebView2 navigation/new-window 处理器：同源保留、外部 HTTP(S) 交系统浏览器（ShellExecuteW）、其它拒绝 |
+| 组织当前态修正 | 原 Core（原版亦然）`updateFromListTeams` 计算了 `resolveCurrentOrgId` 却不赋值 `currentOrgId`；接线用原公开 setter `setCurrentOrgId` 应用服务端真实 `current_team_id`（不用列表第一项顶替），不改原方法字节 |
+
+### 测试与门禁
+
+- `tests/contracts/codely-account-broker.test.mjs` **12/12**：vault/fetch/根目录缺失拒绝、base URL 策略、完整登录生命周期（initiate 体断言 client_name="GameCowork"、pending/slow_down/authorized→exchange→me）、密文落盘无明文且可恢复、并发 start 共享单次 initiate、验证页 host 校验、取消后代次失效+迟到回执不登录、expire/denied/completed/缺码/未知状态、交换与身份失败诚实报错、sealed 持久化失败不发布登录、refresh 轮换持久化+单飞+401 清凭据+登出标记复活防护、组织成员校验+401 后单次强刷重试+plan/usage 映射、wiring RPC 面与秘密不外泄。所有秘密 marker 扫描 status/事件/磁盘。
+- `tests/contracts/codely-account-wiring.test.mjs` **3/3**：两份 Core 入口恰好注册一次且经共享模块；五处 broker 优先分支两份齐全；vault kind 不可被 renderer allowlist 触达、模块零外部依赖。
+- Rust `cargo test` **158/158**（含新增 `codely_account` 4 项：hex 往返、真机 DPAPI 封装往返+版本框拒绝、vault 信封、外链筛查）。
+- `tests/e2e/codely-account-login-e2e.mjs` **9 项**（真实壳+真实维护 Core+回环官方 fixture，Core 进程挂网络护栏）：完整设备登录链（joinedInProgress→device-flow-started SSE→自动轮询→exchange→me→sessionUpdate SSE→白名单会话）、plan/usage/org/switchOrg 经原 GUI RPC 出真实 fixture 数据、登出墓碑、**杀进程重启后 DPAPI 恢复且诚实标记 restored**、全程外部网络请求 0 次、秘密不落日志/报告。报告：`temp/GameCowork/codely-account-login-*/result.json`。
+- `verify-local.ps1` 默认全量 **exit 0**（Rust fmt/test/build、布局与 Quick 来源校验、全部契约/集成/浏览器 E2E，含新纳入的两个账号契约测试）；登录 E2E 已纳入 `-RealCore` 块。
+- 正式 app 已原位更新（`tools/build-local.ps1`，pwsh 运行）：**1546 个运行文件**逐项核验，`core/gamecowork-codely-account.js` 已入包；构建备份 `temp/GameCowork/build/76c0558423c94b2c939be4787de5102e`。包内复验：`codely-account-login-e2e.mjs --packaged` **9/9 通过**（正式 GameCowork.exe + 打包 Core 完成同一登录链）。注意 build-local 需要 PowerShell 7（`pwsh`），Windows PowerShell 5.1 缺 `GetRelativePath` 会中途失败。
+
+### 剩余边界（不因本段交付而宣称）
+
+1. **真实设备授权未执行**：官方是否接受 `client_name:"GameCowork"`、桌面 initiate 完整元数据、验证页实际形态，须由用户本人在官方页面完成一次真实登录后记录；本轮没有任何真实凭据、真实订阅或真实额度被调用。
+2. **Quick/History bootstrap（P0-3）与 Canvas exchange（P0-4）未实现**：`ai-generator` 的 SSO bootstrap+CSRF+cookie、`aicanvas` 的 `/api/v1/auth/exchange` 及其各站额度接口仍按审计合同待主账号真机验证后独立实现；Quick 无映射模型仍返回明确 503，官方积分/paidType 保持不可用。
+3. 登录对话框为原组件（userCode/verificationUri 渲染、cancelLogin/notifyDeviceFlowExpired 消费逻辑已在两代 bundle 验证存在），本轮以 SSE 事件与 HTTP 层 E2E 验证协议面；Chromium 弹窗级 E2E 未单独成稿。
+4. 组织双通道（`/api/orgs` 的 `litellm_team_id` 分支）与 CLI 推理 Key 端点（`/api/api-token/cli-api-key`）未接线——后者按审计要求保持"不自动调用"。
+5. 会话恢复后（restored）首次数据面调用会强制 refresh 完成真实核验；restored 状态不等于在线已验证。
+
+### 第二段：Quick/Canvas 官方站面（服务端会话与真实身份/积分，2026-10-03 同日续）
+
+按审计合同第 5 步实现两站点交换的**服务端实现层与 fixture 验收**。设计沿用本地身份边界原则：broker 在 Core 内部以官方 token 建立 generator/canvas 站点会话（bootstrap jar、exchange/profile/points），官方 token 零过渲染进程；本地 Quick/Canvas 客户端（原代码逐字保持）经同一受信本地 HTTP 通道拿到白名单身份/积分数值。
+
+| 部分 | 实际内容 |
+| --- | --- |
+| broker 官方站面 | `siteFetch` 按 generator/canvas 两个已取证官方源路由（fixture 模式统一映射回环 base）；`ensureGeneratorSession` 以 Bearer 官方 token 调 `/api/editor/sso/bootstrap` 并保存 jar cookie（401/403 先强刷重试）；`/api/user/me`、`/api/credit/my-credits`、`/api/credit/my-paid-status` 经 jar 读取；`canvasExchange`（POST `/api/v1/auth/exchange` 无体）→ profile/points，Canvas JWT 仅存 broker 内存，10 分钟缓存按 token 代次失效，登出/轮换即重建 |
+| Quick 适配器 | `/local-session` 官方会话返回 `{mode:'codely-official', user:{id,name,username}, capabilities.officialIdentity}`；`/user/me`、`/credit/my-credits`、`/credit/my-paid-status` 官方分支返回真实回执；`/credit/cost-preview`、`/sso/generate` 非绑定模型仍诚实 503（accountMode 如实标注）；未登录时全部行为与原状一致 |
+| Quick 本地身份模块 | `local-identity.js` 接受显式 `codely-official` 模式（严格校验 id/name 长度与控制字符）；`local-generation.js` readiness 同等识别官方模式，**CPA 本地生成不回归** |
+| Canvas 服务/适配器 | Rust `local/session` 在 broker 已认证时经 5 秒超时 RPC 附加 `official` overlay（真实 username/role/unity_id + 真实 points）；`canvas-local-auth.js` `validateCanvasOfficialOverlay` 严格拒绝任何 token/jwt/vip 字段，auth value 保持本地存储会话不变、user 展示官方身份、`updatePoints` 返回真实数据 |
+| 测试 | `codely-account-official-surface.test.mjs` **6/6**：官方站 jar 单次 bootstrap、jar cookie 复用、登录前 503/本地模式、轮换后 jar 重建并携新 token、登出复位、Canvas 快照无 token 泄漏；E2E 扩至 **13 项**（两轮登录均验证 Quick 官方身份/真实积分/Canvas overlay + 登出复位）；账号契约合计 **22/22** |
+
+第二段之后的剩余边界（更新原第 1–2 条）：
+
+1. **真实设备授权仍未执行**（用户本人一次官方登录）；在此之前官方登录/身份/积分均以 fixture 与回环验收为准，不宣称线上已验证。
+2. **官方额度的实际消费（生成提交）仍未实现**：Quick `/sso/generate` 代理与按模型验收属审计 P1-4（须逐模型显式绑定与授权）；本轮交付的是身份交换、订阅/积分读取与展示面。
+3. Canvas 积分栏渲染门未翻转（保持本地模式判定），官方积分经 `updatePoints` 数据面提供；Canvas 云协作/模板等官方端点仍未接。
+4. 其余同第一段边界 3–5（GUI 弹窗 E2E、orgs 双通道、restored 语义）。
+
 <a id="feature-matrix"></a>
 
 ## 已完成功能与代码入口矩阵
 
-表内“历史真实 Editor”表示已有自有工程 / 已许可 Editor 实测，但本轮没有重跑；“本轮”仅指当前资产与主视图改进范围。更老状态表里仍有未勾选或“未启动团结”的文字，须以较新的具体验收段为准。
+表内“历史真实 Editor”表示已有自有工程 / 已许可 Editor 实测，但本轮没有重跑；“本轮”指本次账号、Pro、资产与主视图改进范围。更老状态表里仍有未勾选或“未启动团结”的文字，须以较新的具体验收段为准。
 
 | 功能域 | 已实现范围 | 主要维护入口 | 证据与剩余边界 |
 | --- | --- | --- | --- |
@@ -53,6 +211,8 @@
 | Editor 安装缓存 | 持久快照、15 分钟复用、过期后台扫描、显式刷新合并、失败保留、SSE 更新 | `editor_installations_cache.rs`、`editor_installations.rs`；两 Core `unity/getHubProjects/getHubEditors` | 本轮候选两代各 27/27；该 driver 没有独立 mtime 排序断言，不能混称 |
 | 安装模板 / 许可标注 | 真实选定 Editor 本地 tgz、版本 / SHA / 依赖、新建与取消、坏包独立诊断；Unity / 团结 / 工作区权限分开 | `project_templates.rs`、`editor_licensing.rs`、`gamecowork-editor-licensing.js` | 历史真实 Unity 和 Tuanjie 完整模板导入均已通过；在线下载、Editor 安装卸载、许可激活仍未实现 |
 | 聊天 / Agent | 本地模型、真实流式响应与取消、A/B 会话隔离、审批、文件 / 命令工具、持久历史 | 两 Core 入口；`src/agent/cli-main.beautified.js` 与资源；宿主 ACP 中继 | 自动门禁使用同源 guarded Agent 与 loopback 模型；正常交付 Agent 不带 guard；手动 CPA 按本轮表单列 |
+| Codely 官方账号 | 设备授权、DPAPI密封/恢复、刷新/退出、组织与订阅/额度；Quick/Canvas服务端身份交换 | `gamecowork-codely-account.js`、`codely_account.rs`、两Core/两代登录与身份模块 | 本人真实授权与Quick Pro/积分读取已验；旧账号契约61、新增broker40及双代GUI；Canvas真实站面/多真实组织待验 |
+| 官方 Pro 编程 | 显式启用真实目录、Core内存Key、Agent工程/会话/模型能力；固定签名/协议/终帧与退出撤销，保留CPA设置 | `gamecowork-official-llm.js`、`gamecowork-official-models.js`、两Core/Agent | 编程27契约、正式包双代各5 GUI；线上目录8个，GLM-5.3-FLASH短请求9帧success；其余模型和长任务待逐项验 |
 | 初始化 / commands | 复用真实 Redux messenger；CLI 初始化命令缓存登记后回放；refresh 等已有初始化且拒绝旧代次 | 两代 store 与 index；Core `Tma/Pma` | 首次 slash 超时已定位并修；历史实际 Core 7/7 与两代 GUI / 并发刷新已证 |
 | 会话分支 / 回退 | 按原会话和工作区冻结身份；分支持久成功再发布；真实预览 / applied 结果；失败保留原会话 | `assets/gamecowork-history-operations.js`、两 Core history、CLI RewindService | 历史原 GUI / 实际字节通过；多文件恢复不是一个原子事务，部分失败须保留实情 |
 | 文件 / 搜索 / 终端 | 文件树、范围读取、搜索与 watcher、SHA 保存 / 备份撤销、ConPTY 真命令 / resize / exit | `files.rs`、`mutations.rs`、`file_events.rs`、`terminals.rs` | 历史及本轮完整 gate 回归；不是任意目录权限或远程终端 |
@@ -66,6 +226,8 @@
 | Editor 查询 / Console | loaded scene hierarchy、对象与序列化组件、六项上下文、真实 AssetDatabase 与已加载包；Console 当前原生视图及批准 clear-all | `EditorSceneQueries.cs`、`EditorContextQueries.cs`、`EditorAssetQueries.cs`、`EditorPackageQueries.cs`、`EditorConsole.cs` | 历史 Unity：模型上下文/资产/包 48项、SceneQuery40、Console28；新查询团结主要为 DLL 编译，不推定全动作运行完成；Console不是隐藏全队列 |
 | 场景有限写入 | 空对象 create、局部 Transform / activeSelf modify、已加载既有场景 save；Undo / dirty / nonce / domain | `EditorSceneMutations.cs`、Bridge / Agent / Rust 白名单 | 历史 Unity source44、模型30、候选31；组件 / prefab / SaveAs / 包安装与任意脚本仍缺；SaveScene 有路径式 TOCTOU 边界 |
 | 原 Quick / History | 原模型参数控件、手绘 / Undo、网格 / 列表 / 日期 / 标签 / 丢弃、真实三媒体、再生成恢复 | `src/frontend/bundle/codely-generator/`，`gamecowork-codely-generator.js` | 本轮双代原组件交互与冷重启；官方45模型仍未逐项映射，未配置明确失败 |
+| 官方 Pro 普通图片 | Frontier耀斑/日辉原参数、真实付费与报价、最多16参考图/64MiB、任务查询、媒体SHA与历史/下载 | `gamecowork-codely-official-generator.js`、`gamecowork-codely-generator.js`、`gamecowork-assets.js` | 包内双代各22；线上耀斑1张1024×1024 PNG核验通过，报价135积分；日辉及参考图只做隔离验收，分层/其它模型未接 |
+| 原客户端本地媒体下载 | Quick/History 与主/Sidebar Canvas 原消息、原生保存选择、取消/重名保护、SHA及断连owner | `codely_http.rs::download_url`、`generated_assets.rs`、`local-download.js` 与两代Host | 2026-10-03包内双代各16项，真实Windows保存/取消/断连3项，正式app当前代16项；09:45已覆盖，blob/文本/外站不支持 |
 | 原 Canvas 本地编辑 | 原 ReactFlow、Markdown、拖动、完整 graph / viewport / unknown fields、版本、编辑租约与接手 | `codely-canvas/`、`codely_canvas.rs`、`codely_http.rs` | 本轮原上传 / 视频截帧及重启像素；默认右栏 / 多iframe两代已验证，最终包current26/26；云协作 / 模型 schema 未接 |
 | Canvas 跨页最新图 | 已保存本地图的 `Mh` 不使用跨 iframe 共享旧 localStorage，沿原 `sb.De→Fm` 下载已提交图；draft / 非本地不变 | Canvas source ledger `saved-local-canvas-read-through` | 精确 patch 与原绑定保留；故障源是服务器700ms保存与本地2s debounce卸载取消差异，不是时间精度；最终默认包26/26与真实Mh/De缓存契约已通过 |
 | 自有媒体 / 参考输入 | JSON / multipart、任务冻结输入、真实媒体校验与缓存、Range / export、换端口URL重定位 | `gamecowork-assets.js`、`gamecowork-codely-generator.js`、`generated_assets.rs`、`codely_http.rs` | PNG/JPEG/WebP/MP4/WebM/GLB，单文件64MiB；私有注册固定UUID与SHA；大型字节走native不进16MiB Core帧；音频等明确拒绝 |
@@ -95,7 +257,7 @@ Scene/Game/窗口 ── 实际帧与身份几何 ── native二进制 ── 
 - 上传：同源 raw / 原 multipart → Rust 固定UUID暂存并限制字节 → 私有 Core 注册解析 / 真实格式 / SHA → 自有 inputs 持久。公开 RPC 不开放路径注册与路径查询；暂存只清自己的文件。任务提交再次校验输入 snapshot，不接客户端任意 path。
 - 结果：Provider 实际 bytes →格式/CRC/长度校验→受控缓存与任务原子提交→原 output.data 投影。Rust 按 task/artifact/input 身份、范围和 SHA 直接读媒体；大资源不做 base64 stdio 往返。
 - Canvas 保存：runtime session 与 document lease 分开；HTTP GET 对已登记自有媒体完整 URL 值换当前 origin，磁盘图原字节 / 外部链接不变。已保存本地图重新打开沿原下载流程读新提交；未保存 draft 保留原行为。
-- 生成模型映射：本轮只有明确自有 CPA descriptor。保留 `studioModelId`、完整原 payload、scope 和实际 Provider model；不按显示名字猜映射、不使用假付费字段。
+- 生成模型映射：自有CPA descriptor与官方Frontier两普通图片入口各自明确。保留 `studioKind` / `studioModelId` 的实际模型身份、完整原payload、scope和实际Provider model；官方逐模型能力来自真实账号/付费/报价及已安装执行器，不按显示名字猜映射、不使用假付费字段。
 - 测试的 guarded Agent、loopback Provider、工程、浏览器 profile 和日志全在统一 temp；正式 `app/` 经构建脚本装配正常 Agent。测试结果和包装来源分开记账，不能运行 guard 包当正式交付。
 
 <a id="handoff-plan"></a>
@@ -106,21 +268,21 @@ Scene/Game/窗口 ── 实际帧与身份几何 ── native二进制 ── 
 
 ### P0：本人官方账户、组织订阅和站点交换
 
-**P0-1 独立主账号 broker。** 来源：`codelyreversebackup/api/asset-generation-and-canvas-source-audit.md` 的“本人官方账号”第1–6节；原 CLI `VXu/HXu/QXu/qXu`、Core `are`、GUI `Mx/i4n`。拟新增 `src/core/binary/out/gamecowork-codely-account.js`，当前文件不存在。先实现 mandatory `vault.seal/unseal` +注入fetch的独立模块，再提供 Rust DPAPI，最后两Core入口与原弹窗接线。接口 start/poll/cancel/logout/refresh/status/close 及并发/代次约束已详写第6节。
+**P0-1 独立主账号 broker（已交付，本人真实授权通过）。** 来源：`codelyreversebackup/api/asset-generation-and-canvas-source-audit.md` 的“本人官方账号”第1–6节；原 CLI `VXu/HXu/QXu/qXu`、Core `are`、GUI `Mx/i4n`。当前维护入口为 `src/core/binary/out/gamecowork-codely-account.js`，Rust DPAPI、两份 Core 入口与原登录组件已接线。start/poll/cancel/logout/refresh/status/close 已有隔离契约及真实壳/Core 验证；本次接续补齐晚返隔离、系统浏览器链、完整响应体时限和 GUI 验证，准确结果以文首记录为准，不再重复创建模块。
 
-真实链为官方主域 device initiate → poll → exchange → external/me，client_name诚实填写GameCowork，是否接受需官方正常回执；不冒用原CLI客户端名。只给renderer验证页面/码/到期和白名单session数据；auth_request_token、授权码、access/refresh留受保护后端。先测pending/slow_down/expired/denied/completed、并发去重、取消/登出的晚到回执、原子密文持久/文件占用、refresh轮换和400/401重新登录，再由本人在官方返回页面完成一次真实授权。依赖：用户已授权连接本人账户，但本轮未执行；DPAPI及官方client_name接受规则未验证。禁止导入原凭据、读浏览器cookie、从JWT/截图造用户名或Pro、让官方登录替换CPA模型。
+真实链为官方主域 device initiate → poll → exchange → external/me，client_name诚实填写GameCowork，官方已实际接受，本人已在官方页面完成授权。只给renderer验证页面/码/到期和白名单session数据；auth_request_token、授权码、access/refresh留受保护后端。pending/slow_down/expired/denied/completed、并发、取消、密文持久和刷新已有 fixture 验证，DPAPI 已经 Windows 往返及包内冷重启验证。禁止导入原凭据、读浏览器cookie、从JWT/截图造用户名或Pro、让官方登录替换CPA模型。
 
-**P0-2 实际组织与订阅。** 来源：原 `are.listTeams/listOrgs/getUserPlan/getUserUsage`，GUI `hV`；详细路径在同审计第3–4节。主会话通过后读取实际 external/me / teams，以真实 current_team_id 或已验证成员orgId查询 `/api/user/plan` 和usage summary/exhaustion。先实现白名单DTO/组织切换竞态和失败空值，再复用原账号展示。验收至少两组fixture组织不同权益、退出/重启、刷新过期及真实本人当前组织；没有第二真实组织不得造双组织验收。未知保持未知；不调用CLI推理Key端点，不把一个组织的Pro复制到所有组织。
+**P0-2 实际组织与订阅（teams / orgs 已接线，当前本人Pro已验证）。** 来源：原 `are.listTeams/listOrgs/getUserPlan/getUserUsage`，GUI `hV`。当前以真实 current_team_id 或已验证成员 orgId 查询 `/api/user/plan` 和 usage summary/exhaustion，保留白名单DTO、错误与未知状态；CLI凭据按真实账号类型读取teams或orgs及litellm_team_id。本人当前权益已通过实际展示/读取和下述消费链验证；双通道和退出/组织变化有隔离契约，多个真实组织的切换仍待验收，没有第二真实组织不得造双组织验收。只有显式启用官方编程才请求CLI推理Key，不把一个组织的Pro复制到所有组织。
 
-**P0-3 Quick / History 身份交换。** 来源：原host `kG`、Quick `s1e/Mn`；`GET /api/editor/sso/bootstrap` → `/api/user/me`，Cookie/CSRF与专属credit接口。主账户可用后独立实现受控服务器会话/必要cookie jar，并以精确iframe source/origin和代次接原协议；不要把官方Set-Cookie冒装到loopback域。先fixture验证bootstrap成功/失败/刷新/登出，再本人真实只读user/credits/paid-status。报价和生成单独按明确模型授权验收。主域付费不能作为Quick paidType，未验证报价不能填零积分或假fingerprint。
+**P0-3 Quick / History 身份交换（已交付，真实图片验证通过）。** 来源：原host `kG`、Quick `s1e/Mn`；`GET /api/editor/sso/bootstrap` → `/api/user/me`，Cookie/CSRF与专属credit接口。当前broker管理cookie jar，原iframe只取本机白名单身份及专属积分/付费状态，不把官方Set-Cookie冒装到loopback域。本人真实user/credits/paid-status、全能耀斑普通PNG报价/提交/轮询/媒体缓存已验证；全能日辉同协议及参考图以隔离契约/原GUI验证，尚未另行消费真实额度。主域付费不能作为Quick paidType，未验证报价不能填零积分或假fingerprint。
 
-**P0-4 Canvas 身份交换。** 来源：原host `QG`、Canvas `mg/Cm/pg`；`POST /api/v1/auth/exchange` 取得Canvas专属tokens/user，再profile/points。与主token分域保存；主会话轮换后重新exchange并废弃旧请求。先fixture过期/取消/登出/错域token，再本人真实profile/points。尚无已证实Canvas独立refresh端点，不把主域refresh用于Canvas JWT；不把paid映射成admin。本地图/本地CPA仍保持可辨识模式，不伪装云协作。
+**P0-4 Canvas 身份交换（服务端实现与 fixture 已具备）。** 来源：原host `QG`、Canvas `mg/Cm/pg`；`POST /api/v1/auth/exchange` 后读 profile/points。专属 token 仅留 broker 内存，主会话轮换后重新 exchange 并拒绝旧请求，客户端保留本地存储会话和官方展示 overlay。本人真实 profile/points 及原积分栏展示仍待验收；尚无已证实 Canvas 独立 refresh 端点，不把主域 refresh 用于 Canvas JWT，不把 paid 映射成 admin。本地图/本地 CPA 仍保持可辨识模式，不伪装云协作。
 
 ### P1：原生成节点、下载与可配置服务
 
 **P1-1 Canvas 模型目录与schema执行。** 来源：原Canvas `aD/oD/sD/uD/YS/ZS` 读ai-models / models/:id/schema，`GR→oC→cC→mC→dC/fC` 处理表单、上游输入、创建轮询与outputMapping；AMIS原静态组件已经具备。先确定使用本人真实官方schema还是明确标记的本地Provider schema，不能混称来源。选一个模型/一个节点，保存完整实际schema与来源SHA，验证inputParams、taskLifecycle、状态、outputMapping和错误；再扩图片→视频→3D。原 `sF` 提供上游输入，不等于完整DAG调度；先验证一个有实际入边参考的节点，再多节点。验收实际PNG/视频/GLB、node.data/history、原渲染、下游引用、冷重启、失败/取消及无重复创建；缺schema或价格明确不可用。禁止填造官方schema、参数/点数和远端取消回执。
 
-**P1-2 原下载链。** 来源：原Host `openurl` 到 `/api/tauri/download-url`；当前专属native路由仍缺，已有 `generated_assets.rs` / mutations只证明旧导出能力。先静态核对原消息字段及两入口调用，再增加最薄原路由，只处理已登记自有媒体身份或经官方授权且明确来源的合法下载；固定工程/原生保存位置、实际SHA、无覆盖/版本检查。验收原Quick和Canvas的真实下载按钮分别落盘、重名、取消、scope、换端口、损坏媒体和外站拒绝；不能以浏览器打开URL或旧generic Save通过替代原按钮。
+**P1-2 原下载链（本地登记媒体已交付）。** 来源为原 Host 的 `codely:download/openurl` → `/api/tauri/download-url`，实现、包内双代16项及真实Windows保存/取消/断连3项证据见文首交付节。Quick/History、主Canvas和默认右栏原按钮能将登记媒体保存为实际SHA一致的文件；取消、重名、scope、重启、损坏媒体和外站拒绝已验，正式app已覆盖。后续按原Blob/文本导出消费者补各自的有界注册流程；官方远端下载只能在对应授权和来源核实后接入，不开放任意URL抓取。
 
 **P1-3 Provider 设置与原模型显式绑定。** 来源：`gamecowork-assets.js`现有Provider配置；`gamecowork-codely-generator.js`的本地binding；`local-models.js`；审计“自定义服务入口”节。已缓存原Quick/Canvas没有已证实用户API Key设置页，AMIS通用输入能力不代表原后台配置已取得。先盘点当前产品可以复用的设置容器与配置读写，再让用户编辑现有Provider并保存显式descriptor→provider映射；不重建替代Quick/History/Canvas。按真实API返回发布逐模型capability，启停/删Key/改模型立即失效；任务冻结原payload/模型/Provider版本，改配置不将旧任务发向新endpoint。
 
@@ -128,7 +290,9 @@ Scene/Game/窗口 ── 实际帧与身份几何 ── native二进制 ── 
 
 **CPA文字模型补验。** 本轮已通过真实Responses文字与两种接口的函数调用协议，已在正常模型列表添加GPT-6.1 Sol · CPA；尚未针对用户真实CPA跑完整App ACP流式/工具执行/取消链。用自有临时工程和无副作用工具补一次实际Agent验收，核对wireApi、输出token预算、工具ID、流式终帧与取消；不能把独立HTTP回执当作完整Agent执行证明。
 
-**P1-4 Quick原模型逐项支持。** 来源：`tests/fixtures/codely-generator-api-contract.json`的45描述、builder、10目录；原 `xN/hne/hwe/jwe/Bwe/wF`。先选一个已明确可用的原模型契约，按originalModelId显式绑定，保存完整payload及可信参考URL→已登记input/artifact/SHA映射；保留schema/格式约束。图片/首尾帧/多模态视频/3D各自验收，不用单一prompt/model伪覆盖45项。自有CPA descriptor继续独立；没有报价用明确本地能力，不造官方paidType。
+**P1-4 Quick原模型逐项支持（已完成两个Frontier普通图片入口）。** 来源：`tests/fixtures/codely-generator-api-contract.json`的45描述、builder、10目录；原 `xN/hne/hwe/jwe/Bwe/wF`。全能耀斑/全能日辉普通模式已按原payload接官方付费/报价/任务/缓存；实际线上已生成1张全能耀斑PNG，完整边界与证据见文首。后续从实际模型契约逐项扩展分层、图片/首尾帧/多模态视频/3D，保存完整payload及可信参考URL→已登记input/artifact/SHA映射，保留schema/格式约束，不用单一prompt/model伪覆盖45项。自有CPA descriptor继续独立；没有报价用明确本地能力，不造官方paidType。
+
+**官方编程权益（已交付，真实短请求通过）。** 原聊天模型菜单显式启用后读取当前账号/团队真实目录，真实Key留Core，Agent只使用绑定工作区/会话/模型的回环能力。8个实际目录模型可见，GLM-5.3-FLASH短请求达到实际成功终帧；隔离GUI已验工具读取、CPA切换、退出断流。其它目录模型的线上wire/长任务、真实工具调用及额度耗尽反馈继续按具体使用验收，不能把单模型短回复推定为全部8模型已收费验证。
 
 ### P2：其余能力与产品体验
 
@@ -145,9 +309,9 @@ Scene/Game/窗口 ── 实际帧与身份几何 ── native二进制 ── 
 ## 接手第一小时
 
 1. 读AGENTS、README、ARCHITECTURE、DEVELOPMENT和RESTORE_STATUS最新段，检查git status；保留现有WIP/未跟踪文件，不reset/clean，不创建第二份源码。
-2. 从root最终交付记录读取当前app manifest、builtAt、resource count、CLI guard=false及对应源码/候选SHA；以本节最新1544资源与实际manifest为准，不以旧1203/1543等资源数推定当前包。
+2. 从文首最新交付记录读取当前app manifest、builtAt、resource count、CLI guard=false及对应源码/候选SHA；以实际manifest为准，不以历史资源数推定当前包。
 3. 核对`tools/import-codely-generator.mjs --check`、Canvas来源契约与source ledger。功能补丁必须记录可逆来源；不重写原45builder和24绑定来“简化”用户要求。
-4. 优先恢复账号P0任务前先确认root已经结束本轮打包；本轮没有account模块可以直接调用。不要在接手时自动触发真实设备授权或收费生成，保留用户选择和显式可见流程。
+4. 账号P0、官方图片和编程已按文首结果交付；本人真实授权、图片1张及文字短请求已通过。下一步核对剩余Canvas/组织/逐模型边界，不重复从零登录或扣额验收。不要在接手时自动触发真实设备授权或收费生成，保留用户选择和显式可见流程。
 5. 修改后先定向契约，再HTTP/E2E；影响业务共享逻辑必须双代，涉及包装必须包内复验。`verify-local -RealCore -Chat`自动外网禁用，真实Editor另选`-Editor`；真实CPA和账号行为单独记录。所有产物留统一temp，按自己启动的PID与唯一目录清理。
 
 本轮用户已要求收尾交接，后续开发由下一位Agent根据此计划继续。不要因旧过程记录出现“进行中/未覆盖app”而重新执行已完成的装配；先核对最新manifest和本节报告。默认完整gate不调用真实服务，手动真实调用单独说明与记录。

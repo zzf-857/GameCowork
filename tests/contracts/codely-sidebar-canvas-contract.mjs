@@ -31,16 +31,16 @@ for(const[mainFile,sidebarFile,originName,urlName]of cases){
     assert.match(sidebar,/label: t\("rightSidebar.aiCanvasTab"\),\s+onClick: \(\) => N\("aiCanvas"\)/);
   });
   function bridge(local,accessToken){
-    const effects=[],cleanups=[],listeners=new Map(),sent=[],tokenRequests=[],refreshed=[];
+    const effects=[],cleanups=[],listeners=new Map(),sent=[],tokenRequests=[],refreshed=[],downloads=[];
     const frame={postMessage:(message,origin)=>sent.push({message,origin})};
     const window={location:{origin:'http://127.0.0.1:43333'},addEventListener:(kind,fn)=>listeners.set(kind,fn),removeEventListener:(kind,fn)=>{if(listeners.get(kind)===fn)listeners.delete(kind);}};
     const ctx=vm.createContext({window,document:{documentElement:{getAttribute:()=> 'dark'}},MutationObserver:class{observe(){}disconnect(){}},gamecoworkUsesLocalCanvas:()=>local,
       T:{useRef:value=>({current:value}),useState:value=>[typeof value==='function'?value():value,()=>{}],useCallback:fn=>fn,useEffect:fn=>effects.push(fn)},
-      qa:local?window.location.origin:'https://aicanvas.tuanjie.cn',ru:kind=>{tokenRequests.push(kind);return Promise.resolve(null);},console,fetch:()=>{throw Error('No HTTP request expected in bridge fixture');}});
+      qa:local?window.location.origin:'https://aicanvas.tuanjie.cn',ru:kind=>{tokenRequests.push(kind);return Promise.resolve(null);},downloadGameCoworkMedia:(...args)=>downloads.push(args),gamecoworkNotifyDownload:()=>{},console,fetch:()=>{throw Error('No HTTP request expected in bridge fixture');}});
     vm.runInContext(extract(sidebar,'ip')+'\n'+extract(sidebar,'zT'),ctx);
     const ref=ctx.zT({enabled:true,accessToken,workspaces:[{workspaceName:'Owned',workspaceHash:'local:owned'}],onRefreshWorkspaces:()=>refreshed.push(true)});ref.current={contentWindow:frame};
     for(const effect of effects){const cleanup=effect();if(typeof cleanup==='function')cleanups.push(cleanup);}
-    return{sent,tokenRequests,refreshed,deliver:(data,extra={})=>listeners.get('message')?.({data,origin:ctx.qa,source:frame,...extra}),close:()=>cleanups.forEach(fn=>fn()),effects,listeners,origin:ctx.qa};
+    return{sent,tokenRequests,refreshed,downloads,deliver:(data,extra={})=>listeners.get('message')?.({data,origin:ctx.qa,source:frame,...extra}),close:()=>cleanups.forEach(fn=>fn()),effects,listeners,origin:ctx.qa};
   }
   test(sidebarFile+' native ready/workspace bridge never fetches or forwards a platform token',()=>{
     for(const token of [undefined,'owned-test-platform-token-must-not-forward']){
@@ -53,5 +53,11 @@ for(const[mainFile,sidebarFile,originName,urlName]of cases){
   test(sidebarFile+' nonlocal original bridge remains distinct from native local identity',()=>{
     const f=bridge(false,'owned-nonlocal-test-token');f.deliver({type:'ai-canvas-ready'});
     assert.equal(f.sent[0].message.type,'cowork-token');assert.equal(f.sent[0].origin,'https://aicanvas.tuanjie.cn');assert.equal(f.sent[2].message.type,'codely:workspaces');f.close();
+  });
+  test(sidebarFile+' only its real local iframe can initiate a native media save',()=>{
+    const f=bridge(true),message={type:'openurl',url:'http://127.0.0.1:43333/api/codely-generator/local-inputs/i_owned/image.png',filename:'image.png'};
+    f.deliver(message,{origin:'https://outside.invalid'});f.deliver(message,{source:{}});assert.equal(f.downloads.length,0);
+    f.deliver(message);assert.equal(f.downloads.length,1);assert.equal(f.downloads[0][0],message.url);assert.equal(f.downloads[0][1],message.filename);
+    f.close();f.deliver(message);assert.equal(f.downloads.length,1);
   });
 }

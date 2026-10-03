@@ -1,12 +1,22 @@
 // Owned identity boundary for the otherwise original Codely client. Its
-// internal "authed" view state means this local GameCowork session is ready;
-// no original account, SSO token, membership or balance is supplied here.
+// internal "authed" view state means this local GameCowork session is ready.
+// Two explicit modes exist: the plain local identity, and a verified official
+// identity relayed by the local HTTP service from the Codely account broker.
+// No official token, membership or raw balance is supplied here either way.
 import { gamecoworkGenerationReadiness } from './local-generation.js';
 export function gamecoworkLocalIdentity(reply) {
   const user = reply?.user;
+  const safeName = typeof user?.name === 'string' && !!user.name.trim() && user.name.length <= 100 && !/[\u0000-\u001f\u007f]/.test(user.name);
+  if (reply?.mode === 'codely-official') {
+    if (reply?.capabilities?.localHistory !== true || user == null ||
+        !(typeof user.id === 'string' && !!user.id && user.id.length <= 64) ||
+        !safeName || user.accountMode !== 'codely-official') {
+      throw new Error('官方账号会话尚未就绪');
+    }
+    return { id: user.id, name: user.name, accountMode: 'codely-official' };
+  }
   if (reply?.mode !== 'gamecowork-local' || reply?.capabilities?.localHistory !== true ||
-      user?.id !== 'gamecowork-local' || user?.accountMode !== 'local' ||
-      typeof user.name !== 'string' || !user.name.trim() || user.name.length > 100 || /[\u0000-\u001f\u007f]/.test(user.name)) {
+      user?.id !== 'gamecowork-local' || user?.accountMode !== 'local' || !safeName) {
     throw new Error('GameCowork 本地会话尚未就绪');
   }
   // Deliberately keep only the real local identity fields. Platform entitlement

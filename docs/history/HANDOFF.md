@@ -1,16 +1,17 @@
 # GameCowork 交接导读（2026-10-03）
 
-用户要求本轮收尾、打包覆盖现有安装，后续由其他Agent接手。本文仅作导读，**功能状态、证据和详细plan统一维护在RESTORE_STATUS**。
+本文仅作接续工作的导读，**功能状态、证据、包来源和详细 plan 统一维护在 RESTORE_STATUS**。当前源码接线、隔离测试、本人真实服务操作和装配交付须分别核对。
 
-1. 先读 [最新交付记录](../../RESTORE_STATUS.md#handoff-20261003)、[已完成功能与代码入口](../../RESTORE_STATUS.md#feature-matrix) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。当前正式入口是项目根的 `app/启动GameCowork.bat`，资源和数据职责见 [架构](../ARCHITECTURE.md)。
+1. 先读 [最新接续与交付记录](../../RESTORE_STATUS.md#codely-live-login-20261003)、[已完成功能与代码入口](../../RESTORE_STATUS.md#feature-matrix) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。当前正式入口是项目根的 `app/启动GameCowork.bat`，资源和数据职责见 [架构](../ARCHITECTURE.md)。
 2. 读 [项目规范](../../AGENTS.md) 与 [开发指南](../DEVELOPMENT.md)。维护 `src/` 与两代bundle/两份Core入口；只用 `tools/build-local.ps1` 更新app，不创建第二份源码，不回退已有WIP或复制原EXE。
-3. 资产模块先看 [实际来源审计](../../codelyreversebackup/api/asset-generation-and-canvas-source-audit.md) 和两个client的source-ledger。保留原Quick/History/ReactFlow逻辑；CPA是明确扩展，不是把原45模型改名。
-4. 下一阶段首项是**真实官方设备授权、组织订阅与两站点身份交换**。本轮没有account broker、没有本人官方登录验收；审计第6节给出已取证协议、vault要求与逐步验收合同。不要导入原软件凭据或复制Pro标记。
-5. 先定向验证，再按变更跑HTTP/GUI/生命周期与包内检查。自动门禁使用隔离fixture；真实CPA手动试验的范围和限制已单列。已有私有配置保留在本机，不写进源码、截图或日志。
+3. 资产模块先看 [实际来源审计](../../codelyreversebackup/api/asset-generation-and-canvas-source-audit.md) 和两个 client 的 source-ledger。保留原 Quick/History/ReactFlow 逻辑。`gamecowork-codely-official-generator.js` 已把原 `frontier_flare` / `frontier_sunburst` 普通图片的真实报价、最多 16 张登记参考图、提交/查询和核验媒体接入自有历史/下载；CPA 仍是独立扩展。分层图片、其它原模型与 Canvas 生成 schema 继续按状态文档的边界处理。
+4. 账号维护入口是 `src/core/binary/out/gamecowork-codely-account.js`，完整响应体时限、设备授权、DPAPI、组织/订阅读取及两站点交换均沿用该 broker。正式 app 已原位更新，本人真实登录、Quick 付费读取、单张官方 Pro PNG 及 GLM-5.3-FLASH 短文字请求已验收成功；图片实际字节/SHA 与文字最终帧已核验，不推及全部目录模型、其它生成模型或分层。自动门禁仍用隔离 fixture，实际额度、请求与交付范围见 [最新状态](../../RESTORE_STATUS.md)。不要导入原软件凭据或复制 Pro 标记。
+5. 官方编程从两代原模型菜单显式“启用 Codely 官方 · Pro 模型”，读取真实目录后由用户选模型；实现位于 `gamecowork-official-llm.js` 与 `assets/gamecowork-official-models.js`。真实 Key 仅留 Core 内存，Agent 只持有工作区/会话/模型绑定的本机能力，CPA ↔ 官方切换保留原设置。继续核对账号/组织、会话关闭和工作区代次的撤销边界。
+6. 定向命令见 [开发指南](../DEVELOPMENT.md#原客户端资产界面与本地兼容层) 和 [测试导航](../../tests/README.md)：图片使用 `codely-account-login-e2e.mjs --browser --images [--previous]`，编程使用 `codely-official-programming-e2e.mjs --agent <同源码 guarded Agent EXE> [--previous]`；对应编程契约为 `.test.cjs`。先定向验证，再按变更跑 HTTP/GUI/生命周期与包内检查。自动门禁使用隔离 fixture；真实 CPA 手动试验的范围和限制已单列。已有私有配置保留在本机，不写进源码、截图或日志。
 
 可直接给下一位Agent的指令：
 
-> 先阅读AGENTS.md、README.md、docs/ARCHITECTURE.md、docs/DEVELOPMENT.md，以及RESTORE_STATUS.md文首的2026-10-03交接段和详细plan。检查git status并保留现有修改。沿原Codely客户端和已恢复业务代码继续工作，优先实施官方设备授权、真实组织订阅及Quick/Canvas独立交换；不要重写资产主界面，也不要把研究、假账号或HTTP200当作功能完成。每完成一段记录实际测试与剩余边界，再按用户要求装配。
+> 先阅读 AGENTS.md、README.md、docs/ARCHITECTURE.md、docs/DEVELOPMENT.md，以及 RESTORE_STATUS.md 文首最新接续记录和详细 plan。检查 git status 并保留现有修改。复用已实现的账号 broker、原 Codely 客户端、官方普通图片执行器和官方编程桥，按当前剩余边界继续；不要重复创建账号模块、重写资产主界面，也不要把研究、fixture 身份、HTTP 200 或源码接线当作真实额度与包内验收。每完成一段记录实际测试与剩余边界，再按用户要求装配。
 
 ---
 

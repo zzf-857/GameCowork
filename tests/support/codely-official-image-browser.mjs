@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+export async function exerciseOfficialImageBrowser({page,gui,quick,run,origin,state,poll,checks}) {
+  const prompt='OWNED_OFFICIAL_IMAGE a blue crystal on a white background';
+  const api=async route=>{const response=await fetch(origin+'/api/codely-generator'+route);assert.equal(response.status,200);return response.json();};
+  await quick.locator('.studio-model-select').waitFor({state:'visible'});
+  await quick.locator('.studio-model-select').click();
+  await quick.locator('.studio-model-option').filter({has:quick.getByText('全能耀斑',{exact:true})}).click();
+  await quick.locator('textarea').first().fill(prompt);
+  const generate=quick.locator('.studio-generate-button');
+  await poll(()=>generate.isEnabled(),'official paid model and real quoted price enable the original button');
+  assert.equal(await quick.getByText('此模型尚未连接生成服务',{exact:true}).count(),0);
+  await page.screenshot({path:path.join(run,'official-image-01-ready.png'),fullPage:true});
+  const before=state.imageCreates.length;await generate.click();
+  let task;
+  await poll(async()=>{task=(await api('/tasks')).tasks.find(value=>value.type==='frontier_flare');return task?.status==='completed';},'original official image submit/poll returns verified cached pixels',60000);
+  const image=quick.locator('img[src*="/api/codely-generator/local-artifacts/"]').first();
+  await poll(()=>image.evaluate(value=>value.complete&&value.naturalWidth===48&&value.naturalHeight===32),'original Quick shows actual official output pixels');
+  assert.equal(state.imageCreates.length,before+1);assert.equal(state.imageCreates.at(-1).kind,'frontier_flare');
+  assert.equal(state.imageCreates.at(-1).data.prompt,prompt);assert.equal(state.imageCreates.at(-1).data.quality,'medium');
+  assert.ok(state.imageQuotes.some(value=>value.taskType==='fal_frontier_flare'&&value.quality==='medium'));
+  assert.equal(task.input.data.studioModelId,'frontier_flare');assert.equal(task.output.data.artifacts[0].sha256,state.imageMedia.png.sha256);
+  checks.push('The original Pro image model uses its real descriptor, quote, submit and poll with exactly one request and verified cached PNG pixels');
+  await page.screenshot({path:path.join(run,'official-image-02-completed.png'),fullPage:true});
+  const downloadEvents=[];
+  const onResponse=response=>{if(new URL(response.url()).pathname==='/api/tauri/download-url')void response.json().then(body=>downloadEvents.push(body));};
+  page.on('response',onResponse);
+  try {
+    await image.click();const download=quick.locator('.studio-asset-list button').first();await download.waitFor({state:'visible'});
+    const saved=path.join(run,'downloads','official-image.png');fs.mkdirSync(path.dirname(saved),{recursive:true});
+    fs.writeFileSync(path.join(run,'owned-download-choices.json'),JSON.stringify([{action:'save',path:saved},{action:'cancel'}]));
+    await download.click();await poll(()=>downloadEvents.length===1,'original official PNG native save completes');
+    assert.equal(downloadEvents[0].ok,true);assert.equal(sha(fs.readFileSync(saved)),state.imageMedia.png.sha256);
+    await download.click();await poll(()=>downloadEvents.length===2,'original official PNG native cancellation completes');assert.equal(downloadEvents[1].cancelled,true);
+    checks.push('Official results use the original native download flow with exact bytes and cancellation');
+    await quick.locator('body').press('Escape');
+  } finally {page.off('response',onResponse);}
+  await gui.getByRole('tab',{name:/^(生成记录|生成历史)$/}).click();
+  await poll(()=>gui.childFrames().some(frame=>new URL(frame.url()||'about:blank').pathname==='/generation-history'),'official generated history frame');
+  const history=gui.childFrames().find(frame=>new URL(frame.url()||'about:blank').pathname==='/generation-history');
+  await history.locator('.generation-card').first().click();await history.getByRole('dialog').waitFor({state:'visible'});
+  await history.getByRole('dialog').getByRole('button',{name:/再次生成/}).click();
+  await gui.getByRole('tab',{name:'快速生成',exact:true}).click();
+  await poll(async()=>(await quick.locator('.studio-model-select').textContent()).includes('全能耀斑')&&(await quick.locator('textarea').first().inputValue())===prompt,'official original history restores its exact draft');
+  assert.equal(state.imageCreates.length,before+1);
+  checks.push('Official History regeneration restores original parameters without automatically consuming quota again');
+  state.createdImageTaskId=task.id;
+}

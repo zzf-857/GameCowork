@@ -104,12 +104,30 @@ node tests/integration/editor-scene-mutations-agent-smoke.mjs --package <同源�
 
 | 当前入口 | 本地接线及边界 |
 | --- | --- |
-| 快速生成 | 原四种模式、模型 / 参数控件和手绘界面；手绘保存到参考图与参考文件上传走自有缓存 |
+| 快速生成 | 原四种模式、模型 / 参数控件和手绘界面；全能耀斑 / 全能日辉普通图片读取官方 Pro 状态和报价，再提交 / 查询任务；参考图与手绘走自有缓存 |
 | 生成历史 | 原网格 / 列表、分类、日期、标签、丢弃 / 恢复、详情与偏好；数据来自真实自有任务和输入记录 |
 | ReactFlow 画布 | 原个人画布入口、节点 / 连线 / 视口、Markdown 文本编辑、素材上传、视频当前帧转图片；本地服务保存完整图 JSON、版本与编辑租约 |
-| 身份与媒体 | 明确的 GameCowork 本地会话；媒体仅从登记的自有缓存读取并核对长度 / SHA，不拿本地身份代替原平台账号 |
+| 身份与媒体 | 未登录时使用明确的 GameCowork 本地身份；授权成功后由 broker 提供官方身份与额度展示，令牌不进入页面。媒体仅从登记的自有缓存读取并核对长度 / SHA |
 
-**原 45 个模型的服务尚未适配。** 新增 `cpa-gpt-image-2`（GPT Image 2 · CPA）是自有扩展，复用原模型注册表、控件、提交/轮询/历史流程，不把 Frontier 等原模型暗映射到其它服务。`local-session` 只在已有 Provider 启用、认证已配置、模型/图片类型与适配器精确符合时开放该条；未配置模型仍返回 `503 generation_provider_not_configured`。官方 SSO 与积分/订阅接口、Canvas 生成 schema 仍未接通，界面可见不等于远端能力已恢复。
+原 Quick 的 `frontier_flare`（全能耀斑）和 `frontier_sunburst`（全能日辉）普通图片接线已装配到正式 app：保留原控件及参数，在生成站真实付费状态和数值报价就绪后提交官方任务，查询实际状态，并把核验后的媒体送入本机历史、再生成与下载。参考图最多 16 张，限当前工作区已登记的真实图片，组合不超过 64 MiB；历史产物作为参考图时同样核验作用域和 SHA。全部引用先验证再导入，失败只回收本请求新建且未被历史引用的输入。当前接线使用原标准 `medium` 质量及 PNG / JPEG / WebP 普通图片；分层输出和其它原模型继续返回明确不可用，不能统称原模型已全部支持。
+
+新增 `cpa-gpt-image-2`（GPT Image 2 · CPA）保持独立的自有扩展，复用原注册表、控件、提交 / 轮询 / 历史流程。`local-session` 分别判断官方逐模型能力和已配置 CPA Provider，客户端不能在生成 payload 中改选服务。正式 app 已原位交付；本人真实登录、Quick 付费读取和单张官方 Pro PNG 生成已成功，实际图片字节与 SHA 已核验。正式包还取得真实编程目录，并完成 GLM-5.3-FLASH 的一次短文字请求与最终帧验收；目录中其它模型及复杂工具任务不由该请求推定已实测。自动门禁继续只用隔离 fixture。实际扣额、结果尺寸、请求范围、Canvas 边界与装配来源分别记录在 [当前状态](../RESTORE_STATUS.md)。
+
+账号维护入口是 `src/core/binary/out/gamecowork-codely-account.js`，两份 Core 入口同步接线；`src/shell/src/codely_account.rs` 提供 Windows DPAPI vault 和系统浏览器链接。密封记录位于本应用 `GAMECOWORK_USER_DATA_DIR` 下的 `codely-account/`，只允许 Core 请求加解密，不向前端暴露令牌。请求时限覆盖完整响应体；登录取消、退出、刷新和站点身份读取按会话代次隔离晚返请求。`gamecowork-codely-official-generator.js` 私有执行器复用该 broker，`gamecowork-assets.js` 的内部官方任务入口冻结账号绑定和输入 SHA；公开 `generator/createTask` 不能伪造官方任务。生成 POST 结果未知时不重发，只有已记录远端 ID 且所属账号匹配才能恢复查询；参考图上传失败仍属于生成提交前失败，不能误报已提交生成。测试须覆盖这些失败、账号变化、完整响应体超时及重启恢复，自动测试不访问用户账号、原软件凭据或商业额度。
+
+账号定向验证使用以下命令。默认 E2E 验证真实 Rust/Core 与 loopback 官方协议 fixture；`--browser` 增加两代原登录弹窗、链接请求、身份和退出刷新交互，`--images` 必须与 `--browser` 同用，增加原 Quick 官方图片的控件、报价、生成、历史与下载流程；`--previous` 选择上一代。`--packaged` 默认选择当前 `app/`，候选包需显式传入 `--binary`、`--core`、`--frontend`、`--runtime`，该 driver 没有 `--app-root` 参数。输出使用 `--output` 指向统一 temp 下的独立目录。各次是否通过及装配资源来源只记录在 [当前状态](../RESTORE_STATUS.md)，命令存在不表示已经完成验收。
+
+```powershell
+node --test tests/contracts/codely-account-broker.test.mjs tests/contracts/codely-account-wiring.test.mjs tests/contracts/codely-account-official-surface.test.mjs tests/contracts/codely-account-frontend.test.mjs tests/contracts/codely-account-timeout.test.mjs
+node --test tests/contracts/codely-official-generator-broker.test.mjs tests/contracts/codely-official-assets.test.mjs tests/contracts/codely-official-generator-api.test.mjs tests/contracts/codely-official-generator-validation.test.mjs
+node tests/e2e/codely-account-login-e2e.mjs
+node tests/e2e/codely-account-login-e2e.mjs --browser
+node tests/e2e/codely-account-login-e2e.mjs --browser --previous
+node tests/e2e/codely-account-login-e2e.mjs --browser --images
+node tests/e2e/codely-account-login-e2e.mjs --browser --images --previous
+node tests/e2e/codely-account-login-e2e.mjs --packaged --browser
+node tests/e2e/codely-account-login-e2e.mjs --packaged --browser --previous
+```
 
 CPA 绑定使用 `PUT /api/codely-generator/local/model-bindings/cpa-gpt-image-2`，body 为 `{ "providerId": "已保存的Provider ID" }`；传 null 解除绑定。Provider 由原生 `generator/saveProvider` 保存，模型为 `gpt-image-2`、kind 为 image、已配置鉴权、POST `/images/generations`、`responseMode:outputs`、`selectors.outputs:data`、`outputSelectors.base64:b64_json`。当前描述符固定 n=1、PNG、low、请求1024×1024；真实CPA返回1254×1254，产物尺寸从实际PNG读取。模板当前用固定size/quality/output_format；通用 `{{parameters.size}}` 在 `normalizeSpec` 的空参数预检中仍会被拒绝，此缺口列入交接计划。
 
@@ -120,6 +138,10 @@ LAN HTTP 仅在 Provider 显式设置 `allowInsecureLan:true` 且地址为规范
 Quick 上传冻结所在工作区；Canvas 上传绑定实际已保存画布及当前浏览器编辑租约，不能用图里的 `workspaceHash` 授予工程访问权限。参考输入只进入本应用缓存，不改用户原文件。输入缓存有 2048 项 / 4 GiB 上限，目前没有缓存整理界面；被任务引用的输入不能删除，预览占用或写入失败时保留可重试的记录。
 
 `/api/codely-generator` 兼容原 Quick/History 的请求与响应形状；`/codely-canvas/api` 兼容原画布资产、图、版本和租约形状。兼容层的历史读取在未指定私有工作区范围时可查询全部自有记录，显式空范围是全局记录，非空范围精确匹配宿主核定的范围。媒体二进制由宿主读取，不经 Core 的有界 stdio 帧。画布读取时只把能验证真实身份、文件名、作用域和 SHA 的自有媒体 URL 改为当前本机 origin；磁盘图和其它字段不变，外域、已删除或篡改的媒体不会被代理或伪装修复。
+
+原 Quick/History 的 `codely:download` 和两处 Canvas 的 `openurl` 继续携带 `{url,filename}`，本地接到 `POST /api/tauri/download-url`。服务只接受当前 origin 下已登记的 artifact/input 地址：历史产物保留全部自有历史范围，输入必须匹配其登记的 `workspaceKey`。原生保存对话框选择目的文件，请求 JSON 不能指定路径；保存前后核验来源身份及 SHA，实际写入使用 create-new，不覆盖重名文件。文件建议扩展名按真实 MIME 确定。取消返回 `cancelled:true`，写入并同步成功才返回 `ok:true` 与 SHA；失败有可见提示且不转浏览器下载。临时 blob/data、外站下载及尚未登记的编辑器即时导出仍明确不支持。
+
+原生对话框由独立任务持有，页面刷新或请求断开后仍须在原对话框保存或取消，完成前再次下载返回 busy；没有回执时界面提示先检查目标文件。磁盘写入失败可能保留未完成的新文件，不报告成功，也不自动删除可能被并发替换的目标。Windows 写入期间持有父目录句柄并拒绝链接/重解析点。自动门禁替换的是文件选择步骤，真实 Windows 对话框及本次源码/包的验证范围单独记入状态文档。
 
 `gamecowork-assets.js` 的通用 REST 任务、持久化、鉴权、取消、输入与媒体检查仍是已有后端能力，也是 loopback 验证的数据准备入口。其契约和 `asset-generation-service-smoke.mjs` 继续保留。旧 `frontend-asset-generation-contract.mjs`、`asset-generation-e2e.mjs` 针对已不作为现行入口的自研面板，退出默认资产界面门禁；它们的结果不能充当原 Quick/History/ReactFlow 功能恢复证据。
 
@@ -136,11 +158,26 @@ node --test tests/contracts/codely-generator-api.test.mjs tests/contracts/codely
 # 实际 Rust / Core、两代桌面 GUI 和内部原客户端
 node tests/e2e/codely-assets-e2e.mjs --agent <同源码 guarded Agent EXE>
 node tests/e2e/codely-assets-e2e.mjs --previous --agent <同源码 guarded Agent EXE>
+node tests/e2e/codely-assets-e2e.mjs --download-only --agent <同源码 guarded Agent EXE>
+node tests/e2e/codely-assets-e2e.mjs --previous --download-only --agent <同源码 guarded Agent EXE>
 ```
 
-统一验证执行来源、身份、Sidebar、CPA 描述符/后端与原接口契约，并保留已有后端门禁；`-RealCore` 或 `-Chat` 且未指定 `-SkipBrowser` 时，运行两代默认 `codely-assets-e2e.mjs` 和两代 `--cpa-only`。默认验证原参数/手绘/历史/媒体与画布、冷重启及默认右栏双文档租约；CPA分支验证原控件真实提交到 loopback 图片接口、解码、历史再生成草稿与重启，不证明原45模型已能生成。`--flexible-layout` 单独检查原可选分栏入口，不属于默认窗口，验收结果分别记录。
+统一验证执行来源、身份、Sidebar、官方账号/图片/编程、CPA 描述符/后端与原接口契约，并保留已有后端门禁；`-RealCore` 或 `-Chat` 且未指定 `-SkipBrowser` 时，运行两代默认 `codely-assets-e2e.mjs` 和两代 `--cpa-only`，并按统一脚本登记范围执行官方图片和编程 E2E。默认资产 driver 验证原参数/手绘/历史/媒体与画布、冷重启及默认右栏双文档租约；CPA 分支验证原控件提交到 loopback 图片接口、解码、历史再生成草稿与重启，不能替代官方服务验收。`--flexible-layout` 单独检查原可选分栏入口，不属于默认窗口，验收结果分别记录。
 
 该 driver 支持 `--binary <候选宿主 EXE>`、`--output <统一 temp 内的目录>`，以及 `--packaged --app-root <候选包>`；没有 `--frontend` 参数。包模式使用包内宿主、前端和 Core，执行仍使用显式传入的 guarded Agent，不能据此代替正式 Agent 与整个装配包的完整性检查。`--inspect` 只作检查界面 / 截图用途，会跳过完整交互流程，不能用作完整验收。源码门禁和候选包验证均不表示现有 `app/` 已更新；正式装配与结果统一记录在 [RESTORE_STATUS.md](../RESTORE_STATUS.md)。
+
+## 官方编程模型接线
+
+两代原聊天模型菜单通过 `assets/gamecowork-official-models.js` 提供“启用 Codely 官方 · Pro 模型”。用户显式点击后，`gamecowork-official-llm.js` 从账号 broker 取得核实的当前账号/组织绑定与仅留 Core 内存的 CLI 推理 Key，读取真实官方模型目录并交给原菜单选择；登录或展开菜单不获取 Key。官方模型与本地 CPA 配置并存，切换不改写已有 Provider 设置。Agent 只获得绑定工作区、会话及所选模型的可撤销本机能力，Core 校验请求协议、实际最终帧和账号/组织代次；退出、关闭会话及工作区所有权变化必须撤销相应能力。
+
+以下验证使用真实维护 GUI、Rust / Core 和同源码 guarded Agent，官方目录与推理上游均为回环 fixture。`--previous` 选择上一代，`--binary` 可指定候选宿主；`--packaged --app-root <候选包>` 读取候选包内宿主、前端和 Core，同时仍须显式提供同源码 guarded Agent。`--output` 必须指向统一 temp 内的独立目录。它不代替本人真实官方推理或额度验收；测试结果和包来源统一见 [当前状态](../RESTORE_STATUS.md)。
+
+```powershell
+node --test tests/contracts/codely-official-programming.test.cjs
+node tests/e2e/codely-official-programming-e2e.mjs --agent <同源码 guarded Agent EXE>
+node tests/e2e/codely-official-programming-e2e.mjs --previous --agent <同源码 guarded Agent EXE>
+node tests/e2e/codely-official-programming-e2e.mjs --packaged --app-root <候选包> --agent <同源码 guarded Agent EXE>
+```
 
 ## 本地状态与证据
 

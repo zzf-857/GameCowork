@@ -10,7 +10,8 @@ use axum::{
 use serde_json::{json, Value};
 use std::{
     collections::{HashMap, HashSet},
-    sync::{Arc, OnceLock},
+    path::{Path as FilePath, PathBuf},
+    sync::{Arc, Mutex, OnceLock},
     time::Duration,
 };
 
@@ -180,6 +181,439 @@ fn local_origin(headers: &HeaderMap, write: bool) -> Result<String, (StatusCode,
         ));
     }
     Ok(origin)
+}
+
+#[derive(Debug, PartialEq)]
+enum DownloadSource {
+    Artifact {
+        task: String,
+        artifact: String,
+        filename: String,
+    },
+    Input {
+        id: String,
+        filename: String,
+        workspace: String,
+    },
+}
+impl DownloadSource {
+    fn filename(&self) -> &str {
+        match self {
+            Self::Artifact { filename, .. } | Self::Input { filename, .. } => filename,
+        }
+    }
+}
+
+fn decode_url_part(value: &str) -> Result<String, String> {
+    let mut output = Vec::with_capacity(value.len());
+    let mut bytes = value.bytes();
+    while let Some(byte) = bytes.next() {
+        if byte == b'%' {
+            let high = bytes
+                .next()
+                .and_then(|v| (v as char).to_digit(16))
+                .ok_or("Invalid URL encoding")?;
+            let low = bytes
+                .next()
+                .and_then(|v| (v as char).to_digit(16))
+                .ok_or("Invalid URL encoding")?;
+            output.push((high * 16 + low) as u8);
+        } else {
+            output.push(byte);
+        }
+    }
+    let decoded = String::from_utf8(output).map_err(|_| "Invalid URL text")?;
+    if decoded.chars().any(char::is_control) {
+        return Err("Invalid URL text".into());
+    }
+    Ok(decoded)
+}
+
+fn download_source(value: &str, origin: &str) -> Result<DownloadSource, String> {
+    if value.len() > 16 * 1024 || value.contains(['#', '\\']) {
+        return Err("Download requires an exact owned media URL".into());
+    }
+    let uri: axum::http::Uri = value.parse().map_err(|_| "Invalid download URL")?;
+    if uri.scheme_str() != Some("http")
+        || uri
+            .authority()
+            .map(|authority| format!("http://{authority}"))
+            .as_deref()
+            != Some(origin)
+    {
+        return Err("Download URL must use the current local origin".into());
+    }
+    let path = uri
+        .path()
+        .strip_prefix("/api/codely-generator/")
+        .ok_or("URL is not owned media")?;
+    let segments: Vec<_> = path
+        .split('/')
+        .map(decode_url_part)
+        .collect::<Result<_, _>>()?;
+    let identifier = |value: &str| {
+        !value.is_empty()
+            && value.len() <= 100
+            && value
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-'))
+            && !matches!(value, "constructor" | "prototype" | "__proto__")
+    };
+    let source = match segments
+        .iter()
+        .map(String::as_str)
+        .collect::<Vec<_>>()
+        .as_slice()
+    {
+        ["local-artifacts", task, artifact, filename]
+            if identifier(task) && identifier(artifact) && uri.query().is_none() =>
+        {
+            DownloadSource::Artifact {
+                task: (*task).into(),
+                artifact: (*artifact).into(),
+                filename: (*filename).into(),
+            }
+        }
+        ["local-inputs", id, filename] if identifier(id) => {
+            let query = uri
+                .query()
+                .ok_or("Input download requires its exact workspace scope")?;
+            let scope = query
+                .strip_prefix("workspaceKey=")
+                .filter(|_| !query.contains('&'))
+                .ok_or("Unexpected download query")?;
+            let workspace = decode_url_part(scope)?;
+            if workspace.len() > 2048 {
+                return Err("Input workspace scope is too long".into());
+            }
+            DownloadSource::Input {
+                id: (*id).into(),
+                filename: (*filename).into(),
+                workspace,
+            }
+        }
+        _ => return Err("Invalid owned media download identity".into()),
+    };
+    let filename = source.filename();
+    if filename.is_empty()
+        || filename.len() > 1024
+        || filename.chars().count() > 255
+        || filename.contains(['/', '\\'])
+        || matches!(filename, "." | "..")
+    {
+        return Err("Invalid owned media filename".into());
+    }
+    Ok(source)
+}
+
+async fn download_metadata(core: &CoreHandle, source: &DownloadSource) -> Result<Value, String> {
+    let metadata = match source {
+        DownloadSource::Artifact { task, artifact, .. } => {
+            core_call(
+                core,
+                "_gamecowork/assetArtifactPath",
+                json!({"taskId":task,"artifactId":artifact}),
+                Some("default"),
+            )
+            .await?
+        }
+        DownloadSource::Input { id, workspace, .. } => {
+            core_call(
+                core,
+                "_gamecowork/assetInputPath",
+                json!({"inputId":id,"workspaceKey":workspace}),
+                Some("default"),
+            )
+            .await?
+        }
+    };
+    if metadata["filename"].as_str() != Some(source.filename()) {
+        return Err("Owned media filename does not match".into());
+    }
+    if let DownloadSource::Input { workspace, .. } = source {
+        if metadata["workspaceKey"].as_str() != Some(workspace.as_str()) {
+            return Err("Owned input scope does not match".into());
+        }
+    }
+    Ok(metadata)
+}
+
+fn suggested_download_name(body: &Value, metadata: &Value) -> Result<String, String> {
+    let original = metadata["filename"]
+        .as_str()
+        .ok_or("Owned media filename is missing")?;
+    let name = match body.get("filename") {
+        Some(Value::String(name)) if !name.is_empty() => name.as_str(),
+        None | Some(Value::Null) | Some(Value::String(_)) => original,
+        _ => return Err("Download filename must be text".into()),
+    };
+    generated_assets::validate_download_filename(name)?;
+    let extension = match metadata["mime"].as_str() {
+        Some("image/png") => "png",
+        Some("image/jpeg") => "jpg",
+        Some("image/webp") => "webp",
+        Some("video/mp4") => "mp4",
+        Some("video/webm") => "webm",
+        Some("model/gltf-binary") => "glb",
+        _ => return Err("Owned media type is unsupported".into()),
+    };
+    // Original video controls suggest .mp4 even for WebM sources. Preserve the
+    // actual media extension rather than labelling those bytes as another type.
+    let stem = FilePath::new(name)
+        .file_stem()
+        .and_then(|value| value.to_str())
+        .unwrap_or("download");
+    let suggested = format!("{stem}.{extension}");
+    generated_assets::validate_download_filename(&suggested)?;
+    Ok(suggested)
+}
+
+fn test_download_choice(core: &CoreHandle) -> Result<Option<PathBuf>, String> {
+    let root = FilePath::new("F:/AI/AgentMake/temp/GameCowork");
+    let queue = std::env::var_os("GAMECOWORK_TEST_DOWNLOAD_CHOICES")
+        .map(PathBuf::from)
+        .ok_or("No isolated download dialog fixture is configured")?;
+    // The fixture is an environment-only test seam. Renderer JSON never selects
+    // a destination, and normal app / non-isolated headless runs cannot use it.
+    generated_assets::check_download_test_path(&core.paths.data.join("dialog-scope"), root)?;
+    generated_assets::check_download_test_path(&queue, root)?;
+    let info = std::fs::metadata(&queue).map_err(|error| error.to_string())?;
+    if !info.is_file() || info.len() > 64 * 1024 {
+        return Err("Invalid download dialog fixture".into());
+    }
+    let choices: Value =
+        serde_json::from_slice(&std::fs::read(&queue).map_err(|error| error.to_string())?)
+            .map_err(|error| error.to_string())?;
+    let choices = choices
+        .as_array()
+        .filter(|rows| rows.len() <= 128)
+        .ok_or("Invalid download dialog choices")?;
+    static NEXT: OnceLock<Mutex<HashMap<PathBuf, usize>>> = OnceLock::new();
+    let mut consumed = NEXT
+        .get_or_init(|| Mutex::new(HashMap::new()))
+        .lock()
+        .map_err(|_| "Download fixture state unavailable")?;
+    let index = consumed.entry(queue).or_default();
+    let choice = choices
+        .get(*index)
+        .ok_or("Download dialog fixture is exhausted")?;
+    let target = match choice["action"].as_str() {
+        Some("cancel") => None,
+        Some("save") => {
+            let target = PathBuf::from(
+                choice["path"]
+                    .as_str()
+                    .ok_or("Download fixture path missing")?,
+            );
+            generated_assets::check_download_test_path(&target, root)?;
+            Some(target)
+        }
+        _ => return Err("Invalid download dialog action".into()),
+    };
+    *index += 1;
+    Ok(target)
+}
+
+fn download_error(status: StatusCode, code: &str, message: impl ToString) -> Response {
+    (
+        status,
+        Json(json!({"ok":false,"error":code,"message":message.to_string()})),
+    )
+        .into_response()
+}
+
+fn spawn_download_owner<F>(
+    permit: tokio::sync::OwnedSemaphorePermit,
+    operation: F,
+) -> tokio::task::JoinHandle<F::Output>
+where
+    F: std::future::Future + Send + 'static,
+    F::Output: Send + 'static,
+{
+    // rfd uses a native thread that cannot be cancelled by dropping its future.
+    // Dropping this JoinHandle only detaches the owner: the open dialog and its
+    // eventual save/cancel retain the permit even when the HTTP caller leaves.
+    tokio::spawn(async move {
+        let result = operation.await;
+        drop(permit);
+        result
+    })
+}
+
+pub async fn download_url(
+    State(core): State<CoreHandle>,
+    headers: HeaderMap,
+    request: Request,
+) -> Response {
+    let origin = match local_origin(&headers, true) {
+        Ok(origin) => origin,
+        Err((status, value)) => {
+            return download_error(
+                status,
+                "download_source_invalid",
+                value["message"]
+                    .as_str()
+                    .unwrap_or("Local origin is required"),
+            )
+        }
+    };
+    let body = match json_body(request, 20 * 1024).await {
+        Ok(body) => body,
+        Err((status, value)) => {
+            return download_error(
+                status,
+                "download_source_invalid",
+                value["error"].as_str().unwrap_or("Invalid download body"),
+            )
+        }
+    };
+    let parsed = (|| {
+        let fields = body.as_object().ok_or("Download body must be an object")?;
+        if fields
+            .keys()
+            .any(|key| !matches!(key.as_str(), "url" | "filename"))
+        {
+            return Err("Download body accepts only url and filename".to_owned());
+        }
+        download_source(
+            body["url"].as_str().ok_or("Download URL is missing")?,
+            &origin,
+        )
+    })();
+    let source = match parsed {
+        Ok(source) => source,
+        Err(error) => {
+            return download_error(StatusCode::BAD_REQUEST, "download_source_invalid", error)
+        }
+    };
+    static DIALOG: OnceLock<Arc<tokio::sync::Semaphore>> = OnceLock::new();
+    let Ok(permit) = DIALOG
+        .get_or_init(|| Arc::new(tokio::sync::Semaphore::new(1)))
+        .clone()
+        .try_acquire_owned()
+    else {
+        return download_error(
+            StatusCode::CONFLICT,
+            "download_busy",
+            "Another download save dialog is already open",
+        );
+    };
+    let metadata = match download_metadata(&core, &source).await {
+        Ok(metadata) => metadata,
+        Err(error) => {
+            return download_error(StatusCode::NOT_FOUND, "download_source_invalid", error)
+        }
+    };
+    let suggested = match suggested_download_name(&body, &metadata) {
+        Ok(name) => name,
+        Err(error) => {
+            return download_error(StatusCode::BAD_REQUEST, "download_source_invalid", error)
+        }
+    };
+    let input = matches!(source, DownloadSource::Input { .. });
+    let home = core.paths.core_home.clone();
+    let before = metadata.clone();
+    match tokio::task::spawn_blocking(move || {
+        generated_assets::read_http_resource(&home, &before, input)
+    })
+    .await
+    {
+        Ok(Ok(_)) => {}
+        result => {
+            return download_error(
+                StatusCode::NOT_FOUND,
+                "download_source_invalid",
+                match result {
+                    Ok(Err(error)) => error,
+                    Err(error) => error.to_string(),
+                    _ => unreachable!(),
+                },
+            )
+        }
+    }
+    match spawn_download_owner(permit, complete_download(core, source, metadata, suggested)).await {
+        Ok(response) => response,
+        Err(error) => download_error(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "download_write_failed",
+            error,
+        ),
+    }
+}
+
+async fn complete_download(
+    core: CoreHandle,
+    source: DownloadSource,
+    metadata: Value,
+    suggested: String,
+) -> Response {
+    let selected = if core.paths.headless {
+        if !core.paths.test_mode {
+            return download_error(
+                StatusCode::SERVICE_UNAVAILABLE,
+                "download_dialog_unavailable",
+                "Native save dialog is unavailable in headless mode",
+            );
+        }
+        match test_download_choice(&core) {
+            Ok(choice) => choice,
+            Err(error) => {
+                return download_error(
+                    StatusCode::SERVICE_UNAVAILABLE,
+                    "download_dialog_unavailable",
+                    error,
+                )
+            }
+        }
+    } else {
+        rfd::AsyncFileDialog::new()
+            .set_file_name(&suggested)
+            .save_file()
+            .await
+            .map(|handle| handle.path().to_owned())
+    };
+    let Some(path) = selected else {
+        return Json(json!({"cancelled":true})).into_response();
+    };
+    match download_metadata(&core, &source).await {
+        Ok(current) if current == metadata => {}
+        Ok(_) => {
+            return download_error(
+                StatusCode::CONFLICT,
+                "download_source_changed",
+                "Owned media changed while the save dialog was open",
+            )
+        }
+        Err(error) => {
+            return download_error(StatusCode::CONFLICT, "download_source_changed", error)
+        }
+    }
+    let home = core.paths.core_home.clone();
+    let input = matches!(source, DownloadSource::Input { .. });
+    match tokio::task::spawn_blocking(move || {
+        generated_assets::save_native_resource(&home, &metadata, input, &path)
+    })
+    .await
+    {
+        Ok(Ok(result)) => Json(result).into_response(),
+        Ok(Err((code, error))) => download_error(
+            if matches!(
+                code,
+                "download_destination_exists" | "download_source_changed"
+            ) {
+                StatusCode::CONFLICT
+            } else {
+                StatusCode::BAD_REQUEST
+            },
+            code,
+            error,
+        ),
+        Err(error) => download_error(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "download_write_failed",
+            error,
+        ),
+    }
 }
 
 async fn json_body(request: Request, limit: usize) -> Result<Value, (StatusCode, Value)> {
@@ -384,7 +818,29 @@ pub async fn canvas(
         Err((status, value)) => return (status, Json(value)).into_response(),
     };
     if method == "GET" && operation == "local/session" {
-        return Json(core.codely_canvas.local_session()).into_response();
+        let mut session = core.codely_canvas.local_session();
+        // Official identity overlay: the Codely broker exchanges and reads
+        // profile/points server-side; Canvas tokens never cross this boundary
+        // and the local storage session stays authoritative for graph writes.
+        let frame = core
+            .transport
+            .request(
+                "codelyAccount/canvasSnapshot",
+                json!({}),
+                Some("default"),
+                None,
+                false,
+                Duration::from_secs(5),
+            )
+            .await;
+        if let Ok(frame) = frame {
+            if frame["data"]["status"] == "success"
+                && frame["data"]["content"]["mode"] == "codely-official"
+            {
+                session["official"] = frame["data"]["content"].clone();
+            }
+        }
+        return Json(session).into_response();
     }
     if let Some(kind) = operation.strip_prefix("editor/upload/") {
         let context = CanvasUploadScope {
@@ -555,6 +1011,102 @@ async fn rebase_canvas_media(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[tokio::test]
+    async fn disconnected_download_waiter_cannot_release_an_open_dialog_or_pending_save() {
+        let gate = Arc::new(tokio::sync::Semaphore::new(1));
+        let permit = gate.clone().try_acquire_owned().unwrap();
+        let (opened_tx, opened_rx) = tokio::sync::oneshot::channel();
+        let (choose_tx, choose_rx) = tokio::sync::oneshot::channel();
+        let (saving_tx, saving_rx) = tokio::sync::oneshot::channel();
+        let (saved_tx, saved_rx) = tokio::sync::oneshot::channel();
+        let (finished_tx, finished_rx) = tokio::sync::oneshot::channel();
+        let owner = spawn_download_owner(permit, async move {
+            opened_tx.send(()).unwrap();
+            // Models the non-cancellable native dialog, then an in-flight file
+            // write. Both outlive a disconnected HTTP response waiter.
+            choose_rx.await.unwrap();
+            saving_tx.send(()).unwrap();
+            saved_rx.await.unwrap();
+            finished_tx.send(()).unwrap();
+        });
+        let waiter = tokio::spawn(async move { owner.await });
+        opened_rx.await.unwrap();
+        waiter.abort();
+        assert!(waiter.await.unwrap_err().is_cancelled());
+        assert!(gate.clone().try_acquire_owned().is_err());
+        choose_tx.send(()).unwrap();
+        saving_rx.await.unwrap();
+        assert!(gate.clone().try_acquire_owned().is_err());
+        saved_tx.send(()).unwrap();
+        finished_rx.await.unwrap();
+        let permit = tokio::time::timeout(Duration::from_secs(1), gate.clone().acquire_owned())
+            .await
+            .unwrap()
+            .unwrap();
+        // Cancellation finishes without a save and releases the same owner.
+        let cancelled = spawn_download_owner(permit, async { json!({"cancelled":true}) });
+        assert_eq!(cancelled.await.unwrap()["cancelled"], true);
+        assert!(gate.try_acquire_owned().is_ok());
+    }
+
+    #[test]
+    fn downloads_require_exact_current_origin_owned_identity_and_scope() {
+        let origin = "http://127.0.0.1:41234";
+        assert_eq!(
+            download_source(
+                &format!("{origin}/api/codely-generator/local-artifacts/t_123/a_456/%E5%9B%BE.png"),
+                origin
+            )
+            .unwrap(),
+            DownloadSource::Artifact {
+                task: "t_123".into(),
+                artifact: "a_456".into(),
+                filename: "图.png".into()
+            }
+        );
+        assert_eq!(download_source(&format!("{origin}/api/codely-generator/local-inputs/i_123/ref.png?workspaceKey=canvas%3Aown"), origin).unwrap(),
+            DownloadSource::Input { id: "i_123".into(), filename: "ref.png".into(), workspace: "canvas:own".into() });
+        for url in [
+            "https://external.invalid/owned.png",
+            "http://127.0.0.1:41235/api/codely-generator/local-artifacts/t/a/file.png",
+            "http://localhost:41234/api/codely-generator/local-artifacts/t/a/file.png",
+            "http://user@127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/file.png",
+            "http://127.0.0.1:41234/api/tauri/local-file-content?path=secret",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/file.png?workspaceKey=x",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/file.png#fragment",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/%2e%2e%2ffile.png",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/%00.png",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/%zz.png",
+            "http://127.0.0.1:41234/api/codely-generator/local-artifacts/t/a/extra/file.png",
+            "http://127.0.0.1:41234/api/codely-generator/local-inputs/i/ref.png",
+            "http://127.0.0.1:41234/api/codely-generator/local-inputs/i/ref.png?workspaceKey=a&workspaceKey=b",
+            "http://127.0.0.1:41234/api/codely-generator/local-inputs/i/ref.png?workspaceKey=a&path=secret",
+            "blob:http://127.0.0.1:41234/owned-id",
+        ] { assert!(download_source(url, origin).is_err(), "{url}"); }
+    }
+
+    #[test]
+    fn download_suggestions_keep_actual_media_type_and_reject_path_names() {
+        let metadata = json!({"filename":"owned.webm","mime":"video/webm"});
+        assert_eq!(
+            suggested_download_name(&json!({"filename":"video.mp4"}), &metadata).unwrap(),
+            "video.webm"
+        );
+        assert_eq!(
+            suggested_download_name(&json!({}), &metadata).unwrap(),
+            "owned.webm"
+        );
+        for filename in [
+            "../escape.mp4",
+            "C:\\escape.mp4",
+            "stream.mp4:secret",
+            "CON.mp4",
+            "missing.",
+        ] {
+            assert!(suggested_download_name(&json!({"filename":filename}), &metadata).is_err());
+        }
+    }
 
     #[test]
     fn graph_media_replacement_preserves_text_keys_and_unknown_fields() {

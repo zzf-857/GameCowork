@@ -1,5 +1,6 @@
 'use strict';
-// Own configurable REST generation service. No original OAuth/service fallback.
+// Own media cache and generation tasks. Official execution is an internal,
+// account-bound adapter; renderer-configured Providers never acquire it.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -74,10 +75,10 @@ function inputTemplateIndexes(template, count) {
   visit(template); return used;
 }
 function privateIpv4(host) { const parts = host.split('.').map(Number); return /^\d+\.\d+\.\d+\.\d+$/.test(host) && parts.every(value => value >= 0 && value <= 255) && (parts[0] === 10 || parts[0] === 192 && parts[1] === 168 || parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31); }
-function safeUrl(value, base, allowedLanOrigin) {
+function safeUrl(value, base, allowedLanOrigin, officialDownload = false) {
   let url; try { url = new URL(value, base); } catch { throw Error('Invalid Provider URL'); }
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.hash) throw Error('Provider URLs must be HTTP(S) without embedded credentials or fragments');
-  const host = url.hostname.toLowerCase().replace(/\.$/, ''); if (host === 'ai-generator.tuanjie.cn' || host.endsWith('.ai-generator.tuanjie.cn')) throw Error('The original asset service is not supported');
+  const host = url.hostname.toLowerCase().replace(/\.$/, ''); if (!officialDownload && (host === 'ai-generator.tuanjie.cn' || host.endsWith('.ai-generator.tuanjie.cn'))) throw Error('The original asset service is not supported');
   if (url.protocol === 'http:' && !['127.0.0.1', 'localhost', '[::1]', '::1'].includes(host) && !(url.origin === allowedLanOrigin && privateIpv4(host))) throw Error('Unencrypted HTTP requires loopback or an explicitly authorized private LAN origin');
   return url;
 }
@@ -123,7 +124,7 @@ function createAssetService(options) {
   const directory = path.resolve(root); for (let current = directory; ; current = path.dirname(current)) { if (fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink()) throw Error('Linked asset runtime roots are unsupported'); if (path.dirname(current) === current) break; } fs.mkdirSync(directory, { recursive: true, mode: 0o700 });
   const fetcher = options.fetch || globalThis.fetch, pollInterval = options.pollIntervalMs ?? 1000, requestTimeout = options.requestTimeoutMs ?? 30000;
   if (typeof fetcher !== 'function' || !Number.isInteger(pollInterval) || pollInterval < 10 || !Number.isInteger(requestTimeout) || requestTimeout < 10 || requestTimeout > 600000) throw Error('Invalid asset service transport options');
-  let disposed = false, fatalError, providers = {}, tasks = {}, canvases = {}, inputs = {}; const jobs = new Map(), timers = new Map(), secretValues = new Set();
+  let disposed = false, fatalError, officialExecutor, providers = {}, tasks = {}, canvases = {}, inputs = {}; const jobs = new Map(), timers = new Map(), secretValues = new Set();
   function checked(file, existing = false) {
     const full = path.resolve(directory, file); if (full !== directory && !full.startsWith(directory + path.sep)) throw Error('Asset storage path escaped its owner');
     for (let current = full; ; current = path.dirname(current)) { if (fs.existsSync(current)) { const stat = fs.lstatSync(current); if (stat.isSymbolicLink() || stat.isFile() && stat.nlink !== 1) throw Error('Linked asset runtime storage is unsupported'); } if (path.dirname(current) === current) break; }
@@ -162,6 +163,16 @@ function createAssetService(options) {
     try { atomic('inputs.json', Buffer.from(JSON.stringify(next))); } catch (error) { try { const file = checked(input._file, true); if (sha(fs.readFileSync(file)) === input.sha256) fs.unlinkSync(file); } catch {} throw error; }
     inputs = next; return { input: publicInput(input) };
   }
+  function importOwnedArtifactInput(data) {
+    assertRuntime(); const task = taskById(data.taskId), workspaceKey = inputScope(data.workspaceKey);
+    if ((task.workspaceKey || '') !== workspaceKey) throw Error('Owned artifact not found in this workspace');
+    const resource = getArtifactPath(task.id, data.artifactId), bytes = fs.readFileSync(resource.path);
+    if (bytes.length !== resource.byteLength || sha(bytes) !== resource.sha256) throw Error('Owned artifact integrity check failed');
+    const inputId = 'i_' + crypto.randomUUID(), stagedName = path.join('incoming', inputId + '.bin');
+    atomic(stagedName, bytes);
+    try { return registerInput({ inputId, workspaceKey, filename: resource.filename, byteLength: resource.byteLength, sha256: resource.sha256 }); }
+    finally { const staged = checked(stagedName); if (fs.existsSync(staged)) fs.unlinkSync(checked(stagedName, true)); }
+  }
   function deleteInput(data) {
     const input = inputById(data.inputId, data.workspaceKey); if (Object.values(tasks).some(task => task.inputs?.some(reference => reference.id === input.id))) throw Error('Reference input is retained by generation history');
     const { file } = inputFile(input.id, input.workspaceKey), staged = checked(path.join('inputs', '.delete-' + input.id + '-' + crypto.randomUUID()));
@@ -188,6 +199,7 @@ function createAssetService(options) {
   }
   function saveProvider(input) {
     const value = input?.provider; if (!value || typeof value !== 'object') throw Error('provider object is required'); const providerId = value.id ? id(value.id, 'providerId') : 'p_' + crypto.randomUUID(), previous = Object.prototype.hasOwnProperty.call(providers, providerId) && providers[providerId];
+    if (providerId === 'codely-official') throw Error('Official execution is not a configurable Provider');
     if (Object.keys(providers).length >= 64 && !previous) throw Error('Provider limit is 64');
     if (value.allowInsecureLan !== undefined && typeof value.allowInsecureLan !== 'boolean') throw Error('LAN authorization must be an explicit boolean');
     const allowInsecureLan = value.allowInsecureLan ?? previous?.allowInsecureLan ?? false;
@@ -243,13 +255,29 @@ function createAssetService(options) {
     let response; try { response = JSON.parse(result.bytes); } catch { throw Error('Provider response is not JSON'); } return response;
   }
   function remoteState(provider, response) { const raw = select(response, provider.adapter.selectors.status); if (typeof raw !== 'string') return null; const normal = raw.trim().toLowerCase(); return Object.keys(provider.adapter.statusMap).find(key => provider.adapter.statusMap[key].includes(normal)) || null; }
+  function isOfficial(task) { return task.serviceSource === 'codely-official'; }
+  function assertOfficial(task, verifyInputs = false) {
+    if (!officialExecutor || !officialExecutor.isAvailable()) { const error = Error('Official account service is unavailable; this task remains bound to its submitting account'); error.beforeRequest = true; error.officialUnavailable = true; throw error; }
+    try { officialExecutor.assertOwner(task); }
+    catch { const error = Error('Official account changed; this task remains bound to its submitting account'); error.beforeRequest = true; error.officialUnavailable = true; throw error; }
+    if (verifyInputs) try { for (const snapshot of task.inputs || []) { const loaded = inputFile(snapshot.id, task.workspaceKey); if (loaded.input.sha256 !== snapshot.sha256 || loaded.input.byteLength !== snapshot.byteLength || loaded.input.mime !== snapshot.mime || loaded.input.kind !== snapshot.kind) throw Error('Reference input snapshot changed'); } } catch (error) { error.beforeRequest = true; throw error; }
+    return officialExecutor;
+  }
+  function officialDownloadProvider(task) {
+    const raw = assertOfficial(task).downloadProvider(task);
+    if (!raw || raw.authMode !== 'none' || raw._key || raw.apiKey || raw.headers || raw.cookie) throw Error('Official media downloads must not contain account authentication');
+    const base = safeUrl(text(raw.baseUrl, 'official media baseUrl', 2048, true), undefined, undefined, true);
+    const loopbackFixture = base.protocol === 'http:' && ['127.0.0.1', 'localhost', '[::1]', '::1'].includes(base.hostname);
+    if (base.search || base.protocol !== 'https:' && !loopbackFixture) throw Error('Official media downloads require HTTPS or an internal loopback fixture');
+    return { baseUrl: base.toString().replace(/\/+$/, ''), authMode: 'none', _officialDownload: true, _officialLoopbackFixture: loopbackFixture, adapter: { selectors: { taskId: 'id', status: 'status', progress: 'progress', outputs: 'outputs', error: 'error' }, statusMap: DEFAULT_MAP, outputSelectors: DEFAULT_OUTPUT_SELECTORS } };
+  }
   async function download(provider, value, signal) {
     const origin = new URL(provider.baseUrl).origin, allowedLanOrigin = provider.allowInsecureLan === true ? origin : undefined;
-    let url = safeUrl(value, undefined, allowedLanOrigin);
+    let url = safeUrl(value, undefined, allowedLanOrigin, provider._officialDownload === true);
     for (let index = 0; index < 4; index++) {
-      if (url.origin !== origin) { if (url.protocol !== 'https:') throw Error('Cross-origin outputs require HTTPS'); const host = url.hostname.replace(/^\[|\]$/g, ''); const addresses = await dns.lookup(host, { all: true }); if (addresses.some(({ address }) => /^(127\.|10\.|192\.168\.|169\.254\.|0\.|172\.(1[6-9]|2\d|3[01])\.|2(2[4-9]|3\d|4\d|5[0-5])\.|::(?:$|1$|ffff:)|f[cd]|fe80:)/i.test(address))) throw Error('Output URLs must not target private/local infrastructure'); }
+      if (url.origin !== origin || provider._officialDownload && !provider._officialLoopbackFixture) { if (url.protocol !== 'https:') throw Error('Cross-origin outputs require HTTPS'); const host = url.hostname.replace(/^\[|\]$/g, ''); const addresses = await dns.lookup(host, { all: true }); if (!addresses.length || addresses.some(({ address }) => /^(127\.|10\.|192\.168\.|169\.254\.|0\.|172\.(1[6-9]|2\d|3[01])\.|2(2[4-9]|3\d|4\d|5[0-5])\.|::(?:$|1$|ffff:)|f[cd]|fe80:)/i.test(address))) throw Error('Output URLs must not target private/local infrastructure'); }
       const result = await request(url, { method: 'GET', headers: headers(provider, url) }, signal, MAX_FILE, provider.requestTimeoutMs ?? requestTimeout);
-      if ([301, 302, 303, 307, 308].includes(result.status)) { const location = result.headers.get('location'); if (!location) throw Error('Output redirect has no location'); url = safeUrl(location, url, allowedLanOrigin); continue; }
+      if ([301, 302, 303, 307, 308].includes(result.status)) { const location = result.headers.get('location'); if (!location) throw Error('Output redirect has no location'); url = safeUrl(location, url, allowedLanOrigin, provider._officialDownload === true); continue; }
       if (result.status < 200 || result.status >= 300) throw Error('Output download HTTP ' + result.status); return { bytes: result.bytes, mime: result.headers.get('content-type')?.split(';')[0].trim().toLowerCase() };
     }
     throw Error('Output redirect budget exceeded');
@@ -259,12 +287,14 @@ function createAssetService(options) {
     task._phase = 'download'; changed(task);
     for (let index = 0; index < rows.length; index++) {
       if (disposed || jobs.get(task.id) !== job || job.controller.signal.aborted) return;
+      if (isOfficial(task)) assertOfficial(task);
       if (task.artifacts.some(artifact => artifact._outputIndex === index)) continue;
       const raw = rows[index]; if (!raw || typeof raw !== 'object') throw Error('Provider output must be an object'); const row = Object.fromEntries(Object.entries(provider.adapter.outputSelectors || DEFAULT_OUTPUT_SELECTORS).map(([name, selector]) => [name, select(raw, selector)])); let result;
       if (typeof row.base64 === 'string') { if (row.base64.length > Math.ceil(MAX_FILE / 3) * 4 + 4 || !validBase64(row.base64)) throw Error('Invalid/oversized base64 output'); result = { bytes: Buffer.from(row.base64, 'base64'), mime: row.mime }; }
       else if (typeof row.url === 'string') result = await download(provider, text(row.url, 'output URL', 8192, true), job.controller.signal);
       else throw Error('Provider output requires an actual URL or base64 bytes');
       if (disposed || jobs.get(task.id) !== job || job.controller.signal.aborted) return;
+      if (isOfficial(task)) assertOfficial(task);
       if (!result.bytes.length || result.bytes.length > MAX_FILE) throw Error('Generated file exceeds 64 MiB or is empty'); const actual = mediaType(result.bytes);
       // Object stores may supply a generic binary Content-Type. Both explicit
       // output metadata and transport media types must still match actual bytes.
@@ -278,22 +308,26 @@ function createAssetService(options) {
     if (disposed || jobs.get(task.id) !== job || job.controller.signal.aborted) return; if (!task.artifacts.some(artifact => artifact.kind === task.kind)) throw Error('Provider returned no actual primary asset for this task kind'); task.status = 'completed'; task.progress = 100; task._phase = 'terminal'; if (task.cancelRequested) task.mayContinue = false; delete task.error; changed(task);
   }
   async function work(task) {
-    if (disposed || TERMINAL.has(task.status) || jobs.has(task.id)) return; const provider = providers[task.providerId];
-    if (!provider?.enabled || provider.authMode !== 'none' && !provider._key) { task.mayContinue = task._phase !== 'create_pending'; task.status = 'interrupted'; task.error = 'The task Provider is disabled, unavailable or missing its API key'; changed(task); return; }
+    if (disposed || TERMINAL.has(task.status) || jobs.has(task.id)) return; const official = isOfficial(task), provider = providers[task.providerId];
+    if (!official && (!provider?.enabled || provider.authMode !== 'none' && !provider._key)) { task.mayContinue = task._phase !== 'create_pending'; task.status = 'interrupted'; task.error = 'The task Provider is disabled, unavailable or missing its API key'; changed(task); return; }
     const job = { controller: new AbortController() }; jobs.set(task.id, job); let creating = !task._remoteId;
     try {
       if (creating && task._phase !== 'create_pending') { task.status = 'interrupted'; task.mayContinue = true; task.error = 'Create outcome is unknown; it will not be automatically submitted again'; changed(task); return; }
+      const executor = official ? assertOfficial(task, creating) : undefined;
       if (creating) { task._phase = 'create_inflight'; changed(task); }
-      const response = await call(provider, creating ? provider.adapter.create : provider.adapter.poll, task, job.controller.signal);
+      const response = official ? await executor.request(clone(task), creating, job.controller.signal) : await call(provider, creating ? provider.adapter.create : provider.adapter.poll, task, job.controller.signal);
       if (disposed || jobs.get(task.id) !== job || job.controller.signal.aborted) return;
-      const remote = select(response, provider.adapter.selectors.taskId); if (provider.adapter.responseMode !== 'outputs' && typeof remote === 'string' && remote && remote.length <= 2048 && !/[\u0000-\u001f]/.test(remote)) task._remoteId = remote;
-      let state = remoteState(provider, response); const progress = select(response, provider.adapter.selectors.progress), rawState = select(response, provider.adapter.selectors.status);
+      const protocol = official ? { adapter: { selectors: { taskId: 'id', status: 'status', progress: 'progress', outputs: 'outputs', error: 'error' }, statusMap: DEFAULT_MAP } } : provider;
+      const remote = select(response, protocol.adapter.selectors.taskId); if (protocol.adapter.responseMode !== 'outputs' && typeof remote === 'string' && remote && remote.length <= 2048 && !/[\u0000-\u001f]/.test(remote)) { if (official && task._remoteId && task._remoteId !== remote) throw Error('Official response changed the submitted remote task ID'); task._remoteId = remote; if (official) { task.officialTaskId = remote; changed(task); } }
+      if (official) assertOfficial(task);
+      if (official && !task._remoteId) { task.status = 'interrupted'; task.mayContinue = true; task._phase = 'terminal'; task.error = 'Official response has no usable remote task ID; create will not be submitted again'; changed(task); return; }
+      let state = remoteState(protocol, response); const progress = select(response, protocol.adapter.selectors.progress), rawState = select(response, protocol.adapter.selectors.status);
       // A configured synchronous response has no job ID/status. Actual bounded
       // output collection is still mandatory; pending/unknown states stay honest.
-      if (creating && provider.adapter.responseMode === 'outputs' && rawState == null) state = 'completed';
+      if (creating && protocol.adapter.responseMode === 'outputs' && rawState == null) state = 'completed';
       if (Number.isFinite(progress)) task.progress = Math.max(0, Math.min(100, progress));
-      if (state === 'completed') { task.status = task.cancelRequested ? 'cancel_requested' : 'running'; task._phase = 'download'; changed(task); await collect(task, provider, response, job); }
-      else if (state === 'failed') { task.status = 'failed'; task.mayContinue = false; task._phase = 'terminal'; const error = select(response, provider.adapter.selectors.error); task.error = scrub(typeof error === 'string' ? error : error?.message || 'Provider task failed'); changed(task); }
+      if (state === 'completed') { task.status = task.cancelRequested ? 'cancel_requested' : 'running'; task._phase = 'download'; changed(task); await collect(task, official ? officialDownloadProvider(task) : provider, response, job); }
+      else if (state === 'failed') { task.status = 'failed'; task.mayContinue = false; task._phase = 'terminal'; const error = select(response, protocol.adapter.selectors.error); task.error = scrub(typeof error === 'string' ? error : error?.message || 'Provider task failed'); changed(task); }
       else if (state === 'cancelled') { task.status = 'cancelled'; task._phase = 'terminal'; task.remoteCancellationConfirmed = true; task.mayContinue = false; changed(task); }
       else {
         if (!task._remoteId) { task.status = 'interrupted'; task.mayContinue = true; task.error = 'Provider response has no usable remote task ID; create will not be submitted again'; changed(task); }
@@ -301,13 +335,15 @@ function createAssetService(options) {
       }
     } catch (error) {
       if (disposed || jobs.get(task.id) !== job || job.controller.signal.aborted) return;
-      if (task._phase === 'download') { task.status = 'failed'; task.mayContinue = false; task._phase = 'terminal'; task.error = scrub(error.message); }
-      else if (creating) { const rejected = error.httpStatus || error.beforeRequest; task.status = rejected ? 'failed' : 'interrupted'; task.mayContinue = !rejected; task._phase = 'terminal'; task.error = scrub(error.message + (rejected ? '' : '; create outcome is unknown and will not be resubmitted')); }
+      if (official && error.officialUnavailable) { task.status = 'interrupted'; task.mayContinue = !!task._remoteId || task._phase !== 'create_pending'; task._phase = task._remoteId ? 'remote_poll' : 'terminal'; task.error = scrub(error.message); }
+      else if (task._phase === 'download') { task.status = 'failed'; task.mayContinue = false; task._phase = 'terminal'; task.error = scrub(error.message); }
+      else if (creating) { const rejected = official ? error.beforeRequest === true && error.submissionUnknown !== true : error.httpStatus || error.beforeRequest; task.status = rejected ? 'failed' : 'interrupted'; task.mayContinue = !rejected; task._phase = 'terminal'; task.error = scrub(error.message + (rejected ? '' : '; create outcome is unknown and will not be resubmitted')); }
       else { task.error = scrub(error.message); task._phase = 'remote_poll'; }
       changed(task);
     } finally { if (jobs.get(task.id) === job) { jobs.delete(task.id); if (!disposed && !TERMINAL.has(task.status) && task._remoteId) schedule(task, pollInterval); } }
   }
   function createTask(data) {
+    if (data.providerId === 'codely-official' || data.serviceSource === 'codely-official' || data.ownerBinding !== undefined || data._officialOwner !== undefined) throw Error('Official generation requires the internal account-bound entry point');
     const providerId = id(data.providerId, 'providerId'), workspaceKey = data.workspaceKey ? text(data.workspaceKey, 'workspaceKey', 2048, true) : '', prompt = scrub(text(data.prompt, 'prompt', 32000, true)), requestedModel = data.model == null ? undefined : scrub(text(data.model, 'model', 256)), parameters = scrub(boundedJson(data.parameters || {}, 16 * 1024 * 1024));
     if (!KINDS.has(data.kind)) throw Error('Provider does not support this task kind');
     const inputIds = data.inputIds === undefined ? [] : data.inputIds; if (!Array.isArray(inputIds) || inputIds.length > 8 || new Set(inputIds).size !== inputIds.length) throw Error('Reference inputIds must contain at most eight distinct owned IDs'); inputIds.forEach(value => id(value, 'inputId')); if (data.inputs !== undefined || data.inputPaths !== undefined) throw Error('Reference inputs must use registered inputIds, never client paths or metadata');
@@ -328,6 +364,29 @@ function createAssetService(options) {
     if (Object.keys(tasks).length >= 5000 || Object.values(tasks).filter(task => !TERMINAL.has(task.status)).length >= 16) throw Error('Task history/active-task limit reached');
     const now = new Date().toISOString(), task = { id: 't_' + crypto.randomUUID(), providerId: provider.id, kind: data.kind, prompt, model: requestedModel ?? scrub(text(provider.model, 'model', 256)), parameters, inputs: taskInputs, ...(workspaceKey ? { workspaceKey } : {}), status: 'queued', progress: 0, createdTime: now, updatedTime: now, discarded: false, artifacts: [], _phase: 'create_pending', ...(idempotency ? { _idempotency: idempotency } : {}) };
     task.input = { data: { prompt: task.prompt }, param: task.parameters }; tasks[task.id] = task; try { persist(); } catch (error) { delete tasks[task.id]; throw error; } schedule(task); return { task: publicTask(task) };
+  }
+  function createOfficialTask(data) {
+    assertRuntime();
+    if (data.kind !== 'image' || !['frontier_flare', 'frontier_sunburst'].includes(data.model)) throw Error('Official image model is not supported');
+    if (typeof data.ownerBinding !== 'string' || !/^[a-f0-9]{64}$/.test(data.ownerBinding)) throw Error('Official task requires a verified account binding');
+    if (data.inputs !== undefined || data.inputPaths !== undefined || data._remoteId !== undefined) throw Error('Official task inputs must use registered inputIds');
+    const workspaceKey = inputScope(data.workspaceKey), prompt = scrub(text(data.prompt, 'prompt', 32000, true)), parameters = scrub(boundedJson(data.parameters || {}, 16 * 1024 * 1024)), inputIds = data.inputIds || [];
+    if (!Array.isArray(inputIds) || inputIds.length > 16 || new Set(inputIds).size !== inputIds.length) throw Error('Official reference inputIds must contain at most sixteen distinct owned IDs');
+    const taskInputs = inputIds.map(inputId => { const input = inputFile(inputId, workspaceKey).input; if (input.kind !== 'image') throw Error('Official image generation requires image reference inputs'); return clone(publicInput(input)); });
+    if (taskInputs.reduce((sum, input) => sum + input.byteLength, 0) > MAX_FILE) throw Error('Reference inputs exceed the combined 64 MiB budget');
+    if (Object.keys(tasks).length >= 5000 || Object.values(tasks).filter(task => !TERMINAL.has(task.status)).length >= 16) throw Error('Task history/active-task limit reached');
+    const now = new Date().toISOString(), task = { id: 't_' + crypto.randomUUID(), providerId: 'codely-official', serviceSource: 'codely-official', kind: 'image', prompt, model: data.model, parameters, inputs: taskInputs, ...(workspaceKey ? { workspaceKey } : {}), status: 'queued', progress: 0, createdTime: now, updatedTime: now, discarded: false, artifacts: [], _phase: 'create_pending', _officialOwner: data.ownerBinding };
+    assertOfficial(task, true);
+    task.input = { data: { prompt: task.prompt }, param: task.parameters }; tasks[task.id] = task; try { persist(); } catch (error) { delete tasks[task.id]; throw error; } schedule(task); return { task: publicTask(task) };
+  }
+  function attachOfficialExecutor(executor) {
+    assertRuntime();
+    if (!executor || !['isAvailable', 'assertOwner', 'request', 'downloadProvider'].every(key => typeof executor[key] === 'function')) throw Error('Invalid internal official executor');
+    if (officialExecutor !== executor) for (const task of Object.values(tasks)) if (isOfficial(task) && !TERMINAL.has(task.status)) { stopJob(task.id); task.mayContinue = task._phase !== 'create_pending'; task.status = 'interrupted'; task.error = 'Official executor changed; an already submitted task may continue'; if (task._remoteId) task._phase = 'remote_poll'; changed(task); }
+    officialExecutor = executor;
+    for (const task of Object.values(tasks)) if (isOfficial(task) && task._remoteId && task.status === 'interrupted' && ['remote_poll', 'download', 'create_inflight'].includes(task._phase)) {
+      try { assertOfficial(task); task.status = task.cancelRequested ? 'cancel_requested' : 'running'; task._phase = 'remote_poll'; delete task.error; changed(task); schedule(task); } catch {}
+    }
   }
   async function cancelTask(data) {
     const task = taskById(data.taskId); if (TERMINAL.has(task.status)) return { task: publicTask(task), remoteCancellationConfirmed: task.remoteCancellationConfirmed === true, mayContinue: task.mayContinue === true };
@@ -356,7 +415,7 @@ function createAssetService(options) {
   function getArtifactPath(taskId, artifactId) { owner.assert(); const task = taskById(taskId); id(artifactId, 'artifactId'); const artifact = task.artifacts.find(row => row.id === artifactId); if (!artifact) throw Error('Owned artifact not found'); const file = checked(artifact._file, true); if (fs.statSync(file).size > MAX_FILE) throw Error('Owned artifact exceeds 64 MiB'); const bytes = fs.readFileSync(file); if (bytes.length !== artifact.byteLength || sha(bytes) !== artifact.sha256) throw Error('Owned artifact integrity check failed'); return { path: file, mime: artifact.mime, filename: artifact.filename, byteLength: artifact.byteLength, sha256: artifact.sha256 }; }
   providers = read('providers.json', {}); tasks = read('tasks.json', {}); inputs = read('inputs.json', {}); canvases = read('canvases.json', { default: read('canvas.json', { version: 1, nodes: [], edges: [] }) });
   for (const provider of Object.values(providers)) decrypt(provider._key);
-  for (const task of Object.values(tasks)) if (!TERMINAL.has(task.status)) { if (task._remoteId) schedule(task); else { task.status = 'interrupted'; task.mayContinue = task._phase !== 'create_pending'; task.error = 'Process restarted before a remote task ID was recorded; create is not resubmitted'; task._phase = 'terminal'; changed(task); } }
+  for (const task of Object.values(tasks)) if (!TERMINAL.has(task.status)) { if (task._remoteId) { if (isOfficial(task)) { task.status = 'interrupted'; task.mayContinue = true; task._phase = 'remote_poll'; task.error = 'Official task awaits its submitting account before querying its recorded remote ID'; changed(task); } else schedule(task); } else { task.status = 'interrupted'; task.mayContinue = task._phase !== 'create_pending'; task.error = 'Process restarted before a remote task ID was recorded; create is not resubmitted'; task._phase = 'terminal'; changed(task); } }
   async function dispatch(kind, data = {}) {
     if (disposed) throw Error('Asset service is closed'); owner.assert(); if (fatalError) throw Error('Asset runtime unavailable: ' + scrub(fatalError.message));
     switch (kind) {
@@ -379,7 +438,7 @@ function createAssetService(options) {
     }
   }
   function assertRuntime() { if (disposed || fatalError) throw Error('Asset runtime is unavailable'); owner.assert(); }
-  return { dispatch, getArtifactPath, registerInput, assertRuntime, inspectInputBytes(bytes) { assertRuntime(); if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length > MAX_FILE) throw Error('Reference file must contain 1 byte to 64 MiB'); return mediaType(bytes); }, getOwnedSnapshot() { assertRuntime(); return { tasks: Object.values(tasks).map(publicTask), inputs: Object.values(inputs).map(publicInput) }; }, getInputPath(inputId, workspaceKey) { assertRuntime(); const { input, file } = inputFile(inputId, workspaceKey); return { ...publicInput(input), path: file }; }, async close() { disposed = true; for (const timer of timers.values()) clearTimeout(timer); timers.clear(); for (const job of jobs.values()) job.controller.abort(); jobs.clear(); owner.release(); }, root: directory };
+  return { dispatch, getArtifactPath, registerInput, importOwnedArtifactInput, attachOfficialExecutor, createOfficialTask, assertRuntime, inspectInputBytes(bytes) { assertRuntime(); if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length > MAX_FILE) throw Error('Reference file must contain 1 byte to 64 MiB'); return mediaType(bytes); }, getOwnedSnapshot() { assertRuntime(); return { tasks: Object.values(tasks).map(publicTask), inputs: Object.values(inputs).map(publicInput) }; }, getInputPath(inputId, workspaceKey) { assertRuntime(); const { input, file } = inputFile(inputId, workspaceKey); return { ...publicInput(input), path: file }; }, async close() { disposed = true; for (const timer of timers.values()) clearTimeout(timer); timers.clear(); for (const job of jobs.values()) job.controller.abort(); jobs.clear(); owner.release(); }, root: directory };
   } catch (error) { owner.release(); throw error; }
 }
 module.exports = { createAssetService };

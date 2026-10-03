@@ -86,6 +86,54 @@ test('Local identity requires a successful local-session response and never crea
   const source=fs.readFileSync(path.join(root,'canvas-local-auth.js'),'utf8');assert.doesNotMatch(source,/document\.cookie|localStorage|\/auth\/(?:login|exchange|points)/);
 });
 
+test('Official Canvas credits project only verified numeric fields and unknown credits remain unavailable',async()=>{
+  const api=await import(pathToFileURL(path.join(root,'canvas-local-auth.js')).href);
+  const official={mode:'codely-official',user:{id:'owned',username:'Owned User',role:'user'},points:{points:500,total:'800',token:'never-render',nested:{access_token:'never-render'}}};
+  const overlay=api.validateCanvasOfficialOverlay(official);
+  assert.deepEqual(overlay.points,{points:500,total:'800'});
+  for(const points of [null,{},[],{points:NaN},{points:Infinity},{points:'1e8'},{points:'credential'}]){
+    const value=api.makeCanvasLocalAuthValue({user:{},session:{id:'local-session',scope:'gamecowork-canvas-local'},official:api.validateCanvasOfficialOverlay({...official,points})},false,()=>{},()=>{},()=>{});
+    assert.deepEqual(await value.updatePoints(),{available:false,mode:'codely-official',points:null});
+  }
+});
+
+test('Mounted Canvas accepts only parent invalidation, aborts replaced reads and removes its listeners',async()=>{
+  const source=fs.readFileSync(path.join(root,'canvas-local-auth.js'),'utf8'),effects=[],states=[],messages=new Map(),visibility=new Map(),requests=[],tokens=[];
+  const parent={},host={parent,location:{origin:'http://127.0.0.1:40123'},addEventListener:(type,fn)=>messages.set(type,fn),removeEventListener:type=>messages.delete(type)};
+  const doc={visibilityState:'visible',addEventListener:(type,fn)=>visibility.set(type,fn),removeEventListener:type=>visibility.delete(type)};
+  const React={useState:initial=>{const state={value:initial};states.push(state);return[initial,value=>state.value=value];},useRef:value=>({current:value}),useCallback:fn=>fn,useMemo:fn=>fn(),useEffect:fn=>effects.push(fn),createElement:()=>null};
+  const sandbox=vm.createContext({window:host,document:doc,AbortController,fetch:(url,options)=>new Promise(resolve=>requests.push({url,options,resolve}))});
+  vm.runInContext(source.replaceAll('export ','')+'\nthis.provider=CanvasLocalAuthProvider;',sandbox);
+  sandbox.provider({React,context:{Provider:{}},setRuntimeToken:value=>tokens.push(value),children:null});
+  const dispose=effects[0](),flush=()=>new Promise(resolve=>setImmediate(resolve));
+  const reply=async(index,official)=>{requests[index].resolve({ok:true,json:async()=>({mode:'local',user:{id:'gamecowork-local',username:'Local',role:'local'},session:{id:'00112233-4455-4677-8899-aabbccddeeff',scope:'gamecowork-canvas-local'},...(official?{official}:{})})});await flush();};
+  const changed=(extra={})=>messages.get('message')({source:parent,origin:host.location.origin,data:{type:'gamecowork:local-session-changed'},...extra});
+  changed({source:{}});changed({origin:'https://outside.invalid'});changed({data:{type:'cowork-token',token:'untrusted'}});assert.equal(requests.length,1);
+  changed({data:{type:'gamecowork:local-session-changed',user:{username:'spoofed'}}});assert.equal(requests.length,2);assert.equal(requests[0].options.signal.aborted,true);
+  await reply(1);assert.equal(states[0].value.user.username,'Local');await reply(0,{mode:'codely-official',user:{id:'old',username:'Stale',role:'user'},points:{points:1}});assert.equal(states[0].value.user.username,'Local');
+  visibility.get('visibilitychange')();assert.equal(requests.length,3);dispose();assert.equal(requests[2].options.signal.aborted,true);assert.equal(messages.size,0);assert.equal(visibility.size,0);assert.equal(tokens.at(-1),'');
+  await reply(2);assert.equal(tokens.at(-1),'');
+});
+
+test('Both maintained Canvas hosts and default sidebars notify already mounted local clients when their account changes',()=>{
+  const hostRoot=new URL('../../src/frontend/bundle/assets/',import.meta.url);
+  for(const name of ['index-BRxZ4eG7.js','index-DvRYaIVa.js']){
+    const source=fs.readFileSync(new URL(name,hostRoot),'utf8');
+    assert.match(source,/A\.current && h\(\{ type: "gamecowork:local-session-changed" \}\)/);
+    assert.match(source,/\}, \[r, f, h\]\)/);
+    assert.match(source,/p\.current\.contentWindow\.postMessage\(\{ type: "gamecowork:local-session-changed" \}, Di\)/);
+    assert.match(source,/\}, \[E, K\]\)/);
+  }
+  for(const name of ['RightSideBarPanel-JSPvAs5c.js','RightSideBarPanel-B2OWNNNX.js']){
+    const source=fs.readFileSync(new URL(name,hostRoot),'utf8');
+    const start=source.indexOf('const b = T.useRef(p);'),end=source.indexOf('    T.useEffect(() => {\n      var v, m;',start);
+    const expression=source.slice(start,end).replace(/,\s*$/,'')+'\n);';
+    const sent=[],effects=[];
+    vm.runInNewContext('(function(){'+expression+'})()', {T:{useRef:value=>({current:value}),useEffect:(fn,deps)=>effects.push({fn,deps})},p:null,t:'new-account',gamecoworkLocalCanvas:true,s:{current:true},a:{current:{contentWindow:{postMessage:(message,origin)=>sent.push({message,origin})}}},qa:'http://127.0.0.1:40123'});
+    effects[0].fn();assert.equal(effects[0].deps[0],'new-account');assert.equal(sent.length,1);assert.deepEqual(JSON.parse(JSON.stringify(sent[0])),{message:{type:'gamecowork:local-session-changed'},origin:'http://127.0.0.1:40123'});
+  }
+});
+
 test('API header boundary only forwards an existing document owner and never invents one',async()=>{
   const api=await import(pathToFileURL(path.join(root,'canvas-local-auth.js')).href+'?header-test='+crypto.randomUUID());
   const oldWindow=globalThis.window,oldStorage=globalThis.sessionStorage;

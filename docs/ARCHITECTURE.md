@@ -44,8 +44,9 @@ Core 的 `binary/out/`、Agent 的 `carved/` 和前端的带哈希 chunk 仍保�
 | 开发工具 | `git.rs`、`terminals.rs`、`lsp.rs`、`insight.rs` |
 | 编辑器发现、模板、许可边界与桥 | `editor_installations.rs`、`project_templates.rs`、`editor_licensing.rs`、`editor_bridge.rs` |
 | 安装列表持久缓存 | `editor_installations_cache.rs`（快照、刷新合并、失败保留与 SSE 更新） |
-| 生成资产导出 | `generated_assets.rs`（只接收 Core 确认的资产身份，复用工作区 mutation 边界） |
+| 生成资产导出 | `generated_assets.rs`（Core 确认身份；工作区导出复用 mutation，原客户端下载由原生文件选择后 create-new 写入并核验 SHA） |
 | 原资产客户端的本地接口 | `codely_http.rs`（同源 API、原 multipart 上传、可信媒体 Range、重启地址解析）、`codely_canvas.rs`（完整图、真实版本快照与浏览器编辑租约） |
+| Codely 账号宿主支持 | `codely_account.rs`（仅 Core 可调用的 Windows DPAPI vault、系统浏览器授权链接与打开结果） |
 | 串流布局与原生窗口 | `stream_layout.rs`、`native_window.rs`、`native_window.js` |
 | HTTP / WebView 装配 | `main.rs` |
 
@@ -59,9 +60,17 @@ Core 的 `Tma` 在真实 `session/new` 完成且 holder / 初始化 promise / me
 
 当前两代主界面的资产入口使用原 PG / QG / sq 容器，加载 `codely-generator/` 内原 Quick / History 与 `codely-canvas/` 内原 ReactFlow 客户端。它们来自实际 Codely 包明确引用的远端客户端，资源及精确适配补丁记录在各自 `source-ledger.json`；不是 EXE 内嵌服务端。此前 `gamecowork-asset-generation.js` 的自研界面仍保留为历史维护输入，但不再是当前入口。
 
-底层资产服务为 `src/core/binary/out/gamecowork-assets.js`，两份 Core 入口注册同一个 `generator/*` 服务；`gamecowork-codely-generator.js` 按原客户端 API 形状适配本应用历史、标签、偏好、上传与媒体。Rust 将请求集中到默认 Core owner。Provider 配置、任务、上传与实际媒体保存在 Core home 的 `generator/`，API Key 不回显；原模型与自定义 Provider 的显式映射尚未完成，未配置生成返回错误，官方积分与服务权限不伪造。
+底层资产服务为 `src/core/binary/out/gamecowork-assets.js`，两份 Core 入口注册同一个 `generator/*` 服务；`gamecowork-codely-generator.js` 按原客户端 API 形状适配本应用历史、标签、偏好、上传与媒体。Rust 将请求集中到默认 Core owner。Provider 配置、任务、上传与实际媒体保存在 Core home 的 `generator/`，API Key 不回显。官方图片通过独立的内部执行器接入同一缓存；其它未接通模型明确返回不可用，官方积分与权限仍来自真实服务回执。
 
-当前只有自有 `cpa-gpt-image-2` 条目通过 `local-models.js` 附加到原注册表，并由 `local-generation.js` 消费逐模型能力。`modelBindings` 持久引用实际Provider，Core每次提交重新核对enabled、认证、模型和适配器，客户端不能在生成payload中改选Provider。原45模型仍未映射；Quick的CPA绑定也不等同Canvas服务端schema已实现。实际PNG宽高写入artifact元数据，保留请求参数与真实结果的区别。
+`gamecowork-codely-account.js` 是两份 Core 入口共用的账号 broker，承接原登录 RPC、设备授权轮询、授权码交换、刷新、组织/订阅/额度查询与退出，并提供私有图片与推理凭据能力。主账号及站点令牌保留在 Core 内，持久记录经 Rust 的 Windows DPAPI vault 密封后写入本应用目录；页面只能得到受限的展示字段。账号与生成请求的时限覆盖完整响应体读取，取消、退出和新会话通过会话代次隔离旧请求；退出标记阻止旧密封记录在重启后恢复。系统浏览器链接由 Core 请求宿主打开，打开失败和登录失败必须保留错误回执，不能转成成功状态。
+
+官方账号有效时，broker 在服务端完成 Quick 的 SSO bootstrap 和 Canvas 的会话交换，向本地适配层提供官方身份、付费状态和额度数据。Quick/Canvas 页面不接收这些站点令牌，登录/退出后的身份需要重新读取；未登录时明确使用本地身份。正式 app 已原位更新；本人真实设备授权、Quick 付费读取、单张官方 Pro PNG 生成与单个文字模型短请求均已验收。图片核验实际字节与 SHA，文字核验 GLM-5.3-FLASH 的实际流式最终帧；取得真实目录不等于全部目录模型逐项实测。自动门禁继续使用隔离 fixture；扣额、结果尺寸、请求范围与包来源统一见 [状态文档](../RESTORE_STATUS.md)，Canvas 生成 schema 与组织协作仍待接入。
+
+`gamecowork-codely-official-generator.js` 为原 Quick 的 `frontier_flare` / `frontier_sunburst` 普通图片保留原参数语义。Core 读取官方 Pro 状态与实际报价，验证当前工作区最多 16 张已登记参考图及组合 64 MiB 预算，再上传冻结的真实字节并提交官方任务。账号绑定与远端任务 ID 留在私有任务字段，公开历史可展示真实 `officialTaskId`；未知创建结果不重发，仅已知 ID 且账号匹配时恢复查询。未知状态和预览 URL 不视为完成，实际产物沿已有媒体、MIME、SHA、大小与原子落盘检查进入历史和下载。官方媒体下载不带账号 Cookie、Bearer 或 CSRF，继续限制 HTTPS、公网目标和重定向；显式隔离回环 fixture 仅用于测试。分层图片和其它原模型不由这两个入口的接线推定支持。
+
+自有 `cpa-gpt-image-2` 条目仍通过 `local-models.js` 附加到原注册表，与官方入口共同由 `local-generation.js` 消费逐模型能力。`modelBindings` 持久引用实际 Provider，Core 每次提交重新核对 enabled、认证、模型和适配器，客户端不能在生成 payload 中改选 Provider。实际 PNG 宽高写入 artifact 元数据，保留请求参数与真实结果的区别；这些 Quick 能力不替代 Canvas 服务端 schema。
+
+`gamecowork-official-llm.js` 和两代原模型菜单共用的 `assets/gamecowork-official-models.js` 承接官方编程权益。用户显式点击“启用 Codely 官方 · Pro 模型”后，Core 核实账号及当前组织，取得仅在内存保存的 CLI 推理 Key 并读取真实模型目录；登录、额度读取和展开菜单不获取该 Key。选择的官方模型与本地 CPA 配置并存，切换不覆盖已有 Provider 设置。Agent 只获得绑定工作区、会话、模型及账号/组织代次的可撤销本机能力，真实 Key 不进入 Agent、前端、配置或日志。Core 固定官方上游，验证所选模型对应的协议及最终帧；退出、切换组织、关闭会话或失去工作区所有权会撤销相关能力。
 
 原画布图和版本保存在本应用 data 的 `codely-canvas/`。原节点数据、边、视图和未知字段保留；本机 runtime session 与原客户端浏览器编辑租约分别校验。上传绑定实际已保存画布及有效租约，不把原 `workspace_hash` 当文件权限。媒体读取只接受已登记的 input 或 task / artifact 身份；Rust 校验文件路径、大小和 SHA 后直接返回二进制与 Range，不让大文件经过 Core 的 16 MiB stdio 帧。宿主端口变化时，私有 Core helper 校验旧 URL 的实际身份、作用域及文件 SHA，只改读响应中的完整 URL 值，不改原保存图、文本子串或外部链接。导出沿用 `mutations.rs` 的工作区写入边界。
 

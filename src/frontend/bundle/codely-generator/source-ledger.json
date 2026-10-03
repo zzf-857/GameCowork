@@ -16,22 +16,27 @@
   ],
   "staticBase": "/codely-generator",
   "apiBase": "/api/codely-generator",
-  "authentication": "Original UI consumes an explicitly identified own GameCowork local user. Official token, subscription and credit state remain absent/unknown; no official account or entitlements are fabricated",
+  "authentication": "Original UI consumes an explicit GameCowork local identity or broker-relayed official identity, paid status and credit display fields. Official credentials remain private to Core; no account or entitlement is fabricated",
   "localAdapters": [
     {
       "path": "local-identity.js",
-      "role": "Own local-session identity and lifecycle only; not original Codely source",
-      "sha256": "939df8842d6b02085934c4f5d0a0b19a90ce544500be224665ca9a7809d7911f"
+      "role": "Own local-session and broker-relayed official identity and entitlement display boundary; no official credential is supplied",
+      "sha256": "8c8fc006802b5f54f314f2aecd77a4b5c0c003189e0c997297ad528cae2f31f4"
     },
     {
       "path": "local-generation.js",
-      "role": "Own local generation readiness and labels; does not create platform entitlements or modify original model builders",
-      "sha256": "0315ed5c553336699373db22620b1e518f5a9bb5718ddaf79bf00d61a4f8ccf6"
+      "role": "Owned per-model CPA and verified official image-service readiness; no invented platform rights or original builder changes",
+      "sha256": "a1744f7e74d904853cef1ec236e8013faf4133f0dad129fc7c51398949763251"
     },
     {
       "path": "local-models.js",
       "role": "Explicitly named CPA GPT Image 2 extension; preserves all original model descriptors and parameter components",
       "sha256": "bbdcf4cdfa4d60900e7715804a3632a850b6a8d52197572570cd2e80b079d9a9"
+    },
+    {
+      "path": "local-download.js",
+      "role": "Own native save results and errors for original Quick/History/Canvas messages; no browser or remote fallback",
+      "sha256": "6e2f7d82157aa563b935486ba7171374c755e521d97347ef156ef3caab033258"
     }
   ],
   "hostAdapter": {
@@ -51,7 +56,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "e1b6cff816cd4b8e36457b2d50437b880b122edb535348d677d0312066febfe0",
-        "currentSha256": "3550817782421dbe72e42bde148eef192c02add587892f5cee6cf0e0f2d92724",
+        "currentSha256": "908d33ad90cb9f02ec727c1976873ce64a9226be2e162442a650eecd58bed547",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -436,6 +441,70 @@
             "charOffset": 1834753,
             "before": "export {\n",
             "after": "export {\n  gamecoworkUsesLocalAssetPage,\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 1404152,
+            "before": "            const { url: x, filename: E } = b;\n",
+            "after": "            const { url: x, filename: E } = b;\n            if (gamecoworkUsesLocalAssetPage()) {\n              void downloadGameCoworkMedia(x, E, gamecoworkNotifyDownload);\n              return;\n            }\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 1419435,
+            "before": "        const _e = await G2(s, ve.url);\n",
+            "after": "        if (gamecoworkUsesLocalAssetPage()) {\n          await downloadGameCoworkMedia(ve.url, ve.filename, gamecoworkNotifyDownload);\n          return;\n        }\n        const _e = await G2(s, ve.url);\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 0,
+            "before": "",
+            "after": "import { downloadGameCoworkMedia } from \"../codely-generator/local-download.js\";\nconst gamecoworkNotifyDownload = (level, message) => gamecoworkHistoryToast[level](message, { position: \"top-right\", duration: 5000 });\n"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1405095,
+            "byteOffsetBeforePatch": 1406834,
+            "before": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const w = g.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        A.current && h({ type: \"gamecowork:local-session-changed\" });\n        return;\n      }\n      const w = g.current;"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1405381,
+            "byteOffsetBeforePatch": 1407120,
+            "before": "    }, [f, h]),\n    d.useEffect(() => {\n      A.current && h",
+            "after": "    }, [r, f, h]),\n    d.useEffect(() => {\n      A.current && h"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1601782,
+            "byteOffsetBeforePatch": 1603749,
+            "before": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const S = G.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        if (m.current && p.current?.contentWindow)\n          p.current.contentWindow.postMessage({ type: \"gamecowork:local-session-changed\" }, Di);\n        return;\n      }\n      const S = G.current;"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1602402,
+            "byteOffsetBeforePatch": 1604369,
+            "before": "    }, [K]),\n    d.useEffect(() => {\n      var S, C;",
+            "after": "    }, [E, K]),\n    d.useEffect(() => {\n      var S, C;"
+          },
+          {
+            "before": "",
+            "after": "import { officialProgrammingMenu } from \"./gamecowork-official-models.js\";\n",
+            "reason": "Import the owned explicit official programming model-menu action",
+            "charOffset": 0
+          },
+          {
+            "before": "        he\n      );",
+            "after": "        officialProgrammingMenu(he, n, Ba, () => s(f))\n      );",
+            "reason": "Keep original model groups and append only the explicit official Pro enable action",
+            "charOffset": 295885
+          },
+          {
+            "before": "    }, [ne, t, z, ye, se == null ? void 0 : se.title, r, s, f, o, Ae, ce, W, H]),",
+            "after": "    }, [ne, t, z, ye, se == null ? void 0 : se.title, r, s, f, o, Ae, ce, W, H, n]),",
+            "reason": "Track the actual original messenger in the model-menu memo dependencies",
+            "charOffset": 295949
           }
         ]
       },
@@ -453,7 +522,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "4db18044d56bd18d11d5a37e5d5a8ce85e191468dc9fd35bf1143b4eae19c4a2",
-        "currentSha256": "4e4da11b94c1c7b06c7cb055d3a69252a3ed9f12f9aee0521868242d31351653",
+        "currentSha256": "47d15b9e07741ae664d63b851ec327fcd8e9206fc66210b3a873f913cbce745f",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -838,6 +907,70 @@
             "charOffset": 1833411,
             "before": "export {\n",
             "after": "export {\n  gamecoworkUsesLocalAssetPage,\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 1402779,
+            "before": "            const { url: x, filename: E } = B;\n",
+            "after": "            const { url: x, filename: E } = B;\n            if (gamecoworkUsesLocalAssetPage()) {\n              void downloadGameCoworkMedia(x, E, gamecoworkNotifyDownload);\n              return;\n            }\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 1418059,
+            "before": "        const Ee = await W2(s, me.url);\n",
+            "after": "        if (gamecoworkUsesLocalAssetPage()) {\n          await downloadGameCoworkMedia(me.url, me.filename, gamecoworkNotifyDownload);\n          return;\n        }\n        const Ee = await W2(s, me.url);\n"
+          },
+          {
+            "reason": "Preserve original download messages with verified native results and no local fallback",
+            "charOffset": 0,
+            "before": "",
+            "after": "import { downloadGameCoworkMedia } from \"../codely-generator/local-download.js\";\nconst gamecoworkNotifyDownload = (level, message) => gamecoworkHistoryToast[level](message, { position: \"top-right\", duration: 5000 });\n"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1403722,
+            "byteOffsetBeforePatch": 1405461,
+            "before": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const w = g.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        A.current && h({ type: \"gamecowork:local-session-changed\" });\n        return;\n      }\n      const w = g.current;"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1404008,
+            "byteOffsetBeforePatch": 1405747,
+            "before": "    }, [f, h]),\n    d.useEffect(() => {\n      A.current && h",
+            "after": "    }, [r, f, h]),\n    d.useEffect(() => {\n      A.current && h"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1600448,
+            "byteOffsetBeforePatch": 1602415,
+            "before": "      if (gamecoworkUsesLocalAssetPage()) return;\n      const S = z.current;",
+            "after": "      if (gamecoworkUsesLocalAssetPage()) {\n        if (m.current && p.current?.contentWindow)\n          p.current.contentWindow.postMessage({ type: \"gamecowork:local-session-changed\" }, Di);\n        return;\n      }\n      const S = z.current;"
+          },
+          {
+            "reason": "Refresh mounted local Canvas identity when the account session changes; send invalidation only",
+            "charOffset": 1601068,
+            "byteOffsetBeforePatch": 1603035,
+            "before": "    }, [K]),\n    d.useEffect(() => {\n      var S, C;",
+            "after": "    }, [E, K]),\n    d.useEffect(() => {\n      var S, C;"
+          },
+          {
+            "before": "",
+            "after": "import { officialProgrammingMenu } from \"./gamecowork-official-models.js\";\n",
+            "reason": "Import the owned explicit official programming model-menu action",
+            "charOffset": 0
+          },
+          {
+            "before": "        Be\n      );",
+            "after": "        officialProgrammingMenu(Be, n, Ba, () => s(f))\n      );",
+            "reason": "Keep original model groups and append only the explicit official Pro enable action",
+            "charOffset": 296598
+          },
+          {
+            "before": "    }, [N, t, v, W, F == null ? void 0 : F.title, r, s, f, o, Z, ie, Ae, re]),",
+            "after": "    }, [N, t, v, W, F == null ? void 0 : F.title, r, s, f, o, Z, ie, Ae, re, n]),",
+            "reason": "Track the actual original messenger in the model-menu memo dependencies",
+            "charOffset": 296662
           }
         ]
       },
@@ -848,7 +981,7 @@
           "sha256": "0eb9fe1739b9a66213075dbc34c1568a5d749d24dd032751db2f8217b5d44fc8"
         },
         "beforeSha256": "d809b3060cf52b86d9abf3adb201269b8578654cf65a6d0380471b8a083580bd",
-        "currentSha256": "1863d38e1dc16cf0e1109783787241fd364b17bda741eac7e8219bb3eb546c66",
+        "currentSha256": "578ceb37ec530ab858ffd310fdd1b589073259ca01ca1b61b522d85200a50c25",
         "patches": [
           {
             "reason": "Use the same native Canvas mode boundary as the retained host entry points",
@@ -921,6 +1054,32 @@
             "charOffset": 1540186,
             "before": "m.postMessage({ type: \"gamecowork:workspaces\", workspaces: r }, qa);",
             "after": "m.postMessage({ type: \"codely:workspaces\", workspaces: r }, qa);"
+          },
+          {
+            "reason": "Preserve original sidebar Canvas download messages with verified native results",
+            "charOffset": 1538740,
+            "before": "              const { url: E, filename: S } = y;\n",
+            "after": "              const { url: E, filename: S } = y;\n              if (gamecoworkLocalCanvas) {\n                void downloadGameCoworkMedia(E, S, gamecoworkNotifyDownload);\n                return;\n              }\n"
+          },
+          {
+            "reason": "Preserve original sidebar Canvas download messages with verified native results",
+            "charOffset": 0,
+            "before": "",
+            "after": "import { downloadGameCoworkMedia } from \"../codely-generator/local-download.js\";\nimport { eQ as gamecoworkDownloadToast } from \"./registry-BL-NPVNy.js\";\nconst gamecoworkNotifyDownload = (level, message) => gamecoworkDownloadToast[level](message, { position: \"top-right\", duration: 5000 });\n"
+          },
+          {
+            "reason": "Refresh the existing sidebar Canvas on account changes without forwarding credentials",
+            "charOffset": 1539761,
+            "byteOffsetBeforePatch": 1542835,
+            "before": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) return;\n      var m, g, y, x;",
+            "after": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) {\n        if (s.current && a.current?.contentWindow)\n          a.current.contentWindow.postMessage({ type: \"gamecowork:local-session-changed\" }, qa);\n        return;\n      }\n      var m, g, y, x;"
+          },
+          {
+            "reason": "Refresh the existing sidebar Canvas on account changes without forwarding credentials",
+            "charOffset": 1540418,
+            "byteOffsetBeforePatch": 1543492,
+            "before": "    }, [p]),\n    T.useEffect(() => {\n      var v, m;",
+            "after": "    }, [t, p]),\n    T.useEffect(() => {\n      var v, m;"
           }
         ]
       },
@@ -931,7 +1090,7 @@
           "sha256": "8a189ec855741f9f21be5a6192d0a79f5c84ac499dea04f61e4d1a10aea42601"
         },
         "beforeSha256": "ef7fd65a71b83b9cff1f33fa47598130db2b7edbb61888381501532a13dbcf4e",
-        "currentSha256": "102ba3ff448f26a3150acde2053816f48a0445e2721c77904d2d3d21bd4145cb",
+        "currentSha256": "3be9eb8edd6fe942eae44540157fa4815577180dd24eedb753e2de166fc34b37",
         "patches": [
           {
             "reason": "Use the same native Canvas mode boundary as the retained host entry points",
@@ -1004,6 +1163,32 @@
             "charOffset": 1540186,
             "before": "m.postMessage({ type: \"gamecowork:workspaces\", workspaces: r }, qa);",
             "after": "m.postMessage({ type: \"codely:workspaces\", workspaces: r }, qa);"
+          },
+          {
+            "reason": "Preserve original sidebar Canvas download messages with verified native results",
+            "charOffset": 1538740,
+            "before": "              const { url: E, filename: S } = y;\n",
+            "after": "              const { url: E, filename: S } = y;\n              if (gamecoworkLocalCanvas) {\n                void downloadGameCoworkMedia(E, S, gamecoworkNotifyDownload);\n                return;\n              }\n"
+          },
+          {
+            "reason": "Preserve original sidebar Canvas download messages with verified native results",
+            "charOffset": 0,
+            "before": "",
+            "after": "import { downloadGameCoworkMedia } from \"../codely-generator/local-download.js\";\nimport { eQ as gamecoworkDownloadToast } from \"./registry-CHHSpXp3.js\";\nconst gamecoworkNotifyDownload = (level, message) => gamecoworkDownloadToast[level](message, { position: \"top-right\", duration: 5000 });\n"
+          },
+          {
+            "reason": "Refresh the existing sidebar Canvas on account changes without forwarding credentials",
+            "charOffset": 1539761,
+            "byteOffsetBeforePatch": 1542835,
+            "before": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) return;\n      var m, g, y, x;",
+            "after": "    T.useEffect(() => {\n      if (gamecoworkLocalCanvas) {\n        if (s.current && a.current?.contentWindow)\n          a.current.contentWindow.postMessage({ type: \"gamecowork:local-session-changed\" }, qa);\n        return;\n      }\n      var m, g, y, x;"
+          },
+          {
+            "reason": "Refresh the existing sidebar Canvas on account changes without forwarding credentials",
+            "charOffset": 1540418,
+            "byteOffsetBeforePatch": 1543492,
+            "before": "    }, [p]),\n    T.useEffect(() => {\n      var v, m;",
+            "after": "    }, [t, p]),\n    T.useEffect(() => {\n      var v, m;"
           }
         ]
       }

@@ -78,6 +78,7 @@ const mock=await startMockProvider({ toolPlans: { GCW_E2E_MCP_DENIED:{toolName:"
   { toolName: "read_file", arguments: { absolute_path: readFile }, verify: text => text.includes("GCW_LOCAL_SKILL_FILE_SENTINEL") }
 ] } } });
 const checks = [];
+const settingsReadRetries = [];
 const browserErrors = [];
 const blocked = [];
 const rpcObserved = [];
@@ -154,6 +155,27 @@ async function poll(callback, description, timeout = 30000) {
   const end = Date.now() + timeout;
   while (!await callback()) {
     assert.ok(Date.now() < end, "Timed out waiting for " + description);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+}
+async function pollSettings(settingsFile, predicate, description, timeout = 30000) {
+  const end = Date.now() + timeout;
+  let last;
+  while (true) {
+    // The real CLI writes this file in place. A cross-process read may observe
+    // truncation before the replacement JSON is complete; only parsing retries.
+    // Filesystem errors and predicate/assertion failures must still fail at once.
+    const bytes = fs.readFileSync(settingsFile);
+    last = { bytes: bytes.length, sha256: createHash("sha256").update(bytes).digest("hex") };
+    let config, parsed = false;
+    try { config = JSON.parse(bytes.toString("utf8")); parsed = true; }
+    catch (error) {
+      if (!(error instanceof SyntaxError)) throw error;
+      last.parseError = error.message;
+      settingsReadRetries.push({ file: path.relative(root, settingsFile), description, ...last });
+    }
+    if (parsed && await predicate(config)) return config;
+    assert.ok(Date.now() < end, `Timed out waiting for ${description}; ${settingsFile}; last settings read: ${JSON.stringify(last)}`);
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
@@ -374,8 +396,9 @@ async function editProjectSkill(){
 async function toggle(kind,name,enabled,global=false){
  const control=row(kind,name).getByRole("switch");await control.click();
  await poll(async()=>await control.isChecked()===enabled,"capability toggle UI");
- await poll(()=>{
- const settingsFile=global?path.join(root,"data/cli-state/settings.json"):path.join(workspaces.a,".gamecowork-cli/settings.json");if(!fs.existsSync(settingsFile))return false;const config=JSON.parse(fs.readFileSync(settingsFile,"utf8"));
+ const settingsFile=global?path.join(root,"data/cli-state/settings.json"):path.join(workspaces.a,".gamecowork-cli/settings.json");
+ await poll(()=>fs.existsSync(settingsFile),"capability settings file exists");
+ await pollSettings(settingsFile,config=>{
  const disabled=kind==="skill"?config.skills?.disabled:config.disabledExtensions;
  return !disabled?.includes(name)===enabled;
  },"capability toggle persisted");
@@ -449,7 +472,8 @@ async function mcpPrompt(marker,name){
 }
 async function verifyMcpUI(){
  await capabilityPage("mcp");await mcpDialog(mcpName);
- const settings=()=>JSON.parse(fs.readFileSync(path.join(workspaces.a,".gamecowork-cli/settings.json"),"utf8"));
+ const settingsFile=path.join(workspaces.a,".gamecowork-cli/settings.json");
+ const settings=()=>JSON.parse(fs.readFileSync(settingsFile,"utf8"));
  if(stdioMcp){assert.equal(settings().mcpServers[mcpName].command,mcp.command);assert.deepEqual(settings().mcpServers[mcpName].args,mcp.args);assert.equal(settings().mcpServers[mcpName].env.GAMECOWORK_STDIO_MCP_SENTINEL,"GCW_STDIO_ENV_MARKER");}
  else assert.equal(settings().mcpServers[mcpName].httpUrl,mcp.url);
  if(!(await state()).models.length){assert.equal(mcp.requests.length,0);checks.push("MCP configuration persists before model setup and accurately defers connection");}
@@ -468,12 +492,12 @@ async function verifyMcpUI(){
  checks.push(`Real CLI initializes the owned ${stdioMcp?"stdio":"HTTP"} MCP and returns the actual approved echo tool result`);
  if(stdioMcp){assert.ok(mcp.records.some(record=>record.event==="started"&&record.marker==="GCW_STDIO_ENV_MARKER"));assert.ok(mcp.livePids.length);checks.push("Real stdio subprocess preserves a spaced executable/script argv and configured environment");}
  await capabilityPage("mcp");await row("mcp",mcpName).getByRole("switch").click();
- await poll(()=>settings().mcpServers[mcpName].enabled===false,"MCP disable persisted");
+ await pollSettings(settingsFile,config=>config.mcpServers[mcpName].enabled===false,"MCP disable persisted");
  if(stdioMcp){await poll(()=>mcp.livePids.length===0,"Disabling closes the exact owned stdio process");checks.push("Disabling the server releases its actual stdio subprocess");}
- await row("mcp",mcpName).getByRole("switch").click();await poll(()=>settings().mcpServers[mcpName].enabled!==false,"MCP enable persisted");
+ await row("mcp",mcpName).getByRole("switch").click();await pollSettings(settingsFile,config=>config.mcpServers[mcpName].enabled!==false,"MCP enable persisted");
  checks.push("MCP enable/disable changes real server config and reconnects through the actual Agent");
- await mcpDialog("owned-renamed",true);await poll(()=>!settings().mcpServers[mcpName]&&(stdioMcp?settings().mcpServers["owned-renamed"]?.command===mcp.command:settings().mcpServers["owned-renamed"]?.httpUrl===mcp.url),"MCP real rename");
- if(stdioMcp)assert.deepEqual(settings().mcpServers["owned-renamed"].args,mcp.args);
+ await mcpDialog("owned-renamed",true);const renamedSettings=await pollSettings(settingsFile,config=>!config.mcpServers[mcpName]&&(stdioMcp?config.mcpServers["owned-renamed"]?.command===mcp.command:config.mcpServers["owned-renamed"]?.httpUrl===mcp.url),"MCP real rename");
+ if(stdioMcp)assert.deepEqual(renamedSettings.mcpServers["owned-renamed"].args,mcp.args);
  assert.equal(await row("mcp",mcpName).count(),0);checks.push("Editing MCP name replaces the intended configuration instead of leaving two servers");await snapshot("11-mcp-renamed");
  await context.close();context=null;await stopShell();if(stdioMcp){await poll(()=>mcp.livePids.length===0,"Host shutdown releases all its owned stdio children");checks.push("Host shutdown reclaims actual stdio process lifetime");}origin=await launch();await startBrowser("mcp-restart-profile");await gui.getByRole("button",{name:"Workspace A",exact:true}).first().click();
  await capabilityPage("mcp");await row("mcp","owned-renamed").waitFor({state:"visible"});await mcpPrompt("GCW_E2E_MCP_RESTART","12-mcp-restarted");checks.push("Fresh Core/CLI and browser recover MCP configuration and execute its real tool again");
@@ -560,4 +584,4 @@ try{
  assert.deepEqual(browserErrors,[]);assert.deepEqual(guardNetworkAttempts(),[]);assert.deepEqual([...new Set(blocked)],[]);
  console.log(JSON.stringify({status:"passed",root,checks,browserErrors,rpcErrors},null,2));
 }catch(error){failure={message:error.message,stack:error.stack};process.exitCode=1;console.error(error);if(gui)await snapshot("failure").catch(()=>{});}
-finally{if(gui) mcpFormTrace.push(...await gui.evaluate(()=>window.__gamecoworkMcpFocusTrace||[]).catch(()=>[]));await context?.close();await stopShell();await mock.close();await mcp.close();fs.writeFileSync(path.join(root,"mcp-form-trace.json"),JSON.stringify({events:mcpFormTrace,configRequests:mcpConfigRequests},null,2));fs.writeFileSync(path.join(root,"shell.log"),shellLog);fs.writeFileSync(path.join(root,"custom-report.json"),JSON.stringify({checks,failure,browserErrors,rpcErrors,rpcObserved,mcpConfigRequests,providerRequests:mock.requests,mcpRequests:mcp.requests,guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],previous,packaged,binary,coreDir,frontendDir,agent,agentGuarded:manifest.testGuardIncluded,packagedAgentSourceVerified,browserMode:"headless Chromium actual Rust/Core/frontend; native Wry geometry is not exercised"},null,2));}
+finally{if(gui) mcpFormTrace.push(...await gui.evaluate(()=>window.__gamecoworkMcpFocusTrace||[]).catch(()=>[]));await context?.close();await stopShell();await mock.close();await mcp.close();fs.writeFileSync(path.join(root,"mcp-form-trace.json"),JSON.stringify({events:mcpFormTrace,configRequests:mcpConfigRequests},null,2));fs.writeFileSync(path.join(root,"shell.log"),shellLog);fs.writeFileSync(path.join(root,"custom-report.json"),JSON.stringify({checks,failure,browserErrors,rpcErrors,rpcObserved,mcpConfigRequests,settingsReadRetries,providerRequests:mock.requests,mcpRequests:mcp.requests,guardNetworkAttempts:guardNetworkAttempts(),blockedExternalOrigins:[...new Set(blocked)],previous,packaged,binary,coreDir,frontendDir,agent,agentGuarded:manifest.testGuardIncluded,packagedAgentSourceVerified,browserMode:"headless Chromium actual Rust/Core/frontend; native Wry geometry is not exercised"},null,2));}

@@ -2,12 +2,17 @@
 // subscription and credit fields. A global true value does not establish that
 // any particular one of the original model descriptors has a local mapping.
 import { cpaImageModelId, cpaImageUpstreamModel } from './local-models.js';
+export const officialImageModelIds = Object.freeze(['frontier_flare','frontier_sunburst']);
 
 export function gamecoworkGenerationReadiness(reply) {
-  const value = reply?.mode === 'gamecowork-local' ? reply?.capabilities?.localGeneration : undefined;
-  const result = { mode: 'gamecowork-local', localGeneration: typeof value === 'boolean' ? value : null,
+  // Official identity mode shares the same local service capabilities; CPA
+  // generation readiness must not regress when the official session is live.
+  const mode = reply?.mode === 'gamecowork-local' || reply?.mode === 'codely-official' ? reply.mode : undefined;
+  const value = mode ? reply?.capabilities?.localGeneration : undefined;
+  const result = { mode: mode || 'gamecowork-local', localGeneration: typeof value === 'boolean' ? value : null,
     state: value === false ? 'unconfigured' : 'unknown' };
-  const models = reply?.mode === 'gamecowork-local' ? reply?.capabilities?.models : undefined;
+  if (mode === 'codely-official' && reply?.capabilities?.officialGeneration === true) result.officialGeneration = true;
+  const models = mode ? reply?.capabilities?.models : undefined;
   if (models && typeof models === 'object' && !Array.isArray(models)) {
     result.models = {};
     const model = models[cpaImageModelId];
@@ -16,18 +21,29 @@ export function gamecoworkGenerationReadiness(reply) {
         /^[A-Za-z0-9_-]{1,100}$/.test(model.providerId)) {
       result.models[cpaImageModelId] = Object.freeze({ available: true, providerId: model.providerId, model: cpaImageUpstreamModel });
     }
+    if (result.officialGeneration === true) for (const modelId of officialImageModelIds) {
+      const official=models[modelId];
+      if (Object.hasOwn(models,modelId) && official?.available === true && official.service === 'codely-official' && official.model === modelId && official.kind === 'image') {
+        result.models[modelId]=Object.freeze({available:true,service:'codely-official',model:modelId,kind:'image'});
+      }
+    }
     Object.freeze(result.models);
   }
   return result;
 }
 
 export function gamecoworkGenerationPresentation(readiness, language = 'zh', modelId) {
-  const model = modelId === cpaImageModelId ? readiness?.models?.[cpaImageModelId] : undefined;
-  if (readiness?.mode === 'gamecowork-local' && readiness.localGeneration === true && model?.available === true &&
+  const model = readiness?.models?.[modelId];
+  const known = readiness?.mode === 'gamecowork-local' || readiness?.mode === 'codely-official';
+  if (readiness?.mode === 'codely-official' && readiness.officialGeneration === true && officialImageModelIds.includes(modelId) &&
+      model?.available === true && model.service === 'codely-official' && model.model === modelId && model.kind === 'image') {
+    return { blocked:false,label:'',message:'' };
+  }
+  if (known && readiness.localGeneration === true && model?.available === true &&
       model.model === cpaImageUpstreamModel && typeof model.providerId === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(model.providerId)) {
     return { blocked: false, label: '', message: '' };
   }
-  const unconfigured = readiness?.mode === 'gamecowork-local' &&
+  const unconfigured = known &&
     (readiness.localGeneration === false && readiness.state === 'unconfigured' || !!readiness.models);
   const english = String(language).startsWith('en');
   return { blocked: true,

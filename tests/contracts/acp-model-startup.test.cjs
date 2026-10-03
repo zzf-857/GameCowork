@@ -14,6 +14,7 @@ for(const file of ['index.js','index.beautified.js']) {
       acpSessionRegistry:new Map(),acpInitializing:new Map(),defaultMemoryRWMode:'RW',
       restartAcpProcessForSession:async(id,entry,options)=>{restarts.push({id,entry,options});return {restarted:true,options};}};
     const ctx=vm.createContext({process:{env:{GAMECOWORK_LOCAL_PROVIDER_MODE:local?'1':''}},console:{debug:()=>{}},Date,
+      require:name=>{assert.equal(name,'./gamecowork-official-llm.js');return{selectedModel:()=>null};},
       pV:config=>config?.selectedModelByRole?.chat,Iya:async(t,value)=>{syncs++;t.activeCustomModel={id:value.extras.customModelId};},
       oV:()=>[{id:'fixture-id',model:'fixture-model',displayName:model.title,providerId:'own-provider',wireApi:'chat',roles:['model']}],
       Cfi:()=> 'chat',wUt:t=>t.activeCustomModel?{credential:'fixture'}:{},lUt:()=>({}),T9e:()=>undefined,vfi:()=>true,

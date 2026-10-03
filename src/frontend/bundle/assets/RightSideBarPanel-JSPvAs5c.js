@@ -1,3 +1,6 @@
+import { downloadGameCoworkMedia } from "../codely-generator/local-download.js";
+import { eQ as gamecoworkDownloadToast } from "./registry-BL-NPVNy.js";
+const gamecoworkNotifyDownload = (level, message) => gamecoworkDownloadToast[level](message, { position: "top-right", duration: 5000 });
 import { gamecoworkUndoFileChange, gamecoworkCreateLspClient, gamecoworkFetchLspStatus } from "./index-BRxZ4eG7.js";
 import { GameCoworkUnityPanel, gamecoworkWorkspaceLease, gamecoworkWorkspaceLeaseCurrent } from "./VscTheme-BExNMG_K.js";
 import { s as gamecoworkSidebarStore } from "./store-c6kNGz30.js";
@@ -45549,6 +45552,10 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
             else if (y.type === "codely:refreshWorkspaces") i == null || i();
             else if (y.type === "openurl" && typeof y.url == "string") {
               const { url: E, filename: S } = y;
+              if (gamecoworkLocalCanvas) {
+                void downloadGameCoworkMedia(E, S, gamecoworkNotifyDownload);
+                return;
+              }
               fetch(`${window.location.origin}/api/tauri/download-url`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -45562,7 +45569,11 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
   const b = T.useRef(p);
   return (
     T.useEffect(() => {
-      if (gamecoworkLocalCanvas) return;
+      if (gamecoworkLocalCanvas) {
+        if (s.current && a.current?.contentWindow)
+          a.current.contentWindow.postMessage({ type: "gamecowork:local-session-changed" }, qa);
+        return;
+      }
       var m, g, y, x;
       const v = b.current;
       ((b.current = p),
@@ -45573,7 +45584,7 @@ function zT({ enabled: e, accessToken: t, workspaces: r, onAddMediaToChat: n, on
             : v !== null &&
               ((x = (y = a.current) == null ? void 0 : y.contentWindow) == null ||
                 x.postMessage({ type: "logout" }, qa))));
-    }, [p]),
+    }, [t, p]),
     T.useEffect(() => {
       var v, m;
       s.current &&
