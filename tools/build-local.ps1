@@ -116,12 +116,13 @@ $manifest = [ordered]@{
 }
 $manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $stagingRoot 'package-manifest.json') -Encoding utf8
 
-$targetExe = Join-Path $outputRoot 'GameCowork.exe'
-$running = @(Get-CimInstance Win32_Process -Filter "Name='GameCowork.exe'" | Where-Object {
-    $_.ExecutablePath -and ([IO.Path]::GetFullPath($_.ExecutablePath) -eq $targetExe)
+$outputPrefix = $outputRoot.TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+$running = @(Get-CimInstance Win32_Process | Where-Object {
+    $_.ExecutablePath -and ([IO.Path]::GetFullPath($_.ExecutablePath).StartsWith($outputPrefix, [StringComparison]::OrdinalIgnoreCase))
 })
 if ($running.Count -gt 0) {
-    throw "GameCowork is running from $outputRoot. Prepared package is at $stagingRoot; close that window before updating."
+    $packageOwnerPids = ($running.ProcessId -join ', ')
+    throw "Package files are in use from $outputRoot (PIDs: $packageOwnerPids). Prepared package is at $stagingRoot; close the application or let its test processes finish before updating."
 }
 New-Item -ItemType Directory -Path $outputRoot -Force | Out-Null
 $backupRoot = Join-Path $taskRoot 'previous-binaries'

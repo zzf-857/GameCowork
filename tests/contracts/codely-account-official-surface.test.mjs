@@ -251,6 +251,11 @@ function barrier() {
 // the sequential singleton fixture above. All credentials here are invented.
 async function raceFixture(hook = async () => {}, customVault = vault, autoLogin = true) {
   let identity = "A", revision = 0;
+  // Identity markers remain A/B, while cookies are distinct synthetic secrets.
+  // A one-character cookie used as the same identity marker would correctly
+  // redact that marker when successful generator responses are sanitized.
+  const siteCookie = id => `surface-race-generator-cookie-${id}`;
+  const cookieIdentity = header => ["A", "B"].find(id => String(header || "").split(";").some(pair => pair.trim() === `gen_sid=${siteCookie(id)}`));
   const calls = [];
   const fetch = async (url, init = {}) => {
     const route = new URL(url).pathname;
@@ -265,9 +270,9 @@ async function raceFixture(hook = async () => {}, customVault = vault, autoLogin
     if (route === "/auth/refresh") return fixtureResponse({ access_token: `main-${identity}-${++revision}`, refresh_token: "fixture-refresh", expires_in: 3600 });
     if (route === "/api/user/plan") return fixtureResponse({ plan_type: "fixture", is_active: true });
     const source = /main-([AB])-/.exec(call.headers.Authorization || "")?.[1];
-    if (route === "/api/editor/sso/bootstrap") return fixtureResponse({ id: source }, 200, { "Set-Cookie": `gen_sid=${source}; Path=/; HttpOnly` });
-    if (route === "/api/user/me") { const id = /gen_sid=([AB])/.exec(call.headers.Cookie || "")?.[1]; return fixtureResponse({ id, username: id }); }
-    if (route === "/api/credit/my-credits") return fixtureResponse({ currentCredits: call.headers.Cookie === "gen_sid=A" ? 100 : 200 });
+    if (route === "/api/editor/sso/bootstrap") { assert.ok(["A", "B"].includes(source), "bootstrap carries an actual fixture account token"); return fixtureResponse({ id: source }, 200, { "Set-Cookie": `gen_sid=${siteCookie(source)}; Path=/; HttpOnly` }); }
+    if (route === "/api/user/me") { const id = cookieIdentity(call.headers.Cookie); assert.equal(id, source, "identity read must use the same account cookie and Bearer authority"); return fixtureResponse({ id, username: id }); }
+    if (route === "/api/credit/my-credits") { const id = cookieIdentity(call.headers.Cookie); assert.equal(id, source, "credits read must use the same account cookie and Bearer authority"); return fixtureResponse({ currentCredits: id === "A" ? 100 : 200 }); }
     if (route === "/api/credit/my-paid-status") return fixtureResponse({ paidType: "paid", productCode: "fixture" });
     if (route === "/api/v1/auth/exchange") return fixtureResponse({ code: 0, data: { tokens: { access_token: `canvas-${source}` } } });
     if (route === "/api/v1/auth/profile") { const id = call.headers.Authorization.slice(-1); return fixtureResponse({ code: 0, data: { id, username: id, role: "user" } }); }

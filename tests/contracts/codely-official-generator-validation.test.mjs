@@ -114,7 +114,7 @@ test('Duplicate owned artifacts and inputs reject before imports or official sub
     const source = await generate(f), input = register(f.service);
     for (const reference of [artifactUrl(source), inputUrl(input)]) {
       const reply = await f.call({ kind: 'frontier_flare', data: { ...payload(), imageUrls: [reference, reference] } });
-      assert.equal(reply.status, 400); assert.equal(reply.body.error, 'duplicate_reference_input');
+      assert.equal(reply.status, 400); assert.equal(reply.body.error, 'invalid_official_image_parameters');
     }
     assert.equal(imports, 0); assert.equal(f.service.getOwnedSnapshot().inputs.length, 1); assert.equal(f.calls.generations.length, 1);
   } finally { await f.close(); }

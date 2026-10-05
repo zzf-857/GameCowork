@@ -1,3 +1,4 @@
+import { gamecoworkAccountDisplay, gamecoworkOpenAccountUsage } from "./gamecowork-account-display.js";
 import { officialProgrammingMenu } from "./gamecowork-official-models.js";
 import { downloadGameCoworkMedia } from "../codely-generator/local-download.js";
 const gamecoworkNotifyDownload = (level, message) => gamecoworkHistoryToast[level](message, { position: "top-right", duration: 5000 });
@@ -43050,7 +43051,7 @@ function jz({ total: e, windows: t, onAccount: n, isSubmenuOpen: s, onOpen: r, o
 }
 function Rz({
   authenticated: e,
-  displayEmail: t,
+  accountDetail: t,
   currentTheme: n,
   isCloudCowork: s,
   planType: r,
@@ -43088,7 +43089,7 @@ function Rz({
             children: a.jsx("div", {
               className:
                 "text-[var(--semantic-color-text-tertiary)] max-w-[12.375rem] truncate px-2.5 py-1.5 text-xs leading-5",
-              children: R("userProfile.email", { email: t }),
+              children: t,
             }),
           })
         : null,
@@ -43225,11 +43226,13 @@ function U3({
   const A = Ge(),
     c = M(Bd),
     l = d.useContext(tt),
-    { login: u } = yn(),
-    { t: f } = Ie(),
+    { login: u, session: gamecoworkAccountSession } = yn(),
+    { t: f, i18n: gamecoworkAccountI18n } = Ie(),
+    gamecoworkAccountPlan = M((state) => state.account),
+    gamecoworkAccountView = gamecoworkAccountDisplay(gamecoworkAccountSession, gamecoworkAccountPlan, gamecoworkAccountI18n.resolvedLanguage || gamecoworkAccountI18n.language),
     h = Rn(),
     p = qt(),
-    m = o != null ? o : !!(n.trim() || (s != null && s.trim())),
+    m = gamecoworkAccountView.official || gamecoworkAccountView.local,
     g = M(im),
     w = M(mb),
     y = M(ES),
@@ -43240,7 +43243,7 @@ function U3({
     { start: I } = Vg(),
     U = d.useCallback(
       (te) => {
-        (te && m && (A(Ed()), A(kS())),
+        (te && gamecoworkAccountView.official && (A(nk({ skipTtl: true })), A(Ed()), A(kS())),
           te &&
             l
               .request("pet/getVisible", void 0)
@@ -43252,13 +43255,13 @@ function U3({
               })
               .catch(() => {}));
       },
-      [m, A, l],
+      [m, A, l, gamecoworkAccountView.official],
     ),
     R = i === "internal" ? "-" : ld(g),
     Q = i === "internal" ? null : g !== null ? ld(g) : null,
     K = d.useCallback(() => {
-      l.post("controlPlane/openUrl", { path: "dashboard/usage", orgSlug: void 0 });
-    }, [l]),
+      gamecoworkOpenAccountUsage(gamecoworkAccountSession, l);
+    }, [l, gamecoworkAccountSession]),
     G = d.useCallback(() => {
       (l.post("controlPlane/openUrl", { path: "pricing", orgSlug: void 0 }), I(Eu.UpgradePolling));
     }, [l, I]),
@@ -43274,6 +43277,9 @@ function U3({
     C = d.useCallback(() => {
       (E(_ ? "hide" : "show"), l.post("pet/setVisible", { visible: !_ }));
     }, [l, _]);
+  d.useEffect(() => {
+    if (gamecoworkAccountView.official) A(nk({ skipTtl: true }));
+  }, [A, gamecoworkAccountView.official, gamecoworkAccountView.id]);
   (d.useEffect(() => {
     const te = (v) => {
       var N, T, z;
@@ -43335,19 +43341,19 @@ function U3({
                 a.jsxs("div", {
                   className: "text-gamecowork-color-text-default truncate text-sm flex items-center gap-1.5",
                   children: [
-                    m ? n : f("userProfile.notLoggedIn"),
-                    m && i && i !== "internal" && !b
+                    m ? gamecoworkAccountView.displayName : f("userProfile.notLoggedIn"),
+                    gamecoworkAccountView.planBadge
                       ? a.jsx("span", {
                           className: Z(
                             "rounded-md bg-[var(--semantic-color-surface-card)] px-1 py-0.5 text-xs leading-[0.875rem] font-medium text-[var(--semantic-color-text-primary)] flex-shrink-0",
                           ),
-                          children: FS(i, f),
+                          children: gamecoworkAccountView.planBadge,
                         })
                       : null,
                   ],
                 }),
-                m && s
-                  ? a.jsx("div", { className: "text-gamecowork-color-text-tertiary truncate text-xs", children: s })
+                m && gamecoworkAccountView.displaySubtext
+                  ? a.jsx("div", { className: "text-gamecowork-color-text-tertiary truncate text-xs", children: gamecoworkAccountView.displaySubtext })
                   : null,
               ],
             }),
@@ -43375,7 +43381,7 @@ function U3({
     }),
     children: a.jsx(Rz, {
       authenticated: m,
-      displayEmail: r,
+      accountDetail: gamecoworkAccountView.accountDetail,
       currentTheme: c,
       isCloudCowork: h,
       planType: i,

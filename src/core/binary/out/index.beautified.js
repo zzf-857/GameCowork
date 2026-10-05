@@ -334610,12 +334610,16 @@ function RZa(t, e) {
       return b;
     }),
     n("controlPlane/openUrl", async (G) => {
+      const publicUrl = require("./gamecowork-codely-account.js").codelyAccountPublicControlPlaneUrl(G.data.path, G.data.orgSlug);
+      if (publicUrl !== null) { await t.messenger.request("openUrl", publicUrl); return; }
       let h = (await ip(t.ide.getIdeSettings())).API_URL;
       h.at(-1) !== "/" && (h += "/");
       let Z = gZa.resolve(h, G.data.path);
       (G.data.orgSlug && (Z += `?org=${G.data.orgSlug}`), await t.messenger.request("openUrl", Z));
     }),
     n("controlPlane/openUrlV2", async (G) => {
+      const publicUrl = require("./gamecowork-codely-account.js").codelyAccountPublicControlPlaneUrl(G.data.path);
+      if (publicUrl !== null) { await t.messenger.request("openUrl", publicUrl); return; }
       let b = await ip(t.ide.getIdeSettings()),
         h = msn(b.API_URL, G.data.path);
       await t.messenger.request("openUrl", h);
@@ -334646,13 +334650,13 @@ function RZa(t, e) {
         ? {
             planType: h.plan_type,
             planTag: h.plan_tag,
-            isTeamPlan: h.is_team_plan,
-            isActive: h.is_active,
+            isTeamPlan: typeof h.is_team_plan === "boolean" ? h.is_team_plan : null,
+            isActive: typeof h.is_active === "boolean" ? h.is_active : null,
             validTo: h.valid_to,
             canUpgradePlan: h.can_upgrade ?? !1,
             canManagePlan: h.can_manage_plan ?? !1,
             canTopup: h.can_topup ?? !1,
-            hasSeat: h.has_seat ?? !1,
+            hasSeat: typeof h.has_seat === "boolean" ? h.has_seat : null,
             validFrom: h.valid_from,
             seatLimit: h.seat_limit,
             inRenewalPeriod: h.in_renewal_period ?? !1,

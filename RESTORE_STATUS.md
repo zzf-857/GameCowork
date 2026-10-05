@@ -1,5 +1,266 @@
 # RESTORE_STATUS — GameCowork 功能、验收与交接
 
+<a id="commit-review-20261005"></a>
+
+## 现有修改提交前复验（2026-10-05）
+
+按用户要求审查现有 95 个修改及新增文件，覆盖官方多模型契约、自定义 Provider、CPA 型号与尺寸策略、媒体校验、账号展示、错误详情、隔离测试和相关文档。验证期间这批文件的 SHA 保持不变；待提交范围没有安装包、数据库或一次性日志。凭据模式审计的 9 处命中均已核实为测试占位值、既有测试预期或公开本地会话标识，未发现真实凭据。
+
+`tools/verify-local.ps1 -RealCore -Chat` 本轮 **完整 exit0**：Rust **160/160**、全部登记契约、隔离 HTTP / 生命周期 / 索引 / Git / C# LSP，以及真实 Core、同源码 guarded Agent 和 Chromium 界面门禁全部通过。两代官方生成各完成 **43 项 API 模型及四类 GUI**；两代自定义 Provider 主体各 **48/48**，传输错误与详情专项各 **104/104**。Quick / History / Canvas、CPA、原生下载服务、官方编程、聊天 / 文件 / 审批、扩展及命令执行的登记回归亦通过。
+
+本轮自动验证使用统一 temp 内的独立数据和 loopback fixture；浏览器为连接实际 Rust HTTP 宿主的 headless Chromium。正式包、原生 Wry 像素、真实 Editor 与收费 Provider 的验收范围仍以各专门记录为准。`git diff --cached --check` 通过。
+
+证据目录：`F:/AI/AgentMake/temp/GameCowork/commit-review-20261005-ed73c316-61b4-49f4-b597-22cc7a9d1f03/`，包含完整 `verify-realcore-chat.log`、初始文件大小 / SHA 清单及仅记录位置和分类的凭据审计；各 E2E 独立报告路径保留在完整日志内。
+
+<a id="xcai-media-live-minimum-20261004"></a>
+
+## XCAI 图片与视频最低消耗研究（2026-10-04，本轮两次创建均未出片）
+
+用户提供独立图片与视频 Key，授权真实测试；了解到文档不支持3秒后，明确改为按规定、最少消耗。选用文档最低价格的 `wan-3.0-no-video-ref`，720p / 4秒 / 16:9 / 无参考素材，倍率1时文档标价¥2。未发非法3秒请求；因无原片，未裁剪或制造3秒预览。本轮授权与此前已结束的图片预算分别记录。
+
+先读取两份认证 `GET https://xcai.pro/v1/models`，均HTTP200；图片目录完整返回 `gpt-image-2`、`gpt-image-2.5-flare`、`gpt-image-2.5-sunburst`，视频返回本地教程中的8个ID：`3.0`、`3.5`、`minimax-h3-1080p`、`sd-native-full-2.0`、`sd-native-full-2.5`、`sd-native-full-2.5-nonofficial`、`wan-3.0-video-ref`、`wan-3.0-no-video-ref`。目录中的 `owned_by=openai` 不当作实际引擎或分组平台证明。
+
+| 本轮真实调用 | 实际回执与验收范围 |
+| --- | --- |
+| 视频 `POST /v1/videos`，仅1次，唯一Idempotency-Key，WAN最低规格 | **HTTP404**，1,041ms；`not_found_error` / `Videos API is not supported for this platform`。无远端任务ID、无视频；不能进入任务查询、下载或播放验收 |
+| 图片 `POST /v1/images/generations`，仅1次，Image 2 / n=1 / size=1024x1024 / PNG，未发送quality | **HTTP502**，962ms；`upstream_error` / `Upstream service temporarily unavailable`。无图片及远端ID；未重发，未据此断言上游未受理或没有扣费 |
+
+已通过普通HTTPS读取本站在线 [视频文档](https://xcai.pro/docs/video-api/)，仍为1.3版、2026-10-02，地址与8款规格同本地教程；认证、接口、时长和价格分别核对。当前公开 `GET /api/v1/settings/public` 报告版本 `0.2.12-xcai-billingfix-grokprivacy` 与同一API base/doc URL；公开模型广场返回404 / `Model plaza is not enabled`，未读取管理员接口或登录账户。文档列单和最低价格不是实际出片/结算证明。
+
+视频404指向平台/路由未开放；**Key所属分组或当前部署与教程不一致仍只是待服务方确认的推断**。公开上游 [v0.1.179网关源码](https://raw.githubusercontent.com/Wei-Shaw/sub2api/v0.1.179/backend/internal/server/routes/gateway.go) 的平台门禁包含同一错误短句，仅作定位线索，不能代替当前自定义部署源码或证明具体分组身份。下一步须由站点核对这份视频Key的分组及当前部署是否实际承接 `POST /v1/videos` / 八款ID；未用其他接口、模型或重复付费请求猜测修复。
+
+证据目录：`F:/AI/AgentMake/temp/GameCowork/xcai-api-research-20261004-1791095428307/`。`result.json` 保存四次API请求的脱敏HTTP/耗时/响应；`image-request.json`、`video-4s-request.json` 保存无凭据请求与视频操作编号；两份 `*-models.json`、在线文档/公开客户端快照及 `research-evidence.json` 区分实际观察与推断。图片/视频POST各1，总重试0，产物0；实际扣费与退款未核实。请求密钥只留测试进程内存，该自有进程已正常退出；证据文件未检出真实Key格式，后续以SHA清单核对。
+
+本轮仅研究与人工最低样本，不改产品源码、Provider配置/凭据库或运行中的app，不把历史图片成功混为本轮通过，也不宣称视频已接入。`node tools/check-layout.mjs` **exit0**（256 test inputs / 16 documents / 825 path references）；证据审计10项全部通过，`file-ledger.json`保存13个证据文件的大小/SHA并核对POST各1、404/502、无任务/媒体、无真实Key格式及汇总一致。未运行完整代码/浏览器门禁，因没有产品代码改动。
+
+## 错误卡片、HTTP状态与可复制详情（2026-10-04，最终候选已验证，待更新运行中的app）
+
+用户进一步要求错误信息必须直接展示，并明确包括401、402、404、502、503。已在上一节断连修复基础上增加卡片短摘要与始终可见的“查看错误详情”，使用原Quick/History Dialog和原复制实现，未重做任务组件。实际收到的HTTP号直接出现在卡片及详情；未收到HTTP状态的连接失败与旧记录未保存诊断分别说明，不捏造502等数字。
+
+新增 `gamecowork-generation-error-details.js` 从已有任务事实派生17字段的安全DTO，旧 `error` 字段也使用该短摘要，避免另一条原文路径泄露信息。详情包括实际HTTP状态、请求操作/阶段/错误代码、精确耗时/配置时限、模型、任务尺寸参数、本地ID、任务时间和安全服务说明；没有的字段显示“未记录”，旧HTTP502仍能显示其保存的状态码。`parameters.size`不泛称通用REST已经发送的尺寸，创建/更新时间不当作请求耗时。无自动重发，History“再次生成”仅恢复草稿保持。
+
+服务原因仅提取少数message叶字段，非JSON/截断正文不回落原字符串；拒绝URL/相对签名地址、token/key赋值、原始堆栈、请求体/头及复杂dump。固定无值短句如“Invalid API key”可保留，带值版本仍隐藏。Quick/History展开与复制只消费同一DTO，复制成功或两条原复制路径都失败有可见反馈，仍可手选文本；自动测试的剪贴板为独立profile内的受控API，不操作用户系统剪贴板。
+
+证据目录为 `temp/GameCowork/xcai-provider-20261003/error-details-20261004/`。最终API投影 **18/18**、前端详情/状态契约 **15/15**、与官方生成兼容组合 **39/39** 通过；更早相关组合48项有交叉，不累计独立总数。`tools/verify-local.ps1 -SkipBrowser` 本轮 **完整exit0**，`verify-backend.log`包含Rust160、全部登记契约、隔离HTTP/生命周期/索引/Git/LSP；该全量在最后的旧官方/下载HTTP前缀兼容与卡片紧凑样式之前，最后两项由39项契约与下述包内专项补验，不宣称又重跑全套。
+
+最终 `candidate-v2/` 包内两代各 **104/104**，每代7次loopback提交（socket、401/402/404/502/503、成功4K），14个真实展开/复制场景包含旧fetch/旧HTTP记录，六项按钮完整边界和中心命中检查。卡片直接显示五状态，详情与复制保留同一真实值；旧记录缺失字段、两条复制路径均拒绝后的可见反馈与手动选择、History草稿及冷重启不重发均通过。WAN/pageErrors/coreNetworkAttempts为0，自有Host/Core/vault全部退出。汇总 `error-details-v2-e2e-summary.json`，报告 `packaged-v2-{current,previous}/result.json`；最终状态卡片与503详情截图在 `packaged-v2-current/transport-http-statuses-summary.png`、`transport-http-503-final-details.png`。此前98项虽执行通过，但视觉检查发现原retry被挤到footer下方，已保留中间证据并明确不能当最终布局验收；紧凑修复后六项几何已验证，未通过点击重试新增生成。
+
+`candidate-v2-integrity.json`确认 **1568/1568**运行资源、**1564/1564**源码/冻结资源映射一致，差异/漏装/未登记0；normal Agent guard=false，四个非源码资源单列。builtAtUtc=2026-10-04T04:55:28.1414463Z，Quick原资源/helper/Host与354个可逆补丁核对通过，最新Core helper和紧凑CSS均在包中。当前日常app仍为02:46装配的1566资源，未覆盖本轮修改；关闭/更新确认尚待用户回复，不替换运行中的程序、不重发原任务或调用真实额度。
+
+## XCAI Image 2 4K 提交断连排查（2026-10-04，本轮未新增真实生成）
+
+用户截图显示 `fetch failed; create outcome is unknown and will not be resubmitted`。只读核对本人任务与当前配置，确认以下事实，未改写原任务或凭据：
+
+| 任务与北京时间 | 实际记录 |
+| --- | --- |
+| `t_0b71c2fa-ccd5-49a2-a5b3-6fe21bc07671`，12:15:15至12:16:38 | `gpt-image-2` / PNG / size **3840×2160** / 16:9；82,625ms后`interrupted`、mayContinue=true，无远端ID，无产物。旧实现只保存fetch failed，底层cause未保存，不能倒推出socket、DNS、TLS或哪一端超时 |
+| `t_8fdea392-e3f0-461a-969a-107cb50d5d91`，10:15:30至10:17:02 | 同模型与规格，92,532ms后明确 **HTTP502 upstream_error**，无产物 |
+| `t_a248cbbb-f503-4faf-9548-b36ede1b8418`，02:41:42至02:43:39 | 同一Provider版本、相同请求模板，116,920ms完成；原缓存再次只读核实为 **3840×2160 PNG / 10,168,506B**，SHA与记录一致 |
+
+三次均实际发送size，body字段为model/prompt/n/output_format/size，quality均未发送；不是旧的“4K仅写prompt”接线缺陷。当前Provider requestTimeoutMs=180000，本次82.6秒不足以认定本地总deadline。Node内部头超时也不能用于解释这次耗时，未盲目加大超时或改dispatcher。独立无鉴权GET `/v1/models` 750ms返回401，仅证明检查当时DNS/TLS/HTTP入口可达，不证明长生图稳定或真实Key有效。诊断摘要保存在 `temp/GameCowork/xcai-provider-20261003/transport-diagnosis-20261004/observed-task-diagnosis.json`，没有prompt/密钥/私有原始响应。
+
+**实际修复的是可诊断性和未知结果的错误呈现。** `gamecowork-assets.js` 用内部WeakMap绑定有限的operation/stage/code/elapsedMs/timeoutMs/httpStatus，读取有界cause代码白名单；不保存底层消息、stack、URL、header或body。配置deadline与HTTP/响应体断流/JSON解析分开，后续成功、取消或配置变化清理陈旧诊断。旧任务不补写原因，`publicTask`只按interrupted+mayContinue+无内部远端ID派生submissionUnknown，已知远端ID不误标。
+
+兼容层保留原轮询终态，用显式`local_submission_unknown`和bool将Quick/History显示为“结果未知”；原重试按钮和回调均不新发POST，History“再次生成”仍仅恢复草稿。真实E2E又发现原UIe只查completed，导致未知记录不可见；现仅本机身份的History列表/标签默认查询包含失败/未知，非本地和素材选择器仍保留completed筛选。原组件14处精确补丁、`task-outcome.js`及importer/source-ledger同步，可逆验证保留其余原源码。
+
+证据根为 `F:/AI/AgentMake/temp/GameCowork/xcai-provider-20261003/transport-diagnosis-20261004/`：新transport契约8项、投影5项、原前端函数7项通过，相关后端组合79项通过（有交叉，不相加）。源码双代transport各27项、完整候选包内双代transport各 **27/27**、size-policy各 **29/29**；真实loopback接收POST后断socket得到UND_ERR_SOCKET、HTTP502独立分类，fixture PNG3840×2160解码，历史/草稿/冷恢复不重发均通过。报告为 `transport-e2e-summary.json`及`packaged-{transport,size}-{current,previous}/result.json`，WAN/pageErrors为0，自有Host/Core/vault进程全部退出。初轮History筛选与列表等待断言失败保留，不写成全程零失败。
+
+完整Release候选 `candidate/` 已准备，`candidate-integrity.json` **1567/1567**运行文件与**1563/1563**可映射维护/冻结输入一致，差异/漏装/未登记0，normal Agent guard=false；builtAtUtc=2026-10-04T04:27:44.8187254Z，壳SHA `C5FEAF9891FA94F7E44A6BF40A887307C60D29AEE1F3912A5CD0F54B7CADC108`。`tools/verify-local.ps1 -SkipBrowser` 本轮完整 **exit0**，`verify-backend.log`包含Rust160项、来源、全部登记契约和隔离HTTP/进程/索引/Git/LSP后端；浏览器范围按上述专项分别记账，不混称完整RealCore/Chat/Editor。当前日常app仍在运行，修复包未覆盖，已请求用户确认关闭/更新/重开；未确认前不替换。没有重发用户失败任务，没有新增收费GEN、推理或改尺寸/质量策略；这组本地修复不等于XCAI上游稳定性已经解决。
+
+<a id="xcai-custom-provider-20261004"></a>
+
+## XCAI 图片与自定义 Provider（2026-10-04，4K尺寸接线已交付，单张gpt-image-2真实4K已验）
+
+用户随后要求直接进入正式程序验证。本次使用 Computer Use 的 `@oai/sky` 操作实际 Windows Wry 窗口（正式 `app/GameCowork.exe`，窗口8068370）：进入“AI资产生成 → 生成记录”，打开已完成的 `t_a248cbbb-f503-4faf-9548-b36ede1b8418`。真实图片预览正常，详情显示“已达到请求像素”、API请求3840×2160及文件像素3840×2160。通过界面“下载PNG”及原生“另存为”导出到 `F:/AI/AgentMake/temp/GameCowork/xcai-native-ui-20261004/native-4k-ui-download.png`，UI出现“文件已保存”；导出PNG为3840×2160、10,168,506字节，SHA与原缓存 `6f62d318e603ace2320362d5bbbe3cc163293822aa5d66cf56239a100b88b061` 完全一致。再通过“再次生成 → 回到快速生成”核对原提示词、XCAI/gpt-image-2及4K/16:9/3840×2160草稿恢复，参数菜单选中态已在原生窗口观察；未点击“开始生成”，没有追加远程生成。记录为上述临时目录的 `ui-verification.json`。此项是正式原生界面与实际文件导出的验收，复用既有真实产物，不冒称又从UI提交了一个收费任务。
+
+同时只读发现用户此前于北京时间02:48:34自行提交的 Sunburst 4K竖图任务 `t_a723c6fe-6f48-4fb2-a1d7-15a36c8187a2`：持久API size与目标均2160×3840，失败HTTP503，上游返回无可用账号，没有产物；它发生在本次UI验证前，不计作Agent新增生成，不据此认定竖图尺寸不支持，也没有自动重发或换模型。
+
+用户提供新的独立生图中转站 `https://xcai.pro/v1`，要求读取当前 Key 的全部上游模型、逐模型核对档位/尺寸/独立超分，并为后续图片、大模型、视频、ComfyUI 和 Ollama 服务保留可配置入口。本轮认证 GET `/models` 完整返回 **3项**：`gpt-image-2`、`gpt-image-2.5-flare`、`gpt-image-2.5-sunburst`；只读目录记录在 `upstream-models.json`，没有 capability/quality/size 字段。`owned_by=openai` 与目录显示名不是实际引擎身份或参数兑现证明，公开站面中的 Grok/Gemini/视频示例不混入此 Key 目录。
+
+新的 `gamecowork-provider-registry.js`、`gamecowork-provider-catalog.js`、`gamecowork-provider-vault.js` 及原客户端 `provider-manager.js` 接入 Provider 保存/编辑/删除、只读目录同步、选择与稳定动态模型身份。能力按模型分别保存支持状态及 unknown / documented / tested / manual 证据；公开手动配置强制 manual 标签，不伪装实测。未知质量档位不开放，独立超分仅保留能力记录；后续size请求发送方法按公开规范补全，仍不推定模型精确尺寸已兑现，见本段末最新记录。完整目录分页、重复 ID、字节预算和配置代次检查失败时拒绝发布部分结果；删除保留旧任务身份，不自动替换历史型号。
+
+| 协议 / 功能 | 本轮源码范围与明确限制 |
+| --- | --- |
+| OpenAI Images | 接入现有资产任务、字节核验、历史、再次生成与下载；实际服务参数须有逐模型证据，不能由官方 API 文档或 HTTP200推定中转兑现 |
+| 通用 REST 任务 | 按用户明确填写的创建/轮询/输出适配器执行图片、视频、音频或3D任务，不猜服务端接口或重发未知创建 |
+| OpenAI Chat / Responses、Ollama | 可保存独立配置与读取模型目录，推理执行尚未接入；不复制旧聊天设置中的明文密钥 |
+| ComfyUI | 可保存 API 格式工作流与显式 node/input 参数映射，读取节点类型和模型文件目录；工作流执行尚未接入，不自动安装节点、启动服务、运行脚本或全局中断 |
+| 凭据 | 新 Provider 用 Windows DPAPI CurrentUser 密封；先提交不可变凭据版本，再原子更新注册表引用，兼容已有引用。公开响应只显示是否已配置；旧 CPA AES 保存保持原边界，不混称 DPAPI、不复制或迁移其密钥 |
+| 分辨率 / 比例要求 | `resolutionHint`、`aspectRatioHint`保留提示词要求；最新openai-size策略同时把目标像素送标准API size，prompt-only仍只追加提示词。保留原prompt/API参数/摘要，实际文件像素另验，不把策略当全部尺寸能力。历史再生不重复追加、不追认旧历史有size；本次线上只gpt-image-2 3840×2160横图已验 |
+
+证据根沿用任务起始目录 `F:/AI/AgentMake/temp/GameCowork/xcai-provider-20261003/`，本轮跨入10月4日。公开站面与固定网关源码研究见 `capability-research.json`、`gateway-metadata-source-research.json` 和原字节 SHA 清单。站点公开配置报告0.1.179，固定上游 tag 对应 `75f88be5f75c27771836b586f7de1503afa0e3bc`：stock OAuth 图片链会用实际字节校正尺寸，上游 API Key 分支普通非流式直接透传 JSON；**不能据此确定本站当前分支、账号类型或是否改版**。本站画布的 SESSION `channel:upscale` 是独立生图分组，不是本 Key 已证实的独立超分 API。
+
+用户单独授权 **最多8次最小生图、并发1**。首轮 `manual-live/result.json` 已结束：**5 completed / 3 failed**；结果与 `guard.json` 分别记录 imagePosts=8/max8、concurrency=1、无自动重发、otherPaidPrevented=0/foreignImagePrevented=0，自有进程已退出。失败2/3为HTTP502无产物；失败5虽外层HTTP200，但没有合法 outputs，不能算生成完成。五个成功文件均完整核验为 **1254×1254 PNG**；第一项服务报告1024×1024/low，与文件实际像素不同，其余四项没有可用的服务规格字段，不补造 quality。三个模型均至少回图，仍不能确认真实2.5换模、档位效果或独立超分。
+
+| 首轮请求 | 请求尺寸 / quality | 实际产物与结论 |
+| --- | --- | --- |
+| 1 / Image 2 | 1024×1024 / low | completed，实际1254×1254 PNG；服务报告1024×1024/low，报告尺寸不能当实物尺寸 |
+| 2 / Flare | 1024×1024 / low | failed，HTTP502，无产物；没有自动重发同任务 |
+| 3 / Sunburst | 1024×1024 / low | failed，HTTP502，无产物；没有自动重发同任务 |
+| 4 / Image 2 | 1536×1024 / low | completed，实际1254×1254 PNG；横图和精确尺寸未兑现，服务规格未知 |
+| 5 / Image 2 | 1024×1024 / high | failed，外层HTTP200但无合法产物；不能称高质量档可用 |
+| 6 / Flare | 2048×2048 / low | completed，实际1254×1254 PNG；2K未兑现，服务规格未知 |
+| 7 / Sunburst | 2048×2048 / low | completed，实际1254×1254 PNG；2K未兑现，服务规格未知 |
+| 8 / Image 2 | 2048×2048 / low | completed，实际1254×1254 PNG；2K未兑现，服务规格未知 |
+
+首轮8次预算已用完，与前一轮 CPA 的8次预算分别记账。用户随后要求具体场景提示及分辨率/比例要求，又明确授权 **追加最多3次串行**。`scene-20261004/result.json` / `guard.json` 已结束：posted3/max3、concurrency=1、ownExited=true、无其他生图/推理与自动重发。三条用户原 prompt 均保留，executionPrompt实际包含带空格的分辨率文字（例如`1536 x 1024`）和对应比例；不能用匹配无空格`1536x1024`的失败断言宣称没有附加规格。首项失败没有重发，余下两次只提交本场景轮次此前未尝试的另外两个模型和独立提示词。
+
+| 追加场景请求 | 提示词规格要求 | 实际结果与边界 |
+| --- | --- | --- |
+| 1 / Image 2 / 江南雨后风景 | 2048×1152 / 16:9 | failed，HTTP502，无产物，不重发原任务 |
+| 2 / Flare / 幻想港口游戏场景 | 1536×1024 / 3:2 | completed，实际PNG1536×1024；服务报告Flare / low / PNG / 1536×1024。仅证明该提示词与规格要求组合实际实现，不证明任意尺寸、纯API size单独有效、真实质量档或独立超分 |
+| 3 / Sunburst / 成年女性游侠全身插画 | 1024×1536 / 2:3 | failed，HTTP502，无产物，不重发原任务 |
+
+本轮总计 **11次=8+3，6 completed / 5 failed**，两笔授权预算均已用完，停止更多真实GEN。三个模型均至少回图；已核验的PNG可记录文件格式tested，Flare横图仅为上述联合提示要求组合tested。首轮其余精确/2K尺寸所测未兑现，未测配置保持unknown；quality仍只记录服务报告，真实档位效果、refs/edit与本Key独立超分均未知，不继承SESSION画布能力。本轮未调用Codely官方生成/编程推理、不安排自动续测；上轮官方额度数字不表示10月4日实时余额。
+
+| 新接线验收 / 交付 | 当前结果与待完成项 |
+| --- | --- |
+| 定向源码契约 | Provider/Vault/目录/提示词安全相关33项已通过；旧API26项、原UI9项与身份9项回归分别记录，存在交叉，不相加为独立总数 |
+| 新 GUI Provider Manager E2E | 源码双代各48项通过；引用边界修复后的最终候选 `custom-package-current-v2/result.json`、`custom-package-previous-v2/result.json`各 **48/48**。真实Rust/Core/Windows DPAPI与两代原GUI，隔离Provider每代3次创建；external/pageErrors均0，realProvider/liveGeneration/officialQuotaConsumed=false，自有Host/Core/vault子进程全部退出。不调用真实服务，不以fixture证明XCAI规格 |
+| 完整统一门禁（后续样式/分类增量前） | `verify-provider-final-v2.log` / `verify-provider-final-v2-exit.txt` **exit0、Rust160/160**；执行`tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage .../cli-official-programming-20261003-v3`，包含真实契约/隔离HTTP、双代自定义Provider48项、全部官方模型fixture/E2E、ACP/Agent聊天审批文件、持久历史、媒体watcher、MCP与命令子代理。本轮此前`verify-provider-final.log` **exit1**保留：旧CPA VM测试缺少新helper/提示要求依赖及reset文案定位，修正测试适配后复验，没有由这次失败新增产品补丁；不称全程零失败。该完整门禁在下方主题和错误分类增量之前通过，不宣称增量后又重跑全套 |
+| 最新候选与来源 | `build-final-candidate` **exit0**，`candidate-final-integrity.json`为 **1566/1566** 运行文件size/SHA、**1562/1562**源码映射一致，差异/漏装/未登记资源0；2.1.3-canary.2，builtAtUtc=2026-10-03T17:03:27.8057214Z（北京时间10月4日01:03:27）。正常Agent testGuardIncluded=false，Quick **29文件/329可逆补丁**、Canvas318文件来源核对通过；非字面动态import的运行覆盖限制仍保留 |
+| 正式 app 原位更新 | `build-installed-provider-exit.txt` **exit0**，唯一日常`app/`已更新，2.1.3-canary.2、builtAtUtc=2026-10-03T17:16:21.8297423Z（北京时间10月4日01:16:21）；备份/暂存为`temp/GameCowork/build/74a3426e68864bb8ae4ec41e493b8c73/`。`installed-integrity.json`通过 **1566/1566运行文件、1562/1562源码映射、差异/漏装/未登记资源0**，正常Agent guard=false、Quick29文件/329补丁、Canvas318文件；上一次1562资源CPA包记录保留为历史，不替代此轮安装 |
+| 正式包读取本人状态的隔离恢复 | `readonly-actual-1dc866cb-1876-46e4-a5d5-5309c1d30758/proof.json` **15项通过**。只读复制本人真实registry/vault、11任务与6个缓存到独立snapshot，再由正式app执行；恰3模型、密钥已配置、11条state/原提示词/executionPrompt存在性及内容保留、6文件SHA一致，原配置/历史/缓存源SHA不变。早8条原本没有executionPrompt，保持缺省，不伪补。WAN/inference=0、newGenerationAllowed=false、未刷新官方账号，自有Host/Core及DPAPI Unprotect子进程全部退出；这证明正式包能恢复真实数据的隔离副本，不冒称在真实用户数据上进行了全量GUI恢复 |
+| 正式app重开与当前本人配置 | `formal-reopen-proof.json`于UTC17:19:23（北京时间10月4日01:19:23）确认正式原位app **PID44632** 原生窗口存在、HTTPready、liveUserData=true、Provider密钥已配置、modelCount=3、leftRunning=true。仅本机GET Provider核对，没有GEN/inference提交；已留给用户正常运行，只证明窗口/HTTP/配置就绪，不称原生Wry像素/几何或逐模型线上全部成功 |
+| 最新主题专项 | 用户指出CPA/XCAI Provider原生下拉白底后，已按原FZ菜单样式修复Provider DOM弹出层，并让管理页native colorScheme及option背景/文字继承主题。`theme-package-current-v1/result.json`、`theme-package-previous-v1/result.json`各 **8/8**：实际Host菜单切浅/深、表面与原FZ一致、Enter选择CPA/Escape关闭/再展开保留，GEN/WAN/pageErrors=0。`theme-to-fix-frontend-sha.json`确认合并错误分类候选的 **1111个前端文件**与主题候选完全相同，因此这两代主题证明适用，不重复跑同一前端 |
+| 最新错误分类 / 兼容专项 | `gamecowork-assets.js`仅对非official image、responseMode=outputs、outputs=data区分缺字段 / 非数组类型 / 空数组0 / 超8数量四种中文错误；不增加schema、端点猜测或原始响应持久化。相关Provider33项及malformed44项通过，标准url/base64、6坏形状、秘密不持久、冷恢复不重发保留；`cpa-compat-fix-current`原包内`codely-assets --cpa-only` **8 PASS / exit0**，仅修正测试locator排除新Provider selector，原断言保留 |
+| 最新合并候选 / 双代回归 | `build-fix-candidate` **exit0**，暂存/备份`temp/GameCowork/build/0a8c6b2e548847e2b95c7f4725ab393d/`；`candidate-fix-integrity.json` **1566运行文件/1562映射、差异0**。`fix-package-current-v1/result.json`与`fix-package-previous-v1/result.json`各 **48/48**，仅loopback每代3次串行创建，WAN/pageErrors=0、全部自有进程退出。上述专项不能称增量后重新执行了完整门禁 |
+| 最新增量正式更新 | 用户回复“来吧”且目标app进程已退出后，`build-fix-installed-exit.txt` **exit0**，唯一日常`app/`原位更新；备份/暂存`temp/GameCowork/build/9eb2696bbe5e4342a523553f439b9d89/`。`installed-fix-integrity.json`确认 **1566/1566运行文件、1562/1562源码映射、差异/漏装/未登记资源0**，2.1.3-canary.2，builtAtUtc=2026-10-03T17:41:11.2099956Z（北京时间10月4日01:41:11），normalCLI guard=false、Quick29文件/329补丁、Canvas318文件。上方01:16主体安装与11任务恢复保留各自原范围，不代替此轮增量包来源 |
+| 最新正式app重开 | `formal-fix-reopen-proof.json`于UTC2026-10-03T17:41:51.5405215Z（北京时间10月4日01:41:51）确认正式 **PID39032**、nativeWindow/HTTP/liveUserData=true、XCAI密钥已配置、modelCount=3、leftRunning=true，程序留给用户运行。仅本机GET Provider，无GEN/inference提交；菜单视觉依据双代真实Host主题8项及前端完整SHA一致性，不把MainWindowHandle当作原生Wry像素验收 |
+
+用户运行后另外自行提交两条Sunburst任务：3840×2160要求遇到旧collectdata格式错误，2048×1152要求HTTP502，均无产物。这是用户手动请求，**不属于本Agent追加收费测试**，本轮11次预算仍已结束。旧collectdata错误缺少原始形状证据，不能倒推出准确data类别或声称原响应为空；保留两条旧failed/error，不迁移成新分类，也不自动重发。上方11任务/6缓存只读snapshot验证发生在这两条新增手动任务之前，原证据继续有效。
+
+**修正前4K规格接线的只读复核（2026-10-04，诊断阶段无产品改动或新GEN）**：用户指出上游声明1K/2K/4K同价并询问为何本地不能4K。该次正式XCAI的size / quality / aspectRatio为unknown，界面3840×2160目标仅追加到prompt；实际`_managedCreate.bodyTemplate`只有model、prompt、n和output_format，**没有发送size / resolution / aspect_ratio**。这说明当时本地API尺寸接线仍待修正，不能用HTTP502解释全部未兑现分辨率。用户随后自行完成两条4K目标任务（`t8145a78b`、`t50b5027a`短ID），但实际文件均为 **1672×941**；这些手动请求与Agent已结束的11次预算分开，不算本Agent追加实测。
+
+新的公开站面复核见`F:/AI/AgentMake/temp/GameCowork/xcai-4k-docs-20261004/`。本站 [公开Canvas脚本](https://xcai.pro/canvas/assets/index-CW8kB9IJ.js) 的默认API-Key生图渠道示例使用gpt-image-2和`https://xcai.pro/v1/images/generations`，通用请求构建器实际发送size；其4K横图为 **3840×2160**、竖图 **2160×3840**、方图 **2880×2880**，不是4096×4096。quality=auto时省略质量字段，质量与分辨率独立。`published-client-helper-proof.json`提取实际公开helper并以VM/mock HTTP捕获请求，证明上述客户端字段与预设；这是公开客户端接线证据，**不是当前供应Key参数转交或真实4K出图验证**，2.5 Key能力也没有新增真实4K验收。
+
+新鲜公开settings/version观察为 **0.2.12-xcai-billingfix-grokprivacy**；上方0.1.179保留为当时观察，不改写旧源码研究结论或据旧tag宣称当前网关实现。上游4K已可实用、精确像素能兑现及该Key的质量档位均未因这次只读检查获证；诊断阶段没有产品修改、重新生成或自动重发，随后用户授权的源码修正另列如下。
+
+**API尺寸接线补全（正式app已更新并重开，单张gpt-image-2真实4K已验）**：Provider新增`imageSizePolicy: prompt-only / openai-size`，这是请求发送方法，不把size能力的unknown自动改成tested。仅规范的`https://xcai.pro/v1` OpenAI Images默认openai-size；其他服务默认prompt-only，显式用户选择及已有opt-out冷恢复保留。冷读只计算有效策略，不改写registry/vault/旧历史。新API策略从resolutionHint推导parameters.size并实际填入请求body的size，同时保持n=1、原提示词与追加目标；API值与提示目标冲突、越界、模型明确unsupported尺寸均在提交前拒绝。
+
+1K/2K/4K与比例采用本站公开的27项像素预设；这些16像素取整tuple的比例兼容只限openai-size策略，prompt-only不放宽原冲突规则。4K方图为2880×2880而非4096×4096，管理页原Popover可选发送策略/按服务默认。quality仍独立，不新增high、resolution或aspect_ratio请求字段，不把高分辨率请求称独立超分。结果/历史按实际artifact像素显示“已达到 / 部分未兑现 / 未兑现”，服务reported尺寸不用作像素核验；合法图片仍completed、可下载，旧历史不追认当年发送过size。
+
+本阶段证据根为`F:/AI/AgentMake/temp/GameCowork/xcai-4k-integration-20261004/`。Core首组75项已通过，新增unsupported断言后Registry28项通过，累计对应76项范围，**不宣称全部76重新运行**；前端37项、ledger/layout通过。首次真实Manager策略Popover流程的v1–v4失败保留：弹层低于主Dialog、body pointer-events继承阻断、修正后Escape误关主Dialog，最终用作用域pointer-events/z层级和嵌套Escape处理修正；这是产品交互缺陷，不混称旧VM测试适配，也不称全程零失败。
+
+双代size-policy-only源码 `xcai-provider-20261003/size-source-current-v5/result.json`、`size-source-previous-v1/result.json`及候选 `size-package-current-v1/result.json`、`size-package-previous-v1/result.json`各 **29/29**，只用loopback fixture。覆盖横/竖/方4K实际body.size、1K1024合法文件达标、小图未兑现仍可下载、策略切换和原Popover键盘；这些不会替代真实收费验收。v4候选上的原Provider兼容流程 `size-compat-package-current-v1/result.json`、`size-compat-package-previous-v1/result.json`也各 **48/48**；六份报告均network/pageErrors=0、自有进程退出，重复范围不相加为独立总数。`build-candidate-v4-exit.txt` **exit0**、暂存`temp/GameCowork/build/ecd61e821b5843298fc5b418ecb4e386/`，`candidate-v4-integrity.json`为 **1566运行文件/1562映射零差异**、正常Agent guard=false、Quick29文件/336可逆补丁、Canvas318文件；没有虚称4K增量后又重跑完整门禁。
+
+用户另行明确授权本地模拟通过后真实远程验证。本次仅新增 **1张 gpt-image-2 / 3840×2160 / 16:9 / n=1 / PNG**，quality自动省略，不自动重试，不扩大到Codely生成/编程。`manual-4k-live/result.json`已finished、taskState=completed、goalMatched=true；guard imagePosts=1/max1，实际请求字段只有model/n/output_format/prompt/size。真实旅者、石桥、山谷旅馆与瀑布场景输出 **3840×2160 PNG / 10,168,506 bytes**，完整像素存储核验通过，SHA256=`6f62d318e603ace2320362d5bbbe3cc163293822aa5d66cf56239a100b88b061`。原prompt、授权executionPrompt和API size持久记录均匹配，registry字节与原15项暂停official记录不变，Host/Core/Unprotect及全部自有进程退出，inference/其他写入拦截计数0；仅这次标准size加提示要求组合兑现，不泛化为2.5、其他尺寸、高质量或独立超分。该1张属于追加独立授权，不改写原11次预算或把用户手动图计作Agent实测。
+
+首个人工预检曾因15条旧terminal official行的paused/mayContinue标记退出，`manual-preflight-paused.log` / exit1保留；当时没有Core启动或请求，不能计为收费失败。只读按源码确认其无远端ID/terminal且不自动调度后，私有工具仅凭固定15 ID与原行SHA准许这次新测试；没有恢复、修改或重发这些旧official任务，它们仍暂停。实际质量档位和2.5 Key真实4K仍未新增验收。
+
+最新4K正式交付：`build-installed-exit.txt` **exit0**，唯一`app/`原位更新，备份/暂存`temp/GameCowork/build/153b71cc112b4ce3a43d6e46513cf4ee/`。`installed-integrity.json`确认 **1566/1566运行文件、1562/1562映射、source/missing/unlisted差异0**、正常Agent guard=false、Quick29/336、Canvas318；2.1.3-canary.2，builtAtUtc=2026-10-03T18:46:11.741259Z（北京时间10月4日02:46:11）。这次来源与前述01:41主题/分类安装分开保留，不沿用旧包时间。
+
+首次`formal-reopen-proof.json`于UTC2026-10-03T18:47:59.392027Z（北京时间10月4日02:47:59）观察正式 **PID18752**、nativeWindow/HTTP/liveUserData=true、XCAI密钥已配置、恰3模型、策略openai-size且三描述符均API模式，真实4K任务恢复为3840×2160 PNG且SHA仍为`6f62d318...b88b061`，当时leftRunning=true。后续复查该PID已不存在，退出原因未确认，不据无stderr推断产品崩溃或helper/Job确定原因；该记录保留首次观察，不作为当前仍运行的证明。
+
+最新改用桌面Shell正常open启动：`formal-desktop-launch-proof.json`于UTC18:53:03（北京时间10月4日02:53:03）确认正式 **PID42608**、WindowReady；`formal-desktop-restored-proof.json`于UTC2026-10-03T18:54:06.1872371Z（北京时间10月4日02:54:06）再核实launcher退出后仍Running/MainWindowReady、现有XCAI密钥/config与openai-size策略、实际4K任务和SHA恢复true。仅本机GET，无额外GEN，程序留给用户运行的最新PID为42608；窗口句柄不代表Wry像素/几何，视觉来自候选fixture与实际PNG观察。线上结论仍仅 **gpt-image-2这1次3840×2160横图**，不扩为2.5、全部27尺寸、高质量或独立超分。
+
+本轮一次性私有凭据输入在正式配置确认后已清理，正常DPAPI库保留；不在文档记录输入文件名或私有路径。本轮没有Git提交或推送。真实密钥、账号标签、签名URL与原始私有响应不进入文档/Git/测试输出；活动进展只更新本文件，下方历史正文与当时验收事实保持不变。官方剩余15项仍暂停，新增Provider管理不表示Chat/Ollama/ComfyUI执行已接入，通用REST已接线也不表示所有第三方模型均真实验收。
+
+<a id="cpa-variant-buttons-20261003"></a>
+
+## Image 2.5 三个中文选项按钮（2026-10-03）
+
+按用户要求，第三方模型下拉只展示 **Image 2 / Image 2.5** 两个入口。选择Image 2.5后，原Quick工具栏提供 **默认 / 快速 / 精致** 三个按钮，分别请求`gpt-image-2.5`、`gpt-image-2.5-flare`、`gpt-image-2.5-sunburst`；内部四个CPA描述符及既有历史ID仍保留。这是请求路由的展示名称，实际型号“未确认”与账号默认画质/PNG、构图提示边界保持不变。
+
+同家族切换只改变请求型号，保留提示词、构图比例和历史请求参数，不创建或提交任务；历史再次生成及冷重启恢复对应按钮。旧不兼容参数仍须用户明确点击“使用账号默认参数”，选择路由按钮不能代替这一确认。本次只用隔离fixture验证，未追加真实CPA生成，之前8次预算不放宽。
+
+源码契约 **23/23** 及精确逆补丁检查通过；`packaged-current-v1/result.json`与`packaged-previous-v1/result.json`各 **47/47**。每代5次仅loopback fixture POST，外站/页面错误/推理/真实额度使用均0，自有Host/Core均退出；实际验证三按钮精确ID、保留草稿、历史及冷重启、旧不兼容参数不被路由按钮自动修复。证据根为`F:/AI/AgentMake/temp/GameCowork/cpa-variant-buttons-20261003/`。
+
+正式`app/`已通过`build-installed.log`原位更新（exit0），`builtAtUtc=2026-10-03T15:50:45.8125514Z`、2.1.3-canary.2 / **1562资源**；备份与暂存为`temp/GameCowork/build/2b4bdc785c8f4d3cbc9e62352b97c731/`。`installed-integrity.json`确认1562/1562、1558可映射输入与源码相同、0差异，Quick28文件/305逆补丁、Canvas318文件，正常Agent guard=false。`app-reopened.json`确认正式PID53316、进程/原生窗口存在并留给用户运行；只证明重开，不声称Wry像素/几何验收。后台及请求参数未改变，不追加真实生成、推理或Git提交。
+
+<a id="cpa-flexible-20261003"></a>
+
+## 第三方 CPA 图片独立分栏与账户实测（2026-10-03，正式 app 已更新，8次预算已用完）
+
+用户要求把自有CPA能力从官方2D模型目录中分开，并开放Image 2尺寸选择、接入CPA现有Image 2.5。Quick源码现提供第五个 **第三方 · CPA** 分栏，内部仍按image模式复用原生成、历史、再生成与下载；官方四分类、Pro、报价和账号认证保持独立。四个固定条目如下，不为CPA条目制造官方权益或替换模型别名。
+
+| CPA显示条目 / 本地描述符 | 实际请求模型ID | 最终入口收敛范围，实际型号身份未获回执 |
+| --- | --- | --- |
+| GPT Image 2 · CPA / `cpa-gpt-image-2` | `gpt-image-2` | 账户自动size/quality、PNG；构图比例仅作为提示 |
+| GPT Image 2.5 · CPA / `cpa-gpt-image-2-5` | `gpt-image-2.5` | 同上；该请求ID已回图，未证明后台换模 |
+| GPT Image 2.5 Flare · CPA / `cpa-gpt-image-2-5-flare` | `gpt-image-2.5-flare` | 同上；该请求ID已回图，不将xhigh/JPEG当作生效 |
+| GPT Image 2.5 Sunburst · CPA / `cpa-gpt-image-2-5-sunburst` | `gpt-image-2.5-sunburst` | 同上；该请求ID已回图，不将max/WebP当作生效 |
+
+收敛前源码曾依据官方API暴露尺寸预设/custom、多个quality及PNG/JPEG/WebP；用户要求核实CPA账户实际支持后，本次真实样本证明这些请求没有兑现。**已装配的最终入口仅保留单张、size=auto、quality=auto、PNG与明确标为“构图提示”的比例选择**。这是防止假选择的保守策略，不由7个样本推定账户永久固定尺寸或质量。精确像素/2K/4K、高级质量档和服务格式切换已移除；比例可选auto、1:1、3:2、2:3、16:9、9:16、4:3、3:4，仅编入提示词，不保证像素或比例。社区同路径观察与本机证据分开：唯一带16:9提示样本EOF，没有本机比例成功证明。实际文件像素、服务报告、原请求分别显示；旧历史不改，不兼容再生成须用户明确使用账户默认，不自动提交。
+
+模型与边界集中在`src/core/binary/out/gamecowork-cpa-image-models.js`，前端`local-models.js`和`local-generation.js`按确切描述符匹配能力。四条目共享既有Image 2绑定、Provider和认证密钥，公共CPA兼容入口只接受auto/auto/PNG/n=1，再通过内部`createCpaImageTask`和持久私有profile构造图片请求；旧Provider的1024/low/png常量不能覆盖它。**本轮不重写Provider数据库或复制密钥**；公共通用`generator/createTask`即使冒称CPA仍走通用模板，不能设置私有profile。重启、取消、未知创建不重发及已核验产物缓存继续复用；历史请求与服务返回字段不互相覆盖。
+
+证据根为`F:/AI/AgentMake/temp/GameCowork/cpa-flexible-20261003/`。22:03（UTC14:03）首轮GET模型列单HTTP200、26个模型，四ID均存在；随后仅GET观察版本/模型元数据。只读阶段无GEN；用户另授权最多8次单张低并发CPA实测后，实际串行完成全部8次客户端提交，**7个产物完成、1次HTTP500 EOF失败，预算已用完，不再新增GEN**。`manual-live/result.json`、`manual-live/guard.json`保留终态/SHA及imagePosts=8/max8、编程推理/其它图片/非预期写入均0、自有进程已退出；Provider数据库不改写。所有证据不保存服务地址、Key、原始账号响应或账号labels。
+
+追加只读响应核实实际服务为 **CLIProxyAPI v8.0.8 / commit fd48ea6 / build 2026-10-01T03:34:04Z**，`server-version-proof.json`保留版本字段；未使用管理凭据，管理端点返回401头中的版本信息。模型列单没有capability/quality/size元数据。已按对应完整commit`fd48ea6840f5572deb53aeb5657740937ac9daaa`核对 [原代理图片执行器](https://github.com/router-for-me/CLIProxyAPI/blob/fd48ea6840f5572deb53aeb5657740937ac9daaa/internal/runtime/executor/codex_openai_images.go)：四ID走账户上游直接图片路径，参数转交而没有枚举质量/尺寸能力；这证明该代理代码不固定1024，但仍不能证明账户后端接受并兑现各档。公开源码/MIT/SHA位于证据根`proxy-reference/`，不执行其实现，不用Git最新HEAD冒充用户版本。
+
+社区原作者对同一账户原生图片路径的 [2026年9–10月实测](https://github.com/foksa/codex-img/blob/55710a2299a8e560bad780bc54b4304b19a90ca2/README.md#the-backend)报告size字段未兑现、quality最高观察到medium、原生PNG，以及2.5请求未提供换模证据；这属于作者样本，不能替代本机实测或全局能力保证。其建议以明确比例提示引导画面，JPEG/WebP和精确像素由本地转换完成。固定README commit为`55710a2299a8e560bad780bc54b4304b19a90ca2`（2026-10-01），Apache-2.0/SHA位于`community-reference/`；只读取证，没有安装或运行该工具。
+
+| 真实CPA串行实测 | 请求参数 | 实际产物 / 服务返回 | 本机样本结论 |
+| --- | --- | --- | --- |
+| 1 / `gpt-image-2` | 1024×1024、low、PNG | completed；实际1254×1254 PNG，服务报告low/1254×1254/PNG | 请求1024像素未兑现 |
+| 2 / `gpt-image-2` | 1536×1024、high、PNG | completed；同上 | 横图尺寸和high未兑现 |
+| 3 / `gpt-image-2` | 1024×1536、medium、PNG | completed；同上 | 竖图尺寸和medium未兑现 |
+| 4 / `gpt-image-2` | 1280×896、auto、PNG | completed；同上 | 自定义尺寸未兑现，auto实际报告low |
+| 5 / `gpt-image-2` | 1536×864、auto、PNG，并前置16:9构图句 | failed；Provider HTTP500 EOF，无artifact，未重试 | 没有auth/quota/超时/不支持参数指示；该样本不能证明构图比例有效或无效 |
+| 6 / `gpt-image-2.5` | 1024×1024、low、PNG | completed；同1254×1254/low/PNG | ID可回图，但没有实际模型身份回执 |
+| 7 / `gpt-image-2.5-flare` | auto、xhigh、JPEG | completed；同1254×1254/low/PNG | xhigh及JPEG未兑现，未确认真实Flare身份 |
+| 8 / `gpt-image-2.5-sunburst` | auto、max、WebP | completed；同1254×1254/low/PNG | max及WebP未兑现，未确认真实Sunburst身份 |
+
+人工driver只走本人绑定CPA，显式阻断官方生成/编程推理与其它外站；每次单张、并发1、创建前持久记录，未重试或借用其它凭据。7个成功文件经过实际MIME/像素/长度/SHA核验进入本人历史；公开任务事实未提供可确认实际model报告，四ID回图不等于实际2.5/Flare/Sunburst换模确证。最终auto/auto/PNG和构图提示流程由隔离fixture验收，没有超8预算补发该默认组合或其它真实生成。
+
+| 本轮验证 / 交付 | 当前证据与边界 |
+| --- | --- |
+| 收敛前契约 / 新事实契约 | 三组`codely-cpa-image-models.test.cjs`、`asset-generation-cpa-profile.test.mjs`、`asset-generation-template-parameters.test.mjs`进入收敛前门禁；随后增加`asset-generation-cpa-reported-image.test.mjs`保存真实返回事实。最终auto/auto/PNG、构图提示与旧历史兼容契约结果见下表，不沿用旧全参数声明 |
+| 收敛前双代CPA流程 | 源码此前各31项、`package-current-v2/result.json`与`package-previous-v2/result.json`候选各33项通过，外站/浏览器错误0、自有进程退出。该driver当时允许六quality/三format，仅证明透传与实际48×32 PNG差异；最终专项另列，不作上游能力证明 |
+| 收敛前完整门禁 | `verify-cpa-final` **exit0、Rust160/160**；这是仍含6种quality/3种format候选选项的源码门禁，仅隔离fixture。真实账户结果随后发现参数未兑现，不能把该exit0当作最终收敛后交付或上游全支持 |
+| 收敛前候选 | `candidate-integrity.json`为1562/1562资源、1558映射一致，Quick28文件/284补丁、Canvas318文件、正常Agent guard=false；这是全参数候选，当时未正式安装。最终包来源见下表，不以该旧候选代替收敛后的CPA交付 |
+
+| 收敛后最终验收 / 交付 | 实际结果与边界 |
+| --- | --- |
+| 最终源码后端门禁 | `verify-account-backend.log` / `verify-account-backend-exit.txt` **exit0、Rust160/160**；命令为`tools/verify-local.ps1 -RealCore -SkipBrowser -AgentTestPackage .../cli-official-programming-20261003-v3`。这是收敛后的后端门禁，不能称又执行了整套`-RealCore -Chat`浏览器门禁 |
+| 最终定向契约 | CPA/服务报告/实际helper **33项**，账号/音频/恢复 **25项**，`frontend-account-contracts.log`前端相关 **30/30**通过；分组不相加当独立总数。覆盖active参数拒绝、真实返回事实保存、旧请求默认确认、秘密与scope边界 |
+| 最终候选双代原GUI | `account-package-current-v1/result.json`、`account-package-previous-v1/result.json`各 **47/47**；每代5个显式loopback POST，WAN/pageErrors/真实Key使用均0、自有PID全部退出。实际Rust/Core/双层原GUI验证四请求ID、auto默认、8构图提示、请求/服务报告/实际48×32 PNG的区别、下载/重启、旧草稿阻断及明确默认修复；fixture不证明比例或最终默认组合的线上行为 |
+| 最终候选来源 | `candidate-final-integrity.json` **1562/1562**资源size/SHA、**1558/1558**维护输入映射一致，差异/漏装/额外资源0，正常Agent`testGuardIncluded=false`；Quick **28文件/298可逆补丁**、Canvas **318文件**来源核对通过 |
+| 正式app原位更新 | `build-installed-account.log` / `build-installed-account-exit.txt` **exit0**；唯一正式app为 **2.1.3-canary.2 / 1562资源**，`builtAtUtc=2026-10-03T15:10:35.6467193Z`（北京时间23:10:35）。备份/暂存为`temp/GameCowork/build/a92660142110484fb2e99412b6de4c8e/`，不另设日常安装 |
+| 正式资源与本人状态只读核对 | `installed-integrity-final.json`同为 **1562/1562、1558映射、0漂移**；`installed-readonly-proof.json`真实正常用户数据四CPA能力均true，既有8试验仍7completed/1failed、服务报告及实际缓存SHA保持。guard中paidRequestAttempted/keyRequestAttempted/otherWritePrevented均false，未新GEN/inference、未收集账号labels、自有进程退出；这不是原生Wry像素验收 |
+| 正式app重开 | `app-reopened-final.json`于`2026-10-03T15:13:02.4346488Z`（北京时间23:13:02）确认正式 **PID49984**、processRunning/nativeWindowExists=true，留给用户运行；`geometryObserved=false`，只证明进程与窗口存在 |
+
+上一轮官方45项仍为 **30完成、15 HTTP400/no-ID未跑通**。23:12的`installed-readonly-proof.json`再读官方窗口为 **3198/3200、剩余2**，周窗口6314/16000、剩余9686；没有新增官方GEN/编程推理，也不因CPA授权放宽官方边界或安排自动续测。CPA8次预算已用完，停止新增真实生成。没有提交或推送GitHub；最终状态只维护本文件。
+
+<a id="official-all-models-20261003"></a>
+
+## 四分类官方模型逐项接入（2026-10-03，正式 app 已更新，真实45项中30项完成）
+
+用户明确要求快速生成的 **2D、3D、音乐音效、视频四分类全部接入，并授权每个模型使用最低可用参数进行真实测试**。本阶段从原模型定义、原 builder 和原报价函数逐项取证，接入43个固定 Pro 入口契约，其中包含原图片分层页面的 Seedream 辅助模型；Seedance2有三个真实版本，人工验收清单共45项。当前 **30项真实完成，覆盖28个独立原模型；15项创建返回HTTP400且没有远端任务ID，仍未真实跑通**。原 internalOnly 的增强视频/Viggle、原目录排除的 material/sprite-atlas 不因静态定义存在而开放。
+
+| 原分类 | 本阶段维护输入与范围 | 已有证据 / 尚待完成 |
+| --- | --- | --- |
+| 2D及辅助 | `gamecowork-official-image-models.js`的16个图片/天空盒/分层模型，加`doubao-prompt`文字结果；保持原参数/参考字段与报价 | 8个图片模型及提示词真实完成；其余8个图片入口HTTP400。分层17文件、原层元数据和EXR/HDR存储已有隔离证据，不能代替失败入口的真实验收 |
+| 3D | `gamecowork-official-video-3d-models.js`的12个生成/转换/分割/贴图/减面/绑定/动作入口，Tripo保留真实文生/图生报价分支 | 10个入口真实完成，`rodin-25`与`motion`创建HTTP400。生成结果已复用于后续处理；GLB及FBX/OBJ/STL/ZIP/USDZ检查不冒称所有模型已在Editor渲染 |
+| 视频 | 同模块7个Pro模型，Seedance2三个版本分别列入人工清单 | Seedance2三个版本及Seedance2.5真实完成，共4项、2个独立模型；其余5个模型创建HTTP400。未知POST不重发，停止本地等待不冒称取消云任务 |
+| 音乐音效 | `gamecowork-official-audio-text-models.js`的7个音频/声音入口；声音克隆按原`_N/k5/wN`逻辑把实际MP3预览作为音频结果 | 7个入口真实完成；克隆复用同一次TTS产生的至少10秒合成声源。实际返回音色身份时才保留，不把未返回的voiceId造为成功；容器/帧检查不等于所有codec解码 |
+
+公共接线由`gamecowork-official-model-catalog.js`、`gamecowork-codely-official-generator.js`和`gamecowork-official-task-output.js`承接：严格原字段、同工作区已登记素材、SHA冻结后的服务端上传、实际付费/报价、一次提交及已知远端ID查询。账号与Cookie/CSRF仍只在broker；客户端能力逐模型匹配id/kind/mode，不以全局Pro标签推定支持。结果去重后保存已登记媒体位置及原层/动作元数据；输入/原图回显和普通thumbnail不能冒作主产物，未知任务状态不判完成。克隆音频的原结果逻辑是上述预览规则的明确例外。
+
+声音克隆前端专项核对确认：原`_N/k5/wN`已经接受完成任务的音频预览，但媒体分类`lwe`优先命中`preview`键，把MP3误判为image。维护补丁仅在原`lwe`中把已知音频扩展（WAV/MP3/AAC/FLAC/Ogg/M4A/Opus）放在键名判断之前，原输出遍历、完成规则及`xZ`播放器等其余函数保持原字节。`codely-quick-audio-preview.test.mjs` **4/4**，源码`quick-audio-preview-source-v3/result.json`及补丁后候选`quick-audio-preview-candidate-final/result.json`的实际MP3/Opus加载、play/timeupdate/ended各**2项通过**。这只证明原播放器对两种实际样本的播放，不代表全部codec或真实长音频；额外极短FLAC不计为全面验收。该补丁已进入下述21:30正式包，最终完整门禁另行记录。
+
+证据根为`F:/AI/AgentMake/temp/GameCowork/official-all-models-20261003/`。早期源码模型/媒体/能力、资产生命周期和账号/编程分组契约均通过，分组存在交叉，不相加冒充独立总数；源码双代逐模型证据保留在`e2e-all-current-v8/result.json`与`e2e-all-previous-v2/result.json`。后续显示与缓存定向契约`display-and-cache-final-contracts.log`为**39/39**，恢复与对账契约`recovery-final-contracts.log`为**35/35**。
+
+| 本轮交付 / 验收 | 当前证据与边界 |
+| --- | --- |
+| 账号/缓存补丁后候选双代资产流程 | `final-package-current/result.json`、`final-package-previous/result.json`均通过：每代43个模型逐一HTTP提交/真实fixture ID查询/媒体SHA、4类原GUI控件/预览播放/保存/历史，以及4项恢复与scope/分页检查。每代fixture创建49次=43 API+4 GUI+2恢复专用任务；恢复本身没有重复创建，外站请求为0，自有进程已退出。该包在最后`lwe`分类补丁之前，不能称43模型全部已在该最后补丁后重跑；音频补丁后另有上述候选专项 |
+| 账号/缓存补丁后候选双代账号流程 | `final-account-current/result.json`、`final-account-previous/result.json`各**20/20**；后一代使用无邮箱fixture。原菜单积分箭头复用`controlPlane/openUrl`并固定到`https://codely.tuanjie.cn/dashboard/usage`；邮箱未知时显示“账号ID”，不以UID冒充邮箱；Pro来自实际订阅与active/seat字段。候选fixture与下述本人只读观察分开记录，均不代表Wry几何验收 |
+| 本人真实账号菜单只读观察 | `manual-live/account-menu-readonly-final.json`：真实Rust/Core、正常用户数据与Chromium原两层GUI的登录、username匹配、邮箱或账号ID标签匹配、active Pro徽章匹配、原usage RPC和官方网页目标断言均为true；无GEN/inference，未请求推理Key，自有观察进程已释放。使用进程内只读spy/guard（`instrumentationUsed=true`），无截图/账号labels记录、无app资源或任务库手改；`wryObserved=false`，不声称原生Wry像素/几何已验证 |
+| 候选资源与正常Agent | `candidate-final-integrity.json`：**1561/1561** size/SHA、**1557/1557**可映射维护输入一致，差异/漏装/未登记资源为0，正常Agent `testGuardIncluded=false`。候选时间12:31:18Z与下述原位安装时间分开记录 |
+| 最终正式app原位更新 | `build-app-reference-final.log`、`build-app-reference-final-exit.txt` **exit0**；正式`app/package-manifest.json`为**2.1.3-canary.2 / 1561资源**，`builtAtUtc=2026-10-03T13:30:12.2452294Z`（北京时间21:30:12），包含最后`lwe`音频分类补丁。备份和暂存位于`temp/GameCowork/build/fd5f9ec5168b431db5c2e6eefa944a1e/`；此前20:42安装日志保留，不作为最终包来源 |
+| 最终正式app完整性 | `installed-reference-final-integrity.json`：**1561/1561** size/SHA、**1557/1557**维护输入映射一致，差异/漏装/额外资源为0，正常Agent `testGuardIncluded=false`；Quick **28文件/272可逆补丁**，Canvas **318文件**来源核对通过。只维护现有日常安装 |
+| 正式前端真实克隆缓存手动只读专项 | `cached-clone-history-readonly-final-v2/result.json`通过；显式`codely-cached-clone-audio-e2e.mjs --read-owned-cache --frontend .../app/frontend`使用正式静态前端、真实production row projector及仅GET的回环HTTP fixture，从原History唯一克隆卡进入原对话框并点击原播放按钮。实际已缓存**50,352字节MP3**，duration **4.7375s**、currentTime **0.273053s**、readyState **4**、paused=false、error=null；真实任务库与缓存SHA前后不变，UI mutation/GEN/inference/外站均为0，无需额外voiceId。缺少手动开关会在读取tasks前拒绝；不进入默认自动门禁。此项验证原组件和本人既有媒体，不启动真实Rust/Core全链，也不证明原生Wry几何或其它克隆/codec |
+| 本人真实45项与已有任务恢复 | `manual-live/result.json`当前**30 completed + 15 failed**，覆盖28个独立模型。首轮21完成、9个真实远端ID缓存失败、15个创建HTTP400/no-ID；随后仅恢复这9个已有任务，`recover-final-known-only.log`无新GEN。保留原失败与续查证据，不将30项称为43模型全部线上成功 |
+| 最终完整门禁与最后音频补充 | `verify-final-reference-v3.log`、`verify-final-reference-v3-exit.txt` **完整exit0，Rust160/160**；命令为`tools/verify-local.ps1 -RealCore -Chat -AgentTestPackage .../cli-official-programming-20261003-v3`。运行中的脚本清单未包含随后新登记的音频项，因此不称该门禁已经运行新增专项；另执行`codely-quick-audio-preview.test.mjs` **4/4**及补丁后候选原`xZ`的MP3/Opus **2/2**，作为最后小修补充验收。此前`verify-all-models-v2`的exit0/Rust160属于缓存/账号补丁前历史，不作最终验收替代 |
+| 日常正式app重开 | `manual-live/app-reopened-final.json`于`2026-10-03T13:46:32Z`（北京时间21:46:32）确认正式app **PID41328**、`processRunning=true`、`nativeWindowExists=true`并留给用户运行；`uiGeometryObserved=false`。此记录只证明正常进程和原生窗口存在，不扩大为Wry几何/像素验收 |
+
+Windows偶发EPERM只对同一已fsync临时文件做有界rename重试，耗尽保留旧记录和准备好的字节；不删除旧目标、不重发生成POST。已知ID恢复保留已核验artifact，只GET查询和补收缺失文件，并校验原账号、工作区和任务ID。官方对象存储把JPEG标PNG、PNG标WebP时，仅在实际PNG/JPEG已完整检查后纠正transport MIME并保留来源标记；显式输出MIME仍须匹配。未知创建只读本人限定时间窗History，分页完整、ID无重复且原模型/参数唯一匹配才绑定；没有匹配不证明未扣额，也不授权重发。HTTP400诊断有界且脱敏，不回显凭据或签名URL。
+
+15个未跑通入口为`hy-image-v3`、`qwen-image`、`sprite-animation`、`game-ui-kit`、`flare-skybox`、`skybox`、`qwen-layer`、`seedream-layer`、`minimax-h3`、`minimax-h3-max`、`wan3`、`happyhorse-11`、`effect-video`、`rodin-25`、`motion`。45项报价合计**7062积分**仅为读取的报价，不能当作实际结算费用。
+
+用户随后明确**3200是官方5小时编程窗口上限**，并选择先完成代码和已有结果恢复，不安排后续自动测试。初期`manual-live/coding-budget-proof.json`与最后只读GET的`manual-live/coding-budget-proof-final.json`均确认5小时`used3198/3200、remaining2`，窗口结束`2026-10-03T23:27:57.979+08:00`；最后周窗口为`used6314/16000、remaining9686`，`isExhausted=false`。`manual-live/no-new-generation.json`仍禁止新GEN和新编程inference，不因其它窗口余额或exhausted标记放宽用户上限，也不能假定与生成积分相互独立。剩余15项留待用户后续明确续测；当前不建自动提醒或任务。Canvas生成schema和云协作仍未接入，本轮未提交或推送GitHub。
+
 <a id="codely-live-login-20261003"></a>
 
 ## 本人真实官方登录与 Pro 权益交付（2026-10-03，正式 app 已更新，图片与文字真实验证通过）
@@ -189,7 +450,8 @@
 | Quick 适配器 | `/local-session` 官方会话返回 `{mode:'codely-official', user:{id,name,username}, capabilities.officialIdentity}`；`/user/me`、`/credit/my-credits`、`/credit/my-paid-status` 官方分支返回真实回执；`/credit/cost-preview`、`/sso/generate` 非绑定模型仍诚实 503（accountMode 如实标注）；未登录时全部行为与原状一致 |
 | Quick 本地身份模块 | `local-identity.js` 接受显式 `codely-official` 模式（严格校验 id/name 长度与控制字符）；`local-generation.js` readiness 同等识别官方模式，**CPA 本地生成不回归** |
 | Canvas 服务/适配器 | Rust `local/session` 在 broker 已认证时经 5 秒超时 RPC 附加 `official` overlay（真实 username/role/unity_id + 真实 points）；`canvas-local-auth.js` `validateCanvasOfficialOverlay` 严格拒绝任何 token/jwt/vip 字段，auth value 保持本地存储会话不变、user 展示官方身份、`updatePoints` 返回真实数据 |
-| 测试 | `codely-account-official-surface.test.mjs` **6/6**：官方站 jar 单次 bootstrap、jar cookie 复用、登录前 503/本地模式、轮换后 jar 重建并携新 token、登出复位、Canvas 快照无 token 泄漏；E2E 扩至 **13 项**（两轮登录均验证 Quick 官方身份/真实积分/Canvas overlay + 登出复位）；账号契约合计 **22/22** |
+| 测试 | `codely-account-official-surface.test.mjs` **6/6**：官方站 jar 单次 bootstrap、jar cookie 复用、登录前 503/本地模式、轮换后 jar 重建并携新 token、登出复位、Canvas 快照无 token 泄漏；E2E 扩至 **13 项**（两轮登录均验证 Quick 官方身份/真实积分/Canvas overlay + 登出复位）；账号契约合计 **22/22**。两处 ledger 的本地适配器哈希随本轮扩展同步更新（Quick `local-identity/local-generation`、Canvas `canvas-local-auth.js` 的 sha256/currentSha256），来源完整性检查与 `codely-canvas-source-contract.mjs` 10/10 通过 |
+| 装配 | `verify-local.ps1` 默认全量 **exit 0** 后经 `tools/build-local.ps1`（pwsh）原位更新正式 app：**1546 个运行文件**逐项核验（builtAtUtc 2026-10-02T19:59:33Z），构建备份 `temp/GameCowork/build/3d7c95f5404a49beaa8aaac4e14a16e6`；包内复验 `codely-account-login-e2e.mjs --packaged` **13/13 通过** |
 
 第二段之后的剩余边界（更新原第 1–2 条）：
 

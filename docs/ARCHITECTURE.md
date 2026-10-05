@@ -60,15 +60,23 @@ Core 的 `Tma` 在真实 `session/new` 完成且 holder / 初始化 promise / me
 
 当前两代主界面的资产入口使用原 PG / QG / sq 容器，加载 `codely-generator/` 内原 Quick / History 与 `codely-canvas/` 内原 ReactFlow 客户端。它们来自实际 Codely 包明确引用的远端客户端，资源及精确适配补丁记录在各自 `source-ledger.json`；不是 EXE 内嵌服务端。此前 `gamecowork-asset-generation.js` 的自研界面仍保留为历史维护输入，但不再是当前入口。
 
-底层资产服务为 `src/core/binary/out/gamecowork-assets.js`，两份 Core 入口注册同一个 `generator/*` 服务；`gamecowork-codely-generator.js` 按原客户端 API 形状适配本应用历史、标签、偏好、上传与媒体。Rust 将请求集中到默认 Core owner。Provider 配置、任务、上传与实际媒体保存在 Core home 的 `generator/`，API Key 不回显。官方图片通过独立的内部执行器接入同一缓存；其它未接通模型明确返回不可用，官方积分与权限仍来自真实服务回执。
+底层资产服务为 `src/core/binary/out/gamecowork-assets.js`，两份 Core 入口注册同一个 `generator/*` 服务；`gamecowork-codely-generator.js` 按原客户端 API 形状适配本应用历史、标签、偏好、上传与媒体。Rust 将请求集中到默认 Core owner。Provider 配置、任务、上传与实际媒体保存在 Core home 的 `generator/`，API Key 不回显。当前源码的 43 个官方生成契约由内部账号执行器接入同一缓存：图片 16 个（含 Seedream 分层辅助）、视频 7 个、3D 12 个、音频/文字 8 个；原菜单里的多模态提示词仍放在 2D 分类。隐藏/内部模型不获得普通 Pro 能力，官方积分、权限与报价继续来自真实服务回执。
 
 `gamecowork-codely-account.js` 是两份 Core 入口共用的账号 broker，承接原登录 RPC、设备授权轮询、授权码交换、刷新、组织/订阅/额度查询与退出，并提供私有图片与推理凭据能力。主账号及站点令牌保留在 Core 内，持久记录经 Rust 的 Windows DPAPI vault 密封后写入本应用目录；页面只能得到受限的展示字段。账号与生成请求的时限覆盖完整响应体读取，取消、退出和新会话通过会话代次隔离旧请求；退出标记阻止旧密封记录在重启后恢复。系统浏览器链接由 Core 请求宿主打开，打开失败和登录失败必须保留错误回执，不能转成成功状态。
 
-官方账号有效时，broker 在服务端完成 Quick 的 SSO bootstrap 和 Canvas 的会话交换，向本地适配层提供官方身份、付费状态和额度数据。Quick/Canvas 页面不接收这些站点令牌，登录/退出后的身份需要重新读取；未登录时明确使用本地身份。正式 app 已原位更新；本人真实设备授权、Quick 付费读取、单张官方 Pro PNG 生成与单个文字模型短请求均已验收。图片核验实际字节与 SHA，文字核验 GLM-5.3-FLASH 的实际流式最终帧；取得真实目录不等于全部目录模型逐项实测。自动门禁继续使用隔离 fixture；扣额、结果尺寸、请求范围与包来源统一见 [状态文档](../RESTORE_STATUS.md)，Canvas 生成 schema 与组织协作仍待接入。
+官方账号有效时，broker 在服务端完成 Quick 的 SSO bootstrap 和 Canvas 的会话交换，提供受限的身份、付费状态和额度数据；页面不接收站点令牌。两代账号菜单共用`assets/gamecowork-account-display.js`，只展示实际username/email；邮箱未知时标为账号ID。Pro依据真实订阅active/seat字段，个人套餐读取不依赖组织列表非空。原`controlPlane/openUrl`保留，由已认证Core把站内路径映射到固定官方网页，usage为`https://codely.tuanjie.cn/dashboard/usage`，不复用禁用的旧API地址。当前43个契约已装配，45项真实清单中30项完成、15项HTTP400未跑通；完整门禁、结算、原生界面观察与包来源统一见 [状态文档](../RESTORE_STATUS.md#official-all-models-20261003)。Canvas生成schema和云协作仍未接入。
 
-`gamecowork-codely-official-generator.js` 为原 Quick 的 `frontier_flare` / `frontier_sunburst` 普通图片保留原参数语义。Core 读取官方 Pro 状态与实际报价，验证当前工作区最多 16 张已登记参考图及组合 64 MiB 预算，再上传冻结的真实字节并提交官方任务。账号绑定与远端任务 ID 留在私有任务字段，公开历史可展示真实 `officialTaskId`；未知创建结果不重发，仅已知 ID 且账号匹配时恢复查询。未知状态和预览 URL 不视为完成，实际产物沿已有媒体、MIME、SHA、大小与原子落盘检查进入历史和下载。官方媒体下载不带账号 Cookie、Bearer 或 CSRF，继续限制 HTTPS、公网目标和重定向；显式隔离回环 fixture 仅用于测试。分层图片和其它原模型不由这两个入口的接线推定支持。
+`gamecowork-official-model-catalog.js`汇总图片、视频/3D与音频/文字三个规格模块，固定原模型ID、构建参数、报价字段、引用指针和输出类型。Core读取实际Pro状态/报价，验证当前工作区登记引用，冻结字节与组合64 MiB预算，再经broker上传并提交；Tripo按实际imageUrl选择原文生/图生报价。未知创建不重发。已知ID的`/task/:id/resume`只恢复同账号、同工作区任务的GET查询和缺失文件收集；`/task/:id/reconcile`仅从本人限定时间窗History取得证据，分页完整、ID无重复且原模型/参数唯一匹配才允许绑定，客户端不能指定remoteID。无匹配不证明未创建或未扣额。未知状态和普通预览不判完成；媒体下载不带Cookie、Bearer或CSRF，限制HTTPS、公网目标和重定向。
 
-自有 `cpa-gpt-image-2` 条目仍通过 `local-models.js` 附加到原注册表，与官方入口共同由 `local-generation.js` 消费逐模型能力。`modelBindings` 持久引用实际 Provider，Core 每次提交重新核对 enabled、认证、模型和适配器，客户端不能在生成 payload 中改选 Provider。实际 PNG 宽高写入 artifact 元数据，保留请求参数与真实结果的区别；这些 Quick 能力不替代 Canvas 服务端 schema。
+`gamecowork-official-task-output.js`提取有界媒体/文字，保留原图层、天空盒、动作等结构；核验内容/MIME、长度与SHA后投影为自有artifact，History通过索引恢复本机地址和原参数。媒体模块为`gamecowork-{jpeg,image,hdr,audio,model}-media.js`，覆盖完整JPEG存储及EXR/HDR、音频容器/帧、模型归档的有界检查；不执行归档内容，不宣称所有codec解码或模型渲染。官方对象存储错误标注raster MIME时，仅实际PNG/JPEG完整检查通过才纠正transport类型，显式输出类型仍须匹配。声音克隆沿用原`_N/k5/wN`的实际音频预览结果，真实返回voiceId时才保留；不得根据任务ID或预览URL制造音色身份。
+
+原Quick的`lwe`媒体分类优先使用preview/image键，曾把已完成克隆的MP3预览误判为图片；已装配补丁只在该函数开头先判断已知音频扩展。原`_N/k5/wN`遍历/结果/完成规则和`xZ`播放器等其余函数保持原字节，补丁记录在Quick来源ledger和importer。4项源码契约及源码/补丁后候选的实际MP3/Opus播放各2项通过；极短FLAC额外尝试不构成所有codec可播放的证明，完整门禁以活动记录为准。
+
+CPA 描述符由 `local-models.js` 扩展原注册表的独立 `thirdparty` 分组；Quick 展示第五个“第三方 · CPA”分栏，内部执行与历史分类仍是 image，不为外部服务制造官方权益。四个固定描述符对应真实列单ID `gpt-image-2`、`gpt-image-2.5`、`gpt-image-2.5-flare`、`gpt-image-2.5-sunburst`；`local-generation.js`逐项验证能力。`modelBindings`引用既有 Provider，新条目可复用旧 Image 2 绑定及同一密钥，客户端不能在生成payload中改选 Provider。模型列单只读成功不证明生成可用，CPA的2.5别名不擅自映射为Flare或Sunburst。
+
+`gamecowork-cpa-image-models.js`与前端描述符已按8次实测收敛并装配：公共CPA入口仅接受size=auto、quality=auto、PNG和构图比例提示，单次一张。这是保守默认策略，不声称账户永久固定quality/尺寸。Core通过内部`createCpaImageTask`和持久私有profile构造固定白名单请求；Provider认证复用，旧1024/low/png模板不能覆盖profile，ProviderDB不改写。公共通用`generator/createTask`不能指定私有profile；重启/取消/未知创建不重发继续复用。旧历史不改，不兼容草稿再生成须明确接受默认参数；实际MIME/像素/SHA、`providerReportedImage`真实返回字段和请求分开，不制造可确认型号身份。Quick能力不替代Canvas服务端schema。
+
+实际CPA响应版本为v8.0.8/fd48ea6，对应源码转交参数；人工8次串行单张中7个产物完成、1次EOF失败。7个样本均实际1254×1254 PNG、报告low，证明本机这些quality/size/format请求没有兑现；不由此泛化全部账户永久上限。四ID都回图而公开任务事实未提供可确认model报告，2.5换模未确认。构图提示是社区同路径观察的引导方案，本机唯一带16:9提示请求失败，不能声明精确尺寸或比例保证；最终收敛源码/包验见活动状态。
 
 `gamecowork-official-llm.js` 和两代原模型菜单共用的 `assets/gamecowork-official-models.js` 承接官方编程权益。用户显式点击“启用 Codely 官方 · Pro 模型”后，Core 核实账号及当前组织，取得仅在内存保存的 CLI 推理 Key 并读取真实模型目录；登录、额度读取和展开菜单不获取该 Key。选择的官方模型与本地 CPA 配置并存，切换不覆盖已有 Provider 设置。Agent 只获得绑定工作区、会话、模型及账号/组织代次的可撤销本机能力，真实 Key 不进入 Agent、前端、配置或日志。Core 固定官方上游，验证所选模型对应的协议及最终帧；退出、切换组织、关闭会话或失去工作区所有权会撤销相关能力。
 
@@ -81,6 +89,20 @@ Core 的 `Tma` 在真实 `session/new` 完成且 holder / 初始化 promise / me
 `EditorContextQueries.cs` 提供六项主线程读取：选择、工程根目录、实际窗口、标签、层和活动工具；不切换工具、焦点或选择。`EditorAssetQueries.cs` 使用真实 AssetDatabase 和已注册包挂载，分页与扫描 / 响应预算保留 `queryComplete`、`truncated`、`totalAssetsExact`。`AssetPreview` 的异步结果保留实际 `previewStatus`；仅就绪原生像素编码为有界 PNG，不以缩略图替代失败。`EditorPackageQueries.cs` 读取 `PackageInfo.GetAllRegisteredPackages()` 的当前已加载注册表，声明 `scope:"currently-loaded-registered-packages"`，不从 manifest 推断安装结果或发起联网 UPM 列单。
 
 `EditorSceneMutations.cs` 在主线程执行批准后的空对象 create、有限 modify 和已加载场景 save。create / modify 使用 Unity Undo 并标记实际场景 dirty；save 仅写原有场景文件，校验启动时工程 / Assets 与已加载场景文件的 Windows 身份，拒绝链接、硬链接和替换代次。路径检查与 Unity 的保存调用之间仍有 TOCTOU 窗口，保存也不是可回滚事务。`EditorCancellation` 在 effect admission 前校验同工程、domain、client / cancel nonce 及原 TCP 所有权；nonce 位于 transport envelope，不由模型参数提供。Agent 按实际 action 判断读写权限，拒绝用 `command` / `operation` 遮蔽写动作；同一调度队列中的编辑器控制、Console clear 和场景写入串行，读取批次在下一项写入前结束。Rust 通用本地工具入口继续拒绝场景写动作。
+
+## 自定义 Provider 的配置与执行边界
+
+`gamecowork-provider-registry.js`、`gamecowork-provider-catalog.js` 与 `gamecowork-provider-vault.js` 管理新的独立 Provider 注册表、目录和凭据，原客户端通过 `codely-generator/provider-manager.js` 提供选择与管理。每条动态模型身份绑定 Provider ID 和确切上游模型 ID；目录中失去的模型保留历史身份并置为不可用，不用同名模型替代。切换地址、协议或认证后须重新读取目录，完整分页、重复 ID 和上限检查失败时不发布部分目录。连接检查只发起 GET 目录请求，不进行收费生成。
+
+新凭据采用 Windows DPAPI CurrentUser 密封，先写不可变的凭据版本，再原子更新注册表引用；前端仅得知是否已配置，留空保留、显式清除才移除。注册表与模板不接受秘密，凭据不写入模型、任务、日志或旧聊天设置。旧 CPA 仍沿用自身已有 AES 存储，不将其宣称为新 DPAPI 凭据，也不自动迁移或复制明文密钥。本人的配置/任务恢复验收只读复制到独立snapshot后由正式包读取，原源SHA不变；实际原位重开只做本机GET配置就绪核对，不将恢复检查变为收费生成或原生像素验收。
+
+协议配置覆盖 `openai-images`、`generic-rest-task`、`openai-chat`、`openai-responses`、`ollama` 与 `comfyui`。本阶段仅前两种接入现有资产任务执行、历史与下载；后四种可保存配置并读取目录，不能据此宣称聊天推理、本地模型或 ComfyUI 工作流已可执行。ComfyUI 保存 API 格式 graph 和显式 node/input 参数映射，目录区分节点类型与模型文件；不执行任意脚本、安装节点、启动服务或调用全局中断。
+
+能力将支持状态与证据分开：状态为 unknown / supported / unsupported，证据为 unknown / documented / tested / manual。公开手动更新接口将声明强制标为 manual；读到模型 ID 或源代码通用控件不推定质量、分辨率或超分。新图片请求的未知质量档位被拒绝；独立超分仅记录能力，不由未知站点规格推导执行按钮。`resolutionHint` / `aspectRatioHint`保留提示词要求，由服务端生成`executionPrompt`，同时可按下文显式尺寸策略发送标准size；用户原prompt、API参数、服务报告与文件像素分开存储。Flare某次联合提示要求实际回图1536×1024，只记录该组合的文件事实，不推定其他尺寸、纯API参数单独生效或独立超分。本轮真实结果与最终包状态见 [当前状态](../RESTORE_STATUS.md#xcai-custom-provider-20261004)。
+
+Provider选择弹出层复用原FZ的主题表面与键盘行为，管理页原生select显式继承colorScheme和option颜色。图片格式错误细分仅位于非official image的outputs/data分支：缺字段、非数组、空集合及超数量各自拒绝，不扩大接收schema或记录原始回复；旧历史泛化错误保留，不凭后加分类反推当时上游形状。该增量已进入最新正式包；主题的Host/Chromium专项与前端SHA证明、原生窗口/HTTP就绪证明分开，不把它们合称原生Wry像素验收。
+
+后续尺寸补全新增Provider请求方法`imageSizePolicy`：prompt-only只追加提示要求，openai-size同时推导parameters.size并送标准body size。规范XCAI地址默认后者，其他服务默认前者；显式选择/opt-out与冷恢复保留，冷读不写registry/vault/历史。它不自动改变逐模型size证据，不放开未知quality。公开27像素tuple的16取整比例兼容仅在该API策略中使用，冲突/越界/明确unsupported先拒绝；文件像素用于目标兑现提示，reported字段与旧历史API存在性不被追认。已另获独立授权并完成1张gpt-image-2实际3840×2160 PNG，正式包安装与只读恢复已验，最新桌面启动再确认launcher退出后程序仍运行；仍只是本次组合的产物事实，其他未验规格与完整门禁范围按RESTORE分别记录。
 
 ## 依赖与产物边界
 

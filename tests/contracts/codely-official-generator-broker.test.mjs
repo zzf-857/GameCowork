@@ -148,7 +148,7 @@ test("Frontier quotes use the exact original GET fields and private cookie, CSRF
 
 test("quote, model, task and upload validation reject unsupported capabilities before network dispatch", async t => {
   const f = await fixture(t), before = f.calls.length;
-  for (const query of [{}, { taskType: "fal_frontier_lite" }, { taskType: "fal_frontier_flare", url: "https://outside.invalid" }, { taskType: "fal_frontier_flare", quality: [] }]) {
+  for (const query of [{}, { taskType: "unimplemented-hidden-task" }, { taskType: "fal_frontier_flare", url: "https://outside.invalid" }, { taskType: "fal_frontier_flare", quality: [] }]) {
     assert.throws(() => f.broker.generatorCostPreview(query), error => error.code === "policy");
   }
   for (const [kind, payload] of [["cpa-gpt-image-2", {}], ["frontier_flare", []], ["frontier_sunburst", null]]) {
@@ -302,6 +302,23 @@ test("network error diagnostics remain private when a POST outcome is unknown", 
   await assert.rejects(f.broker.generatorGenerate("frontier_sunburst", { prompt: "owned" }), error => error.code === "server" && error.submissionUnknown === true && !/synthetic-secret|main-A-0|owned-csrf/.test(error.message));
   assert.deepEqual(f.warnings, []);
   assert.equal(f.count("/api/sso/generate"), 0, "the injected failure happened before the fixture server accepted bytes");
+});
+
+function expandedDiagnostic(value,depth=0) {
+  assert.ok(depth<40,'Synthetic diagnostic stays bounded');
+  if(typeof value==='string'){try{const decoded=JSON.parse(value);if(decoded!==value)return expandedDiagnostic(decoded,depth+1);}catch{}return value;}
+  if(Array.isArray(value))return value.map(item=>expandedDiagnostic(item,depth+1));
+  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,expandedDiagnostic(item,depth+1)]));return value;
+}
+const unicodeDiagnostic=value=>JSON.stringify(value).replace(/[A-Za-z0-9_-]/g,ch=>'\\u'+ch.charCodeAt(0).toString(16).padStart(4,'0'));
+for(const route of ['/api/sso/generate','/api/task/owned-task/status'])test(`successful HTTP task diagnostics redact private values and nested Unicode JSON at ${route}`,async t=>{
+  const f=await fixture(t),secrets=['main-A-0','refresh-A','owned-csrf','owned-session'];
+  const nested=unicodeDiagnostic({reason:'合法的原始错误：额度不足',credentialEcho:secrets.join(' ')});
+  f.state.overrides.set(route,(_call,response)=>response.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({data:{id:'owned-task',status:'failed',error:{message:JSON.stringify({reason:'模型暂时繁忙，请稍后重试',direct:secrets[0],nested:JSON.stringify({details:nested})})},output:{data:{description:secrets[2],cookie:secrets[3]}}}})));
+  const reply=route.includes('generate')?await f.broker.generatorGenerate('frontier_flare',{prompt:'Owned diagnostics'}):await f.broker.generatorTaskStatus('owned-task');
+  const exposed=JSON.stringify(expandedDiagnostic(reply));for(const secret of secrets)assert.equal(exposed.includes(secret),false,'Private values stay redacted even after consumer JSON decoding');
+  assert.match(exposed,/模型暂时繁忙/);assert.match(exposed,/合法的原始错误/);assert.match(exposed,/\[redacted\]/);
+  for(const secret of secrets)assert.equal(JSON.stringify([...f.warnings,...f.events,f.broker.status()]).includes(secret),false);
 });
 
 test("an invalid JSON generation receipt keeps the outcome unknown and never repeats submission", async t => {

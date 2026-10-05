@@ -220,6 +220,33 @@ pub fn read_input_resource(core_home: &Path, metadata: &Value) -> Result<Value, 
     resource_value(read_verified_file(core_home, metadata, "inputs")?, metadata)
 }
 
+pub fn owned_media_extension(mime: &str) -> Option<&'static str> {
+    match mime {
+        "image/png" => Some("png"),
+        "image/jpeg" => Some("jpg"),
+        "image/webp" => Some("webp"),
+        "image/x-exr" => Some("exr"),
+        "image/vnd.radiance" => Some("hdr"),
+        "video/mp4" => Some("mp4"),
+        "video/webm" => Some("webm"),
+        "audio/wav" => Some("wav"),
+        "audio/mpeg" => Some("mp3"),
+        "audio/aac" => Some("aac"),
+        "audio/flac" => Some("flac"),
+        "audio/ogg" => Some("ogg"),
+        "audio/mp4" => Some("m4a"),
+        "model/gltf-binary" => Some("glb"),
+        "application/vnd.autodesk.fbx" | "model/fbx" => Some("fbx"),
+        "model/obj" => Some("obj"),
+        "model/stl" => Some("stl"),
+        "model/vnd.usdz+zip" => Some("usdz"),
+        "application/zip" => Some("zip"),
+        "application/json" => Some("json"),
+        "text/plain" => Some("txt"),
+        _ => None,
+    }
+}
+
 pub fn read_http_resource(
     core_home: &Path,
     metadata: &Value,
@@ -229,15 +256,7 @@ pub fn read_http_resource(
     let mime = metadata["mime"]
         .as_str()
         .ok_or("Owned media MIME missing")?;
-    if !matches!(
-        mime,
-        "image/png"
-            | "image/jpeg"
-            | "image/webp"
-            | "video/mp4"
-            | "video/webm"
-            | "model/gltf-binary"
-    ) {
+    if owned_media_extension(mime).is_none() {
         return Err("Owned media MIME is unsupported".into());
     }
     Ok((asset.bytes, mime.to_owned()))
@@ -474,6 +493,37 @@ mod tests {
             fs::create_dir_all(&project).unwrap();
             crate::mutations::Mutations::new(&project, &self.root.join("changes")).unwrap()
         }
+    }
+
+    #[test]
+    fn expanded_media_transport_keeps_verified_bytes_and_rejects_stale_or_active_content() {
+        let fixture = Fixture::new();
+        let bytes = b"Core-verified audio/model/text payload";
+        fs::write(&fixture.file, bytes).unwrap();
+        for mime in [
+            "audio/wav",
+            "audio/mpeg",
+            "model/obj",
+            "application/zip",
+            "text/plain",
+            "image/x-exr",
+        ] {
+            let mut metadata = fixture.metadata(bytes);
+            metadata["mime"] = json!(mime);
+            assert_eq!(
+                read_http_resource(&fixture.home, &metadata, false).unwrap(),
+                (bytes.to_vec(), mime.to_owned())
+            );
+            metadata["sha256"] = json!("0".repeat(64));
+            assert!(read_http_resource(&fixture.home, &metadata, false).is_err());
+        }
+        let mut metadata = fixture.metadata(bytes);
+        metadata["mime"] = json!("text/html");
+        assert!(read_http_resource(&fixture.home, &metadata, false)
+            .unwrap_err()
+            .contains("unsupported"));
+        assert_eq!(owned_media_extension("audio/ogg"), Some("ogg"));
+        assert_eq!(owned_media_extension("model/vnd.usdz+zip"), Some("usdz"));
     }
 
     #[test]

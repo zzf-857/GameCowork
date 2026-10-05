@@ -93,8 +93,9 @@ async function exerciseCpaQuick() {
   const saved=await rpc('generator/saveProvider',{provider:{name:'Owned CPA image protocol',baseUrl:provider.baseUrl,model:'gpt-image-2',kinds:['image'],authMode:'bearer',apiKey:provider.apiKey,enabled:true,requestTimeoutMs:120000,
     adapter:{responseMode:'outputs',selectors:{outputs:'data'},outputSelectors:{base64:'b64_json'},cancel:null,create:{method:'POST',path:'/images/generations',bodyTemplate:{model:'{{model}}',prompt:'{{prompt}}',n:1,size:'1024x1024',quality:'low',output_format:'png'}}}}});
   const binding=await api('/api/codely-generator/local/model-bindings/cpa-gpt-image-2',{method:'PUT',body:{providerId:saved.provider.id}});assert.equal(binding.status,200);
-  await creator.goto(creator.url(),{waitUntil:'domcontentloaded'});await creator.locator('.studio-model-select').waitFor({state:'visible'});
-  await creator.locator('.studio-model-select').click();await creator.locator('.studio-model-option').filter({has:creator.getByText('GPT Image 2 · CPA',{exact:true})}).click();
+  await creator.goto(creator.url(),{waitUntil:'domcontentloaded'});await creator.locator('.studio-model-select:not(.gamecowork-provider-selector)').waitFor({state:'visible'});
+  await creator.getByRole('button',{name:'第三方',exact:true}).click();
+  await creator.locator('.studio-model-select:not(.gamecowork-provider-selector)').click();await creator.locator('.studio-model-option').filter({has:creator.getByText('GPT Image 2 · CPA',{exact:true})}).click();
   const prompt='OWNED_CPA_IMAGE a crystal fixture';await creator.locator('textarea').first().fill(prompt);
   const generate=creator.locator('.studio-generate-button');await poll(()=>generate.isEnabled(),'only the explicitly bound CPA descriptor can generate');
   check('Original model menu enables the explicitly configured CPA descriptor without an official paid entitlement',await creator.getByText('需付费订阅',{exact:true}).count()===0);
@@ -102,19 +103,19 @@ async function exerciseCpaQuick() {
   let task;await poll(async()=>{task=(await api('/api/codely-generator/tasks',{body:undefined})).body.tasks.find(value=>value.type==='cpa-gpt-image-2');return task?.status==='completed';},'original submit and polling complete an actual owned CPA-format image');
   const image=creator.locator('img[src*="/api/codely-generator/local-artifacts/"]').first();await poll(()=>image.evaluate(value=>value.complete&&value.naturalWidth===48&&value.naturalHeight===32),'original Quick result decodes actual output pixels');
   const pixels=await decodedPixels(image),calls=provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST');
-  check('One original submit reaches the configured image endpoint once with the requested model and bounded parameters',calls.length===1&&calls[0].authorized&&calls[0].body.model==='gpt-image-2'&&calls[0].body.n===1&&calls[0].body.output_format==='png');
-  check('Actual image dimensions come from generated PNG bytes rather than the requested 1024 size',task.output.data.artifacts[0].width===48&&task.output.data.artifacts[0].height===32&&pixels.width===48&&pixels.height===32);
+  check('One original submit reaches the configured image endpoint once using the requested route and verified account defaults',calls.length===1&&calls[0].authorized&&calls[0].body.model==='gpt-image-2'&&calls[0].body.n===1&&calls[0].body.size==='auto'&&calls[0].body.quality==='auto'&&calls[0].body.output_format==='png');
+  check('Actual image dimensions come from generated PNG bytes without a promised request resolution',task.output.data.artifacts[0].width===48&&task.output.data.artifacts[0].height===32&&pixels.width===48&&pixels.height===32&&task.input.data.size==='auto');
   await snapshot('cpa-02-generated',creator);
   if(downloadOnly)await exerciseQuickDownload(image);
   await openHistory();await history.locator('.generation-card').first().click();await history.getByRole('dialog').waitFor({state:'visible'});
   const regenerate=history.getByRole('dialog').getByRole('button',{name:/再次生成/});await regenerate.click();
-  await poll(async()=>(await creator.locator('.studio-model-select').textContent()).includes('GPT Image 2 · CPA')&&(await creator.locator('textarea').first().inputValue())===prompt,'original History regenerates the exact CPA descriptor and prompt draft');
-  check('Original History regeneration restores CPA parameters without silently creating another task',provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST').length===1);
+  await poll(async()=>(await creator.locator('.studio-model-select:not(.gamecowork-provider-selector)').textContent()).includes('GPT Image 2 · CPA')&&(await creator.locator('textarea').first().inputValue())===prompt,'original History regenerates the exact CPA descriptor and prompt draft');
+  check('Original History regeneration restores the separate CPA tab and parameters without silently creating another task',await creator.getByRole('button',{name:'第三方',exact:true}).getAttribute('aria-pressed')==='true'&&provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST').length===1);
   await snapshot('cpa-03-regenerated-draft',creator);
   const taskId=task.id;await context.close();context=undefined;await stopShell();origin=await launch();await startBrowser();await openHistory();await poll(()=>history.locator('.generation-card').count().then(count=>count===1),'fresh browser and host restore the CPA history');
   const restored=(await api('/api/codely-generator/task/'+taskId+'/status')).body,cap=(await api('/api/codely-generator/local-session')).body.capabilities;
   check('CPA mapping, original task parameters and generated bytes survive a real host restart without resubmission',restored.status==='completed'&&restored.input.data.studioModelId==='cpa-gpt-image-2'&&cap.models['cpa-gpt-image-2']?.providerId===saved.provider.id&&provider.requests.filter(value=>value.path==='/images/generations'&&value.method==='POST').length===1);
-  cpaEvidence={taskId,providerId:saved.provider.id,pixels,actualDimensions:{width:48,height:32},requestedSize:'1024x1024',requests:calls,restoredModel:restored.input.data.studioModelId,liveService:false};
+  cpaEvidence={taskId,providerId:saved.provider.id,pixels,actualDimensions:{width:48,height:32},requestedSize:'auto',quality:'auto',requests:calls,restoredModel:restored.input.data.studioModelId,liveService:false};
   await snapshot('cpa-04-restarted',history);
 }
 

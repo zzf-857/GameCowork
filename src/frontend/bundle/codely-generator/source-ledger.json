@@ -25,18 +25,33 @@
     },
     {
       "path": "local-generation.js",
-      "role": "Owned per-model CPA and verified official image-service readiness; no invented platform rights or original builder changes",
-      "sha256": "a1744f7e74d904853cef1ec236e8013faf4133f0dad129fc7c51398949763251"
+      "role": "Owned per-model CPA, custom Provider and verified official image/video/audio/model/text readiness; no invented platform rights or original builder changes",
+      "sha256": "89e695e66cedf11bf2ec8e3508fc4a4ce84ce8d581d05b6fd62a0a9d67c4a79c"
     },
     {
       "path": "local-models.js",
-      "role": "Explicitly named CPA GPT Image 2 extension; preserves all original model descriptors and parameter components",
-      "sha256": "bbdcf4cdfa4d60900e7715804a3632a850b6a8d52197572570cd2e80b079d9a9"
+      "role": "Explicit CPA routes and server-issued custom descriptors, conservative per-model evidence controls and separate request/report/file facts",
+      "sha256": "4ab718808c1e2df04d8792a458ad0d14b130da6e17d01e739ac0ade73cf1ebf9"
+    },
+    {
+      "path": "provider-manager.js",
+      "role": "Write-only credential configuration, GET model discovery and explicit per-model evidence inside the original Quick Dialog; no browser secret storage or unimplemented execution claim",
+      "sha256": "690862c0fe7a06e6a3d35c108e95404e3ec581d43992cfc43d232918d41b81b3"
     },
     {
       "path": "local-download.js",
       "role": "Own native save results and errors for original Quick/History/Canvas messages; no browser or remote fallback",
       "sha256": "6e2f7d82157aa563b935486ba7171374c755e521d97347ef156ef3caab033258"
+    },
+    {
+      "path": "../assets/gamecowork-account-display.js",
+      "role": "Whitelisted broker account presentation and original official usage RPC; no credentials or local-mode network",
+      "sha256": "375c9900f8189115482a99cd3279f99304047c26f52d02c3bf41ccf821443774"
+    },
+    {
+      "path": "task-outcome.js",
+      "role": "Explicit local unknown-create presentation and original retry guard; no generation transport, status protocol or credential access",
+      "sha256": "bb6bd3bfe01519d43f7f7aa7871a050ea6ff4ae77c31b7208fac42fba06dabd0"
     }
   ],
   "hostAdapter": {
@@ -56,7 +71,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "e1b6cff816cd4b8e36457b2d50437b880b122edb535348d677d0312066febfe0",
-        "currentSha256": "908d33ad90cb9f02ec727c1976873ce64a9226be2e162442a650eecd58bed547",
+        "currentSha256": "791fabd4863eb057ecb5c6951789564c7f8b32a9ea35290106bd22fb383b33fc",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -505,6 +520,96 @@
             "after": "    }, [ne, t, z, ye, se == null ? void 0 : se.title, r, s, f, o, Ae, ce, W, H, n]),",
             "reason": "Track the actual original messenger in the model-menu memo dependencies",
             "charOffset": 295949
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 0,
+            "before": "import { officialProgrammingMenu }",
+            "after": "import { gamecoworkAccountDisplay, gamecoworkOpenAccountUsage } from \"./gamecowork-account-display.js\";\nimport { officialProgrammingMenu }"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1557028,
+            "before": "  displayEmail: t,",
+            "after": "  accountDetail: t,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1557978,
+            "before": "children: R(\"userProfile.email\", { email: t }),",
+            "after": "children: t,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1562425,
+            "before": "{ login: u } = yn(),",
+            "after": "{ login: u, session: gamecoworkAccountSession } = yn(),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1562485,
+            "before": "{ t: f } = Ie(),",
+            "after": "{ t: f, i18n: gamecoworkAccountI18n } = Ie(),\n    gamecoworkAccountPlan = M((state) => state.account),\n    gamecoworkAccountView = gamecoworkAccountDisplay(gamecoworkAccountSession, gamecoworkAccountPlan, gamecoworkAccountI18n.resolvedLanguage || gamecoworkAccountI18n.language),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1562797,
+            "before": "m = o != null ? o : !!(n.trim() || (s != null && s.trim())),",
+            "after": "m = gamecoworkAccountView.official || gamecoworkAccountView.local,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1563057,
+            "before": "(te && m && (A(Ed()), A(kS())),",
+            "after": "(te && gamecoworkAccountView.official && (A(nk({ skipTtl: true })), A(Ed()), A(kS())),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1563514,
+            "before": "[m, A, l],",
+            "after": "[m, A, l, gamecoworkAccountView.official],"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1563701,
+            "before": "l.post(\"controlPlane/openUrl\", { path: \"dashboard/usage\", orgSlug: void 0 });\n    }, [l]),",
+            "after": "gamecoworkOpenAccountUsage(gamecoworkAccountSession, l);\n    }, [l, gamecoworkAccountSession]),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1564336,
+            "before": "  (d.useEffect(() => {",
+            "after": "  d.useEffect(() => {\n    if (gamecoworkAccountView.official) A(nk({ skipTtl: true }));\n  }, [A, gamecoworkAccountView.official, gamecoworkAccountView.id]);\n  (d.useEffect(() => {"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1567062,
+            "before": "m ? n : f(\"userProfile.notLoggedIn\"),",
+            "after": "m ? gamecoworkAccountView.displayName : f(\"userProfile.notLoggedIn\"),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1567152,
+            "before": "m && i && i !== \"internal\" && !b",
+            "after": "gamecoworkAccountView.planBadge"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1567508,
+            "before": "children: FS(i, f),",
+            "after": "children: gamecoworkAccountView.planBadge,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1567665,
+            "before": "m && s\n                  ? a.jsx(\"div\", { className: \"text-gamecowork-color-text-tertiary truncate text-xs\", children: s })",
+            "after": "m && gamecoworkAccountView.displaySubtext\n                  ? a.jsx(\"div\", { className: \"text-gamecowork-color-text-tertiary truncate text-xs\", children: gamecoworkAccountView.displaySubtext })"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1568700,
+            "before": "      displayEmail: r,",
+            "after": "      accountDetail: gamecoworkAccountView.accountDetail,"
           }
         ]
       },
@@ -522,7 +627,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "4db18044d56bd18d11d5a37e5d5a8ce85e191468dc9fd35bf1143b4eae19c4a2",
-        "currentSha256": "47d15b9e07741ae664d63b851ec327fcd8e9206fc66210b3a873f913cbce745f",
+        "currentSha256": "2fd78351280ff9569ff4fc71bbd8ca387d203c749f440f8c13c235a7fa9d529c",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -971,6 +1076,96 @@
             "after": "    }, [N, t, v, W, F == null ? void 0 : F.title, r, s, f, o, Z, ie, Ae, re, n]),",
             "reason": "Track the actual original messenger in the model-menu memo dependencies",
             "charOffset": 296662
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 0,
+            "before": "import { officialProgrammingMenu }",
+            "after": "import { gamecoworkAccountDisplay, gamecoworkOpenAccountUsage } from \"./gamecowork-account-display.js\";\nimport { officialProgrammingMenu }"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1555694,
+            "before": "  displayEmail: t,",
+            "after": "  accountDetail: t,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1556644,
+            "before": "children: R(\"userProfile.email\", { email: t }),",
+            "after": "children: t,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1561091,
+            "before": "{ login: u } = yn(),",
+            "after": "{ login: u, session: gamecoworkAccountSession } = yn(),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1561151,
+            "before": "{ t: f } = ke(),",
+            "after": "{ t: f, i18n: gamecoworkAccountI18n } = ke(),\n    gamecoworkAccountPlan = M((state) => state.account),\n    gamecoworkAccountView = gamecoworkAccountDisplay(gamecoworkAccountSession, gamecoworkAccountPlan, gamecoworkAccountI18n.resolvedLanguage || gamecoworkAccountI18n.language),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1561463,
+            "before": "m = o != null ? o : !!(n.trim() || (s != null && s.trim())),",
+            "after": "m = gamecoworkAccountView.official || gamecoworkAccountView.local,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1561723,
+            "before": "(te && m && (A(Cd()), A(IS())),",
+            "after": "(te && gamecoworkAccountView.official && (A(ek({ skipTtl: true })), A(Cd()), A(IS())),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1562180,
+            "before": "[m, A, l],",
+            "after": "[m, A, l, gamecoworkAccountView.official],"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1562367,
+            "before": "l.post(\"controlPlane/openUrl\", { path: \"dashboard/usage\", orgSlug: void 0 });\n    }, [l]),",
+            "after": "gamecoworkOpenAccountUsage(gamecoworkAccountSession, l);\n    }, [l, gamecoworkAccountSession]),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1563002,
+            "before": "  (d.useEffect(() => {",
+            "after": "  d.useEffect(() => {\n    if (gamecoworkAccountView.official) A(ek({ skipTtl: true }));\n  }, [A, gamecoworkAccountView.official, gamecoworkAccountView.id]);\n  (d.useEffect(() => {"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1565728,
+            "before": "m ? n : f(\"userProfile.notLoggedIn\"),",
+            "after": "m ? gamecoworkAccountView.displayName : f(\"userProfile.notLoggedIn\"),"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1565818,
+            "before": "m && i && i !== \"internal\" && !B",
+            "after": "gamecoworkAccountView.planBadge"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1566174,
+            "before": "children: SS(i, f),",
+            "after": "children: gamecoworkAccountView.planBadge,"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1566331,
+            "before": "m && s\n                  ? a.jsx(\"div\", { className: \"text-gamecowork-color-text-tertiary truncate text-xs\", children: s })",
+            "after": "m && gamecoworkAccountView.displaySubtext\n                  ? a.jsx(\"div\", { className: \"text-gamecowork-color-text-tertiary truncate text-xs\", children: gamecoworkAccountView.displaySubtext })"
+          },
+          {
+            "reason": "Render verified broker identity and active plan without treating UID as email",
+            "charOffset": 1567366,
+            "before": "      displayEmail: r,",
+            "after": "      accountDetail: gamecoworkAccountView.accountDetail,"
           }
         ]
       },
@@ -1191,6 +1386,66 @@
             "after": "    }, [t, p]),\n    T.useEffect(() => {\n      var v, m;"
           }
         ]
+      },
+      {
+        "path": "../assets/VscTheme-BExNMG_K.js",
+        "beforeSha256": "1689ef233fd061f6619b36e3257f409f669b463a6c4c12f281aba43ad4f03a2c",
+        "currentSha256": "d7aaa2fb419600419e273a957f7d99a85a96255400b4edae9d86d662c330cd1e",
+        "patches": [
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3851510,
+            "before": "(e.hasSeat = (s = t.payload.hasSeat) != null ? s : !1),",
+            "after": "(e.hasSeat = typeof t.payload.hasSeat === \"boolean\" ? t.payload.hasSeat : null),"
+          },
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3856758,
+            "before": "hasSeat: (u = m.content.hasSeat) != null ? u : !1,",
+            "after": "hasSeat: typeof m.content.hasSeat === \"boolean\" ? m.content.hasSeat : null,"
+          },
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3853421,
+            "before": "selectIsNoSeatTeamMember: (e) => e.isTeamPlan && !e.hasSeat,",
+            "after": "selectIsNoSeatTeamMember: (e) => e.isTeamPlan === true && e.hasSeat === false,"
+          }
+        ],
+        "sourceReference": {
+          "file": "F:\\AI\\AgentMake\\CyberSoftwares\\GameCowork\\src\\frontend\\bundle\\assets\\VscTheme-BExNMG_K.js",
+          "sha256": "1689ef233fd061f6619b36e3257f409f669b463a6c4c12f281aba43ad4f03a2c",
+          "note": "Maintained source baseline before the account-display correction; not a new claim about original installation bytes"
+        }
+      },
+      {
+        "path": "../assets/VscTheme-B-CSeuv5.js",
+        "beforeSha256": "3c115a683455d7dd542c413631faf8f20fc32d88d54aa5f7d0fd7cd48d1df428",
+        "currentSha256": "13f0f2c05146de7f273f7deee53f2fa4abd741cf5dfed4dae507727532035f49",
+        "patches": [
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3850519,
+            "before": "(e.hasSeat = (s = t.payload.hasSeat) != null ? s : !1),",
+            "after": "(e.hasSeat = typeof t.payload.hasSeat === \"boolean\" ? t.payload.hasSeat : null),"
+          },
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3855767,
+            "before": "hasSeat: (u = m.content.hasSeat) != null ? u : !1,",
+            "after": "hasSeat: typeof m.content.hasSeat === \"boolean\" ? m.content.hasSeat : null,"
+          },
+          {
+            "reason": "Keep unknown seat information distinct from an explicit denied seat",
+            "charOffset": 3852430,
+            "before": "selectIsNoSeatTeamMember: (e) => e.isTeamPlan && !e.hasSeat,",
+            "after": "selectIsNoSeatTeamMember: (e) => e.isTeamPlan === true && e.hasSeat === false,"
+          }
+        ],
+        "sourceReference": {
+          "file": "F:\\AI\\AgentMake\\CyberSoftwares\\GameCowork\\src\\frontend\\bundle\\assets\\VscTheme-B-CSeuv5.js",
+          "sha256": "3c115a683455d7dd542c413631faf8f20fc32d88d54aa5f7d0fd7cd48d1df428",
+          "note": "Maintained source baseline before the account-display correction; not a new claim about original installation bytes"
+        }
       }
     ]
   },
@@ -1261,8 +1516,8 @@
       "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
       "sourceBytes": 2400014,
       "sourceSha256": "10e0e9c2a6771c22eb65c205fab910a1779794c689e8523f97d8f831eed19d9d",
-      "currentBytes": 2401210,
-      "currentSha256": "925894042e14a97404a912a845b719a2450016ac2cb7b2613236c07d3f5ff7f5",
+      "currentBytes": 2410519,
+      "currentSha256": "360a8ed1ff8e50044cbf1b014b50b6df8194a1c1830b2e75dad270a717639386",
       "patches": [
         {
           "reason": "Import the owned local identity boundary and freeze this iframe URL workspace without replacing original UI components",
@@ -1571,6 +1826,587 @@
           "byteOffsetBeforePatch": 1746613,
           "before": "?R5:Pe,[Fe,oe]",
           "after": "?R5:Pe,gcwGeneration=gamecoworkGenerationPresentation(gcwGenerationReadiness,Er.resolvedLanguage||Er.language,Z==null?void 0:Z.id),[Fe,oe]"
+        },
+        {
+          "reason": "Classify recognized audio file extensions before original preview/image key heuristics; preserve original task helpers and audio renderer",
+          "charOffset": 882624,
+          "byteOffsetBeforePatch": 909073,
+          "before": "function lwe(t,e=\"\",n=\"\"){const i=",
+          "after": "function lwe(t,e=\"\",n=\"\"){if(typeof t===\"string\"&&/\\.(wav|mp3|aac|flac|ogg|m4a|opus)$/i.test(t.split(/[?#]/)[0]))return\"audio\";const i="
+        },
+        {
+          "reason": "Import owned CPA group and dimensions helpers without changing original model definitions",
+          "charOffset": 9,
+          "byteOffsetBeforePatch": 9,
+          "before": "extendGameCoworkModelRegistry, gamecoworkModelAcceptsReferences",
+          "after": "extendGameCoworkModelRegistry, gamecoworkModelAcceptsReferences, gamecoworkIsThirdPartyModel, gamecoworkCpaParameterError"
+        },
+        {
+          "reason": "Map owned third-party history entries to the existing image task flow",
+          "charOffset": 908785,
+          "byteOffsetBeforePatch": 935261,
+          "before": "e.map(n=>({mode:t,model:n}))",
+          "after": "e.map(n=>({mode:t===\"thirdparty\"?\"image\":t,model:n}))"
+        },
+        {
+          "reason": "Keep third-party selection in its own original Quick tab and leave official model groups intact",
+          "charOffset": 1719705,
+          "byteOffsetBeforePatch": 1746529,
+          "before": "[P,L]=y.useState(\"image\"),F=I[P]||[]",
+          "after": "[P,L]=y.useState(\"image\"),[gcwThirdParty,gcwSetThirdParty]=y.useState(!1),F=I[gcwThirdParty?\"thirdparty\":P]||[]"
+        },
+        {
+          "reason": "Switch only the original mode and model selection when entering or leaving the CPA tab",
+          "charOffset": 1727905,
+          "byteOffsetBeforePatch": 1754729,
+          "before": "Vt=H=>{if(H===P)return;const ae=I[H]||[]",
+          "after": "Vt=H=>{const gcwNextThirdParty=H===\"thirdparty\";H=gcwNextThirdParty?\"image\":H;if(H===P&&gcwNextThirdParty===gcwThirdParty)return;gcwSetThirdParty(gcwNextThirdParty);const ae=I[gcwNextThirdParty?\"thirdparty\":H]||[]"
+        },
+        {
+          "reason": "Add the independently selectable third-party tab using the original Quick navigation buttons",
+          "charOffset": 1755648,
+          "byteOffsetBeforePatch": 1782528,
+          "before": "children:LK.map(H=>{const ae=INe[H.key],ze=P===H.key",
+          "after": "children:LK.concat({key:\"thirdparty\",labelKey:\"gamecowork.thirdParty\",label:\"第三方\",icon:\"🧩\"}).map(H=>{const ae=INe[H.key]||INe.image,ze=H.key===\"thirdparty\"?gcwThirdParty:!gcwThirdParty&&P===H.key"
+        },
+        {
+          "reason": "Give the third-party tab an explicit label in desktop and mobile layouts",
+          "charOffset": 1755983,
+          "byteOffsetBeforePatch": 1782871,
+          "before": "n?t(`studio.mobile.modes.${H.key}`):t(H.labelKey,H.label)",
+          "after": "H.key===\"thirdparty\"?t(H.labelKey,{defaultValue:H.label}):n?t(`studio.mobile.modes.${H.key}`):t(H.labelKey,H.label)"
+        },
+        {
+          "reason": "Display the owned CPA model description in the original model menu instead of a missing translation key",
+          "charOffset": 1703115,
+          "byteOffsetBeforePatch": 1729839,
+          "before": "f.jsx(\"small\",{children:i(`studio.models.${u.id}.description`)})",
+          "after": "f.jsx(\"small\",{children:i(`studio.models.${u.id}.description`,{defaultValue:u.gamecoworkThirdParty?u.info.note:void 0})})"
+        },
+        {
+          "reason": "Reuse original canvas chip and custom width/height inputs for exact CPA dimensions with an independent quality menu",
+          "charOffset": 1706360,
+          "byteOffsetBeforePatch": 1733084,
+          "before": "if(t===\"image\"&&(e==null?void 0:e.sizeKey)===\"size\"){const le=",
+          "after": "if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){const le=e.sizeOptions.map(Ne=>({value:Ne,label:Ne===\"auto\"?s(\"studio.values.adaptive\"):Ne.replace(\"x\",\"×\")}));ie.push({key:\"canvas\",label:s(\"studio.fields.canvas\"),value:a||!e.sizeOptions.includes(o)?\"__custom__\":o,options:[...le,{value:\"__custom__\",label:s(\"studio.fields.customSize\")}],onChange:Ne=>{St(\"\");if(Ne===\"__custom__\"){ce(!0);oe(`${l}x${c}`)}else{ce(!1);oe(Ne);const vt=/^(\\d+)x(\\d+)$/.exec(Ne);vt&&(Te(Number(vt[1])),De(Number(vt[2])))}},footer:f.jsxs(f.Fragment,{children:[f.jsx(\"div\",{className:\"studio-pop-sep\"}),f.jsxs(\"div\",{className:\"studio-pop-custom\",children:[f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":s(\"studio.fields.width\",{defaultValue:\"宽度\"}),value:l,onChange:Ne=>{const vt=Number(Ne.target.value);Te(vt);ce(!0);oe(`${vt}x${c}`);St(\"\")}}),f.jsx(\"b\",{children:\"×\"}),f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":s(\"studio.fields.height\",{defaultValue:\"高度\"}),value:c,onChange:Ne=>{const vt=Number(Ne.target.value);De(vt);ce(!0);oe(`${l}x${vt}`);St(\"\")}})]}),f.jsx(\"small\",{role:\"note\",children:e.info.size})]})},{key:\"quality\",label:s(\"studio.fields.quality\"),value:e.qualityOptions.includes(u)?u:e.defaultQuality,options:e.qualityOptions.map(Ne=>({value:Ne,label:s(`studio.values.${Ne}`,{defaultValue:Ne})})),onChange:Ie});}else if(t===\"image\"&&(e==null?void 0:e.sizeKey)===\"size\"){const le="
+        },
+        {
+          "reason": "Initialize CPA custom dimensions and quality through the original model change handler",
+          "charOffset": 1729230,
+          "byteOffsetBeforePatch": 1756064,
+          "before": "(of=H==null?void 0:H.sizeOptions)!=null&&of.length&&(Ie(H.sizeOptions[0]),tt(!1))},Vt=",
+          "after": "(of=H==null?void 0:H.sizeOptions)!=null&&of.length&&(Ie(H.sizeOptions[0]),tt(!1));if(H!=null&&H.gamecoworkThirdParty){const gcwSize=/^(\\d+)x(\\d+)$/.exec(H.sizeOptions[0]);gcwSize&&(pt(Number(gcwSize[1])),ht(Number(gcwSize[2])));ee(H.defaultQuality)}},Vt="
+        },
+        {
+          "reason": "Validate the selected CPA dimensions and parameters before enabling the original submit button",
+          "charOffset": 1733240,
+          "byteOffsetBeforePatch": 1760074,
+          "before": "if(!Z)return t(\"studio.validation.model\");if(ri)",
+          "after": "if(!Z)return t(\"studio.validation.model\");const gcwCpaError=gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y});if(gcwCpaError)return gcwCpaError;if(ri)"
+        },
+        {
+          "reason": "Restore third-party tab and exact CPA model identity through original history regeneration",
+          "charOffset": 1745030,
+          "byteOffsetBeforePatch": 1771920,
+          "before": "L(ae),R(\"\"),ct();const Si=(I[ae]||[]).find(of=>of.id===tn)",
+          "after": "L(ae),gcwSetThirdParty(gamecoworkIsThirdPartyModel(tn)),R(\"\"),ct();const Si=(I[gamecoworkIsThirdPartyModel(tn)?\"thirdparty\":ae]||[]).find(of=>of.id===tn)"
+        },
+        {
+          "reason": "Keep custom CPA width and height when reopening an existing history draft",
+          "charOffset": 1745483,
+          "byteOffsetBeforePatch": 1772373,
+          "before": "ot.size&&Ie(ot.size);const sf=",
+          "after": "ot.size&&Ie(ot.size);if(Si!=null&&Si.gamecoworkThirdParty&&ot.size){const gcwSize=/^(\\d+)x(\\d+)$/.exec(ot.size);tt(!Si.sizeOptions.includes(ot.size));gcwSize&&(pt(Number(gcwSize[1])),ht(Number(gcwSize[2])))}const sf="
+        },
+        {
+          "reason": "Import whitelisted CPA request, service-report and actual-file fact presentation",
+          "charOffset": 74,
+          "byteOffsetBeforePatch": 74,
+          "before": "gamecoworkIsThirdPartyModel, gamecoworkCpaParameterError",
+          "after": "gamecoworkIsThirdPartyModel, gamecoworkCpaParameterError, gamecoworkCpaFactLines"
+        },
+        {
+          "reason": "Constrain active account CPA controls to service defaults and explicitly labelled composition ratio hints; remove unverified pixel and quality controls",
+          "charOffset": 1706384,
+          "byteOffsetBeforePatch": 1733108,
+          "before": "if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){const le=e.sizeOptions.map(Ne=>({value:Ne,label:Ne===\"auto\"?s(\"studio.values.adaptive\"):Ne.replace(\"x\",\"×\")}));ie.push({key:\"canvas\",label:s(\"studio.fields.canvas\"),value:a||!e.sizeOptions.includes(o)?\"__custom__\":o,options:[...le,{value:\"__custom__\",label:s(\"studio.fields.customSize\")}],onChange:Ne=>{St(\"\");if(Ne===\"__custom__\"){ce(!0);oe(`${l}x${c}`)}else{ce(!1);oe(Ne);const vt=/^(\\d+)x(\\d+)$/.exec(Ne);vt&&(Te(Number(vt[1])),De(Number(vt[2])))}},footer:f.jsxs(f.Fragment,{children:[f.jsx(\"div\",{className:\"studio-pop-sep\"}),f.jsxs(\"div\",{className:\"studio-pop-custom\",children:[f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":s(\"studio.fields.width\",{defaultValue:\"宽度\"}),value:l,onChange:Ne=>{const vt=Number(Ne.target.value);Te(vt);ce(!0);oe(`${vt}x${c}`);St(\"\")}}),f.jsx(\"b\",{children:\"×\"}),f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":s(\"studio.fields.height\",{defaultValue:\"高度\"}),value:c,onChange:Ne=>{const vt=Number(Ne.target.value);De(vt);ce(!0);oe(`${l}x${vt}`);St(\"\")}})]}),f.jsx(\"small\",{role:\"note\",children:e.info.size})]})},{key:\"quality\",label:s(\"studio.fields.quality\"),value:e.qualityOptions.includes(u)?u:e.defaultQuality,options:e.qualityOptions.map(Ne=>({value:Ne,label:s(`studio.values.${Ne}`,{defaultValue:Ne})})),onChange:Ie});}",
+          "after": "if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){ie.push({key:\"compositionRatio\",label:\"构图比例目标\",value:e.aspectRatios.includes(m)?m:\"auto\",options:e.aspectRatios.map(le=>({value:le,label:le===\"auto\"?\"服务决定\":le})),onChange:le=>{St(\"\");pt(le)},footer:f.jsx(\"small\",{role:\"note\",children:e.info.size})});}"
+        },
+        {
+          "reason": "Initialize the original CPA form with service-default quality, size, format and composition hint",
+          "charOffset": 1728292,
+          "byteOffsetBeforePatch": 1755136,
+          "before": "if(H!=null&&H.gamecoworkThirdParty){const gcwSize=/^(\\d+)x(\\d+)$/.exec(H.sizeOptions[0]);gcwSize&&(pt(Number(gcwSize[1])),ht(Number(gcwSize[2])));ee(H.defaultQuality)}",
+          "after": "if(H!=null&&H.gamecoworkThirdParty){D(\"auto\");ee(H.defaultQuality)}"
+        },
+        {
+          "reason": "Validate the active account CPA profile without silently normalizing unsupported history requests",
+          "charOffset": 1732180,
+          "byteOffsetBeforePatch": 1759024,
+          "before": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y})",
+          "after": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye})"
+        },
+        {
+          "reason": "Detect unsupported legacy CPA draft parameters separately from service availability",
+          "charOffset": 1741681,
+          "byteOffsetBeforePatch": 1768581,
+          "before": "const vF=jK(P,Z),Ib=",
+          "after": "const gcwCpaResetRequired=gamecoworkIsThirdPartyModel(Z.id)&&!!gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye}),vF=jK(P,Z),Ib="
+        },
+        {
+          "reason": "Offer an explicit original-form action to adopt account defaults before a blocked historical CPA draft can be submitted",
+          "charOffset": 1768706,
+          "byteOffsetBeforePatch": 1795618,
+          "before": "(gcwGeneration.blocked||$l)&&f.jsxs(\"div\",{className:\"studio-paid-note\"",
+          "after": "gcwCpaResetRequired&&f.jsx(\"button\",{type:\"button\",className:\"studio-param-chip\",onClick:()=>{Ie(\"auto\");ee(\"auto\");lt(\"png\");tt(!1);D(Z.aspectRatios.includes(ye)?ye:\"auto\");R(\"\")},children:\"使用账号默认参数\"}),(gcwGeneration.blocked||$l)&&f.jsxs(\"div\",{className:\"studio-paid-note\""
+        },
+        {
+          "reason": "Keep old requested CPA pixel values in the draft without presenting them as supported editable resolutions",
+          "charOffset": 1744520,
+          "byteOffsetBeforePatch": 1771420,
+          "before": "if(Si!=null&&Si.gamecoworkThirdParty&&ot.size){const gcwSize=/^(\\d+)x(\\d+)$/.exec(ot.size);tt(!Si.sizeOptions.includes(ot.size));gcwSize&&(pt(Number(gcwSize[1])),ht(Number(gcwSize[2])))}",
+          "after": "if(Si!=null&&Si.gamecoworkThirdParty&&ot.size)tt(!1);"
+        },
+        {
+          "reason": "Restore CPA composition hint independently of the original official image size field",
+          "charOffset": 1744860,
+          "byteOffsetBeforePatch": 1771760,
+          "before": "ot.aspectRatio&&Ie(ot.aspectRatio)",
+          "after": "ot.aspectRatio&&(Si!=null&&Si.gamecoworkThirdParty?D(ot.aspectRatio):Ie(ot.aspectRatio))"
+        },
+        {
+          "reason": "Preserve historical CPA requested quality for explicit review instead of silently substituting the current account default",
+          "charOffset": 1745505,
+          "byteOffsetBeforePatch": 1772405,
+          "before": "ee(of.includes(ot.quality)?ot.quality:(Si==null?void 0:Si.defaultQuality)||\"medium\")",
+          "after": "ee(Si!=null&&Si.gamecoworkThirdParty?ot.quality:of.includes(ot.quality)?ot.quality:(Si==null?void 0:Si.defaultQuality)||\"medium\")"
+        },
+        {
+          "reason": "Attach bounded CPA execution facts after the original poll result mapper without changing media classification or playback",
+          "charOffset": 887967,
+          "byteOffsetBeforePatch": 914416,
+          "before": "const J=k5(w.serverTaskId,B,w.model);if(x.onSucceeded)",
+          "after": "const J=k5(w.serverTaskId,B,w.model);const gcwFacts=gamecoworkCpaFactLines(B,w.model,w.payload);gcwFacts.length&&(J.cpaFacts=gcwFacts);if(x.onSucceeded)"
+        },
+        {
+          "reason": "Attach the same bounded CPA execution facts after the original immediate result mapper",
+          "charOffset": 889015,
+          "byteOffsetBeforePatch": 915464,
+          "before": "const M=k5(T,S,w.model);if(x.onSucceeded)",
+          "after": "const M=k5(T,S,w.model);const gcwFacts=gamecoworkCpaFactLines(S,w.model,w.payload);gcwFacts.length&&(M.cpaFacts=gcwFacts);if(x.onSucceeded)"
+        },
+        {
+          "reason": "Show CPA requested route, unconfirmed backend identity, verified file pixels and separate service reports in the original Quick result summary",
+          "charOffset": 1666082,
+          "byteOffsetBeforePatch": 1692587,
+          "before": "f.jsx(\"span\",{children:s(\"studio.result.assetCount\",{count:d.length||1})})]}),f.jsxs(\"div\",{className:\"studio-result-actions\"",
+          "after": "f.jsx(\"span\",{children:s(\"studio.result.assetCount\",{count:d.length||1})}),t.cpaFacts&&t.cpaFacts.length>0&&f.jsx(\"small\",{className:\"gamecowork-cpa-execution-facts\",children:t.cpaFacts.map(gcwFact=>`${gcwFact.label}：${gcwFact.value}`).join(\"；\")})]}),f.jsxs(\"div\",{className:\"studio-result-actions\""
+        },
+        {
+          "reason": "Add actual-file and provider-reported CPA facts to the original history detail rows while retaining original request parameters",
+          "charOffset": 1851613,
+          "byteOffsetBeforePatch": 1878618,
+          "before": "f.jsx(\"strong\",{children:JS(t.type)||l(\"generation.detail.unknown\")})]})]}),t.localPath",
+          "after": "f.jsx(\"strong\",{children:JS(t.type)||l(\"generation.detail.unknown\")})]}),...gamecoworkCpaFactLines(t).map(gcwFact=>f.jsxs(\"div\",{className:\"gamecowork-cpa-execution-fact\",children:[f.jsx(\"span\",{children:gcwFact.label}),f.jsx(\"strong\",{children:gcwFact.value})]},gcwFact.label))]}),t.localPath"
+        },
+        {
+          "reason": "Explain unsupported historical CPA parameters next to the explicit account-defaults action in both original desktop and mobile status areas",
+          "charOffset": 1769041,
+          "byteOffsetBeforePatch": 1795957,
+          "before": "gcwCpaResetRequired&&f.jsx(\"button\",{type:\"button\",className:\"studio-param-chip\",onClick:()=>{Ie(\"auto\");ee(\"auto\");lt(\"png\");tt(!1);D(Z.aspectRatios.includes(ye)?ye:\"auto\");R(\"\")},children:\"使用账号默认参数\"})",
+          "after": "gcwCpaResetRequired&&f.jsxs(\"div\",{className:\"studio-paid-note\",role:\"status\",children:[f.jsx(io,{size:14}),f.jsx(\"span\",{children:ef}),f.jsx(\"button\",{type:\"button\",className:\"studio-param-chip\",onClick:()=>{Ie(\"auto\");ee(\"auto\");lt(\"png\");tt(!1);D(Z.aspectRatios.includes(ye)?ye:\"auto\");R(\"\")},children:\"使用账号默认参数\"})]})"
+        },
+        {
+          "reason": "Import fixed Image 2.5 family display and its three exact CPA route selections",
+          "charOffset": 103,
+          "byteOffsetBeforePatch": 103,
+          "before": "gamecoworkCpaParameterError, gamecoworkCpaFactLines",
+          "after": "gamecoworkCpaParameterError, gamecoworkCpaFactLines, cpaImage25Variants, gamecoworkCpaImage25Variant, gamecoworkCpaFamilyModelId, gamecoworkCpaMenuModels, gamecoworkCpaMenuLabel"
+        },
+        {
+          "reason": "Keep the original model menu active on the Image 2.5 family when its actual route is default, Flare or Sunburst",
+          "charOffset": 1703265,
+          "byteOffsetBeforePatch": 1729993,
+          "before": "h=u.id===a.id",
+          "after": "h=gamecoworkCpaFamilyModelId(u.id)===gamecoworkCpaFamilyModelId(a.id)"
+        },
+        {
+          "reason": "Show one Image 2.5 family name in the original dropdown while preserving friendly variant labels elsewhere",
+          "charOffset": 1703665,
+          "byteOffsetBeforePatch": 1730393,
+          "before": "defaultValue:u.label",
+          "after": "defaultValue:gamecoworkCpaMenuLabel(u)"
+        },
+        {
+          "reason": "Keep the original model selector caption at family level for all three Image 2.5 routes",
+          "charOffset": 1704249,
+          "byteOffsetBeforePatch": 1730977,
+          "before": "defaultValue:a.label",
+          "after": "defaultValue:gamecoworkCpaMenuLabel(a)"
+        },
+        {
+          "reason": "Merge only the three owned Image 2.5 routes into one displayed model family; retain all actual descriptors for history and selection",
+          "charOffset": 1704503,
+          "byteOffsetBeforePatch": 1731231,
+          "before": "children:t.map(u=>c(u))",
+          "after": "children:gamecoworkCpaMenuModels(t).map(u=>c(u))"
+        },
+        {
+          "reason": "Preserve prompts, composition hints and unaccepted historical parameters when switching routes within the same Image 2.5 family",
+          "charOffset": 1729373,
+          "byteOffsetBeforePatch": 1756221,
+          "before": "li=H=>{const ae=F.find(ze=>ze.id===H);G(H),R(\"\"),ae&&Qt(ae)}",
+          "after": "li=H=>{const ae=F.find(ze=>ze.id===H);G(H),R(\"\");if(gamecoworkCpaImage25Variant(Pe.id)&&gamecoworkCpaImage25Variant(H))return;ae&&Qt(ae)}"
+        },
+        {
+          "reason": "Use the original model change controller for default, fast and refined Image 2.5 buttons without submitting generation",
+          "charOffset": 1764895,
+          "byteOffsetBeforePatch": 1791808,
+          "before": "f.jsx(FZ,{models:F,activeId:Pe.id,onSelect:li,t,open:Xs===\"model\",onOpenChange:H=>ca(H?\"model\":null)})",
+          "after": "f.jsx(FZ,{models:F,activeId:Pe.id,onSelect:li,t,open:Xs===\"model\",onOpenChange:H=>ca(H?\"model\":null)}),gamecoworkCpaImage25Variant(Pe.id)&&f.jsx(\"div\",{role:\"group\",\"aria-label\":\"Image 2.5 选项\",className:\"studio-chip-group-options gamecowork-cpa-variants\",children:cpaImage25Variants.map(gcwVariant=>f.jsx(\"button\",{type:\"button\",className:Ke(\"studio-chip-option\",Pe.id===gcwVariant.id&&\"is-active\"),\"aria-pressed\":Pe.id===gcwVariant.id,onClick:()=>li(gcwVariant.id),children:gcwVariant.label},gcwVariant.id))})"
+        },
+        {
+          "reason": "Import the owned Provider manager and public dynamic model catalog into the existing Quick interface",
+          "charOffset": 0,
+          "byteOffsetBeforePatch": 0,
+          "before": "",
+          "after": "import { GameCoworkProviderControls } from \"../provider-manager.js\";\nimport { gamecoworkGenerationReadiness } from \"../local-generation.js\";\nimport { gamecoworkThirdPartyModels, gamecoworkCustomModel, gamecoworkModelProviderId, gamecoworkProviderModels, gamecoworkCustomParameterSettings } from \"../local-models.js\";\n"
+        },
+        {
+          "reason": "Resolve custom model history through its server-issued stable identity, without remapping upstream IDs",
+          "charOffset": 909545,
+          "byteOffsetBeforePatch": 936021,
+          "before": "function Owe(t){return sY.find(({model:e})=>e.id===t)}",
+          "after": "function Owe(t){const gcwModel=gamecoworkCustomModel(t);return gcwModel?{mode:\"image\",model:gcwModel}:sY.find(({model:e})=>e.id===t)}"
+        },
+        {
+          "reason": "Use the public custom model label in original history detail rows",
+          "charOffset": 903709,
+          "byteOffsetBeforePatch": 930159,
+          "before": "function JS(t){const e=String(t||\"\").trim();",
+          "after": "function JS(t){const gcwModel=gamecoworkCustomModel(t);if(gcwModel)return gcwModel.label;const e=String(t||\"\").trim();"
+        },
+        {
+          "reason": "Keep an unavailable custom history route unavailable rather than replacing it with a different Provider",
+          "charOffset": 910630,
+          "byteOffsetBeforePatch": 937106,
+          "before": "const u=Owe(c);if(u)return",
+          "after": "if(gamecoworkIsThirdPartyModel(c)&&!Owe(c))return{mode:\"image\",modelId:c,layerDecomposition:!1,payload:r,prompt:l};const u=Owe(c);if(u)return"
+        },
+        {
+          "reason": "Merge only the public custom image catalog at the owned third-party group while preserving original official descriptors",
+          "charOffset": 1721150,
+          "byteOffsetBeforePatch": 1747998,
+          "before": "I=y.useMemo(()=>Object.fromEntries(Object.keys(xN).map(H=>[H,(xN[H]||[]).filter(ae=>(!ae.internalOnly||l)&&(!ae.paidGated||D1e||l))])),[l])",
+          "after": "I=y.useMemo(()=>({...Object.fromEntries(Object.keys(xN).map(H=>[H,(xN[H]||[]).filter(ae=>(!ae.internalOnly||l)&&(!ae.paidGated||D1e||l))])),thirdparty:gamecoworkThirdPartyModels()}),[l,gcwGenerationReadiness])"
+        },
+        {
+          "reason": "Keep each third-party Provider catalog separately selectable in original Quick model controls",
+          "charOffset": 1721386,
+          "byteOffsetBeforePatch": 1748234,
+          "before": "[gcwThirdParty,gcwSetThirdParty]=y.useState(!1),F=I[gcwThirdParty?\"thirdparty\":P]||[]",
+          "after": "[gcwThirdParty,gcwSetThirdParty]=y.useState(!1),[gcwProvider,gcwSetProvider]=y.useState(\"cpa\"),gcwEffectiveProvider=gcwProvider,F=gcwThirdParty?gamecoworkProviderModels(I.thirdparty||[],gcwEffectiveProvider):I[P]||[]"
+        },
+        {
+          "reason": "Choose the selected Provider model when re-entering the third-party tab",
+          "charOffset": 1729924,
+          "byteOffsetBeforePatch": 1756772,
+          "before": "const ae=I[gcwNextThirdParty?\"thirdparty\":H]||[],ze=rw(ae)",
+          "after": "const ae=gcwNextThirdParty?gamecoworkProviderModels(I.thirdparty||[],gcwEffectiveProvider):I[H]||[],ze=rw(ae)"
+        },
+        {
+          "reason": "Initialize only model-specific supported parameters, retaining account defaults for CPA",
+          "charOffset": 1729690,
+          "byteOffsetBeforePatch": 1756538,
+          "before": "if(H!=null&&H.gamecoworkThirdParty){D(\"auto\");ee(H.defaultQuality)}",
+          "after": "if(H!=null&&H.gamecoworkThirdParty){D(H.aspectRatios[0]||\"auto\");ee(H.defaultQuality)}"
+        },
+        {
+          "reason": "Render dimensions and quality chips only from supported per-model capability evidence; unknown capabilities expose no actionable controls",
+          "charOffset": 1707581,
+          "byteOffsetBeforePatch": 1734309,
+          "before": "if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){ie.push({key:\"compositionRatio\"",
+          "after": "if(t===\"image\"&&(e!=null&&e.gamecoworkCustomProvider)){ie.push(...gamecoworkCustomParameterSettings(e,{size:o,quality:u,format:p,ratio:m},(gcwField,gcwValue)=>{St(\"\");({size:oe,quality:Ie,format:Xe,ratio:pt})[gcwField](gcwValue)}));}else if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){ie.push({key:\"compositionRatio\""
+        },
+        {
+          "reason": "Do not let original general format controls expose an unverified custom Provider format",
+          "charOffset": 1711294,
+          "byteOffsetBeforePatch": 1738068,
+          "before": "if(t===\"image\"&&((dt=e==null?void 0:e.formats)!=null&&dt.length))",
+          "after": "if(t===\"image\"&&!(e!=null&&e.gamecoworkCustomProvider)&&((dt=e==null?void 0:e.formats)!=null&&dt.length))"
+        },
+        {
+          "reason": "Restore the exact Provider identity for original history regeneration and stop on removed configuration",
+          "charOffset": 1745936,
+          "byteOffsetBeforePatch": 1772840,
+          "before": "const Si=(I[gamecoworkIsThirdPartyModel(tn)?\"thirdparty\":ae]||[]).find(of=>of.id===tn);Si&&",
+          "after": "const Si=(I[gamecoworkIsThirdPartyModel(tn)?\"thirdparty\":ae]||[]).find(of=>of.id===tn);if(gamecoworkIsThirdPartyModel(tn)&&!Si){R(\"该历史 Provider 模型当前不可用，请先恢复原配置\");return}Si&&gamecoworkIsThirdPartyModel(tn)&&gcwSetProvider(gamecoworkModelProviderId(Si));Si&&"
+        },
+        {
+          "reason": "Explicitly adopt each selected Provider model current parameters while preserving unsupported historical draft values until the user chooses",
+          "charOffset": 1771277,
+          "byteOffsetBeforePatch": 1798233,
+          "before": "Ie(\"auto\");ee(\"auto\");lt(\"png\");tt(!1);D(Z.aspectRatios.includes(ye)?ye:\"auto\");R(\"\")",
+          "after": "Ie(Z.sizeOptions[0]||\"auto\");ee(Z.defaultQuality||\"auto\");lt(Z.formats[0]||\"png\");tt(!1);D(Z.aspectRatios.includes(ye)?ye:Z.aspectRatios[0]||\"auto\");R(\"\")"
+        },
+        {
+          "reason": "Distinguish custom Provider parameter adoption from CPA account defaults",
+          "charOffset": 1771433,
+          "byteOffsetBeforePatch": 1798389,
+          "before": "children:\"使用账号默认参数\"",
+          "after": "children:Z.gamecoworkCustomProvider?\"使用当前可用参数\":\"使用账号默认参数\""
+        },
+        {
+          "reason": "Add Provider selection and the original Dialog-based configuration manager to Quick without changing submit, result or player implementations",
+          "charOffset": 1766194,
+          "byteOffsetBeforePatch": 1793143,
+          "before": "f.jsx(FZ,{models:F,activeId:Pe.id,onSelect:li,t,open:Xs===\"model\",onOpenChange:H=>ca(H?\"model\":null)})",
+          "after": "gcwThirdParty&&f.jsx(GameCoworkProviderControls,{React:y,Dialog:TM,Popover:bc,PopoverTrigger:ih,PopoverContent:_c,Chevron:wo,readiness:gcwGenerationReadiness,selectedProvider:gcwEffectiveProvider,onSelect:H=>{const ae=rw((I.thirdparty||[]).filter(ze=>gamecoworkModelProviderId(ze)===H));if(!ae)return;gcwSetProvider(H);G(ae.id);Qt(ae);z([]);No(\"\");qt([]);ai([]);Tt(\"\");R(\"\")},onChanged:async()=>{const H=await Mn.get(\"/local-session\");za.setState({gamecoworkGeneration:gamecoworkGenerationReadiness(H)})}}),f.jsx(FZ,{models:F,activeId:Pe.id,onSelect:li,t,open:Xs===\"model\",onOpenChange:H=>ca(H?\"model\":null)}),Pe.gamecoworkCustomProvider&&f.jsx(\"small\",{role:\"note\",className:\"gamecowork-provider-capability-note\",children:Pe.info.size})"
+        },
+        {
+          "reason": "Keep prompt-only target dimensions and composition in independent state rather than claiming API capabilities",
+          "charOffset": 1720086,
+          "byteOffsetBeforePatch": 1746934,
+          "before": "const gcwGenerationReadiness=za(e=>e.gamecoworkGeneration);const{t}=an()",
+          "after": "const gcwGenerationReadiness=za(e=>e.gamecoworkGeneration),[gcwResolutionHint,gcwSetResolutionHint]=y.useState(\"auto\"),[gcwAspectHint,gcwSetAspectHint]=y.useState(\"auto\");const{t}=an()"
+        },
+        {
+          "reason": "Pass prompt targets to the owned custom builder without changing the original submitted prompt or official builders",
+          "charOffset": 1733496,
+          "byteOffsetBeforePatch": 1760344,
+          "before": "ae={viggleOptions:nn,prompt:ce,size:De",
+          "after": "ae={resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint,viggleOptions:nn,prompt:ce,size:De"
+        },
+        {
+          "reason": "Block invalid or conflicting prompt target dimensions in the original validation and submit states",
+          "charOffset": 1743742,
+          "byteOffsetBeforePatch": 1770646,
+          "before": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye})",
+          "after": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})"
+        },
+        {
+          "reason": "Block invalid or conflicting prompt target dimensions in the original validation and submit states",
+          "charOffset": 1734178,
+          "byteOffsetBeforePatch": 1761026,
+          "before": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye})",
+          "after": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})"
+        },
+        {
+          "reason": "Initialize prompt targets on a deliberate model or Provider change without any generation side effect",
+          "charOffset": 1730080,
+          "byteOffsetBeforePatch": 1756928,
+          "before": "if(H!=null&&H.gamecoworkThirdParty){D(H.aspectRatios[0]||\"auto\");ee(H.defaultQuality)}",
+          "after": "if(H!=null&&H.gamecoworkThirdParty){D(H.aspectRatios[0]||\"auto\");ee(H.defaultQuality);gcwSetResolutionHint(\"auto\");gcwSetAspectHint(\"auto\")}"
+        },
+        {
+          "reason": "Feed the original parameter component independent prompt-only hints",
+          "charOffset": 1749934,
+          "byteOffsetBeforePatch": 1776874,
+          "before": "state:{size:De,sizeCustom:ke",
+          "after": "state:{resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint,size:De,sizeCustom:ke"
+        },
+        {
+          "reason": "Use original parameter controllers for the additional prompt hints",
+          "charOffset": 1750489,
+          "byteOffsetBeforePatch": 1777429,
+          "before": "setters:{setSize:Ie,setSizeCustom:tt",
+          "after": "setters:{setResolutionHint:gcwSetResolutionHint,setAspectRatioHint:gcwSetAspectHint,setSize:Ie,setSizeCustom:tt"
+        },
+        {
+          "reason": "Reuse original dimension popover and numeric controls for labelled prompt-only targets, separate from verified API size and quality",
+          "charOffset": 1707581,
+          "byteOffsetBeforePatch": 1734309,
+          "before": "if(t===\"image\"&&(e!=null&&e.gamecoworkCustomProvider)){ie.push(...gamecoworkCustomParameterSettings(e,{size:o,quality:u,format:p,ratio:m},(gcwField,gcwValue)=>{St(\"\");({size:oe,quality:Ie,format:Xe,ratio:pt})[gcwField](gcwValue)}));}",
+          "after": "if(t===\"image\"&&(e!=null&&e.gamecoworkCustomProvider)){const gcwHintSize=/^(\\d+)x(\\d+)$/.exec(i.resolutionHint||\"\"),gcwHintW=gcwHintSize?Number(gcwHintSize[1]):1024,gcwHintH=gcwHintSize?Number(gcwHintSize[2]):1024;ie.push(...gamecoworkCustomParameterSettings(e,{size:o,quality:u,format:p,ratio:m,resolutionHint:i.resolutionHint,aspectRatioHint:i.aspectRatioHint},(gcwField,gcwValue)=>{St(\"\");({size:oe,quality:Ie,format:Xe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)},f.jsxs(\"div\",{children:[f.jsxs(\"div\",{className:\"studio-pop-custom\",children:[f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":\"提示词目标宽度\",value:gcwHintW,onChange:gcwEvent=>{r.setResolutionHint(`${Number(gcwEvent.target.value)}x${gcwHintH}`);St(\"\")}}),f.jsx(\"b\",{children:\"×\"}),f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":\"提示词目标高度\",value:gcwHintH,onChange:gcwEvent=>{r.setResolutionHint(`${gcwHintW}x${Number(gcwEvent.target.value)}`);St(\"\")}})]}),f.jsx(\"small\",{role:\"note\",children:\"提示词要求，不保证上游输出像素；边长须为 16 的倍数且不超过 3840，总像素不超过 8294400，长短边比不超过 3。不是独立超分。\"})]})));}"
+        },
+        {
+          "reason": "Restore exact prompt target fields from the original history draft without sending another request",
+          "charOffset": 1747758,
+          "byteOffsetBeforePatch": 1774827,
+          "before": "if(Si!=null&&Si.gamecoworkThirdParty&&ot.size)tt(!1);",
+          "after": "if(Si!=null&&Si.gamecoworkThirdParty&&ot.size)tt(!1);if(Si!=null&&Si.gamecoworkCustomProvider){gcwSetResolutionHint(typeof ot.resolutionHint===\"string\"?ot.resolutionHint:\"auto\");gcwSetAspectHint(typeof ot.aspectRatioHint===\"string\"?ot.aspectRatioHint:\"auto\")}"
+        },
+        {
+          "reason": "Allow explicit parameter reset to clear invalid prompt targets while leaving historical records intact",
+          "charOffset": 1773595,
+          "byteOffsetBeforePatch": 1800680,
+          "before": "D(Z.aspectRatios.includes(ye)?ye:Z.aspectRatios[0]||\"auto\");R(\"\")",
+          "after": "D(Z.aspectRatios.includes(ye)?ye:Z.aspectRatios[0]||\"auto\");gcwSetResolutionHint(\"auto\");gcwSetAspectHint(\"auto\");R(\"\")"
+        },
+        {
+          "reason": "Restore a historical explicit API size in the current request controls without rewriting old task records",
+          "charOffset": 1747811,
+          "byteOffsetBeforePatch": 1774880,
+          "before": "if(Si!=null&&Si.gamecoworkCustomProvider){gcwSetResolutionHint(typeof ot.resolutionHint===\"string\"?ot.resolutionHint:\"auto\");gcwSetAspectHint(typeof ot.aspectRatioHint===\"string\"?ot.aspectRatioHint:\"auto\")}",
+          "after": "if(Si!=null&&Si.gamecoworkCustomProvider){gcwSetResolutionHint(typeof ot.resolutionHint===\"string\"?ot.resolutionHint:Si.imageSizePolicy===\"openai-size\"&&typeof ot.size===\"string\"&&ot.size!==\"auto\"?ot.size:\"auto\");gcwSetAspectHint(typeof ot.aspectRatioHint===\"string\"?ot.aspectRatioHint:\"auto\")}"
+        },
+        {
+          "reason": "An explicit new request target replaces only the draft inherited API size before Core derives the new size",
+          "charOffset": 1707966,
+          "byteOffsetBeforePatch": 1734694,
+          "before": "St(\"\");({size:oe,quality:Ie,format:Xe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)",
+          "after": "St(\"\");if(e.imageSizePolicy===\"openai-size\"&&gcwField===\"resolutionHint\")oe(\"auto\");({size:oe,quality:Ie,format:Xe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)"
+        },
+        {
+          "reason": "Allow original custom width input to select a new API target while preserving historical metadata",
+          "charOffset": 1708374,
+          "byteOffsetBeforePatch": 1735116,
+          "before": "r.setResolutionHint(`${Number(gcwEvent.target.value)}x${gcwHintH}`);St(\"\")",
+          "after": "r.setResolutionHint(`${Number(gcwEvent.target.value)}x${gcwHintH}`);if(e.imageSizePolicy===\"openai-size\")oe(\"auto\");St(\"\")"
+        },
+        {
+          "reason": "Allow original custom height input to select a new API target while preserving historical metadata",
+          "charOffset": 1708637,
+          "byteOffsetBeforePatch": 1735394,
+          "before": "r.setResolutionHint(`${gcwHintW}x${Number(gcwEvent.target.value)}`);St(\"\")",
+          "after": "r.setResolutionHint(`${gcwHintW}x${Number(gcwEvent.target.value)}`);if(e.imageSizePolicy===\"openai-size\")oe(\"auto\");St(\"\")"
+        },
+        {
+          "reason": "Name custom dimensions as actual API request inputs only when that Provider policy is enabled",
+          "charOffset": 1708316,
+          "byteOffsetBeforePatch": 1735044,
+          "before": "\"aria-label\":\"提示词目标宽度\"",
+          "after": "\"aria-label\":e.imageSizePolicy===\"openai-size\"?\"接口请求宽度\":\"提示词目标宽度\""
+        },
+        {
+          "reason": "Keep prompt-only target names separate from API request dimensions",
+          "charOffset": 1708622,
+          "byteOffsetBeforePatch": 1735377,
+          "before": "\"aria-label\":\"提示词目标高度\"",
+          "after": "\"aria-label\":e.imageSizePolicy===\"openai-size\"?\"接口请求高度\":\"提示词目标高度\""
+        },
+        {
+          "reason": "Explain actual API size request policy separately from prompt-only requirements in the original numeric popover",
+          "charOffset": 1708879,
+          "byteOffsetBeforePatch": 1735660,
+          "before": "children:\"提示词要求，不保证上游输出像素；边长须为 16 的倍数且不超过 3840，总像素不超过 8294400，长短边比不超过 3。不是独立超分。\"",
+          "after": "children:e.imageSizePolicy===\"openai-size\"?\"同时发送标准 size 参数和提示词规格；边长须为 16 的倍数且不超过 3840，像素 \"+((e.imageSizePolicyInfo&&e.imageSizePolicyInfo.constraints&&e.imageSizePolicyInfo.constraints.minPixels)||0)+\"–8294400，长短边比不超过 3；实际输出未验证，不是独立超分。\":\"提示词要求，不保证上游输出像素；边长须为 16 的倍数且不超过 3840，总像素不超过 8294400，长短边比不超过 3。不是独立超分。\""
+        },
+        {
+          "reason": "Import the owned unknown-create presentation boundary without replacing original task components",
+          "charOffset": 0,
+          "byteOffsetBeforePatch": 0,
+          "before": "",
+          "after": "import { gamecoworkSubmissionUnknown, gamecoworkTaskOutcomeLabel, gamecoworkUnknownRetryHint } from \"../task-outcome.js\";\n"
+        },
+        {
+          "reason": "Preserve the explicit local unknown-create flag through the original Quick terminal poll mapper",
+          "charOffset": 888789,
+          "byteOffsetBeforePatch": 915238,
+          "before": "const J={errorCode:(B==null?void 0:B.errorCode)",
+          "after": "const J={submissionUnknown:gamecoworkSubmissionUnknown(B),errorCode:(B==null?void 0:B.errorCode)"
+        },
+        {
+          "reason": "Prevent original direct retry from submitting an explicitly unknown create outcome again",
+          "charOffset": 891048,
+          "byteOffsetBeforePatch": 917497,
+          "before": "v=y.useCallback(w=>{if(w.sync)return null;if(w.error===\"poll-timeout\"",
+          "after": "v=y.useCallback(w=>{if(w.sync||gamecoworkSubmissionUnknown(w))return null;if(w.error===\"poll-timeout\""
+        },
+        {
+          "reason": "Mark the original terminal Quick card as result-unknown without inventing another polling state",
+          "charOffset": 1655458,
+          "byteOffsetBeforePatch": 1681945,
+          "before": "className:\"studio-task-card is-failed\",children:",
+          "after": "className:\"studio-task-card is-failed\",\"data-submission-unknown\":gamecoworkSubmissionUnknown(t)||void 0,children:"
+        },
+        {
+          "reason": "Use the original theme secondary tone instead of the failure icon color for an unknown result",
+          "charOffset": 1655638,
+          "byteOffsetBeforePatch": 1682125,
+          "before": "className:\"studio-task-failed\",children:",
+          "after": "className:\"studio-task-failed\",style:gamecoworkSubmissionUnknown(t)?{color:\"var(--studio-text-secondary)\"}:void 0,children:"
+        },
+        {
+          "reason": "Disable the original retry affordance with a provider-record check hint only for an explicit uncertain submission",
+          "charOffset": 1655896,
+          "byteOffsetBeforePatch": 1682383,
+          "before": "title:c(\"studio.task.retry\"),onClick:()=>i(t)",
+          "after": "title:gamecoworkSubmissionUnknown(t)?gamecoworkUnknownRetryHint(Er.resolvedLanguage||Er.language):c(\"studio.task.retry\"),\"aria-label\":gamecoworkSubmissionUnknown(t)?gamecoworkUnknownRetryHint(Er.resolvedLanguage||Er.language):c(\"studio.task.retry\"),disabled:gamecoworkSubmissionUnknown(t),onClick:()=>{if(!gamecoworkSubmissionUnknown(t))i(t)}"
+        },
+        {
+          "reason": "Label explicit uncertain Quick outcomes without claiming that generation failed",
+          "charOffset": 1656376,
+          "byteOffsetBeforePatch": 1682863,
+          "before": "className:\"is-danger\",children:c(\"studio.task.failed\")",
+          "after": "className:gamecoworkSubmissionUnknown(t)?void 0:\"is-danger\",children:gamecoworkTaskOutcomeLabel(t,c(\"studio.task.failed\"),Er.resolvedLanguage||Er.language)"
+        },
+        {
+          "reason": "Reuse the original History status chip for explicit local unknown-create outcomes",
+          "charOffset": 1875738,
+          "byteOffsetBeforePatch": 1903062,
+          "before": "function KL({status:t}){const{t:e}=an();return t===\"completed\"?null:f.jsx(\"span\",{className:`generation-status is-${t}`,children:e(`generation.status.${t}`,t)})}",
+          "after": "function KL({status:t,task:gcwTask}){const{t:e}=an();return t===\"completed\"?null:f.jsx(\"span\",{className:`generation-status is-${gamecoworkSubmissionUnknown(gcwTask)?\"unknown\":t}`,\"data-submission-unknown\":gamecoworkSubmissionUnknown(gcwTask)||void 0,children:gamecoworkTaskOutcomeLabel(gcwTask,e(`generation.status.${t}`,t),Er.resolvedLanguage||Er.language)})}"
+        },
+        {
+          "reason": "Pass the original task identity and local outcome marker to History grid and list chips",
+          "charOffset": 1882520,
+          "byteOffsetBeforePatch": 1909845,
+          "before": "f.jsx(KL,{status:e.status})",
+          "after": "f.jsx(KL,{status:e.status,task:e})"
+        },
+        {
+          "reason": "Pass the original task identity and local outcome marker to History grid and list chips",
+          "charOffset": 1880524,
+          "byteOffsetBeforePatch": 1907848,
+          "before": "f.jsx(KL,{status:e.status})",
+          "after": "f.jsx(KL,{status:e.status,task:e})"
+        },
+        {
+          "reason": "Keep the original History detail status consistent while preserving its regenerate-to-draft action",
+          "charOffset": 1855392,
+          "byteOffsetBeforePatch": 1882714,
+          "before": "f.jsx(\"span\",{children:l(`generation.status.${t.status}`,t.status)})",
+          "after": "f.jsx(\"span\",{\"data-submission-unknown\":gamecoworkSubmissionUnknown(t)||void 0,children:gamecoworkTaskOutcomeLabel(t,l(`generation.status.${t.status}`,t.status),Er.resolvedLanguage||Er.language)})"
+        },
+        {
+          "reason": "Import the owned History default-status boundary without changing completed-only asset selection",
+          "charOffset": 66,
+          "byteOffsetBeforePatch": 66,
+          "before": "gamecoworkUnknownRetryHint } from \"../task-outcome.js\";",
+          "after": "gamecoworkUnknownRetryHint, gamecoworkHistoryDefaultStatus } from \"../task-outcome.js\";"
+        },
+        {
+          "reason": "Include all owned task outcomes in the original main History list while retaining remote completed-only defaults",
+          "charOffset": 1891064,
+          "byteOffsetBeforePatch": 1918389,
+          "before": "GZ({status:\"completed\",page:xe,pageSize:yR",
+          "after": "GZ({status:gamecoworkHistoryDefaultStatus(a),page:xe,pageSize:yR"
+        },
+        {
+          "reason": "Make the original History tag counts use the same owned outcome scope as its main task list",
+          "charOffset": 1887743,
+          "byteOffsetBeforePatch": 1915068,
+          "before": "rIe({status:\"completed\",discarded:P",
+          "after": "rIe({status:gamecoworkHistoryDefaultStatus(a),discarded:P"
+        },
+        {
+          "reason": "Import the safe error-details view that reuses the original Dialog and clipboard helper",
+          "charOffset": 94,
+          "byteOffsetBeforePatch": 94,
+          "before": "gamecoworkHistoryDefaultStatus } from \"../task-outcome.js\";",
+          "after": "gamecoworkHistoryDefaultStatus, gamecoworkTaskErrorDetails, GameCoworkTaskErrorDetails } from \"../task-outcome.js\";"
+        },
+        {
+          "reason": "Preserve only the public structured error details and local server task identity through original Quick polling",
+          "charOffset": 888877,
+          "byteOffsetBeforePatch": 915326,
+          "before": "const J={submissionUnknown:gamecoworkSubmissionUnknown(B),errorCode:",
+          "after": "const J={errorDetails:gamecoworkTaskErrorDetails(B),serverTaskId:w.serverTaskId,submissionUnknown:gamecoworkSubmissionUnknown(B),errorCode:"
+        },
+        {
+          "reason": "Offer explicit structured error details in the original Quick reason slot without long text in the card",
+          "charOffset": 1653552,
+          "byteOffsetBeforePatch": 1680032,
+          "before": "const l=()=>i(!0);return f.jsxs(f.Fragment,{children:[f.jsx(\"em\",{ref:s,className:Ke(\"studio-task-failed-reason\"",
+          "after": "const l=()=>i(!0);return gamecoworkTaskErrorDetails(t)?f.jsx(GameCoworkTaskErrorDetails,{React:y,Dialog:TM,task:t,copyText:xb}):f.jsxs(f.Fragment,{children:[f.jsx(\"em\",{ref:s,className:Ke(\"studio-task-failed-reason\""
+        },
+        {
+          "reason": "Reuse the original nested Dialog and clipboard control for error details in the History sidebar",
+          "charOffset": 1857003,
+          "byteOffsetBeforePatch": 1884325,
+          "before": "f.jsx(bM,{tasks:[t]}),f.jsxs(\"section\",{className:\"generation-detail-section\"",
+          "after": "f.jsx(bM,{tasks:[t]}),f.jsx(GameCoworkTaskErrorDetails,{React:y,Dialog:TM,task:t,copyText:xb}),f.jsxs(\"section\",{className:\"generation-detail-section\""
         }
       ]
     },

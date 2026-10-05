@@ -110761,7 +110761,7 @@ const Ewt = {
           (e.canUpgradePlan = (a = t.payload.canUpgradePlan) != null ? a : !1),
           (e.canManagePlan = (i = t.payload.canManagePlan) != null ? i : !1),
           (e.canTopup = (o = t.payload.canTopup) != null ? o : !1),
-          (e.hasSeat = (s = t.payload.hasSeat) != null ? s : !1),
+          (e.hasSeat = typeof t.payload.hasSeat === "boolean" ? t.payload.hasSeat : null),
           (e.validTo = t.payload.validTo),
           (e.lastPlanFetchAt = Date.now()));
       },
@@ -110804,7 +110804,7 @@ const Ewt = {
       selectShowHubUpgrade: (e) => e.planType === "free" && !e.isTeamPlan && e.canManagePlan && e.canUpgradePlan,
       selectShowHubRenewal: (e) => e.inRenewalPeriod && e.canManagePlan,
       selectSubscriptionUrl: (e) => e.subscriptionUrl,
-      selectIsNoSeatTeamMember: (e) => e.isTeamPlan && !e.hasSeat,
+      selectIsNoSeatTeamMember: (e) => e.isTeamPlan === true && e.hasSeat === false,
       selectValidTo: (e) => e.validTo,
       selectUsageRemainingPoints: (e) => e.usageRemainingPoints,
       selectUsageWindows: (e) => e.usageWindows,
@@ -110892,7 +110892,7 @@ const Ewt = {
             canUpgradePlan: (l = m.content.canUpgradePlan) != null ? l : !1,
             canManagePlan: (c = m.content.canManagePlan) != null ? c : !1,
             canTopup: (d = m.content.canTopup) != null ? d : !1,
-            hasSeat: (u = m.content.hasSeat) != null ? u : !1,
+            hasSeat: typeof m.content.hasSeat === "boolean" ? m.content.hasSeat : null,
             validTo: (h = m.content.validTo) != null ? h : null,
           }),
         );

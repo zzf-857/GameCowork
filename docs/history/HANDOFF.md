@@ -1,17 +1,20 @@
-# GameCowork 交接导读（2026-10-03）
+# GameCowork 交接导读（2026-10-04）
 
-本文仅作接续工作的导读，**功能状态、证据、包来源和详细 plan 统一维护在 RESTORE_STATUS**。当前源码接线、隔离测试、本人真实服务操作和装配交付须分别核对。
+本文仅作接续工作的导读，**功能状态、证据与包来源统一维护在 RESTORE_STATUS**。源码接线、隔离 fixture、本人真实服务操作和装配交付分别核对；下方2026-10-01历史正文不改写。
 
-1. 先读 [最新接续与交付记录](../../RESTORE_STATUS.md#codely-live-login-20261003)、[已完成功能与代码入口](../../RESTORE_STATUS.md#feature-matrix) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。当前正式入口是项目根的 `app/启动GameCowork.bat`，资源和数据职责见 [架构](../ARCHITECTURE.md)。
-2. 读 [项目规范](../../AGENTS.md) 与 [开发指南](../DEVELOPMENT.md)。维护 `src/` 与两代bundle/两份Core入口；只用 `tools/build-local.ps1` 更新app，不创建第二份源码，不回退已有WIP或复制原EXE。
-3. 资产模块先看 [实际来源审计](../../codelyreversebackup/api/asset-generation-and-canvas-source-audit.md) 和两个 client 的 source-ledger。保留原 Quick/History/ReactFlow 逻辑。`gamecowork-codely-official-generator.js` 已把原 `frontier_flare` / `frontier_sunburst` 普通图片的真实报价、最多 16 张登记参考图、提交/查询和核验媒体接入自有历史/下载；CPA 仍是独立扩展。分层图片、其它原模型与 Canvas 生成 schema 继续按状态文档的边界处理。
-4. 账号维护入口是 `src/core/binary/out/gamecowork-codely-account.js`，完整响应体时限、设备授权、DPAPI、组织/订阅读取及两站点交换均沿用该 broker。正式 app 已原位更新，本人真实登录、Quick 付费读取、单张官方 Pro PNG 及 GLM-5.3-FLASH 短文字请求已验收成功；图片实际字节/SHA 与文字最终帧已核验，不推及全部目录模型、其它生成模型或分层。自动门禁仍用隔离 fixture，实际额度、请求与交付范围见 [最新状态](../../RESTORE_STATUS.md)。不要导入原软件凭据或复制 Pro 标记。
-5. 官方编程从两代原模型菜单显式“启用 Codely 官方 · Pro 模型”，读取真实目录后由用户选模型；实现位于 `gamecowork-official-llm.js` 与 `assets/gamecowork-official-models.js`。真实 Key 仅留 Core 内存，Agent 只持有工作区/会话/模型绑定的本机能力，CPA ↔ 官方切换保留原设置。继续核对账号/组织、会话关闭和工作区代次的撤销边界。
-6. 定向命令见 [开发指南](../DEVELOPMENT.md#原客户端资产界面与本地兼容层) 和 [测试导航](../../tests/README.md)：图片使用 `codely-account-login-e2e.mjs --browser --images [--previous]`，编程使用 `codely-official-programming-e2e.mjs --agent <同源码 guarded Agent EXE> [--previous]`；对应编程契约为 `.test.cjs`。先定向验证，再按变更跑 HTTP/GUI/生命周期与包内检查。自动门禁使用隔离 fixture；真实 CPA 手动试验的范围和限制已单列。已有私有配置保留在本机，不写进源码、截图或日志。
+1. 先读 [XCAI与Provider最新状态](../../RESTORE_STATUS.md#xcai-custom-provider-20261004)、[CPA三按钮](../../RESTORE_STATUS.md#cpa-variant-buttons-20261003)、[官方四分类](../../RESTORE_STATUS.md#official-all-models-20261003) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。日常入口仍为app/启动GameCowork.bat；本轮完整-RealCore -Chat门禁exit0/Rust160，首次旧VM测试适配失败记录保留；最终候选和正式app均1566运行文件/1562映射零差异，双代Provider Manager各48项已验。本人11任务/6缓存的正式包只读snapshot恢复15项已验、原源SHA不变，早8条缺省executionPrompt不补写；正式app10月4日01:19已正常重开，3模型及密钥配置就绪，无新GEN/infer。后续下拉主题两代8项、合并错误分类候选双代48及CPA兼容专项已验，1111前端SHA一致，最新主题/分类增量10月4日01:41:11原位安装、01:41:51重开，正式1566运行文件/1562映射零差、密钥/3模型/窗口/HTTP就绪留运行；此前完整门禁在增量前通过，不虚称又跑全套，窗口句柄不作Wry像素验收。用户后来自行两次Sunburst失败另记，不属Agent11预算，旧collectdata错误类别不能反推，主体已交付事实保留。
+2. 阅读 [项目规范](../../AGENTS.md)、[架构](../ARCHITECTURE.md)与[开发指南](../DEVELOPMENT.md)。只维护src/、两代前端与两份Core入口；用tools/build-local.ps1更新app，保留全部WIP，不创建第二份源码、不复制原EXE、不执行原软件或读取原凭据。
+3. 新Provider入口是gamecowork-provider-registry.js、gamecowork-provider-catalog.js、gamecowork-provider-vault.js和codely-generator/provider-manager.js。管理/选择/GET目录与模型稳定身份已接线，完整分页失败不能发布部分目录。OpenAI Images与显式REST任务可执行；Chat/Responses/Ollama/ComfyUI目前仅配置和目录，执行未接入须明确显示。ComfyUI保存API graph与node/input映射，不安装、运行脚本或全局中断。
+4. 新Provider密钥采用DPAPI CurrentUser和不可变凭据版本/原子引用，公开DTO仅显示已配置；旧CPA自身AES保存不混称DPAPI，不迁移其密钥或复制旧聊天明文配置。逐模型能力分开状态和unknown/documented/tested/manual证据，公开手动声明强制manual；未知质量、尺寸与独立超分不开可用按钮。
+5. XCAI当前Key完整目录只有Image 2、Flare、Sunburst三个确切ID。首轮8次串行已结束5个产物/3失败，实际成功图均1254×1254 PNG；第一回包size=1024×1024与文件不同，其余四成功无可用服务规格字段。HTTP200无合法outputs仍算失败，quality只标服务报告，独立超分和实际模型身份未确认。不要把站面SESSION upscale分组或上游stock版本源码当成此Key已确认路由。
+6. 用户追加3次串行场景测试已结束1产物/2次HTTP502：Flare幻想港口实际1536×1024，风景与成年女性游侠插画失败；两轮总11次6产物/5失败，预算已用完。该联合提示要求组合不证明任意尺寸、纯API参数单独有效或超分。resolutionHint/aspectRatioHint只编入服务端executionPrompt，保留用户prompt与摘要，历史再生不能重复追加；不承诺像素/比例。旧CPA8次与本轮XCAI8次和追加3次分别计数，不自动重发、不高并发、不扩大到官方生成/编程；上轮官方3198/3200是10月3日当时观测，不表示10月4日余额。
+7. 原Quick/History/ReactFlow、43官方契约及账号/缓存/下载边界继续复用。官方45项仍30完成、15HTTP400未跑通；已有9远端任务只GET恢复。声音克隆已知扩展修复仅在原lwe，原xZ播放器和任务规则保留。旧CPA三按钮分别保存确切请求ID，8次7产物/1EOF，实际2.5换模仍未确认。新的门禁与正式资源计数只查RESTORE顶部，不相加交叉测试数或把fixture成功当真实规格兑现。
+
+最新4K接线补全：imageSizePolicy请求方法、规范XCAI默认标准size、保守默认/optout冷恢复及原history不写已接；1K/2K/4K公开27tuple与质量分开、旧history不追认。Core75+新增Registry28累计对应76范围非全重跑，Frontend37与双代source/候选各29通过；真实Popover层级/pointer-events/Escape早期v1–v4失败保留，修正后流程已验。用户新增独立1张授权实际gpt-image-2输出3840×2160 PNG（n1、quality省略），原词/API size与registry/15暂停官方行不变，自有进程退出；仅这张横图，不泛化2.5/其它规格/高质量/超分。预检paused退出时0Core/0请求不计收费失败。候选v4与正式包1566/1562零差、Quick29/336，双代源码/包size各29与原兼容各48全过；02:46:11原位安装与02:47:59首次18752观察保留，但该PID后续不存在且退出原因未知；最新桌面Shell启动42608于02:54确认launcher退出后仍Running/WindowReady、密钥/策略与实际4K/SHA恢复，仅本机GET无新GEN。完整门禁仍为更早增量前范围，不把窗口句柄当Wry像素；其他2.5/尺寸/质量/超分未扩大。
 
 可直接给下一位Agent的指令：
 
-> 先阅读 AGENTS.md、README.md、docs/ARCHITECTURE.md、docs/DEVELOPMENT.md，以及 RESTORE_STATUS.md 文首最新接续记录和详细 plan。检查 git status 并保留现有修改。复用已实现的账号 broker、原 Codely 客户端、官方普通图片执行器和官方编程桥，按当前剩余边界继续；不要重复创建账号模块、重写资产主界面，也不要把研究、fixture 身份、HTTP 200 或源码接线当作真实额度与包内验收。每完成一段记录实际测试与剩余边界，再按用户要求装配。
+> 先读AGENTS、README、架构、开发指南和RESTORE最新段，保留WIP。复用原客户端、43官方契约、CPA兼容profile与独立Provider注册/目录/DPAPI链。XCAI仅当前Key三模型，第一轮8次5产物/3失败；追加3次1产物/2失败，合计11次6产物/5失败预算已用完，禁止高并发/未知请求重发或自动扩额；Flare横图仅该联合提示要求组合已实证。分辨率/比例提示与真实API参数、服务报告、文件像素分开；quality和实际型号不造确证。Chat/Ollama/ComfyUI执行未接，未知独立超分无按钮。最终源码/GUI/候选/正式包范围只查RESTORE，禁止沿用旧验收替代。真实密钥、私有凭据输入路径与原始私有响应不进Git/日志；活动状态只写RESTORE_STATUS。
 
 ---
 

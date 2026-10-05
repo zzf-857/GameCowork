@@ -28,10 +28,13 @@ const PLAN_KEYS = ["planType", "planTag", "isTeamPlan", "isActive", "inRenewalPe
 const USAGE_KEYS = ["remainingPoints", "isExhausted", "windows"];
 const MAX_RECORD_BYTES = 64 * 1024;
 const MAX_NETWORK_ERRORS = 10;
-const GENERATOR_KINDS = new Set(["frontier_flare", "frontier_sunburst"]);
-const GENERATOR_QUOTE_TYPES = new Set(["fal_frontier_flare", "fal_frontier_sunburst"]);
+const generatorCatalog = require("./gamecowork-official-model-catalog.js");
+const GENERATOR_KINDS = new Set(Object.keys(generatorCatalog.MODELS));
+const GENERATOR_QUOTE_TYPES = new Set(Object.values(generatorCatalog.MODELS).flatMap(model => model.quoteTaskTypes || [model.taskType]));
+const GENERATOR_QUOTE_FIELDS = new Set(["taskType", ...Object.values(generatorCatalog.MODELS).flatMap(model => model.quoteFields || [])]);
 const MAX_GENERATOR_JSON_BYTES = 1024 * 1024;
 const MAX_GENERATOR_IMAGE_BYTES = 64 * 1024 * 1024;
+const MAX_GENERATOR_DIAGNOSTIC_BYTES = 64 * 1024;
 
 function resolveBaseUrl(env = process.env) {
   const override = env.GAMECOWORK_CODELY_ACCOUNT_BASE_URL;
@@ -64,6 +67,16 @@ function pick(obj, keys) {
   for (const key of keys) if (obj[key] !== undefined) out[key] = obj[key];
   return out;
 }
+function displayText(value, maximum = 320) {
+  if (typeof value !== 'string') return null;
+  const result = value.trim();
+  return result && result.length <= maximum && !/[\u0000-\u001f\u007f]/.test(result) ? result : null;
+}
+function displayEmail(value) {
+  const result = displayText(value);
+  return result && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result) ? result : null;
+}
+function nullableBoolean(value) { return typeof value === 'boolean' ? value : null; }
 
 async function atomicWrite(target, bytes) {
   const directory = path.dirname(target);
@@ -139,9 +152,20 @@ async function createCodelyAccountBroker(options) {
 
   function publicSession() {
     if (phase !== "authenticated" || !session) return null;
+    const visible = (value, project = displayText) => {
+      const projected = project(value);
+      return projected && [session.accessToken, session.refreshToken].some(secret => typeof secret === 'string' && secret.length >= 8 && projected.includes(secret)) ? null : projected;
+    };
     return {
       accessToken: "gamecowork-codely-session",
-      account: { id: String(session.account.id), label: String(session.account.label) },
+      account: {
+        id: String(session.account.id),
+        label: visible(session.account.username) || visible(session.account.displayName)
+          || (session.account.label !== String(session.account.id) ? visible(session.account.label) : null)
+          || visible(session.account.email, displayEmail) || 'Codely 用户',
+        username: visible(session.account.username),
+        email: visible(session.account.email, displayEmail),
+      },
       mode: "codely",
     };
   }
@@ -423,10 +447,13 @@ async function createCodelyAccountBroker(options) {
     if (!response.ok) throw new AccountError("server", `User info request failed: ${response.status}`);
     const payload = await response.json().catch(() => null);
     checkEpoch(current);
-    if (!payload || payload.id === undefined || payload.id === null) throw new AccountError("server", "User info response has no identity");
-    const label = typeof payload.username === "string" && payload.username ? payload.username
-      : typeof payload.email === "string" && payload.email ? payload.email : String(payload.id);
-    return { id: String(payload.id), label, email: typeof payload.email === "string" ? payload.email : null };
+    if (!payload || !['string','number'].includes(typeof payload.id) || !String(payload.id).trim()
+      || String(payload.id).length > 256 || /[\u0000-\u001f\u007f]/.test(String(payload.id))
+      || String(payload.id).includes(accessToken)) throw new AccountError("server", "User info response has no usable identity");
+    const username = displayText(payload.username), email = displayEmail(payload.email);
+    const displayName = displayText(payload.display_name) || displayText(payload.name);
+    const label = username || displayName || email || 'Codely 用户';
+    return { id: String(payload.id), label, username, displayName, email };
   }
 
   async function completeAuthentication(exchangePayload) {
@@ -777,6 +804,78 @@ async function createCodelyAccountBroker(options) {
     return (jar?.cookies || []).map((cookie) => cookie.split(";")[0]).join("; ");
   }
 
+  // One private sanitizer serves successful receipts, self-history and the
+  // narrow 400/422 validation diagnostic. Never hand this sanitizer or its
+  // credential list to a renderer or a general authenticated-fetch API.
+  function redactGeneratorPayload(payload, jar) {
+    const csrfCookie = jar.cookies.find(cookie => cookie.startsWith("_csrf="));
+    const secrets = [...new Set([jar.owner.token, jar.owner.session?.refreshToken, session?.refreshToken,
+      csrfCookie ? csrfCookie.split(";", 1)[0].slice("_csrf=".length) : null,
+      ...jar.cookies.map(cookie => cookie.split(";", 1)[0].slice(cookie.indexOf("=") + 1))]
+      .filter(value => typeof value === "string" && value.length > 0))];
+    const decoded = value => {
+      for (let n = 0; n < 4; n++) {
+        const next = value.replace(/\\u([a-f\d]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)))
+          .replace(/\\\//g, "/").replace(/(?:%[a-f\d]{2})+/gi, run => { try { return decodeURIComponent(run); } catch { return run; } });
+        if (next === value) break;
+        value = next;
+      }
+      return value;
+    };
+    const replace = value => {
+      let safe = value;
+      for (const secret of secrets) safe = safe.replaceAll(secret, "[redacted]").replaceAll(encodeURIComponent(secret), "[redacted]");
+      const expanded = decoded(safe);
+      let clean = expanded;
+      for (const secret of secrets) clean = clean.replaceAll(secret, "[redacted]").replaceAll(encodeURIComponent(secret), "[redacted]");
+      // Preserve ordinary encoded output URLs exactly when they contain no
+      // private value. Decoding is used only to remove an encoded credential.
+      return clean === expanded ? safe : clean;
+    };
+    const redact = (value, depth = 0) => {
+      if (depth > 32) throw new AccountError("server", "Official generator reply exceeds nesting limit");
+      if (typeof value === "string") {
+        value = replace(value);
+        if (/^\s*[\[{\"]/.test(value)) {
+          try { const parsed = JSON.parse(value), safe = redact(parsed, depth + 1); if (JSON.stringify(parsed) !== JSON.stringify(safe)) return JSON.stringify(safe); }
+          catch (error) { if (error instanceof AccountError) throw error; }
+        }
+        return value;
+      }
+      if (Array.isArray(value)) return value.map(item => redact(item, depth + 1));
+      if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => {
+        const normalizedKey = decoded(key);
+        return [replace(key), /^(?:access[_-]?token|refresh[_-]?token|authorization|api[_-]?key|cookie|csrf(?:[_-]?token)?|secret|password|bearer(?:[_-]?token)?|token)$/i.test(normalizedKey) ? "[redacted]" : redact(item, depth + 1)];
+      }));
+      return value;
+    };
+    return redact(payload);
+  }
+
+  async function generatorValidationDiagnostic(response, jar) {
+    if (![400, 422].includes(response.status)) return undefined;
+    try {
+      const body = await response.text();
+      if (typeof body !== "string" || Buffer.byteLength(body) > MAX_GENERATOR_DIAGNOSTIC_BYTES) return undefined;
+      const payload = JSON.parse(body);
+      if (!payload || typeof payload !== "object" || Array.isArray(payload)) return undefined;
+      const safe = redactGeneratorPayload(payload, jar), entries = [];
+      for (const row of [safe, safe.data].filter(value => value && typeof value === "object" && !Array.isArray(value))) {
+        if (typeof row.message === "string" && row.message.trim()) entries.push(row.message);
+        if (typeof row.detail === "string" && row.detail.trim()) entries.push(row.detail);
+        else if (row.detail && typeof row.detail === "object") entries.push(JSON.stringify(row.detail));
+        if (row.error && typeof row.error === "object" && !Array.isArray(row.error) && typeof row.error.message === "string" && row.error.message.trim()) entries.push(row.error.message);
+        if (typeof row.code === "string" && row.code.trim() || typeof row.code === "number" && Number.isFinite(row.code)) entries.push(`code: ${String(row.code).slice(0, 128)}`);
+      }
+      const diagnostic = [...new Set(entries)].join("; ").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, 1200);
+      return diagnostic || undefined;
+    } catch {
+      // Malformed/deep JSON and parser/transport errors remain fixed failures;
+      // neither exception text nor an unrecognized body becomes a diagnostic.
+      return undefined;
+    }
+  }
+
   async function withGeneratorSignal(promise, signal) {
     if (!signal) return promise;
     let listener;
@@ -831,7 +930,7 @@ async function createCodelyAccountBroker(options) {
 
   async function generatorRequest(urlPath, init = {}, allowRetry = true) {
     const method = init.method || "GET";
-    let submitted = false;
+    let submitted = false, safeDiagnostic;
     try {
       const jar = await ensureGeneratorSession(undefined, true, init.signal);
       checkSessionOwner(jar.owner);
@@ -857,15 +956,19 @@ async function createCodelyAccountBroker(options) {
       if (!response.ok) {
         const failure = new AccountError("server", `Official generator request failed (${response.status})`);
         failure.httpStatus = response.status;
+        safeDiagnostic = await generatorValidationDiagnostic(response, jar);
+        checkSessionOwner(jar.owner);
+        if (init.signal?.aborted) throw new AccountError("cancelled", "Official generator request was cancelled");
         throw failure;
       }
       const payload = await response.json();
       checkSessionOwner(jar.owner);
       if (init.signal?.aborted) throw new AccountError("cancelled", "Official generator request was cancelled");
-      return payload;
+      return redactGeneratorPayload(payload, jar);
     } catch (error) {
       // Upstream bodies and transport diagnostics can contain cookies/tokens.
-      // Only fixed errors and HTTP status cross this private adapter facade.
+      // Only fixed errors/status and our locally produced 400/422 diagnostic
+      // cross this facade. An injected transport's error fields are not trusted.
       const code = error?.code === "timeout" ? "timeout"
         : error?.code === "cancelled" || init.signal?.aborted || error?.name === "AbortError" ? "cancelled"
         : error?.code === "requires-login" ? "requires-login" : "server";
@@ -874,7 +977,9 @@ async function createCodelyAccountBroker(options) {
         : code === "requires-login" ? "Official generator requires login"
         : Number.isInteger(error?.httpStatus) ? `Official generator request failed (${error.httpStatus})`
         : "Official generator returned no usable response";
-      const failure = new AccountError(code, message);
+      const diagnostic = code === "server" && [400, 422].includes(error?.httpStatus) ? safeDiagnostic : undefined;
+      const failure = new AccountError(code, diagnostic ? `${message}: ${diagnostic}` : message);
+      if (diagnostic) failure.safeDiagnostic = diagnostic;
       if (Number.isInteger(error?.httpStatus)) failure.httpStatus = error.httpStatus;
       if (submitted) failure.submissionUnknown = true;
       throw failure;
@@ -892,17 +997,19 @@ async function createCodelyAccountBroker(options) {
 
   function generatorCostPreview(query, signal) {
     if (!query || typeof query !== "object" || Array.isArray(query)
-      || Object.keys(query).some(key => !["taskType", "resolution", "quality"].includes(key))
+      || Object.keys(query).some(key => !GENERATOR_QUOTE_FIELDS.has(key))
       || !GENERATOR_QUOTE_TYPES.has(query.taskType)) {
       throw new AccountError("policy", "Unsupported official generator quote");
     }
     const parameters = new URLSearchParams({ taskType: query.taskType });
-    for (const field of ["resolution", "quality"]) {
+    for (const field of GENERATOR_QUOTE_FIELDS) {
+      if (field === "taskType") continue;
       if (query[field] === undefined) continue;
-      if (typeof query[field] !== "string" || !query[field] || query[field].length > 64 || /[\x00-\x1f\x7f]/.test(query[field])) {
+      const value = query[field];
+      if (!["string", "number", "boolean"].includes(typeof value) || typeof value === "number" && !Number.isFinite(value) || !String(value) || String(value).length > 128 || /[\x00-\x1f\x7f]/.test(String(value))) {
         throw new AccountError("policy", "Invalid official generator quote parameter");
       }
-      parameters.set(field, query[field]);
+      parameters.set(field, String(value));
     }
     return generatorRequest(`/api/credit/cost-preview?${parameters}`, { method: "GET", signal });
   }
@@ -924,16 +1031,40 @@ async function createCodelyAccountBroker(options) {
     return generatorRequest(`/api/task/${encodeURIComponent(id)}/status`, { method: "GET", signal });
   }
 
-  function generatorUploadImage(image, signal) {
-    const { bytes, mime, filename } = image || {};
-    if (!(bytes instanceof Uint8Array) || !bytes.byteLength || bytes.byteLength > MAX_GENERATOR_IMAGE_BYTES
-      || !["image/png", "image/jpeg", "image/webp"].includes(mime)
-      || typeof filename !== "string" || !filename || filename.length > 255 || /[\\/\x00-\x1f\x7f]/.test(filename)) {
-      throw new AccountError("policy", "Invalid official generator image upload");
+  function generatorTaskHistory(query = {}, signal) {
+    if (!query || typeof query !== "object" || Array.isArray(query) || Object.keys(query).some(key => !["startTime", "endTime", "page", "pageSize"].includes(key))) {
+      throw new AccountError("policy", "Unsupported official self-history query");
     }
-    const form = new FormData();
-    form.append("image", new Blob([Buffer.from(bytes)], { type: mime }), filename);
-    return generatorRequest("/api/sso/upload/image", { method: "POST", signal, body: form }, false);
+    const iso = value => {
+      if (typeof value !== "string" || value.length > 35) return false;
+      const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+      if (!match) return false;
+      const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]), hour = Number(match[4]), minute = Number(match[5]), second = Number(match[6]);
+      const days = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      const zone = match[8], zoneHour = zone === "Z" ? 0 : Number(zone.slice(1, 3)), zoneMinute = zone === "Z" ? 0 : Number(zone.slice(4, 6));
+      return year >= 1 && month >= 1 && month <= 12 && day >= 1 && day <= days[month - 1] && hour <= 23 && minute <= 59 && second <= 59 && zoneHour <= 14 && zoneMinute <= 59 && (zoneHour !== 14 || zoneMinute === 0) && Number.isFinite(Date.parse(value));
+    };
+    if (!iso(query.startTime) || !iso(query.endTime) || Date.parse(query.startTime) >= Date.parse(query.endTime)) throw new AccountError("policy", "Official self-history requires a valid bounded ISO time range");
+    const page = query.page ?? 1, pageSize = query.pageSize ?? 100;
+    if (![page, pageSize].every(value => Number.isInteger(value) && value >= 1 && value <= 100)) throw new AccountError("policy", "Invalid official self-history page bounds");
+    const parameters = new URLSearchParams({ historyScope: "self", excludeBase64: "true", startTime: query.startTime, endTime: query.endTime, page: String(page), pageSize: String(pageSize) });
+    return generatorRequest(`/api/tasks?${parameters}`, { method: "GET", signal });
+  }
+
+  function generatorUploadImage(image, signal) { return generatorUploadMedia({ ...image, kind: "image" }, signal); }
+  function generatorUploadMedia(media, signal) {
+    const { bytes, mime, filename, kind, conversion } = media || {};
+    const allowed = {
+      image: ["image/png", "image/jpeg", "image/webp"],
+      video: ["video/mp4", "video/webm"],
+      audio: ["audio/wav", "audio/mpeg", "audio/aac", "audio/flac", "audio/ogg", "audio/mp4"],
+      model: ["model/gltf-binary", "application/vnd.autodesk.fbx", "model/obj", "model/stl", "model/vnd.usdz+zip", "application/zip"]
+    };
+    if (!(bytes instanceof Uint8Array) || !bytes.byteLength || bytes.byteLength > MAX_GENERATOR_IMAGE_BYTES
+      || !allowed[kind]?.includes(mime) || typeof filename !== "string" || !filename || filename.length > 255 || /[\\/\x00-\x1f\x7f]/.test(filename))
+      throw new AccountError("policy", "Invalid official generator media upload");
+    const form = new FormData(); form.append(kind, new Blob([Buffer.from(bytes)], { type: mime }), filename);
+    return generatorRequest(`/api/sso/upload/${kind === "model" && conversion === true ? "model-conversion" : kind}?entry=studio`, { method: "POST", signal, body: form }, false);
   }
 
   function hasAccountTypeClaim(token) {
@@ -1193,9 +1324,9 @@ async function createCodelyAccountBroker(options) {
     getUserPlanRaw: async (orgId) => {
       const data = await getRawJson(PATHS.plan, orgId);
       cachedPlan = {
-        planType: data?.plan_type, planTag: data?.plan_tag, isTeamPlan: data?.is_team_plan, isActive: data?.is_active,
+        planType: data?.plan_type, planTag: data?.plan_tag, isTeamPlan: nullableBoolean(data?.is_team_plan), isActive: nullableBoolean(data?.is_active),
         inRenewalPeriod: data?.in_renewal_period, subscriptionUrl: data?.pending_payment_url, canUpgradePlan: data?.can_upgrade,
-        canManagePlan: data?.can_manage_plan, canTopup: data?.can_topup, hasSeat: data?.has_seat, validTo: data?.valid_to,
+        canManagePlan: data?.can_manage_plan, canTopup: data?.can_topup, hasSeat: nullableBoolean(data?.has_seat), validTo: data?.valid_to,
       };
       return data;
     },
@@ -1219,7 +1350,9 @@ async function createCodelyAccountBroker(options) {
     generatorCostPreview,
     generatorGenerate,
     generatorTaskStatus,
+    generatorTaskHistory,
     generatorUploadImage,
+    generatorUploadMedia,
     inferenceBinding,
     isInferenceBindingCurrent,
     getCliInferenceCredential,
@@ -1300,7 +1433,9 @@ function codelyAccountOfficialSurface() {
     generatorCostPreview: (query, signal) => wiring.broker.generatorCostPreview(query, signal),
     generatorGenerate: (kind, payload, signal) => wiring.broker.generatorGenerate(kind, payload, signal),
     generatorTaskStatus: (id, signal) => wiring.broker.generatorTaskStatus(id, signal),
+    generatorTaskHistory: (query, signal) => wiring.broker.generatorTaskHistory(query, signal),
     generatorUploadImage: (image, signal) => wiring.broker.generatorUploadImage(image, signal),
+    generatorUploadMedia: (media, signal) => wiring.broker.generatorUploadMedia(media, signal),
     canvasSnapshot: () => wiring.broker.canvasSnapshot(),
   };
 }
@@ -1340,6 +1475,23 @@ async function codelyAccountDataCall(method, orgId) {
     if (error?.code === "requires-login") return null;
     throw error;
   }
+}
+
+// Browser destinations are distinct from the disabled legacy API client.
+// This returns no credential, changes no SDK base URL, and performs no fetch.
+function codelyAccountPublicControlPlaneUrl(relativePath, orgSlug) {
+  if (!wiringState || wiringState.brokerStatus?.() !== 'authenticated') return null;
+  if (typeof relativePath !== 'string' || !relativePath || relativePath.length > 2048
+    || /[\\\u0000-\u001f\u007f]/.test(relativePath) || relativePath.startsWith('//')
+    || /^[a-z][a-z0-9+.-]*:/i.test(relativePath)) throw new AccountError('policy', '官方控制面网页需要可信的站内路径');
+  const target = new URL(relativePath, OFFICIAL_BASE + '/');
+  if (target.origin !== OFFICIAL_BASE || target.username || target.password) throw new AccountError('policy', '官方控制面网页不能改变站点');
+  if (orgSlug !== undefined && orgSlug !== null && orgSlug !== '') {
+    const slug = displayText(orgSlug, 256);
+    if (!slug) throw new AccountError('policy', '无效的组织网页参数');
+    target.searchParams.set('org', slug);
+  }
+  return target.toString();
 }
 
 async function codelyAccountOrgSnapshot(core) {
@@ -1467,6 +1619,6 @@ function registerCoreWiring({ messenger, core, logger = console, overrides = {} 
 
 module.exports = {
   createCodelyAccountBroker, resolveBaseUrl, OFFICIAL_BASE, OFFICIAL_SITES, CLIENT_NAME, PATHS, AccountError,
-  registerCoreWiring, codelyAccountPhase, codelyAccountDataCall, codelyAccountOrgSnapshot, codelyAccountSwitchOrg,
+  registerCoreWiring, codelyAccountPhase, codelyAccountDataCall, codelyAccountOrgSnapshot, codelyAccountSwitchOrg, codelyAccountPublicControlPlaneUrl,
   codelyAccountOfficialSurface, codelyAccountInferenceSurface,
 };

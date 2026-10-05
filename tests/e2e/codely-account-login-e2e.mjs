@@ -24,6 +24,7 @@ fs.mkdirSync(run, { recursive: true });
 const previousGeneration = args.includes("--previous");
 const browserEnabled = args.includes("--browser");
 const imageEnabled = args.includes('--images');
+const noEmail = args.includes('--no-email');
 assert.ok(!imageEnabled || browserEnabled,'--images requires the real browser flow');
 const packaged = args.includes("--packaged");
 const core = path.resolve(option("--core", path.join(root, packaged ? "app/core" : "src/core/binary/out")));
@@ -42,7 +43,7 @@ const REQUEST_TOKEN = `e2e-request-${randomUUID()}`;
 const USER_CODE = "E2EV-CODE";
 const ORG = { id: "org-e2e-1", name: "E2E Main Org" };
 
-const state = { authorizeAfterPolls: 2, initiateFailure: false, initiateDelay: 0, imageEnabled,
+const state = { authorizeAfterPolls: 2, initiateFailure: false, initiateDelay: 0, imageEnabled, noEmail, defaultOrgPlanReads: 0,
   imageMedia:imageEnabled?createOwnedGenerationMedia(path.join(run,'owned-image-media')):null,
   imageCreates:[],imageQuotes:[] };
 if(imageEnabled)fs.writeFileSync(path.join(run,'owned-download-choices.json'),'[]');
@@ -98,7 +99,7 @@ async function startFixture() {
       }
       if (parsed.pathname === "/auth/external/me") {
         if (request.headers.authorization !== `Bearer ${REAL_ACCESS}`) return fail(401, { detail: "bad token" });
-        return send({ id: 64001, username: "e2e-codely-user", email: "e2e-user@example.invalid" });
+        return send({ id: 64001, username: "e2e-codely-user", ...(noEmail ? {} : { email: "e2e-user@example.invalid" }) });
       }
       if (parsed.pathname === "/auth/refresh" && request.method === "POST") {
         assert.equal(JSON.parse(bodyText || "{}").refresh_token, REAL_REFRESH);
@@ -141,15 +142,16 @@ async function startFixture() {
         return send({ success: true, current_team_id: ORG.id, team_name: ORG.name });
       }
       if (parsed.pathname === "/api/user/plan") {
-        assert.equal(parsed.searchParams.get("orgId"), ORG.id);
+        const orgId=parsed.searchParams.get("orgId");assert.ok(orgId===null||orgId===ORG.id,'Only the owned default account or explicit owned organization may be read');
+        if(orgId===null)state.defaultOrgPlanReads++;
         return send({ plan_type: "pro", plan_tag: "team", is_team_plan: true, is_active: true, valid_to: "2026-12-31", can_upgrade: false, can_manage_plan: true, can_topup: true, has_seat: true, in_renewal_period: false, pending_payment_url: null });
       }
       if (parsed.pathname === "/api/user/usage/summary") {
-        assert.equal(parsed.searchParams.get("orgId"), ORG.id);
+        assert.ok([null,ORG.id].includes(parsed.searchParams.get("orgId")));
         return send({ remaining_points: "135", is_exhausted: false, details: [{ type: "coding_plan", remaining_points: "135", exhausted: false, windows: [{ window_type: "five_hours", quota_points: "100", used_points: "20", remaining_points: "80", exhausted: false, period: { start_at: "2026-10-03T00:00:00+08:00", end_at: "2026-10-03T05:00:00+08:00" } }] }] });
       }
       if (parsed.pathname === "/api/user/usage/exhaustion") {
-        assert.equal(parsed.searchParams.get("orgId"), ORG.id);
+        assert.ok([null,ORG.id].includes(parsed.searchParams.get("orgId")));
         return send({ is_exhausted: false, exhausted_source: "", next_available_at: null });
       }
       fail(404, { detail: `fixture route missing: ${parsed.pathname}` });
@@ -455,7 +457,7 @@ try {
 
   const result = {
     generatedAt: new Date().toISOString(),
-    packaged, browserEnabled, previousGeneration, binary, core, frontend, runtime, guardRunId,
+    packaged, browserEnabled, noEmail, defaultOrgPlanReads:state.defaultOrgPlanReads, previousGeneration, binary, core, frontend, runtime, guardRunId,
     checks,
     officialCallPaths: [...new Set(officialCalls.map((call) => `${call.method} ${call.path}`))],
     networkGuard: { initializedCorePids: actors.map((actor) => actor.corePid), blocked: 0 },

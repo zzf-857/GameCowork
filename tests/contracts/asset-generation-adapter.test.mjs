@@ -1,6 +1,7 @@
 // Explicit user-configurable synchronous response adapters through actual HTTP.
 import fs from 'node:fs';
 import path from 'node:path';
+import http from 'node:http';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -64,4 +65,48 @@ test('Unknown adapter modes and unsafe/empty output mappings fail before transpo
     await assert.rejects(() => service.dispatch('generator/saveProvider', { provider: { ...configuration, id: 'invalid', adapter: { ...configuration.adapter, ...change } } }));
   }
   assert.equal(peer.requests.length, before); assert.equal((await service.dispatch('generator/listProviders')).providers.some(item => item.id === 'invalid'), false);
+});
+
+test('OpenAI Images distinguishes invalid data shapes without retaining reply secrets and keeps standard URL/base64 results working', async () => {
+  const ownedKey = 'owned-diagnostic-key-' + randomUUID(), replyPrompt = 'DO_NOT_STORE_DIAGNOSTIC_REPLY_PROMPT', encoded = peer.media.png.bytes.toString('base64');
+  const shapes = new Map([
+    ['missing', { response: { prompt: replyPrompt, error: { message: ownedKey }, url: 'https://reply.invalid/image?token=' + ownedKey, b64_json: encoded }, pattern: /data 缺失/ }],
+    ['object', { response: { data: { b64_json: encoded, url: 'https://reply.invalid/image?token=' + ownedKey }, prompt: replyPrompt }, pattern: /data 不是数组（类型：object）/ }],
+    ['null', { response: { data: null }, pattern: /data 不是数组（类型：null）/ }],
+    ['string', { response: { data: ownedKey }, pattern: /data 不是数组（类型：string）/ }],
+    ['empty', { response: { data: [] }, pattern: /空 data 数组（0 张）/ }],
+    ['excess', { response: { data: Array.from({ length: 9 }, () => ({ b64_json: encoded })) }, pattern: /data 数量超限（9 张/ }],
+    ['base64', { response: { data: [{ b64_json: encoded }] } }],
+    ['url', {}],
+  ]);
+  const requests = [], sockets = new Set(), runtimeRoot = path.join(root, 'response-diagnostics'); let diagnostic, baseUrl;
+  const server = http.createServer(async (request, response) => {
+    requests.push({ method: request.method, path: request.url });
+    if (request.method === 'GET' && request.url === '/owned.png') { response.writeHead(200, { 'Content-Type': 'image/png' }); response.end(peer.media.png.bytes); return; }
+    assert.equal(request.method, 'POST'); assert.equal(request.url, '/images/generations'); assert.equal(request.headers.authorization, 'Bearer ' + ownedKey);
+    const chunks = []; for await (const bytes of request) chunks.push(bytes); const body = JSON.parse(Buffer.concat(chunks)), plan = shapes.get(body.prompt); assert.ok(plan);
+    response.writeHead(200, { 'Content-Type': 'application/json' }); response.end(JSON.stringify(body.prompt === 'url' ? { data: [{ url: baseUrl + '/owned.png' }] } : plan.response));
+  });
+  server.on('connection', socket => { sockets.add(socket); socket.on('close', () => sockets.delete(socket)); });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve)); baseUrl = 'http://127.0.0.1:' + server.address().port;
+  const reopen = () => { diagnostic = createAssetService({ root: runtimeRoot, pollIntervalMs: 20, requestTimeoutMs: 1000 }); };
+  const wait = async id => { const deadline = Date.now() + 3000; for (;;) { const { task } = await diagnostic.dispatch('generator/getTask', { taskId: id }); if (terminal.has(task.status)) return task; if (Date.now() > deadline) throw Error('Owned response diagnostic deadline'); await new Promise(resolve => setTimeout(resolve, 5)); } };
+  const failed = [];
+  try {
+    reopen(); await diagnostic.dispatch('generator/saveProvider', { provider: { ...configuration, id: 'owned-diagnostics', baseUrl, apiKey: ownedKey, adapter: { ...configuration.adapter, outputSelectors: { url: 'url', base64: 'b64_json', mime: '', filename: '' } } } });
+    for (const [prompt, plan] of shapes) {
+      const before = requests.filter(row => row.method === 'POST').length;
+      const { task: queued } = await diagnostic.dispatch('generator/createTask', { providerId: 'owned-diagnostics', kind: 'image', prompt }); const task = await wait(queued.id);
+      assert.equal(requests.filter(row => row.method === 'POST').length, before + 1, 'Each explicit fixture submission issues exactly one POST');
+      if (plan.pattern) { assert.equal(task.status, 'failed'); assert.equal(task.mayContinue, false); assert.equal(task.artifacts.length, 0); assert.match(task.error, plan.pattern); failed.push(task); }
+      else { assert.equal(task.status, 'completed', task.error); assert.equal(task.artifacts.length, 1); assert.equal(task.artifacts[0].sha256, peer.media.png.sha256); }
+      for (const secret of [ownedKey, replyPrompt, 'reply.invalid', encoded]) assert.equal(JSON.stringify(task).includes(secret), false);
+    }
+    const saved = fs.readFileSync(path.join(runtimeRoot, 'tasks.json'), 'utf8');
+    for (const secret of [ownedKey, replyPrompt, 'reply.invalid', encoded]) assert.equal(saved.includes(secret), false, 'Response details never enter durable task state');
+    const before = requests.length; await diagnostic.close(); reopen();
+    for (const previous of failed) { const { task } = await diagnostic.dispatch('generator/getTask', { taskId: previous.id }); assert.equal(task.error, previous.error); assert.equal(task.status, 'failed'); }
+    await new Promise(resolve => setTimeout(resolve, 40)); assert.equal(requests.length, before, 'Restart cannot resubmit failed image tasks');
+    assert.equal(requests.filter(row => row.method === 'GET').length, 1, 'Only the explicit standard URL result downloads a file');
+  } finally { await diagnostic?.close(); for (const socket of sockets) socket.destroy(); await new Promise(resolve => server.close(resolve)); }
 });

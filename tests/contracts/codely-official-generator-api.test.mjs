@@ -72,10 +72,10 @@ test('Actual original Frontier variant builders are accepted without replacing t
   const variants=contract.registry.generatedVariants.buildSource.slice(contract.registry.generatedVariants.buildSource.indexOf('const OK'),contract.registry.generatedVariants.buildSource.indexOf('  I5 =')).trim().replace(/,$/,';');
   vm.runInContext('const iw={build:('+original+'),creditParams:()=>({})};'+variants+'globalThis.models=OK;',context);
   for(const model of context.models){const result=model.build({prompt:payload().prompt,size:'square_hd',quality:'medium',format:'png',segMode:'none',background:'auto',images:[]});assert.deepEqual(spec.validatePayload(model.id,JSON.parse(JSON.stringify(result))),payload());}
-  assert.deepEqual(Object.keys(spec.MODELS),officialImageModelIds);
+  assert.deepEqual(Object.values(spec.MODELS).filter(model=>model.kind==='image').map(model=>model.id),officialImageModelIds);
 });
 test('Only explicit official model capabilities unlock the original two entries; CPA and unrelated models stay separate',()=>{
-  const reply={mode:'codely-official',capabilities:{localGeneration:false,officialGeneration:true,models:{frontier_flare:{available:true,model:'frontier_flare',kind:'image',service:'codely-official'}}}};
+  const reply={mode:'codely-official',capabilities:{localGeneration:false,officialGeneration:true,models:{frontier_flare:{available:true,model:'frontier_flare',kind:'image',mode:'image',service:'codely-official'}}}};
   assert.equal(gamecoworkGenerationPresentation(gamecoworkGenerationReadiness(reply),'zh','frontier_flare').blocked,false);
   for(const altered of [{...reply,mode:'gamecowork-local'},{...reply,capabilities:{...reply.capabilities,officialGeneration:false}},{...reply,capabilities:{...reply.capabilities,models:{frontier_flare:{available:true,model:'frontier_flare'}}}}])assert.equal(gamecoworkGenerationPresentation(gamecoworkGenerationReadiness(altered),'zh','frontier_flare').blocked,true);
   for(const id of ['qwen-image','cpa-gpt-image-2','frontier_sunburst'])assert.equal(gamecoworkGenerationPresentation(gamecoworkGenerationReadiness(reply),'zh',id).blocked,true);
@@ -109,7 +109,7 @@ test('Paid state and a numeric real quote are mandatory; unsupported models/para
     f.state.paid='unpaid';assert.equal((await f.call('POST','/sso/generate',{kind:'frontier_flare',data:payload()})).status,403);
     f.state.paid='paid';f.state.quote=null;const created=await f.call('POST','/sso/generate',{kind:'frontier_flare',data:payload()});const final=await until(()=>f.service.dispatch('generator/getTask',{taskId:created.body.taskId}),r=>r.task.status==='failed');assert.match(final.task.error,/报价/);
     for(const data of [{...payload(),quality:'high'},{...payload(),apiKey:'forged'},{...payload(),nativeSegmentation:true}])assert.equal((await f.call('POST','/sso/generate',{kind:'frontier_flare',data})).status,400);
-    assert.equal((await f.call('POST','/sso/generate',{kind:'qwen-image',data:payload()})).status,503);assert.equal(f.calls.filter(c=>c.path==='/api/sso/generate').length,0);
+    assert.equal((await f.call('POST','/sso/generate',{kind:'material',data:payload()})).status,503);assert.equal(f.calls.filter(c=>c.path==='/api/sso/generate').length,0);
   }finally{await f.close();}
 });
 test('A failed or ambiguous official POST is never automatically sent again',async()=>{

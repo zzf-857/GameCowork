@@ -8,11 +8,14 @@ import { createHash, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { createOwnedGenerationMedia } from '../fixtures/asset-generation-provider-fixture.mjs';
 const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
+const { minimalPayload } = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
 const suiteRoot = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/codely-official-assets-' + randomUUID());
 const media = createOwnedGenerationMedia(path.join(suiteRoot, 'media')), binding = 'a'.repeat(64), otherBinding = 'b'.repeat(64);
 const sha = value => createHash('sha256').update(value).digest('hex'), delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(read, predicate, label = 'official task state') { const deadline = Date.now() + 3000; for (;;) { const value = await read(); if (predicate(value)) return value; if (Date.now() > deadline) throw Error('Fixture deadline: ' + label); await delay(5); } }
 function deferred() { let resolve; const promise = new Promise(done => { resolve = done; }); return { promise, resolve }; }
+const inputUrl = inputId => 'http://127.0.0.1/owned-reference/' + inputId;
+const withReferences = (data, inputIds) => ({ ...data, inputIds, parameters: { ...data.parameters, imageUrls: inputIds.map(inputUrl) } });
 function fixture(name, overrides = {}, options = {}) {
   const store = path.join(suiteRoot, name), calls = []; let account = binding;
   const make = () => createAssetService({ root: store, pollIntervalMs: 20, requestTimeoutMs: 1000, ...options });
@@ -24,7 +27,7 @@ function fixture(name, overrides = {}, options = {}) {
     ...overrides,
   };
   const service = make(); service.attachOfficialExecutor(executor);
-  const data = { kind: 'image', model: 'frontier_flare', prompt: '真实官方图片任务 fixture', parameters: { action: 'generate', model: 'frontier_flare', prompt: '真实官方图片任务 fixture', size: '1:1', count: 1 }, inputIds: [], workspaceKey: 'workspace-a', ownerBinding: binding };
+  const data = { kind: 'image', model: 'frontier_flare', prompt: '真实官方图片任务 fixture', parameters: { ...minimalPayload('frontier_flare'), prompt: '真实官方图片任务 fixture' }, inputIds: [], workspaceKey: 'workspace-a', ownerBinding: binding };
   return { store, service, calls, executor, data, make, account(value) { account = value; }, read(taskId, target = service) { return target.dispatch('generator/getTask', { taskId }).then(value => value.task); } };
 }
 function register(service, bytes, workspaceKey = 'workspace-a') {
@@ -45,8 +48,8 @@ test('Official execution is private and cannot be enabled by renderer Provider/t
 test('Official completion freezes original payload/inputs and stores real verified pixels without private fields', async () => {
   const f = fixture('pixels');
   try {
-    const input = register(f.service, media.png.bytes), parameters = { ...f.data.parameters, referenceIds: [input.id] }, original = structuredClone(parameters);
-    const { task: queued } = f.service.createOfficialTask({ ...f.data, inputIds: [input.id], parameters }); parameters.count = 99; parameters.referenceIds.push('forged');
+    const input = register(f.service, media.png.bytes), parameters = { ...f.data.parameters, imageUrls: [inputUrl(input.id)] }, original = structuredClone(parameters);
+    const { task: queued } = f.service.createOfficialTask({ ...f.data, inputIds: [input.id], parameters }); parameters.outputFormat = 'jpeg'; parameters.imageUrls.push(inputUrl('forged'));
     const task = await until(() => f.read(queued.id), task => task.status === 'completed');
     assert.equal(task.serviceSource, 'codely-official'); assert.equal(task.officialTaskId, 'official-pixels'); assert.equal(task.providerId, 'codely-official');
     assert.deepEqual(task.parameters, original); assert.deepEqual(f.calls[0].task.parameters, original); assert.equal(task.inputs[0].sha256, media.png.sha256); assert.equal(f.calls[0].task._officialOwner, binding);
@@ -62,8 +65,8 @@ test('Official input scope, kind, checksum and unsupported models fail before a 
   const f = fixture('preflight');
   try {
     const reference = register(f.service, media.png.bytes), video = register(f.service, media.webm.bytes);
-    for (const change of [{ kind: 'video' }, { model: 'unmapped' }, { ownerBinding: 'account-name' }, { workspaceKey: 'workspace-b', inputIds: [reference.id] }, { inputIds: [video.id] }, { inputIds: [reference.id, reference.id] }, { inputPaths: ['F:/arbitrary'] }, { parameters: { access_token: 'never-store' } }]) assert.throws(() => f.service.createOfficialTask({ ...f.data, ...change }));
-    const file = f.service.getInputPath(reference.id, 'workspace-a').path; fs.appendFileSync(file, 'tampered'); assert.throws(() => f.service.createOfficialTask({ ...f.data, inputIds: [reference.id] }), /integrity/); fs.writeFileSync(file, media.png.bytes);
+    for (const change of [{ kind: 'video' }, { model: 'unmapped' }, { ownerBinding: 'account-name' }, { ...withReferences(f.data, [reference.id]), workspaceKey: 'workspace-b' }, withReferences(f.data, [video.id]), { ...withReferences(f.data, [reference.id, reference.id]), parameters: { ...f.data.parameters, imageUrls: [inputUrl(reference.id), inputUrl(reference.id) + '?alias=1'] } }, { inputPaths: ['F:/arbitrary'] }, { parameters: { access_token: 'never-store' } }, { parameters: { ...f.data.parameters, count: 1 } }]) assert.throws(() => f.service.createOfficialTask({ ...f.data, ...change }), undefined, 'Preflight must reject ' + JSON.stringify(change));
+    const file = f.service.getInputPath(reference.id, 'workspace-a').path; fs.appendFileSync(file, 'tampered'); assert.throws(() => f.service.createOfficialTask(withReferences(f.data, [reference.id])), /integrity/); fs.writeFileSync(file, media.png.bytes);
     assert.equal(f.calls.length, 0); assert.equal(f.service.getOwnedSnapshot().tasks.length, 0);
   } finally { await f.service.close(); }
 });
@@ -72,7 +75,7 @@ test('Registered input bytes are rechecked in the scheduled create preflight', a
   const f = fixture('queued-input-change');
   try {
     const input = register(f.service, media.png.bytes), file = f.service.getInputPath(input.id, 'workspace-a').path;
-    const { task } = f.service.createOfficialTask({ ...f.data, inputIds: [input.id] }); fs.appendFileSync(file, 'change-before-executor');
+    const { task } = f.service.createOfficialTask(withReferences(f.data, [input.id])); fs.appendFileSync(file, 'change-before-executor');
     const final = await until(() => f.read(task.id), task => task.status === 'failed'); assert.equal(final.mayContinue, false); assert.equal(f.calls.length, 0); fs.writeFileSync(file, media.png.bytes);
   } finally { await f.service.close(); }
 });
@@ -81,13 +84,22 @@ test('Original Frontier variants freeze sixteen owned references while ordinary 
   const f = fixture('sixteen-frontier-references');
   try {
     const references = Array.from({ length: 17 }, () => register(f.service, media.png.bytes));
-    const inputIds = references.slice(0, 16).map(reference => reference.id), parameters = { ...f.data.parameters, imageUrls: inputIds.map(inputId => 'http://127.0.0.1/owned-reference/' + inputId) };
+    const inputIds = references.slice(0, 16).map(reference => reference.id), parameters = { ...f.data.parameters, imageUrls: inputIds.map(inputUrl) };
     const { task } = f.service.createOfficialTask({ ...f.data, inputIds, parameters }); const final = await until(() => f.read(task.id), task => task.status === 'completed');
     assert.equal(final.inputs.length, 16); assert.deepEqual(final.inputs.map(reference => reference.id), inputIds); assert.ok(final.inputs.every(reference => reference.sha256 === media.png.sha256)); assert.equal(f.calls[0].task.inputs.length, 16);
-    assert.throws(() => f.service.createOfficialTask({ ...f.data, inputIds: references.map(reference => reference.id) }), /sixteen/); assert.equal(f.calls.filter(row => row.creating).length, 1);
+    assert.throws(() => f.service.createOfficialTask(withReferences(f.data, references.map(reference => reference.id))), /sixteen/); assert.equal(f.calls.filter(row => row.creating).length, 1);
     await f.service.dispatch('generator/saveProvider', { provider: { id: 'own-eight-only', kinds: ['image'], baseUrl: 'http://127.0.0.1:49199', authMode: 'none', adapter: { create: { method: 'POST', path: '/images', bodyType: 'multipart', fileFields: [{ name: 'image[]', inputIndex: 'all' }] } } } });
     await assert.rejects(() => f.service.dispatch('generator/createTask', { providerId: 'own-eight-only', kind: 'image', prompt: 'Eight-reference Provider boundary', workspaceKey: 'workspace-a', inputIds: inputIds.slice(0, 9) }), /eight/);
     assert.equal(f.service.getOwnedSnapshot().tasks.length, 1);
+    const video = fixture('same-reference-distinct-first-last', { async request(task, creating, signal) { video.calls.push({ task, creating, signal }); return { id: 'same-reference-wan3', status: 'completed', outputs: [{ base64: media.webm.bytes.toString('base64'), mime: media.webm.mimeType, filename: 'first-last.webm' }] }; } });
+    try {
+      const frame = register(video.service, media.png.bytes), address = inputUrl(frame.id), payload = { ...minimalPayload('wan3'), mode: 'first_last_frame', first_frame: address, last_frame: address };
+      const submitted = video.service.createOfficialTask({ ...video.data, kind: 'video', model: 'wan3', parameters: payload, inputIds: [frame.id, frame.id] }).task;
+      const completed = await until(() => video.read(submitted.id), task => ['completed', 'failed'].includes(task.status));
+      assert.equal(completed.status, 'completed', completed.error); assert.deepEqual(completed.inputs.map(input => input.id), [frame.id, frame.id]);
+      assert.deepEqual(video.calls[0].task.parameters, payload); assert.equal(video.calls.filter(row => row.creating).length, 1);
+      assert.equal(completed.artifacts[0].sha256, media.webm.sha256);
+    } finally { await video.service.close(); }
   } finally { await f.service.close(); }
 });
 

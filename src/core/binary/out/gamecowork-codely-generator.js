@@ -6,12 +6,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const officialImages = require('./gamecowork-codely-official-generator.js');
+const {reconcile}=require('./gamecowork-official-task-reconciliation.js');
+const {CPA_IMAGE_MODELS,LEGACY_CPA_IMAGE_MODEL_ID,validateCpaImageAccountPayload,isCpaImageProvider}=require('./gamecowork-cpa-image-models.js');
+const {createTaskErrorDetails}=require('./gamecowork-generation-error-details.js');
 const STATE_LIMIT = 16 * 1024 * 1024;
 const INPUT_LIMIT = 64 * 1024 * 1024, MULTIPART_LIMIT = INPUT_LIMIT + 256 * 1024;
 const ID = /^[A-Za-z0-9_-]{1,100}$/;
 const CATEGORIES = new Set(['image', '3d', 'video', 'audio', 'other']);
 const LOCAL_USER = Object.freeze({ id: 'gamecowork-local', name: 'GameCowork 本地用户', accountMode: 'local' });
-const CPA_MODEL_ID = 'cpa-gpt-image-2';
 class ApiError extends Error {
   constructor(status, code, message = code) { super(message); this.status = status; this.code = code; }
 }
@@ -32,9 +34,13 @@ function loopbackOrigin(value) {
   if (url.protocol !== 'http:' || !['127.0.0.1','localhost','[::1]'].includes(url.hostname) || url.username || url.password || url.search || url.hash || url.pathname !== '/' || url.origin !== value) fail(400, 'invalid_local_origin');
   return url.origin;
 }
-function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver }) {
+function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver, providerRegistry: suppliedRegistry }) {
   if (!assetService || !path.isAbsolute(assetService.root || '') || typeof assetService.getOwnedSnapshot !== 'function') throw Error('A trusted owned asset service is required');
   const root = assetService.root, stateFile = path.join(root, 'codely-generator-state.json');
+  let providerRegistry=suppliedRegistry;
+  function customProviders() {
+    return providerRegistry ||= require('./gamecowork-provider-registry.js').createProviderRegistry({root:path.join(root,'provider-registry'),assetService});
+  }
   if (officialResolver !== undefined && typeof officialResolver !== 'function') throw Error('The internal official account resolver must be a function');
   const getOfficial = officialResolver || (() => { try { return require('./gamecowork-codely-account.js').codelyAccountOfficialSurface(); } catch { return null; } });
   const officialExecutor = officialImages.createOfficialImageExecutor({assetService,getOfficial});
@@ -70,30 +76,41 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
   function workspaceName(record, names) { const key = record.workspaceKey || ''; return key && typeof names?.[key] === 'string' ? names[key] : key; }
   function inputUrl(input, origin) { return origin + '/api/codely-generator/local-inputs/' + encodeURIComponent(input.id) + '/' + encodeURIComponent(input.filename) + '?workspaceKey=' + encodeURIComponent(input.workspaceKey || ''); }
   function artifactUrl(task, artifact, origin) { return origin + '/api/codely-generator/local-artifacts/' + encodeURIComponent(task.id) + '/' + encodeURIComponent(artifact.id) + '/' + encodeURIComponent(artifact.filename); }
-  function isCpaTask(task) { return task.parameters?.studioModelId === CPA_MODEL_ID && task.model === 'gpt-image-2' && task.kind === 'image'; }
-  function isOfficialTask(task) { return task.serviceSource === 'codely-official' && task.kind === 'image' && Object.hasOwn(officialImages.MODELS,task.model); }
-  function studioType(task) { return isCpaTask(task) ? CPA_MODEL_ID : task.model || task.kind; }
+  function isCpaTask(task) { const modelId=task.parameters?.studioModelId, descriptor=Object.hasOwn(CPA_IMAGE_MODELS,modelId) ? CPA_IMAGE_MODELS[modelId] : null; return !!(descriptor && task.model===descriptor.model && task.kind==='image' && task.serviceSource!=='codely-official'); }
+  function customModel(task) { const id=task.managedStudioId||task.parameters?.studioModelId;if(task.serviceSource!=='custom-provider'||typeof id!=='string'||!/^cust_[a-f0-9]{32}$/.test(id))return null;try{return customProviders().resolveModel(id);}catch{return null;} }
+  function isOfficialTask(task) { return task.serviceSource === 'codely-official' && Object.hasOwn(officialImages.MODELS,task.model); }
+  function studioType(task) { return isCpaTask(task) ? task.parameters.studioModelId : task.serviceSource==='custom-provider'&&typeof task.managedStudioId==='string' ? task.managedStudioId : task.model || task.kind; }
   function row(task, origin, names) {
-    const category = task.kind === 'model' ? '3d' : CATEGORIES.has(task.kind) ? task.kind : 'other';
-    const output = { artifacts: [] };
+    const category = isOfficialTask(task) ? officialImages.MODELS[task.model].mode : task.kind === 'model' ? '3d' : CATEGORIES.has(task.kind) ? task.kind : 'other';
+    const hydrate = value => {
+      if (value && typeof value === 'object' && Number.isInteger(value.artifactIdIndex)) { const artifact=task.artifacts?.find(a=>a.outputIndex===value.artifactIdIndex); return artifact ? artifactUrl(task,artifact,origin) : null; }
+      if(Array.isArray(value)) return value.map(hydrate);
+      if(value && typeof value==='object') return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,hydrate(item)]));
+      return value;
+    };
+    const output = {...hydrate(task.officialOutput || {}), artifacts: []};
     for (const artifact of task.artifacts || []) {
       const url = artifactUrl(task, artifact, origin), key = artifact.kind === 'model' ? 'modelUrl' : artifact.kind === 'image' ? 'imageUrl' : artifact.kind === 'video' ? 'videoUrl' : artifact.kind === 'audio' ? 'audioUrl' : 'downloadUrl';
       if (!output[key]) output[key] = url;
       output.artifacts.push({ url, mime: artifact.mime, filename: artifact.filename, byteLength: artifact.byteLength, sha256: artifact.sha256, ...(artifact.width ? { width: artifact.width, height: artifact.height } : {}) });
     }
-    const input = { ...clone(task.parameters || {}), prompt: task.prompt, ...(isOfficialTask(task) ? {studioKind:task.model,studioModelId:task.model} : {}) };
-    for (const [kind, field] of [['image','imageUrls'],['video','videos'],['audio','audios'],['model','modelUrls']]) {
+    const input = { ...clone(task.parameters || {}), ...(task.prompt && !isOfficialTask(task) ? {prompt:task.prompt} : {}), ...(isOfficialTask(task) ? {studioKind:task.model,studioModelId:task.model} : {}) };
+    if(isOfficialTask(task)) officialImages.referenceSlots(task.model,task.parameters).forEach((slot,index)=>{if(task.inputs?.[index]) officialImages.setPointer(input,slot.pointer,inputUrl(task.inputs[index],origin));});
+    if(!isOfficialTask(task)) for (const [kind, field] of [['image','imageUrls'],['video','videos'],['audio','audios'],['model','modelUrls']]) {
       const urls = (task.inputs || []).filter(reference => reference.kind === kind || kind === 'image' && reference.mime?.startsWith('image/')).map(reference => inputUrl(reference, origin));
       if (urls.length) input[field] = urls;
     }
     if (input.modelUrls?.length) input.modelUrl = input.modelUrls[0];
-    return { id: task.id, taskId: task.id, type: studioType(task), name: isCpaTask(task) ? 'GPT Image 2 · CPA' : isOfficialTask(task) ? officialImages.MODELS[task.model].name : task.model || task.providerId, category,
+    const errorDetails = createTaskErrorDetails(task);
+    return { id: task.id, taskId: task.id, type: studioType(task), name: isCpaTask(task) ? CPA_IMAGE_MODELS[task.parameters.studioModelId].name : customModel(task)?.label || (isOfficialTask(task) ? officialImages.MODELS[task.model].name : task.model || task.providerId), category,
       status: task.status === 'interrupted' ? 'failed' : task.status === 'cancel_requested' ? 'running' : task.status,
       createdTime: task.createdTime, updatedTime: task.updatedTime, discarded: task.discarded === true,
-      workspaceName: workspaceName(task, names), ...(task.workspaceKey ? { workspaceKey: task.workspaceKey } : {}),
+      workspaceName: workspaceName(task, names), ...(task.officialTaskId ? {officialTaskId:task.officialTaskId} : {}), ...(task.workspaceKey ? { workspaceKey: task.workspaceKey } : {}),
       input: { data: input }, output: { data: output }, tags: taskTags(task.id),
-      ...(task.error ? { error: task.error, errorCode: task.status === 'interrupted' ? 'local_task_interrupted' : 'local_task_failed' } : {}),
-      local: { accountMode: 'local', source: 'gamecowork-owned-assets', providerId: task.providerId, originalStudioModelKnown: false, ...(isCpaTask(task) ? { descriptorSource: 'gamecowork-cpa-extension' } : {}) } };
+      ...(task.serviceSource==='custom-provider' && typeof task.executionPrompt==='string' ? {executionPrompt:task.executionPrompt} : {}),
+      ...((isCpaTask(task)||task.serviceSource==='custom-provider') && task.providerReportedImage ? {providerReportedImage:clone(task.providerReportedImage)} : {}),
+      ...(errorDetails ? { error: errorDetails.summary, errorDetails, errorCode: task.submissionUnknown === true ? 'local_submission_unknown' : task.status === 'interrupted' ? 'local_task_interrupted' : 'local_task_failed' } : {}),
+      local: { accountMode: 'local', source: 'gamecowork-owned-assets', providerId: task.providerId, originalStudioModelKnown: false, ...(task.submissionUnknown === true ? { submissionUnknown: true } : {}), ...(isCpaTask(task) ? { descriptorSource: 'gamecowork-cpa-extension' } : customModel(task) ? {descriptorSource:'gamecowork-custom-provider'} : {}) } };
   }
   function authorizeHistory(query) {
     if (query.historyScope !== undefined && query.historyScope !== 'self' || query.historyEmail) fail(403, 'global_history_view_required', 'Only actual GameCowork local history is available');
@@ -105,7 +122,7 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
     const missing = boolean(query.workspaceMissing, 'workspaceMissing'); if (query.workspaceName !== undefined) boundedText(query.workspaceName, 'workspaceName', 2048);
     const selected = ignoreTags || query.tagIds === undefined || query.tagIds === '' ? [] : ids(Array.isArray(query.tagIds) ? query.tagIds : String(query.tagIds).split(','), 'tagIds', 100);
     return tasks.filter(task => {
-      const timestamp = Date.parse(task.createdTime), name = workspaceName(task, names), actualCategory = task.kind === 'model' ? '3d' : CATEGORIES.has(task.kind) ? task.kind : 'other';
+      const timestamp = Date.parse(task.createdTime), name = workspaceName(task, names), actualCategory = isOfficialTask(task) ? officialImages.MODELS[task.model].mode : task.kind === 'model' ? '3d' : CATEGORIES.has(task.kind) ? task.kind : 'other';
       const status = task.status === 'interrupted' ? 'failed' : task.status === 'cancel_requested' ? 'running' : task.status;
       return (discarded === undefined || !!task.discarded === discarded) && (!query.status || status === query.status) && (!category || category === 'all' || actualCategory === category) &&
         (!query.type || studioType(task) === query.type) && (!search || (task.prompt + ' ' + (task.model || '') + ' ' + task.providerId).toLocaleLowerCase().includes(search)) &&
@@ -114,13 +131,16 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
     }).sort((a,b) => b.createdTime.localeCompare(a.createdTime) || b.id.localeCompare(a.id));
   }
   function tagCounts(tasks) { const counts = new Map(); for (const task of tasks) for (const tagId of new Set(state.taskTags[task.id] || [])) counts.set(tagId, (counts.get(tagId) || 0) + 1); return counts; }
-  async function configuredCpa(providerId = state.modelBindings[CPA_MODEL_ID]?.providerId) {
+  async function configuredCpa(modelId=LEGACY_CPA_IMAGE_MODEL_ID, explicitProviderId) {
+    if (!Object.hasOwn(CPA_IMAGE_MODELS,modelId)) return null;
+    // All verified CPA image models can share its existing credentials. An
+    // explicit per-model unbind disables that model instead of falling back.
+    const binding=Object.hasOwn(state.modelBindings,modelId) ? state.modelBindings[modelId] : state.modelBindings[LEGACY_CPA_IMAGE_MODEL_ID];
+    const providerId=explicitProviderId===undefined ? binding?.providerId : explicitProviderId;
     if (!providerId) return null;
     const { providers } = await assetService.dispatch('generator/listProviders', {});
     const provider = providers.find(item => item.id === providerId);
-    return provider?.enabled && provider.model === 'gpt-image-2' && provider.kinds.includes('image') &&
-      provider.authMode !== 'none' && provider.apiKeyConfigured && provider.adapter.responseMode === 'outputs' &&
-      provider.adapter.create.method === 'POST' && provider.adapter.create.path === '/images/generations' ? provider : null;
+    return isCpaImageProvider(provider) && typeof assetService.createCpaImageTask==='function' ? provider : null;
   }
   async function handle(data) {
     assetService.assertRuntime(); const origin = loopbackOrigin(data.origin), scope = scopeOf(data), method = boundedText(data.method, 'method', 10, true).toUpperCase();
@@ -134,31 +154,59 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
     const ok = body => ({ status: 200, body });
     const official = getOfficial();
     const officialGuard = async (call) => { try { return await call(); } catch (error) { fail(503, 'official_session_unavailable', `Official account session is unavailable: ${error?.message || error}`); } };
+    if(route==='/local/providers' || route.startsWith('/local/providers/')) {
+      const registry=customProviders();await registry.ready;
+      try {
+        if(route==='/local/providers' && method==='GET') return ok(await registry.dispatch('list',{}));
+        if(route==='/local/providers' && method==='POST') return ok(await registry.dispatch('save',body));
+        const providerRoute=/^\/local\/providers\/([A-Za-z0-9_-]{1,100})(?:\/(sync-models|model-capabilities))?$/.exec(route);
+        if(providerRoute) {
+          const providerId=identifier(providerRoute[1],'provider_id');
+          if(!providerRoute[2] && method==='DELETE') return ok(await registry.dispatch('delete',{providerId}));
+          if(providerRoute[2]==='sync-models' && method==='POST' && Object.keys(body).length===0) return ok(await registry.dispatch('syncModels',{providerId}));
+          if(providerRoute[2]==='model-capabilities' && method==='PUT' && Object.keys(body).every(key=>['modelId','capabilities'].includes(key))) {
+            const supplied=object(body.capabilities,'capabilities'),capabilities=Object.fromEntries(Object.entries(supplied).map(([name,value])=>[name,{...object(value,'capability'),evidence:value.status==='unknown'?'unknown':'manual'}]));
+            return ok(await registry.dispatch('setModelCapabilities',{providerId,modelId:body.modelId,capabilities}));
+          }
+        }
+        fail(400,'invalid_provider_operation');
+      } catch(error) {if(error instanceof ApiError)throw error;fail(400,'custom_provider_error',error.message);}
+    }
     if (method === 'GET' && (route === '/local-session' || route === '/local/model-bindings')) {
-      const provider = await configuredCpa(), models = provider ? { [CPA_MODEL_ID]: { available: true, providerId: provider.id, model: 'gpt-image-2' } } : {};
+      const models = {};
+      for (const descriptor of Object.values(CPA_IMAGE_MODELS)) {
+        const provider=await configuredCpa(descriptor.id);
+        if (provider) models[descriptor.id]={available:true,providerId:provider.id,model:descriptor.model,kind:'image',mode:'image',service:'cpa'};
+      }
+      const registry=customProviders();await registry.ready;
+      const providerDescriptors=registry.modelDescriptors();
+      for(const descriptor of providerDescriptors)if(descriptor.generationAvailable)models[descriptor.id]={available:true,providerId:descriptor.providerId,model:descriptor.model||descriptor.upstreamModel,kind:descriptor.kind,mode:descriptor.mode,service:'custom-provider'};
+      const localGeneration=Object.keys(models).length>0;
       let officialGeneration = false;
       if (official && typeof official.generatorGenerate === 'function' && typeof assetService.createOfficialTask === 'function') {
         const paid = await officialGuard(() => official.generatorPaidStatus());
         if (['paid','internal'].includes(paid.paidType)) {
           officialGeneration = true; attachOfficial();
-          for (const model of Object.values(officialImages.MODELS)) models[model.id] = {available:true,model:model.id,kind:'image',service:'codely-official'};
+          for (const model of Object.values(officialImages.MODELS)) models[model.id] = {available:true,model:model.id,kind:model.kind,mode:model.mode,service:'codely-official'};
         }
       }
       if (route === '/local/model-bindings') return ok({ models });
-      if (official) return ok({ mode: 'codely-official', user: await officialGuard(() => official.generatorUser()), capabilities: { localHistory: true, localAssets: true, localTags: true, localGeneration: !!provider, officialGeneration, officialIdentity: true, models } });
-      return ok({ mode: 'gamecowork-local', user: LOCAL_USER, capabilities: { localHistory: true, localAssets: true, localTags: true, localGeneration: !!provider, models } });
+      if (official) return ok({ mode: 'codely-official', user: await officialGuard(() => official.generatorUser()), capabilities: { localHistory: true, localAssets: true, localTags: true, localGeneration, officialGeneration, officialIdentity: true, models,providerDescriptors } });
+      return ok({ mode: 'gamecowork-local', user: LOCAL_USER, capabilities: { localHistory: true, localAssets: true, localTags: true, localGeneration, models,providerDescriptors } });
     }
-    if (method === 'PUT' && route === '/local/model-bindings/' + CPA_MODEL_ID) {
+    if (method === 'PUT' && route.startsWith('/local/model-bindings/')) {
+      const modelId=route.slice('/local/model-bindings/'.length);
+      if (!Object.hasOwn(CPA_IMAGE_MODELS,modelId)) fail(404,'local_model_binding_not_supported');
       if (Object.keys(body).some(key => key !== 'providerId')) fail(400, 'invalid_model_binding');
       const modelBindings = { ...state.modelBindings };
-      if (body.providerId === null) delete modelBindings[CPA_MODEL_ID];
+      if (body.providerId === null) modelBindings[modelId]=null;
       else {
         const providerId = identifier(body.providerId, 'providerId');
-        if (!await configuredCpa(providerId)) fail(400, 'cpa_provider_unavailable', '请先配置已启用的 GPT Image 2 图片接口');
-        modelBindings[CPA_MODEL_ID] = { providerId, model: 'gpt-image-2' };
+        if (!await configuredCpa(modelId,providerId)) fail(400, 'cpa_provider_unavailable', '请先配置已启用的 CPA 图片接口');
+        modelBindings[modelId] = { providerId, model: CPA_IMAGE_MODELS[modelId].model };
       }
       commit({ ...state, modelBindings });
-      return ok({ modelId: CPA_MODEL_ID, configured: !!modelBindings[CPA_MODEL_ID] });
+      return ok({ modelId, configured: !!modelBindings[modelId] });
     }
     if (method === 'GET' && route === '/user/me') return official ? ok(await officialGuard(() => official.generatorUser())) : ok(LOCAL_USER);
     if (method === 'GET' && route === '/credit/my-credits') {
@@ -172,8 +220,9 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
       return ok({ paidType: paid.paidType, productCode: paid.productCode, supported: true, accountMode: 'codely-official' });
     }
     if (method === 'GET' && route === '/credit/cost-preview' && official && typeof official.generatorCostPreview === 'function') {
-      if (!Object.values(officialImages.MODELS).some(model => model.taskType === query.taskType)) fail(503,'official_model_not_connected','此原模型的官方生成接线尚未验收');
-      if (Object.keys(query).some(key => !['taskType','resolution','quality'].includes(key))) fail(400,'invalid_official_quote');
+      if (!Object.values(officialImages.MODELS).some(model => (model.quoteTaskTypes || [model.taskType]).includes(query.taskType))) fail(503,'official_model_not_connected','此原模型的官方生成接线尚未验收');
+      const quoteFields=new Set(['taskType',...Object.values(officialImages.MODELS).filter(model=>(model.quoteTaskTypes || [model.taskType]).includes(query.taskType)).flatMap(model=>model.quoteFields || [])]);
+      if (Object.keys(query).some(key => !quoteFields.has(key))) fail(400,'invalid_official_quote');
       const quote=officialImages.unwrap(await officialGuard(() => official.generatorCostPreview(query)));
       if (!Number.isFinite(quote?.credits) || quote.credits < 0) fail(503,'official_quote_unavailable','官方报价尚未就绪');
       return ok({credits:quote.credits,supported:true,accountMode:'codely-official'});
@@ -238,6 +287,41 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
       if (reference) { const input = inputs.find(item => item.id === decodeURIComponent(reference[1])); if (!input || decodeURIComponent(reference[2]) !== input.filename || (url.searchParams.get('workspaceKey') || '') !== (input.workspaceKey || '')) fail(404,'input_not_found'); assetService.getInputPath(input.id,input.workspaceKey); return ok({ url: inputUrl(input,origin) }); }
       fail(400,'invalid_owned_url');
     }
+    const reconcileMatch=/^\/task\/([^/]+)\/reconcile$/.exec(route);
+    if(method==='POST' && reconcileMatch) {
+      const task=taskById(decodeURIComponent(reconcileMatch[1]));
+      if(scope===undefined || (task.workspaceKey || '')!==scope || !isOfficialTask(task) || !official?.generatorTaskHistory) fail(403,'official_task_scope_required');
+      attachOfficial(); const local=assetService.officialReconciliationTask(task.id,scope);
+      if(local._remoteId) return ok({status:'matched',remoteId:local._remoteId,alreadyKnown:true,replayAllowed:false});
+      if(local.status!=='interrupted' || local._phase!=='terminal' || local.mayContinue!==true) fail(409,'official_task_not_uncertain');
+      const at=Date.parse(local.createdTime),query={startTime:new Date(at-5000).toISOString(),endTime:new Date(at+120000).toISOString(),pageSize:100};
+      const remoteRows=[],historyIds=new Set(); let total,complete=false;
+      for(let page=1;page<=3;page++) {
+        const reply=officialImages.unwrap(await officialGuard(()=>official.generatorTaskHistory({...query,page})));
+        if(!Array.isArray(reply?.tasks) || !Number.isInteger(reply.total) || reply.total<0) fail(503,'official_history_unavailable');
+        if(total!==undefined && total!==reply.total) return ok({status:'inconclusive',reason:'history_changed_during_read',replayAllowed:false});
+        total=reply.total;
+        for(const row of reply.tasks) {
+          const id=row?.id || row?.taskId || row?.task_id;
+          if(typeof id!=='string' || !id || historyIds.has(id)) return ok({status:'inconclusive',reason:'history_identity_missing_or_repeated',replayAllowed:false,historyComplete:false});
+          historyIds.add(id); remoteRows.push(row);
+        }
+        if(remoteRows.length>total) return ok({status:'inconclusive',reason:'history_count_mismatch',replayAllowed:false,historyComplete:false});
+        if(remoteRows.length>=total){complete=true;break;}
+        if(!reply.tasks.length) break;
+      }
+      const result=reconcile(local,remoteRows);
+      if(!complete) return ok({status:'inconclusive',reason:'history_incomplete',historyComplete:false,historyRows:remoteRows.length,historyTotal:total,replayAllowed:false});
+      if(result.status==='matched') assetService.adoptOfficialRemoteTask(task.id,scope,result.remoteId);
+      return ok({...result,historyComplete:complete,historyRows:remoteRows.length,historyTotal:total,replayAllowed:false});
+    }
+    const resumeMatch=/^\/task\/([^/]+)\/resume$/.exec(route);
+    if(method==='POST' && resumeMatch) {
+      const task=taskById(decodeURIComponent(resumeMatch[1]));
+      if(scope===undefined || (task.workspaceKey || '')!==scope || !isOfficialTask(task)) fail(403,'official_task_scope_required');
+      attachOfficial(); const resumed=await assetService.dispatch('generator/resumeOfficialTask',{taskId:task.id,workspaceKey:scope});
+      return ok({taskId:task.id,resumed:resumed.resumed,createRepeated:false});
+    }
     if (method === 'POST' && route === '/sso/generate') {
       const modelId = boundedText(body.kind, 'model_id', 128, true), payload = object(body.data,'model_payload');
       if (Object.hasOwn(officialImages.MODELS,modelId) && official && typeof official.generatorGenerate === 'function' && typeof assetService.createOfficialTask === 'function') {
@@ -248,7 +332,8 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
         const binding=official.generationBinding();
         if (!binding) fail(401,'official_session_unavailable');
         const planned=[], identities=new Set(); let totalReferenceBytes=0;
-        for(const reference of parameters.imageUrls || []) {
+        for(const slot of officialImages.referenceSlots(modelId,parameters)) {
+          const reference=slot.value;
           let url; try {url=new URL(reference);} catch {fail(400,'invalid_owned_image_reference');}
           if (url.origin !== origin || url.username || url.password || url.hash) fail(400,'invalid_owned_image_reference','参考图必须来自当前工作区已登记的本机素材');
           const inputMatch=/^\/api\/codely-generator\/local-inputs\/([^/]+)\/([^/]+)$/.exec(url.pathname);
@@ -256,16 +341,16 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
           if (inputMatch) {
             const inputId=identifier(decodeURIComponent(inputMatch[1]),'inputId');
             const input=inputs.find(item=>item.id===inputId && (item.workspaceKey||'')===scope);
-            if (!input || input.filename !== decodeURIComponent(inputMatch[2]) || (url.searchParams.get('workspaceKey')||'') !== scope || [...url.searchParams.keys()].some(key=>key!=='workspaceKey') || !input.mime?.startsWith('image/')) fail(404,'input_not_found');
+            if (!input || input.filename !== decodeURIComponent(inputMatch[2]) || (url.searchParams.get('workspaceKey')||'') !== scope || [...url.searchParams.keys()].some(key=>key!=='workspaceKey') || !slot.mediaKinds.includes(input.kind)) fail(404,'input_not_found');
             const actual=assetService.getInputPath(inputId,scope);
-            const identity='input:'+inputId; if(identities.has(identity)) fail(400,'duplicate_reference_input'); identities.add(identity);
+            const identity='input:'+inputId+':'+slot.pointer.replace(/\/\d+$/,''); if(identities.has(identity)) fail(400,'duplicate_reference_input'); identities.add(identity);
             totalReferenceBytes+=actual.byteLength; planned.push({inputId});
           } else if (artifactMatch && !url.search) {
             const sourceTask=taskById(decodeURIComponent(artifactMatch[1])), artifactId=identifier(decodeURIComponent(artifactMatch[2]),'artifactId');
             const artifact=sourceTask.artifacts.find(item=>item.id===artifactId);
-            if ((sourceTask.workspaceKey||'')!==scope || !artifact || artifact.filename!==decodeURIComponent(artifactMatch[3]) || !artifact.mime?.startsWith('image/')) fail(404,'artifact_not_found');
+            if ((sourceTask.workspaceKey||'')!==scope || !artifact || artifact.filename!==decodeURIComponent(artifactMatch[3]) || !slot.mediaKinds.includes(artifact.kind)) fail(404,'artifact_not_found');
             const actual=assetService.getArtifactPath(sourceTask.id,artifactId);
-            const identity='artifact:'+sourceTask.id+':'+artifactId; if(identities.has(identity)) fail(400,'duplicate_reference_input'); identities.add(identity);
+            const identity='artifact:'+sourceTask.id+':'+artifactId+':'+slot.pointer.replace(/\/\d+$/,''); if(identities.has(identity)) fail(400,'duplicate_reference_input'); identities.add(identity);
             totalReferenceBytes+=actual.byteLength; planned.push({taskId:sourceTask.id,artifactId});
           } else fail(400,'invalid_owned_image_reference');
         }
@@ -278,7 +363,7 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
             else { const imported=assetService.importOwnedArtifactInput({...reference,workspaceKey:scope}); inputIds.push(imported.input.id); importedIds.push(imported.input.id); }
           }
           attachOfficial();
-          const created=assetService.createOfficialTask({kind:'image',model:modelId,prompt:parameters.prompt,parameters,inputIds,workspaceKey:scope,ownerBinding:binding});
+          const created=assetService.createOfficialTask({kind:officialImages.MODELS[modelId].kind,model:modelId,prompt:parameters.prompt || parameters.text || '',parameters,inputIds,workspaceKey:scope,ownerBinding:binding});
           return ok({taskId:created.task.id,accountMode:'codely-official'});
         } catch(error) {
           // Reclaim only inputs this failed request created. The asset service
@@ -287,15 +372,19 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
           throw error;
         }
       }
-      const provider = modelId === CPA_MODEL_ID ? await configuredCpa() : null;
+      if(/^cust_[a-f0-9]{32}$/.test(modelId)) {
+        if(scope===undefined)fail(400,'generation_workspace_scope_required');
+        const registry=customProviders();await registry.ready;
+        try {const created=await registry.createGenerationTask(modelId,payload,scope);return ok({taskId:created.task.id});}
+        catch(error){fail(400,'unsupported_custom_provider_parameters',error.message);}
+      }
+      const provider = Object.hasOwn(CPA_IMAGE_MODELS,modelId) ? await configuredCpa(modelId) : null;
       if (!provider) return { status: 503, body: { error: 'generation_provider_not_configured', message: '该模型尚未绑定 GameCowork 本地生成服务', modelId, supported: false, accountMode: official ? 'codely-official' : 'local' } };
       if (scope === undefined) fail(400, 'generation_workspace_scope_required');
-      if (Object.keys(payload).some(key => !['prompt','model','size','quality','outputFormat','studioModelId'].includes(key)) ||
-          payload.model !== 'gpt-image-2' || payload.studioModelId !== CPA_MODEL_ID || payload.size !== '1024x1024' ||
-          payload.quality !== 'low' || payload.outputFormat !== 'png') fail(400, 'unsupported_cpa_image_parameters');
-      const prompt = boundedText(payload.prompt, 'prompt', 32000, true, true);
-      const created = await assetService.dispatch('generator/createTask', { providerId: provider.id, kind: 'image', model: 'gpt-image-2', prompt,
-        workspaceKey: scope, parameters: clone(payload), inputIds: [] });
+      let parameters;
+      try { parameters=validateCpaImageAccountPayload(modelId,payload); } catch(error) { fail(400,'unsupported_cpa_image_parameters',error.message); }
+      const created = assetService.createCpaImageTask({ providerId: provider.id, kind: 'image', model: parameters.model, prompt: parameters.prompt,
+        workspaceKey: scope, parameters, inputIds: [] });
       return ok({ taskId: created.task.id });
     }
     if (/^\/sso\/(assets|effects)\/(search|download)$/.test(route)) fail(503,'asset_catalogue_unavailable','尚未配置原素材库的可用数据来源');
@@ -329,7 +418,7 @@ function createCodelyGeneratorApi({ assetService, getOfficial: officialResolver 
     if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > INPUT_LIMIT) fail(413,'reference_file_too_large');
     const bytes = Buffer.from(await file.arrayBuffer()); if (bytes.length !== file.size) fail(400,'reference_file_length_changed');
     let actual;
-    try { actual = assetService.inspectInputBytes(bytes); } catch { fail(415,'reference_media_unsupported','参考文件不是当前本地服务可验证的完整媒体格式'); }
+    try { actual = assetService.inspectInputBytes(bytes,{filename}); } catch { fail(415,'reference_media_unsupported','参考文件不是当前本地服务可验证的完整媒体格式'); }
     if (actual.kind !== expectedKind) fail(415,'reference_media_kind_mismatch');
     const inputId = 'i_'+crypto.randomUUID(), decodedPath = checked(path.join(root,'incoming',inputId+'.bin'));
     let descriptor, identity;

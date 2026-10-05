@@ -104,21 +104,28 @@ node tests/integration/editor-scene-mutations-agent-smoke.mjs --package <同源�
 
 | 当前入口 | 本地接线及边界 |
 | --- | --- |
-| 快速生成 | 原四种模式、模型 / 参数控件和手绘界面；全能耀斑 / 全能日辉普通图片读取官方 Pro 状态和报价，再提交 / 查询任务；参考图与手绘走自有缓存 |
+| 快速生成 | 原四种官方模式、模型 / 参数控件和手绘界面，外加独立“第三方 · CPA”分栏；官方43个契约读取Pro状态和实际报价，CPA仍以image内部模式执行；所有引用先进入自有缓存 |
 | 生成历史 | 原网格 / 列表、分类、日期、标签、丢弃 / 恢复、详情与偏好；数据来自真实自有任务和输入记录 |
 | ReactFlow 画布 | 原个人画布入口、节点 / 连线 / 视口、Markdown 文本编辑、素材上传、视频当前帧转图片；本地服务保存完整图 JSON、版本与编辑租约 |
 | 身份与媒体 | 未登录时使用明确的 GameCowork 本地身份；授权成功后由 broker 提供官方身份与额度展示，令牌不进入页面。媒体仅从登记的自有缓存读取并核对长度 / SHA |
 
-原 Quick 的 `frontier_flare`（全能耀斑）和 `frontier_sunburst`（全能日辉）普通图片接线已装配到正式 app：保留原控件及参数，在生成站真实付费状态和数值报价就绪后提交官方任务，查询实际状态，并把核验后的媒体送入本机历史、再生成与下载。参考图最多 16 张，限当前工作区已登记的真实图片，组合不超过 64 MiB；历史产物作为参考图时同样核验作用域和 SHA。全部引用先验证再导入，失败只回收本请求新建且未被历史引用的输入。当前接线使用原标准 `medium` 质量及 PNG / JPEG / WebP 普通图片；分层输出和其它原模型继续返回明确不可用，不能统称原模型已全部支持。
+当前源码接入 43 个官方生成契约：16 个图片契约（含 Seedream 分层辅助）、7 个视频、12 个 3D、8 个音频/文字。原 Quick 的模型描述、构建函数与参数控件保留，后端固定契约位于 `gamecowork-official-{image,video-3d,audio-text}-models.js`，由 `gamecowork-official-model-catalog.js` 汇总。维护时同步核对 `MODELS`、`validatePayload`、`quoteFor`、`referenceSlots` 和 `minimalPayload`，不得把通用 JSON 或自由 Provider 参数当作官方 builder。Tripo 文生/图生报价按实际 `imageUrl` 分支和原版本/纹理参数生成；报价数值由站点读取，不写固定价格。原隐藏/内部模型继续拒绝普通 Pro 能力。
 
-新增 `cpa-gpt-image-2`（GPT Image 2 · CPA）保持独立的自有扩展，复用原注册表、控件、提交 / 轮询 / 历史流程。`local-session` 分别判断官方逐模型能力和已配置 CPA Provider，客户端不能在生成 payload 中改选服务。正式 app 已原位交付；本人真实登录、Quick 付费读取和单张官方 Pro PNG 生成已成功，实际图片字节与 SHA 已核验。正式包还取得真实编程目录，并完成 GLM-5.3-FLASH 的一次短文字请求与最终帧验收；目录中其它模型及复杂工具任务不由该请求推定已实测。自动门禁继续只用隔离 fixture。实际扣额、结果尺寸、请求范围、Canvas 边界与装配来源分别记录在 [当前状态](../RESTORE_STATUS.md)。
+引用限当前工作区已登记的图片、视频、音频或模型，数量和类型按模型契约，组合不超过64 MiB；历史引用同样核验作用域与SHA。全部引用先验证再导入，失败只回收本请求新建且未被任务引用的输入。同一数组字段的重复素材拒绝，原独立首尾帧字段可复用同一素材。冻结字节后提交实际任务，保留原图层、天空盒、模型和文字结构，文件核验后进入缓存、历史、再生成和下载。声音克隆按原`_N/k5/wN`把实际音频预览作为结果，不要求服务没有返回的voiceId；只有真实返回音色身份时才保留。
 
-账号维护入口是 `src/core/binary/out/gamecowork-codely-account.js`，两份 Core 入口同步接线；`src/shell/src/codely_account.rs` 提供 Windows DPAPI vault 和系统浏览器链接。密封记录位于本应用 `GAMECOWORK_USER_DATA_DIR` 下的 `codely-account/`，只允许 Core 请求加解密，不向前端暴露令牌。请求时限覆盖完整响应体；登录取消、退出、刷新和站点身份读取按会话代次隔离晚返请求。`gamecowork-codely-official-generator.js` 私有执行器复用该 broker，`gamecowork-assets.js` 的内部官方任务入口冻结账号绑定和输入 SHA；公开 `generator/createTask` 不能伪造官方任务。生成 POST 结果未知时不重发，只有已记录远端 ID 且所属账号匹配才能恢复查询；参考图上传失败仍属于生成提交前失败，不能误报已提交生成。测试须覆盖这些失败、账号变化、完整响应体超时及重启恢复，自动测试不访问用户账号、原软件凭据或商业额度。
+声音预览分类维护只改原`lwe`：已知音频文件扩展优先于原preview/image键名，修复MP3被归入image；未知地址、query伪扩展和非音频仍沿原分类。原`_N/k5/wN`等任务规则及`xZ`音频播放器保持字节一致。`codely-quick-audio-preview.test.mjs`验证这4项来源/行为契约，源码专项另检查原播放器实际MP3/Opus加载和play/timeupdate/ended；两种样本不代表所有codec或真实长音频，额外极短FLAC不计为全面播放验收。最终装配和门禁见活动状态。
+
+CPA扩展在原Quick第五个“第三方 · CPA”分栏选择，复用原控件、提交/轮询/历史和再生成，内部仍为image模式。固定四个请求ID为`gpt-image-2`、`gpt-image-2.5`、`gpt-image-2.5-flare`和`gpt-image-2.5-sunburst`；`local-session`分别判断官方逐模型能力和CPA绑定，客户端不能在payload中改选服务。CPA本轮状态与装配见 [第三方图片接入记录](../RESTORE_STATUS.md#cpa-flexible-20261003)。43个官方契约已装配，真实45项中30项完成、15项创建HTTP400未跑通；官方完整门禁、实际费用、原生界面观察和包来源见 [官方状态](../RESTORE_STATUS.md#official-all-models-20261003)，自动门禁仅用隔离fixture。
+
+账号维护入口是`src/core/binary/out/gamecowork-codely-account.js`，两份Core同步接线；Rust的`codely_account.rs`提供Windows DPAPI vault和系统浏览器链接。密封记录留在本应用数据目录，只有Core请求加解密；时限覆盖完整响应体，会话代次隔离取消/退出/刷新后的晚返请求。两代菜单共用`assets/gamecowork-account-display.js`，真实邮箱未知则明确显示账号ID；Pro按实际订阅active/seat字段，个人套餐不等待非空组织列表。原`controlPlane/openUrl`固定官方站内网页，usage为`https://codely.tuanjie.cn/dashboard/usage`，不改SDK端点或复制Pro标记。
+
+私有官方执行器复用broker，内部任务冻结账号与输入SHA，公开`generator/createTask`不能伪造官方任务。生成POST未知不重发；同工作区`POST /task/:id/resume`只恢复已知远端ID的查询和缺失文件收集，校验账号/任务ID并保留已核验artifact。`POST /task/:id/reconcile`只读本人限定时间窗History；分页完整、ID无重复且原模型/参数唯一匹配才绑定，客户端不能指定remoteID，无匹配不能证明未扣额或授权重发。HTTP400诊断有界脱敏。对象存储错误MIME仅在实际PNG/JPEG完整检查后纠正transport类型，显式输出类型仍严格匹配。测试覆盖scope/账号/ID变化、部分缓存、零重复生成、分页及诊断秘密边界；自动测试不访问真实账号或商业额度。
 
 账号定向验证使用以下命令。默认 E2E 验证真实 Rust/Core 与 loopback 官方协议 fixture；`--browser` 增加两代原登录弹窗、链接请求、身份和退出刷新交互，`--images` 必须与 `--browser` 同用，增加原 Quick 官方图片的控件、报价、生成、历史与下载流程；`--previous` 选择上一代。`--packaged` 默认选择当前 `app/`，候选包需显式传入 `--binary`、`--core`、`--frontend`、`--runtime`，该 driver 没有 `--app-root` 参数。输出使用 `--output` 指向统一 temp 下的独立目录。各次是否通过及装配资源来源只记录在 [当前状态](../RESTORE_STATUS.md)，命令存在不表示已经完成验收。
 
 ```powershell
 node --test tests/contracts/codely-account-broker.test.mjs tests/contracts/codely-account-wiring.test.mjs tests/contracts/codely-account-official-surface.test.mjs tests/contracts/codely-account-frontend.test.mjs tests/contracts/codely-account-timeout.test.mjs
+node --test tests/contracts/codely-account-display.test.cjs tests/contracts/codely-account-display-frontend.test.mjs
 node --test tests/contracts/codely-official-generator-broker.test.mjs tests/contracts/codely-official-assets.test.mjs tests/contracts/codely-official-generator-api.test.mjs tests/contracts/codely-official-generator-validation.test.mjs
 node tests/e2e/codely-account-login-e2e.mjs
 node tests/e2e/codely-account-login-e2e.mjs --browser
@@ -129,11 +136,34 @@ node tests/e2e/codely-account-login-e2e.mjs --packaged --browser
 node tests/e2e/codely-account-login-e2e.mjs --packaged --browser --previous
 ```
 
-CPA 绑定使用 `PUT /api/codely-generator/local/model-bindings/cpa-gpt-image-2`，body 为 `{ "providerId": "已保存的Provider ID" }`；传 null 解除绑定。Provider 由原生 `generator/saveProvider` 保存，模型为 `gpt-image-2`、kind 为 image、已配置鉴权、POST `/images/generations`、`responseMode:outputs`、`selectors.outputs:data`、`outputSelectors.base64:b64_json`。当前描述符固定 n=1、PNG、low、请求1024×1024；真实CPA返回1254×1254，产物尺寸从实际PNG读取。模板当前用固定size/quality/output_format；通用 `{{parameters.size}}` 在 `normalizeSpec` 的空参数预检中仍会被拒绝，此缺口列入交接计划。
+全部模型验证覆盖三组原参数契约、逐模型能力、结构结果与媒体检查。`codely-all-models-e2e.mjs`逐一完成43个契约的报价、上传、单次提交、ID查询及文件/文字SHA；4类原GUI检查控件、预览/播放、保存和历史草稿，恢复case检查同一远端ID、scope/账号边界、分页不完整/重复及零重复创建。`--previous`选择上一代，候选包支持`--packaged --app-root`，也可分别指定`--binary`/`--core`/`--frontend`/`--runtime`。显式传入同源码guarded Agent，网络guard拒绝外站；各次结果与实际装配状态分开记录。
+
+```powershell
+node --test tests/contracts/codely-official-image-models.test.mjs tests/contracts/codely-official-video-3d-models.test.mjs tests/contracts/codely-official-audio-text-models.test.cjs tests/contracts/codely-all-model-readiness.test.mjs tests/contracts/codely-official-task-output.test.cjs
+node --test tests/contracts/codely-audio-media.test.cjs tests/contracts/model-media.test.cjs tests/contracts/codely-extra-image-media.test.cjs tests/contracts/codely-hdr-media.test.cjs tests/contracts/codely-assets-persistence.test.cjs
+node --test tests/contracts/codely-jpeg-media.test.cjs tests/contracts/codely-official-known-task-resume.test.cjs tests/contracts/codely-official-task-reconciliation.test.cjs tests/contracts/codely-generator-diagnostics.test.mjs
+node --test tests/contracts/codely-quick-audio-preview.test.mjs
+node tests/e2e/codely-all-models-e2e.mjs --agent <同源码 guarded Agent EXE>
+node tests/e2e/codely-all-models-e2e.mjs --previous --agent <同源码 guarded Agent EXE>
+```
+
+真实服务验证单独按用户授权执行数量1和原最低参数，先读报价再提交一次；未知结果保留远端身份，只继续查询，不自动重发。逐条核对最终状态、缓存SHA及原界面真实加载/播放，报价不是结算证明。声音克隆只用合法自有或经同意声源。用户明确3200为官方5小时编程窗口限制，最新已知3198已用、2剩余，故官方新GEN和编程inference继续停止，不安排自动续测。剩余15项等后续明确授权；这次另授权的最多8次CPA单张串行实测只用于自有CPA参数核对，不放宽官方边界。CPA、内部管理员、Canvas schema和隐藏模型不因Pro登录自动可用。
+
+Image 2.5的可见选择使用默认/快速/精致三个按钮，分别映射通用、Flare、Sunburst请求ID；下拉只展示Image 2和Image 2.5两家族。内部四描述符不合并，原历史精确路由仍恢复对应按钮；同家族切换保留提示词、比例及不兼容旧参数，不等于接受账号默认，也不提交任务。名称不证明实际后台型号或速度/质量差异。
+
+CPA绑定使用 `PUT /api/codely-generator/local/model-bindings/<CPA描述符ID>`，body为 `{ "providerId": "已保存的Provider ID" }`，传null解除该条目绑定；未单独绑定的新条目可复用旧`cpa-gpt-image-2`绑定。四个描述符ID为`cpa-gpt-image-2`、`cpa-gpt-image-2-5`、`cpa-gpt-image-2-5-flare`和`cpa-gpt-image-2-5-sunburst`。Provider经原生`generator/saveProvider`保存，需要对应CPA型号、image kind、已配置bearer/header认证、JSON POST `/images/generations`、`responseMode:outputs`、`selectors.outputs:data`及`outputSelectors.base64:b64_json`。凭据不随描述符复制；本轮不重写已有Provider数据库。
+
+公共CPA条目已按本机样本收敛并装配为单张文生图、size=auto、quality=auto、PNG及明确的构图比例提示；精确宽高/2K/4K、高级quality档和服务格式切换已移除。这是保守策略，不能据7个样本泛化账户永久限制或重放公开API枚举作为认证能力。比例只在prompt表达构图形状，不能承诺像素或比例；唯一真实提示样本EOF，尚无本机成功证明。实际文件MIME/尺寸/SHA与服务报告分别保存显示。
+
+`gamecowork-cpa-image-models.js`与前端描述符成套维护。公共兼容入口固定确切请求model、auto/auto/PNG及n=1，再经内部`createCpaImageTask`与持久profile执行；旧Provider常量不覆盖它，ProviderDB不重写。公共通用`generator/createTask`不能选择或伪造profile；重启/取消/未知创建不重发沿现有生命周期。旧请求/返回事实不改，不兼容再生成须明确接受账户默认；修复只改草稿，仍须用户提交。通用parameters模板预检修复保留，不能因此放开公共CPA自定义参数或任意覆盖。
+
+只读CPA GET `/models`实际返回四个ID。随后用户限8次单张低并发实测已串行提交完毕：7个产物完成、1次HTTP500 EOF失败不重试；四ID均有真实图片，全部成功样本为1254×1254 PNG、报告low，而requested横/竖/custom/high/medium/xhigh/max/JPEG/WebP均未兑现。公开任务事实未提供可确认model报告，不宣称2.5换模确认或永久上限。预算8已用完，不再GEN；原始请求、报文字段、实际文件与失败分别记录，完整表和最终包验见活动状态。
+
+用户代理响应版本已只读确认v8.0.8/fd48ea6，build 2026-10-01T03:34:04Z；按对应commit图片executor核实参数转交，未使用管理认证或原软件凭据。模型元数据不含size/quality范围，源码转交不证明账户后端兑现。公开 [同原生路径作者实测](https://github.com/foksa/codex-img/blob/55710a2299a8e560bad780bc54b4304b19a90ca2/README.md#the-backend)与本机参数不兑现的样本部分一致；其medium上限等观察仍须与本机结果区分。只读研究、隔离测试、用户限额内CPA实测分别记账；官方新GEN和编程inference继续禁止，不能把CPA授权扩为无限生成或绕过官方额度。
 
 LAN HTTP 仅在 Provider 显式设置 `allowInsecureLan:true` 且地址为规范 RFC1918 IPv4 时开放；无该标记、公网 HTTP、数值/十六进制别名或跨源 HTTP 输出不会获得授权。`requestTimeoutMs` 支持1000..600000，作用于创建与下载；默认保持原30秒。凭据通过现有资产服务加密保存，不进入任务/模板 JSON 或公开回执。自动门禁只用隔离 fixture，真实服务测试必须单独人工运行，私有配置不随包或 Git 分发。
 
-上传按原客户端的 multipart 字段接到可信本机 staging，再由 Core 解析、验证并登记。当前支持 PNG / JPEG / WebP / MP4 / WebM / GLB，单文件最多 64 MiB；multipart 原始请求上限为 64 MiB 加 256 KiB，每次只接受对应字段的单个文件。GIF、音频、FBX/ZIP、SPLAT 等即使出现在原文件选择器中，目前也会明确拒绝，不返回虚构的成功 URL。手绘导出的真实 PNG 可沿同一路径保存为参考素材。
+上传按原客户端的 image/video/audio/model/model-conversion multipart 字段接到可信本机 staging，再由 Core 解析、验证并登记。本轮源码支持已有 PNG / JPEG / WebP / MP4 / WebM / GLB，以及 WAV / MP3 / AAC / FLAC / Ogg Opus / AAC-LC M4A、FBX / OBJ / STL / ZIP / USDZ；单文件最多 64 MiB，multipart 原始请求上限为 64 MiB 加 256 KiB，每次只接受对应字段的单个文件。ZIP/USDZ 仅验证有界结构、内容与资源，不解压执行；声音容器和帧检查不替代 codec 解码。天空盒输出另有 EXR/HDR 有界检查，不因此允许任意 EXR/HDR 作为普通生图参考。GIF、SPLAT、HE-AAC/ALAC/fragmented M4A 和其它超出检查范围的变体仍明确拒绝，不返回虚构的成功 URL。原转换器的更大文件说明不能覆盖本机 64 MiB 边界。
 
 Quick 上传冻结所在工作区；Canvas 上传绑定实际已保存画布及当前浏览器编辑租约，不能用图里的 `workspaceHash` 授予工程访问权限。参考输入只进入本应用缓存，不改用户原文件。输入缓存有 2048 项 / 4 GiB 上限，目前没有缓存整理界面；被任务引用的输入不能删除，预览占用或写入失败时保留可重试的记录。
 
@@ -162,9 +192,41 @@ node tests/e2e/codely-assets-e2e.mjs --download-only --agent <同源码 guarded 
 node tests/e2e/codely-assets-e2e.mjs --previous --download-only --agent <同源码 guarded Agent EXE>
 ```
 
-统一验证执行来源、身份、Sidebar、官方账号/图片/编程、CPA 描述符/后端与原接口契约，并保留已有后端门禁；`-RealCore` 或 `-Chat` 且未指定 `-SkipBrowser` 时，运行两代默认 `codely-assets-e2e.mjs` 和两代 `--cpa-only`，并按统一脚本登记范围执行官方图片和编程 E2E。默认资产 driver 验证原参数/手绘/历史/媒体与画布、冷重启及默认右栏双文档租约；CPA 分支验证原控件提交到 loopback 图片接口、解码、历史再生成草稿与重启，不能替代官方服务验收。`--flexible-layout` 单独检查原可选分栏入口，不属于默认窗口，验收结果分别记录。
+统一验证执行来源、身份、Sidebar、官方账号/生成/编程、CPA描述符/后端与原接口契约，并保留已有后端门禁；`-RealCore`或`-Chat`且未指定`-SkipBrowser`时，运行两代默认`codely-assets-e2e.mjs`、两代`--cpa-only`、两代`codely-cpa-flexible-e2e.mjs`和两代`codely-all-models-e2e.mjs`，并按统一脚本登记范围执行官方图片和编程E2E。CPA专项验证独立分栏、四型号、尺寸/质量/格式透传、参数拒绝、Provider数据不变、历史再生成及重启，仅提交到WAN阻断的loopback fixture。默认资产driver验证原参数/手绘/历史/媒体与画布、冷重启及默认右栏双文档租约；fixture成功不能替代真实服务验收。`--flexible-layout`单独检查原可选分栏入口，不属于默认窗口，验收结果分别记录。
 
 该 driver 支持 `--binary <候选宿主 EXE>`、`--output <统一 temp 内的目录>`，以及 `--packaged --app-root <候选包>`；没有 `--frontend` 参数。包模式使用包内宿主、前端和 Core，执行仍使用显式传入的 guarded Agent，不能据此代替正式 Agent 与整个装配包的完整性检查。`--inspect` 只作检查界面 / 截图用途，会跳过完整交互流程，不能用作完整验收。源码门禁和候选包验证均不表示现有 `app/` 已更新；正式装配与结果统一记录在 [RESTORE_STATUS.md](../RESTORE_STATUS.md)。
+
+## 自定义 Provider 维护
+
+传输失败保存 `transportDiagnostic` 的有限字段：操作、阶段、错误代码、耗时、配置时限及收到的 HTTP 状态。仅识别有限的 Node 网络错误代码，不复制底层 cause 的消息/stack、URL、请求头或正文；未知代码归为通用传输错误。配置时限使用现有 AbortController，不从 `fetch failed` 推测其已经到期。旧任务没有底层原因时保持未知，不补写推断的故障代码。
+
+`gamecowork-generation-error-details.js` 为兼容接口生成固定白名单 `errorDetails`，原 `error` 字段也只返回安全短摘要。401/402/404/502/503等实际收到的状态直接显示在卡片；Quick与History通过原Dialog展示阶段、代码、HTTP、精确毫秒、模型、任务尺寸参数、本地任务ID及创建/更新时间，并使用同一DTO复制。尺寸字段只代表保存的`parameters.size`，不能由通用REST模板推定已经传给上游；任务更新时间不冒充请求耗时。旧HTTP字符串可恢复明确状态与少数安全message叶字段，缺失诊断仍为null；连接阶段确实未收到状态时说明“未收到HTTP状态码”，旧缺记录显示“未记录”。原始异常、URL、凭据赋值、签名地址、堆栈和不完整正文不会进入详情或复制文本；无法安全展示时注明隐藏/未保存。固定短句“Invalid API key”等不含值的认证诊断可展示，带实际密钥值的变体仍拒绝。
+
+创建请求已发出且没有远端任务 ID 时，`submissionUnknown` 由实际内部状态派生；兼容层保留原轮询终态并附 `local_submission_unknown` 与显式标记。Quick/History 显示“结果未知”，该卡片不能直接重发；原 History“再次生成”仍仅恢复草稿。历史页本机身份默认可查看未完成记录，素材选择器保持 completed 筛选。已知远端 ID 的中断不当成未知创建，后续成功、取消或配置变化清理陈旧诊断。自动测试使用真实 loopback 断流/502，禁止以故障重试名义消耗用户额度。
+
+第三方界面的“管理 Provider”负责新增、编辑、删除和“读取模型 / 测试连接”；后者只调用目录 GET，不生成内容。源码分别位于 `gamecowork-provider-registry.js`、`gamecowork-provider-catalog.js`、`gamecowork-provider-vault.js` 和前端 `codely-generator/provider-manager.js`。旧 CPA 描述符、三按钮与历史保留，新增服务使用 Provider 与确切模型组成的稳定身份，不覆盖旧模型绑定或复制旧聊天设置凭据。最终装配和真实流程进度只查看 [XCAI 与 Provider 状态](../RESTORE_STATUS.md#xcai-custom-provider-20261004)。
+
+本机 HTTP 前缀为 `/api/codely-generator/local/providers`：GET 列表、POST 保存 `{provider}`、DELETE `/{providerId}`、POST `/{providerId}/sync-models`（空 body）、PUT `/{providerId}/model-capabilities`（`modelId` 与 `capabilities`）。本机 POST 目录同步只在服务端执行上游 GET，不是生成请求。凭据仅在显式保存时送入 Core，保存后前端只返回已配置状态；空密钥保留，清除须显式指定。新凭据由 DPAPI CurrentUser 密封，不把旧 CPA AES 存储混称 DPAPI；不得将真实密钥、私有输入路径、签名 URL 或完整响应写入源码/测试日志。
+
+新增 Provider 可选择 OpenAI Images、显式通用 REST 任务、OpenAI Chat / Responses、Ollama 和 ComfyUI。当前只有 Images 与 REST 任务有执行适配器，其他协议明确显示执行未接入。Ollama 读取模型目录；ComfyUI 读取节点类型/模型文件并保存导出的 API 格式工作流及现有节点输入映射，不自动安装、启动或全局中断本地服务。REST 必须按所接服务文档填写创建、轮询与输出映射，不根据型号名称猜接口。目录需完整分页，部分/重复/超限响应拒绝更新。
+
+每个模型的 size / quality / outputFormat / aspectRatio / references / generation / upscale 独立记录状态和证据。手动能力保存强制使用 manual，显示“手动配置，未验证”；它不是实测通过。未知质量等参数默认不发送，不开放未证实档位或独立超分；标准size可按下文公开/显式请求方法发送，但不提高真实能力证据。对于服务端不兑现精确尺寸的通道，可保留 `resolutionHint` / `aspectRatioHint` 的提示词要求：服务端保留原 prompt，另构造 executionPrompt 和摘要，历史再次生成恢复原文及要求，不重复拼接。提示词要求、真实 API 参数、服务报告和文件像素必须分别核对，不能把 HTTP200、quality 回填或高分辨率生成当独立超分验收。
+
+XCAI 当前 Key 已完整读取3个图片请求 ID；首轮最多8次串行预算已用完，5个产物完成、3次失败，五图实际1254×1254 PNG，精确尺寸/横图/2K未兑现。追加3次串行场景测试已结束1产物/2次HTTP502：Flare幻想港口的1536×1024 / 3:2提示要求组合实际输出同尺寸PNG，风景与成年女性游侠插画无产物。总11次6产物/5失败，全部预算已用完，不自动重试或扩为官方生成/编程请求。三个原prompt保持，executionPrompt含带空格像素规格与比例；匹配时不能因未找到无空格字串误判规格缺失。Flare成功只证明这个组合，不能扩大为任意尺寸或纯API size单独有效；quality仅标服务报告，真实档位、参考编辑与独立超分仍未知，HTTP200无合法产物仍算失败。
+
+定向自动验证仅使用隔离 fixture，不读取本人凭据或收费：
+
+```powershell
+node --test tests/contracts/provider-catalog.test.cjs tests/contracts/provider-vault.test.cjs tests/contracts/provider-registry.test.mjs tests/contracts/codely-custom-provider-ui.test.mjs
+node tests/e2e/custom-provider-e2e.mjs --agent <同源码 guarded Agent EXE>
+node tests/e2e/custom-provider-e2e.mjs --previous --agent <同源码 guarded Agent EXE>
+```
+
+`custom-provider-e2e.mjs` 支持 `--packaged --app-root <候选包>`，验证真实 Rust/Core 与原 GUI 的 Provider 管理、目录、生成/历史/重启及不可执行协议的明确状态。主体双代48/48、完整`-RealCore -Chat`复验及正式安装已通过；本人数据另以只读snapshot的11任务/6缓存做15项恢复验证，早8条缺省executionPrompt不补写，原源数据SHA不变。后续主题/错误分类增量另以定向契约、双代48、主题8与CPA兼容验收，已于10月4日01:41原位安装并重开，不称增量后又重跑完整门禁。实际重开仅本机GET验证窗口/HTTP与3模型密钥配置就绪，留给用户运行；证据与历史失败见当前状态，不扩大为全部上游真实可用或原生像素验收。
+
+Provider选择使用原FZ一致的DOM弹出层，管理页原生下拉以colorScheme与option背景/文字继承主题；专项须从真实Host菜单切换浅/深色，不只改DOM class假装主题变化。图片响应错误分类仅适用于非official image、outputs模式、data集合，四种坏形状继续拒绝，不猜其他响应协议、不持久化原始body、不迁移历史失败。用户自行新增请求与Agent授权预算分开计数；旧泛化collectdata错误不能逆推出data准确形状。
+
+最新尺寸接线支持Provider `imageSizePolicy`两种请求方法：prompt-only与openai-size。规范`https://xcai.pro/v1`默认实际标准size，其他服务默认仅提示词，管理原Popover可显式选择并保留原opt-out；冷恢复不写旧注册表、密钥库或任务历史。API策略用resolutionHint推导parameters.size和body size，固定n=1并保留prompt/执行要求，冲突、像素边界与明确unsupported先拒绝；质量独立，不新增high、resolution或aspect_ratio字段。1K/2K/4K×9比例为27公开预设，4K方2880×2880，16取整tuple兼容仅限此策略；结果按真实文件像素显示全部/部分/未兑现，合法产物可下载，不追认旧历史当年有API size。双代源码和候选size专项各29、v4原兼容各48通过，Popover真实交互早期失败保留。另获独立1张授权后gpt-image-2的3840×2160横图PNG已真实兑现，quality省略、原词/API size与暂停任务不变；不泛化2.5/其他规格/高质量或超分。02:46安装1566/1562零差、02:47首次重开观察保留，其后退出原因未知；最新桌面Shell启动PID42608于02:54确认launcher退出后仍运行并恢复4K/策略，仅本机GET。未重跑全套完整门禁，不猜测前次退出原因。
 
 ## 官方编程模型接线
 

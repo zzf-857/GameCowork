@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param([switch]$SkipBrowser, [switch]$RealCore, [switch]$Chat, [switch]$Editor, [string]$AgentTestPackage, [string]$TuanjieEditor)
 $ErrorActionPreference = 'Stop'
 if ($TuanjieEditor -and (-not $Editor -or $SkipBrowser)) { throw '-TuanjieEditor requires -Editor with browser verification enabled.' }
@@ -53,6 +53,12 @@ $testScripts += @('contracts/core-hub-discovery.test.cjs', 'contracts/frontend-p
 $testScripts += @('contracts/codely-generator-local-identity.test.mjs', 'contracts/codely-canvas-source-contract.mjs', 'contracts/codely-sidebar-canvas-contract.mjs', 'contracts/codely-download-contract.mjs', 'contracts/codely-generator-api.test.mjs', 'contracts/codely-generator-upload.test.mjs', 'contracts/codely-media-rebase.test.mjs', 'contracts/codely-local-models.test.mjs', 'contracts/codely-cpa-generation.test.mjs')
 $testScripts += @('contracts/codely-account-broker.test.mjs', 'contracts/codely-account-wiring.test.mjs', 'contracts/codely-account-official-surface.test.mjs', 'contracts/codely-account-frontend.test.mjs', 'contracts/codely-account-timeout.test.mjs')
 $testScripts += @('contracts/codely-official-generator-broker.test.mjs', 'contracts/codely-official-assets.test.mjs', 'contracts/codely-official-generator-api.test.mjs', 'contracts/codely-official-generator-validation.test.mjs', 'contracts/codely-official-programming.test.cjs')
+$testScripts += @('contracts/codely-official-image-models.test.mjs', 'contracts/codely-official-video-3d-models.test.mjs', 'contracts/codely-official-audio-text-models.test.cjs', 'contracts/codely-extra-image-media.test.cjs', 'contracts/model-media.test.cjs', 'contracts/codely-audio-media.test.cjs', 'contracts/codely-all-model-readiness.test.mjs', 'contracts/codely-hdr-media.test.cjs', 'contracts/codely-jpeg-media.test.cjs', 'contracts/codely-account-display.test.cjs', 'contracts/codely-account-display-frontend.test.mjs', 'contracts/codely-official-task-output.test.cjs', 'contracts/codely-assets-persistence.test.cjs', 'contracts/codely-official-known-task-resume.test.cjs', 'contracts/codely-generator-diagnostics.test.mjs', 'contracts/codely-official-task-reconciliation.test.cjs')
+$testScripts += @('contracts/codely-quick-audio-preview.test.mjs')
+$testScripts += @('contracts/codely-cpa-image-models.test.cjs', 'contracts/asset-generation-cpa-profile.test.mjs', 'contracts/asset-generation-template-parameters.test.mjs')
+$testScripts += @('contracts/asset-generation-cpa-reported-image.test.mjs')
+$testScripts += @('contracts/provider-catalog.test.cjs', 'contracts/provider-vault.test.cjs', 'contracts/provider-registry.test.mjs', 'contracts/codely-custom-provider-ui.test.mjs')
+$testScripts += @('contracts/asset-generation-transport-diagnostic.test.mjs', 'contracts/codely-task-outcome.test.mjs', 'contracts/codely-task-outcome-ui.test.mjs')
 foreach ($script in $testScripts) {
     $arguments = @((Join-Path $projectRoot "tests\$script"))
     if ($script -eq 'e2e/terminal-e2e.mjs' -and $SkipBrowser) { $arguments += '--skip-browser' }
@@ -61,6 +67,8 @@ foreach ($script in $testScripts) {
     if ($LASTEXITCODE -ne 0) { throw "Verification failed: $script" }
 }
 if (-not $SkipBrowser) {
+    & node (Join-Path $projectRoot 'tests\e2e\codely-quick-audio-preview-e2e.mjs')
+    if ($LASTEXITCODE -ne 0) { throw 'Original Quick audio preview and playback verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\editor-installations-cache.mjs') --browser
     if ($LASTEXITCODE -ne 0) { throw 'Editor cache/restart browser verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\editor-installations-cache.mjs') --browser --previous
@@ -108,6 +116,22 @@ if ($RealCore) {
         if ($LASTEXITCODE -ne 0) { throw 'Codely account original login UI verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\codely-account-login-e2e.mjs') --browser --images --previous
         if ($LASTEXITCODE -ne 0) { throw 'Previous Codely account original login UI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-all-models-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Official all-model HTTP and four-category GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-all-models-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous official all-model HTTP and GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-cpa-flexible-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'CPA independent category, four models and flexible parameters verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-cpa-flexible-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous CPA flexible parameters verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Custom Provider registry, vault, catalog and original GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous custom Provider original GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --transport-errors-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Custom Provider transport failure and unknown outcome verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --previous --transport-errors-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous custom Provider transport failure and unknown outcome verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\insight-e2e.mjs') --binary (Join-Path $shellRoot 'target\debug\GameCowork.exe') --package $AgentTestPackage
         if ($LASTEXITCODE -ne 0) { throw 'Actual local index HTTP/GUI verification failed' }
     }

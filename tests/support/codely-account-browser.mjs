@@ -56,7 +56,7 @@ export async function exerciseAccountBrowser({ run, frontend, origin, previousGe
         siteReads.push({ site: 'quick', mode: body.mode, username: body.user?.name });
       }).catch(() => {}));
       if (url.pathname === '/api/tauri/invoke') responseReads.push(response.json().then(body => {
-        if (['getControlPlaneSessionInfo', 'cancelLogin', 'logoutOfControlPlane', 'controlPlane/openBrowser'].includes(body.messageType)) responses.push(body);
+        if (['getControlPlaneSessionInfo', 'cancelLogin', 'logoutOfControlPlane', 'controlPlane/openBrowser', 'controlPlane/openUrl'].includes(body.messageType)) responses.push(body);
       }).catch(() => {}));
     });
     await page.goto(origin, { waitUntil: 'domcontentloaded' });
@@ -103,6 +103,17 @@ export async function exerciseAccountBrowser({ run, frontend, origin, previousGe
     await login.click();
     const account = gui.getByRole('button', { name: /e2e-codely-user/ });
     await account.waitFor({ state: 'visible', timeout: 30000 });
+    await poll(async()=>(await account.textContent()).includes('Pro'),'original account badge reflects the actual active Pro plan');
+    await account.click();
+    const accountMenu=gui.getByRole('menu').first();
+    await accountMenu.getByText(state.noEmail?'账号 ID: 64001':'邮箱: e2e-user@example.invalid',{exact:true}).waitFor({state:'visible'});
+    assert.equal(await accountMenu.getByText(/邮箱.*64001/).count(),0,'The original account menu must not call its numeric UID an email');
+    const usageMenu=accountMenu.locator('[data-telemetry-id="credits_menu"]');
+    if(await usageMenu.count()) {await usageMenu.hover();await gui.locator('[data-telemetry-id="view_credits"]').first().waitFor({state:'visible'});await gui.locator('[data-telemetry-id="view_credits"]').first().click();}
+    else await accountMenu.locator('[data-telemetry-id="view_credits"]').click();
+    await poll(()=>requests.some(value=>value.type==='controlPlane/openUrl'&&value.data?.path==='dashboard/usage'),'original credits arrow sends its existing public usage RPC');
+    await poll(()=>responses.some(value=>value.messageType==='controlPlane/openUrl'&&value.data?.status==='success'),'public usage RPC completes through the actual Core and test host');
+    checks.push('Original account menu shows a real username, actual email or explicit account ID, active Pro badge and the original usage-link RPC');
     await snapshot('account-03-authenticated');
     assert.equal((await rpc('codelyAccount/status')).phase, 'authenticated');
     await gui.getByRole('button', { name: 'AI资产生成', exact: true }).click();

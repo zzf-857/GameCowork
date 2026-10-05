@@ -348,15 +348,10 @@ fn suggested_download_name(body: &Value, metadata: &Value) -> Result<String, Str
         _ => return Err("Download filename must be text".into()),
     };
     generated_assets::validate_download_filename(name)?;
-    let extension = match metadata["mime"].as_str() {
-        Some("image/png") => "png",
-        Some("image/jpeg") => "jpg",
-        Some("image/webp") => "webp",
-        Some("video/mp4") => "mp4",
-        Some("video/webm") => "webm",
-        Some("model/gltf-binary") => "glb",
-        _ => return Err("Owned media type is unsupported".into()),
-    };
+    let extension = metadata["mime"]
+        .as_str()
+        .and_then(generated_assets::owned_media_extension)
+        .ok_or("Owned media type is unsupported")?;
     // Original video controls suggest .mp4 even for WebM sources. Preserve the
     // actual media extension rather than labelling those bytes as another type.
     let stem = FilePath::new(name)
@@ -741,7 +736,13 @@ pub async fn generator(
         Err((status, value)) => return (status, Json(value)).into_response(),
     };
     let mut data = json!({"method":method,"path":format!("/{operation}"),"query":query,"body":body,"origin":origin});
-    if operation == "sso/generate" || operation.starts_with("sso/upload/") {
+    let task_recovery = operation
+        .strip_prefix("task/")
+        .and_then(|path| path.rsplit_once('/'))
+        .is_some_and(|(task, action)| {
+            !task.is_empty() && !task.contains('/') && matches!(action, "resume" | "reconcile")
+        });
+    if operation == "sso/generate" || operation.starts_with("sso/upload/") || task_recovery {
         let key = match headers.get("X-GameCowork-Workspace").and_then(|value| value.to_str().ok()) {
             Some(key) => key, None => return (StatusCode::BAD_REQUEST, Json(json!({"error":"workspace_scope_required","message":"The original client must capture its local workspace"}))).into_response(),
         };

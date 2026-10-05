@@ -27,7 +27,7 @@ const chunk = (name, bytes) => { const label = Buffer.from(name), out = Buffer.a
 const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(4); ihdr.writeUInt32BE(3, 4); ihdr[8] = 8; ihdr[9] = 6;
 const pixels = Buffer.alloc((4 * 4 + 1) * 3); for (let y = 0; y < 3; y++) for (let x = 0; x < 4; x++) pixels.set([20 + x * 30, 60 + y * 40, 170, 255], y * 17 + x * 4 + 1);
 const png = Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', deflateSync(pixels)), chunk('IEND', Buffer.alloc(0))]);
-const payload = prompt => ({ prompt, model: 'gpt-image-2', size: '1024x1024', quality: 'low', outputFormat: 'png', studioModelId: modelId });
+const payload = prompt => ({ prompt, model: 'gpt-image-2', size: 'auto', quality: 'auto', outputFormat: 'png', studioModelId: modelId, aspectRatio:'auto' });
 const json = body => new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } });
 const configuration = changes => ({ id: 'own-cpa', name: 'Isolated CPA', kinds: ['image'], baseUrl: lanOrigin + '/v1', allowInsecureLan: true, requestTimeoutMs: 1000,
   model: 'gpt-image-2', enabled: true, authMode: 'bearer', apiKey,
@@ -64,7 +64,7 @@ test('Explicit CPA binding persists, re-evaluates live profile availability, and
   assert.equal((await f.session()).body.capabilities.localGeneration, false);
   await f.save(config); assert.deepEqual((await f.session()).body.capabilities.models, {});
   assert.deepEqual((await f.bind(config.id)).body, { modelId, configured: true });
-  const expected = { [modelId]: { available: true, providerId: config.id, model: 'gpt-image-2' } };
+  const expected = Object.fromEntries(Object.values(require('../../src/core/binary/out/gamecowork-cpa-image-models.js').CPA_IMAGE_MODELS).map(row=>[row.id,{available:true,providerId:config.id,model:row.model,kind:'image',mode:'image',service:'cpa'}]));
   assert.deepEqual((await f.session()).body.capabilities.models, expected);
   await f.restart(); assert.deepEqual((await f.dispatch('GET', '/local/model-bindings')).body.models, expected);
   await f.save({ ...config, enabled: false }); assert.equal((await f.session()).body.capabilities.localGeneration, false);
@@ -106,7 +106,7 @@ test('Original Quick submission completes real PNG, preserves full payload/scope
   assert.equal(task.model, 'gpt-image-2'); assert.deepEqual(task.parameters, input); assert.equal(task.artifacts.length, 1);
   assert.equal(task.artifacts[0].width, 4); assert.equal(task.artifacts[0].height, 3);
   assert.deepEqual(f.requests, [{ url: lanOrigin + '/v1/images/generations', method: 'POST', redirect: 'manual', authorized: true,
-    body: { model: 'gpt-image-2', prompt: input.prompt, n: 1, size: '1024x1024', quality: 'low', output_format: 'png' } }]);
+    body: { model: 'gpt-image-2', prompt: input.prompt, n: 1, size: 'auto', quality: 'auto', output_format: 'png' } }]);
   const saved = await f.service.dispatch('generator/getResource', { taskId: task.id, artifactId: task.artifacts[0].id });
   assert.equal(saved.mime, 'image/png'); const bytes = Buffer.from(saved.base64, 'base64'); assert.equal(sha(bytes), sha(png));
   const dataLength = bytes.readUInt32BE(33); assert.deepEqual(inflateSync(bytes.subarray(41, 41 + dataLength)), pixels);
@@ -129,7 +129,7 @@ test('Original Quick submission completes real PNG, preserves full payload/scope
 test('No implicit model remapping, unsupported parameters, or missing workspace may submit a request', async t => {
   const f = await fixture(t); await f.save(configuration()); await f.bind('own-cpa');
   for (const kind of ['gpt-image-2','qwen-image','seedream-lite','gpt-6.1-sol']) assert.equal((await f.generate(payload('test'), 'workspace-a', kind)).status, 503, kind);
-  for (const change of [{ size: '1536x1024' }, { quality: 'high' }, { outputFormat: 'jpeg' }, { model: 'gpt-image-1' }, { studioModelId: 'qwen-image' },
+  for (const change of [{ size: '1025x1024' }, {size:'1536x1024'}, {quality:'high'}, {quality:'medium'}, {outputFormat:'jpeg'}, {outputFormat:'webp'}, {aspectRatio:'8:1'}, { quality: 'max' }, { outputFormat: 'gif' }, { model: 'gpt-image-1' }, { studioModelId: 'qwen-image' },
     { n: 2 }, { imageUrls: ['http://untrusted.invalid/ref.png'] }, { prompt: '' }, { arbitrary: true }]) {
     assert.equal((await f.generate({ ...payload('test'), ...change })).status, 400, JSON.stringify(change));
   }
@@ -139,6 +139,32 @@ test('No implicit model remapping, unsupported parameters, or missing workspace 
   assert.equal(f.requests.length, 0); assert.equal((await f.service.dispatch('generator/listTasks')).total, 0);
   const global = await f.generate(payload('Explicit global'), ''); assert.equal(global.status, 200); const task = await f.terminal(global.body.taskId);
   assert.equal(task.status, 'completed'); assert.equal(task.workspaceKey, undefined); assert.equal((await f.dispatch('GET', '/tasks', { scope: '' })).body.total, 1);
+});
+
+test('All four CPA request routes submit account defaults and explicit framing while preserving the original prompt/history', async t => {
+  const f=await fixture(t), config=configuration(); await f.save(config); await f.bind(config.id);
+  const before=fs.readFileSync(path.join(f.directory,'providers.json'));
+  const rows=Object.values(require('../../src/core/binary/out/gamecowork-cpa-image-models.js').CPA_IMAGE_MODELS);
+  const settings=['auto','3:2','2:3','16:9'];
+  const created=[];
+  for(let i=0;i<rows.length;i++) {
+    const row=rows[i],aspectRatio=settings[i],input={prompt:'Own '+row.model,model:row.model,size:'auto',quality:'auto',outputFormat:'png',studioModelId:row.id,aspectRatio};
+    const response=await f.generate(input,'workspace-a',row.id);assert.equal(response.status,200);const task=await f.terminal(response.body.taskId);assert.equal(task.status,'completed');created.push(task.id);
+    assert.deepEqual(f.requests.at(-1).body,{model:row.model,prompt:require('../../src/core/binary/out/gamecowork-cpa-image-models.js').cpaImageRequestPrompt(input),n:1,size:'auto',quality:'auto',output_format:'png'});
+    const result=await f.dispatch('GET','/generation-history/task/'+task.id);assert.equal(result.body.type,row.id);assert.equal(result.body.name,row.name);assert.deepEqual(result.body.input.data,input);
+    assert.equal(result.body.output.data.artifacts[0].width,4);assert.equal((await f.dispatch('GET','/generation-history/task/'+task.id,{scope:'workspace-b'})).status,404);
+  }
+  assert.deepEqual(fs.readFileSync(path.join(f.directory,'providers.json')),before);
+  await f.restart();for(const taskId of created)assert.equal((await f.dispatch('GET','/task/'+taskId+'/status')).body.status,'completed');
+  assert.equal(f.requests.length,4);assert.deepEqual(fs.readFileSync(path.join(f.directory,'providers.json')),before);
+});
+
+test('A per-model CPA unbind remains disabled after restart while other inherited choices stay available',async t=>{
+  const f=await fixture(t);await f.save(configuration());await f.bind('own-cpa');
+  const newer='cpa-gpt-image-2-5';assert.equal((await f.dispatch('PUT','/local/model-bindings/'+newer,{body:{providerId:null}})).status,200);
+  await f.restart();const models=(await f.session()).body.capabilities.models;assert.equal(Object.hasOwn(models,newer),false);assert.ok(models[modelId]);assert.ok(models['cpa-gpt-image-2-5-flare']);
+  const data={...payload('Own draft'),model:'gpt-image-2.5',studioModelId:newer};assert.equal((await f.generate(data,'workspace-a',newer)).status,503);assert.equal(f.requests.length,0);
+  assert.equal((await f.dispatch('PUT','/local/model-bindings/'+newer,{body:{providerId:'own-cpa'}})).status,200);assert.ok((await f.session()).body.capabilities.models[newer]);
 });
 
 test('Insecure LAN requires explicit authorization and an RFC1918 dotted-decimal literal', async t => {
