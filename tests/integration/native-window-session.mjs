@@ -9,7 +9,7 @@ import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),exec=promisify(execFile);
-const packaged=process.argv.includes('--packaged'),base=path.resolve(repo,'../../temp/GameCowork/tests');
+const packaged=process.argv.includes('--packaged'),base=path.resolve(repo,'codelyreversebackup/work/tests');
 const at=process.argv.indexOf('--output'),run=path.resolve(at<0?path.join(base,'native-window-'+randomUUID()):process.argv[at+1]);
 assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));
 assert.ok(!fs.existsSync(run),'Use a fresh native-window fixture directory');

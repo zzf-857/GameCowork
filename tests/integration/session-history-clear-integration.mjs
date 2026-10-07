@@ -10,7 +10,7 @@ import {fileURLToPath} from 'node:url';
 import {startMockProvider} from '../fixtures/mock-provider.mjs';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2),exec=promisify(execFile);
 const option=(name,fallback)=>args.includes(name)?args[args.indexOf(name)+1]:fallback;
-const temp=path.resolve(repo,'../../temp/GameCowork'),run=path.resolve(option('--output',path.join(temp,'session-history-clear-'+randomUUID())));
+const temp=path.resolve(repo,'codelyreversebackup/work'),run=path.resolve(option('--output',path.join(temp,'session-history-clear-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep));assert.ok(!fs.existsSync(run));fs.mkdirSync(run,{recursive:true});
 const agent=path.resolve(option('--agent',path.join(temp,'cli-phase6-guarded-20261001-03/gamecowork.exe'))),agentRoot=path.dirname(agent);
 const binary=path.resolve(option('--binary',path.join(repo,'src/shell/target/debug/GameCowork.exe'))),core=path.join(repo,'src/core/binary/out');

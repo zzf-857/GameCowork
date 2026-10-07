@@ -458,7 +458,7 @@ async fn main() {
         .parent()
         .unwrap()
         .to_path_buf();
-    let allowed = PathBuf::from("F:/AI/AgentMake/temp/GameCowork/tests")
+    let allowed = PathBuf::from("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests")
         .canonicalize()
         .unwrap();
     assert!(task_root.starts_with(&allowed));

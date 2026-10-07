@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const read=file=>fs.readFileSync(new URL('../../'+file,import.meta.url),'utf8');
-const mutation=read('src/editor-bridge/Editor/EditorSceneMutations.cs'),queries=read('src/editor-bridge/Editor/EditorSceneQueries.cs');
+const mutation=read('src/editor-bridge/Editor/Operations/EditorSceneMutations.cs'),queries=read('src/editor-bridge/Editor/Queries/EditorSceneQueries.cs');
 test('Mutation dispatch remains limited and the separate actual read-only entry rejects write actions',()=>{
  assert.match(mutation,/command == "manage_gameobject" && \(action == "create" \|\| action == "modify"\) \|\| command == "manage_scene" && action == "save"/);
  assert.match(queries,/if \(action != "get_hierarchy"\) throw new NotSupportedException/);

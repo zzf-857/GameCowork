@@ -3,10 +3,10 @@
 // No original application, real account or commercial Provider is contacted.
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
-const {createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js');
-const {createCodelyGeneratorApi}=require('../../src/core/binary/out/gamecowork-codely-generator.js');
-const catalog=require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
-const root=path.join('F:/AI/AgentMake/temp/GameCowork/tests','official-known-resume-'+crypto.randomUUID()),scope='owned-workspace',binding='b'.repeat(64),otherBinding='c'.repeat(64);
+const {createAssetService}=require('../../src/core/binary/out/modules/generation/service.js');
+const {createCodelyGeneratorApi}=require('../../src/core/binary/out/modules/generation/codely-api.js');
+const catalog=require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
+const root=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','official-known-resume-'+crypto.randomUUID()),scope='owned-workspace',binding='b'.repeat(64),otherBinding='c'.repeat(64);
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 let media;
 test.before(async()=>{

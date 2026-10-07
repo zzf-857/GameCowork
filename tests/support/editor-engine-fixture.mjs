@@ -16,7 +16,7 @@ export function readEditorIdentity(editor) {
 export function prepareEngineFixture({repo,project,templateProject,bridgePackage,identity,engine=identity.engine,version=identity.version}) {
   assert.equal(engine,identity.engine,'Requested fixture engine must match installed executable product');
   assert.equal(version,identity.version,'Requested fixture version must match installed executable metadata');
-  const temp=path.resolve(repo,'../../temp/GameCowork');
+  const temp=path.resolve(repo,'codelyreversebackup/work');
   const inside=value=>path.resolve(value).toLowerCase().startsWith(temp.toLowerCase()+path.sep);
   assert.ok(inside(project),'Fixture output must stay in own temp');
   const sceneExtension=engine==='tuanjie'?'.scene':'.unity';

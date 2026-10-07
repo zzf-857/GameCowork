@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {createHash} = require('node:crypto');
-const {inspectAudioMedia} = require('../../src/core/binary/out/gamecowork-audio-media.js');
+const {inspectAudioMedia} = require('../../src/core/binary/out/modules/media/audio.js');
 const fixture = require('../fixtures/codely-audio-media.json');
 const source = name => Buffer.from(fixture.files[name].base64, 'base64');
 

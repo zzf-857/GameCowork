@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline';
 import assert from 'node:assert/strict';
 const root=path.resolve(process.env.GAMECOWORK_STDIO_MCP_FIXTURE_ROOT||'');
-const owned=path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const owned=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 assert.ok(root.toLowerCase().startsWith(owned.toLowerCase()+path.sep),'MCP fixture needs its own temp root');
 assert.ok(fs.statSync(root).isDirectory());
 const log=path.join(root,'stdio-mcp-events.jsonl');

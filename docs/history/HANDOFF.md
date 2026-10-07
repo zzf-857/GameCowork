@@ -1,10 +1,14 @@
+> 2026-10-07 接续：先读[当前聊天模型菜单与权限验收](../../RESTORE_STATUS.md#chat-model-menu-20261007)和[官方失败项复测结果](../../RESTORE_STATUS.md#official-retest-3000-20261007)。源码分类见[架构迁移表](../architecture/overview.md#旧目录迁移表)，活动状态只维护在 RESTORE_STATUS；下方旧交接、计数及暂停预算均保留当时事实，不作为当前结论。
+
+> 2026-10-06 接续：源码、工具与文档已按功能分类，路径见 [架构迁移表](../architecture/overview.md#旧目录迁移表)，本轮验证及重新核实的缺口见 [当前状态](../../RESTORE_STATUS.md#organization-20261006)。临时产物与备份统一放在 `codelyreversebackup/work/`。下方既有交接与服务预算保留当时事实。
+
 # GameCowork 交接导读（2026-10-04）
 
 本文仅作接续工作的导读，**功能状态、证据与包来源统一维护在 RESTORE_STATUS**。源码接线、隔离 fixture、本人真实服务操作和装配交付分别核对；下方2026-10-01历史正文不改写。
 
 1. 先读 [XCAI与Provider最新状态](../../RESTORE_STATUS.md#xcai-custom-provider-20261004)、[CPA三按钮](../../RESTORE_STATUS.md#cpa-variant-buttons-20261003)、[官方四分类](../../RESTORE_STATUS.md#official-all-models-20261003) 和 [后续详细plan](../../RESTORE_STATUS.md#handoff-plan)。日常入口仍为app/启动GameCowork.bat；本轮完整-RealCore -Chat门禁exit0/Rust160，首次旧VM测试适配失败记录保留；最终候选和正式app均1566运行文件/1562映射零差异，双代Provider Manager各48项已验。本人11任务/6缓存的正式包只读snapshot恢复15项已验、原源SHA不变，早8条缺省executionPrompt不补写；正式app10月4日01:19已正常重开，3模型及密钥配置就绪，无新GEN/infer。后续下拉主题两代8项、合并错误分类候选双代48及CPA兼容专项已验，1111前端SHA一致，最新主题/分类增量10月4日01:41:11原位安装、01:41:51重开，正式1566运行文件/1562映射零差、密钥/3模型/窗口/HTTP就绪留运行；此前完整门禁在增量前通过，不虚称又跑全套，窗口句柄不作Wry像素验收。用户后来自行两次Sunburst失败另记，不属Agent11预算，旧collectdata错误类别不能反推，主体已交付事实保留。
-2. 阅读 [项目规范](../../AGENTS.md)、[架构](../ARCHITECTURE.md)与[开发指南](../DEVELOPMENT.md)。只维护src/、两代前端与两份Core入口；用tools/build-local.ps1更新app，保留全部WIP，不创建第二份源码、不复制原EXE、不执行原软件或读取原凭据。
-3. 新Provider入口是gamecowork-provider-registry.js、gamecowork-provider-catalog.js、gamecowork-provider-vault.js和codely-generator/provider-manager.js。管理/选择/GET目录与模型稳定身份已接线，完整分页失败不能发布部分目录。OpenAI Images与显式REST任务可执行；Chat/Responses/Ollama/ComfyUI目前仅配置和目录，执行未接入须明确显示。ComfyUI保存API graph与node/input映射，不安装、运行脚本或全局中断。
+2. 阅读 [项目规范](../../AGENTS.md)、[架构](../architecture/overview.md)与[开发指南](../development/guide.md)。只维护src/、两代前端与两份Core入口；用tools/build-local.ps1更新app，保留全部WIP，不创建第二份源码、不复制原EXE、不执行原软件或读取原凭据。
+3. 新Provider入口是src/core/binary/out/modules/providers/registry.js、src/core/binary/out/modules/providers/catalog.js、src/core/binary/out/modules/providers/vault.js和codely-generator/provider-manager.js。管理/选择/GET目录与模型稳定身份已接线，完整分页失败不能发布部分目录。OpenAI Images与显式REST任务可执行；Chat/Responses/Ollama/ComfyUI目前仅配置和目录，执行未接入须明确显示。ComfyUI保存API graph与node/input映射，不安装、运行脚本或全局中断。
 4. 新Provider密钥采用DPAPI CurrentUser和不可变凭据版本/原子引用，公开DTO仅显示已配置；旧CPA自身AES保存不混称DPAPI，不迁移其密钥或复制旧聊天明文配置。逐模型能力分开状态和unknown/documented/tested/manual证据，公开手动声明强制manual；未知质量、尺寸与独立超分不开可用按钮。
 5. XCAI当前Key完整目录只有Image 2、Flare、Sunburst三个确切ID。首轮8次串行已结束5个产物/3失败，实际成功图均1254×1254 PNG；第一回包size=1024×1024与文件不同，其余四成功无可用服务规格字段。HTTP200无合法outputs仍算失败，quality只标服务报告，独立超分和实际模型身份未确认。不要把站面SESSION upscale分组或上游stock版本源码当成此Key已确认路由。
 6. 用户追加3次串行场景测试已结束1产物/2次HTTP502：Flare幻想港口实际1536×1024，风景与成年女性游侠插画失败；两轮总11次6产物/5失败，预算已用完。该联合提示要求组合不证明任意尺寸、纯API参数单独有效或超分。resolutionHint/aspectRatioHint只编入服务端executionPrompt，保留用户prompt与摘要，历史再生不能重复追加；不承诺像素/比例。旧CPA8次与本轮XCAI8次和追加3次分别计数，不自动重发、不高并发、不扩大到官方生成/编程；上轮官方3198/3200是10月3日当时观测，不表示10月4日余额。
@@ -24,7 +28,7 @@
 
 # GameCowork 项目交接
 
-> 历史交接：正文保留当时的源码路径、包状态和任务判断。当前开发入口见 [开发指南](../DEVELOPMENT.md)，路径对应见 [迁移表](../ARCHITECTURE.md#旧目录迁移表)。不要把下文的暂停或验收记录当作最新状态。
+> 历史交接：正文保留当时的源码路径、包状态和任务判断。当前开发入口见 [开发指南](../development/guide.md)，路径对应见 [迁移表](../architecture/overview.md#旧目录迁移表)。不要把下文的暂停或验收记录当作最新状态。
 
 交接日期：2026-10-01。用户要求本轮暂时收尾，持续完善任务已暂停；没有开展新的团结运行、远程或 Provider 实现。
 
@@ -44,7 +48,7 @@ GameCowork 是用户参考 Tuanjie Cowork 制作的 Windows 本地桌面产品�
 |---|---|
 | restored/shell/ | 当前实际 Rust 宿主；main.rs 是路由与装配入口，transport/workspaces/files/mutations/file_events/terminals/editor_bridge/stream_layout/project_templates/insight/process_lifetime 是实际模块 |
 | restored/frontend/dist-beautified/ | 当前前端维护输入，虽然含 dist 名称仍是本项目源码；保留两代 chunk，修改共用逻辑时必须同步 |
-| restored/core-gamecowork-binary/binary/out/index.js、index.beautified.js | 实际 Core 与对应可读版本；修改同一业务逻辑必须两份同步；gamecowork-custom.js 是本地能力管理补充模块 |
+| restored/core-gamecowork-binary/binary/out/index.js、index.beautified.js | 实际 Core 与对应可读版本；修改同一业务逻辑必须两份同步；src/core/binary/out/modules/custom/service.js 是本地能力管理补充模块 |
 | restored/cli-gamecowork/cli-main.beautified.js、resources/ | 自有 Agent 的维护入口与配套资源，补 CommonJS 工厂调用后自编译 |
 | restored/cli-unity-insight/ | 本地索引 worker、启动/权限适配与 parser 资源；版本、来源和许可证记录在 resources/restore-manifest.json |
 | restored/editor-bridge/ | 自有 Editor-only UPM cn.gamecowork.bridge，不是原版桥的改名二进制 |
@@ -53,7 +57,7 @@ GameCowork 是用户参考 Tuanjie Cowork 制作的 Windows 本地桌面产品�
 | original/ 与外部参考安装目录 | 只读；不改源码、不运行原 CLI、不借用账号、Hub 写入或许可客户端 |
 | F:/AI/AgentMake/temp/GameCowork/ | 测试工程、日志、截图、CLI guard、依赖缓存与构建备份；保留复核证据，不作为第二个正式安装 |
 
-日常入口：[app/启动GameCowork.bat](../../app/启动GameCowork.bat)，主程序为 app/GameCowork.exe。
+日常入口：`app/启动GameCowork.bat`，主程序为 `app/GameCowork.exe`（本地装配产物，不在源码仓库内）。
 
 收尾机器工具版本：PowerShell、Node v24.18.0、rustc/cargo 1.95.0、Bun 1.3.11；运行时还需要 WebView2、项目准备好的 Node/SQLite binding 与 CLI/parser 资源。依赖和缓存不通过修改 node_modules 或原安装目录修复。
 
@@ -136,7 +140,7 @@ F:/AI/AgentMake/temp/GameCowork/build/94147966bf0e4c2881dff959c2f22a09
 | Git | 主 index 的 k2/jd/Q2/U2/qR/XR/JR/YR | 分支/变更列表及操作 UI、已有仓库发现 | getBranch/getGitBranches/getChangedFiles/applyGitFileAction/switchGitBranch/getFileAtHead/getFileAtIndex 的宿主链路与隔离仓库测试 |
 | LSP | 主 index 的 PR/DR/OR、RightSideBar 的 gamecoworkLspReady、Core lsp/* | hover、定义、引用界面与 ACP 转发 | Server 安装/启动、通信、文档同步及关闭回收；当前前端明确未接入 |
 | 模型配置、设置与原生窗口 | VscTheme 的 Udn/Fdn/Idn、acp/modelProfiles；cd/idn/Hdn；index-DG7m4Xaq.js 窗口按钮 | 自有模型表单/角色选择、导航/主题/快捷键说明、已有窗口 HTTP fallback | 商业协议与认证；账号/套餐/远程等服务；原生 Wry 几何和操作专项验证 |
-| Skills/Extensions/MCP | 主 index 的 cd、VscTheme 创建/编辑对话框、Core custom/* 与 gamecowork-custom.js | 已验的原入口和限定目录创建/编辑/安装；无需重新画 UI | 任意 stdio MCP、外部市场来源与 Provider 专项适配 |
+| Skills/Extensions/MCP | 主 index 的 cd、VscTheme 创建/编辑对话框、Core custom/* 与 src/core/binary/out/modules/custom/service.js | 已验的原入口和限定目录创建/编辑/安装；无需重新画 UI | 任意 stdio MCP、外部市场来源与 Provider 专项适配 |
 | Commands/Subagents | VscTheme 的 rNt/Gcn，Core commands/*/subagents/* | 枚举、启停与对话框代码 | 新建仍走通用 writeFile；需限定目录创建/全局编辑接口、真实生效与重启验证；未包含自定义22项 |
 | 资产生成与首次引导 | 主 index 的 gamecoworkAssetPending、gamecoworkCapabilityStatus/IntroductionImage；GenerationDetailDialog/GenerationModelViewer/GenerationSkyboxViewer | 已有入口、任务/预览组件和当前准确 pending/capability 提示 | 自有图片/视频/3D Provider、任务/结果/下载服务；原官方 iframe 已门控，不是自己的后端 |
 | 本地索引与资源解析 | cli-unity-insight/bundle 的 indexBuildWorker/indexSyncWorker/sqliteQueryWorker，加自有 worker-entry/guard/paths 与 shell/insight.rs | 已恢复且真实运行的 parser、SQLite、GUID/调用关系、watch 与 GUI 查询；继续沿用当前隔离适配 | 大工程和更多类型；不要退回原 worker 的用户目录/metrics 路径 |

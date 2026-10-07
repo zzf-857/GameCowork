@@ -1,6 +1,6 @@
 # 初期提取记录（历史）
 
-> 从原 README 迁出，保留初期提取结论与路径语境。下面的命令、架构和隔离推断不作为当前运行指南；当前入口见 [开发指南](../DEVELOPMENT.md)，旧路径见 [迁移表](../ARCHITECTURE.md#旧目录迁移表)，活动状态见 [RESTORE_STATUS.md](../../RESTORE_STATUS.md)。
+> 从原 README 迁出，保留初期提取结论与路径语境。下面的命令、架构和隔离推断不作为当前运行指南；当前入口见 [开发指南](../development/guide.md)，旧路径见 [迁移表](../architecture/overview.md#旧目录迁移表)，活动状态见 [RESTORE_STATUS.md](../../RESTORE_STATUS.md)。
 
 以下是历史提取记录，其中覆盖率指提取文件数量；涉及运行能力的旧结论以当前状态与测试为准。
 
@@ -12,9 +12,9 @@
 ## codely → GameCowork 重命名与本机隔离（2026-09-30）
 
 应用户要求，工程内 codely 系命名已全部改为 GameCowork（13,500+ 处，82+ 文件，脚本
-[tools/rename-codely.py](../../tools/research/rename-codely.py) 可复跑）。同日完成**深度隔离**（第二轮，
-[tools/isolate-gamecowork.py](../../tools/research/isolate-gamecowork.py)）：外部契约标识全部分叉。
-打包要求与装配红线见 **[PACKAGING.md](../PACKAGING.md)**。
+[tools/rename-codely.py](../../tools/research/migration/rename-codely.py) 可复跑）。同日完成**深度隔离**（第二轮，
+[tools/isolate-gamecowork.py](../../tools/research/migration/isolate-gamecowork.py)）：外部契约标识全部分叉。
+打包要求与装配红线见 **[PACKAGING.md](../development/packaging.md)**。
 
 ### 映射表
 

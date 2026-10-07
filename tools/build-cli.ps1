@@ -2,18 +2,18 @@
 param([string]$OutputDirectory, [string]$GuardFile)
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$tempRoot = [IO.Path]::GetFullPath('F:\AI\AgentMake\temp\GameCowork')
+$tempRoot = [IO.Path]::GetFullPath('F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work')
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $tempRoot ('cli-build-' + [guid]::NewGuid()) }
 $outputRoot = [IO.Path]::GetFullPath($OutputDirectory)
 if (-not $outputRoot.StartsWith($tempRoot.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)) { throw 'CLI build output must be inside the dedicated GameCowork temporary area.' }
 if (Test-Path -LiteralPath $outputRoot) { throw 'Use a fresh CLI build output directory; existing output is preserved.' }
 $source = Join-Path $projectRoot 'src\agent\cli-main.beautified.js'
 $resources = Join-Path $projectRoot 'src\agent\resources'
-if (-not (Test-Path -LiteralPath (Join-Path $resources 'restore-manifest.json'))) { throw 'Run tools/extract-cli-text-assets.mjs first or restore the checked-in resources.' }
+if (-not (Test-Path -LiteralPath (Join-Path $resources 'restore-manifest.json'))) { throw 'Run tools/resources/extract-agent-text.mjs first or restore the checked-in resources.' }
 $bunCommand = Get-Command bun -ErrorAction Stop
 New-Item -ItemType Directory -Path $outputRoot | Out-Null
 $entry = Join-Path $outputRoot 'cli-entry.cjs'
-& node (Join-Path $PSScriptRoot 'restore-cli-entry.mjs') --source $source --output $entry
+& node (Join-Path $PSScriptRoot 'resources/restore-agent-entry.mjs') --source $source --output $entry
 if ($LASTEXITCODE -ne 0) { throw 'CLI entry restoration failed.' }
 if ($GuardFile) {
     $guardPath = [IO.Path]::GetFullPath($GuardFile)

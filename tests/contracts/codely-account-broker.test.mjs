@@ -10,7 +10,7 @@ import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const account = require("../../src/core/binary/out/gamecowork-codely-account.js");
+const account = require("../../src/core/binary/out/modules/account/broker.js");
 
 const FIXTURE_ORIGIN = "http://127.0.0.1:8641";
 const REAL_ACCESS = "real-access-token-XYZ";
@@ -20,7 +20,7 @@ const REQUEST_TOKEN = "auth-request-token-SECRET-1";
 const USER_CODE = "WDVX-MJTV";
 
 function tempRoot() {
-  const root = "F:/AI/AgentMake/temp/GameCowork/codely-account-contract-" + randomUUID();
+  const root = "F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/codely-account-contract-" + randomUUID();
   fs.mkdirSync(root, { recursive: true });
   return root;
 }
@@ -134,6 +134,29 @@ test("Broker refuses to start without an injected vault, fetch or absolute root"
     account.createCodelyAccountBroker({ root, vault: testVault(), fetch: fixtureFetch(), baseUrl: "http://evil.example" }),
     /official|loopback/i,
   );
+});
+
+async function modelMenuBroker(menuResponse) {
+  const clock=new Clock(),root=path.resolve('codelyreversebackup/work/2026-10-07-chat-model-menu/broker-menu-'+randomUUID());fs.mkdirSync(root,{recursive:true});
+  const original=fixtureFetch({
+    '/auth/device/initiate':defaultInitiate,'/auth/device/poll':{status:'authorized',authorization_code:AUTH_CODE},'/auth/device/exchange':{access_token:REAL_ACCESS,refresh_token:REAL_REFRESH,expires_in:3600},'/auth/external/me':{id:41001,username:'owned-menu-account'},
+    '/api/teams':{teams:[{team_id:'owned-team-a',is_current:true},{team_id:'owned-team-b'}],current_team_id:'owned-team-a'},'/api/teams/switch':{switched:true},
+  });
+  const calls=[];const fetcher=async(url,init)=>{calls.push({path:new URL(url).pathname,url,init});if(new URL(url).pathname==='/api/config/v3')return menuResponse(url,init);return original(url,init);};
+  const broker=await account.createCodelyAccountBroker(brokerOptions(fetcher,{clock,root}));await broker.start();assert.equal((await broker.poll()).status,'completed');return{broker,calls};
+}
+test('Original config-v3 content facade returns keyless safe native metadata with exact version/team/client headers',async()=>{
+  const {broker,calls}=await modelMenuBroker((url,init)=>{const target=new URL(url);assert.equal(target.searchParams.get('version'),'2.1.3-canary.2');assert.equal(target.searchParams.get('teamId'),'owned-team-a');assert.equal(init.headers['X-User-Agent'],'codely-desktop/2.1.3-canary.2');return fixtureResponse({content:JSON.stringify({models:[{name:'Basic',model:'owned-basic',roles:['chat'],rate:.1,apiKey:REAL_ACCESS,description:REAL_ACCESS}]})});});
+  const menu=await broker.getModelMenuConfig({selectedOrgId:'owned-team-a',clientVersion:'2.1.3-canary.2',ideType:'gamecowork-desktop',parseConfig:JSON.parse});assert.equal(menu.source,'original-config-v3');assert.equal(menu.models[0].name,'Basic');assert.equal(menu.models[0].rate,.1);assert.equal(menu.models[1].disabled,true);assertNoSecrets(menu,'native menu metadata');assert.equal(broker.isModelMenuBindingCurrent(menu.binding,'owned-team-a'),true);assert.equal(calls.some(row=>row.path.includes('cli-api-key')||row.path==='/v1/models'),false);await broker.logout();
+});
+test('A same-account team switch and switch-back cannot rebind a held old metadata response',async()=>{
+  let release,entered;const started=new Promise(resolve=>entered=resolve),held=new Promise(resolve=>release=resolve);
+  const {broker}=await modelMenuBroker(async()=>{entered();await held;return fixtureResponse({content:{models:[{name:'Basic',model:'owned-basic',roles:['chat']}]}});});
+  const pending=broker.getModelMenuConfig({selectedOrgId:'owned-team-a',clientVersion:'2.1.3-canary.2',ideType:'gamecowork-desktop',parseConfig:JSON.parse});pending.catch(()=>{});await started;await broker.switchTeamRaw('owned-team-b');await broker.switchTeamRaw('owned-team-a');release();await assert.rejects(pending,/context changed|cancel|superseded/i);await broker.logout();
+});
+test('Model metadata stops a response stream at the 2MiB bound before parsing or publishing',async()=>{
+  let cancelled=false;const {broker}=await modelMenuBroker(()=>new Response(new ReadableStream({start(controller){controller.enqueue(new Uint8Array(2*1024*1024+1));},cancel(){cancelled=true;}}),{headers:{'Content-Type':'application/json'}}));
+  await assert.rejects(broker.getModelMenuConfig({selectedOrgId:'owned-team-a',clientVersion:'2.1.3-canary.2',ideType:'gamecowork-desktop',parseConfig:JSON.parse}),/exceeds its bound/);assert.equal(cancelled,true);await broker.logout();
 });
 
 test("Device login lifecycle: initiate, pending, slow_down, authorized, exchange, identity", async () => {

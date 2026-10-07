@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const catalog = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
-const { reconcile, MATCH_WINDOW_MS, CLOCK_SKEW_MS } = require('../../src/core/binary/out/gamecowork-official-task-reconciliation.js');
+const catalog = require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
+const { reconcile, MATCH_WINDOW_MS, CLOCK_SKEW_MS } = require('../../src/core/binary/out/modules/generation/official-task-reconciliation.js');
 const created = '2026-10-03T17:31:02.123Z', milliseconds = Date.parse(created);
 const references = { images: ['http://127.0.0.1:43000/owned/input.png'], videos: ['http://127.0.0.1:43000/owned/input.mp4'], audios: ['http://127.0.0.1:43000/owned/input.wav'], models: ['http://127.0.0.1:43000/owned/input.glb'] };
 const clone = value => JSON.parse(JSON.stringify(value));

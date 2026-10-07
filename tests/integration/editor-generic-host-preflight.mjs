@@ -7,7 +7,7 @@ import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {readEditorIdentity,prepareEngineFixture} from '../support/editor-engine-fixture.mjs';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2),option=(key,fallback)=>args.includes(key)?args[args.indexOf(key)+1]:fallback,exec=promisify(execFile);
-const run=path.resolve(option('--output','F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-generic-preflight-'+randomUUID())),project=path.join(run,'project');
+const run=path.resolve(option('--output','F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-generic-preflight-'+randomUUID())),project=path.join(run,'project');
 assert.ok(run.replaceAll('\\','/').toLowerCase().startsWith('f:/ai/agentmake/temp/gamecowork/tests/editor-bridge-generic-'));assert.equal(fs.existsSync(project),false);
 const editor=option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'),identity=readEditorIdentity(editor);
 prepareEngineFixture({repo,project,bridgePackage:path.join(repo,'src/editor-bridge'),identity});

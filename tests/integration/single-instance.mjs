@@ -13,7 +13,7 @@ const repo=fileURLToPath(new URL('../../',import.meta.url)),exec=promisify(execF
 const binaryArg=process.argv.indexOf('--binary');
 const binary=path.resolve(binaryArg<0?path.join(repo,'src/shell/target/debug/GameCowork.exe'):process.argv[binaryArg+1]);
 const native=process.argv.includes('--native');
-const run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','single-instance-'+randomUUID());
+const run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','single-instance-'+randomUUID());
 fs.mkdirSync(run,{recursive:true});
 const owned=new Set(),checks=[];let completed=false;
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));

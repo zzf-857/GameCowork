@@ -16,7 +16,7 @@ import os from "node:os";
 const exec=promisify(execFile),root=fileURLToPath(new URL("../../",import.meta.url));
 const index=process.argv.indexOf("--binary");
 const binary=path.resolve(index>=0?process.argv[index+1]:path.join(root,"src/shell/target/debug/GameCowork.exe"));
-const runDir=path.join("F:/AI/AgentMake/temp/GameCowork/tests",`terminal-e2e-${randomUUID()}`);
+const runDir=path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests",`terminal-e2e-${randomUUID()}`);
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const alive=pid=>{try{process.kill(pid,0);return true;}catch(error){if(error.code==="ESRCH")return false;throw error;}};
 const normalize=value=>String(value).replace(/\\/g,"/").replace(/^\/\/\?\//,"").replace(/\/+$/,"").toLowerCase();

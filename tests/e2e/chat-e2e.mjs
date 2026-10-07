@@ -11,8 +11,9 @@ import { startMockProvider } from "../fixtures/mock-provider.mjs";
 
 const project = fileURLToPath(new URL("../../", import.meta.url));
 const args = process.argv.slice(2);
+const previous = args.includes("--previous"), harness = args.includes("--harness");
 function option(name, fallback) { const index = args.indexOf(name); return index < 0 ? fallback : args[index + 1]; }
-const base = path.resolve(project, "../../temp/GameCowork");
+const base = path.resolve(project, "codelyreversebackup/work");
 const root = path.resolve(option("--output", path.join(base, "chat-e2e-" + randomUUID())));
 assert.ok(root.toLowerCase().startsWith(base.toLowerCase() + path.sep), "Chat fixtures must stay under temp/GameCowork");
 const packaged = args.includes("--packaged");
@@ -102,7 +103,8 @@ async function launch() {
     GAMECOWORK_CLI_PROBE_SOURCE: agentSource,
     CUSTOM_AUTH: "1",
     BUN_RUNTIME_TRANSPILER_CACHE_PATH: path.join(root, "bun-cache"),
-    NODE_OPTIONS: "--require " + JSON.stringify(path.join(project, "tests/fixtures/chat-core-guard.cjs")),
+    ...(harness ? { GAMECOWORK_HARNESS_CORE_SHA: createHash("sha256").update(fs.readFileSync(path.join(coreDir, "index.js"))).digest("hex") } : {}),
+    NODE_OPTIONS: "--require " + JSON.stringify(path.join(project, harness ? "tests/fixtures/core-chat-harness-guard.cjs" : "tests/fixtures/chat-core-guard.cjs")),
   };
   shell = spawn(binary, [], { cwd: root, env, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
   return new Promise((resolve, reject) => {
@@ -158,6 +160,8 @@ async function startBrowser(profile) {
     if (url.hostname === "127.0.0.1" || ["data:", "blob:"].includes(url.protocol)) return route.continue();
     blocked.push(url.origin); return route.abort("blockedbyclient");
   });
+  if (previous) await context.route("**/gui.html*", route => route.fulfill({ contentType: "text/html", body: fs.readFileSync(path.join(frontendDir, "gui.html"), "utf8")
+    .replaceAll("index-BRxZ4eG7.js", "index-DvRYaIVa.js").replaceAll("VscTheme-BExNMG_K.js", "VscTheme-B-CSeuv5.js").replaceAll("store-c6kNGz30.js", "store-0rGrUshb.js") }));
   await context.addInitScript(() => { window.GAMECOWORK_SHELL = true; window.workspacePaths = []; window.vscMediaUrl = ""; });
   page = context.pages()[0] || await context.newPage();
   page.on("pageerror", (error) => browserErrors.push(error.stack || String(error)));
@@ -206,8 +210,8 @@ async function snapshot(name) {
   await page.screenshot({ path: path.join(root, name + ".png"), fullPage: true, animations: "disabled" });
 }
 async function state() {
-  return gui.evaluate(async () => {
-    const { s: store } = await import("/assets/store-c6kNGz30.js");
+  return gui.evaluate(async previous => {
+    const { s: store } = await import(previous ? "/assets/store-0rGrUshb.js" : "/assets/store-c6kNGz30.js");
     const value = store.getState();
     const session = value.session.sessions[value.session.activeSessionId];
     function text(content) { return typeof content === "string" ? content : Array.isArray(content) ? content.map((item) => item.text || "").join("") : ""; }
@@ -217,8 +221,9 @@ async function state() {
       models: (value.config.config.modelsByRole?.chat || []).map((model) => model.title),
       historyText: (session?.history || []).map((entry) => text(entry.message?.content)).join("\n"),
       sessionSettings: value.session.sessionSettingsById?.[value.session.activeSessionId],
+      streamError: session?.streamError,
     };
-  });
+  }, previous);
 }
 async function openWorkspaceUI(directory, label) {
   await context.route(/\/api\/tauri\/pick-folder(?:-modal)?$/, (route) => route.fulfill({ contentType: "application/json", body: JSON.stringify({ path: directory, cancelled: false }) }), { times: 1 });
@@ -384,7 +389,32 @@ try {
     const aSession = (await state()).sessionId;
     assert.ok(mock.requests.some((request) => request.scenario === "workspace-a" && request.chunksSent >= 3 && request.completed));
     checks.push("Real GUI -> core -> guarded compiled CLI -> loopback Provider delivers multiple chunks and a final frame");
-    if (option("--until") === "drafts") await verifyDraftRestoreUI(aSession);
+    if (harness) {
+      for (const [marker, expected] of [["REFUSAL", "refused"], ["LIMIT", "token limit"], ["MISSING", "missing final"]]) {
+        await prompt(`GCW_HARNESS_FINAL_${marker}`);
+        await gui.getByRole("heading", { name: "模型响应错误", exact: true }).waitFor({ state: "visible", timeout: 30000 });
+        await poll(async () => !(await state()).isStreaming, "failed actual GUI stream finalized");
+        const failed = await state();
+        assert.ok(failed.streamError?.message.includes(expected), `${marker}: actual failure state retains the final reason`);
+        assert.ok(failed.historyText.includes("Hello fixture"), `${marker}: actual partial Provider text survives the error`);
+        await gui.getByText(`Agent ${marker === "REFUSAL" ? "refused the response (refusal)." : marker === "LIMIT" ? "response reached the output token limit (max_tokens)." : "returned an invalid or missing final response."}`, { exact: true }).last().waitFor({ state: "visible" });
+        checks.push(`${marker}: actual GUI shows the ACP final failure, keeps partial output and stops streaming`);
+        await snapshot(`harness-${marker.toLowerCase()}`);
+        await gui.locator('[data-telemetry-id="dialog_close"]').last().click();
+        await prompt("GCW_E2E_A explicit fixture recovery after final error", "GCW_REPLY_A_COMPLETE", `harness-${marker.toLowerCase()}-recovered`);
+        assert.equal((await state()).streamError, null);
+        checks.push(`${marker}: a subsequent normal actual prompt clears the saved stream error`);
+      }
+      await prompt("GCW_HARNESS_FINAL_CANCELLED");
+      await poll(async () => !(await state()).isStreaming, "Agent-cancelled final reaches actual GUI");
+      assert.equal(await gui.getByRole("heading", { name: "模型响应错误", exact: true }).count(), 0);
+      assert.ok((await state()).historyText.includes("Hello fixture"));
+      checks.push("An Agent-cancelled final keeps partial output and closes actual GUI streaming without an error dialog");
+      await snapshot("harness-agent-cancelled");
+      await prompt("GCW_E2E_A explicit fixture prompt after Agent cancelled final", "GCW_REPLY_A_COMPLETE", "harness-agent-cancelled-resumed");
+      checks.push("Actual GUI accepts the next normal prompt after an Agent-cancelled final");
+    }
+    else if (option("--until") === "drafts") await verifyDraftRestoreUI(aSession);
     else if (option("--until") !== "chat") {
       await prompt("GCW_E2E_SLOW: slow fixture to test cancellation.", undefined);
       await gui.getByText("GCW_SLOW_STARTED", { exact: false }).last().waitFor({ state: "visible" });
@@ -436,7 +466,7 @@ try {
     assert.deepEqual(guardNetworkAttempts(), [], "Owned-mode core/Agent must skip all external services before network access");
     assert.deepEqual([...new Set(blocked)], [], "Owned GUI must not request external resources");
   }
-  console.log(JSON.stringify({ status: "passed", checks, root, packaged, binary, coreDir, frontendDir,
+  console.log(JSON.stringify({ status: "passed", checks, root, packaged, previous, harness, binary, coreDir, frontendDir,
     packagedAgentSourceVerified, browserMode: "headless Chromium against actual HTTP host; native Wry geometry is not exercised", providerRequestCount: mock.requests.length,
     completedChatRequests: mock.requests.filter((request) => request.url === "/v1/chat/completions" && request.completed).length,
     abortedSlowStreams: mock.requests.filter((request) => request.scenario === "slow" && request.aborted).length,
@@ -452,7 +482,7 @@ try {
   fs.writeFileSync(path.join(root, "shell.log"), shellLog);
   fs.writeFileSync(path.join(root, "chat-report.json"), JSON.stringify({ checks, browserErrors, providerRequests: mock.requests,
     blockedExternalOrigins: [...new Set(blocked)], rpcObserved, rpcErrors, agent, agentGuarded: manifest.testGuardIncluded,
-    guardNetworkAttempts: guardNetworkAttempts(), packaged, binary, coreDir, frontendDir, packagedAgentSourceVerified,
+    guardNetworkAttempts: guardNetworkAttempts(), packaged, previous, harness, binary, coreDir, frontendDir, packagedAgentSourceVerified,
     browserMode: "headless Chromium against actual HTTP host; native Wry geometry is not exercised" }, null, 2));
   fs.writeFileSync(path.join(root, "file-report.json"), JSON.stringify({ checks, fileRequests }, null, 2));
 }

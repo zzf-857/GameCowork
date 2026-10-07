@@ -13,9 +13,9 @@ import {startEditorControlProvider} from '../fixtures/editor-control-provider.mj
 
 const repo=fileURLToPath(new URL('../../',import.meta.url)),exec=promisify(execFile);
 function option(name,fallback){const index=process.argv.indexOf(name);return index<0?fallback:process.argv[index+1];}
-const agent=path.resolve(option('--agent','F:/AI/AgentMake/temp/GameCowork/cli-phase6-guarded-20261001-02/gamecowork.exe')),pkg=path.dirname(agent),manifest=JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8'));
+const agent=path.resolve(option('--agent','F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cli-phase6-guarded-20261001-02/gamecowork.exe')),pkg=path.dirname(agent),manifest=JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8'));
 assert.equal(manifest.testGuardIncluded,true);assert.equal(manifest.sourceSha256.toLowerCase(),createHash('sha256').update(fs.readFileSync(path.join(repo,'src/agent/cli-main.beautified.js'))).digest('hex'));
-const run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-bridge-cli-controls-'+randomUUID()),project=path.join(run,'project');
+const run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-bridge-cli-controls-'+randomUUID()),project=path.join(run,'project');
 const editor=option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'),identity=readEditorIdentity(editor);
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),checks=[],findings=[],notifications=[],permissions=[],physicalStates=[],pending=new Map();let unity,cli,provider,sequence=0,stderr='',stdout='',sessionId,failure,currentKey,cancelSent=false,decision='allow';
 const alive=pid=>{try{process.kill(pid,0);return true;}catch(error){if(error.code==='ESRCH')return false;throw error;}};

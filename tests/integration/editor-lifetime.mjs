@@ -23,7 +23,7 @@ async function until(predicate, message) {
 
 test("native host launches an editor that survives shell and core Job termination", { skip: process.platform !== "win32" }, async () => {
   assert.ok(fs.existsSync(binary), `Build the Rust shell first: ${binary}`);
-  const dataDir = path.join("F:/AI/AgentMake/temp/GameCowork/tests", `editor-lifetime-${randomUUID()}`);
+  const dataDir = path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests", `editor-lifetime-${randomUUID()}`);
   const coreDir = path.join(dataDir, "fixture-core");
   const editorDir = path.join(dataDir, "fake-editors");
   fs.mkdirSync(coreDir, { recursive: true }); fs.mkdirSync(editorDir, { recursive: true });

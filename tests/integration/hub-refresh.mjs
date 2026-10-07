@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const repo = fileURLToPath(new URL('../../', import.meta.url));
 const args = process.argv.slice(2);
 const option = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
-const run = path.join('F:/AI/AgentMake/temp/GameCowork/tests', 'hub-refresh-' + randomUUID());
+const run = path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests', 'hub-refresh-' + randomUUID());
 const binary = path.resolve(option('--binary', path.join(repo, 'src/shell/target/debug/GameCowork.exe')));
 const frontend = path.resolve(option('--frontend', path.join(repo, 'src/frontend/bundle')));
 fs.mkdirSync(run, { recursive: true });

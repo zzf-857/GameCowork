@@ -9,7 +9,7 @@ import {randomUUID} from 'node:crypto';
 const args=process.argv.slice(2);const option=name=>args.includes(name)?args[args.indexOf(name)+1]:undefined;
 assert.ok(option('--project')&&option('--package')&&option('--editor-pid'),'Pass --project, --package and --editor-pid from an owned live fixture.');
 const editorProject=fs.realpathSync(option('--project')),pkg=path.resolve(option('--package'));
-const base=fs.realpathSync('F:/AI/AgentMake/temp/GameCowork');
+const base=fs.realpathSync('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 assert.ok(editorProject.toLowerCase().startsWith(base.toLowerCase()+path.sep));
 assert.equal(JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8')).testGuardIncluded,true);
 const editorPid=Number(option('--editor-pid'));assert.ok(Number.isInteger(editorPid)&&editorPid>0);process.kill(editorPid,0);

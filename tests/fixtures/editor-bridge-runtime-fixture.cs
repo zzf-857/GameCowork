@@ -20,7 +20,7 @@ public sealed class GameCoworkBridgeRuntimeFixture : MonoBehaviour
     void OnGUI()
     {
         string root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase)) return;
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase)) return;
         if (Event.current.type == EventType.MouseDown)
             File.WriteAllText(root + "/Temp/game-input.txt", (++mouseEvents).ToString());
         if (Event.current.type == EventType.KeyDown || Event.current.type == EventType.KeyUp)

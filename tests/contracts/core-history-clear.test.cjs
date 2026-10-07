@@ -1,7 +1,7 @@
 // Actual maintained handler/store methods; controlled async ACP/SQLite only.
 // Disk deletion is restricted to this run's own unique temporary directories.
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{randomUUID}=require('node:crypto');
-const directory=path.join('F:/AI/AgentMake/temp/GameCowork/tests','history-clear-'+randomUUID());
+const directory=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','history-clear-'+randomUUID());
 fs.mkdirSync(directory,{recursive:true});
 const core=path.join(__dirname,'../../src/core/binary/out');
 function deferred(){let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return{promise,resolve,reject};}

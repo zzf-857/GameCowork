@@ -6,8 +6,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { randomUUID } from 'node:crypto';
 import { createOwnedGenerationMedia } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js'),{createCodelyGeneratorApi}=require('../../src/core/binary/out/gamecowork-codely-generator.js');
-const root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/codely-media-rebase-'+randomUUID()),store=path.join(root,'runtime'),media=createOwnedGenerationMedia(root),oldOrigin='http://127.0.0.1:41111',newOrigin='http://127.0.0.1:42222';
+const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/modules/generation/service.js'),{createCodelyGeneratorApi}=require('../../src/core/binary/out/modules/generation/codely-api.js');
+const root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/codely-media-rebase-'+randomUUID()),store=path.join(root,'runtime'),media=createOwnedGenerationMedia(root),oldOrigin='http://127.0.0.1:41111',newOrigin='http://127.0.0.1:42222';
 let assets,api,inputA,inputGlobal,inputDeleted,inputTampered,networkCalls=0;const snapshots=new Map(),originalFetch=globalThis.fetch;
 const noFetch=async()=>{networkCalls++;throw Error('Media rebasing must never fetch');};
 function register(filename,workspaceKey){const inputId='i_'+randomUUID(),file=path.join(store,'incoming',inputId+'.bin');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,media.png.bytes);try{return assets.registerInput({inputId,filename,workspaceKey,byteLength:media.png.size,sha256:media.png.sha256}).input;}finally{fs.unlinkSync(file);}}

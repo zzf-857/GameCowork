@@ -14,7 +14,7 @@ import { exerciseAccountBrowser } from "../support/codely-account-browser.mjs";
 import { createOwnedGenerationMedia } from "../fixtures/asset-generation-provider-fixture.mjs";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const temp = path.resolve(root, "../../temp/GameCowork");
+const temp = path.resolve(root, "codelyreversebackup/work");
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 const run = path.resolve(option("--output", path.join(temp, `codely-account-login-${Date.now()}-${process.pid}`)));

@@ -2,7 +2,7 @@
 require('./core-chat-spawn-guard.cjs');
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(process.env.GAMECOWORK_SMOKE_ROOT),agent=path.resolve(process.env.GAMECOWORK_SMOKE_CLI_PATH);
-const temp=path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const temp=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 if(!root.toLowerCase().startsWith(temp.toLowerCase()+path.sep))throw Error('History clear integration requires its owned temporary root');
 const record=value=>fs.appendFileSync(path.join(root,'process-events.jsonl'),JSON.stringify(value)+'\n');
 record({event:'core-start',pid:process.pid,parentPid:process.ppid,entry:process.argv[1],cwd:process.cwd()});

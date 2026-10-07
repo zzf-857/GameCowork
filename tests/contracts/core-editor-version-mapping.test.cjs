@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{randomUUID}=require('node:crypto');
-const root=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-version-mapping-'+randomUUID());fs.mkdirSync(root,{recursive:true});
+const root=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-version-mapping-'+randomUUID());fs.mkdirSync(root,{recursive:true});
 for(const name of ['index.js','index.beautified.js']){
  const source=fs.readFileSync(path.join(__dirname,'../../src/core/binary/out',name),'utf8'),start=source.indexOf('function jba('),end=source.indexOf('function Pba(',start);assert.ok(start>=0&&end>start);
  const read=vm.runInNewContext(source.slice(start,end)+';jba',{hs:fs,Ca:path});

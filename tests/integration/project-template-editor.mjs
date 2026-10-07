@@ -6,7 +6,7 @@ import {randomUUID,createHash} from 'node:crypto';import {fileURLToPath} from 'n
 import {readEditorIdentity} from '../support/editor-engine-fixture.mjs';
 const repo=fileURLToPath(new URL('../../',import.meta.url));const args=process.argv.slice(2);
 const option=(k,d)=>args.includes(k)?args[args.indexOf(k)+1]:d;
-const owned=path.resolve(repo,'../../temp/GameCowork');
+const owned=path.resolve(repo,'codelyreversebackup/work');
 const source=path.resolve(option('--project',''));
 const cache=path.resolve(option('--cache',''));
 for(const p of[source,cache])assert.ok(p.toLowerCase().startsWith(owned.toLowerCase()+path.sep));

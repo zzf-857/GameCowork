@@ -5,7 +5,7 @@ if ($TuanjieEditor -and (-not $Editor -or $SkipBrowser)) { throw '-TuanjieEditor
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 & node (Join-Path $PSScriptRoot 'check-layout.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'Repository layout checks failed' }
-& node (Join-Path $PSScriptRoot 'import-codely-generator.mjs') --check
+& node (Join-Path $PSScriptRoot 'frontend/import-generator.mjs') --check
 if ($LASTEXITCODE -ne 0) { throw 'Preserved Quick/History client source and host boundary verification failed' }
 $shellRoot = Join-Path $projectRoot 'src\shell'
 Push-Location $shellRoot
@@ -19,7 +19,7 @@ try {
 } finally { Pop-Location }
 if ($RealCore -or $Chat -or ($Editor -and -not $SkipBrowser)) {
     if (-not $AgentTestPackage) {
-        $AgentTestPackage = Join-Path 'F:\AI\AgentMake\temp\GameCowork' ('verification-cli-' + [guid]::NewGuid())
+        $AgentTestPackage = Join-Path 'F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work' ('verification-cli-' + [guid]::NewGuid())
         & (Join-Path $PSScriptRoot 'build-cli.ps1') -OutputDirectory $AgentTestPackage -GuardFile (Join-Path $projectRoot 'tests\fixtures\cli-probe-guard.cjs')
         if ($LASTEXITCODE -ne 0) { throw 'Guarded verification Agent build failed' }
     }
@@ -28,10 +28,10 @@ if ($RealCore -or $Chat -or ($Editor -and -not $SkipBrowser)) {
     if ($testManifest.sourceSha256 -ne (Get-FileHash -LiteralPath (Join-Path $projectRoot 'src\agent\cli-main.beautified.js')).Hash) { throw 'Test Agent source is stale; build a fresh guarded package.' }
     if ($testManifest.executableSha256 -ne (Get-FileHash -LiteralPath (Join-Path $AgentTestPackage 'gamecowork.exe')).Hash) { throw 'Test Agent executable does not match its build manifest.' }
     if ($testManifest.entrySha256 -ne (Get-FileHash -LiteralPath (Join-Path $AgentTestPackage 'cli-entry.cjs')).Hash) { throw 'Test Agent entry does not match its build manifest.' }
-    $entryCheckRoot = Join-Path 'F:\AI\AgentMake\temp\GameCowork' ('verification-entry-' + [guid]::NewGuid())
+    $entryCheckRoot = Join-Path 'F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work' ('verification-entry-' + [guid]::NewGuid())
     New-Item -ItemType Directory -Path $entryCheckRoot | Out-Null
     $expectedTestEntry = Join-Path $entryCheckRoot 'expected-guarded-cli.cjs'
-    & node (Join-Path $PSScriptRoot 'restore-cli-entry.mjs') --source (Join-Path $projectRoot 'src\agent\cli-main.beautified.js') --output $expectedTestEntry
+    & node (Join-Path $PSScriptRoot 'resources/restore-agent-entry.mjs') --source (Join-Path $projectRoot 'src\agent\cli-main.beautified.js') --output $expectedTestEntry
     if ($LASTEXITCODE -ne 0) { throw 'Could not verify the guarded Agent entry.' }
     $guardLiteral = ConvertTo-Json -InputObject ([IO.Path]::GetFullPath((Join-Path $projectRoot 'tests\fixtures\cli-probe-guard.cjs'))) -Compress
     $expectedBody = [IO.File]::ReadAllText($expectedTestEntry)
@@ -58,7 +58,11 @@ $testScripts += @('contracts/codely-quick-audio-preview.test.mjs')
 $testScripts += @('contracts/codely-cpa-image-models.test.cjs', 'contracts/asset-generation-cpa-profile.test.mjs', 'contracts/asset-generation-template-parameters.test.mjs')
 $testScripts += @('contracts/asset-generation-cpa-reported-image.test.mjs')
 $testScripts += @('contracts/provider-catalog.test.cjs', 'contracts/provider-vault.test.cjs', 'contracts/provider-registry.test.mjs', 'contracts/codely-custom-provider-ui.test.mjs')
+$testScripts += @('contracts/codely-official-parameter-matrix.test.mjs', 'contracts/codely-video-media.test.cjs', 'contracts/codely-artifact-roles.test.mjs', 'contracts/core-chat-harness.test.cjs')
 $testScripts += @('contracts/asset-generation-transport-diagnostic.test.mjs', 'contracts/codely-task-outcome.test.mjs', 'contracts/codely-task-outcome-ui.test.mjs')
+$testScripts += @('contracts/package-retired-resource.test.mjs')
+$testScripts += @('contracts/frontend-chat-model-menu.test.mjs')
+$testScripts += @('contracts/codely-official-model-menu.test.cjs')
 foreach ($script in $testScripts) {
     $arguments = @((Join-Path $projectRoot "tests\$script"))
     if ($script -eq 'e2e/terminal-e2e.mjs' -and $SkipBrowser) { $arguments += '--skip-browser' }
@@ -124,10 +128,18 @@ if ($RealCore) {
         if ($LASTEXITCODE -ne 0) { throw 'CPA independent category, four models and flexible parameters verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\codely-cpa-flexible-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Previous CPA flexible parameters verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-cpa-flexible-e2e.mjs') --api-size-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'CPA explicit API pixel controls, history and original-byte verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\codely-cpa-flexible-e2e.mjs') --api-size-only --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous CPA explicit API pixel controls verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Custom Provider registry, vault, catalog and original GUI verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Previous custom Provider original GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --rest-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Custom REST video parameters, media and history GUI verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --rest-only --previous --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
+        if ($LASTEXITCODE -ne 0) { throw 'Previous custom REST video GUI verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --transport-errors-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Custom Provider transport failure and unknown outcome verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\custom-provider-e2e.mjs') --previous --transport-errors-only --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
@@ -163,6 +175,8 @@ if ($Chat) {
     if ($LASTEXITCODE -ne 0) { throw 'Actual CLI ACP verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\core-chat-smoke.mjs') --package $AgentTestPackage
     if ($LASTEXITCODE -ne 0) { throw 'Actual host/core/Agent chat verification failed' }
+    & node (Join-Path $projectRoot 'tests\integration\core-chat-smoke.mjs') --package $AgentTestPackage --harness
+    if ($LASTEXITCODE -ne 0) { throw 'Actual chat cancellation and terminal-frame harness verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\cli-actions-smoke.mjs') --package $AgentTestPackage
     if ($LASTEXITCODE -ne 0) { throw 'Actual Agent approval/write/command verification failed' }
     & node (Join-Path $projectRoot 'tests\integration\session-history-smoke.mjs') --package $AgentTestPackage
@@ -170,6 +184,10 @@ if ($Chat) {
     if (-not $SkipBrowser) {
         & node (Join-Path $projectRoot 'tests\e2e\chat-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe') --files --marketplace
         if ($LASTEXITCODE -ne 0) { throw 'Actual GUI chat/file verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\chat-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe') --harness
+        if ($LASTEXITCODE -ne 0) { throw 'Actual GUI chat terminal-frame verification failed' }
+        & node (Join-Path $projectRoot 'tests\e2e\chat-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe') --harness --previous
+        if ($LASTEXITCODE -ne 0) { throw 'Previous GUI chat terminal-frame verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\agent-actions-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Actual GUI Agent approval/actions verification failed' }
         & node (Join-Path $projectRoot 'tests\e2e\file-media-e2e.mjs') --agent (Join-Path $AgentTestPackage 'gamecowork.exe')

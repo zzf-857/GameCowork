@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict');
-const {inspectHdrMedia}=require('../../src/core/binary/out/gamecowork-hdr-media.js');
+const {inspectHdrMedia}=require('../../src/core/binary/out/modules/media/hdr.js');
 const header=(w,h)=>Buffer.from(`#?RADIANCE\nFORMAT=32-bit_rle_rgbe\n\n-Y ${h} +X ${w}\n`);
 test('HDR validates each real scanline and all four bounded component runs',()=>{
   const line=Buffer.from([2,2,0,8,136,128,136,64,136,32,136,129]),image=Buffer.concat([header(8,2),line,line]);

@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "purpose": "Source-grounded adapter contract for the original cached Codely Quick Generate and History client. Not a replacement UI, a server schema, or proof of official service access.",
   "source": {
-    "rawFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
+    "rawFile": "F:\\AI\\AgentMake\\CyberSoftwares\\GameCowork\\codelyreversebackup\\work\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
     "rawSha256": "10e0e9c2a6771c22eb65c205fab910a1779794c689e8523f97d8f831eed19d9d",
     "rawBytes": 2400014,
     "originalUrl": "https://ai.cdn.tuanjie.cn/static/dist/assets/index-DZWJHC3S.js",
     "sourceLayer": "anonymous remote client referenced by original packaged GUI; captured 2026-10-02, not embedded in cowork.exe",
-    "formattedFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\pretty-public\\index-DZWJHC3S.js",
+    "formattedFile": "F:\\AI\\AgentMake\\CyberSoftwares\\GameCowork\\codelyreversebackup\\work\\codely-assets-reference-20261002\\pretty-public\\index-DZWJHC3S.js",
     "formattedSha256": "1c1953090b6f84861aaec1319814e56765023fcaf32d15d2f664f6844e903f66",
-    "modelExtractionSource": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public-provider-model-registry.json",
+    "modelExtractionSource": "F:\\AI\\AgentMake\\CyberSoftwares\\GameCowork\\codelyreversebackup\\work\\codely-assets-reference-20261002\\public-provider-model-registry.json",
     "modelExtractionSha256": "f9871940d13503bca8a5b585b517a4b25acc8e5fb1bd542c44ecc7e5b9bc2007"
   },
   "method": {

@@ -8,8 +8,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { randomUUID, createHash } from 'node:crypto';
 import { createOwnedGenerationMedia } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js'),{createCodelyGeneratorApi}=require('../../src/core/binary/out/gamecowork-codely-generator.js');
-const root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/codely-generator-upload-'+randomUUID()),store=path.join(root,'runtime'),incoming=path.join(store,'incoming'),media=createOwnedGenerationMedia(root),sha=value=>createHash('sha256').update(value).digest('hex'),LIMIT=64*1024*1024;
+const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/modules/generation/service.js'),{createCodelyGeneratorApi}=require('../../src/core/binary/out/modules/generation/codely-api.js');
+const root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/codely-generator-upload-'+randomUUID()),store=path.join(root,'runtime'),incoming=path.join(store,'incoming'),media=createOwnedGenerationMedia(root),sha=value=>createHash('sha256').update(value).digest('hex'),LIMIT=64*1024*1024;
 const sockets=new Set(),receipts=[];let assets,compatibility,server,origin;
 async function staged(raw,contentType,kind,scope='workspace-a',change={}) {
   const stagingId='i_'+randomUUID(),file=path.join(incoming,stagingId+'.bin');fs.writeFileSync(file,raw,{flag:'wx'});

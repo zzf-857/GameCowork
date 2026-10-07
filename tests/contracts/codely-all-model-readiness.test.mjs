@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { officialModelIds, officialImageModelIds, gamecoworkGenerationReadiness, gamecoworkGenerationPresentation } from '../../src/frontend/bundle/codely-generator/local-generation.js';
 import { cpaImageModelId, cpaImageUpstreamModel } from '../../src/frontend/bundle/codely-generator/local-models.js';
 const require = createRequire(import.meta.url);
-const { MODELS } = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
+const { MODELS } = require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
 function reply(models, extra = {}) {
   return { mode: 'codely-official', capabilities: { officialGeneration: true, localGeneration: false, models, ...extra } };
 }

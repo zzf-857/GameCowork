@@ -8,7 +8,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import { deflateSync } from 'node:zlib';
 import assert from 'node:assert/strict';
 
-const fixtureArea = path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const fixtureArea = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 function ownRoot(value) {
   const root = path.resolve(value);

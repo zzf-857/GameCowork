@@ -14,7 +14,7 @@ import {readEditorIdentity} from '../support/editor-engine-fixture.mjs';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2);
 const option=(name,value)=>args.includes(name)?args[args.indexOf(name)+1]:value;
 const packaged=args.includes('--packaged'),previous=args.includes('--previous');
-const temp=path.resolve(repo,'../../temp/GameCowork'),run=path.resolve(option('--output',path.join(temp,'editor-installations-real-'+randomUUID())));
+const temp=path.resolve(repo,'codelyreversebackup/work'),run=path.resolve(option('--output',path.join(temp,'editor-installations-real-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep));assert.ok(!fs.existsSync(run)||fs.readdirSync(run).length===0,'Use a new owned output directory');fs.mkdirSync(run,{recursive:true});
 const app=path.join(repo,'app'),core=path.resolve(option('--core',path.join(repo,packaged?'app/core':'src/core/binary/out')));
 const runtime=path.resolve(option('--runtime',path.join(app,'core/gamecowork-runtime.exe'))),runtimeCore=path.dirname(runtime);

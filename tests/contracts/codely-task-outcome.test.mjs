@@ -6,10 +6,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const require = createRequire(import.meta.url);
-const { createCodelyGeneratorApi } = require('../../src/core/binary/out/gamecowork-codely-generator.js');
+const { createCodelyGeneratorApi } = require('../../src/core/binary/out/modules/generation/codely-api.js');
 
 async function project(change = {}) {
-  const root = path.join('F:/AI/AgentMake/temp/GameCowork/tests', 'task-outcome-' + randomUUID());
+  const root = path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests', 'task-outcome-' + randomUUID());
   fs.mkdirSync(root, { recursive: true });
   const task = {
     id: 't_owned', providerId: 'owned-provider', kind: 'image', model: 'owned-image-model',

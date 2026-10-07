@@ -12,12 +12,12 @@ import {readEditorIdentity,prepareEngineFixture} from '../support/editor-engine-
 
 const repo=fileURLToPath(new URL('../../',import.meta.url)),exec=promisify(execFile);
 function option(name,fallback){const index=process.argv.indexOf(name);return index<0?fallback:process.argv[index+1];}
-const run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-bridge-control-'+randomUUID()),project=path.join(run,'project');
+const run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-bridge-control-'+randomUUID()),project=path.join(run,'project');
 const packaged=process.argv.includes('--packaged'),app=path.join(repo,'app');
 const editor=option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'),identity=readEditorIdentity(editor);
 const coreContainer=packaged?path.join(app,'core'):path.join(repo,'src/core'),core=packaged?coreContainer:path.join(coreContainer,'binary/out');
 const frontend=packaged?path.join(app,'frontend'):path.join(repo,'src/frontend/bundle'),bridgePackage=packaged?path.join(app,'editor-bridge'):path.join(repo,'src/editor-bridge');
-const agent=path.resolve(option('--agent',path.join(option('--agent-directory','F:/AI/AgentMake/temp/GameCowork/cli-guarded-20261001-12'),'gamecowork.exe'))),agentSource=path.dirname(agent);
+const agent=path.resolve(option('--agent',path.join(option('--agent-directory','F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cli-guarded-20261001-12'),'gamecowork.exe'))),agentSource=path.dirname(agent);
 if(packaged){
  const guard=JSON.parse(fs.readFileSync(path.join(agentSource,'cli-package-manifest.json'),'utf8')),normal=JSON.parse(fs.readFileSync(path.join(app,'cli/cli-package-manifest.json'),'utf8'));
  assert.equal(guard.testGuardIncluded,true);assert.equal(normal.testGuardIncluded,false);
@@ -40,7 +40,7 @@ async function actualGameFrames(label){
 async function control(action,expected,extra={}){const result=await tool(action,extra);assert.equal(result.status,'success',JSON.stringify(result));const data=result.content.response.data;assert.equal(data.controlStatus,'completed');assert.equal(data.pending,false);assert.equal(data.controlAction,action);assert.equal(data.playMode,expected);assert.ok(samePath(data.projectRoot,project));assert.equal(data.pid,unity.pid);return data;}
 function playwright(){try{return createRequire(import.meta.url).resolve('playwright');}catch{}const cache=path.join(process.env.LOCALAPPDATA,'npm-cache/_npx');return fs.readdirSync(cache).map(name=>path.join(cache,name,'node_modules/playwright/index.mjs')).find(file=>fs.existsSync(file));}
 function chromiumPath(){const cache=path.join(process.env.LOCALAPPDATA,'ms-playwright'),version=fs.readdirSync(cache).filter(name=>/^chromium-\d+$/.test(name)).sort((a,b)=>Number(b.split('-')[1])-Number(a.split('-')[1]))[0];return path.join(cache,version,'chrome-win64/chrome.exe');}
-const observer=`using System.IO; using UnityEngine; public sealed class GameCoworkControlRuntimeObserver : MonoBehaviour { void Update() { string root=Path.GetFullPath(Path.Combine(Application.dataPath,"..")); if(!root.Replace('\\\\','/').StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-control-")) return; File.WriteAllText(Path.Combine(root,"Temp/runtime-frame.txt"),Time.frameCount.ToString()); } }`;
+const observer=`using System.IO; using UnityEngine; public sealed class GameCoworkControlRuntimeObserver : MonoBehaviour { void Update() { string root=Path.GetFullPath(Path.Combine(Application.dataPath,"..")); if(!root.Replace('\\\\','/').StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-control-")) return; File.WriteAllText(Path.Combine(root,"Temp/runtime-frame.txt"),Time.frameCount.ToString()); } }`;
 try{
  fs.mkdirSync(run,{recursive:true});prepareEngineFixture({repo,project,bridgePackage,identity});
  const fixture=path.join(project,'Assets/Editor/GameCoworkBridgeFixture.cs');let fixtureSource=fs.readFileSync(fixture,'utf8').replace('cameraObject.AddComponent<GameCoworkBridgeRuntimeFixture>();','cameraObject.AddComponent<GameCoworkBridgeRuntimeFixture>(); cameraObject.AddComponent<GameCoworkControlRuntimeObserver>();');

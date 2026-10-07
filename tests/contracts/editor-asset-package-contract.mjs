@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-const asset = fs.readFileSync(new URL('../../src/editor-bridge/Editor/EditorAssetQueries.cs', import.meta.url), 'utf8');
-const packages = fs.readFileSync(new URL('../../src/editor-bridge/Editor/EditorPackageQueries.cs', import.meta.url), 'utf8');
+const asset = fs.readFileSync(new URL('../../src/editor-bridge/Editor/Queries/EditorAssetQueries.cs', import.meta.url), 'utf8');
+const packages = fs.readFileSync(new URL('../../src/editor-bridge/Editor/Queries/EditorPackageQueries.cs', import.meta.url), 'utf8');
 test('Own asset queries retain original parameter/output names and declare all finite search/preview bounds', () => {
   for (const field of ['searchPattern', 'filterType', 'filterDateAfter', 'pageSize', 'pageNumber', 'generatePreview', 'totalAssets', 'previewBase64', 'previewWidth', 'previewHeight']) assert.ok(asset.includes(field), field);
   assert.match(asset, /ScanLimit = 4096, PageLimit = 100, ResponseLimit = 900000/);

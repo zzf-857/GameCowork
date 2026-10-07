@@ -10,7 +10,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repo = fileURLToPath(new URL("../../", import.meta.url)), args = process.argv.slice(2);
 const option = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
-const temp = path.resolve(repo, "../../temp/GameCowork"), previous = args.includes("--previous"), packaged = args.includes("--packaged"), unknownMetadata = args.includes("--unknown-metadata");
+const temp = path.resolve(repo, "codelyreversebackup/work"), previous = args.includes("--previous"), packaged = args.includes("--packaged"), unknownMetadata = args.includes("--unknown-metadata");
 const run = path.resolve(option("--output", path.join(temp, "editor-view-discovery-" + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep)); assert.equal(fs.existsSync(run), false);
 const appRoot = path.resolve(option("--app-root", path.join(repo, "app")));

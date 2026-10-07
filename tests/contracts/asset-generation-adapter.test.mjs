@@ -7,8 +7,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { randomUUID, createHash } from 'node:crypto';
 import { startAssetGenerationProvider } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-adapter-' + randomUUID()), sha = bytes => createHash('sha256').update(bytes).digest('hex');
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-adapter-' + randomUUID()), sha = bytes => createHash('sha256').update(bytes).digest('hex');
 let peer, service, configuration;
 const terminal = new Set(['completed', 'failed', 'interrupted', 'cancelled']);
 async function done(id) { const deadline = Date.now() + 3000; for (;;) { const { task } = await service.dispatch('generator/getTask', { taskId: id }); if (terminal.has(task.status)) return task; if (Date.now() > deadline) throw Error('Owned adapter completion deadline'); await new Promise(resolve => setTimeout(resolve, 5)); } }

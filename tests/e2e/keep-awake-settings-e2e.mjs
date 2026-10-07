@@ -9,7 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { randomUUID } from "node:crypto";
 const project = fileURLToPath(new URL("../../", import.meta.url)), args = process.argv.slice(2);
 function option(name, fallback) { const index = args.indexOf(name); return index < 0 ? fallback : args[index + 1]; }
-const temp = path.resolve(project, "../../temp/GameCowork"), run = path.resolve(option("--output", path.join(temp, "keep-awake-settings-" + randomUUID())));
+const temp = path.resolve(project, "codelyreversebackup/work"), run = path.resolve(option("--output", path.join(temp, "keep-awake-settings-" + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep));
 const packaged = args.includes("--packaged"), previous = args.includes("--previous"), app = path.resolve(option("--app-root", path.join(project, "app")));
 const binary = path.resolve(option("--binary", packaged ? path.join(app, "GameCowork.exe") : path.join(project, "src/shell/target/debug/GameCowork.exe")));

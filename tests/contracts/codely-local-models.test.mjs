@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import babel from '../../tools/node_modules/prettier/plugins/babel.mjs';
 import { cpaImageDescriptor, cpaImageModels, cpaImageModelId, cpaImageModelIds, cpaImageAspectRatios, cpaImage25Variants, gamecoworkCpaImage25Variant, gamecoworkCpaFamilyModelId, gamecoworkCpaMenuModels, gamecoworkCpaMenuLabel, extendGameCoworkModelRegistry, gamecoworkModelAcceptsReferences, gamecoworkIsThirdPartyModel, gamecoworkSetProviderDescriptors, gamecoworkCustomModel, gamecoworkModelProviderId, gamecoworkProviderModels, gamecoworkCpaParameterError, gamecoworkCpaFactLines } from '../../src/frontend/bundle/codely-generator/local-models.js';
 import { gamecoworkGenerationReadiness, gamecoworkGenerationPresentation } from '../../src/frontend/bundle/codely-generator/local-generation.js';
+import {gamecoworkCpaParameterSettings} from '../../src/frontend/bundle/codely-generator/local-models.js';
 
 const main=fs.readFileSync(new URL('../../src/frontend/bundle/codely-generator/assets/index-DZWJHC3S.js',import.meta.url),'utf8');
 const program=(await babel.parsers.babel.parse(main,{parser:'babel'})).program;
@@ -58,11 +59,12 @@ test('The original parameter builder exposes composition hints and actual PNG fo
   const state={size:'auto',quality:'auto',format:'png',ratio:'16:9',genCount:1},noop=()=>{};
   const setters=new Proxy({},{get:()=>noop});
   const render=(type,props)=>({type,...props});
-  const context=vm.createContext({DNe:{},FK:()=>['low'],f:{jsx:render,jsxs:render,Fragment:'Fragment'}});vm.runInContext(source('VNe')+';this.parameters=VNe;',context);
+  const context=vm.createContext({y:{},DNe:{},FK:()=>['low'],gamecoworkCpaParameterSettings,GameCoworkImagePixelInputs:'OwnedPixelInputs',f:{jsx:render,jsxs:render,Fragment:'Fragment'}});vm.runInContext(source('VNe')+';this.parameters=VNe;',context);
   const result=context.parameters({mode:'image',model:cpaImageDescriptor,baseModel:cpaImageDescriptor,state,setters,t:key=>key});
-  assert.deepEqual(Array.from(result.chips,chip=>chip.key),['compositionRatio','format']);assert.equal(result.settings.length,0);
-  assert.equal(result.chips[0].label,'构图比例目标');assert.equal(result.chips[0].options[0].label,'服务决定');assert.equal(result.chips[1].options[0].value,'png');
-  assert.equal(result.chips[0].value,'16:9');assert.equal(result.chips[1].value,'png');assert.equal(result.chips[1].options.length,1);
+  assert.deepEqual(Array.from(result.chips,chip=>chip.key),['cpa-request-size-mode','compositionRatio','format']);assert.equal(result.settings.length,0);
+  const mode=result.chips[0],composition=result.chips[1],format=result.chips[2];assert.equal(mode.value,'auto');assert.deepEqual(mode.options.map(item=>item.value),['auto','api-size']);
+  assert.equal(composition.label,'构图比例目标');assert.equal(composition.options[0].label,'服务决定');assert.equal(format.options[0].value,'png');
+  assert.equal(composition.value,'16:9');assert.equal(format.value,'png');assert.equal(format.options.length,1);
   assert.doesNotMatch(JSON.stringify(result),/3840|2K|4K|type.*number|1024x1024/);
   assert.match(cpaImageDescriptor.info.size,/实际像素/);
   const payload=cpaImageDescriptor.build({...state,prompt:'Own prompt',resolution:'4K',segMode:'native'});
@@ -86,12 +88,12 @@ test('CPA builders enforce the verified account profile and keep ratio hints dis
 test('The original composition chip changes only a prompt ratio hint, without changing exact resolution or quality',()=>{
   const output=[],state={size:'auto',quality:'auto',format:'png',ratio:'auto'},noop=()=>{};
   const setters=new Proxy({setSize:()=>assert.fail('A composition hint cannot promise API pixels'),setQuality:()=>assert.fail('A composition hint cannot change account quality'),setRatio:value=>output.push(['ratio',value])},{get:(target,key)=>target[key]||noop});
-  const render=(type,props)=>({type,...props}),context=vm.createContext({DNe:{},FK:()=>['low'],f:{jsx:render,jsxs:render,Fragment:'Fragment'}});
+  const render=(type,props)=>({type,...props}),context=vm.createContext({y:{},DNe:{},FK:()=>['low'],gamecoworkCpaParameterSettings,GameCoworkImagePixelInputs:'OwnedPixelInputs',f:{jsx:render,jsxs:render,Fragment:'Fragment'}});
   vm.runInContext(source('VNe')+';this.parameters=VNe;',context);
-  const chip=context.parameters({mode:'image',model:cpaImageDescriptor,baseModel:cpaImageDescriptor,state,setters,t:key=>key}).chips[0];
+  const chip=context.parameters({mode:'image',model:cpaImageDescriptor,baseModel:cpaImageDescriptor,state,setters,t:key=>key}).chips.find(item=>item.key==='compositionRatio');
   chip.onChange('9:16');assert.deepEqual(output.splice(0),[['ratio','9:16']]);
-  assert.match(chip.footer.children,/不保证精准分辨率/);assert.match(chip.footer.children,/质量由账号服务决定/);
-  const returned=context.parameters({mode:'image',model:cpaImageDescriptor,baseModel:cpaImageDescriptor,state:{...state,ratio:'9:16'},setters,t:key=>key}).chips[0];
+  assert.match(typeof chip.footer==='string'?chip.footer:chip.footer.children,/仅通过提示词|实际像素由 CPA 服务决定/);
+  const returned=context.parameters({mode:'image',model:cpaImageDescriptor,baseModel:cpaImageDescriptor,state:{...state,ratio:'9:16'},setters,t:key=>key}).chips.find(item=>item.key==='compositionRatio');
   assert.equal(returned.value,'9:16');assert.equal(returned.options.length,8);
 });
 
@@ -119,7 +121,7 @@ test('Original history regeneration identifies CPA through explicit studioModelI
 test('Original Quick tab switching and regeneration restore the separate CPA group with exact model and custom parameters',()=>{
   const nodes=new Map();walk(binding('HNe'),node=>{if(node.type==='VariableDeclarator'&&node.id?.type==='Identifier')nodes.set(node.id.name,node.init);});
   const changes={},noop=()=>{},official={id:'frontier_flare',kind:'image'},context=vm.createContext({I:{image:[official],thirdparty:cpaImageModels},P:'image',gcwThirdParty:false,gcwEffectiveProvider:'cpa',gcwProvider:'cpa',ft:[],rw:models=>models[0],sw:()=>null,gamecoworkIsThirdPartyModel,gamecoworkProviderModels,gamecoworkModelProviderId,
-    gcwSetProvider:value=>{context.gcwProvider=value;context.gcwEffectiveProvider=value;},gcwSetResolutionHint:noop,gcwSetAspectHint:noop,
+    gcwSetProvider:value=>{context.gcwProvider=value;context.gcwEffectiveProvider=value;},gcwSetResolutionHint:noop,gcwSetAspectHint:noop,gcwSetParameters:noop,gcwSetCpaSizeMode:value=>changes.cpaSizeMode=value,
     gcwSetThirdParty:value=>{context.gcwThirdParty=value;changes.thirdparty=value;},L:value=>{context.P=value;changes.mode=value;},R:noop,ct:noop,Qt:noop,G:value=>{changes.modelId=value;},z:noop,qs:noop,
     Bwe:()=>({refImgUrls:[],videoUrls:[],audioUrls:[]}),j:noop,pe:noop,Te:noop,qt:noop,Mt:noop,ai:noop,No:noop,Tt:noop,Ie:value=>{changes.size=value;},tt:value=>{changes.custom=value;},pt:value=>{changes.width=value;},ht:value=>{changes.height=value;},aY:()=>null,K:noop,D:noop,Ce:noop,Ve:noop,lt:value=>{changes.format=value;},mv:noop,FK:model=>model.qualityOptions,ee:value=>{changes.quality=value;},W:noop,ge:noop,Oe:noop,me:noop,Ue:noop,ue:noop,We:noop,St:noop,st:noop,ie:noop,dt:noop,$e:noop,le:noop,Ee:noop,jt:noop,Rt:noop,X:noop,vt:noop,te:noop,Se:noop,l:false});
   for(const symbol of ['Vt','wF']){const node=nodes.get(symbol);assert.ok(node);vm.runInContext('this.'+symbol+'='+main.slice(node.start,node.end)+';',context);}
@@ -127,7 +129,7 @@ test('Original Quick tab switching and regeneration restore the separate CPA gro
   context.Vt('image');assert.equal(changes.thirdparty,false);assert.equal(changes.modelId,official.id);
   const descriptor=cpaImageModels[1],payload={prompt:'Restore own draft',model:'gpt-image-2.5',studioModelId:descriptor.id,size:'1600x896',quality:'xhigh',outputFormat:'webp',aspectRatio:'16:9'};
   context.wF({model:{id:descriptor.id,mode:'image'},payload,prompt:payload.prompt});
-  assert.deepEqual(changes,{thirdparty:true,mode:'image',modelId:descriptor.id,size:'1600x896',custom:false,format:'webp',quality:'xhigh'});
+  assert.deepEqual(changes,{thirdparty:true,mode:'image',modelId:descriptor.id,size:'1600x896',custom:false,format:'webp',quality:'xhigh',cpaSizeMode:'auto'});
   assert.equal(context.gcwProvider,'cpa','Original CPA history restores the actual CPA Provider identity');
   const historyMap=source('sY');assert.ok(historyMap.includes('mode:t==="thirdparty"?"image":t'));
 });
@@ -146,7 +148,7 @@ test('Each CPA variant needs its own exact capability and never borrows another 
 test('Actual original form validation and submit reject unverified historical CPA parameters without dispatching a task',()=>{
   const nodes=new Map();walk(binding('HNe'),node=>{if(node.type==='VariableDeclarator'&&node.id?.type==='Identifier')nodes.set(node.id.name,node.init);});
   for(const size of ['1024x1024','1536x1024','1024x1536','3008x800']){
-    const messages=[],context=vm.createContext({Z:cpaImageDescriptor,De:size,Me:'low',Y:'png',ye:'auto',gcwResolutionHint:'auto',gcwAspectHint:'auto',gamecoworkCpaParameterError,t:key=>key,
+    const messages=[],context=vm.createContext({Z:cpaImageDescriptor,De:size,Me:'low',Y:'png',ye:'auto',gcwCpaSizeMode:'auto',gcwResolutionHint:'auto',gcwAspectHint:'auto',gcwParameters:'{}',gamecoworkCpaParameterError,t:key=>key,
       gcwGeneration:{blocked:false},$l:false,R:value=>messages.push(value),w:()=>assert.fail('Invalid dimensions reached original generation'),hne:()=>assert.fail('Invalid dimensions reached the payload builder')});
     const validation=nodes.get('ef'),submit=nodes.get('Tne');
     vm.runInContext('this.ef='+main.slice(validation.start,validation.end)+';this.submit='+main.slice(submit.start,submit.end)+';',context);
@@ -156,11 +158,14 @@ test('Actual original form validation and submit reject unverified historical CP
 
 test('Only the explicit account-defaults action clears unsupported old parameters, and it creates no task',()=>{
   let reset,caption;walk(binding('HNe'),node=>{if(node.type!=='ObjectExpression')return;const children=node.properties.find(p=>p.key?.name==='children')?.value;if(children?.type==='ConditionalExpression'&&children.alternate?.value==='使用账号默认参数'&&children.consequent?.value==='使用当前可用参数'){reset=node.properties.find(p=>p.key?.name==='onClick')?.value;caption=children;}});assert.ok(reset);assert.ok(caption);
-  const hints={resolution:'2048x2048',aspect:'9:16'},values={size:'1600x896',quality:'xhigh',format:'webp',ratio:'16:9'},context=vm.createContext({Z:cpaImageDescriptor,ye:values.ratio,Ie:value=>values.size=value,ee:value=>values.quality=value,lt:value=>values.format=value,tt:()=>{},D:value=>values.ratio=value,gcwSetResolutionHint:value=>hints.resolution=value,gcwSetAspectHint:value=>hints.aspect=value,R:()=>{},w:()=>assert.fail('Adopting account defaults cannot submit generation')});
+  let serviceParameters='{"old":true}',cpaSizeMode='api-size';
+  const hints={resolution:'2048x2048',aspect:'9:16'},values={size:'1600x896',quality:'xhigh',format:'webp',ratio:'16:9'},context=vm.createContext({Z:cpaImageDescriptor,ye:values.ratio,Ie:value=>values.size=value,ee:value=>values.quality=value,lt:value=>values.format=value,tt:()=>{},D:value=>values.ratio=value,gcwSetResolutionHint:value=>hints.resolution=value,gcwSetAspectHint:value=>hints.aspect=value,gcwSetParameters:value=>serviceParameters=value,gcwSetCpaSizeMode:value=>cpaSizeMode=value,R:()=>{},w:()=>assert.fail('Adopting account defaults cannot submit generation')});
   vm.runInContext('this.caption='+main.slice(caption.start,caption.end)+';this.reset='+main.slice(reset.start,reset.end)+';',context);
   assert.equal(context.caption,'使用账号默认参数','The actual original CPA action retains its account-defaults label');
   assert.deepEqual(values,{size:'1600x896',quality:'xhigh',format:'webp',ratio:'16:9'});
   context.reset();assert.deepEqual(values,{size:'auto',quality:'auto',format:'png',ratio:'16:9'});
+  assert.equal(serviceParameters,'{}');
+  assert.equal(cpaSizeMode,'auto');
   assert.deepEqual(hints,{resolution:'auto',aspect:'auto'});
   const id='cust_'+ 'e'.repeat(32);gamecoworkSetProviderDescriptors([{id,providerId:'owned-image',model:'owned-image-model',kind:'image',mode:'image',protocol:'openai-images',imageSizePolicy:'openai-size',capabilities:{}}]);
   const custom=gamecoworkCustomModel(id);context.ce='An actual game scene, preserved unchanged.';
@@ -181,8 +186,8 @@ test('CPA facts separate requested values, provider claims and verified file pix
   const lines=gamecoworkCpaFactLines(row),values=Object.fromEntries(lines.map(line=>[line.label,line.value]));
   assert.equal(values['请求型号'],'gpt-image-2.5');assert.equal(values['实际型号'],'未确认');assert.equal(values['文件像素'],'48×32');assert.equal(values['文件格式'],'image/png');assert.equal(values['服务报告质量'],'low');assert.equal(values['服务报告尺寸'],'1254x1254');assert.equal(values['历史请求尺寸'],'1536x1024');assert.equal(values['历史请求质量'],'high');assert.equal(values['历史请求格式'],'jpeg');
   assert.doesNotMatch(JSON.stringify(lines),/secret|do-not-display|apiKey|confirmed/);
-  assert.equal(gamecoworkCpaFactLines({...row,type:'frontier_flare',input:{data:{studioModelId:'frontier_flare'}}}).length,0);
-  const report=gamecoworkCpaFactLines({...row,providerReportedImage:{model:'gpt-image-2.5-flare'}});assert.equal(report.find(line=>line.label==='实际型号').value,'gpt-image-2.5-flare');
+  assert.deepEqual(gamecoworkCpaFactLines({...row,type:'frontier_flare',input:{data:{studioModelId:'frontier_flare'}}}),[{label:'文件像素',value:'48×32'}],'Official results expose measured pixels without inheriting CPA gateway claims');
+  const report=gamecoworkCpaFactLines({...row,providerReportedImage:{model:'gpt-image-2.5-flare'}});assert.equal(report.find(line=>line.label==='服务报告型号').value,'gpt-image-2.5-flare');assert.equal(report.find(line=>line.label==='实际型号').value,'未确认');
   assert.equal(gamecoworkCpaFactLines({data:row},cpaImageModels[1],row.input.data).find(line=>line.label==='文件像素').value,'48×32');
   assert.ok(source('hwe').includes('gamecoworkCpaFactLines(B,w.model,w.payload)'));assert.ok(source('MZ').includes('gamecowork-cpa-execution-facts'));assert.ok(source('pQ').includes('gamecoworkCpaFactLines(t)'));
 });

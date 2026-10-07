@@ -20,7 +20,7 @@ public static class GameCoworkAssetPackageFixture
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-assets-packages-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Asset/package fixture must stay in its own temp directory");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-assets-packages-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Asset/package fixture must stay in its own temp directory");
         if (!AssetDatabase.IsValidFolder("Assets/AssetQueries")) AssetDatabase.CreateFolder("Assets", "AssetQueries");
         string texturePath = "Assets/AssetQueries/OwnedTexture.png", materialPath = "Assets/AssetQueries/OwnedMaterial.mat", prefabPath = "Assets/AssetQueries/OwnedPrefab.prefab";
         var texture = new Texture2D(4, 3, TextureFormat.RGBA32, false); var colors = new Color[12];

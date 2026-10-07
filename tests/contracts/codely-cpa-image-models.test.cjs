@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
-const {CPA_IMAGE_MODELS,validateCpaImageSize,validateCpaImagePayload,validateCpaImageAccountPayload,cpaImageRequestPrompt,isCpaImageProvider}=require('../../src/core/binary/out/gamecowork-cpa-image-models.js');
+const {CPA_IMAGE_MODELS,validateCpaImageSize,validateCpaImagePayload,validateCpaImageAccountPayload,cpaImageRequestPrompt,isCpaImageProvider}=require('../../src/core/binary/out/modules/generation/models/cpa-image.js');
 const payload=(descriptor,changes={})=>({prompt:'Owned image',model:descriptor.model,studioModelId:descriptor.id,size:'1536x1024',quality:'low',outputFormat:'png',...changes});
 test('CPA retains every exact verified model ID including the gateway 2.5 alias',()=>{
   assert.deepEqual(Object.values(CPA_IMAGE_MODELS).map(row=>row.model),['gpt-image-2','gpt-image-2.5','gpt-image-2.5-flare','gpt-image-2.5-sunburst']);
@@ -30,4 +30,14 @@ test('The active account profile rejects unfulfilled quality/format/exact-pixel 
     assert.equal(checked.prompt,input.prompt);assert.ok(cpaImageRequestPrompt(checked).includes(ratio));assert.ok(cpaImageRequestPrompt(checked).endsWith(input.prompt));
   }
   assert.equal(cpaImageRequestPrompt(base),base.prompt);
+});
+test('Explicit CPA API-size opt-in keeps original defaults while requiring legal precise pixels and matching ratios',()=>{
+  for(const row of Object.values(CPA_IMAGE_MODELS)) {
+    const input=payload(row,{size:'1536x864',quality:'auto',aspectRatio:'16:9',requestSizeMode:'api-size'}),checked=validateCpaImageAccountPayload(row.id,input);assert.deepEqual(checked,input);
+    const prompt=cpaImageRequestPrompt(checked);assert.ok(prompt.startsWith(input.prompt+'\n\n'));assert.match(prompt,/1536 x 864 pixels/);assert.match(prompt,/aspect ratio: 16:9/);
+    for(const change of [{size:'auto'},{size:'2048x1360',aspectRatio:'3:2'},{size:'1536x864',aspectRatio:'1:1'},{quality:'low'},{quality:'high'},{outputFormat:'jpeg'},{outputFormat:'webp'},{requestSizeMode:'anything'},{n:2},{providerId:'other'}])assert.throws(()=>validateCpaImageAccountPayload(row.id,{...input,...change}));
+  }
+  const row=CPA_IMAGE_MODELS['cpa-gpt-image-2'],custom=validateCpaImageAccountPayload(row.id,payload(row,{size:'3824x1296',quality:'auto',aspectRatio:'auto',requestSizeMode:'api-size'}));assert.match(cpaImageRequestPrompt(custom),/aspect ratio: 239:81/);
+  const {OPENAI_IMAGE_EXACT_SIZE_PRESETS}=require('../../src/core/binary/out/modules/providers/catalog.js');for(const presets of Object.values(OPENAI_IMAGE_EXACT_SIZE_PRESETS))for(const [aspectRatio,size]of Object.entries(presets))validateCpaImageAccountPayload(row.id,payload(row,{size,quality:'auto',aspectRatio,requestSizeMode:'api-size'}));
+  assert.throws(()=>validateCpaImageAccountPayload(row.id,payload(row,{size:'1536x864',quality:'auto',aspectRatio:'16:9'})),'An older non-auto payload cannot silently activate the new mode');
 });

@@ -27,7 +27,7 @@ if (packaged) {
   assert.equal(normal.testGuardIncluded, false); assert.equal(normal.sourceSha256, manifest.sourceSha256);
   assert.equal(normal.executableSha256.toLowerCase(), createHash('sha256').update(fs.readFileSync(path.join(appRoot, 'cli/gamecowork.exe'))).digest('hex'));
 }
-const base = path.resolve('F:/AI/AgentMake/temp/GameCowork'), root = path.resolve(option('--output', path.join(base, 'core-command-bootstrap-' + randomUUID())));
+const base = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work'), root = path.resolve(option('--output', path.join(base, 'core-command-bootstrap-' + randomUUID())));
 assert.ok(root.startsWith(base + path.sep)); fs.mkdirSync(root, { recursive: true });
 fs.mkdirSync(path.join(root, 'releases'));
 const workspace = path.join(root, 'workspace'); fs.mkdirSync(path.join(workspace, '.gamecowork-cli/commands'), { recursive: true });

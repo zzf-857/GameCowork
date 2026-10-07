@@ -11,7 +11,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 const require = createRequire(import.meta.url), root = fileURLToPath(new URL('../../', import.meta.url)), args = process.argv.slice(2);
 assert.ok(args.includes('--read-owned-cache'), 'Pass --read-owned-cache to explicitly select this manual read-only real-cache check; automatic gates must remain fixture-only');
 const option = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
-const temp = path.resolve(root, '../../temp/GameCowork'), run = path.resolve(option('--output', path.join(temp, 'cached-clone-audio-' + crypto.randomUUID())));
+const temp = path.resolve(root, 'codelyreversebackup/work'), run = path.resolve(option('--output', path.join(temp, 'cached-clone-audio-' + crypto.randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep));fs.mkdirSync(run,{recursive:true});
 const frontend = path.resolve(option('--frontend', path.join(root,'app/frontend'))), cache = path.join(process.env.USERPROFILE,'.gamecowork/generator'), registry = path.join(cache,'tasks.json');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -23,10 +23,10 @@ const audio = task.artifacts.find(row=>row.mime==='audio/mpeg'), file = path.res
 assert.ok(file.toLowerCase().startsWith(path.resolve(cache).toLowerCase()+path.sep));
 for(let current=file;;current=path.dirname(current)){const stat=fs.lstatSync(current);assert.equal(stat.isSymbolicLink(),false);if(stat.isFile())assert.equal(stat.nlink,1);if(path.dirname(current)===current)break;}
 const media = fs.readFileSync(file); assert.equal(media.length,audio.byteLength);assert.equal(sha(media),audio.sha256);
-const {inspectAudioMedia}=require('../../src/core/binary/out/gamecowork-audio-media.js');assert.equal(inspectAudioMedia(media).mime,'audio/mpeg');
+const {inspectAudioMedia}=require('../../src/core/binary/out/modules/media/audio.js');assert.equal(inspectAudioMedia(media).mime,'audio/mpeg');
 const publicValue=value=>Array.isArray(value)?value.map(publicValue):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).filter(([key])=>!key.startsWith('_')).map(([key,child])=>[key,publicValue(child)])):value;
 const publicTask=publicValue(task), helperRoot=path.join(run,'readonly-adapter');fs.mkdirSync(helperRoot,{recursive:true});
-const {createCodelyGeneratorApi}=require('../../src/core/binary/out/gamecowork-codely-generator.js');
+const {createCodelyGeneratorApi}=require('../../src/core/binary/out/modules/generation/codely-api.js');
 const assetService={root:helperRoot,assertRuntime(){},getOwnedSnapshot:()=>({tasks:[publicTask],inputs:[]}),
   getArtifactPath(taskId,artifactId){assert.equal(taskId,task.id);assert.equal(artifactId,audio.id);return{path:file,...publicValue(audio)};},
   async dispatch(kind,data){if(kind==='generator/listProviders')return{providers:[]};if(kind==='generator/getTask'&&data.taskId===task.id)return{task:publicTask};throw Error('Read-only fixture rejects unneeded asset mutation');}};

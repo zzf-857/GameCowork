@@ -8,8 +8,8 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-transport-' + randomUUID());
+const { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-transport-' + randomUUID());
 const terminal = new Set(['completed', 'failed', 'interrupted', 'cancelled']);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(read, label) {

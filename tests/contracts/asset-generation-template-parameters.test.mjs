@@ -6,8 +6,8 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { startAssetGenerationProvider } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/cpa-flexible-20261003/template-' + randomUUID());
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cpa-flexible-20261003/template-' + randomUUID());
 let peer, service, configuration;
 const terminal = new Set(['completed', 'failed', 'interrupted', 'cancelled']);
 async function done(taskId) {

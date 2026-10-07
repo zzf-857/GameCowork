@@ -12,7 +12,7 @@ import {randomUUID} from 'node:crypto';
 import {createMonacoMenuProbe} from '../fixtures/monaco-menu-fixture.mjs';
 const exec=promisify(execFile),project=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2);
 const option=(name,fallback)=>{const index=args.indexOf(name);return index<0?fallback:args[index+1];};
-const base=path.resolve('F:/AI/AgentMake/temp/GameCowork'),run=path.resolve(option('--output',path.join(base,'tests','lsp-e2e-'+randomUUID())));assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));assert.equal(fs.existsSync(run),false);fs.mkdirSync(run,{recursive:true});
+const base=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work'),run=path.resolve(option('--output',path.join(base,'tests','lsp-e2e-'+randomUUID())));assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));assert.equal(fs.existsSync(run),false);fs.mkdirSync(run,{recursive:true});
 const packaged=args.includes('--packaged'),binary=path.resolve(option('--binary',path.join(project,packaged?'app/GameCowork.exe':'src/shell/target/debug/GameCowork.exe'))),frontend=path.join(project,packaged?'app/frontend':'src/frontend/bundle'),lspDir=path.join(project,packaged?'app/lsp-csharp':'vendor/csharp-lsp');
 const a=path.join(run,'Workspace A 中文'),b=path.join(run,'Workspace B'),missing=path.join(run,'Missing Unity metadata'),data=path.join(run,'data');for(const dir of[a,b,missing,data])fs.mkdirSync(dir);
 const checks=[],errors=[],blocked=[],rpc=[],pids=new Set();let shell,context,page,gui,origin,log='',wa,wb,menuProbe;

@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 const root = fs.realpathSync(process.env.GAMECOWORK_FIXTURE_DATA_DIR);
-const allowed = path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const allowed = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 if (!root.toLowerCase().startsWith(allowed.toLowerCase() + path.sep)) throw Error('Own isolated fixture directory required');
 const configFile = path.join(root, 'discovery-control.json'), logFile = path.join(root, 'discovery-events.jsonl');
 const log = value => fs.appendFileSync(logFile, JSON.stringify(value) + '\n');

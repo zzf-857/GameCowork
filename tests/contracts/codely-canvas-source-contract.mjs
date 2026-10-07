@@ -8,7 +8,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import babel from '../../tools/node_modules/prettier/plugins/babel.mjs';
-import { verifyCodelyCanvasSource } from '../../tools/verify-codely-canvas-source.mjs';
+import { verifyCodelyCanvasSource } from '../../tools/frontend/verify-canvas-source.mjs';
 const root=fileURLToPath(new URL('../../src/frontend/bundle/codely-canvas/',import.meta.url));
 const ledger=JSON.parse(fs.readFileSync(path.join(root,'source-ledger.json'),'utf8'));
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');

@@ -10,7 +10,7 @@ const test = require('node:test');
 // This tests denied shapes without starting any command or touching profiles.
 const source = fs.readFileSync(path.join(__dirname, '../fixtures/cli-probe-guard.cjs'), 'utf8');
 test('path validation may inspect exact fixture ancestors but never read content, enumerate, write or inspect siblings', async () => {
-  const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/guard-contract-owned');
+  const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/guard-contract-owned');
   const base = path.dirname(root), calls = [], denied = [];
   const fakeFs = { promises: {} };
   for (const name of ['readFile','readdir','access','stat','lstat','realpath','writeFile','mkdir','rm']) {
@@ -39,7 +39,7 @@ const left = source.indexOf("const cp = require('node:child_process');");
 const right = source.indexOf('function loopback(', left);
 assert.ok(left >= 0 && right > left);
 function fixture(enabled = true) {
-  const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/guard-contract-fixture');
+  const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/guard-contract-fixture');
   const workspace = path.join(root, 'workspace');
   let bytes = Buffer.from('trusted fixture script');
   const command = "& 'C:/fixture/node.exe' 'F:/fixture/script.mjs'; exit $LASTEXITCODE";

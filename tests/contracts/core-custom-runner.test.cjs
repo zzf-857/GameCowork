@@ -23,14 +23,14 @@ for (const file of ["index.js", "index.beautified.js"]) {
     const h = harness(), pending = h.run(5, 100); h.child.stdout.emit("data", Buffer.from("Partial output")); await assert.rejects(pending, /timed out/); assert.equal(h.child.killed, 1); h.child.emit("close", 0);
   });
   test(`${file}: actual definition handlers pin storage, attach file SHA and propagate CLI failure`, async () => {
-    const root = path.join("F:/AI/AgentMake/temp/GameCowork/commands-subagents", "core-handlers-" + randomUUID()), workspace = path.join(root, "workspace"), home = path.join(root, "home");
+    const root = path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/commands-subagents", "core-handlers-" + randomUUID()), workspace = path.join(root, "workspace"), home = path.join(root, "home");
     fs.mkdirSync(workspace, { recursive: true }); fs.mkdirSync(home);
     const handlers = new Map(), actions = [], refreshes = [];
     const core = {
       getWorkspaceCwd: async () => workspace, resolveCliPath: () => "owned-agent", refreshCommandsForAllSessions: async () => refreshes.push("commands"), refreshAgentsForAllSessions: async () => refreshes.push("agents"), refreshSkillsForAllSessions: async () => refreshes.push("skills"),
       parseCliListOutput: output => JSON.parse(output), runGameCoworkCliCommand: async () => "[]", runCliManageAction: async (...args) => { actions.push(args); return { status: "success" }; }
     };
-    const ctx = vm.createContext({ process: { env: { GAMECOWORK_LOCAL_PROVIDER_MODE: "1", GAMECOWORK_CLI_HOME: home } }, t: core, n: (type, handler) => handlers.set(type, handler), require: name => name === "./gamecowork-custom.js" ? require(path.join(base, "gamecowork-custom.js")) : assert.fail(name), Htr: { parse: () => ({ prompt: "Owned command" }) } });
+    const ctx = vm.createContext({ process: { env: { GAMECOWORK_LOCAL_PROVIDER_MODE: "1", GAMECOWORK_CLI_HOME: home } }, t: core, n: (type, handler) => handlers.set(type, handler), require: name => name === "./modules/custom/service.js" ? require(path.join(base, "modules/custom/service.js")) : assert.fail(name), Htr: { parse: () => ({ prompt: "Owned command" }) } });
     const first = source.indexOf("const gamecoworkCustomOptions"), last = source.indexOf('n("skills/reloadAcp"', first);
     const customSection = source.slice(first, last).replace(/\(\s*$/, "");
     const listStart = source.indexOf('n("commands/list"'), listEnd = source.indexOf('n("acp/refreshCommands"', listStart);

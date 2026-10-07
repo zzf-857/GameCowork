@@ -1,6 +1,6 @@
 # 前端维护入口
 
-`bundle/` 是实际前端源码输入：可读的 JS / CSS / HTML、两代业务 chunk、Monaco worker、图标和字体。构建脚本直接装配该目录，不执行 Vite。恢复阶段推断的依赖清单已移至 [研究资料](../../research/frontend-package.reference.json)，不能用于安装或重建前端。
+`bundle/` 是实际前端源码输入：可读的 JS / CSS / HTML、两代业务 chunk、Monaco worker、图标和字体。构建脚本直接装配该目录，不执行 Vite。恢复阶段推断的依赖清单已移至 [研究资料](../../research/frontend/frontend-package.reference.json)，不能用于安装或重建前端。
 
 | 入口 / 模块 | 用途 |
 | --- | --- |

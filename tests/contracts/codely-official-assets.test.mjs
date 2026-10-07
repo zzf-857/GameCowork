@@ -7,9 +7,9 @@ import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { createOwnedGenerationMedia } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const { minimalPayload } = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
-const suiteRoot = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/codely-official-assets-' + randomUUID());
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const { minimalPayload } = require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
+const suiteRoot = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/codely-official-assets-' + randomUUID());
 const media = createOwnedGenerationMedia(path.join(suiteRoot, 'media')), binding = 'a'.repeat(64), otherBinding = 'b'.repeat(64);
 const sha = value => createHash('sha256').update(value).digest('hex'), delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(read, predicate, label = 'official task state') { const deadline = Date.now() + 3000; for (;;) { const value = await read(); if (predicate(value)) return value; if (Date.now() > deadline) throw Error('Fixture deadline: ' + label); await delay(5); } }

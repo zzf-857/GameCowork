@@ -14,7 +14,7 @@ import { startLocalMcpFixture } from "../fixtures/local-mcp-fixture.mjs";
 const project = fileURLToPath(new URL("../../", import.meta.url));
 const args = process.argv.slice(2);
 function option(name, fallback) { const index = args.indexOf(name); return index < 0 ? fallback : args[index + 1]; }
-const base = path.resolve(project, "../../temp/GameCowork");
+const base = path.resolve(project, "codelyreversebackup/work");
 const root = path.resolve(option("--output", path.join(base, "command-subagent-e2e-" + randomUUID())));
 assert.ok(root.toLowerCase().startsWith(base.toLowerCase() + path.sep), "Chat fixtures must stay under temp/GameCowork");
 const packaged = args.includes("--packaged");

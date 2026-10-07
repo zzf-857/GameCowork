@@ -11,8 +11,8 @@ import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const account = require("../../src/core/binary/out/gamecowork-codely-account.js");
-const generator = require("../../src/core/binary/out/gamecowork-codely-generator.js");
+const account = require("../../src/core/binary/out/modules/account/broker.js");
+const generator = require("../../src/core/binary/out/modules/generation/codely-api.js");
 const { validateCanvasOfficialOverlay, validateCanvasLocalSession } = await import("../../src/frontend/bundle/codely-canvas/canvas-local-auth.js");
 
 const FIXTURE_ORIGIN = "http://127.0.0.1:8641";
@@ -25,7 +25,7 @@ const CANVAS_TOKEN = `canvas-jwt-${randomUUID()}`;
 const USER_CODE = "SRFC-TEST";
 
 function tempRoot() {
-  const root = "F:/AI/AgentMake/temp/GameCowork/codely-surface-" + randomUUID();
+  const root = "F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/codely-surface-" + randomUUID();
   fs.mkdirSync(root, { recursive: true });
   return root;
 }
@@ -129,7 +129,7 @@ const statusHandler = listeners.get("codelyAccount/status");
 const pollHandler = listeners.get("codelyAccount/poll");
 const logoutHandler = listeners.get("logoutOfControlPlane");
 
-const assetRoot = path.resolve("F:/AI/AgentMake/temp/GameCowork/codely-surface-asset-" + randomUUID());
+const assetRoot = path.resolve("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/codely-surface-asset-" + randomUUID());
 fs.mkdirSync(assetRoot, { recursive: true });
 const assetService = {
   root: assetRoot,

@@ -7,7 +7,7 @@ const vm = require('node:vm');
 const crypto = require('node:crypto');
 const test = require('node:test');
 
-const base = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests');
+const base = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests');
 const root = path.join(base, `project-status-${crypto.randomUUID()}`);
 fs.mkdirSync(root, { recursive: true });
 test.after(() => {

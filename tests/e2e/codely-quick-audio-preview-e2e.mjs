@@ -10,7 +10,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {quickAudioPreviewSource} from '../support/codely-quick-audio-preview-source.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url)), args = process.argv.slice(2), option = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
-const temp = path.resolve(root, '../../temp/GameCowork'), run = path.resolve(option('--output', path.join(temp, 'quick-audio-preview-' + randomUUID())));
+const temp = path.resolve(root, 'codelyreversebackup/work'), run = path.resolve(option('--output', path.join(temp, 'quick-audio-preview-' + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep)); fs.mkdirSync(run, {recursive: true});
 const frontend = path.resolve(option('--frontend', path.join(root, 'src/frontend/bundle'))), extracted = await quickAudioPreviewSource(frontend);
 const encoded = JSON.parse(fs.readFileSync(path.join(root, 'tests/fixtures/codely-audio-media.json'), 'utf8'));

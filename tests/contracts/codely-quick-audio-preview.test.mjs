@@ -46,6 +46,6 @@ test('the source ledger and importer declare exactly the same limited reversible
   const entry = ledger.files.find(row => row.path === 'assets/index-DZWJHC3S.js'), patch = entry.patches.find(row => row.reason.startsWith('Classify recognized audio file extensions'));
   assert.ok(patch); assert.equal(patch.before, 'function lwe(t,e="",n=""){const i=');
   assert.ok(patch.after.endsWith(';const i=')); assert.ok(!patch.after.includes('voiceId'));
-  const importer = fs.readFileSync(new URL('../../tools/import-codely-generator.mjs', import.meta.url), 'utf8');
+  const importer = fs.readFileSync(new URL('../../tools/frontend/import-generator.mjs', import.meta.url), 'utf8');
   assert.ok(importer.includes(patch.reason)); assert.ok(importer.includes('wav|mp3|aac|flac|ogg|m4a|opus'));
 });

@@ -9,7 +9,7 @@ const repo = fileURLToPath(new URL('../../', import.meta.url));
 const option = (name, fallback) => process.argv.includes(name) ? process.argv[process.argv.indexOf(name) + 1] : fallback;
 const binary = path.resolve(option('--binary', path.join(repo, 'src/shell/target/debug/GameCowork.exe')));
 const frontend = path.resolve(option('--frontend', path.join(repo, 'src/frontend/bundle'))), previous = process.argv.includes('--previous');
-const run = path.join('F:/AI/AgentMake/temp/GameCowork/tests', 'editor-installations-cache-' + randomUUID());
+const run = path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests', 'editor-installations-cache-' + randomUUID());
 const data = path.join(run, 'app-data'), diskFile = path.join(data, 'installed-editors.json');
 const snapshotFile = path.join(run, 'snapshot.json'), controlFile = path.join(run, 'discovery-control.json'), logFile = path.join(run, 'discovery-events.jsonl');
 const exe = path.join(run, 'install/Editor/Unity.exe');

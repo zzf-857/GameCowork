@@ -15,7 +15,7 @@ import { readEditorIdentity } from "../support/editor-engine-fixture.mjs";
 const repo = fileURLToPath(new URL("../../", import.meta.url));
 const args = process.argv.slice(2);
 const option = (key, fallback) => args.includes(key) ? args[args.indexOf(key) + 1] : fallback;
-const temp = path.resolve(repo, "../../temp/GameCowork");
+const temp = path.resolve(repo, "codelyreversebackup/work");
 const run = path.resolve(option("--output", path.join(temp, "editor-installations-" + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep), "Outputs stay in a unique temp task");
 assert.ok(!fs.existsSync(run) || fs.readdirSync(run).length === 0, "Select a new or empty owned output directory");

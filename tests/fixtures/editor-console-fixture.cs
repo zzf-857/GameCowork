@@ -9,7 +9,7 @@ public static class GameCoworkConsoleFixture
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-console-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own console fixture scope required");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-console-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own console fixture scope required");
         Debug.Log("GCW_CONSOLE_LOG\nGCW_CONSOLE_MULTILINE"); Debug.LogWarning("GCW_CONSOLE_WARNING"); Debug.LogError("GCW_CONSOLE_ERROR");
         Debug.LogException(new InvalidOperationException("GCW_CONSOLE_EXCEPTION")); Debug.LogAssertion("GCW_CONSOLE_ASSERT");
         Debug.Log("GCW_CONSOLE_DUPLICATE"); Debug.Log("GCW_CONSOLE_DUPLICATE");

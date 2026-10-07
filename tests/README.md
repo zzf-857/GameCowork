@@ -28,7 +28,7 @@ Unity Hub 本地接线验证使用 `integration/hub-refresh.mjs`、两代 `e2e/h
 
 当前资产入口使用 `e2e/codely-assets-e2e.mjs --agent <同源码 guarded Agent EXE>`，真实 Rust / Core / 两层 GUI iframe 加载保留的原 Quick、History 和 ReactFlow 客户端。加 `--previous` 验证上一代，加 `--packaged --app-root <候选包>` 验证装配资源；`--inspect` 仅做结构检查，不能作为完整交互门禁。实际覆盖范围与通过记录见 [当前状态](../RESTORE_STATUS.md)，原模型未配置的错误断言不能算作生成成功。loopback Provider只准备自有历史媒体，不调用原平台或真实额度。
 
-`codely-generator-local-identity.test.mjs`、`codely-canvas-source-contract.mjs` 核对原资源、组件、Host与身份边界；`codely-generator-api.test.mjs`、`codely-generator-upload.test.mjs`、`codely-media-rebase.test.mjs` 验证原接口形状、本地实际文件与重启地址解析。构建前同时执行 `tools/import-codely-generator.mjs --check` 和 `tools/verify-codely-canvas-source.mjs`；后者静态解析依赖，不执行原应用代码，nonliteral动态路径仍须实际运行验收。
+`codely-generator-local-identity.test.mjs`、`codely-canvas-source-contract.mjs` 核对原资源、组件、Host与身份边界；`codely-generator-api.test.mjs`、`codely-generator-upload.test.mjs`、`codely-media-rebase.test.mjs` 验证原接口形状、本地实际文件与重启地址解析。构建前同时执行 `tools/frontend/import-generator.mjs --check` 和 `tools/frontend/verify-canvas-source.mjs`；后者静态解析依赖，不执行原应用代码，nonliteral动态路径仍须实际运行验收。
 
 账号契约包括`codely-account-{broker,wiring,official-surface,frontend,timeout}.test.mjs`的授权/密封/刷新/代次/站面及完整响应体时限，另由`codely-account-display.test.cjs`和`codely-account-display-frontend.test.mjs`提取两份Core及两代菜单实际函数，验证固定官方usage网页、真实邮箱/未知邮箱账号ID标签、active/seat与个人订阅读取。这些是隔离测试；本人真实登录和原生界面观察统一见状态文档。
 
@@ -42,9 +42,9 @@ Unity Hub 本地接线验证使用 `integration/hub-refresh.mjs`、两代 `e2e/h
 
 `codely-quick-audio-preview.test.mjs`的4项契约提取原/维护实际函数：复现`lwe`因preview键将MP3/Opus误判image，验证仅已知音频扩展提前分类、query伪扩展拒绝，以及`_N/k5/wN`结果/完成规则和`xZ`播放器等其余函数字节一致。源码浏览器专项使用原`xZ`检查实际MP3/Opus字节的loadedmetadata/play/timeupdate/ended，2项通过；额外极短FLAC不构成全部codec播放通过。该专项与包内验证范围分别记录在状态文档。
 
-`e2e/codely-all-models-e2e.mjs --agent <同源码 guarded Agent EXE>`使用真实Rust/Core、原Quick/History GUI和隔离官方fixture：43契约逐一检查报价、上传、提交、ID查询与字节/文字SHA，4类GUI检查菜单控件、播放、保存和历史草稿，再覆盖4项恢复/HTTP scope/History分页case。`--previous`选择上一代，`--packaged --app-root <候选包>`选择包内资源，也支持分别指定路径。账号/缓存补丁后的候选双代已通过，该43模型包在最后`lwe`音频分类补丁前；后者另有补丁后候选MP3/Opus2项专项。本轮正式app1561资源，真实45项中30完成、15HTTP400未跑通，完整门禁与实际结算单独见 [状态文档](../RESTORE_STATUS.md#official-all-models-20261003)。fixture完成数不等于线上扣额成功数。外部请求受loopback guard限制，合成克隆fixture不证明真实音色身份。
+`e2e/codely-all-models-e2e.mjs --agent <同源码 guarded Agent EXE>`使用真实Rust/Core、原Quick/History GUI和隔离官方fixture：43契约逐一检查报价、上传、提交、ID查询与字节/文字SHA，4类GUI检查菜单控件、播放、保存和历史草稿，再覆盖4项恢复/HTTP scope/History分页case。`--previous`选择上一代，`--packaged --app-root <候选包>`选择包内资源，也支持分别指定路径。每轮源码、候选及正式包验证分别见[当前状态](../RESTORE_STATUS.md)；真实45项的历史30项与10月7日新增15项复测见[官方验收](../RESTORE_STATUS.md#official-retest-3000-20261007)。fixture完成数不等于线上扣额成功数。外部请求受loopback guard限制，合成克隆fixture不证明真实音色身份。
 
-`contracts/codely-official-programming.test.cjs` 验证显式启用真实模型目录、Core 内存 Key、Agent 的工作区/会话/模型能力、三种推理协议与最终帧、账号/组织撤销及 CPA 设置保留。`e2e/codely-official-programming-e2e.mjs --agent <同源码 guarded Agent EXE>` 从两代原模型菜单点击“启用 Codely 官方 · Pro 模型”，选择官方模型并通过实际 Agent 验证流式响应、工具、取消和 CPA ↔ 官方切换；`--previous` 选择上一代，`--binary` 指定候选宿主，`--packaged --app-root <候选包>` 读取包内资源。该 driver 始终使用同源码 guarded Agent、隔离账号/目录/推理 fixture 和自有 temp 工程，不证明真实官方推理或额度消费。
+`contracts/codely-official-programming.test.cjs`、`contracts/codely-official-model-menu.test.cjs` 与 `contracts/frontend-chat-model-menu.test.mjs` 验证原 config-v3 元数据、内置/自定义分组、无Key目录刷新、会话启动时懒获取私密Key、真实协议与最终帧、账号/组织撤销和CPA保留。`e2e/codely-official-programming-e2e.mjs --agent <同源码 guarded Agent EXE>` 展开两代原模型菜单，通过原级联控件验证名称/图标/倍率/禁用状态、High/Max实际传参、工具/取消、无权及账号切换；两代各16项的范围见[菜单验收](../RESTORE_STATUS.md#chat-model-menu-20261007)。`--previous`选择上一代，`--binary`指定候选宿主，`--packaged --app-root <候选包>`读取包内资源。该driver始终使用同源码guarded Agent、隔离账号/目录/推理fixture和自有temp工程，不证明真实官方推理或额度消费。
 
 ```powershell
 node --test tests/contracts/codely-official-generator-broker.test.mjs tests/contracts/codely-official-assets.test.mjs tests/contracts/codely-official-generator-api.test.mjs tests/contracts/codely-official-generator-validation.test.mjs tests/contracts/codely-official-programming.test.cjs
@@ -108,6 +108,6 @@ Editor 功能增量的四个源码 driver 也已进入 `verify-local -Editor`：
 
 对应默认契约为 `cli-unity-operations.test.mjs`、`editor-context-contract.mjs`、`editor-context-implementation-contract.mjs`、`editor-asset-package-contract.mjs` 和 `editor-scene-mutation-contract.mjs`，均位于 `contracts/`。上述四个 driver 没有通用包内参数；它们的源码结果不证明新的装配包、团结运行时、资产写入或包安装 / 移除。场景 save 的磁盘效果不能由取消或 Undo 自动回滚，路径校验也不提供原子 TOCTOU 保证。
 
-新增测试归入对应目录，通过 `import.meta.url` / `__dirname` 解析项目根。通用 fixture 放入 `fixtures/`，辅助逻辑放入 `support/`。截图、日志、项目、SQLite、编译产物和浏览器状态只写入统一 `temp/GameCowork`。
+新增测试归入对应目录，通过 `import.meta.url` / `__dirname` 解析项目根。通用 fixture 放入 `fixtures/`，辅助逻辑放入 `support/`。截图、日志、项目、SQLite、编译产物和浏览器状态只写入统一 `codelyreversebackup/work`。
 
-旧文件名全部保留。更多说明见 [开发指南](../docs/DEVELOPMENT.md#验证选择)，真实编辑器约束见 [桥规范](../src/editor-bridge/AGENTS.md)。
+旧文件名全部保留。更多说明见 [开发指南](../docs/development/guide.md#验证选择)，真实编辑器约束见 [桥规范](../src/editor-bridge/AGENTS.md)。

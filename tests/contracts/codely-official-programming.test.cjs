@@ -1,21 +1,23 @@
 const test = require("node:test"), assert = require("node:assert/strict"), http = require("node:http"), fs = require("node:fs"), vm = require("node:vm"), path = require("node:path");
-const { createOfficialLlmService, signature } = require("../../src/core/binary/out/gamecowork-official-llm.js");
+const { createOfficialLlmService, signature } = require("../../src/core/binary/out/modules/account/official-llm.js");
 const ROOT = path.resolve(__dirname, "../..");
 const KEY = "fixture-cli-key-never-given-to-agent";
 test("Signature matches the independently extracted original CLI vector (SHA 8da5876521a7 bytes 4850164/4851351)", () => {
   assert.equal(signature(KEY, "/v1/chat/completions", 1700000000), "v1.1700000000.seBpGYWjNsSze3R0OiEZfoqEhCJ8XwIQrZroqH3BAbU");
 });
-function fixtureSurface() {
+function fixtureSurface(options={}) {
   const state = { binding: { accountId: "fixture-account-hash", teamId: "fixture-team", generationKey: "fixture-generation" }, keyCalls: 0 };
   const listeners = new Set();
   const surface = { inferenceBinding: async () => ({ ...state.binding }),
+    getModelMenuConfig:async()=>({binding:{...state.binding},models:require('../../src/core/binary/out/modules/account/official-model-menu.js').projectModelMenu({models:(options.models||[{id:'fixture-model'},{id:'gpt-fixture'},{id:'claude-fixture'}]).map(row=>({name:row.id,model:row.id,roles:['chat','summarize','apply','edit'],capabilities:row.capabilities?.vision===true||row.supports_vision===true?['image_input']:[],extras:{...(row.wireApi?{wireApi:row.wireApi}:{})}}))},{secrets:[KEY]})}),
+    isModelMenuBindingCurrent:binding=>!!state.binding&&binding.generationKey===state.binding.generationKey,
     getCliInferenceCredential: async () => { state.keyCalls++; return { cliApiKey: KEY, userId: "fixture-user-id", rpm: 5, tpm: 10 }; },
     isInferenceBindingCurrent: binding => !!state.binding && binding.generationKey === state.binding.generationKey,
     onInferenceInvalidated: listener => { listeners.add(listener); return () => listeners.delete(listener); } };
   return { surface, state, invalidate() { state.binding = null; for (const listener of listeners) listener(); } };
 }
 async function fixture(t, options = {}) {
-  const account = fixtureSurface(), calls = [];
+  const account = fixtureSurface(options), calls = [];
   const upstream = http.createServer(async (req, res) => {
     let bytes = ""; for await (const chunk of req) bytes += chunk;
     const body = bytes ? JSON.parse(bytes) : null;
@@ -45,11 +47,11 @@ async function fixture(t, options = {}) {
   });
   return { account, calls, workspace, service, endpoint, request };
 }
-test("Default login/status and model display never obtain a CLI key; explicit enable reads genuine directory", async t => {
+test("Native menu metadata and compatible enable never obtain a CLI key; session launch acquires it privately", async t => {
   const f = await fixture(t); assert.deepEqual(f.service.status(), { enabled: false, modelCount: 0 });
   assert.deepEqual(f.service.profiles(), []); assert.equal(f.account.state.keyCalls, 0); assert.equal(f.calls.length, 0);
-  const result = await f.service.enable(); assert.equal(result.modelCount, 3); assert.equal(f.account.state.keyCalls, 1);
-  assert.equal(f.calls[0].url, "/v1/models"); assert.equal(f.calls[0].headers.authorization, `Bearer ${KEY}`);
+  const result = await f.service.enable(); assert.equal(result.modelCount, 3); assert.equal(f.account.state.keyCalls, 0);assert.equal(f.calls.length,0);
+  await f.endpoint();assert.equal(f.account.state.keyCalls,1);assert.equal(f.calls.length,0);
   const exposed = JSON.stringify([result, f.service.profiles(), f.service.models()]);
   assert.ok(!exposed.includes(KEY)); assert.ok(!exposed.includes("fixture-user-id"));
 });
@@ -63,7 +65,7 @@ test("Agent capability authorizes only exact workspace, catalog model, endpoint 
     [req, "chat/completions", { Origin: "http://127.0.0.1:1" }, 403],
     [req, "chat/completions", { Authorization: "Bearer wrong" }, 401],
   ]) assert.equal((await f.request(peer, body, route, headers)).status, status);
-  assert.equal(f.calls.length, 1, "denied requests never reach upstream");
+  assert.equal(f.calls.length, 0, "denied requests never reach upstream");
   await assert.rejects(f.service.sessionEnvironment("other", path.join(f.workspace, "other"), peer.selected, () => true), /工作区/);
   const accepted = await f.request(peer, req); assert.equal(accepted.status, 200); assert.match(await accepted.text(), /\[DONE\]/);
   const call = f.calls.at(-1); assert.equal(call.headers.authorization, `Bearer ${KEY}`);
@@ -143,16 +145,17 @@ test("Invalid UTF-8 or incomplete codepoints after a valid terminator are reject
   await f.service.enable(); const peer = await f.endpoint();
   await assert.rejects(async () => { const response = await f.request(peer, { model: "fixture-model", stream: true }); await response.text(); });
 });
-test("Malformed model-directory JSON and underlying exceptions never reveal a CLI key in enable errors", async t => {
+test("Malformed menu metadata and underlying exceptions never reveal private material in metadata loading errors", async t => {
   const account = fixtureSurface();
+  account.surface.getModelMenuConfig=async()=>{throw Error('Invalid JSON '+KEY);};
   const service = createOfficialLlmService({ surface: () => account.surface, currentWorkspace: () => ROOT,
     fetch: async () => new Response(KEY, { headers: { "content-type": "application/json" } }) });
   t.after(() => service.close());
-  await assert.rejects(service.enable(), error => error.message === "官方服务返回无效 JSON" && !String(error.stack).includes(KEY));
+  await assert.rejects(service.enable(), error => error.message === "官方内置模型配置加载失败，请刷新菜单" && !String(error.stack).includes(KEY));
   const secondary = createOfficialLlmService({ surface: () => account.surface, currentWorkspace: () => ROOT,
     fetch: async () => { throw Error("Synthetic exception: " + KEY); } });
   t.after(() => secondary.close());
-  await assert.rejects(secondary.enable(), error => error.message === "官方编程模型加载失败，请重试" && !String(error.stack).includes(KEY));
+  await assert.rejects(secondary.enable(), error => error.message === "官方内置模型配置加载失败，请刷新菜单" && !String(error.stack).includes(KEY));
 });
 test("Exhaustion and permission errors retain server status without leaking the actual Key", async t => {
   const f = await fixture(t, { handler(req, res) { res.writeHead(429); res.end(JSON.stringify({ error: KEY })); } });
@@ -218,8 +221,8 @@ for (const file of ["index.js", "index.beautified.js"]) test(`${file}: official 
   const owner = { ide: {}, activeCustomModel: { id: "CPA" }, resolveActiveSlotCustomModels() {}, getWorkspaceCwd: async () => "owned", applyActiveCustomModelsToProject: value => writes.push(value) };
   await context.Iya(owner, { extras: { officialModelId: "official" } }); assert.equal(writes.length, 0); assert.equal(owner.activeOfficialModel, "official");
   await context.Iya(owner, { extras: { customModelId: "CPA" } }); assert.deepEqual(writes, ["owned"]); assert.equal(owner.activeOfficialModel, undefined);
-  assert.match(source, /gamecowork-official-llm\.js["']\)\.registerCoreWiring/);
-  assert.match(between("async function fpa(", "S0();"), /\.\.\.\(local\?\.profiles\|\|\[\]\),\.\.\.official/);
+  assert.match(source, /modules\/account\/official-llm\.js["']\)\.registerCoreWiring/);
+  assert.match(between("async function fpa(", "S0();"), /\.\.\.official,\.\.\.\(local\?\.profiles\|\|\[\]\)/);
 });
 test("The actual shell routes logout and all global account RPCs to the single default broker after opening a workspace", () => {
   const source = fs.readFileSync(path.join(ROOT, "src/shell/src/main.rs"), "utf8");
@@ -228,22 +231,22 @@ test("The actual shell routes logout and all global account RPCs to the single d
   for (const kind of ["logoutOfControlPlane", "cancelLogin", "notifyDeviceFlowExpired", "codelyAccount/status", "codelyAccount/logout"]) assert.ok(block.includes(`"${kind}"`));
   assert.match(block, /Some\("default"\)/); assert.match(block, /Ok\(frame\) => frame/); assert.match(block, /Err\(error\) => error_reply/);
 });
-test("Both real model menus use an explicit action, remain passive until clicked, and share in-flight enable", async () => {
+test("Both real model menus retain native groups and refresh only authenticated metadata on open", async () => {
   const { pathToFileURL } = require("node:url");
   const helper = await import(pathToFileURL(path.join(ROOT, "src/frontend/bundle/assets/gamecowork-official-models.js")).href);
   const calls = [], notifications = []; let settle;
   const messenger = { request(kind) { calls.push(kind); return new Promise(resolve => { settle = resolve; }); } };
-  const groups = helper.officialProgrammingMenu([], messenger, text => notifications.push(text), () => false);
-  assert.equal(calls.length, 0); assert.equal(groups[0].items[0].label, "启用 Codely 官方 · Pro 模型");
-  const first = groups[0].items[0].onClick(), second = groups[0].items[0].onClick();
-  await new Promise(resolve => setImmediate(resolve)); assert.deepEqual(calls, ["codelyOfficial/enable"]);
-  settle({ status: "success", content: { enabled: true, modelCount: 2 } }); await first; await second;
-  assert.equal(notifications.length, 1);
-  const busy = helper.officialProgrammingMenu([], messenger, text => notifications.push(text), () => true);
-  await busy[0].items[0].onClick(); assert.equal(calls.length, 1);
+  const originalGroups = [{ key: "standard-models", title: "内置模型", items: [] }];
+  assert.equal(helper.officialProgrammingMenu(originalGroups, messenger), originalGroups);
+  assert.equal(calls.length, 0);
+  const first = helper.refreshOfficialProgrammingMenu(messenger, text => notifications.push(text)), second = helper.refreshOfficialProgrammingMenu(messenger, text => notifications.push(text));
+  await new Promise(resolve => setImmediate(resolve)); assert.deepEqual(calls, ["codelyOfficial/refreshMenu"]);
+  settle({ status: "success", content: { ready: true, source: "original-config-v3", modelCount: 6 } }); await first; await second;
+  assert.equal(notifications.length, 0);
   for (const file of ["index-BRxZ4eG7.js", "index-DvRYaIVa.js"]) {
     const source = fs.readFileSync(path.join(ROOT, "src/frontend/bundle/assets", file), "utf8");
-    assert.match(source, /import \{ officialProgrammingMenu \} from "\.\/gamecowork-official-models\.js"/);
-    assert.match(source, /officialProgrammingMenu\((?:he|Be), n, Ba, \(\) => s\(f\)\)/);
+    assert.match(source, /import \{ refreshOfficialProgrammingMenu \} from "\.\/gamecowork-official-models\.js"/);
+    assert.match(source, /if \(open\) void refreshOfficialProgrammingMenu\(n, Ba\)/);
+    assert.doesNotMatch(source, /officialProgrammingMenu\((?:he|Be),/);
   }
 });

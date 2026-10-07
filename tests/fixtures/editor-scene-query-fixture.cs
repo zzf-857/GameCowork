@@ -23,7 +23,7 @@ public static class GameCoworkSceneQueryFixture
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-scene-queries-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Fixture must be in its exact own temp scope");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-scene-queries-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Fixture must be in its exact own temp scope");
         sceneA = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var rootA = Add("QueryRoot"); var activeA = Add("ActiveChild", rootA.transform); activeA.AddComponent<Light>(); activeA.AddComponent<GameCoworkQueryComponent>();
         var inactive = Add("InactiveParent", rootA.transform); inactive.SetActive(false); var child = Add("InactiveChild", inactive.transform);

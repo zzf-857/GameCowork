@@ -2,11 +2,11 @@
 // Actual output normalizer -> durable verified media cache -> original API DTO.
 // The only media HTTP transport is an owned loopback server with synthetic files.
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
-const {normalizeTaskReply}=require('../../src/core/binary/out/gamecowork-official-task-output.js');
-const {createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js');
-const {createCodelyGeneratorApi}=require('../../src/core/binary/out/gamecowork-codely-generator.js');
-const catalog=require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
-const root=path.join('F:/AI/AgentMake/temp/GameCowork/tests','official-task-output-'+crypto.randomUUID()),binding='b'.repeat(64);
+const {normalizeTaskReply}=require('../../src/core/binary/out/modules/generation/official-task-output.js');
+const {createAssetService}=require('../../src/core/binary/out/modules/generation/service.js');
+const {createCodelyGeneratorApi}=require('../../src/core/binary/out/modules/generation/codely-api.js');
+const catalog=require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
+const root=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/2026-10-07-ai-assets/official/tests','official-task-output-'+crypto.randomUUID()),binding='b'.repeat(64);
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 let media,server,origin;const downloads=[];
 function wav(){const bytes=Buffer.alloc(16044);bytes.write('RIFF');bytes.writeUInt32LE(bytes.length-8,4);bytes.write('WAVEfmt ',8);bytes.writeUInt32LE(16,16);bytes.writeUInt16LE(1,20);bytes.writeUInt16LE(1,22);bytes.writeUInt32LE(8000,24);bytes.writeUInt32LE(16000,28);bytes.writeUInt16LE(2,32);bytes.writeUInt16LE(16,34);bytes.write('data',36);bytes.writeUInt32LE(bytes.length-44,40);return bytes;}
@@ -18,16 +18,16 @@ test.before(async()=>{
 test.after(async()=>{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));});
 async function until(read,condition){const deadline=Date.now()+3000;for(;;){const value=await read();if(condition(value))return value;if(Date.now()>deadline)throw Error('Owned output fixture did not settle');await new Promise(resolve=>setTimeout(resolve,5));}}
 function input(service,bytes,filename,kind){const id='i_'+crypto.randomUUID(),staged=path.join(service.root,'incoming',id+'.bin');fs.mkdirSync(path.dirname(staged),{recursive:true});fs.writeFileSync(staged,bytes);const result=service.registerInput({inputId:id,filename,workspaceKey:'',sha256:hash(bytes),byteLength:bytes.length}).input;fs.unlinkSync(staged);assert.equal(result.kind,kind);return result;}
-async function completed(id,makeOutput,{expect='completed',status='completed',before}={}){
+async function completed(id,makeOutput,{expect='completed',status='completed',before,reply=value=>value}={}){
   const service=createAssetService({root:path.join(root,id+'-'+crypto.randomUUID()),pollIntervalMs:15,requestTimeoutMs:1000}),calls=[];
   const image=input(service,media.png.bytes,'owned.png','image'),audio=input(service,media.wav.bytes,'owned.wav','audio');
   const refs={images:[origin+'/image/'+image.id],audios:[origin+'/audio/'+audio.id],models:[]};let payload=catalog.minimalPayload(id,refs);const slots=catalog.referenceSlots(id,payload),ids=slots.map(slot=>slot.mediaKinds[0]==='image'?image.id:audio.id);
-  const executor={isAvailable:()=>true,assertOwner:task=>assert.equal(task._officialOwner,binding),downloadProvider:()=>({baseUrl:origin,authMode:'none'}),async request(task,creating){calls.push({creating});return normalizeTaskReply({data:{id:'remote-owned',status,output:{data:makeOutput()}}},creating,id);}};
+  const executor={isAvailable:()=>true,assertOwner:task=>assert.equal(task._officialOwner,binding),downloadProvider:()=>({baseUrl:origin,authMode:'none'}),async request(task,creating){calls.push({creating});return normalizeTaskReply(reply({data:{id:'remote-owned',status,output:{data:makeOutput()}}}),creating,id);}};
   service.attachOfficialExecutor(executor);
   try{
     const task=service.createOfficialTask({kind:catalog.MODELS[id].kind,model:id,parameters:payload,prompt:payload.prompt||'',inputIds:ids,workspaceKey:'',ownerBinding:binding}).task;
     if(before)before(task,service);
-    const actual=await until(()=>service.dispatch('generator/getTask',{taskId:task.id}).then(v=>v.task),row=>expect==='pending'?calls.length>1:['completed','failed','cancelled'].includes(row.status));
+    const actual=await until(()=>service.dispatch('generator/getTask',{taskId:task.id}).then(v=>v.task),row=>expect==='pending'?calls.length>1:['completed','failed','cancelled','interrupted'].includes(row.status));
     if(expect==='pending'){assert.notEqual(actual.status,'completed');assert.equal(actual.artifacts.length,0);return {actual,calls};}
     assert.equal(actual.status,expect,actual.error);const api=createCodelyGeneratorApi({assetService:service,getOfficial:()=>null});
     const response=await api.dispatch({method:'GET',path:'/task/'+task.id+'/status',origin,workspaceKey:''});assert.equal(response.status,200);
@@ -49,6 +49,43 @@ for(const [id,field,ext,kind]of[['frontier_flare','imageUrl','png','image'],['se
 });
 test('completed image/video tasks with only thumbnails fail without inventing a primary file',async()=>{
   for(const [id,ext]of[['frontier_flare','png'],['seedance2','png'],['sonilo-sfx','wav']]){const {actual}=await completed(id,()=>({previewUrl:origin+'/owned.'+ext}),{expect:'failed'});assert.match(actual.error,/primary/);assert.equal(actual.artifacts.every(row=>row.role==='preview'),true);}
+});
+test('outer receipt task aliases survive a data envelope through the real cache and original API',async()=>{
+  for(const alias of ['taskId','task_id','id']) {
+    const {actual,response,calls}=await completed('frontier_flare',()=>({imageUrl:origin+'/owned.png'}),{
+      reply:value=>({[alias]:'remote-owned',data:{status:value.data.status,output:value.data.output}}),
+    });
+    assert.equal(actual.officialTaskId,'remote-owned');assert.equal(actual.artifacts[0].sha256,hash(media.png.bytes));
+    assert.ok(response.body.output.data.imageUrl.startsWith(origin+'/api/codely-generator/local-artifacts/'));
+    assert.equal(calls.filter(call=>call.creating).length,1);
+  }
+});
+test('conflicting receipt aliases preserve the unknown create outcome without media collection or resubmission',async()=>{
+  const before=downloads.length;
+  const {actual,calls}=await completed('frontier_flare',()=>({imageUrl:origin+'/owned.png'}),{
+    expect:'interrupted',reply:value=>({taskId:'different-task',...value}),
+  });
+  assert.equal(actual.officialTaskId,undefined);assert.equal(actual.submissionUnknown,true);assert.equal(actual.artifacts.length,0);
+  assert.equal(calls.length,1);assert.equal(downloads.length,before);
+  for(const creating of [true,false]) {
+    for(const row of [{id:'task-a',taskId:'task-b'}, {id:'task-a',task_id:123}, {taskId:'task-a',data:{id:'task-b',status:'completed'}}]) {
+      assert.throws(()=>normalizeTaskReply(row,creating,'frontier_flare'),error=>{
+        assert.match(error.message,/task identities/);assert.equal(error.submissionUnknown,creating?true:undefined);return true;
+      });
+    }
+  }
+  assert.equal(normalizeTaskReply({taskId:'task-a',data:{id:'task-a',status:'queued'}},true,'frontier_flare').id,'task-a');
+});
+test('nested preview and thumbnail objects remain previews through verified caching',async()=>{
+  for(const [id,ext,key]of [['frontier_flare','png','thumbnail'],['seedance2','mp4','preview'],['sonilo-sfx','wav','preview']]) {
+    const {actual}=await completed(id,()=>({[key]:{files:[{url:origin+'/owned.'+ext}]}}),{expect:'failed'});
+    assert.match(actual.error,/primary/);assert.equal(actual.artifacts.length,1);assert.equal(actual.artifacts[0].role,'preview');
+  }
+  const result=await completed('frontier_flare',()=>({preview:{images:[{url:origin+'/owned.png'}]},imageUrl:origin+'/owned.png'}));
+  assert.equal(result.actual.artifacts.length,1);assert.equal(result.actual.artifacts[0].role,'result');
+  assert.equal(result.response.body.output.data.preview.images[0].url,result.response.body.output.data.imageUrl);
+  const voice=await completed('minimax-voice',()=>({preview:{audioUrl:origin+'/owned.wav'}}));
+  assert.equal(voice.actual.artifacts[0].kind,'audio');assert.equal(voice.actual.artifacts[0].role,'result');
 });
 test('text and generated voice identity preserve actual structured results and verified text files',async()=>{
   const generated='A concise prompt describing the actual image.';

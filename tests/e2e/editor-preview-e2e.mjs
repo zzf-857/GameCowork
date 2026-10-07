@@ -14,11 +14,11 @@ import {readEditorIdentity,prepareEngineFixture} from "../support/editor-engine-
 const repo=fileURLToPath(new URL("../../",import.meta.url)),exec=promisify(execFile);
 function option(name,fallback){const index=process.argv.indexOf(name);return index<0?fallback:process.argv[index+1];}
 const packaged=process.argv.includes("--packaged"),app=path.join(repo,"app");
-const run=path.join("F:/AI/AgentMake/temp/GameCowork/tests",`editor-bridge-preview-${randomUUID()}`),project=path.join(run,"project");
+const run=path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests",`editor-bridge-preview-${randomUUID()}`),project=path.join(run,"project");
 const binary=path.resolve(option("--binary",packaged?path.join(app,"GameCowork.exe"):path.join(repo,"src/shell/target/debug/GameCowork.exe")));
 const editor=path.resolve(option("--editor","F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe"));
 const identity=readEditorIdentity(editor),engine=option("--engine",identity.engine),editorVersion=option("--editor-version",identity.version),templateProject=option("--template-project");
-const agent=path.resolve(option("--agent","F:/AI/AgentMake/temp/GameCowork/cli-guarded-20261001-12/gamecowork.exe")),agentSource=path.dirname(agent);
+const agent=path.resolve(option("--agent","F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cli-guarded-20261001-12/gamecowork.exe")),agentSource=path.dirname(agent);
 const coreContainer=packaged?path.join(app,"core"):path.join(repo,"src/core"),core=packaged?coreContainer:path.join(coreContainer,"binary/out");
 const frontend=packaged?path.join(app,"frontend"):path.join(repo,"src/frontend/bundle"),bridgePackage=packaged?path.join(app,"editor-bridge"):path.join(repo,"src/editor-bridge");
 const manifest=JSON.parse(fs.readFileSync(path.join(agentSource,"cli-package-manifest.json"),"utf8"));

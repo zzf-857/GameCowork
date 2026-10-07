@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const agent=fs.readFileSync(new URL('../../src/agent/cli-main.beautified.js',import.meta.url),'utf8');
-const reader=fs.readFileSync(new URL('../../src/editor-bridge/Editor/EditorConsole.cs',import.meta.url),'utf8');
+const reader=fs.readFileSync(new URL('../../src/editor-bridge/Editor/Queries/EditorConsole.cs',import.meta.url),'utf8');
 const declaration=name=>{const begin=agent.indexOf('    '+(name==='f_e'?'async ':'')+'function '+name+'(');assert.ok(begin>0);return agent.slice(begin,agent.indexOf('\n    }',begin)+6);};
 test('Actual console context keeps failed execution visible rather than reporting an empty success',async()=>{
  let returned={success:false,llmContent:'Own Console API unavailable',error:{message:'structured API unavailable'}};

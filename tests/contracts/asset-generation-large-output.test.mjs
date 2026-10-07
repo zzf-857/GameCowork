@@ -7,8 +7,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { deflateSync } from 'node:zlib';
 import { randomUUID, createHash } from 'node:crypto';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-large-output-' + randomUUID());
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-large-output-' + randomUUID());
 const crcTable = new Uint32Array(256); for (let i = 0; i < 256; i++) { let value = i; for (let bit = 0; bit < 8; bit++) value = value >>> 1 ^ (value & 1 ? 0xedb88320 : 0); crcTable[i] = value; }
 function chunk(name, payload) { const bytes = Buffer.alloc(payload.length + 12); bytes.writeUInt32BE(payload.length); bytes.write(name, 4); payload.copy(bytes, 8); let crc = 0xffffffff; for (let i = 4; i < bytes.length - 4; i++) crc = crc >>> 8 ^ crcTable[(crc ^ bytes[i]) & 255]; bytes.writeUInt32BE((crc ^ 0xffffffff) >>> 0, bytes.length - 4); return bytes; }
 const width = 2048, height = 1700, row = Buffer.alloc(width * 4), pixels = Buffer.alloc((row.length + 1) * height); row.fill(Buffer.from([16, 144, 224, 255])); for (let y = 0; y < height; y++) row.copy(pixels, y * (row.length + 1) + 1);

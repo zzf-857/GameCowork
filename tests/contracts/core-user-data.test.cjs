@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const { randomUUID } = require('node:crypto');
 const test = require('node:test');
 
-const fixtureBase = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests');
+const fixtureBase = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests');
 const fixtureRoot = path.join(fixtureBase, `core-user-data-${randomUUID()}`);
 fs.mkdirSync(fixtureRoot, { recursive: true });
 test.after(() => {

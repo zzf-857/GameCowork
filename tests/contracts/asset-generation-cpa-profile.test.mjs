@@ -6,9 +6,9 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { startAssetGenerationProvider } from '../fixtures/asset-generation-provider-fixture.mjs';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const { CPA_IMAGE_MODELS } = require('../../src/core/binary/out/gamecowork-cpa-image-models.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/cpa-flexible-20261003/profile-' + randomUUID()), store = path.join(root, 'runtime');
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const { CPA_IMAGE_MODELS } = require('../../src/core/binary/out/modules/generation/models/cpa-image.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cpa-flexible-20261003/profile-' + randomUUID()), store = path.join(root, 'runtime');
 let peer, service, configuration, providerBytes, completedTask;
 const reopen = () => { service = createAssetService({ root: store, pollIntervalMs: 20, requestTimeoutMs: 200 }); };
 const request = (modelId = 'cpa-gpt-image-2', extra = {}) => {

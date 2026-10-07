@@ -17,12 +17,12 @@ const appRoot=process.argv.includes('--app')?path.resolve(option('--app')):proce
 const bridgePackage=appRoot?path.join(appRoot,'editor-bridge'):path.join(repo,'src/editor-bridge');
 const editor=path.resolve(option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe')),identity=readEditorIdentity(editor);
 assert.equal(identity.engine,'unity','This query fixture currently uses Unity .unity scenes');
-const pkg=path.resolve(option('--package','F:/AI/AgentMake/temp/GameCowork/scene-query-guarded-20261002'));
+const pkg=path.resolve(option('--package','F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/scene-query-guarded-20261002'));
 const manifest=JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8'));
 const sha=value=>createHash('sha256').update(value).digest('hex');
 assert.equal(manifest.testGuardIncluded,true);assert.equal(manifest.sourceSha256.toLowerCase(),sha(fs.readFileSync(path.join(repo,'src/agent/cli-main.beautified.js'))));
 assert.equal(manifest.executableSha256.toLowerCase(),sha(fs.readFileSync(path.join(pkg,'gamecowork.exe'))));
-const run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-bridge-scene-queries-'+randomUUID()),project=path.join(run,'工程 查询');
+const run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-bridge-scene-queries-'+randomUUID()),project=path.join(run,'工程 查询');
 const issuedTools=process.argv.includes('--issued-tools');
 const checks=[],queryEvidence=[],notifications=[],permissions=[],packageVerified=[],pending=new Map(),delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));let unity,cli,provider,normalCatalog,stderr='',stdout='',carry='',sequence=0,failure;
 const alive=pid=>{try{process.kill(pid,0);return true;}catch(error){if(error.code==='ESRCH')return false;throw error;}};
@@ -48,7 +48,7 @@ try{
   const normal=JSON.parse(fs.readFileSync(path.join(appRoot,'cli/cli-package-manifest.json'),'utf8')),appManifest=JSON.parse(fs.readFileSync(path.join(appRoot,'package-manifest.json'),'utf8'));
   assert.equal(normal.testGuardIncluded,false,'Packaged normal Agent must not contain a test guard');assert.equal(normal.sourceSha256.toLowerCase(),manifest.sourceSha256.toLowerCase(),'Packaged normal/guarded Agents must share the maintained source');
   const relevant=appManifest.files.filter(file=>file.path==='GameCowork.exe'||file.path.startsWith('cli/')||file.path.startsWith('editor-bridge/'));
-  assert.ok(relevant.some(file=>file.path==='GameCowork.exe')&&relevant.some(file=>file.path==='cli/gamecowork.exe')&&relevant.some(file=>file.path==='editor-bridge/Editor/EditorSceneQueries.cs'),'Package ledger must include actual host, normal Agent and query implementation');
+  assert.ok(relevant.some(file=>file.path==='GameCowork.exe')&&relevant.some(file=>file.path==='cli/gamecowork.exe')&&relevant.some(file=>file.path==='editor-bridge/Editor/Queries/EditorSceneQueries.cs'),'Package ledger must include actual host, normal Agent and query implementation');
   const paths=new Set();for(const file of relevant){assert.equal(paths.has(file.path),false,'Duplicate package resource path');paths.add(file.path);const absolute=path.resolve(appRoot,file.path);assert.ok(absolute.toLowerCase().startsWith(appRoot.toLowerCase()+path.sep),'Package resource must stay inside app');const bytes=fs.readFileSync(absolute);assert.equal(bytes.length,file.size);assert.equal(sha(bytes),file.sha256.toLowerCase(),'Packaged resource SHA: '+file.path);packageVerified.push({path:file.path,size:file.size,sha256:file.sha256});}
   assert.equal(sha(fs.readFileSync(path.join(appRoot,'cli/gamecowork.exe'))),normal.executableSha256.toLowerCase());assert.equal(JSON.parse(fs.readFileSync(path.join(bridgePackage,'package.json'),'utf8')).name,'cn.gamecowork.bridge');
   check('Actual package host/normal-Agent/editor resources match their SHA ledger',true);

@@ -83,7 +83,7 @@ export function gamecoworkGenerationReadiness(reply) {
       const model = models[descriptor.id];
       if (Object.hasOwn(models, descriptor.id) && verifiedCpa(descriptor.id, model)) result.models[descriptor.id] = Object.freeze({ available: true, providerId: model.providerId, model: model.model, service: 'cpa', kind: 'image', mode: 'image' });
     }
-    for(const descriptor of custom) if(descriptor.generationAvailable) result.models[descriptor.id]=Object.freeze({available:true,providerId:descriptor.providerId,model:descriptor.upstreamModel,service:'custom-provider',kind:'image',mode:'image'});
+    for(const descriptor of custom) if(descriptor.generationAvailable) result.models[descriptor.id]=Object.freeze({available:true,providerId:descriptor.providerId,model:descriptor.upstreamModel,service:'custom-provider',kind:descriptor.kind,mode:descriptor.mode});
     if (result.officialGeneration === true) for (const modelId of officialModelIds) {
       const official=models[modelId];
       if (Object.hasOwn(models,modelId) && verifiedOfficial(modelId,official)) {
@@ -105,7 +105,7 @@ export function gamecoworkGenerationPresentation(readiness, language = 'zh', mod
     return { blocked: false, label: '', message: '' };
   }
   const custom=gamecoworkCustomModel(modelId);
-  if(known && custom?.generationAvailable===true && model?.available===true && model.service==='custom-provider' && model.providerId===custom.providerId && model.model===custom.upstreamModel && model.kind==='image' && model.mode==='image') return {blocked:false,label:'',message:''};
+  if(known && custom?.generationAvailable===true && model?.available===true && model.service==='custom-provider' && model.providerId===custom.providerId && model.model===custom.upstreamModel && model.kind===custom.kind && model.mode===custom.mode) return {blocked:false,label:'',message:''};
   const unconfigured = known &&
     (readiness.localGeneration === false && readiness.state === 'unconfigured' || !!readiness.models);
   const english = String(language).startsWith('en');

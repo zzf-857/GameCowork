@@ -1,7 +1,7 @@
 var gcwAssetActors = new Map();
-function gcwLocalAssetService(core){const p=require("node:path"),r=process.env.GAMECOWORK_USER_DATA_DIR;if(!r||!p.isAbsolute(r))throw new Error("Asset runtime directory is not configured");const root=p.join(r,"generator");if(!gcwAssetActors.has(root))gcwAssetActors.set(root,require("./gamecowork-assets.js").createAssetService({root,onUpdate:task=>core.messenger.send("generator/taskUpdated",{task})}));return gcwAssetActors.get(root);}
+function gcwLocalAssetService(core){const p=require("node:path"),r=process.env.GAMECOWORK_USER_DATA_DIR;if(!r||!p.isAbsolute(r))throw new Error("Asset runtime directory is not configured");const root=p.join(r,"generator");if(!gcwAssetActors.has(root))gcwAssetActors.set(root,require("./modules/generation/service.js").createAssetService({root,onUpdate:task=>core.messenger.send("generator/taskUpdated",{task})}));return gcwAssetActors.get(root);}
 var gcwCodelyGeneratorActors = new Map();
-function gcwCodelyGeneratorApi(core){const service=gcwLocalAssetService(core);if(!gcwCodelyGeneratorActors.has(service.root))gcwCodelyGeneratorActors.set(service.root,require("./gamecowork-codely-generator.js").createCodelyGeneratorApi({assetService:service}));return gcwCodelyGeneratorActors.get(service.root);}
+function gcwCodelyGeneratorApi(core){const service=gcwLocalAssetService(core);if(!gcwCodelyGeneratorActors.has(service.root))gcwCodelyGeneratorActors.set(service.root,require("./modules/generation/codely-api.js").createCodelyGeneratorApi({assetService:service}));return gcwCodelyGeneratorActors.get(service.root);}
 if (typeof URL.canParse !== "function") {
   URL.canParse = function (input, base) {
     try {
@@ -288399,6 +288399,22 @@ function vbe(t) {
       return null;
   }
 }
+function gcuAcpChatCancelled(t) {
+  return { modelTitle: t.data.title || "gamecowork-cli", modelProvider: "acp", completion: "", prompt: "", cancelled: true, stopReason: "cancelled" };
+}
+function gcuAcpChatStopReason(t) {
+  const reason = t?.stopReason;
+  if (reason === "end_turn" || reason === "cancelled") return reason;
+  const messages = {
+    refusal: "Agent refused the response (refusal).",
+    max_tokens: "Agent response reached the output token limit (max_tokens).",
+    max_turn_requests: "Agent response reached the turn request limit (max_turn_requests).",
+    error: "Agent response failed (error).",
+  };
+  const error = new Error(Object.hasOwn(messages, reason) ? messages[reason] : "Agent returned an invalid or missing final response.");
+  error.code = "ACP_PROMPT_INCOMPLETE";
+  throw error;
+}
 async function* H6e(t, e) {
   let {
       acpManager: n,
@@ -288415,12 +288431,14 @@ async function* H6e(t, e) {
       onInjectedUserConsumed: G,
     } = t,
     { messages: b, completionOptions: h, title: Z, collaborationMode: N, approvalMode: g } = e.data;
+  if (s.signal.aborted) return gcuAcpChatCancelled(e);
   if (N === void 0 && g === void 0) {
     let Ce = vbe(e.data.mode);
     Ce && ((N = Ce.collaborationMode), (g = Ce.approvalMode));
   }
   let R = h.model;
   R && (await Ebe({ acpManager: n, model: R, abortController: s, acpSessionId: r }), o?.(R));
+  if (s.signal.aborted) return gcuAcpChatCancelled(e);
   let f = N ?? "default",
     y = g ?? "autoEdit",
     w =
@@ -288429,6 +288447,7 @@ async function* H6e(t, e) {
       (I === void 0 && f !== "default") ||
       (u === void 0 && y !== "autoEdit");
   (await n.modeRequest(r, f, y), w && d?.(f, y));
+  if (s.signal.aborted) return gcuAcpChatCancelled(e);
   let Y = Cl.chatMessagesToPrompt(b);
   try {
     n.maybeUploadPromptAttachmentFilePaths(r, Cl.collectPromptImageFileUrls(b));
@@ -288439,7 +288458,7 @@ async function* H6e(t, e) {
   }
   let F = [],
     v = null,
-    A = !1,
+    A = !1, _gcuPromptResult = null,
     Q = null,
     X = new Set(),
     x = new jR();
@@ -288476,7 +288495,7 @@ async function* H6e(t, e) {
     .sendPrompt(r, Y, (Ce) => {
       (F.push(Ce), v && (v(), (v = null)));
     })
-    .then(() => {
+    .then((Ce) => { _gcuPromptResult = Ce;
       ((A = !0), v && (v(), (v = null)));
     })
     .catch((Ce) => {
@@ -288599,7 +288618,7 @@ async function* H6e(t, e) {
         }
       }
     }
-    if (Q) {
+    if (Q && !s.signal.aborted) {
       let ge = Q,
         Je = ge.data;
       if (Je?.conversation_id) {
@@ -288612,8 +288631,9 @@ async function* H6e(t, e) {
       }
       throw Je ? new Error(`code: ${ge.code}, message: ${ge.message}, data: ${JSON.stringify(ge.data)}`) : Q;
     }
+    const _gcuStopReason = s.signal.aborted ? "cancelled" : gcuAcpChatStopReason(_gcuPromptResult);
     return (
-      ye && ye.logItem({ kind: "success", promptTokens: 0, thinkingTokens: pe, generatedTokens: Ke, usage: void 0 }),
+      ye && !s.signal.aborted && ye.logItem({ kind: _gcuStopReason === "cancelled" ? "cancel" : "success", promptTokens: 0, thinkingTokens: pe, generatedTokens: Ke, usage: void 0 }),
       M.content &&
         (B =
           typeof M.content == "string"
@@ -288622,7 +288642,7 @@ async function* H6e(t, e) {
                 .filter((ge) => ge.type === "text")
                 .map((ge) => ge.text)
                 .join("")),
-      { modelTitle: Z || "gamecowork-cli", modelProvider: "acp", completion: B, prompt: JSON.stringify(Y) }
+      { modelTitle: Z || "gamecowork-cli", modelProvider: "acp", completion: B, prompt: JSON.stringify(Y), stopReason: _gcuStopReason, ...(_gcuStopReason === "cancelled" ? { cancelled: true } : {}) }
     );
   } catch (Ce) {
     throw (
@@ -323822,13 +323842,13 @@ async function Nua(t) {
     if (
       !c ||
       !I ||
-      (!o.roles?.includes("model") && !o.roles?.includes("multimodalModel") && !o.roles?.includes("flashModel"))
+      (!o.officialBuiltin && !o.roles?.includes("model") && !o.roles?.includes("multimodalModel") && !o.roles?.includes("flashModel"))
     )
       continue;
     let p = s(u, d);
     a.add(p);
-    let G = PHi(o.roles),
-      b = [];
+    let G = o.officialBuiltin ? o.roles : PHi(o.roles),
+      b = o.officialBuiltin ? [...(o.capabilities || [])] : [];
     (o.supportsMultimodal || o.roles?.includes("multimodalModel")) && b.push("image_input");
     let h = qHi(o.extraBody),
       Z = h ? { default: h, options: [h] } : void 0,
@@ -323838,7 +323858,9 @@ async function Nua(t) {
         provider: "openai",
         roles: G,
         apiBase: o.baseUrl,
+        ...(o.officialBuiltin ? {rate:o.rate,disabled:o.disabled,logoUrl:o.logoUrl,description:o.description,defaultCompletionOptions:o.defaultCompletionOptions} : {}),
         extras: {
+          ...(o.officialBuiltin ? o.extras : {}),
           ...(o.officialModelId ? { officialModelId:o.officialModelId } : {customModelId:c}),
           displayLabel: u,
           ...(o.providerId ? { providerId: o.providerId } : {}),
@@ -323859,7 +323881,8 @@ async function Nua(t) {
       });
       if (g.length === 0) continue;
       let R = g[0];
-      R.customedModel = !0;
+      R.customedModel = !o.officialBuiltin;
+      if(o.officialBuiltin){R.disabled=o.disabled;R.rate=o.rate;R.logoUrl=o.logoUrl;if(o.contextLength!==undefined&&!o.defaultCompletionOptions?.contextLength)R._contextLength=o.contextLength;if(o.class_name!==undefined)R.class_name=o.class_name;}
       let f = [...new Set(G)];
       for (let y of f) {
         let w = t.config.modelsByRole[y];
@@ -326016,7 +326039,7 @@ async function gcuLocalProfiles(t) {
           }),
       };
 }
-async function fpa(t){const local=await gcuLocalProfiles(t);const official=require("./gamecowork-official-llm.js").profiles(t);return official.length?{profiles:[...(local?.profiles||[]),...official]}:local;}
+async function fpa(t){const local=await gcuLocalProfiles(t);const official=await require("./modules/account/official-llm.js").profiles(t);return official.length?{profiles:[...official,...(local?.profiles||[])]}:local;}
 S0();
 m();
 var kp = T(require("node:fs"), 1),
@@ -327433,7 +327456,7 @@ function Afi(t, e, n, r = {}) {
 function Cfi(t, e) {
   return t ? sUt(t.model, t.extras) : (e ?? "chat");
 }
-function wUt(t, e) {if(e?.extras?.officialModelId)return require("./gamecowork-official-llm.js").selectionEnvironment(t.ide,e);
+function wUt(t, e) {if(e?.extras?.officialModelId)return require("./modules/account/official-llm.js").selectionEnvironment(t.ide,e);
   let n = t.activeCustomModel
     ? spa([t.activeCustomModel, t.activeFlashCustomModel, t.activeMultimodalCustomModel])
     : {};
@@ -327557,9 +327580,9 @@ async function Bma(t, e) {
   };
 }
 function gcuPersistedSessionModel(t, selected, title) {
-  const official = require("./gamecowork-official-llm.js").selectedModel(t.ide, title || selected?.extras?.officialModelId);
+  const official = require("./modules/account/official-llm.js").selectedModel(t.ide, title || selected?.extras?.officialModelId);
   if (official) return official;
-  if (selected?.extras?.officialModelId || String(title || "").includes("Codely 官方 · Pro")) throw new Error("官方模型尚未启用或账号已经变化，请在模型菜单重新启用");
+  if (selected?.extras?.officialModelId || String(title || "").startsWith("codely-official:") || String(title || "").includes("Codely 官方 · Pro")) throw new Error("官方模型当前不可用，请刷新模型菜单或检查账号权限");
   let local = oV();
   let requested = selected?.extras?.customModelId;
   let record = title ? local.find(model => model.id === title || model.displayName === title || model.model === title) : void 0;
@@ -327648,7 +327671,7 @@ async function Tma(t, e, n) {
     if ((Object.assign(d, s), b)) d.CUSTOM_AUTH = "1";
     else for (let A of Yfi) d[A] = "";
     let h = await t.ide.getWorkspaceDirs(),
-      Z=n?.currentSelectedModel?.extras?.officialModelId ? await require("./gamecowork-official-llm.js").prepareAcpEnvironment(t,e,n.currentSelectedModel,Bpa(n?.cwdOverride,h),d,gcuHolder) : Bpa(n?.cwdOverride,h),
+      Z=n?.currentSelectedModel?.extras?.officialModelId ? await require("./modules/account/official-llm.js").prepareAcpEnvironment(t,e,n.currentSelectedModel,Bpa(n?.cwdOverride,h),d,gcuHolder) : Bpa(n?.cwdOverride,h),
       N = AP(e) ? await yUt(t.ide, Z) : await Yma(t.ide, Z, t.defaultMemoryRWMode),
       g = nUt({
         requestedMemoryRWMode: n?.memoryRWMode,
@@ -334610,7 +334633,7 @@ function RZa(t, e) {
       return b;
     }),
     n("controlPlane/openUrl", async (G) => {
-      const publicUrl = require("./gamecowork-codely-account.js").codelyAccountPublicControlPlaneUrl(G.data.path, G.data.orgSlug);
+      const publicUrl = require("./modules/account/broker.js").codelyAccountPublicControlPlaneUrl(G.data.path, G.data.orgSlug);
       if (publicUrl !== null) { await t.messenger.request("openUrl", publicUrl); return; }
       let h = (await ip(t.ide.getIdeSettings())).API_URL;
       h.at(-1) !== "/" && (h += "/");
@@ -334618,7 +334641,7 @@ function RZa(t, e) {
       (G.data.orgSlug && (Z += `?org=${G.data.orgSlug}`), await t.messenger.request("openUrl", Z));
     }),
     n("controlPlane/openUrlV2", async (G) => {
-      const publicUrl = require("./gamecowork-codely-account.js").codelyAccountPublicControlPlaneUrl(G.data.path);
+      const publicUrl = require("./modules/account/broker.js").codelyAccountPublicControlPlaneUrl(G.data.path);
       if (publicUrl !== null) { await t.messenger.request("openUrl", publicUrl); return; }
       let b = await ip(t.ide.getIdeSettings()),
         h = msn(b.API_URL, G.data.path);
@@ -334640,12 +334663,12 @@ function RZa(t, e) {
           options: { reuseTerminal: !1, terminalName: "gamecowork", icon: "gamecowork", extraPathEntries: b },
         }));
     }),
-    require("./gamecowork-codely-account.js").registerCoreWiring({ messenger: t.messenger, core: t, logger: console }),
-    require("./gamecowork-official-llm.js").registerCoreWiring({messenger:t.messenger,core:t}),
+    require("./modules/account/broker.js").registerCoreWiring({ messenger: t.messenger, core: t, logger: console }),
+    require("./modules/account/official-llm.js").registerCoreWiring({messenger:t.messenger,core:t,parseConfig:value=>Xua.parse(value)}),
     n("controlPlane/getFreeTrialStatus", async (G) => t.configHandler.controlPlaneClient.getFreeTrialStatus()),
     n("controlPlane/getUserPlan", async (G) => {
       let b = G.data.orgId,
-        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserPlan", b)) ?? (await t.configHandler.controlPlaneClient.getUserPlan(b));
+        h = (await require("./modules/account/broker.js").codelyAccountDataCall("getUserPlan", b)) ?? (await t.configHandler.controlPlaneClient.getUserPlan(b));
       return h
         ? {
             planType: h.plan_type,
@@ -334666,7 +334689,7 @@ function RZa(t, e) {
     }),
     n("controlPlane/getUserUsageSummary", async (G) => {
       let b = G.data.orgId,
-        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserUsageSummary", b)) ?? (await t.configHandler.controlPlaneClient.getUserUsageSummary(b));
+        h = (await require("./modules/account/broker.js").codelyAccountDataCall("getUserUsageSummary", b)) ?? (await t.configHandler.controlPlaneClient.getUserUsageSummary(b));
       if (!h) return null;
       let N = (Array.isArray(h.details) ? h.details : []).find((R) => R.type === "coding_plan"),
         g = Array.isArray(N?.windows) ? N.windows : [];
@@ -334685,7 +334708,7 @@ function RZa(t, e) {
     }),
     n("controlPlane/getUserExhaustion", async (G) => {
       let b = G.data.orgId,
-        h = (await require("./gamecowork-codely-account.js").codelyAccountDataCall("getUserExhaustion", b)) ?? (await t.configHandler.controlPlaneClient.getUserExhaustion(b));
+        h = (await require("./modules/account/broker.js").codelyAccountDataCall("getUserExhaustion", b)) ?? (await t.configHandler.controlPlaneClient.getUserExhaustion(b));
       return h
         ? { isExhausted: h.is_exhausted, exhaustedSource: h.exhausted_source, nextAvailableAt: h.next_available_at }
         : null;
@@ -335525,7 +335548,7 @@ function RZa(t, e) {
         await t.configHandler.loadConfig());
     }),
     n("refreshOrgList", async () => {
-      const codelyOrgSnapshot = await require("./gamecowork-codely-account.js").codelyAccountOrgSnapshot(t).catch(() => null);
+      const codelyOrgSnapshot = await require("./modules/account/broker.js").codelyAccountOrgSnapshot(t).catch(() => null);
       if (codelyOrgSnapshot) return codelyOrgSnapshot;
       if (!t._acpOrgSupported)
         return { organizations: [], currentOrgId: null, currentOrgName: null, multiTeamEnabled: !1 };
@@ -335544,9 +335567,9 @@ function RZa(t, e) {
     }),
     n("switchOrg", async (G) => {
       let { orgId: b } = G.data;
-      if ((await require("./gamecowork-codely-account.js").codelyAccountPhase()) === "authenticated") {
+      if ((await require("./modules/account/broker.js").codelyAccountPhase()) === "authenticated") {
         try {
-          return await require("./gamecowork-codely-account.js").codelyAccountSwitchOrg(t, b);
+          return await require("./modules/account/broker.js").codelyAccountSwitchOrg(t, b);
         } catch (h) {
           return (En.error(h, { context: "switchOrg:codely" }), { success: !1, error: String(h?.message || h), organizations: t.orgManager.getOrganizations() });
         }
@@ -336082,34 +336105,34 @@ function RZa(t, e) {
     else if (kind === "agents") await t.refreshAgentsForAllSessions();
     else await t.refreshSkillsForAllSessions();
   };
-  n("custom/read", async (G) => require("./gamecowork-custom.js").readCapability(await gamecoworkCustomOptions(G.data)));
+  n("custom/read", async (G) => require("./modules/custom/service.js").readCapability(await gamecoworkCustomOptions(G.data)));
   n("custom/update", async (G) => {
-    const options = await gamecoworkCustomOptions(G.data), helper = require("./gamecowork-custom.js");
+    const options = await gamecoworkCustomOptions(G.data), helper = require("./modules/custom/service.js");
     helper.validateDefinition(options);
     const result = await helper.updateCapability(options);
     await gamecoworkRefreshCustom(options.kind); return result;
   });
   n("custom/create", async (G) => {
-    const options = await gamecoworkCustomOptions(G.data), helper = require("./gamecowork-custom.js");
+    const options = await gamecoworkCustomOptions(G.data), helper = require("./modules/custom/service.js");
     helper.validateDefinition(options);
     const result = await helper.createCapability({ ...options, contents: options.content });
     await gamecoworkRefreshCustom(options.kind); return result;
   });
   n("custom/rename", async (G) => {
-    const options = await gamecoworkCustomOptions(G.data), result = await require("./gamecowork-custom.js").renameDefinition(options);
+    const options = await gamecoworkCustomOptions(G.data), result = await require("./modules/custom/service.js").renameDefinition(options);
     await gamecoworkRefreshCustom(options.kind); return result;
   });
   const gamecoworkDefinitionItems = async (kind, items) => Promise.all(items.map(async (item) => {
     if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return item;
     try {
       const options = await gamecoworkCustomOptions({ kind, name: item.name, scope: item.source === "user" ? "user" : "workspace", path: item.path });
-      const file = await require("./gamecowork-custom.js").readCapability(options);
+      const file = await require("./modules/custom/service.js").readCapability(options);
       return { ...item, managed: true, sha256: file.sha256 };
     } catch { return { ...item, managed: false }; }
   }));
   const gamecoworkDefinitionAction = async (kind, action, data) => {
     if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1") {
-      const helper = require("./gamecowork-custom.js"); helper.capabilityName(data.name); helper.scope(data.scope || "workspace");
+      const helper = require("./modules/custom/service.js"); helper.capabilityName(data.name); helper.scope(data.scope || "workspace");
       // Builtin/extension agents may be enabled, but cannot be written/deleted.
       if (data.path || data.expectedSha256) await helper.assertCapabilityVersion(await gamecoworkCustomOptions({ ...data, kind }));
       else {
@@ -336123,7 +336146,7 @@ function RZa(t, e) {
   };
   const gamecoworkDeleteDefinition = async (kind, data) => {
     if (process.env.GAMECOWORK_LOCAL_PROVIDER_MODE !== "1") return kind === "agents" ? t.deleteCustomSubagent(data.name, data.path) : t.runCliManageAction(kind, "delete", data.name, data.path);
-    const options = await gamecoworkCustomOptions({ ...data, kind }), result = await require("./gamecowork-custom.js").deleteDefinition(options);
+    const options = await gamecoworkCustomOptions({ ...data, kind }), result = await require("./modules/custom/service.js").deleteDefinition(options);
     await gamecoworkRefreshCustom(kind); return result;
   };
   (n("skills/reloadAcp", async (G) => {
@@ -336141,7 +336164,7 @@ function RZa(t, e) {
       let { content: b, fileName: h, scope: Z = "workspace" } = G.data,
         N = null;
       try {
-        const helper = require("./gamecowork-custom.js");
+        const helper = require("./modules/custom/service.js");
         helper.scope(Z);
         const R = helper.validateSkillUpload(b, h);
         const directory = await kp.promises.mkdtemp(ZV.join(helper.runtimeTemp(), "skill-upload-"));
@@ -339300,7 +339323,7 @@ function cya(t) {
 m();
 async function Iya(t, e) {
   if (!e) return;
-  if(e.extras?.officialModelId){require("./gamecowork-official-llm.js").selectionEnvironment(t.ide,e);t.activeOfficialModel=e.extras.officialModelId;t.activeCustomModel=void 0;t.resolveActiveSlotCustomModels(void 0);return;}
+  if(e.extras?.officialModelId){require("./modules/account/official-llm.js").selectionEnvironment(t.ide,e);t.activeOfficialModel=e.extras.officialModelId;t.activeCustomModel=void 0;t.resolveActiveSlotCustomModels(void 0);return;}
   t.activeOfficialModel=void 0;
   let n = e.extras?.customModelId;
   if (typeof n == "string" && n) {
@@ -339403,7 +339426,7 @@ var Cje = class {
               this.activeOfficialModel=u.config.selectedModelByRole.chat.extras?.officialModelId;let p = u.config.selectedModelByRole.chat,
                 G = p.title ?? "",
                 b = p.extras?.customModelId,
-                h = b ? q2(b) : G ? (q2(G) ?? oV().find((Z) => Z.displayName === G || Z.model === G)) : void 0;
+                h = p.extras?.officialModelId ? void 0 : b ? q2(b) : G ? (q2(G) ?? oV().find((Z) => Z.displayName === G || Z.model === G)) : void 0;
               ((this.activeCustomModel = h),
                 this.resolveActiveSlotCustomModels(h),
                 this.getWorkspaceCwd()
@@ -339650,7 +339673,9 @@ var Cje = class {
     async saveCheckpointThenApplyDeferredRestart(e) {
       return sGa(this, e);
     }
-    async *streamChatViaACPHandler(e, n, r, a) {e=await gcuStoredSessionMode(this,e,e.data.continueSessionId??e.messageId);
+    async *streamChatViaACPHandler(e, n, r, a) {if (n.signal.aborted) return gcuAcpChatCancelled(e);
+      e=await gcuStoredSessionMode(this,e,e.data.continueSessionId??e.messageId);
+      if (n.signal.aborted) return gcuAcpChatCancelled(e);
       let s = e.data.continueSessionId ?? e.messageId,
         l = (G) => (a?.length ? Sw(a, G) : G()),
         { config: o } = await this.configHandler.loadConfig(),
@@ -339660,20 +339685,24 @@ var Cje = class {
       } catch (G) {
         console.warn("[Core] Failed to sync active custom model for stream request:", G);
       }
+      if (n.signal.aborted) return gcuAcpChatCancelled(e);
       let I = Sx(e.data.memoryRWMode),
         u = await this.getOrCreateAcpEntry(s, {
           currentSelectedModel: c,
           reasoningEffort: e.data.reasoningEffort,
           memoryRWMode: I,
         });
+      if (n.signal.aborted) return gcuAcpChatCancelled(e);
       this.checkRestart(u, e) &&
         (u = await this.restartAcpProcessForSession(s, u, {
           currentSelectedModel: c,
           reasoningEffort: e.data.reasoningEffort,
           memoryRWMode: I,
         }));
+      if (n.signal.aborted) return gcuAcpChatCancelled(e);
       let d = this.getHolder(s),
         p = await d.queue.acquire();
+      if (n.signal.aborted) { p(); return gcuAcpChatCancelled(e); }
       try {
         let G = d.current;
         if (
@@ -339817,6 +339846,7 @@ var Cje = class {
             yield f.value,
             (u.lastUsedAt = Date.now()),
             (f = await R.next()));
+        if (f.value?.cancelled) return f.value;
         return (
           this.sendIdeNotificationIfEnabled({
             notificationId: Al(),
@@ -340386,7 +340416,7 @@ var Cje = class {
     runGameCoworkCliCommand(e, n, r, a = 3e4, s = 1e3, l) {
       return new Promise((o, c) => {
         console.debug(`[Core] Running capability CLI: ${n[0]} ${n[1] || ""}`);
-        const ownTemp = process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" ? require("./gamecowork-custom.js").runtimeTemp() : null;
+        const ownTemp = process.env.GAMECOWORK_LOCAL_PROVIDER_MODE === "1" ? require("./modules/custom/service.js").runtimeTemp() : null;
         let I = (0, dya.spawn)(e, n, {
             stdio: ["ignore", "pipe", "pipe"],
             env: { ...process.env, ...(ownTemp ? { TEMP: ownTemp, TMP: ownTemp } : {}), ...l },

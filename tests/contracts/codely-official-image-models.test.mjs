@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { MODELS, validatePayload, quoteFor, referenceSlots, minimalPayload } = require('../../src/core/binary/out/gamecowork-official-image-models.js');
+const { MODELS, validatePayload, quoteFor, referenceSlots, minimalPayload } = require('../../src/core/binary/out/modules/generation/models/official-image.js');
 const fixture = JSON.parse(fs.readFileSync(new URL('../fixtures/codely-generator-api-contract.json', import.meta.url), 'utf8'));
 const reference = 'http://127.0.0.1:41331/api/codely-generator/local-inputs/i_fixture/reference.png';
 const clone = value => JSON.parse(JSON.stringify(value));

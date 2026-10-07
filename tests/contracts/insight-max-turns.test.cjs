@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{randomUUID}=require('node:crypto');
-const repo=path.resolve(__dirname,'../..'),run=path.resolve(repo,'../../temp/GameCowork','insight-max-turns-contract-'+randomUUID());fs.mkdirSync(run,{recursive:true});
+const repo=path.resolve(__dirname,'../..'),run=path.resolve(repo,'codelyreversebackup/work','insight-max-turns-contract-'+randomUUID());fs.mkdirSync(run,{recursive:true});
 for(const file of['index.js','index.beautified.js']){
  const source=fs.readFileSync(path.join(repo,'src/core/binary/out',file),'utf8');
  const start=source.indexOf('var QP =')>=0?source.indexOf('var QP ='):source.indexOf('var QP=');

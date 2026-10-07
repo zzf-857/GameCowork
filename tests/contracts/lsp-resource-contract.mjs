@@ -76,7 +76,7 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
  const result=verifyLspResources(root),checks=['Frozen source/runtime/package/license closure and relative shim verified'];
  let output;
  if(args.includes('--self-test')){
-  output=path.join('F:/AI/AgentMake/temp/GameCowork/tests',`lsp-resources-${randomUUID()}`);
+  output=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests',`lsp-resources-${randomUUID()}`);
   const copy=path.join(output,'staging/lsp-csharp');fs.mkdirSync(path.dirname(copy),{recursive:true});
   if(process.platform==='win32'){
    const build=fs.readFileSync(path.join(project,'tools/build-local.ps1'),'utf8'),start=build.indexOf("$lspStaging = Join-Path $stagingRoot 'lsp-csharp'"),end=build.indexOf("if ($LASTEXITCODE -ne 0) { throw 'Staged C# LSP resources failed integrity checks.' }",start);

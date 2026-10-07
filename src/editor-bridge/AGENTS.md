@@ -2,7 +2,7 @@
 
 Follow the project AGENTS.md. This directory is GameCowork's own editable Unity UPM source, including stable Unity-generated `.meta` asset identities. Do not copy or install the original Codely bridge or modify the original application, Hub records, user projects, licenses or account state.
 
-All editor tests use a unique project under `F:\AI\AgentMake\temp\GameCowork\tests\editor-bridge-*`. Logs, Library, fixture scenes, compiler output and browser artifacts stay there. Use only an installed editor's existing license; a license failure is a failed/blocked live gate, not authorization to activate or log in. Cleanup verifies only the exact self-spawned editor PID and project path.
+All editor tests use a unique project under `F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work\tests\editor-bridge-*`. Logs, Library, fixture scenes, compiler output and browser artifacts stay there. Use only an installed editor's existing license; a license failure is a failed/blocked live gate, not authorization to activate or log in. Cleanup verifies only the exact self-spawned editor PID and project path.
 
 Keep per-stream ownership: at most six actual captures and 16 compound slots, immutable bounded latest-frame bytes, independent IDs/dimensions/input/leases, and selected actual editor instance identities. Compound receivers are namespaced by compositeId. Shared editor windows close only if created by the bridge and their final capture holder explicitly stops; lease expiry keeps windows open. Unsupported window slots must have honest reasons and must never be filled with mock editor UI.
 

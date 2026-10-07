@@ -12,7 +12,7 @@ import {readEditorIdentity} from '../support/editor-engine-fixture.mjs';
 
 const repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2);
 const option=(key,fallback)=>args.includes(key)?args[args.indexOf(key)+1]:fallback;
-const temp=path.resolve(repo,'../../temp/GameCowork');
+const temp=path.resolve(repo,'codelyreversebackup/work');
 const run=path.resolve(option('--output',path.join(temp,'template-details-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep),'Output stays in own temp');
 assert.ok(!fs.existsSync(run),'Each audit uses a new output directory');

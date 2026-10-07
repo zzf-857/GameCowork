@@ -3,7 +3,7 @@ import fs from 'node:fs';import path from 'node:path';import net from 'node:net'
 import {spawn,execFile} from 'node:child_process';import {promisify} from 'node:util';import {randomUUID,randomBytes,createHash} from 'node:crypto';import {fileURLToPath} from 'node:url';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),exec=promisify(execFile),option=(key,fallback)=>process.argv.includes(key)?process.argv[process.argv.indexOf(key)+1]:fallback;
 const editor=option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'),bridge=path.join(repo,'src/editor-bridge');
-const run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-bridge-scene-mutations-'+randomUUID()),project=path.join(run,'工程 写入'),checks=[],evidence=[];
+const run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-bridge-scene-mutations-'+randomUUID()),project=path.join(run,'工程 写入'),checks=[],evidence=[];
 const sha=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex'),alive=pid=>{try{process.kill(pid,0);return true;}catch(error){if(error.code==='ESRCH')return false;throw error;}};
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));let unity,failure,identity,sequence=0,transientReads=0;
 const check=(name,passed)=>{checks.push({name,passed:!!passed});assert.ok(passed,name);console.log(name+': PASS');};
@@ -22,7 +22,7 @@ async function observe(command='observe',output='observed.json'){const target=pa
 try{
  fs.mkdirSync(run,{recursive:true});for(const folder of ['Assets/Editor','Packages','ProjectSettings','Temp'])fs.mkdirSync(path.join(project,folder),{recursive:true});
  const editorDir=path.dirname(editor),managed=path.join(editorDir,'Data/Managed');
- const sources=fs.readdirSync(path.join(bridge,'Editor')).filter(file=>file.endsWith('.cs')).map(file=>path.join(bridge,'Editor',file));
+ const sources=fs.readdirSync(path.join(bridge,'Editor'),{recursive:true}).filter(file=>file.endsWith('.cs')).map(file=>path.join(bridge,'Editor',file));
  await exec(path.join(editorDir,'Data/MonoBleedingEdge/bin/mono.exe'),[path.join(editorDir,'Data/MonoBleedingEdge/lib/mono/4.5/mcs.exe'),'-target:library','-out:'+path.join(run,'GameCowork.EditorBridge.dll'),'-r:'+path.join(managed,'UnityEditor.dll'),'-r:'+path.join(managed,'UnityEngine.dll'),'-r:'+path.join(editorDir,'Data/MonoBleedingEdge/lib/mono/4.5/Facades/netstandard.dll'),...sources],{windowsHide:true});check('Actual installed Unity assemblies compile maintained bridge including mutations',true);
  fs.writeFileSync(path.join(project,'Packages/manifest.json'),JSON.stringify({dependencies:{'cn.gamecowork.bridge':'file:'+bridge.replaceAll('\\','/'),'com.unity.modules.imgui':'1.0.0'}}));fs.writeFileSync(path.join(project,'ProjectSettings/ProjectVersion.txt'),'m_EditorVersion: 2022.3.51f1c1\n');fs.copyFileSync(path.join(repo,'tests/fixtures/editor-scene-mutation-fixture.cs'),path.join(project,'Assets/Editor/GameCoworkSceneMutationFixture.cs'));
  unity=spawn(editor,['-batchmode','-nographics','-projectPath',project,'-executeMethod','GameCoworkSceneMutationFixture.Boot','-logFile',path.join(run,'editor.log')],{windowsHide:true,stdio:'ignore',env:{...cleanEnv(),UPM_CACHE_ROOT:path.join(run,'upm-cache'),UPM_NPM_CACHE_PATH:path.join(run,'upm-npm-cache')}});
@@ -58,5 +58,5 @@ try{
 }catch(error){failure={message:error.message,stack:error.stack};process.exitCode=1;console.error(error.message);}
 finally{
  if(unity&&alive(unity.pid)){fs.writeFileSync(path.join(project,'Temp/exit'),'');const end=Date.now()+15000;while(alive(unity.pid)&&Date.now()<end)await delay(100);if(alive(unity.pid)){const own=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command',`(Get-CimInstance Win32_Process -Filter 'ProcessId = ${unity.pid}').CommandLine`],{windowsHide:true});assert.ok(own.stdout.includes(project),'PID must still own this exact fixture');await exec('taskkill.exe',['/PID',String(unity.pid),'/T','/F'],{windowsHide:true});}}
- fs.writeFileSync(path.join(run,'summary.json'),JSON.stringify({passed:!failure,checks,failure,evidence,project,editor,editorPid:unity?.pid,ownEditorAlive:unity?alive(unity.pid):false,modelInvoked:false,transientReads,sourceSha256:createHash('sha256').update(fs.readFileSync(path.join(bridge,'Editor/EditorSceneMutations.cs'))).digest('hex')},null,2));console.log('Artifacts: '+run);
+ fs.writeFileSync(path.join(run,'summary.json'),JSON.stringify({passed:!failure,checks,failure,evidence,project,editor,editorPid:unity?.pid,ownEditorAlive:unity?alive(unity.pid):false,modelInvoked:false,transientReads,sourceSha256:createHash('sha256').update(fs.readFileSync(path.join(bridge,'Editor/Operations/EditorSceneMutations.cs'))).digest('hex')},null,2));console.log('Artifacts: '+run);
 }

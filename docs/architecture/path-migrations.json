@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-06",
+  "purpose": "Source, tools and maintained documentation paths; historical evidence remains at its original claims.",
+  "moves": [
+    {
+      "from": "src/core/binary/out/gamecowork-assets.js",
+      "to": "src/core/binary/out/modules/generation/service.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-codely-generator.js",
+      "to": "src/core/binary/out/modules/generation/codely-api.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-codely-official-generator.js",
+      "to": "src/core/binary/out/modules/generation/official-executor.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-generation-error-details.js",
+      "to": "src/core/binary/out/modules/generation/error-details.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-task-output.js",
+      "to": "src/core/binary/out/modules/generation/official-task-output.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-task-reconciliation.js",
+      "to": "src/core/binary/out/modules/generation/official-task-reconciliation.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-cpa-image-models.js",
+      "to": "src/core/binary/out/modules/generation/models/cpa-image.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-image-models.js",
+      "to": "src/core/binary/out/modules/generation/models/official-image.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-video-3d-models.js",
+      "to": "src/core/binary/out/modules/generation/models/official-video-3d.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-audio-text-models.js",
+      "to": "src/core/binary/out/modules/generation/models/official-audio-text.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-model-catalog.js",
+      "to": "src/core/binary/out/modules/generation/models/official-catalog.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-audio-media.js",
+      "to": "src/core/binary/out/modules/media/audio.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-hdr-media.js",
+      "to": "src/core/binary/out/modules/media/hdr.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-image-media.js",
+      "to": "src/core/binary/out/modules/media/image.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-jpeg-media.js",
+      "to": "src/core/binary/out/modules/media/jpeg.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-model-media.js",
+      "to": "src/core/binary/out/modules/media/model.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-codely-account.js",
+      "to": "src/core/binary/out/modules/account/broker.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-official-llm.js",
+      "to": "src/core/binary/out/modules/account/official-llm.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-provider-catalog.js",
+      "to": "src/core/binary/out/modules/providers/catalog.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-provider-registry.js",
+      "to": "src/core/binary/out/modules/providers/registry.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-provider-vault.js",
+      "to": "src/core/binary/out/modules/providers/vault.js"
+    },
+    {
+      "from": "src/core/binary/out/gamecowork-custom.js",
+      "to": "src/core/binary/out/modules/custom/service.js"
+    },
+    {
+      "from": "src/shell/src/codely_account.rs",
+      "to": "src/shell/src/account/codely.rs"
+    },
+    {
+      "from": "src/shell/src/codely_canvas.rs",
+      "to": "src/shell/src/assets/codely_canvas.rs"
+    },
+    {
+      "from": "src/shell/src/codely_http.rs",
+      "to": "src/shell/src/assets/codely_http.rs"
+    },
+    {
+      "from": "src/shell/src/generated_assets.rs",
+      "to": "src/shell/src/assets/exports.rs"
+    },
+    {
+      "from": "src/shell/src/transport.rs",
+      "to": "src/shell/src/core/transport.rs"
+    },
+    {
+      "from": "src/shell/src/git.rs",
+      "to": "src/shell/src/developer_tools/git.rs"
+    },
+    {
+      "from": "src/shell/src/insight.rs",
+      "to": "src/shell/src/developer_tools/insight.rs"
+    },
+    {
+      "from": "src/shell/src/lsp.rs",
+      "to": "src/shell/src/developer_tools/lsp.rs"
+    },
+    {
+      "from": "src/shell/src/terminals.rs",
+      "to": "src/shell/src/developer_tools/terminals.rs"
+    },
+    {
+      "from": "src/shell/src/editor_bridge.rs",
+      "to": "src/shell/src/editor/bridge.rs"
+    },
+    {
+      "from": "src/shell/src/editor_installations.rs",
+      "to": "src/shell/src/editor/installations.rs"
+    },
+    {
+      "from": "src/shell/src/editor_installations_cache.rs",
+      "to": "src/shell/src/editor/installation_cache.rs"
+    },
+    {
+      "from": "src/shell/src/editor_licensing.rs",
+      "to": "src/shell/src/editor/licensing.rs"
+    },
+    {
+      "from": "src/shell/src/project_templates.rs",
+      "to": "src/shell/src/editor/project_templates.rs"
+    },
+    {
+      "from": "src/shell/src/stream_layout.rs",
+      "to": "src/shell/src/editor/stream_layout.rs"
+    },
+    {
+      "from": "src/shell/src/keep_awake.rs",
+      "to": "src/shell/src/platform/keep_awake.rs"
+    },
+    {
+      "from": "src/shell/src/native_window.rs",
+      "to": "src/shell/src/platform/native_window.rs"
+    },
+    {
+      "from": "src/shell/src/native_window.js",
+      "to": "src/shell/src/platform/native_window.js"
+    },
+    {
+      "from": "src/shell/src/process_lifetime.rs",
+      "to": "src/shell/src/platform/process_lifetime.rs"
+    },
+    {
+      "from": "src/shell/src/single_instance.rs",
+      "to": "src/shell/src/platform/single_instance.rs"
+    },
+    {
+      "from": "src/shell/src/file_events.rs",
+      "to": "src/shell/src/workspace/file_events.rs"
+    },
+    {
+      "from": "src/shell/src/files.rs",
+      "to": "src/shell/src/workspace/files.rs"
+    },
+    {
+      "from": "src/shell/src/mutations.rs",
+      "to": "src/shell/src/workspace/mutations.rs"
+    },
+    {
+      "from": "src/shell/src/workspaces.rs",
+      "to": "src/shell/src/workspace/registry.rs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/Bridge.cs",
+      "to": "src/editor-bridge/Editor/Transport/Bridge.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/Bridge.cs.meta",
+      "to": "src/editor-bridge/Editor/Transport/Bridge.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/LocalServer.cs",
+      "to": "src/editor-bridge/Editor/Transport/LocalServer.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/LocalServer.cs.meta",
+      "to": "src/editor-bridge/Editor/Transport/LocalServer.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorCapture.cs",
+      "to": "src/editor-bridge/Editor/Capture/EditorCapture.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorCapture.cs.meta",
+      "to": "src/editor-bridge/Editor/Capture/EditorCapture.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/PreviewStreams.cs",
+      "to": "src/editor-bridge/Editor/Capture/PreviewStreams.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/PreviewStreams.cs.meta",
+      "to": "src/editor-bridge/Editor/Capture/PreviewStreams.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/FrameGeometry.cs",
+      "to": "src/editor-bridge/Editor/Capture/FrameGeometry.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/FrameGeometry.cs.meta",
+      "to": "src/editor-bridge/Editor/Capture/FrameGeometry.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/GenericWindowHost.cs",
+      "to": "src/editor-bridge/Editor/Capture/GenericWindowHost.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/GenericWindowHost.cs.meta",
+      "to": "src/editor-bridge/Editor/Capture/GenericWindowHost.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorReadOnly.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorReadOnly.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorReadOnly.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorReadOnly.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorSceneQueries.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorSceneQueries.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorSceneQueries.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorSceneQueries.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorContextQueries.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorContextQueries.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorContextQueries.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorContextQueries.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorAssetQueries.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorAssetQueries.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorAssetQueries.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorAssetQueries.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorPackageQueries.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorPackageQueries.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorPackageQueries.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorPackageQueries.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorConsole.cs",
+      "to": "src/editor-bridge/Editor/Queries/EditorConsole.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorConsole.cs.meta",
+      "to": "src/editor-bridge/Editor/Queries/EditorConsole.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorControl.cs",
+      "to": "src/editor-bridge/Editor/Operations/EditorControl.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorControl.cs.meta",
+      "to": "src/editor-bridge/Editor/Operations/EditorControl.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorSceneMutations.cs",
+      "to": "src/editor-bridge/Editor/Operations/EditorSceneMutations.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorSceneMutations.cs.meta",
+      "to": "src/editor-bridge/Editor/Operations/EditorSceneMutations.cs.meta"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorCancellation.cs",
+      "to": "src/editor-bridge/Editor/Operations/EditorCancellation.cs"
+    },
+    {
+      "from": "src/editor-bridge/Editor/EditorCancellation.cs.meta",
+      "to": "src/editor-bridge/Editor/Operations/EditorCancellation.cs.meta"
+    },
+    {
+      "from": "tools/restore-cli-entry.mjs",
+      "to": "tools/resources/restore-agent-entry.mjs"
+    },
+    {
+      "from": "tools/extract-cli-text-assets.mjs",
+      "to": "tools/resources/extract-agent-text.mjs"
+    },
+    {
+      "from": "tools/restore-insight-resources.mjs",
+      "to": "tools/resources/restore-insight.mjs"
+    },
+    {
+      "from": "tools/import-codely-generator.mjs",
+      "to": "tools/frontend/import-generator.mjs"
+    },
+    {
+      "from": "tools/verify-codely-canvas-source.mjs",
+      "to": "tools/frontend/verify-canvas-source.mjs"
+    },
+    {
+      "from": "tools/prepare-template-test-cache.py",
+      "to": "tools/editor/prepare-template-cache.py"
+    },
+    {
+      "from": "tools/scan-host-contracts.mjs",
+      "to": "tools/analysis/scan-protocol-surface.mjs"
+    },
+    {
+      "from": "docs/ARCHITECTURE.md",
+      "to": "docs/architecture/overview.md"
+    },
+    {
+      "from": "docs/DEVELOPMENT.md",
+      "to": "docs/development/guide.md"
+    },
+    {
+      "from": "docs/PACKAGING.md",
+      "to": "docs/development/packaging.md"
+    },
+    {
+      "from": "docs/UNITY_INTEGRATION.md",
+      "to": "docs/editor/integration.md"
+    },
+    {
+      "from": "docs/DUAL_ENGINE_MULTI_PROJECT.md",
+      "to": "docs/editor/multi-project.md"
+    }
+  ],
+  "archiveManifest": "codelyreversebackup/history/organization/2026-10-06-archive-migrations.json"
+}

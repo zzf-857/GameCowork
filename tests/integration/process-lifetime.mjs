@@ -23,7 +23,7 @@ async function until(predicate, message) {
 
 test("Windows job closes core and later descendants when only the shell is terminated", { skip: process.platform !== "win32" }, async () => {
   assert.ok(fs.existsSync(binary), `Build the Rust shell first: ${binary}`);
-  const dataDir = path.join("F:/AI/AgentMake/temp/GameCowork/tests", `process-lifetime-${randomUUID()}`);
+  const dataDir = path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests", `process-lifetime-${randomUUID()}`);
   const coreDir = path.join(dataDir, "fixture-core");
   fs.mkdirSync(coreDir, { recursive: true });
   const entry = path.join(dataDir, `core-entry-${randomUUID()}.mjs`);

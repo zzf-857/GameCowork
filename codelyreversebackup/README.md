@@ -1,13 +1,15 @@
 # codelyreversebackup — 原版 Codely 功能提取库
 
+2026-10-06 目录导航：原始桥、协议、字符串、模块窗口和来源 manifest 保留现有功能分组及字节；旧研究计划进入 [history/plans/](history/plans/README.md)，归档路径和 SHA-256 见 [history/organization/](history/organization/README.md)。用户指定的本轮临时脚本、日志、研究中间稿与验证输出进入 `work/2026-10-06-organization/`，由 Git 忽略。实际维护输入在 `src/`，当前功能进度只见 [RESTORE_STATUS.md](../RESTORE_STATUS.md)。
+
 > 2026-10-02 原包复核补充：[真实资产生成与画布来源审计](api/asset-generation-and-canvas-source-audit.md)直接读取实际原 EXE / 随包资源，并沿原包引用取得匿名公开客户端。旧 T1–T17 中部分结论来自已改动的维护副本；T17 的七条新增字符串不能归因于原厂 canary.2。“下轮候选清空 / 提取闭环”不覆盖真实远端生成、Canvas 内部和服务端。后续以逐项来源、SHA 和可复核行为为准。
 
 > 提取日期: 2026-10-01 · 来源: `original/` 只读镜像 + 本机 PackageCache
-> 用途: 按 [HANDOFF.md](../HANDOFF.md) §4/§5 的未完成项，从原版继续反编译功能逻辑，
+> 用途: 按 [HANDOFF.md](../docs/history/HANDOFF.md) §4/§5 的未完成项，从原版继续反编译功能逻辑，
 > 供 GameCowork 自研直接取用，减少重复开发。所有原版资产只读参考、记录来源/SHA，
 > 不得改名分发（见项目 AGENTS.md 隔离规则）。
 >
-> **➡ 后续执行入口: [REVERSE-PLAN.md](REVERSE-PLAN.md)（2026-10-01 制定）**
+> **历史提取计划: [原 REVERSE-PLAN.md](history/plans/2026-10-01-reverse-extraction.md)（2026-10-01 制定；已归档）**
 > 已完成侦察并内嵌成果：壳的 52 个自有 Rust 模块清单（含 LSP 7 模块、frp/tunnel 远程三件套、
 > pet/drill/push）、LicensingClient .NET 关键类型、方法工具箱（M1-M6）与任务单 T1-T5。
 > 执行 agent 按任务单串行领取即可，**不要重做侦察**。

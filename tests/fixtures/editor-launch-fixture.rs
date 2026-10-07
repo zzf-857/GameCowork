@@ -6,7 +6,7 @@ fn main() {
     let Some(index) = args.iter().position(|arg| arg == "-projectPath") else { std::process::exit(2); };
     let Some(project) = args.get(index + 1) else { std::process::exit(2); };
     let root = fs::canonicalize(project).expect("fixture project exists");
-    let base = fs::canonicalize(PathBuf::from(r"F:\AI\AgentMake\temp\GameCowork\tests")).expect("fixture base exists");
+    let base = fs::canonicalize(PathBuf::from(r"F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work\tests")).expect("fixture base exists");
     assert!(root.starts_with(base), "fake editor only accepts isolated fixture projects");
     fs::write(root.join("fixture-editor-ready.pid"), std::process::id().to_string()).unwrap();
     loop { std::thread::sleep(Duration::from_secs(1)); }

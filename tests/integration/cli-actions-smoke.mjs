@@ -13,7 +13,7 @@ const packageIndex=process.argv.indexOf('--package');
 assert.ok(packageIndex>=0&&process.argv[packageIndex+1], 'Pass --package with a guarded CLI.');
 const pkg=path.resolve(process.argv[packageIndex+1]);
 assert.equal(JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8')).testGuardIncluded,true);
-const root=path.resolve('F:/AI/AgentMake/temp/GameCowork',`cli-actions-${randomUUID()}`);
+const root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work',`cli-actions-${randomUUID()}`);
 const workspace=path.join(root,'workspace');
 for(const directory of[workspace,path.join(root,'cli-state'),path.join(root,'user-state')])fs.mkdirSync(directory,{recursive:true});
 fs.mkdirSync(path.join(workspace,'.gamecowork-cli'));

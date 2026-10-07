@@ -1,5 +1,5 @@
 import fs from 'node:fs';import test from 'node:test';import assert from 'node:assert/strict';
-const source=fs.readFileSync(new URL('../../src/editor-bridge/Editor/EditorContextQueries.cs',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL('../../src/editor-bridge/Editor/Queries/EditorContextQueries.cs',import.meta.url),'utf8');
 test('Context route reuses both established root/selection handlers and exposes exact read actions',()=>{
  for(const action of ['get_selection','get_project_root','get_windows','get_tags','get_layers','get_active_tool'])assert.ok(source.includes('"'+action+'"'));
  assert.match(source,/EditorReadOnly\.Invoke\("manage_editor", action\)/);assert.match(source,/default: throw new NotSupportedException/);
@@ -13,5 +13,5 @@ test('Collection/geometry/response bounds are explicit and windows report actual
  assert.match(source,/instanceID = id, instanceId = id/);assert.match(source,/EditorWindow\.focusedWindow == window/);assert.match(source,/customToolUnavailableReason/);
 });
 test('New Context source has a valid stable Unity import identity',()=>{
- const meta=fs.readFileSync(new URL('../../src/editor-bridge/Editor/EditorContextQueries.cs.meta',import.meta.url),'utf8');assert.match(meta,/^guid: [a-f0-9]{32}$/m);
+ const meta=fs.readFileSync(new URL('../../src/editor-bridge/Editor/Queries/EditorContextQueries.cs.meta',import.meta.url),'utf8');assert.match(meta,/^guid: [a-f0-9]{32}$/m);
 });

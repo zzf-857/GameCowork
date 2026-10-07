@@ -1,26 +1,50 @@
 // GameCowork local desktop host. HTTP, core stdio and workspace state share one contract.
+// Domain paths organize maintained inputs while preserving crate module names.
+#[path = "account/codely.rs"]
 mod codely_account;
+#[path = "assets/codely_canvas.rs"]
 mod codely_canvas;
+#[path = "assets/codely_http.rs"]
 mod codely_http;
+#[path = "editor/bridge.rs"]
 mod editor_bridge;
+#[path = "editor/installations.rs"]
 mod editor_installations;
+#[path = "editor/installation_cache.rs"]
 mod editor_installations_cache;
+#[path = "editor/licensing.rs"]
 mod editor_licensing;
+#[path = "workspace/file_events.rs"]
 mod file_events;
+#[path = "workspace/files.rs"]
 mod files;
+#[path = "assets/exports.rs"]
 mod generated_assets;
+#[path = "developer_tools/git.rs"]
 mod git;
+#[path = "developer_tools/insight.rs"]
 mod insight;
+#[path = "platform/keep_awake.rs"]
 mod keep_awake;
+#[path = "developer_tools/lsp.rs"]
 mod lsp;
+#[path = "workspace/mutations.rs"]
 mod mutations;
+#[path = "platform/native_window.rs"]
 mod native_window;
+#[path = "platform/process_lifetime.rs"]
 mod process_lifetime;
+#[path = "editor/project_templates.rs"]
 mod project_templates;
+#[path = "platform/single_instance.rs"]
 mod single_instance;
+#[path = "editor/stream_layout.rs"]
 mod stream_layout;
+#[path = "developer_tools/terminals.rs"]
 mod terminals;
+#[path = "core/transport.rs"]
 mod transport;
+#[path = "workspace/registry.rs"]
 mod workspaces;
 
 use axum::{
@@ -3647,7 +3671,9 @@ mod mutation_scope_tests {
     use super::*;
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn closing_waits_for_inflight_disk_write_and_rejects_stale_queued_write() {
-        let base = PathBuf::from(r"F:\AI\AgentMake\temp\GameCowork\tests");
+        let base = PathBuf::from(
+            r"F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work\tests",
+        );
         let run = base.join(format!("scope-lease-{}", uuid::Uuid::new_v4()));
         let project = run.join("workspace");
         std::fs::create_dir_all(&project).unwrap();
@@ -3871,7 +3897,7 @@ fn main() {
         })
         .with_initialization_script(&format!(
             "window.GAMECOWORK_FRAMELESS_WINDOW={frameless};\n{}",
-            include_str!("native_window.js")
+            include_str!("platform/native_window.js")
         ))
         .with_ipc_handler(move |request| {
             if request.uri().scheme_str() != Some("http")

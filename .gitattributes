@@ -6,6 +6,16 @@
 /vendor/csharp-lsp/LICENSE -text
 /src/agent/resources/** -text
 /src/unity-insight/resources/** -text
+# Keep Unity's generated empty-field whitespace and metadata bytes intact.
+/src/editor-bridge/Editor/**/*.meta -text -whitespace
+# Archived migrations record original bytes; preserve them on future checkouts.
+/research/protocols/codely-account-protocol.md -text
+/research/frontend/frontend-package.reference.json -text
+/research/tauri-shell/evidence/invoke-targets.txt -text
+/codelyreversebackup/history/plans/** -text
+/tools/research/extraction/** -text
+/tools/research/probes/** -text
+/tools/research/migration/** -text
 /codelyreversebackup_fromunityhub/source-fragments/** -text
 /codelyreversebackup_fromunityhub/reusable/** -text
 /src/frontend/bundle/codely-generator/** -text
@@ -20,3 +30,6 @@
 /src/frontend/bundle/assets/index-DvRYaIVa.js -text
 /src/frontend/bundle/assets/RightSideBarPanel-JSPvAs5c.js -text
 /src/frontend/bundle/assets/RightSideBarPanel-B2OWNNNX.js -text
+/src/frontend/bundle/assets/VscTheme-BExNMG_K.js -text
+/src/frontend/bundle/assets/VscTheme-B-CSeuv5.js -text
+/src/frontend/bundle/assets/gamecowork-account-display.js -text

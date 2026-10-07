@@ -1,6 +1,6 @@
 import fs from 'node:fs';import path from 'node:path';import test from 'node:test';import assert from 'node:assert/strict';import {createRequire} from 'node:module';import {randomUUID,createHash} from 'node:crypto';
 import {startAssetGenerationProvider,createOwnedGenerationMedia} from '../fixtures/asset-generation-provider-fixture.mjs';
-const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js'),root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-auth-'+randomUUID()),media=createOwnedGenerationMedia(root),sha=value=>createHash('sha256').update(value).digest('hex');
+const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/modules/generation/service.js'),root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-auth-'+randomUUID()),media=createOwnedGenerationMedia(root),sha=value=>createHash('sha256').update(value).digest('hex');
 for(const authMode of ['none','header'])test('Actual custom REST '+authMode+' authentication yields real image bytes without key-bearing DTOs',async()=>{
  const provider=await startAssetGenerationProvider({root:path.join(root,authMode),media,authMode,apiKeyHeader:'X-Owned-Custom-Key',plans:{OWN_AUTH:{kind:'image',base64:true}}}),service=createAssetService({root:path.join(root,authMode,'runtime/generator'),pollIntervalMs:25,requestTimeoutMs:1000});
  try{

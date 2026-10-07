@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),zlib=require('node:zlib');
-const {inspectModelMedia:inspect}=require('../../src/core/binary/out/gamecowork-model-media.js');
+const {inspectModelMedia:inspect}=require('../../src/core/binary/out/modules/media/model.js');
 const obj=Buffer.from('# own triangle\nv 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n');
 const fbxText=Buffer.from('; FBX 7.4.0 project file\nFBXHeaderExtension: {\n FBXVersion: 7400\n}\nObjects: {\n Model: 1, "Model::Cube", "Mesh" {\n }\n}\n');
 const usda=Buffer.from('#usda 1.0\ndef Mesh "Triangle" {\n point3f[] points = [(0,0,0), (1,0,0), (0,1,0)]\n int[] faceVertexCounts = [3]\n int[] faceVertexIndices = [0,1,2]\n}\n');

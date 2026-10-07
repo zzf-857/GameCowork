@@ -15,7 +15,7 @@ if (controlFile) assertOwned(controlFile);
 const projects = new Map();
 const write = message => process.stdout.write(JSON.stringify(message) + "\r");
 const log = message => fs.appendFileSync(logFile, JSON.stringify({ event: "received", frame: message, handledBy: "editor-view-discovery-core" }) + "\n");
-function assertOwned(value) { if (!value.toLowerCase().startsWith(path.resolve("F:/AI/AgentMake/temp/GameCowork").toLowerCase() + path.sep)) throw new Error("Discovery fixture must remain below temp/GameCowork"); }
+function assertOwned(value) { if (!value.toLowerCase().startsWith(path.resolve("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work").toLowerCase() + path.sep)) throw new Error("Discovery fixture must remain below temp/GameCowork"); }
 function success(message, content) { write({ ...message, data: { done: true, status: "success", content } }); }
 function history(workspaceId, project) {
   const sessionId = "fixture-view-" + createHash("sha256").update(workspaceId).digest("hex").slice(0, 16);

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { insightHome, indexDirectory } from '../../src/unity-insight/bundle/gamecowork-worker-paths.js';
 const project=fileURLToPath(new URL('../../',import.meta.url)),source=path.join(project,'src/unity-insight');
-const run=path.resolve(project,'../../temp/GameCowork','insight-contract-'+randomUUID()),fixture=path.join(run,'project'),cache=path.join(run,'cache'),outside=path.join(run,'outside');
+const run=path.resolve(project,'codelyreversebackup/work','insight-contract-'+randomUUID()),fixture=path.join(run,'project'),cache=path.join(run,'cache'),outside=path.join(run,'outside');
 for(const directory of[fixture,cache,outside])fs.mkdirSync(directory,{recursive:true});
 const manifest=JSON.parse(fs.readFileSync(path.join(source,'resources/restore-manifest.json')));
 for(const asset of manifest.assets){const bytes=fs.readFileSync(path.join(source,'resources',asset.path));assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256);if(asset.path.endsWith('.wasm'))assert.ok(WebAssembly.validate(bytes));}

@@ -10,7 +10,7 @@ import { randomUUID } from "node:crypto";
 import { dismissToastStack } from "../support/dismiss-toast-stack.mjs";
 const project = fileURLToPath(new URL("../../", import.meta.url)), args = process.argv.slice(2);
 function option(name, fallback) { const index = args.indexOf(name); return index < 0 ? fallback : args[index + 1]; }
-const temp = path.resolve(project, "../../temp/GameCowork"), run = path.resolve(option("--output", path.join(temp, "editor-licensing-" + randomUUID())));
+const temp = path.resolve(project, "codelyreversebackup/work"), run = path.resolve(option("--output", path.join(temp, "editor-licensing-" + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep));
 const previous = args.includes("--previous"), binary = path.resolve(option("--binary", path.join(project, "src/shell/target/debug/GameCowork.exe")));
 const frontend = path.resolve(option("--frontend", path.join(project, "src/frontend/bundle"))), snapshotFile = path.join(run, "hub-fixture.json"), workspace = path.join(run, "projects/FixtureUnity");

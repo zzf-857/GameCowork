@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
-const {inspectJpegMedia} = require('../../src/core/binary/out/gamecowork-jpeg-media.js');
+const {inspectJpegMedia} = require('../../src/core/binary/out/modules/media/jpeg.js');
 const fixture = require('../fixtures/codely-jpeg-media.json');
 const source = name => Buffer.from(fixture.files[name].base64, 'base64');
 const segment = (marker, body) => { const head = Buffer.from([255,marker,0,0]); head.writeUInt16BE(body.length + 2,2); return Buffer.concat([head,body]); };

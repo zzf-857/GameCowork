@@ -79,7 +79,7 @@ public static class GameCoworkQueriesPreflight
     public static void Run()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-queries-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Query fixture must stay in its unique temp project");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-queries-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Query fixture must stay in its unique temp project");
         var report = new Report { projectRoot = root, unityVersion = Application.unityVersion, pid = Process.GetCurrentProcess().Id };
         try {
             var a = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);

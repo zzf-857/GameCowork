@@ -8,7 +8,7 @@ import {randomUUID,createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {readEditorIdentity,prepareEngineFixture} from '../support/editor-engine-fixture.mjs';
-const repo=fileURLToPath(new URL('../../',import.meta.url)),run=path.resolve(repo,'../../temp/GameCowork/tests','editor-bridge-engine-prepare-'+randomUUID());
+const repo=fileURLToPath(new URL('../../',import.meta.url)),run=path.resolve(repo,'codelyreversebackup/work/tests','editor-bridge-engine-prepare-'+randomUUID());
 const editor='E:/TuanJieAllVersion/2022.3.62t16/Editor/Tuanjie.exe';
 const identity=readEditorIdentity(editor),source=path.join(run,'native-template-source');
 const unityIdentity=readEditorIdentity('F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe');

@@ -6,7 +6,7 @@ import { randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
 
 const dataDir = path.resolve(process.env.GAMECOWORK_FIXTURE_DATA_DIR || process.env.GAMECOWORK_DATA_DIR || "");
-const allowed = path.resolve("F:/AI/AgentMake/temp/GameCowork");
+const allowed = path.resolve("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work");
 if (!dataDir.toLowerCase().startsWith(allowed.toLowerCase() + path.sep)) {
   throw new Error("Core fixture requires an isolated temp/GameCowork directory");
 }

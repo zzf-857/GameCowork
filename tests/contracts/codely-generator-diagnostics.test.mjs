@@ -7,8 +7,8 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
 const require = createRequire(import.meta.url);
-const {createCodelyAccountBroker} = require('../../src/core/binary/out/gamecowork-codely-account.js');
-const {minimalPayload} = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
+const {createCodelyAccountBroker} = require('../../src/core/binary/out/modules/account/broker.js');
+const {minimalPayload} = require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
 const SECRET = {access: 'diag-access/+/Fixture~', refresh: 'diag-refresh+++token', cookie: 'diag-site-session-abc123', csrf: 'cS4!'};
 const secrets = Object.values(SECRET);
 const historyQuery = {startTime: '2026-10-03T00:00:00.000Z', endTime: '2026-10-03T02:00:00.000Z', page: 1, pageSize: 100};
@@ -24,7 +24,7 @@ function expanded(value, depth = 0) {
 function assertSecretFree(value) { const exposed = JSON.stringify(expanded(value)); for (const secret of secrets) assert.equal(exposed.includes(secret), false, 'Synthetic private credential stays redacted after consumer decoding'); }
 
 async function fixture(t, options = {}) {
-  const directory = fs.mkdtempSync('F:/AI/AgentMake/temp/GameCowork/generator-diagnostics-');
+  const directory = fs.mkdtempSync('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/generator-diagnostics-');
   const key = crypto.randomBytes(32), calls = [], events = [], logs = [], overrides = new Map();
   const vault = {
     async seal(bytes) { const iv = crypto.randomBytes(12), cipher = crypto.createCipheriv('aes-256-gcm', key, iv), encrypted = Buffer.concat([cipher.update(bytes), cipher.final()]); return Buffer.concat([iv, cipher.getAuthTag(), encrypted]); },
@@ -76,9 +76,33 @@ for (const status of [400, 422]) test(`HTTP ${status} preserves a bounded valida
 
 test('only whitelisted validation fields are relayed, including a single data envelope', async t => {
   const f = await fixture(t);
-  f.overrides.set('/api/sso/generate', (_call,response) => response.writeHead(400).end(JSON.stringify({data: {message: 'unsupported duration', error: {message: 'wrong format', stack: 'private-stack'}, code: 17}, error: 'unwhitelisted raw error', target: 'unwhitelisted raw target', reason: 'unwhitelisted raw reason'})));
+  f.overrides.set('/api/sso/generate', (_call,response) => response.writeHead(400).end(JSON.stringify({data: {message: 'unsupported duration', error: {message: 'wrong format', stack: 'private-stack'}, code: 17}, error: 'Unsupported original model kind', target: 'qwen-image', reason: 'unwhitelisted raw reason'})));
   const error = await capture(f.broker.generatorGenerate('frontier_flare', {}));
-  assert.equal(error.safeDiagnostic, 'unsupported duration; wrong format; code: 17'); assert.doesNotMatch(error.message, /private-stack|unwhitelisted/);
+  assert.equal(error.safeDiagnostic, 'Unsupported original model kind; qwen-image; unsupported duration; wrong format; code: 17'); assert.doesNotMatch(error.message, /private-stack|unwhitelisted/);
+});
+
+for(const status of [400,422]) for(const field of ['error','msg','target']) test(`HTTP ${status} preserves original Quick ${field} string diagnostics without secrets or POST replay`,async t=>{
+  const f=await fixture(t),message=`Original model kind was rejected ${SECRET.access} ${percent(SECRET.cookie)}`;
+  f.overrides.set('/api/sso/generate',(_call,response)=>response.writeHead(status).end(JSON.stringify({data:{[field]:message},debug:'unselected-private-debug',access_token:'unselected-private-token'})));
+  const error=await capture(f.broker.generatorGenerate('frontier_flare',minimalPayload('frontier_flare')));
+  assert.equal(error.httpStatus,status);assert.equal(error.submissionUnknown,true);assert.match(error.safeDiagnostic,/Original model kind was rejected/);assert.match(error.safeDiagnostic,/\[redacted\]/);
+  assertSecretFree({message:error.message,safeDiagnostic:error.safeDiagnostic,stack:error.stack});
+  assert.doesNotMatch(error.message,/unselected-private/);assert.equal(f.count('/api/sso/generate'),1);
+});
+
+test('JSON message follows only original Quick diagnostic leaves and never exposes encoded debug objects',async t=>{
+  const f=await fixture(t);
+  for(const field of ['error','message','msg','target']) {
+    f.overrides.set('/api/sso/generate',(_call,response)=>response.writeHead(400).end(JSON.stringify({message:JSON.stringify({[field]:'Original size is not supported',debug:'unselected-private-debug',access_token:'unselected-private-token'})})));
+    const error=await capture(f.broker.generatorGenerate('frontier_flare',minimalPayload('frontier_flare')));
+    assert.equal(error.safeDiagnostic,'Original size is not supported');assert.doesNotMatch(error.message,/unselected-private|[{}]/);
+  }
+  for(const message of [JSON.stringify({debug:'unselected-private-debug',echo:SECRET.cookie}),'{broken-private-json',JSON.stringify(['unselected-private-debug'])]) {
+    f.overrides.set('/api/sso/generate',(_call,response)=>response.writeHead(400).end(JSON.stringify({message})));
+    const error=await capture(f.broker.generatorGenerate('frontier_flare',minimalPayload('frontier_flare')));
+    assert.equal(error.safeDiagnostic,undefined);assert.equal(error.message,'Official generator request failed (400)');assertSecretFree(error.message);
+  }
+  assert.equal(f.count('/api/sso/generate'),7,'Every explicit fixture request submits once; no automatic replay');
 });
 
 for (const [name, status, body] of [
@@ -163,7 +187,7 @@ test('explicit cancellation settles a stalled self-history body without POST or 
 });
 
 test('the history capability remains a private facade method without renderer registration', () => {
-  const source = fs.readFileSync(new URL('../../src/core/binary/out/gamecowork-codely-account.js', import.meta.url), 'utf8');
+  const source = fs.readFileSync(new URL('../../src/core/binary/out/modules/account/broker.js', import.meta.url), 'utf8');
   assert.match(source, /generatorTaskHistory: \(query, signal\) => wiring\.broker\.generatorTaskHistory\(query, signal\)/);
   const handlers = [...source.matchAll(/messenger\.on\("([^"]+)"/g)].map(match => match[1]);
   assert.equal(handlers.some(route => /generator.*history|history.*generator/i.test(route)), false);

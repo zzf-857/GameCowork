@@ -10,7 +10,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {readEditorIdentity} from '../support/editor-engine-fixture.mjs';
 const repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2),option=(key,fallback)=>args.includes(key)?args[args.indexOf(key)+1]:fallback;
-const previous=args.includes('--previous'),packaged=args.includes('--packaged'),temp=path.resolve(repo,'../../temp/GameCowork'),run=path.resolve(option('--output',path.join(temp,'editor-installations-presentation-'+randomUUID())));
+const previous=args.includes('--previous'),packaged=args.includes('--packaged'),temp=path.resolve(repo,'codelyreversebackup/work'),run=path.resolve(option('--output',path.join(temp,'editor-installations-presentation-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep));assert.equal(fs.existsSync(run),false,'Fresh owned matrix root required');
 const frontend=path.join(repo,packaged?'app/frontend':'src/frontend/bundle'),binary=path.resolve(option('--binary',path.join(repo,packaged?'app/GameCowork.exe':'src/shell/target/debug/GameCowork.exe')));
 const installed=[readEditorIdentity('F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'),readEditorIdentity('E:/TuanJieAllVersion/2022.3.38t2/Editor/Tuanjie.exe'),readEditorIdentity('E:/TuanJieAllVersion/2022.3.62t16/Editor/Tuanjie.exe')];

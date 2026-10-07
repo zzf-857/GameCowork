@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {createHash} = require('node:crypto');
-const {MODELS, validatePayload, quoteFor, referenceSlots, minimalPayload, structuredOutput} = require('../../src/core/binary/out/gamecowork-official-audio-text-models.js');
+const {MODELS, validatePayload, quoteFor, referenceSlots, minimalPayload, structuredOutput} = require('../../src/core/binary/out/modules/generation/models/official-audio-text.js');
 const contract = require('../fixtures/codely-generator-api-contract.json');
 const media = {images: ['http://127.0.0.1:4321/owned/input.png'], videos: ['http://127.0.0.1:4321/owned/input.mp4'], audios: ['http://127.0.0.1:4321/owned/input.wav']};
 

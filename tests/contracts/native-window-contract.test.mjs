@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-const source=fs.readFileSync(new URL('../../src/shell/src/native_window.js',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL('../../src/shell/src/platform/native_window.js',import.meta.url),'utf8');
 function fixture(pathname='/gui.html',frameless=true){
   const handlers={},requests=[],window={GAMECOWORK_FRAMELESS_WINDOW:frameless,addEventListener:(type,handler)=>handlers[type]=handler};
   const location={protocol:'http:',hostname:'127.0.0.1',origin:'http://127.0.0.1:31000',pathname};

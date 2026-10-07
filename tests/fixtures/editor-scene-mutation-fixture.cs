@@ -19,14 +19,14 @@ public static class GameCoworkSceneMutationFixture
     [InitializeOnLoadMethod] static void ResumeAfterReload()
     {
         string ownRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!ownRoot.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-scene-mutations-", StringComparison.OrdinalIgnoreCase) || !File.Exists(ownRoot + "/Temp/reload-started")) return;
+        if (!ownRoot.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-scene-mutations-", StringComparison.OrdinalIgnoreCase) || !File.Exists(ownRoot + "/Temp/reload-started")) return;
         root = ownRoot; reloaded = true; started = EditorApplication.timeSinceStartup; EditorApplication.update += Tick;
         File.WriteAllText(root + "/Temp/reload-resumed", "resumed");
     }
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-scene-mutations-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own mutation fixture scope required");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-scene-mutations-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own mutation fixture scope required");
         Directory.CreateDirectory(root + "/Assets/Scenes");
         sceneA = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         parent = new GameObject("MutationParent"); parent.transform.position = new Vector3(10, 20, 30);

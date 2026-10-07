@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-06",
+  "purpose": "Historical research file organization; no product functionality changed by these moves.",
+  "originalBytesPreserved": true,
+  "oldLinkBaseRule": "Relative links inside byte-preserved historical documents are interpreted at their original oldPath; use current README indexes and this mapping for navigation.",
+  "untouchedReferences": [
+    "original/",
+    "codelyreversebackup/editor-bridge-original/",
+    "codelyreversebackup_fromunityhub/",
+    "tools/research/pkg-prelude.js",
+    "tools/research/extract-unity-hub-reference.mjs",
+    "docs/history/HANDOFF.md",
+    "docs/history/EXTRACTION.md"
+  ],
+  "moves": [
+    {
+      "oldPath": "research/codely-account-protocol.md",
+      "newPath": "research/protocols/codely-account-protocol.md",
+      "byteLength": 44309,
+      "sha256Before": "8a25dc2ac1205398137ec1ef990b21802d51fc0096fb31f98384753253b3a914",
+      "sha256After": "8a25dc2ac1205398137ec1ef990b21802d51fc0096fb31f98384753253b3a914",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "research/frontend-package.reference.json",
+      "newPath": "research/frontend/frontend-package.reference.json",
+      "byteLength": 1630,
+      "sha256Before": "c9229a7ad617adc5f39b7784e428f0311ebfcb305af1279ed2d7b962b1316f29",
+      "sha256After": "c9229a7ad617adc5f39b7784e428f0311ebfcb305af1279ed2d7b962b1316f29",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "research/tauri-shell/COMMAND_SURFACE.md.txt",
+      "newPath": "research/tauri-shell/evidence/invoke-targets.txt",
+      "byteLength": 546,
+      "sha256Before": "77116e751be2cf22349ca9ce4ab8eb3a693820359b3ada03a6bb88c04f3ea1bf",
+      "sha256After": "77116e751be2cf22349ca9ce4ab8eb3a693820359b3ada03a6bb88c04f3ea1bf",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "codelyreversebackup/REVERSE-PLAN.md",
+      "newPath": "codelyreversebackup/history/plans/2026-10-01-reverse-extraction.md",
+      "byteLength": 33869,
+      "sha256Before": "f6e0e141e9cd53fb77b56698873ced98ffdc3ea847d616e457422fbff743c83a",
+      "sha256After": "f6e0e141e9cd53fb77b56698873ced98ffdc3ea847d616e457422fbff743c83a",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/analyze-shell.py",
+      "newPath": "tools/research/extraction/binaries/analyze-shell.py",
+      "byteLength": 8964,
+      "sha256Before": "dee1ec3203bd1e643b707f4af8f961392a60f9fc2d066c90475bcd87d6f1583f",
+      "sha256After": "dee1ec3203bd1e643b707f4af8f961392a60f9fc2d066c90475bcd87d6f1583f",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/bun-carve.py",
+      "newPath": "tools/research/extraction/binaries/bun-carve.py",
+      "byteLength": 1816,
+      "sha256Before": "59705caa3c0776b51b4edbb33805a8c937e18f3e92a2a1e4a94fd255ec093adc",
+      "sha256After": "59705caa3c0776b51b4edbb33805a8c937e18f3e92a2a1e4a94fd255ec093adc",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/pkg-probe.py",
+      "newPath": "tools/research/extraction/binaries/pkg-vfs-probe.py",
+      "byteLength": 1776,
+      "sha256Before": "f43fe9334c8fda2a65cd5f63200a951f1d0c6c12568e72488536f1536d98bcf0",
+      "sha256After": "f43fe9334c8fda2a65cd5f63200a951f1d0c6c12568e72488536f1536d98bcf0",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/pkg-probe2.py",
+      "newPath": "tools/research/extraction/binaries/pkg-marker-offset-probe.py",
+      "byteLength": 620,
+      "sha256Before": "e76f138834f63724dd1c8b97ba34abcade26ce763ed76c7e18b121885e4a336f",
+      "sha256After": "e76f138834f63724dd1c8b97ba34abcade26ce763ed76c7e18b121885e4a336f",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/pkg-unpack.mjs",
+      "newPath": "tools/research/extraction/binaries/pkg-unpack.mjs",
+      "byteLength": 3526,
+      "sha256Before": "14bd8d2a241563e67964f669878ef9322fd93692b8d4d8bda8519483c32d318b",
+      "sha256After": "14bd8d2a241563e67964f669878ef9322fd93692b8d4d8bda8519483c32d318b",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/pkg-unpack.py",
+      "newPath": "tools/research/extraction/binaries/pkg-unpack.py",
+      "byteLength": 3947,
+      "sha256Before": "0de9c38568be18e8296f03ef85dcf2ec6bb0eab0be97d3d7315681371544c8d5",
+      "sha256After": "0de9c38568be18e8296f03ef85dcf2ec6bb0eab0be97d3d7315681371544c8d5",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-reverse-shell.py",
+      "newPath": "tools/research/extraction/binaries/extract-reverse-shell.py",
+      "byteLength": 2248,
+      "sha256Before": "35f0731ec36d7c8dd29d966375d54b2d2fd65da3b91cbc6837b74a83362c3456",
+      "sha256After": "35f0731ec36d7c8dd29d966375d54b2d2fd65da3b91cbc6837b74a83362c3456",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-shell-strings.py",
+      "newPath": "tools/research/extraction/binaries/extract-shell-strings.py",
+      "byteLength": 2276,
+      "sha256Before": "5fb94414123c21b79d6fa8e917401fe8395f63738bad2d7167d6696ecdec3ced",
+      "sha256After": "5fb94414123c21b79d6fa8e917401fe8395f63738bad2d7167d6696ecdec3ced",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/beautify-dist.mjs",
+      "newPath": "tools/research/extraction/frontend/beautify-dist.mjs",
+      "byteLength": 2089,
+      "sha256Before": "75c4af8798194ed238fee850a1563e7019441c41f60cf33f427746589443c3bc",
+      "sha256After": "75c4af8798194ed238fee850a1563e7019441c41f60cf33f427746589443c3bc",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-i18n.py",
+      "newPath": "tools/research/extraction/frontend/extract-i18n.py",
+      "byteLength": 868,
+      "sha256Before": "202a64c47d9c5fbefe3926d5e284f93dfe3c8973b522d1ab6e2445ab1d4f554b",
+      "sha256After": "202a64c47d9c5fbefe3926d5e284f93dfe3c8973b522d1ab6e2445ab1d4f554b",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-icon.ps1",
+      "newPath": "tools/research/extraction/frontend/extract-icon.ps1",
+      "byteLength": 311,
+      "sha256Before": "776de32fb04ade020519f47659b1f2d9432f289f5f51460f0f51a3e65afec9b6",
+      "sha256After": "776de32fb04ade020519f47659b1f2d9432f289f5f51460f0f51a3e65afec9b6",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-invoke.mjs",
+      "newPath": "tools/research/extraction/frontend/extract-invoke.mjs",
+      "byteLength": 1593,
+      "sha256Before": "ba79f5f676880f0d056db7b23b317d9b24fdad0411e7aa43637518f2dd267370",
+      "sha256After": "ba79f5f676880f0d056db7b23b317d9b24fdad0411e7aa43637518f2dd267370",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-msgtypes.py",
+      "newPath": "tools/research/extraction/frontend/extract-msgtypes.py",
+      "byteLength": 458,
+      "sha256Before": "ed1442a893960cd7303f99e11bc5000d772dc38022127f1652e9309a98035568",
+      "sha256After": "ed1442a893960cd7303f99e11bc5000d772dc38022127f1652e9309a98035568",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-batch2.py",
+      "newPath": "tools/research/extraction/catalogs/extract-git-webrtc-i18n.py",
+      "byteLength": 3834,
+      "sha256Before": "cb938c5bf949a938bfd36cb191c0ef3cb010f4fdd7b05712a896840a528b21e8",
+      "sha256After": "cb938c5bf949a938bfd36cb191c0ef3cb010f4fdd7b05712a896840a528b21e8",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-batch3.py",
+      "newPath": "tools/research/extraction/catalogs/extract-git-rpc-i18n.py",
+      "byteLength": 3580,
+      "sha256Before": "456c1c0c41a362c198f1c1c2473348786bfb937162e6e7bf651c2ee09e61f4f3",
+      "sha256After": "456c1c0c41a362c198f1c1c2473348786bfb937162e6e7bf651c2ee09e61f4f3",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/extract-layers.py",
+      "newPath": "tools/research/extraction/catalogs/extract-message-layers.py",
+      "byteLength": 3333,
+      "sha256Before": "92bf3fb10c0a400dd845437bd325ac9cc964370c0dd305f8f06b2c0e374bf884",
+      "sha256After": "92bf3fb10c0a400dd845437bd325ac9cc964370c0dd305f8f06b2c0e374bf884",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/auth-bypass-probe.py",
+      "newPath": "tools/research/probes/auth/auth-bypass-probe.py",
+      "byteLength": 1187,
+      "sha256Before": "f0414c7d7ff3e2ff759365bdca23dadeb743227b9ac2f153ea365a39d07ee1d2",
+      "sha256After": "f0414c7d7ff3e2ff759365bdca23dadeb743227b9ac2f153ea365a39d07ee1d2",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/auth-file-probe.py",
+      "newPath": "tools/research/probes/auth/auth-file-probe.py",
+      "byteLength": 745,
+      "sha256Before": "f386ea23c7b4e8f46753cf1fd90708f6904f71f3055c3d3c930d7100567ad8fb",
+      "sha256After": "f386ea23c7b4e8f46753cf1fd90708f6904f71f3055c3d3c930d7100567ad8fb",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/auth-methods-probe.py",
+      "newPath": "tools/research/probes/auth/auth-methods-probe.py",
+      "byteLength": 1248,
+      "sha256Before": "e405798b2499c02dc9fc94208fdfe02ebe7c1f8229fdb6755cad16e8976bb772",
+      "sha256After": "e405798b2499c02dc9fc94208fdfe02ebe7c1f8229fdb6755cad16e8976bb772",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/authjson-probe.py",
+      "newPath": "tools/research/probes/auth/auth-json-fields-probe.py",
+      "byteLength": 436,
+      "sha256Before": "8bc0999db38c3aad5377cc6b8c9928ab44272ce1c13445e5ce76572b622dd7a5",
+      "sha256After": "8bc0999db38c3aad5377cc6b8c9928ab44272ce1c13445e5ce76572b622dd7a5",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/gate-conds.py",
+      "newPath": "tools/research/probes/auth/auth-gate-conditions-probe.py",
+      "byteLength": 349,
+      "sha256Before": "3c76ab481104901644575a97f6db29cb99b997edf4a287e67490dafd40356c3c",
+      "sha256After": "3c76ab481104901644575a97f6db29cb99b997edf4a287e67490dafd40356c3c",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/hastoken-probe.py",
+      "newPath": "tools/research/probes/auth/auth-token-check-probe.py",
+      "byteLength": 495,
+      "sha256Before": "57ecf8ae84ff41f7fd86f1aeb97432ecca8ecd0fd6b10edc113a771c6a968382",
+      "sha256After": "57ecf8ae84ff41f7fd86f1aeb97432ecca8ecd0fd6b10edc113a771c6a968382",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/login-bypass-probe.py",
+      "newPath": "tools/research/probes/auth/login-bypass-probe.py",
+      "byteLength": 1361,
+      "sha256Before": "ff7247452635a66c264e67275658d580d03e23d8a445a43823a765038a0442c8",
+      "sha256After": "ff7247452635a66c264e67275658d580d03e23d8a445a43823a765038a0442c8",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/login-gate-probe.py",
+      "newPath": "tools/research/probes/auth/login-gate-probe.py",
+      "byteLength": 1054,
+      "sha256Before": "161e43cee6869ea41dfe3000348fa33c98d2b8655a326bad5d9ea36ef5824aaf",
+      "sha256After": "161e43cee6869ea41dfe3000348fa33c98d2b8655a326bad5d9ea36ef5824aaf",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/login-gate2.py",
+      "newPath": "tools/research/probes/auth/login-registry-gate-probe.py",
+      "byteLength": 779,
+      "sha256Before": "d7e8acd427c134a5a73f921d81f44c326af1a3eadbbfa6d68f3b273f9c0b8591",
+      "sha256After": "d7e8acd427c134a5a73f921d81f44c326af1a3eadbbfa6d68f3b273f9c0b8591",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/login-thunk-probe.py",
+      "newPath": "tools/research/probes/auth/login-thunk-probe.py",
+      "byteLength": 1083,
+      "sha256Before": "08414efd4b49dc9a24ebe959aab1a99b8dec70708b1f607d59e846ba5b46fd8f",
+      "sha256After": "08414efd4b49dc9a24ebe959aab1a99b8dec70708b1f607d59e846ba5b46fd8f",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/token-file-probe.py",
+      "newPath": "tools/research/probes/auth/token-file-probe.py",
+      "byteLength": 701,
+      "sha256Before": "dd15266be7d1424dd244086067e5b1eb6d23b2a683090e159b5a04f6d82fccef",
+      "sha256After": "dd15266be7d1424dd244086067e5b1eb6d23b2a683090e159b5a04f6d82fccef",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/core-msgtype-probe.py",
+      "newPath": "tools/research/probes/core/core-message-types-probe.py",
+      "byteLength": 513,
+      "sha256Before": "16cabb7f49176aff9961cec1d27ddaf810a0970aab7b317d2b8fa181ef2065a4",
+      "sha256After": "16cabb7f49176aff9961cec1d27ddaf810a0970aab7b317d2b8fa181ef2065a4",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/core-proto-test.py",
+      "newPath": "tools/research/probes/core/core-protocol-launch-probe.py",
+      "byteLength": 2362,
+      "sha256Before": "9f2ec9eb373d9265b7ec163fc70b1be6f5f53f2f09fc4a7d89fcbcf440052e09",
+      "sha256After": "9f2ec9eb373d9265b7ec163fc70b1be6f5f53f2f09fc4a7d89fcbcf440052e09",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/core-server-probe.py",
+      "newPath": "tools/research/probes/core/core-server-probe.py",
+      "byteLength": 808,
+      "sha256Before": "34f5c59a58e7b49bc432f88fa55fb3d9557c1728950ef48c48775d692ce71d7f",
+      "sha256After": "34f5c59a58e7b49bc432f88fa55fb3d9557c1728950ef48c48775d692ce71d7f",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/core-stdio-probe.py",
+      "newPath": "tools/research/probes/core/core-stdio-context-probe.py",
+      "byteLength": 640,
+      "sha256Before": "51c61f369770d4d3de2eaef7a62936b89e7bf810790add5f117c531a1bc3e07c",
+      "sha256After": "51c61f369770d4d3de2eaef7a62936b89e7bf810790add5f117c531a1bc3e07c",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/core-stdio-probe2.py",
+      "newPath": "tools/research/probes/core/core-stdio-process-frame-probe.py",
+      "byteLength": 729,
+      "sha256Before": "aa65c9eefb7ae966e07433139edfdb8e1b0a66e1969d707e9d772666db6a6a2c",
+      "sha256After": "aa65c9eefb7ae966e07433139edfdb8e1b0a66e1969d707e9d772666db6a6a2c",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/wsdirs-probe.py",
+      "newPath": "tools/research/probes/core/workspace-directories-probe.py",
+      "byteLength": 476,
+      "sha256Before": "a15d4bbe9c3bf224fbc89a2b0d9863ff81b0d43bdb732053f6b7ad98b7b63e4f",
+      "sha256After": "a15d4bbe9c3bf224fbc89a2b0d9863ff81b0d43bdb732053f6b7ad98b7b63e4f",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/hub-transport.py",
+      "newPath": "tools/research/probes/frontend/hub-transport-probe.py",
+      "byteLength": 504,
+      "sha256Before": "2ad768be9673b6b64458ecdc04143744d2d950e2786cb6d117a312663e73127b",
+      "sha256After": "2ad768be9673b6b64458ecdc04143744d2d950e2786cb6d117a312663e73127b",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/loading-gate.py",
+      "newPath": "tools/research/probes/frontend/loading-gate-probe.py",
+      "byteLength": 495,
+      "sha256Before": "589de80375ebb9d7411cbc5fc02b5dcf0abfd3613ac524b699991ce12dccf015",
+      "sha256After": "589de80375ebb9d7411cbc5fc02b5dcf0abfd3613ac524b699991ce12dccf015",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/route-shapes.py",
+      "newPath": "tools/research/probes/frontend/route-shapes-entry-probe.py",
+      "byteLength": 720,
+      "sha256Before": "d684f6bfe794ff1ad016a883a55d98f9b4aebbb28ab7d651e405307bf38aa37d",
+      "sha256After": "d684f6bfe794ff1ad016a883a55d98f9b4aebbb28ab7d651e405307bf38aa37d",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/route-shapes2.py",
+      "newPath": "tools/research/probes/frontend/route-shapes-bundle-scan.py",
+      "byteLength": 954,
+      "sha256Before": "e4fb9bc39c287dfd9c2e110790873b62ccc8e55e6761220411dd403b6b775a02",
+      "sha256After": "e4fb9bc39c287dfd9c2e110790873b62ccc8e55e6761220411dd403b6b775a02",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/slices-probe.py",
+      "newPath": "tools/research/probes/frontend/redux-slices-probe.py",
+      "byteLength": 816,
+      "sha256Before": "3d0408b9869c10829a85adfd13f1122c362a0d16a45a8b4f756cb59fa7d008f4",
+      "sha256After": "3d0408b9869c10829a85adfd13f1122c362a0d16a45a8b4f756cb59fa7d008f4",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/tjhub-shapes.py",
+      "newPath": "tools/research/probes/frontend/tjhub-route-shapes-probe.py",
+      "byteLength": 554,
+      "sha256Before": "198049c4818e16b8f848d54307d88087a2e78b66f4f92a9129b4b902afeab1a6",
+      "sha256After": "198049c4818e16b8f848d54307d88087a2e78b66f4f92a9129b4b902afeab1a6",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/welcome-comp.py",
+      "newPath": "tools/research/probes/frontend/welcome-component-probe.py",
+      "byteLength": 419,
+      "sha256Before": "c36e3e60a3175ca769a23fbc35762b65d87c50166dedd72714ea14c6534d9492",
+      "sha256After": "c36e3e60a3175ca769a23fbc35762b65d87c50166dedd72714ea14c6534d9492",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/welcome-usage.py",
+      "newPath": "tools/research/probes/frontend/welcome-registry-usage-probe.py",
+      "byteLength": 633,
+      "sha256Before": "576e0e535e1cffdafae7613dd66ae7006c907698b6e9ddad36af4aefdddcb699",
+      "sha256After": "576e0e535e1cffdafae7613dd66ae7006c907698b6e9ddad36af4aefdddcb699",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/isolate-gamecowork.py",
+      "newPath": "tools/research/migration/isolate-gamecowork.py",
+      "byteLength": 1671,
+      "sha256Before": "79c8447217db5a8d749902ebc0bb30616e75dc2b8b97ced21ecfc87961258407",
+      "sha256After": "79c8447217db5a8d749902ebc0bb30616e75dc2b8b97ced21ecfc87961258407",
+      "bytePreserved": true
+    },
+    {
+      "oldPath": "tools/research/rename-codely.py",
+      "newPath": "tools/research/migration/rename-codely.py",
+      "byteLength": 1854,
+      "sha256Before": "8e05cb79ff712edd025ce103a36e057f1c34a436214cba40ad640537d6ad50f4",
+      "sha256After": "8e05cb79ff712edd025ce103a36e057f1c34a436214cba40ad640537d6ad50f4",
+      "bytePreserved": true
+    }
+  ]
+}

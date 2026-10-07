@@ -13,21 +13,21 @@ const beautified = fs.readFileSync(`${root}/src/core/binary/out/index.beautified
 const minified = fs.readFileSync(`${root}/src/core/binary/out/index.js`, "utf8");
 
 test("Both Core entries register the account broker wiring once", () => {
-  const moduleNeedle = './gamecowork-codely-account.js';
+  const moduleNeedle = './modules/account/broker.js';
   for (const [name, text] of [["index.beautified.js", beautified], ["index.js", minified]]) {
-    const calls = [...text.matchAll(/require\((['"])\.\/gamecowork-codely-account\.js\1\)\.registerCoreWiring\(/g)].length;
+    const calls = [...text.matchAll(/require\((['"])\.\/modules\/account\/broker\.js\1\)\.registerCoreWiring\(/g)].length;
     assert.equal(calls, 1, `${name} must register the broker exactly once`);
     assert.ok(
-      text.includes(moduleNeedle) && /require\((['"])\.\/gamecowork-codely-account\.js\1\)\.registerCoreWiring\(/.test(text),
+      text.includes(moduleNeedle) && /require\((['"])\.\/modules\/account\/broker\.js\1\)\.registerCoreWiring\(/.test(text),
       `${name} must wire through the shared module`,
     );
   }
 });
 
 test("Both Core entries expose the official site surface RPCs and adapters", () => {
-  assert.ok(fs.readFileSync(`${root}/src/core/binary/out/gamecowork-codely-account.js`, "utf8")
+  assert.ok(fs.readFileSync(`${root}/src/core/binary/out/modules/account/broker.js`, "utf8")
     .includes('messenger.on("codelyAccount/canvasSnapshot"'), "the shared wiring must register the canvas snapshot RPC");
-  const generator = fs.readFileSync(`${root}/src/core/binary/out/gamecowork-codely-generator.js`, "utf8");
+  const generator = fs.readFileSync(`${root}/src/core/binary/out/modules/generation/codely-api.js`, "utf8");
   assert.ok(generator.includes("codelyAccountOfficialSurface()"), "the Quick adapter must consult the official surface facade");
   assert.ok(generator.includes("codely-official"), "the Quick adapter must mark the official identity mode");
   const canvasAuth = fs.readFileSync(`${root}/src/frontend/bundle/codely-canvas/canvas-local-auth.js`, "utf8");
@@ -65,7 +65,7 @@ test("Shell vault request kinds stay core-only and the broker module stays depen
   assert.ok(allowlistStart > 0, "renderer workspace allowlist block not found");
   const allowlist = shellMain.slice(allowlistStart, shellMain.indexOf(")", shellMain.indexOf('"getDiff"', allowlistStart)) + 1);
   assert.ok(!/gamecoworkAccount\/vault/.test(allowlist), "vault kinds must not be renderer-reachable");
-  const moduleSource = fs.readFileSync(`${root}/src/core/binary/out/gamecowork-codely-account.js`, "utf8");
+  const moduleSource = fs.readFileSync(`${root}/src/core/binary/out/modules/account/broker.js`, "utf8");
   for (const dependency of ['require("electron")', 'require("axios")', "node-fetch"]) {
     assert.ok(!moduleSource.includes(dependency), `unexpected dependency ${dependency}`);
   }

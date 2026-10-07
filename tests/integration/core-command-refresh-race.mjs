@@ -15,7 +15,7 @@ const pkg=path.resolve(opt('--package'));
 const agentManifest=JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8'));
 assert.equal(agentManifest.testGuardIncluded,true);
 if(packaged){const productAgent=JSON.parse(fs.readFileSync(path.join(appRoot,'cli/cli-package-manifest.json'),'utf8'));assert.equal(productAgent.testGuardIncluded,false);assert.equal(productAgent.sourceSha256,agentManifest.sourceSha256,'Guarded verification Agent must match the packaged Agent source.');}
-const root=path.resolve('F:/AI/AgentMake/temp/GameCowork',`command-refresh-race-${randomUUID()}`);
+const root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work',`command-refresh-race-${randomUUID()}`);
 const workspace=path.join(root,'workspace');fs.mkdirSync(workspace,{recursive:true});
 const workspaceB=path.join(root,'workspace B');fs.mkdirSync(workspaceB);
 const file=path.join(workspace,'fixture.txt');fs.writeFileSync(file,'GCW_FIXTURE_FILE_CONTENT\n');

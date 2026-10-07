@@ -9,7 +9,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { createCodelyAccountBroker, OFFICIAL_SITES } = require("../../src/core/binary/out/gamecowork-codely-account.js");
+const { createCodelyAccountBroker, OFFICIAL_SITES } = require("../../src/core/binary/out/modules/account/broker.js");
 const key = crypto.randomBytes(32);
 const vault = {
   seal: async bytes => {
@@ -36,7 +36,7 @@ async function until(predicate, timeoutMs = 2000) {
 }
 
 async function fixture(t, options = {}) {
-  const root = fs.mkdtempSync("F:/AI/AgentMake/temp/GameCowork/official-generator-broker-");
+  const root = fs.mkdtempSync("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/official-generator-broker-");
   const calls = [], warnings = [], events = [];
   const state = { user: "A", rotation: 0, currentTeam: "lite-A", overrides: new Map() };
   const accessToken = () => options.accountTypeClaim
@@ -120,7 +120,7 @@ test("generation binding is opaque, stable across refresh and restart, and chang
 
 test("production generator origin is fixed without sending a production request", async () => {
   const broker = await createCodelyAccountBroker({
-    root: fs.mkdtempSync("F:/AI/AgentMake/temp/GameCowork/official-generator-origin-"), vault, autoDrive: false,
+    root: fs.mkdtempSync("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/official-generator-origin-"), vault, autoDrive: false,
     fetch: async () => assert.fail("the production-origin check must perform no network request"),
   });
   assert.equal(broker.generatorOrigin(), OFFICIAL_SITES.generator);
@@ -461,7 +461,7 @@ test("a main refresh rejection invalidates inference immediately and performs no
 });
 
 test("the private inference key capability is separate from both renderer registrations and Quick surfaces", () => {
-  const source = fs.readFileSync(new URL("../../src/core/binary/out/gamecowork-codely-account.js", import.meta.url), "utf8");
+  const source = fs.readFileSync(new URL("../../src/core/binary/out/modules/account/broker.js", import.meta.url), "utf8");
   const quick = source.slice(source.indexOf("function codelyAccountOfficialSurface()"), source.indexOf("function codelyAccountInferenceSurface()"));
   assert.ok(!quick.includes("getCliInferenceCredential"));
   const registered = [...source.matchAll(/messenger\.on\("([^"]+)"/g)].map(match => match[1]);

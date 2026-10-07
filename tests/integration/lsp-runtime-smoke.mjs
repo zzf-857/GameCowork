@@ -11,7 +11,7 @@ import {pathToFileURL,fileURLToPath} from 'node:url';
 const exec=promisify(execFile);
 const args=process.argv.slice(2);
 const option=(name,fallback)=>{const index=args.indexOf(name);return index<0?fallback:args[index+1];};
-const base=path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const base=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 const run=path.resolve(option('--output',path.join(base,'tests',`lsp-runtime-${randomUUID()}`)));
 assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep),'All preflight output must remain in temp/GameCowork');
 assert.equal(fs.existsSync(run),false,'The test owns a newly created unique output directory');

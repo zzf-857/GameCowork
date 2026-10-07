@@ -16,9 +16,9 @@ function option(name, fallback) {
   const index = args.indexOf(name);
   return index < 0 ? fallback : args[index + 1];
 }
-const runDir = path.resolve(option("--output", path.join(root, "../../temp/GameCowork",
+const runDir = path.resolve(option("--output", path.join(root, "codelyreversebackup/work",
   `project-panel-e2e-${Date.now()}-${process.pid}`)));
-const tempRoot = path.resolve(root, "../../temp/GameCowork");
+const tempRoot = path.resolve(root, "codelyreversebackup/work");
 assert.ok(runDir.toLowerCase().startsWith(tempRoot.toLowerCase() + path.sep), "E2E outputs must stay in a task directory below temp/GameCowork");
 const binary = path.resolve(option("--binary", path.join(root, "src/shell/target/debug/GameCowork.exe")));
 let baseUrl = option("--url");

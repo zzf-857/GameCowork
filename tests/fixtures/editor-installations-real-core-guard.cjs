@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const url = require('node:url');
 const root = path.resolve(process.env.GAMECOWORK_EDITOR_AUDIT_ROOT || '');
-const temp = path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const temp = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 if (!root.toLowerCase().startsWith(temp.toLowerCase() + path.sep)) throw Error('Editor audit requires an isolated temp root');
 const policy = JSON.parse(fs.readFileSync(path.join(root, 'read-policy.json'), 'utf8'));
 const append = fs.appendFileSync.bind(fs), realpath = fs.realpathSync.bind(fs), exists = fs.existsSync.bind(fs);

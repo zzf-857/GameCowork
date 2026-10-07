@@ -14,7 +14,7 @@ import test from "node:test";
 
 const exec=promisify(execFile), repo=fileURLToPath(new URL("../../",import.meta.url));
 const editorArg=process.argv.indexOf("--editor"),editor=path.resolve(editorArg<0?"F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe":process.argv[editorArg+1]);
-const run=path.join("F:/AI/AgentMake/temp/GameCowork/tests",`editor-bridge-${randomUUID()}`);
+const run=path.join("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests",`editor-bridge-${randomUUID()}`);
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const alive=pid=>{try{process.kill(pid,0);return true;}catch(error){if(error.code==="ESRCH")return false;throw error;}};
 async function until(predicate,label,timeout=15000){const end=Date.now()+timeout;while(Date.now()<end){if(await predicate())return;await delay(50);}assert.fail(`Timed out: ${label}; artifacts ${run}`);}
@@ -57,7 +57,7 @@ async function tcp(port){const socket=net.createConnection({host:"127.0.0.1",por
 test("self-owned editor bridge compiles and produces real project-scoped frames/input",{skip:process.platform!=="win32",timeout:120000},async t=>{
   assert.ok(fs.existsSync(editor),"An installed editor is required; this test does not install or activate one");fs.mkdirSync(run,{recursive:true});
   const editorDir=path.dirname(editor),managed=path.join(editorDir,"Data/Managed"),mono=path.join(editorDir,"Data/MonoBleedingEdge/bin/mono.exe"),compiler=path.join(editorDir,"Data/MonoBleedingEdge/lib/mono/4.5/mcs.exe");
-  const sources=fs.readdirSync(path.join(repo,"src/editor-bridge/Editor")).filter(name=>name.endsWith(".cs")).map(name=>path.join(repo,"src/editor-bridge/Editor",name));
+  const sources=fs.readdirSync(path.join(repo,"src/editor-bridge/Editor"),{recursive:true}).filter(name=>name.endsWith(".cs")).map(name=>path.join(repo,"src/editor-bridge/Editor",name));
   await t.test("actual installed Editor/Engine assemblies compile the source",async()=>{await exec(mono,[compiler,"-target:library",`-out:${path.join(run,"GameCowork.EditorBridge.dll")}`,`-r:${path.join(managed,"UnityEditor.dll")}`,`-r:${path.join(managed,"UnityEngine.dll")}`,`-r:${path.join(editorDir,"Data/MonoBleedingEdge/lib/mono/4.5/Facades/netstandard.dll")}`,...sources],{windowsHide:true});});
   if(process.argv.includes("--compile-only")){console.log(`Offline compilation only; no real frame/input claim. Artifacts: ${run}`);return;}
   const project=path.join(run,"project");for(const dir of["Assets/Editor","Packages","ProjectSettings","Temp"])fs.mkdirSync(path.join(project,dir),{recursive:true});

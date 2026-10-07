@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { createCodelyAccountBroker } = require("../../src/core/binary/out/gamecowork-codely-account.js");
+const { createCodelyAccountBroker } = require("../../src/core/binary/out/modules/account/broker.js");
 
 function fixtureVault() {
   const key = crypto.randomBytes(32);
@@ -46,7 +46,7 @@ async function bounded(promise, timeoutMs = 1000) {
 }
 
 async function fixture(t, options = {}) {
-  const root = fs.mkdtempSync("F:/AI/AgentMake/temp/GameCowork/codely-timeout-");
+  const root = fs.mkdtempSync("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/codely-timeout-");
   const events = [], calls = [], signals = [], timers = new Set();
   const state = { stallPath: options.stallPath, stalled: 0, closed: 0 };
   let origin, broker;

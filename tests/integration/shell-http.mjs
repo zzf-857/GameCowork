@@ -12,7 +12,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const binaryIndex = process.argv.indexOf("--binary");
 const binary = path.resolve(binaryIndex >= 0 ? process.argv[binaryIndex + 1] : path.join(root, "src/shell/target/debug/GameCowork.exe"));
 assert.ok(fs.existsSync(binary), `Build the Rust shell first: ${binary}`);
-const tempBase = path.resolve("F:/AI/AgentMake/temp/GameCowork/tests");
+const tempBase = path.resolve("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests");
 const runRoot = path.join(tempBase, `shell-http-${randomUUID()}`);
 fs.mkdirSync(runRoot, { recursive: true });
 const fixture = path.join(root, "tests/fixtures/core-fixture.mjs");

@@ -26,17 +26,17 @@
     {
       "path": "local-generation.js",
       "role": "Owned per-model CPA, custom Provider and verified official image/video/audio/model/text readiness; no invented platform rights or original builder changes",
-      "sha256": "89e695e66cedf11bf2ec8e3508fc4a4ce84ce8d581d05b6fd62a0a9d67c4a79c"
+      "sha256": "4950f0723bacada97b24b65a90196dbe45661e89d027cc2f678acb4f8ace975b"
     },
     {
       "path": "local-models.js",
       "role": "Explicit CPA routes and server-issued custom descriptors, conservative per-model evidence controls and separate request/report/file facts",
-      "sha256": "4ab718808c1e2df04d8792a458ad0d14b130da6e17d01e739ac0ade73cf1ebf9"
+      "sha256": "7df0295b48645cd70566a6e405594c713e5a362bea0ed418d8b9887d25b5fd37"
     },
     {
       "path": "provider-manager.js",
       "role": "Write-only credential configuration, GET model discovery and explicit per-model evidence inside the original Quick Dialog; no browser secret storage or unimplemented execution claim",
-      "sha256": "690862c0fe7a06e6a3d35c108e95404e3ec581d43992cfc43d232918d41b81b3"
+      "sha256": "db87bc49ebd63da67b16fcb8680292c73f470b24cdd31b7e65b367e8bd3ba898"
     },
     {
       "path": "local-download.js",
@@ -44,14 +44,14 @@
       "sha256": "6e2f7d82157aa563b935486ba7171374c755e521d97347ef156ef3caab033258"
     },
     {
-      "path": "../assets/gamecowork-account-display.js",
-      "role": "Whitelisted broker account presentation and original official usage RPC; no credentials or local-mode network",
-      "sha256": "375c9900f8189115482a99cd3279f99304047c26f52d02c3bf41ccf821443774"
-    },
-    {
       "path": "task-outcome.js",
       "role": "Explicit local unknown-create presentation and original retry guard; no generation transport, status protocol or credential access",
       "sha256": "bb6bd3bfe01519d43f7f7aa7871a050ea6ff4ae77c31b7208fac42fba06dabd0"
+    },
+    {
+      "path": "../assets/gamecowork-account-display.js",
+      "role": "Whitelisted broker account presentation and original official usage RPC; no credentials or local-mode network",
+      "sha256": "375c9900f8189115482a99cd3279f99304047c26f52d02c3bf41ccf821443774"
     }
   ],
   "hostAdapter": {
@@ -71,7 +71,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "e1b6cff816cd4b8e36457b2d50437b880b122edb535348d677d0312066febfe0",
-        "currentSha256": "791fabd4863eb057ecb5c6951789564c7f8b32a9ea35290106bd22fb383b33fc",
+        "currentSha256": "777824c86d7ee05bd49d7ed6f7cf779dd96dfc4f3b1bfa6f0559a705ee4a7e54",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -610,6 +610,27 @@
             "charOffset": 1568700,
             "before": "      displayEmail: r,",
             "after": "      accountDetail: gamecoworkAccountView.accountDetail,"
+          },
+          {
+            "reason": "Restore original chat model groups while importing only the keyless canonical metadata refresh",
+            "charOffset": 104,
+            "byteOffsetBeforePatch": 104,
+            "before": "import { officialProgrammingMenu } from \"./gamecowork-official-models.js\";",
+            "after": "import { refreshOfficialProgrammingMenu } from \"./gamecowork-official-models.js\";"
+          },
+          {
+            "reason": "Preserve the original built-in and independent Provider groups without an injected official enable row",
+            "charOffset": 296004,
+            "byteOffsetBeforePatch": 296049,
+            "before": "officialProgrammingMenu(he, n, Ba, () => s(f))",
+            "after": "he"
+          },
+          {
+            "reason": "Refresh canonical account-bound metadata only when opening the original chat model trigger",
+            "charOffset": 300690,
+            "byteOffsetBeforePatch": 300735,
+            "before": "onOpenChange: k,",
+            "after": "onOpenChange: (open) => {\n                    k(open);\n                    if (open) void refreshOfficialProgrammingMenu(n, Ba);\n                  },"
           }
         ]
       },
@@ -627,7 +648,7 @@
           "note": "Original packaged host/bridge components already present in this maintained bundle; patches only reconnect them to verified local original clients"
         },
         "beforeSha256": "4db18044d56bd18d11d5a37e5d5a8ce85e191468dc9fd35bf1143b4eae19c4a2",
-        "currentSha256": "2fd78351280ff9569ff4fc71bbd8ca387d203c749f440f8c13c235a7fa9d529c",
+        "currentSha256": "73429a1a378f22c5a300c03cb22d47f877b12b57eb88a2572892f45057a67eb4",
         "patches": [
           {
             "reason": "Restore original Codely asset host message protocol",
@@ -1166,6 +1187,27 @@
             "charOffset": 1567366,
             "before": "      displayEmail: r,",
             "after": "      accountDetail: gamecoworkAccountView.accountDetail,"
+          },
+          {
+            "reason": "Restore original chat model groups while importing only the keyless canonical metadata refresh",
+            "charOffset": 104,
+            "byteOffsetBeforePatch": 104,
+            "before": "import { officialProgrammingMenu } from \"./gamecowork-official-models.js\";",
+            "after": "import { refreshOfficialProgrammingMenu } from \"./gamecowork-official-models.js\";"
+          },
+          {
+            "reason": "Preserve the original built-in and independent Provider groups without an injected official enable row",
+            "charOffset": 296717,
+            "byteOffsetBeforePatch": 296762,
+            "before": "officialProgrammingMenu(Be, n, Ba, () => s(f))",
+            "after": "Be"
+          },
+          {
+            "reason": "Refresh canonical account-bound metadata only when opening the original chat model trigger",
+            "charOffset": 300299,
+            "byteOffsetBeforePatch": 300344,
+            "before": "onOpenChange: K,",
+            "after": "onOpenChange: (open) => {\n                    K(open);\n                    if (open) void refreshOfficialProgrammingMenu(n, Ba);\n                  },"
           }
         ]
       },
@@ -1516,8 +1558,8 @@
       "sourceFile": "F:\\AI\\AgentMake\\temp\\GameCowork\\codely-assets-reference-20261002\\public\\f44af72cd039-index-DZWJHC3S.js",
       "sourceBytes": 2400014,
       "sourceSha256": "10e0e9c2a6771c22eb65c205fab910a1779794c689e8523f97d8f831eed19d9d",
-      "currentBytes": 2410519,
-      "currentSha256": "360a8ed1ff8e50044cbf1b014b50b6df8194a1c1830b2e75dad270a717639386",
+      "currentBytes": 2411371,
+      "currentSha256": "bcb0ca80b5737f115db47901e774880cc33cb899e71e45708a111c4cda508ac5",
       "patches": [
         {
           "reason": "Import the owned local identity boundary and freeze this iframe URL workspace without replacing original UI components",
@@ -2407,6 +2449,265 @@
           "byteOffsetBeforePatch": 1884325,
           "before": "f.jsx(bM,{tasks:[t]}),f.jsxs(\"section\",{className:\"generation-detail-section\"",
           "after": "f.jsx(bM,{tasks:[t]}),f.jsx(GameCoworkTaskErrorDetails,{React:y,Dialog:TM,task:t,copyText:xb}),f.jsxs(\"section\",{className:\"generation-detail-section\""
+        },
+        {
+          "reason": "Import the explicitly configured REST service parameter editor",
+          "charOffset": 219,
+          "byteOffsetBeforePatch": 219,
+          "before": "GameCoworkProviderControls } from \"../provider-manager.js\"",
+          "after": "GameCoworkProviderControls, GameCoworkRestParameterInput } from \"../provider-manager.js\""
+        },
+        {
+          "reason": "Restore each custom task using its declared media mode rather than forcing image",
+          "charOffset": 910067,
+          "byteOffsetBeforePatch": 936543,
+          "before": "return gcwModel?{mode:\"image\",model:gcwModel}",
+          "after": "return gcwModel?{mode:gcwModel.mode,model:gcwModel}"
+        },
+        {
+          "reason": "Keep explicit REST parameters in the current Quick draft",
+          "charOffset": 1722634,
+          "byteOffsetBeforePatch": 1749743,
+          "before": "[gcwAspectHint,gcwSetAspectHint]=y.useState(\"auto\")",
+          "after": "[gcwAspectHint,gcwSetAspectHint]=y.useState(\"auto\"),[gcwParameters,gcwSetParameters]=y.useState(\"{}\")"
+        },
+        {
+          "reason": "Select the actual declared third-party media mode and reset only new draft parameters on model changes",
+          "charOffset": 1730852,
+          "byteOffsetBeforePatch": 1757961,
+          "before": "Qt=H=>{var ae,ze,Ze,tn,ot,mr,Si,tl,sf,Tv,Mv,of;",
+          "after": "Qt=H=>{var ae,ze,Ze,tn,ot,mr,Si,tl,sf,Tv,Mv,of;gcwSetParameters(\"{}\");if(H&&H.gamecoworkThirdParty){L(H.mode||\"image\");qs(\"text_to_video\")}"
+        },
+        {
+          "reason": "Pass explicit service parameters to the custom model builder without changing official payloads",
+          "charOffset": 1736121,
+          "byteOffsetBeforePatch": 1763230,
+          "before": "ae={resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint,",
+          "after": "ae={providerParameters:gcwParameters,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint,"
+        },
+        {
+          "reason": "Validate REST JSON before enabling generation or accepting an old draft",
+          "charOffset": 1746463,
+          "byteOffsetBeforePatch": 1773628,
+          "before": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})",
+          "after": "gamecoworkCpaParameterError(Z,{providerParameters:gcwParameters,size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})"
+        },
+        {
+          "reason": "Validate REST JSON before enabling generation or accepting an old draft",
+          "charOffset": 1736836,
+          "byteOffsetBeforePatch": 1763945,
+          "before": "gamecoworkCpaParameterError(Z,{size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})",
+          "after": "gamecoworkCpaParameterError(Z,{providerParameters:gcwParameters,size:De,quality:Me,format:Y,ratio:ye,resolutionHint:gcwResolutionHint,aspectRatioHint:gcwAspectHint})"
+        },
+        {
+          "reason": "Use the custom contract validator instead of unrelated original video and model reference rules",
+          "charOffset": 1737002,
+          "byteOffsetBeforePatch": 1764111,
+          "before": "if(gcwCpaError)return gcwCpaError;if(ri)",
+          "after": "if(gcwCpaError)return gcwCpaError;if(Z.gamecoworkCustomProvider)return !ce.trim()?t(\"studio.validation.prompt\"):[...ce].length>32000?\"提示词不能超过 32000 个字符\":\"\";if(ri)"
+        },
+        {
+          "reason": "Keep the official video subscription gate scoped to official models; custom Providers use their own server readiness",
+          "charOffset": 1740216,
+          "byteOffsetBeforePatch": 1767391,
+          "before": "au=!l&&P===\"video\"&&ru!==\"paid\"",
+          "after": "au=!Z.gamecoworkCustomProvider&&!l&&P===\"video\"&&ru!==\"paid\""
+        },
+        {
+          "reason": "Hide original multimodal reference tabs for a text-only custom REST contract",
+          "charOffset": 1754293,
+          "byteOffsetBeforePatch": 1781514,
+          "before": "TF=f.jsxs(f.Fragment,{children:[P===\"video\"&&Z.kind===\"video\"&&",
+          "after": "TF=f.jsxs(f.Fragment,{children:[!Z.gamecoworkCustomProvider&&P===\"video\"&&Z.kind===\"video\"&&"
+        },
+        {
+          "reason": "A text-only custom model cannot inherit default original video reference capacity",
+          "charOffset": 881236,
+          "byteOffsetBeforePatch": 907685,
+          "before": "function sw(t,e,n=\"text_to_video\",i=!1){if(!e)return null;",
+          "after": "function sw(t,e,n=\"text_to_video\",i=!1){if(!e||e.gamecoworkCustomProvider)return null;"
+        },
+        {
+          "reason": "Do not advertise unmapped custom video or audio reference slots",
+          "charOffset": 881769,
+          "byteOffsetBeforePatch": 908218,
+          "before": "function UK(t,e){var n;return{",
+          "after": "function UK(t,e){var n;if(t&&t.gamecoworkCustomProvider)return{images:0,last:0,videos:0,audios:0};return{"
+        },
+        {
+          "reason": "Hide the attachment group for custom REST until references have an explicit implemented binding",
+          "charOffset": 1747164,
+          "byteOffsetBeforePatch": 1774349,
+          "before": "Db=ri||vF||Z.kind===\"prompt\"||P===\"video\"&&Z.kind===\"video\"||P===\"video\"&&((DF=Z.needs)==null?void 0:DF.includes(\"video\"))||P===\"audio\"||Ib,",
+          "after": "Db=!Z.gamecoworkCustomProvider&&(ri||vF||Z.kind===\"prompt\"||P===\"video\"&&Z.kind===\"video\"||P===\"video\"&&((DF=Z.needs)==null?void 0:DF.includes(\"video\"))||P===\"audio\"||Ib),"
+        },
+        {
+          "reason": "Keep default original video uploads out of a text-only REST draft",
+          "charOffset": 1747444,
+          "byteOffsetBeforePatch": 1774629,
+          "before": "yF=ri||Z.kind===\"prompt\"||P===\"video\"&&Z.kind===\"video\"&&(qn===\"multimodal\"||qn===\"reference\")||P===\"video\"&&((LF=Z.needs)==null?void 0:LF.includes(\"video\"))||P===\"audio\"&&Z.supportsVideo,",
+          "after": "yF=!Z.gamecoworkCustomProvider&&(ri||Z.kind===\"prompt\"||P===\"video\"&&Z.kind===\"video\"&&(qn===\"multimodal\"||qn===\"reference\")||P===\"video\"&&((LF=Z.needs)==null?void 0:LF.includes(\"video\"))||P===\"audio\"&&Z.supportsVideo),"
+        },
+        {
+          "reason": "Keep default original audio uploads out of a text-only REST draft",
+          "charOffset": 1747663,
+          "byteOffsetBeforePatch": 1774848,
+          "before": "Mne=Z.kind===\"prompt\"||P===\"video\"&&qn===\"multimodal\"||P===\"audio\"&&Z.kind===\"voice-clone\",",
+          "after": "Mne=!Z.gamecoworkCustomProvider&&(Z.kind===\"prompt\"||P===\"video\"&&qn===\"multimodal\"||P===\"audio\"&&Z.kind===\"voice-clone\"),"
+        },
+        {
+          "reason": "Prevent paste and drop from accepting ignored custom reference files",
+          "charOffset": 1748235,
+          "byteOffsetBeforePatch": 1775420,
+          "before": "Ane=H=>{if(se)return;",
+          "after": "Ane=H=>{if(se||Z.gamecoworkCustomProvider)return;"
+        },
+        {
+          "reason": "Do not expose unrelated official video or 3D controls for an explicit REST schema",
+          "charOffset": 1707607,
+          "byteOffsetBeforePatch": 1734335,
+          "before": "function VNe({mode:t,model:e,baseModel:n,state:i,setters:r,t:s}){",
+          "after": "function VNe({mode:t,model:e,baseModel:n,state:i,setters:r,t:s}){if(e&&e.gamecoworkCustomProvider&&e.kind!==\"image\")return {chips:[],settings:[]};"
+        },
+        {
+          "reason": "Show an explicit service parameter editor for REST models including video, audio and 3D",
+          "charOffset": 1770850,
+          "byteOffsetBeforePatch": 1798080,
+          "before": "children:Pe.info.size})",
+          "after": "children:Pe.kind===\"image\"?Pe.info.size:\"按所选模型的服务文档填写参数；返回内容按实际用途核验。\"}),f.jsx(GameCoworkRestParameterInput,{React:y,model:Pe,value:gcwParameters,onChange:H=>{gcwSetParameters(H);R(\"\")}})"
+        },
+        {
+          "reason": "Restore the frozen service parameter object without inflating its validated JSON budget or submitting it",
+          "charOffset": 1750042,
+          "byteOffsetBeforePatch": 1777263,
+          "before": "if(Si!=null&&Si.gamecoworkCustomProvider){gcwSetResolutionHint",
+          "after": "if(Si!=null&&Si.gamecoworkCustomProvider){gcwSetParameters(JSON.stringify(ot.parameters||{}));gcwSetResolutionHint"
+        },
+        {
+          "reason": "An explicit parameter reset also clears invalid REST draft JSON",
+          "charOffset": 1776218,
+          "byteOffsetBeforePatch": 1803509,
+          "before": "gcwSetResolutionHint(\"auto\");gcwSetAspectHint(\"auto\");R(\"\")",
+          "after": "gcwSetResolutionHint(\"auto\");gcwSetAspectHint(\"auto\");gcwSetParameters(\"{}\");R(\"\")"
+        },
+        {
+          "reason": "Use the owned draft-only custom-pixel controller while preserving original builders",
+          "charOffset": 494,
+          "byteOffsetBeforePatch": 494,
+          "before": "gamecoworkCustomParameterSettings } from \"../local-models.js\";",
+          "after": "gamecoworkCustomParameterSettings, gamecoworkCustomImagePixelChanges } from \"../local-models.js\";"
+        },
+        {
+          "reason": "Changing custom width clears only the stale ratio hint and synchronizes an explicitly supported API ratio",
+          "charOffset": 1709683,
+          "byteOffsetBeforePatch": 1736437,
+          "before": "r.setResolutionHint(`${Number(gcwEvent.target.value)}x${gcwHintH}`);if(e.imageSizePolicy===\"openai-size\")oe(\"auto\");St(\"\")",
+          "after": "Object.entries(gamecoworkCustomImagePixelChanges(e,`${Number(gcwEvent.target.value)}x${gcwHintH}`)).forEach(([gcwField,gcwValue])=>({size:oe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue));St(\"\")"
+        },
+        {
+          "reason": "Changing custom height retains the requested pixels instead of inheriting an incompatible preset ratio",
+          "charOffset": 1710118,
+          "byteOffsetBeforePatch": 1736899,
+          "before": "r.setResolutionHint(`${gcwHintW}x${Number(gcwEvent.target.value)}`);if(e.imageSizePolicy===\"openai-size\")oe(\"auto\");St(\"\")",
+          "after": "Object.entries(gamecoworkCustomImagePixelChanges(e,`${gcwHintW}x${Number(gcwEvent.target.value)}`)).forEach(([gcwField,gcwValue])=>({size:oe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue));St(\"\")"
+        },
+        {
+          "reason": "Reuse owned pixel inputs for explicit CPA and custom Provider size requests",
+          "charOffset": 247,
+          "byteOffsetBeforePatch": 247,
+          "before": "GameCoworkRestParameterInput } from \"../provider-manager.js\";",
+          "after": "GameCoworkRestParameterInput, GameCoworkImagePixelInputs } from \"../provider-manager.js\";"
+        },
+        {
+          "reason": "Import the explicit CPA size-mode settings without granting other Provider access",
+          "charOffset": 557,
+          "byteOffsetBeforePatch": 557,
+          "before": "gamecoworkCustomImagePixelChanges } from \"../local-models.js\";",
+          "after": "gamecoworkCustomImagePixelChanges, gamecoworkCpaParameterSettings } from \"../local-models.js\";"
+        },
+        {
+          "reason": "CPA stays account-auto until the user explicitly selects API size in this draft",
+          "charOffset": 1723223,
+          "byteOffsetBeforePatch": 1750332,
+          "before": "[gcwParameters,gcwSetParameters]=y.useState(\"{}\")",
+          "after": "[gcwParameters,gcwSetParameters]=y.useState(\"{}\"),[gcwCpaSizeMode,gcwSetCpaSizeMode]=y.useState(\"auto\")"
+        },
+        {
+          "reason": "A deliberate model change resets only the new draft CPA request mode",
+          "charOffset": 1731490,
+          "byteOffsetBeforePatch": 1758599,
+          "before": "gcwSetParameters(\"{}\");if(H&&H.gamecoworkThirdParty)",
+          "after": "gcwSetParameters(\"{}\");gcwSetCpaSizeMode(\"auto\");if(H&&H.gamecoworkThirdParty)"
+        },
+        {
+          "reason": "Pass the explicit CPA draft mode to its own builder; original official builders ignore it",
+          "charOffset": 1736738,
+          "byteOffsetBeforePatch": 1763847,
+          "before": "ae={providerParameters:gcwParameters,",
+          "after": "ae={requestSizeMode:gcwCpaSizeMode,providerParameters:gcwParameters,"
+        },
+        {
+          "reason": "Gate CPA auto versus API-size payloads before the existing submit action",
+          "charOffset": 1747295,
+          "byteOffsetBeforePatch": 1774480,
+          "before": "gamecoworkCpaParameterError(Z,{providerParameters:gcwParameters,",
+          "after": "gamecoworkCpaParameterError(Z,{requestSizeMode:gcwCpaSizeMode,providerParameters:gcwParameters,"
+        },
+        {
+          "reason": "Gate CPA auto versus API-size payloads before the existing submit action",
+          "charOffset": 1737484,
+          "byteOffsetBeforePatch": 1764593,
+          "before": "gamecoworkCpaParameterError(Z,{providerParameters:gcwParameters,",
+          "after": "gamecoworkCpaParameterError(Z,{requestSizeMode:gcwCpaSizeMode,providerParameters:gcwParameters,"
+        },
+        {
+          "reason": "Show the persisted draft CPA request mode in original Quick settings",
+          "charOffset": 1753932,
+          "byteOffsetBeforePatch": 1781153,
+          "before": "state:{resolutionHint:gcwResolutionHint,",
+          "after": "state:{requestSizeMode:gcwCpaSizeMode,resolutionHint:gcwResolutionHint,"
+        },
+        {
+          "reason": "Use the original React draft setters for explicit CPA size selection",
+          "charOffset": 1754518,
+          "byteOffsetBeforePatch": 1781739,
+          "before": "setters:{setResolutionHint:gcwSetResolutionHint,",
+          "after": "setters:{setCpaSizeMode:gcwSetCpaSizeMode,setResolutionHint:gcwSetResolutionHint,"
+        },
+        {
+          "reason": "Share exact pixel controls while keeping CPA opt-in and account-auto framing independent",
+          "charOffset": 1708907,
+          "byteOffsetBeforePatch": 1735635,
+          "before": "if(t===\"image\"&&(e!=null&&e.gamecoworkCustomProvider)){const gcwHintSize=/^(\\d+)x(\\d+)$/.exec(i.resolutionHint||\"\"),gcwHintW=gcwHintSize?Number(gcwHintSize[1]):1024,gcwHintH=gcwHintSize?Number(gcwHintSize[2]):1024;ie.push(...gamecoworkCustomParameterSettings(e,{size:o,quality:u,format:p,ratio:m,resolutionHint:i.resolutionHint,aspectRatioHint:i.aspectRatioHint},(gcwField,gcwValue)=>{St(\"\");if(e.imageSizePolicy===\"openai-size\"&&gcwField===\"resolutionHint\")oe(\"auto\");({size:oe,quality:Ie,format:Xe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)},f.jsxs(\"div\",{children:[f.jsxs(\"div\",{className:\"studio-pop-custom\",children:[f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":e.imageSizePolicy===\"openai-size\"?\"接口请求宽度\":\"提示词目标宽度\",value:gcwHintW,onChange:gcwEvent=>{Object.entries(gamecoworkCustomImagePixelChanges(e,`${Number(gcwEvent.target.value)}x${gcwHintH}`)).forEach(([gcwField,gcwValue])=>({size:oe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue));St(\"\")}}),f.jsx(\"b\",{children:\"×\"}),f.jsx(\"input\",{type:\"number\",min:16,max:3840,step:16,\"aria-label\":e.imageSizePolicy===\"openai-size\"?\"接口请求高度\":\"提示词目标高度\",value:gcwHintH,onChange:gcwEvent=>{Object.entries(gamecoworkCustomImagePixelChanges(e,`${gcwHintW}x${Number(gcwEvent.target.value)}`)).forEach(([gcwField,gcwValue])=>({size:oe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue));St(\"\")}})]}),f.jsx(\"small\",{role:\"note\",children:e.imageSizePolicy===\"openai-size\"?\"同时发送标准 size 参数和提示词规格；边长须为 16 的倍数且不超过 3840，像素 \"+((e.imageSizePolicyInfo&&e.imageSizePolicyInfo.constraints&&e.imageSizePolicyInfo.constraints.minPixels)||0)+\"–8294400，长短边比不超过 3；实际输出未验证，不是独立超分。\":\"提示词要求，不保证上游输出像素；边长须为 16 的倍数且不超过 3840，总像素不超过 8294400，长短边比不超过 3。不是独立超分。\"})]})));}else if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){ie.push({key:\"compositionRatio\",label:\"构图比例目标\",value:e.aspectRatios.includes(m)?m:\"auto\",options:e.aspectRatios.map(le=>({value:le,label:le===\"auto\"?\"服务决定\":le})),onChange:le=>{St(\"\");pt(le)},footer:f.jsx(\"small\",{role:\"note\",children:e.info.size})});}",
+          "after": "if(t===\"image\"&&(e!=null&&e.gamecoworkCustomProvider)){const gcwUpdate=(gcwField,gcwValue)=>{St(\"\");if(e.imageSizePolicy===\"openai-size\"&&gcwField===\"resolutionHint\")oe(\"auto\");({size:oe,quality:Ie,format:Xe,ratio:pt,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)};ie.push(...gamecoworkCustomParameterSettings(e,{size:o,quality:u,format:p,ratio:m,resolutionHint:i.resolutionHint,aspectRatioHint:i.aspectRatioHint},gcwUpdate,f.jsx(GameCoworkImagePixelInputs,{React:y,model:e,resolution:i.resolutionHint,onChange:gcwUpdate})));}else if(t===\"image\"&&(e!=null&&e.gamecoworkThirdParty)){const gcwUpdate=(gcwField,gcwValue)=>{St(\"\");({size:oe,quality:Ie,format:Xe,ratio:pt,requestSizeMode:r.setCpaSizeMode,resolutionHint:r.setResolutionHint,aspectRatioHint:r.setAspectRatioHint})[gcwField](gcwValue)};ie.push(...gamecoworkCpaParameterSettings(e,{size:o,quality:u,format:p,ratio:m,requestSizeMode:i.requestSizeMode,resolutionHint:i.resolutionHint,aspectRatioHint:i.aspectRatioHint},gcwUpdate,f.jsx(GameCoworkImagePixelInputs,{React:y,model:{...e,protocol:\"openai-images\",imageSizePolicy:\"openai-size\"},resolution:i.resolutionHint,onChange:gcwUpdate})));}"
+        },
+        {
+          "reason": "History restores only its frozen CPA mode/size/ratio without changing records or submitting",
+          "charOffset": 1749928,
+          "byteOffsetBeforePatch": 1776868,
+          "before": "const sf=Si!=null&&Si.frontierImage?",
+          "after": "if(Si&&!Si.gamecoworkCustomProvider&&gamecoworkIsThirdPartyModel(Si.id)){gcwSetCpaSizeMode(ot.requestSizeMode===\"api-size\"?\"api-size\":\"auto\");gcwSetResolutionHint(ot.requestSizeMode===\"api-size\"&&typeof ot.size===\"string\"?ot.size:\"auto\");gcwSetAspectHint(ot.requestSizeMode===\"api-size\"&&typeof ot.aspectRatio===\"string\"?ot.aspectRatio:\"auto\")}const sf=Si!=null&&Si.frontierImage?"
+        },
+        {
+          "reason": "An explicit account-default reset also leaves CPA API-size mode",
+          "charOffset": 1776195,
+          "byteOffsetBeforePatch": 1803205,
+          "before": "gcwSetAspectHint(\"auto\");gcwSetParameters(\"{}\");R(\"\")",
+          "after": "gcwSetAspectHint(\"auto\");gcwSetParameters(\"{}\");gcwSetCpaSizeMode(\"auto\");R(\"\")"
+        },
+        {
+          "reason": "Show measured output precision on the original completed card without changing its state or media renderer",
+          "charOffset": 277,
+          "byteOffsetBeforePatch": 277,
+          "before": "GameCoworkImagePixelInputs } from \"../provider-manager.js\";",
+          "after": "GameCoworkImagePixelInputs, GameCoworkMediaPrecisionBadge } from \"../provider-manager.js\";"
+        },
+        {
+          "reason": "Keep file-size and ratio mismatches visible on completed Quick cards instead of only inside result details",
+          "charOffset": 1659993,
+          "byteOffsetBeforePatch": 1686480,
+          "before": "f.jsx(\"span\",{children:ENe(t.finishedAt)})]})]})}yZ.propTypes",
+          "after": "f.jsx(\"span\",{children:ENe(t.finishedAt)})]}),f.jsx(GameCoworkMediaPrecisionBadge,{React:y,task:t})]})}yZ.propTypes"
         }
       ]
     },

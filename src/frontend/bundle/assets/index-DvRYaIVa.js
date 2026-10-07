@@ -1,5 +1,5 @@
 import { gamecoworkAccountDisplay, gamecoworkOpenAccountUsage } from "./gamecowork-account-display.js";
-import { officialProgrammingMenu } from "./gamecowork-official-models.js";
+import { refreshOfficialProgrammingMenu } from "./gamecowork-official-models.js";
 import { downloadGameCoworkMedia } from "../codely-generator/local-download.js";
 const gamecoworkNotifyDownload = (level, message) => gamecoworkHistoryToast[level](message, { position: "top-right", duration: 5000 });
 import { gamecoworkGetStoreMessenger } from "./store-0rGrUshb.js";
@@ -9292,7 +9292,7 @@ function lL(e) {
             key: "no-models",
             items: [{ key: "no-model", label: o("models.noModelsConfigured"), disabled: !0 }],
           }),
-        officialProgrammingMenu(Be, n, Ba, () => s(f))
+        Be
       );
     }, [N, t, v, W, F == null ? void 0 : F.title, r, s, f, o, Z, ie, Ae, re, n]),
     se = d.useCallback(
@@ -9376,7 +9376,10 @@ function lL(e) {
                   useTooltip: !0,
                   anchor: "top start",
                   panelClassName: "w-auto border border-solid border-semantic-color-surface-elevated rounded-xl !p-0",
-                  onOpenChange: K,
+                  onOpenChange: (open) => {
+                    K(open);
+                    if (open) void refreshOfficialProgrammingMenu(n, Ba);
+                  },
                   renderPanel: ({ close: de }) => {
                     var Ve;
                     return a.jsx(sL, {

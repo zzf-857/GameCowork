@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {spawn,execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {startMockProvider} from '../fixtures/mock-provider.mjs';
 const project=fileURLToPath(new URL('../../',import.meta.url));
 const args=process.argv.slice(2);const opt=(key,fallback)=>args.includes(key)?args[args.indexOf(key)+1]:fallback;
@@ -14,8 +14,14 @@ assert.ok(args.includes('--package'), 'Specify --package with a freshly built, g
 const pkg=path.resolve(opt('--package'));
 const agentManifest=JSON.parse(fs.readFileSync(path.join(pkg,'cli-package-manifest.json'),'utf8'));
 assert.equal(agentManifest.testGuardIncluded,true);
+assert.equal(agentManifest.sourceSha256?.toLowerCase(),createHash('sha256').update(fs.readFileSync(path.join(project,'src/agent/cli-main.beautified.js'))).digest('hex'),'Guarded Agent must match the maintained source.');
+assert.equal(agentManifest.executableSha256?.toLowerCase(),createHash('sha256').update(fs.readFileSync(path.join(pkg,'gamecowork.exe'))).digest('hex'),'Guarded Agent executable must match its manifest.');
 if(packaged){const productAgent=JSON.parse(fs.readFileSync(path.join(appRoot,'cli/cli-package-manifest.json'),'utf8'));assert.equal(productAgent.testGuardIncluded,false);assert.equal(productAgent.sourceSha256,agentManifest.sourceSha256,'Guarded verification Agent must match the packaged Agent source.');}
-const root=path.resolve('F:/AI/AgentMake/temp/GameCowork',`core-chat-${randomUUID()}`);
+const temp=path.resolve(project,'codelyreversebackup/work');
+const root=path.resolve(opt('--output',path.join(temp,`core-chat-${randomUUID()}`)));
+assert.ok(root.toLowerCase().startsWith(temp.toLowerCase()+path.sep),'Core chat fixtures must stay under the dedicated work directory.');
+assert.ok(!fs.existsSync(root),'Use a fresh Core chat fixture directory; existing test state is preserved.');
+const harness=args.includes('--harness'),heldSession=randomUUID();
 const workspace=path.join(root,'workspace');fs.mkdirSync(workspace,{recursive:true});
 const workspaceB=path.join(root,'workspace B');fs.mkdirSync(workspaceB);
 const file=path.join(workspace,'fixture.txt');fs.writeFileSync(file,'GCW_FIXTURE_FILE_CONTENT\n');
@@ -27,7 +33,9 @@ Object.assign(env,{GAMECOWORK_HEADLESS:'1',GAMECOWORK_TEST_MODE:'1',GAMECOWORK_A
   GAMECOWORK_CORE_DIR:core,GAMECOWORK_CORE_ENTRY:path.join(core,'index.js'),GAMECOWORK_FRONTEND_DIR:packaged?path.join(appRoot,'frontend'):path.join(project,'src/frontend/bundle'),
   GAMECOWORK_DATA_DIR:path.join(root,'data'),GAMECOWORK_AGENT_PATH:path.join(pkg,'gamecowork.exe'),GAMECOWORK_AGENT_RESOURCE_DIR:path.join(pkg,'resources'),
   GAMECOWORK_SMOKE_ROOT:root,GAMECOWORK_SMOKE_CLI_PATH:path.join(pkg,'gamecowork.exe'),
-  GAMECOWORK_CLI_PROBE_ROOT:root,GAMECOWORK_CLI_PROBE_SOURCE:pkg,NODE_OPTIONS:`--require ${JSON.stringify(path.join(project,'tests/fixtures/core-chat-spawn-guard.cjs'))}`});
+  GAMECOWORK_CLI_PROBE_ROOT:root,GAMECOWORK_CLI_PROBE_SOURCE:pkg,
+  ...(harness?{GAMECOWORK_HARNESS_CORE_SHA:createHash('sha256').update(fs.readFileSync(path.join(core,'index.js'))).digest('hex'),GAMECOWORK_HARNESS_HOLD_SESSION:heldSession}:{}),
+  NODE_OPTIONS:`--require ${JSON.stringify(path.join(project,harness?'tests/fixtures/core-chat-harness-guard.cjs':'tests/fixtures/core-chat-spawn-guard.cjs'))}`});
 const binary=path.resolve(opt('--binary',packaged?path.join(appRoot,'GameCowork.exe'):path.join(project,'src/shell/target/debug/GameCowork.exe')));
 let shell;
 let log='',origin;const checks=[];const frames=[];let eventsAbort,eventPump,eventError;
@@ -41,6 +49,7 @@ async function rpc(kind,data,workspaceKey){const id=randomUUID();const response=
 async function subscribe(){eventError=undefined;const controller=new AbortController();eventsAbort=controller;const events=await fetch(new URL('/api/tauri/events',origin),{signal:controller.signal});eventPump=(async()=>{let carry='';const decoder=new TextDecoder();try{for await(const bytes of events.body){carry+=decoder.decode(bytes,{stream:true}).replace(/\r\n/g,'\n');let p;while((p=carry.indexOf('\n\n'))>=0){const block=carry.slice(0,p);carry=carry.slice(p+2);const data=block.split('\n').filter(l=>l.startsWith('data:')).map(l=>l.slice(5).trim()).join('\n');if(data){const envelope=JSON.parse(data);frames.push(envelope.inner?{...envelope.inner,_hubWorkspaceKey:envelope.hubWorkspaceKey}:envelope);}}}}catch(error){if(!controller.signal.aborted)eventError=error;}})();}
 async function stopHost(){eventsAbort?.abort();await eventPump?.catch(()=>{});if(shell.exitCode===null){const current=shell;const exited=new Promise(resolve=>current.once('exit',resolve));await promisify(execFile)('taskkill.exe',['/PID',String(current.pid),'/F'],{windowsHide:true});await exited;cleanup.push({pid:current.pid,exited:current.exitCode!==null});}}
 function chatFrames(id){return frames.filter(frame=>frame.messageId===id&&frame.messageType==='llm/streamChat');}
+function harnessEvents(){const file=path.join(root,'harness-events.jsonl');return fs.existsSync(file)?fs.readFileSync(file,'utf8').split(/\r?\n/).filter(Boolean).map(JSON.parse):[];}
 async function startChat(key,sid,title,text){const id=randomUUID();const ack=await fetch(new URL('/api/tauri/invoke',origin),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:{messageType:'llm/streamChat',messageId:id,data:{messages:[{role:'user',content:text}],continueSessionId:sid,title,currentModel:title,completionOptions:{},messageOptions:{},_deferResponseToSse:true}},workspaceKey:key})}).then(response=>response.json());assert.equal(ack,null);return{id,key,sid};}
 async function completeChat(chat,marker){await until(()=>chatFrames(chat.id).some(frame=>frame.data?.done),'Actual stream did not complete');const chunks=chatFrames(chat.id),last=chunks.find(frame=>frame.data?.done);if(last.data.status==='error')throw Error(`Actual stream failed: ${last.data.error}`);check('Actual stream terminal success',last.data.status==='success');check('All stream frames kept their workspace route',chunks.every(frame=>frame._hubWorkspaceKey===chat.key));check(`Actual output ${marker} traversed Core/SSE`,JSON.stringify(chunks).includes(marker));check('Multiple content frames survived the real protocol',chunks.filter(frame=>frame.data.done===false).length>=2);return chunks;}
 function assistantText(value){if(Array.isArray(value))return value.map(assistantText).join('');if(value&&typeof value==='object'){if(value.role==='assistant'&&typeof value.content==='string')return value.content;return Object.values(value).map(assistantText).join('');}return '';}
@@ -69,6 +78,38 @@ try{
   const abort=await fetch(new URL('/api/tauri/invoke',origin),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:{messageType:'abort',messageId:slow.id,data:null},workspaceKey:key})}).then(response=>response.json());assert.equal(abort.messageId,slow.id);
   await until(()=>chatFrames(slow.id).some(frame=>frame.data?.done),'Cancel terminal frame not received');const cancelled=chatFrames(slow.id).at(-1).data;check('Cancel finalized as a normal cancelled stream',cancelled.done===true&&cancelled.status==='success'&&cancelled.content?.cancelled===true);
   await until(()=>mock.requests.some(request=>request.scenario==='slow'&&request.aborted),'Actual Provider HTTP connection was not aborted');check('Cancel propagated to actual Provider connection',mock.requests.some(request=>request.scenario==='slow'&&request.aborted));
+  if(harness){
+    async function abortChat(chat){await fetch(new URL('/api/tauri/invoke',origin),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:{messageType:'abort',messageId:chat.id,data:null},workspaceKey:chat.key})}).then(response=>response.json());}
+    const held=await startChat(key,heldSession,title,'GCW_HARNESS_INIT_CANCEL');
+    await until(()=>harnessEvents().some(event=>event.event==='initializationHeld'&&event.sessionId===heldSession),'Real Agent initialization barrier was not reached');
+    await abortChat(held);fs.writeFileSync(path.join(root,'harness-init.release'),'owned release');
+    await until(()=>harnessEvents().some(event=>event.event==='streamSettled'&&event.sessionId===heldSession&&event.cancelled),'Cancelled initialization did not settle');
+    await until(()=>chatFrames(held.id).some(frame=>frame.data.done),'Initialization cancellation final frame did not reach SSE');
+    check('Cancelled real initialization never entered the chat prompt dispatcher',!harnessEvents().some(event=>event.event==='queueWaiting'&&event.sessionId===heldSession));
+    check('Initialization cancellation returned exactly one cancelled terminal frame',chatFrames(held.id).filter(frame=>frame.data.done).length===1&&chatFrames(held.id).at(-1).data.content.cancelled===true);
+    const queueSession=randomUUID(),running=await startChat(key,queueSession,title,'GCW_E2E_SLOW queued harness owner');
+    await until(()=>chatFrames(running.id).some(frame=>JSON.stringify(frame).includes('GCW_SLOW_STARTED')),'Queue owner did not stream');
+    const beforeQueued=harnessEvents().filter(event=>event.event==='promptDispatched').length;
+    const queued=await startChat(key,queueSession,title,'GCW_HARNESS_QUEUED_CANCEL');
+    await until(()=>harnessEvents().some(event=>event.event==='queueWaiting'&&event.sessionId===queueSession&&event.queuedFixture),'Second actual turn did not wait for the session lease');
+    await abortChat(queued);await abortChat(running);
+    await until(()=>harnessEvents().some(event=>event.event==='streamSettled'&&event.sessionId===queueSession&&event.queuedFixture&&event.cancelled),'Queued cancellation did not settle after its owner');
+    await until(()=>chatFrames(queued.id).some(frame=>frame.data.done),'Queued cancellation final frame did not reach SSE');
+    check('Cancelled queued turn made zero additional real prompt dispatches',harnessEvents().filter(event=>event.event==='promptDispatched').length===beforeQueued);
+    check('Queued cancellation produced one cancelled final frame',chatFrames(queued.id).filter(frame=>frame.data.done).length===1&&chatFrames(queued.id).at(-1).data.content.cancelled===true);
+    for(const [marker,expected]of[['REFUSAL','refused'],['LIMIT','token limit'],['MISSING','missing final']]){
+      const chat=await startChat(key,randomUUID(),title,`GCW_HARNESS_FINAL_${marker}`);
+      await until(()=>chatFrames(chat.id).some(frame=>frame.data.done),'Injected ACP final did not terminate the actual SSE request');
+      const terminal=chatFrames(chat.id).filter(frame=>frame.data.done);
+      check(`${marker}: exactly one actual SSE error final`,terminal.length===1&&terminal[0].data.status==='error'&&terminal[0].data.error.includes(expected));
+      check(`${marker}: real partial Provider output survived the final error`,assistantText(chatFrames(chat.id).map(frame=>frame.data.content)).includes('Hello fixture'));
+      await until(()=>harnessEvents().filter(event=>event.event==='streamFailed').length>=['REFUSAL','LIMIT','MISSING'].indexOf(marker)+1,'Core did not preserve final failure');
+    }
+    const agentCancelled=await startChat(key,randomUUID(),title,'GCW_HARNESS_FINAL_CANCELLED');
+    await until(()=>chatFrames(agentCancelled.id).some(frame=>frame.data.done),'Agent cancelled final was not delivered');
+    const last=chatFrames(agentCancelled.id).at(-1).data;
+    check('Agent cancelled receipt is a normal cancelled SSE final with its real partial output',last.status==='success'&&last.content.cancelled===true&&last.content.completion==='Hello fixture');
+  }
   const text=assistantText(streamA.map(frame=>frame.data.content));check('History uses actual returned Assistant text',text.includes('GCW_REPLY_A_COMPLETE'));
   await rpc('history/save',{sessionId:sid,title:'Fixture A',workspaceDirectory:workspace,selectedChatModelTitle:title,history:[{message:{role:'user',content:'GCW_E2E_A'}},{message:{role:'assistant',content:text}}]},key);
   const history=await rpc('history/load',{id:sid},key);check('Saved actual history contains Provider output',history.result.data.content.sessionId===sid&&JSON.stringify(history.result.data.content.history).includes('GCW_REPLY_A_COMPLETE'));

@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 const project=fileURLToPath(new URL('../../',import.meta.url));
 const source=path.join(project,'src/unity-insight');
-const run=path.resolve('F:/AI/AgentMake/temp/GameCowork',`insight-worker-${randomUUID()}`);
+const run=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work',`insight-worker-${randomUUID()}`);
 const fixture=path.join(run,'project'),home=path.join(run,'own-state');
 for(const directory of[home,path.join(fixture,'Assets'),path.join(fixture,'ProjectSettings'),path.join(fixture,'Packages')])fs.mkdirSync(directory,{recursive:true});
 fs.writeFileSync(path.join(fixture,'ProjectSettings/ProjectVersion.txt'),'m_EditorVersion: 2022.3.28f1\n');

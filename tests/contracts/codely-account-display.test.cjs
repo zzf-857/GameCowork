@@ -2,10 +2,10 @@
 // Real shared broker and extracted handlers from both maintained Core entries.
 // All account HTTP is an injected fixture; browser opening is only a spy.
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),url=require('node:url');
-const accountFile=path.resolve(__dirname,'../../src/core/binary/out/gamecowork-codely-account.js');
+const accountFile=path.resolve(__dirname,'../../src/core/binary/out/modules/account/broker.js');
 const base='http://127.0.0.1:8401',privateAccess='fixture-private-access-DO-NOT-DISPLAY',privateRefresh='fixture-private-refresh-DO-NOT-DISPLAY';
 async function fixture(t,{profile={id:102427,username:'owned-user',email:'owned@example.invalid'},plan={plan_type:'pro',plan_tag:'TuanjieAIPro',is_active:true,has_seat:true},login=true}={}){
-  const directory=fs.mkdtempSync('F:/AI/AgentMake/temp/GameCowork/account-display-'),module={exports:{}},calls=[],handlers=new Map(),events=[];
+  const directory=fs.mkdtempSync('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/account-display-'),module={exports:{}},calls=[],handlers=new Map(),events=[];
   const context=vm.createContext({module,exports:module.exports,require:specifier=>specifier.startsWith('.')?require(path.join(path.dirname(accountFile),specifier)):require(specifier),process:{env:{GAMECOWORK_CODELY_ACCOUNT_DIR:directory},pid:process.pid,platform:process.platform},Buffer,URL,URLSearchParams,AbortController,AbortSignal,Headers,FormData,Blob,TextDecoder,setTimeout,clearTimeout,console});
   vm.runInContext(fs.readFileSync(accountFile,'utf8'),context,{filename:accountFile});const account=module.exports;
   const fixtureFetch=async(address,options={})=>{
@@ -27,7 +27,7 @@ async function fixture(t,{profile={id:102427,username:'owned-user',email:'owned@
 function extractHandler(filename,name,nextName,account){
   const source=fs.readFileSync(path.resolve(__dirname,'../../src/core/binary/out/'+filename),'utf8'),start=source.indexOf(`n("${name}",`),end=source.indexOf(`n("${nextName}",`,start);
   assert.ok(start>=0&&end>start);const registration=source.slice(start,end).trim().replace(/,\s*$/,'');let handler,ideReads=0,legacyPlanReads=0;const opened=[];
-  const context=vm.createContext({require:specifier=>{assert.equal(specifier,'./gamecowork-codely-account.js');return account;},n:(registered,fn)=>{assert.equal(registered,name);handler=fn;},t:{ide:{getIdeSettings:()=>({})},messenger:{request:async(kind,value)=>{assert.equal(kind,'openUrl');opened.push(value);}},configHandler:{controlPlaneClient:{getUserPlan:async()=>{legacyPlanReads++;assert.fail('Authenticated plan must remain broker-owned');}}}},ip:async()=>{ideReads++;return{API_URL:'https://api.gamecowork.invalid/'};},gZa:{resolve:url.resolve},msn:(base,path)=>new URL(path,base).toString(),URL});
+  const context=vm.createContext({require:specifier=>{assert.equal(specifier,'./modules/account/broker.js');return account;},n:(registered,fn)=>{assert.equal(registered,name);handler=fn;},t:{ide:{getIdeSettings:()=>({})},messenger:{request:async(kind,value)=>{assert.equal(kind,'openUrl');opened.push(value);}},configHandler:{controlPlaneClient:{getUserPlan:async()=>{legacyPlanReads++;assert.fail('Authenticated plan must remain broker-owned');}}}},ip:async()=>{ideReads++;return{API_URL:'https://api.gamecowork.invalid/'};},gZa:{resolve:url.resolve},msn:(base,path)=>new URL(path,base).toString(),URL});
   vm.runInContext(registration,context,{timeout:100});assert.equal(typeof handler,'function');return{handler,opened,ideReads:()=>ideReads,legacyPlanReads:()=>legacyPlanReads};
 }
 test('verified email and username reach the display DTO; UID and credentials keep their distinct meaning',async t=>{

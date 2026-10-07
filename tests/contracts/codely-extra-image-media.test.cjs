@@ -1,20 +1,23 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { deflateSync } = require('node:zlib');
-const { inspectExtraImageMedia } = require('../../src/core/binary/out/gamecowork-image-media.js');
+const { inspectExtraImageMedia } = require('../../src/core/binary/out/modules/media/image.js');
 function uint(value) { const buffer = Buffer.alloc(4); buffer.writeInt32LE(value); return buffer; }
 function float(value) { const buffer = Buffer.alloc(4); buffer.writeFloatLE(value); return buffer; }
 function attribute(name, type, data) { return Buffer.concat([Buffer.from(name + '\0' + type + '\0'), uint(data.length), data]); }
 function channel(name, pixelType = 1) { return Buffer.concat([Buffer.from(name + '\0'), uint(pixelType), Buffer.alloc(4), uint(1), uint(1)]); }
-function fixture({ width = 4, height = 3, compression = 0, channels = 3, fill = 0, yMin = 0, pixelType = 1 } = {}) {
+function fixture({ width = 4, height = 3, compression = 0, channels = 3, fill = 0, yMin = 0, pixelType = 1, omitAttributes = [], replaceAttributes = {} } = {}) {
   const head = Buffer.alloc(8); head.writeUInt32LE(20000630); head.writeUInt32LE(2, 4);
   const window = Buffer.concat([uint(0), uint(yMin), uint(width - 1), uint(yMin + height - 1)]);
-  const header = Buffer.concat([head,
-    attribute('channels', 'chlist', Buffer.concat(Array.from({ length: channels }, (_, i) => channel(String.fromCharCode(65 + i), pixelType)).concat([Buffer.from([0])]))),
-    attribute('compression', 'compression', Buffer.from([compression])), attribute('dataWindow', 'box2i', window), attribute('displayWindow', 'box2i', window),
-    attribute('lineOrder', 'lineOrder', Buffer.from([0])), attribute('pixelAspectRatio', 'float', float(1)),
-    attribute('screenWindowCenter', 'v2f', Buffer.concat([float(0), float(0)])), attribute('screenWindowWidth', 'float', float(1)), Buffer.from([0]),
-  ]);
+  const descriptors = [
+    ['channels', 'chlist', Buffer.concat(Array.from({ length: channels }, (_, i) => channel(String.fromCharCode(65 + i), pixelType)).concat([Buffer.from([0])]))],
+    ['compression', 'compression', Buffer.from([compression])], ['dataWindow', 'box2i', window], ['displayWindow', 'box2i', window],
+    ['lineOrder', 'lineOrder', Buffer.from([0])], ['pixelAspectRatio', 'float', float(1)],
+    ['screenWindowCenter', 'v2f', Buffer.concat([float(0), float(0)])], ['screenWindowWidth', 'float', float(1)],
+  ];
+  const header = Buffer.concat([head, ...descriptors.filter(([name]) => !omitAttributes.includes(name)).map(([name, type, data]) => {
+    const replacement = replaceAttributes[name]; return attribute(name, replacement?.type ?? type, replacement?.data ?? data);
+  }), Buffer.from([0])]);
   const blockLines = compression === 3 ? 16 : 1, count = Math.ceil(height / blockLines), table = Buffer.alloc(count * 8), chunks = [];
   let offset = header.length + table.length;
   for (let index = 0; index < count; index++) {
@@ -69,4 +72,55 @@ test('Recognized unsupported EXR layouts remain explicit errors instead of false
   for (const compression of [1, 4, 8]) assert.throws(() => inspectExtraImageMedia(fixture({ compression }).bytes), /compression/);
   assert.throws(() => inspectExtraImageMedia(Buffer.from('not EXR'), { filename: 'official.exr' }), /magic/);
   assert.equal(inspectExtraImageMedia(Buffer.from('ordinary unknown file')), null);
+});
+test('Only wholly absent descriptive EXR attributes use official InputFile defaults and preserve the original bytes', () => {
+  // OpenEXR InputFile defaults strictHeaderValidation(false); validation.c supplies
+  // pixelAspectRatio=1, screenWindowCenter=(0,0), screenWindowWidth=1 if absent.
+  // https://github.com/AcademySoftwareFoundation/openexr/blob/main/src/lib/OpenEXRCore/validation.c
+  const descriptive = ['pixelAspectRatio', 'screenWindowCenter', 'screenWindowWidth'];
+  for (const compression of [0, 2, 3]) for (let mask = 1; mask < 8; mask++) {
+    const omitAttributes = descriptive.filter((_, index) => mask & (1 << index));
+    const { bytes } = fixture({ width: 128, height: 19, compression, omitAttributes });
+    const original = Buffer.from(bytes), info = inspectExtraImageMedia(bytes);
+    assert.deepEqual(info.defaultedAttributes, omitAttributes);
+    assert.equal(info.width, 128); assert.equal(info.height, 19); assert.equal(info.decodedBytes, 128 * 19 * 6);
+    assert.equal(info.validation, 'complete-scanline-pixel-storage'); assert.deepEqual(bytes, original);
+  }
+  assert.equal(Object.hasOwn(inspectExtraImageMedia(fixture().bytes), 'defaultedAttributes'), false, 'Explicit original attributes are not reported as inferred defaults');
+});
+test('Existing descriptive EXR attributes with wrong types or lengths are malformed, never defaulted', () => {
+  const variants = [
+    ['pixelAspectRatio', 'double', Buffer.alloc(8)], ['pixelAspectRatio', 'float', Buffer.alloc(0)], ['pixelAspectRatio', 'float', Buffer.alloc(8)],
+    ['screenWindowCenter', 'v2d', Buffer.alloc(16)], ['screenWindowCenter', 'v2f', Buffer.alloc(4)], ['screenWindowCenter', 'v2f', Buffer.alloc(12)],
+    ['screenWindowWidth', 'double', Buffer.alloc(8)], ['screenWindowWidth', 'float', Buffer.alloc(0)], ['screenWindowWidth', 'float', Buffer.alloc(8)],
+  ];
+  for (const [name, type, data] of variants) {
+    const { bytes } = fixture({ replaceAttributes: { [name]: { type, data } } });
+    assert.throws(() => inspectExtraImageMedia(bytes), new RegExp('malformed ' + name));
+  }
+  for (const value of [NaN, Infinity, -Infinity, 0, -1]) for (const name of ['pixelAspectRatio', 'screenWindowWidth']) {
+    assert.throws(() => inspectExtraImageMedia(fixture({ replaceAttributes: { [name]: { data: float(value) } } }).bytes), /invalid pixel aspect ratio|invalid screen window width/);
+  }
+  for (const value of [NaN, Infinity, -Infinity]) for (const axis of [0, 1]) {
+    const data = Buffer.concat(axis ? [float(0), float(value)] : [float(value), float(0)]);
+    assert.throws(() => inspectExtraImageMedia(fixture({ replaceAttributes: { screenWindowCenter: { data } } }).bytes), /invalid screen window center/);
+  }
+});
+test('Compatibility defaults cannot replace any required pixel layout field or make damaged storage valid', () => {
+  const descriptive = ['pixelAspectRatio', 'screenWindowCenter', 'screenWindowWidth'];
+  for (const name of ['channels', 'compression', 'dataWindow', 'displayWindow', 'lineOrder']) {
+    assert.throws(() => inspectExtraImageMedia(fixture({ omitAttributes: [...descriptive, name] }).bytes), new RegExp('missing ' + name));
+  }
+  for (const compression of [0, 2, 3]) {
+    const { bytes, tableOffset } = fixture({ width: 128, height: 19, compression, omitAttributes: descriptive });
+    assert.throws(() => inspectExtraImageMedia(bytes.subarray(0, tableOffset)), /offset table/);
+    assert.throws(() => inspectExtraImageMedia(bytes.subarray(0, bytes.length - 1)), /pixel block/);
+    assert.throws(() => inspectExtraImageMedia(Buffer.concat([bytes, Buffer.from([0])])), /unowned/);
+    const outside = Buffer.from(bytes); outside.writeBigUInt64LE(BigInt(tableOffset), tableOffset);
+    assert.throws(() => inspectExtraImageMedia(outside), /chunk offset/);
+    if (compression) {
+      const corrupt = Buffer.from(bytes), first = Number(corrupt.readBigUInt64LE(tableOffset)); corrupt[first + 10] ^= 0xff;
+      assert.throws(() => inspectExtraImageMedia(corrupt), /decompressed|length/);
+    }
+  }
 });

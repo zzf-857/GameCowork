@@ -9,7 +9,7 @@ import { randomUUID } from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const base = path.resolve('F:/AI/AgentMake/temp/GameCowork');
+const base = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
 const root = path.join(base, `real-core-smoke-${randomUUID()}`);
 const packaged=process.argv.includes('--packaged');
 const core = path.join(project, packaged?'app/core':'src/core/binary/out');

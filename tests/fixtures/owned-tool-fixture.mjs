@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 
 export function createOwnedToolFixture(root, workspace=path.join(root,'workspace')) {
-  const boundary=path.resolve('F:/AI/AgentMake/temp/GameCowork');
+  const boundary=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work');
   root=path.resolve(root);workspace=path.resolve(workspace);
   assert.ok(root.toLowerCase().startsWith(boundary.toLowerCase()+path.sep));
   assert.ok(workspace.toLowerCase().startsWith(root.toLowerCase()+path.sep));

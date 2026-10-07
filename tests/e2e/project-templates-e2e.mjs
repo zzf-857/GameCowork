@@ -9,7 +9,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createRequire} from 'node:module';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const args=process.argv.slice(2); const option=(name,value)=>args.includes(name)?args[args.indexOf(name)+1]:value;
-const temp=path.resolve(root,'../../temp/GameCowork');
+const temp=path.resolve(root,'codelyreversebackup/work');
 const run=path.resolve(option('--output',path.join(temp,'project-templates-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase()+path.sep));
 const editor=path.resolve(option('--editor','F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe'));

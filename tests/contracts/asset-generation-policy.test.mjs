@@ -1,7 +1,7 @@
 // Actual service policy/format boundaries with an own loopback HTTP fixture.
 import fs from 'node:fs';import path from 'node:path';import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {createRequire} from 'node:module';
 import {startAssetGenerationProvider} from '../fixtures/asset-generation-provider-fixture.mjs';
-const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/gamecowork-assets.js'),root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-policy-'+randomUUID());
+const require=createRequire(import.meta.url),{createAssetService}=require('../../src/core/binary/out/modules/generation/service.js'),root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-policy-'+randomUUID());
 let provider,service,base;const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function done(taskId){const deadline=Date.now()+5000;for(;;){const {task}=await service.dispatch('generator/getTask',{taskId});if(['completed','failed','interrupted'].includes(task.status))return task;if(Date.now()>deadline)throw Error('Owned policy task deadline');await wait(10);}}
 test.before(async()=>{provider=await startAssetGenerationProvider({root,plans:{POLICY_BAD_PNG:{kind:'image',base64:true},POLICY_BAD_GLB:{kind:'model'},POLICY_PREVIEW_ONLY:{kind:'model',extensions:['png']}}});service=createAssetService({root:path.join(root,'runtime/generator'),pollIntervalMs:25,requestTimeoutMs:1000});base={id:'owned-policy',name:'Owned policy',baseUrl:provider.baseUrl,kinds:['image','video','model'],model:'owned',authMode:'bearer',apiKey:provider.apiKey};await service.dispatch('generator/saveProvider',{provider:base});});

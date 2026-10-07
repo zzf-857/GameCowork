@@ -1,7 +1,7 @@
 'use strict';
 const test = require('node:test'), assert = require('node:assert/strict'), fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), { spawn } = require('node:child_process');
-const { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const base = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/asset-owner-' + crypto.randomUUID()); fs.mkdirSync(base, { recursive: true });
+const { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const base = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/asset-owner-' + crypto.randomUUID()); fs.mkdirSync(base, { recursive: true });
 function child(root) {
   const processHandle = spawn(process.execPath, [path.resolve(__dirname, '../fixtures/asset-generation-owner-child.cjs'), root], { windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] }); let output = '';
   const ready = new Promise((resolve, reject) => { const timer = setTimeout(() => reject(Error('Owned lock child deadline')), 5000); processHandle.stdout.on('data', bytes => { output += bytes; const end = output.indexOf('\n'); if (end >= 0) { clearTimeout(timer); resolve(JSON.parse(output.slice(0, end))); } }); processHandle.once('error', error => { clearTimeout(timer); reject(error); }); });

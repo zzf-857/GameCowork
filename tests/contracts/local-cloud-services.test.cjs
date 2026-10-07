@@ -42,10 +42,10 @@ for(const file of ['index.js','index.beautified.js']) {
  test(`${file}: local asset task polling uses the real owned service before any cloud authentication`,async()=>{
   const pattern=/n\("generator\/listTasks",\s*async\s*(?:\(G\)|G)\s*=>\s*\{(if\(process\.env\.GAMECOWORK_LOCAL_PROVIDER_MODE==="1"\)return gcwLocalAssetService\(t\)\.dispatch\("generator\/listTasks",G\.data\?\?\{\}\);)/;
   const matched=source.match(pattern);assert.ok(matched,'actual listTasks own-service route');
-  const root=path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/local-asset-route-'+require('node:crypto').randomUUID());
+  const root=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/local-asset-route-'+require('node:crypto').randomUUID());
   const owner={messenger:{send(){throw Error('Unconfigured task polling must not publish synthetic updates');}}};
   const ctx=vm.createContext({process:{env:{GAMECOWORK_LOCAL_PROVIDER_MODE:'1',GAMECOWORK_USER_DATA_DIR:root}},t:owner,
-   require(name){if(name==='node:path')return path;if(name==='./gamecowork-assets.js')return require(path.join(base,name));throw Error('Unexpected external dependency: '+name);}});
+   require(name){if(name==='node:path')return path;if(name==='./modules/generation/service.js')return require(path.join(base,name));throw Error('Unexpected external dependency: '+name);}});
   vm.runInContext(section('var gcwAssetActors = new Map();','if (typeof URL.canParse'),ctx);
   const service=ctx.gcwLocalAssetService(owner);
   try{

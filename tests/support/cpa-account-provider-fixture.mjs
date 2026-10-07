@@ -8,7 +8,7 @@ import {randomUUID} from 'node:crypto';
 import {createOwnedGenerationMedia} from '../fixtures/asset-generation-provider-fixture.mjs';
 
 export async function startAccountCpaProvider(rootValue){
-  const temp=path.resolve('F:/AI/AgentMake/temp/GameCowork'),root=path.resolve(rootValue),areas=['cpa-flexible-20261003','cpa-variant-buttons-20261003'].map(name=>path.join(temp,name));
+  const temp=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work'),root=path.resolve(rootValue),areas=['cpa-flexible-20261003','cpa-variant-buttons-20261003','2026-10-07-thirdparty-live'].map(name=>path.join(temp,name));
   assert.ok(areas.some(area=>root.toLowerCase().startsWith(area.toLowerCase()+path.sep)),'The account fixture stays inside a named CPA temp area');
   fs.mkdirSync(root,{recursive:true});const media=createOwnedGenerationMedia(root),apiKey='owned-account-fixture-'+randomUUID(),requests=[],sockets=new Set();let baseUrl;
   const server=http.createServer(async(request,response)=>{

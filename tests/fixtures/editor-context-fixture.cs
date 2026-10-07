@@ -23,7 +23,7 @@ public static class GameCoworkContextFixture
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-context-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own context fixture scope required");
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-context-", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Own context fixture scope required");
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var selected = new GameObject("GCW_CONTEXT_SELECTED"); selected.transform.position = new Vector3(2, 3, 4);
         var asset = new AnimationClip(); asset.name = "GCW_CONTEXT_ASSET"; AssetDatabase.CreateAsset(asset, "Assets/ContextAsset.anim");

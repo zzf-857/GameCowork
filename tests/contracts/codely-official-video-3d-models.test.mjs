@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const spec=require('../../src/core/binary/out/gamecowork-official-video-3d-models.js');
+const spec=require('../../src/core/binary/out/modules/generation/models/official-video-3d.js');
 const fixture=JSON.parse(fs.readFileSync(new URL('../fixtures/codely-generator-api-contract.json',import.meta.url),'utf8'));
 const originals=new Map(fixture.registry.models.map(m=>[m.id,m.fields]));
 const normalize=value=>JSON.parse(JSON.stringify(value));

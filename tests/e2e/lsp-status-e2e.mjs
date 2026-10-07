@@ -8,7 +8,7 @@ import {promisify} from 'node:util';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const exec=promisify(execFile),repo=fileURLToPath(new URL('../../',import.meta.url)),args=process.argv.slice(2),option=(name,fallback)=>args.includes(name)?args[args.indexOf(name)+1]:fallback;
-const base=path.resolve('F:/AI/AgentMake/temp/GameCowork'),run=path.resolve(option('--output',path.join(base,'tests/lsp-status-'+randomUUID())));assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));assert.equal(fs.existsSync(run),false);fs.mkdirSync(run,{recursive:true});
+const base=path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work'),run=path.resolve(option('--output',path.join(base,'tests/lsp-status-'+randomUUID())));assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));assert.equal(fs.existsSync(run),false);fs.mkdirSync(run,{recursive:true});
 const packaged=args.includes('--packaged'),binary=path.resolve(option('--binary',path.join(repo,packaged?'app/GameCowork.exe':'src/shell/target/debug/GameCowork.exe'))),runtime=path.join(run,'owned-lsp-csharp'),offline=path.join(run,'owned-lsp-offline'),workspace=path.join(run,'own-workspace');
 fs.mkdirSync(workspace);fs.writeFileSync(path.join(workspace,'Fixture.csproj'),'<Project ToolsVersion="4.0" />');fs.writeFileSync(path.join(workspace,'a.cs'),'class A {}');
 const checks=[],errors=[];let shell,origin,log='';

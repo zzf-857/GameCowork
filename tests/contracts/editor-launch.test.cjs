@@ -7,7 +7,7 @@ const vm = require('node:vm');
 const { randomUUID } = require('node:crypto');
 const test = require('node:test');
 
-const project = path.join('F:/AI/AgentMake/temp/GameCowork/tests', `editor-helper-${randomUUID()}`, 'Project');
+const project = path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests', `editor-helper-${randomUUID()}`, 'Project');
 function extract(source, start, end) {
   const left = source.indexOf(start), right = source.indexOf(end, left + start.length);
   assert.ok(left >= 0 && right > left, `Missing boundary ${start}`);

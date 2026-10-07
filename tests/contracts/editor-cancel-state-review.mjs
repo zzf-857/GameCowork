@@ -7,7 +7,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-const project=fileURLToPath(new URL('../../',import.meta.url)),run=path.join('F:/AI/AgentMake/temp/GameCowork/tests','editor-bridge-cancel-review-'+randomUUID());fs.mkdirSync(run,{recursive:true});
+const project=fileURLToPath(new URL('../../',import.meta.url)),run=path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests','editor-bridge-cancel-review-'+randomUUID());fs.mkdirSync(run,{recursive:true});
 const mono='E:/TuanJieAllVersion/2022.3.62t16/Editor/Data/MonoBleedingEdge/bin/mono.exe',compiler='E:/TuanJieAllVersion/2022.3.62t16/Editor/Data/MonoBleedingEdge/lib/mono/4.5/mcs.exe';
 assert.ok(fs.existsSync(mono)&&fs.existsSync(compiler),'Use the installed isolated Mono compiler, not an Editor process');
 const stub=path.join(run,'StateReview.cs'),program=path.join(run,'StateReview.exe');
@@ -31,7 +31,7 @@ namespace UnityEditor {
 }
 namespace UnityEditor.Compilation { public static class CompilationPipeline { public static event Action<object> compilationStarted; public static event Action<object> compilationFinished; } }
 namespace GameCowork.EditorBridge {
- public static class Bridge { public static string ProjectRoot="F:/AI/AgentMake/temp/GameCowork/tests/owned-review-project"; public static string DomainId=new string('d',32); public static string EditorDomain {get{return DomainId;}} public static int ProcessId=123; public static string Json(string value){return new JavaScriptSerializer().Serialize(value);} }
+ public static class Bridge { public static string ProjectRoot="F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/owned-review-project"; public static string DomainId=new string('d',32); public static string EditorDomain {get{return DomainId;}} public static int ProcessId=123; public static string Json(string value){return new JavaScriptSerializer().Serialize(value);} }
  public class PreviewRequest {public string action; public int timeoutSeconds; public bool singleFrame;}
  class StateReview {
   static JavaScriptSerializer json=new JavaScriptSerializer();
@@ -61,7 +61,7 @@ namespace GameCowork.EditorBridge {
   }catch(Exception error){Console.Error.WriteLine(error.Message);return 1;}}
  }
 }`);
-execFileSync(mono,[compiler,'-nologo','-r:System.Web.Extensions','-out:'+program,stub,path.join(project,'src/editor-bridge/Editor/EditorCancellation.cs'),path.join(project,'src/editor-bridge/Editor/EditorControl.cs')],{cwd:run,timeout:30000,encoding:'utf8',windowsHide:true});
+execFileSync(mono,[compiler,'-nologo','-r:System.Web.Extensions','-out:'+program,stub,path.join(project,'src/editor-bridge/Editor/Operations/EditorCancellation.cs'),path.join(project,'src/editor-bridge/Editor/Operations/EditorControl.cs')],{cwd:run,timeout:30000,encoding:'utf8',windowsHide:true});
 for(const [mode,label]of [['identity','nonce/root/operation and client-scoped equal request IDs'],['invalid-restore','invalid recovered identity does not execute'],['invalid-native-root','native recovered operations retain their original root'],['reload-cancel','confirmed pre-effect cancellation survives pre-Tick reload'],['applied-no-rollback','applied effects are neither replayed nor blindly rolled back'],['owner-disconnect','accepted disconnected owner cannot apply later'],['owner-multiple','one disconnection cannot cancel another live owner'],['reload-renew','restored accepted effect waits for authenticated ownership renewal'],['freeze-unknown','Freeze cannot falsely confirm a late cancellation'],['tombstone','pre-cancel survives late original request admission'],['retired-replay','retired same-client request IDs cannot admit another effect'],['expired-self-replay','expired known identity cannot replace itself during cleanup']])test('Actual C# cancellation/control: '+label,()=>{
  const output=execFileSync(mono,[program,mode],{cwd:run,timeout:10000,encoding:'utf8',windowsHide:true});assert.ok(output.includes(': PASS'));
 });

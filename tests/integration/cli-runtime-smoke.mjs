@@ -12,7 +12,7 @@ assert.ok(packageIndex >= 0 && process.argv[packageIndex + 1], 'Pass --package <
 const packageRoot = path.resolve(process.argv[packageIndex + 1]);
 const manifest = JSON.parse(fs.readFileSync(path.join(packageRoot, 'cli-package-manifest.json'), 'utf8'));
 assert.equal(manifest.testGuardIncluded, true, 'Full runtime smoke requires a guarded test artifact');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork', `cli-runtime-${randomUUID()}`);
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work', `cli-runtime-${randomUUID()}`);
 const workspace = path.join(root, 'workspace');
 const managedDefault = path.join(root, 'managed-default');
 const prewarm = process.argv.includes('--prewarm');

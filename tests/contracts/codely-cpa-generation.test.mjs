@@ -9,9 +9,9 @@ import { randomUUID, createHash } from 'node:crypto';
 import { deflateSync, inflateSync } from 'node:zlib';
 
 const require = createRequire(import.meta.url);
-const { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const { createCodelyGeneratorApi } = require('../../src/core/binary/out/gamecowork-codely-generator.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests/codely-cpa-generation-' + randomUUID());
+const { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const { createCodelyGeneratorApi } = require('../../src/core/binary/out/modules/generation/codely-api.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/2026-10-07-thirdparty-live/cpa-contracts-' + randomUUID());
 const localOrigin = 'http://127.0.0.1:48721', lanOrigin = 'http://192.168.0.101:8317';
 const modelId = 'cpa-gpt-image-2', apiKey = 'owned-isolated-cpa-' + randomUUID();
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -64,7 +64,7 @@ test('Explicit CPA binding persists, re-evaluates live profile availability, and
   assert.equal((await f.session()).body.capabilities.localGeneration, false);
   await f.save(config); assert.deepEqual((await f.session()).body.capabilities.models, {});
   assert.deepEqual((await f.bind(config.id)).body, { modelId, configured: true });
-  const expected = Object.fromEntries(Object.values(require('../../src/core/binary/out/gamecowork-cpa-image-models.js').CPA_IMAGE_MODELS).map(row=>[row.id,{available:true,providerId:config.id,model:row.model,kind:'image',mode:'image',service:'cpa'}]));
+  const expected = Object.fromEntries(Object.values(require('../../src/core/binary/out/modules/generation/models/cpa-image.js').CPA_IMAGE_MODELS).map(row=>[row.id,{available:true,providerId:config.id,model:row.model,kind:'image',mode:'image',service:'cpa'}]));
   assert.deepEqual((await f.session()).body.capabilities.models, expected);
   await f.restart(); assert.deepEqual((await f.dispatch('GET', '/local/model-bindings')).body.models, expected);
   await f.save({ ...config, enabled: false }); assert.equal((await f.session()).body.capabilities.localGeneration, false);
@@ -144,13 +144,13 @@ test('No implicit model remapping, unsupported parameters, or missing workspace 
 test('All four CPA request routes submit account defaults and explicit framing while preserving the original prompt/history', async t => {
   const f=await fixture(t), config=configuration(); await f.save(config); await f.bind(config.id);
   const before=fs.readFileSync(path.join(f.directory,'providers.json'));
-  const rows=Object.values(require('../../src/core/binary/out/gamecowork-cpa-image-models.js').CPA_IMAGE_MODELS);
+  const rows=Object.values(require('../../src/core/binary/out/modules/generation/models/cpa-image.js').CPA_IMAGE_MODELS);
   const settings=['auto','3:2','2:3','16:9'];
   const created=[];
   for(let i=0;i<rows.length;i++) {
     const row=rows[i],aspectRatio=settings[i],input={prompt:'Own '+row.model,model:row.model,size:'auto',quality:'auto',outputFormat:'png',studioModelId:row.id,aspectRatio};
     const response=await f.generate(input,'workspace-a',row.id);assert.equal(response.status,200);const task=await f.terminal(response.body.taskId);assert.equal(task.status,'completed');created.push(task.id);
-    assert.deepEqual(f.requests.at(-1).body,{model:row.model,prompt:require('../../src/core/binary/out/gamecowork-cpa-image-models.js').cpaImageRequestPrompt(input),n:1,size:'auto',quality:'auto',output_format:'png'});
+    assert.deepEqual(f.requests.at(-1).body,{model:row.model,prompt:require('../../src/core/binary/out/modules/generation/models/cpa-image.js').cpaImageRequestPrompt(input),n:1,size:'auto',quality:'auto',output_format:'png'});
     const result=await f.dispatch('GET','/generation-history/task/'+task.id);assert.equal(result.body.type,row.id);assert.equal(result.body.name,row.name);assert.deepEqual(result.body.input.data,input);
     assert.equal(result.body.output.data.artifacts[0].width,4);assert.equal((await f.dispatch('GET','/generation-history/task/'+task.id,{scope:'workspace-b'})).status,404);
   }
@@ -216,4 +216,19 @@ test('Per-provider request deadline applies to both create and output download',
     assert.ok(Date.now() - started >= 800, 'Provider deadline overrides the service default of 50 ms: ' + stage);
     assert.equal(f.requests.length, stage === 'create' ? 1 : 2);
   }
+});
+
+test('Original Quick explicitly opts into precise CPA API size through the unchanged binding, cache and History path', async t => {
+  const f=await fixture(t);await f.save(configuration());await f.bind('own-cpa');const providerBefore=fs.readFileSync(path.join(f.directory,'providers.json'));
+  const input={...payload('原始场景描述 {{model}} 保留不变'),size:'1536x864',aspectRatio:'16:9',requestSizeMode:'api-size'},created=await f.generate(input);assert.equal(created.status,200);const task=await f.terminal(created.body.taskId);assert.equal(task.status,'completed');
+  assert.equal(task.prompt,input.prompt);assert.deepEqual(task.parameters,input);assert.ok(task.executionPrompt.startsWith(input.prompt+'\n\n'));assert.match(task.executionPrompt,/1536 x 864 pixels/);assert.match(task.executionPrompt,/aspect ratio: 16:9/);
+  assert.deepEqual(f.requests[0].body,{model:'gpt-image-2',prompt:task.executionPrompt,n:1,size:'1536x864',quality:'auto',output_format:'png'});assert.equal(f.requests[0].authorized,true);
+  assert.equal(task.artifacts[0].sha256,sha(png));assert.equal(task.artifacts[0].width,4);assert.equal(task.artifacts[0].height,3,'A requested target never rewrites actual image pixels');assert.deepEqual(fs.readFileSync(path.join(f.directory,'providers.json')),providerBefore);
+  const detail=await f.dispatch('GET','/task/'+task.id+'/status');assert.deepEqual(detail.body.input.data,input);assert.equal(detail.body.executionPrompt,task.executionPrompt);assert.equal(JSON.stringify(detail).includes(apiKey),false);assert.equal(Object.hasOwn(detail.body,'_cpaRequestPromptSha256'),false);
+  const originalHistory=JSON.stringify(JSON.parse(fs.readFileSync(path.join(f.directory,'tasks.json')))[task.id]);await f.restart();const restored=await f.dispatch('GET','/task/'+task.id+'/status');assert.deepEqual(restored.body.input.data,input);assert.equal(restored.body.executionPrompt,task.executionPrompt);assert.equal(f.requests.length,1);assert.equal(JSON.stringify(JSON.parse(fs.readFileSync(path.join(f.directory,'tasks.json')))[task.id]),originalHistory);assert.deepEqual(fs.readFileSync(path.join(f.directory,'providers.json')),providerBefore);
+});
+test('CPA API-size malformed opt-in rejects before any generation and cannot grant references or Provider overrides',async t=>{
+  const f=await fixture(t);await f.save(configuration());await f.bind('own-cpa');const before=fs.readFileSync(path.join(f.directory,'providers.json')),input={...payload('Never send contradictory opt-in'),requestSizeMode:'api-size',size:'1536x864',aspectRatio:'16:9'};
+  for(const changes of [{requestSizeMode:'unknown'},{size:'auto'},{size:'1536x1024'},{aspectRatio:'9:16'},{quality:'low'},{quality:'high'},{outputFormat:'jpeg'},{outputFormat:'webp'},{imageUrls:[localOrigin+'/fake.png']},{providerId:'other'},{n:3},{size:'512x512'}])assert.equal((await f.generate({...input,...changes})).status,400);
+  assert.equal(f.requests.length,0);assert.deepEqual(fs.readFileSync(path.join(f.directory,'providers.json')),before);assert.equal(f.service.getOwnedSnapshot().tasks.length,0);
 });

@@ -8,7 +8,7 @@ const repo = fileURLToPath(new URL('../../', import.meta.url)), exec = promisify
 const option = (key, fallback) => process.argv.includes(key) ? process.argv[process.argv.indexOf(key) + 1] : fallback;
 const editor = path.resolve(option('--editor', 'F:/UnityEditorVersion/2022.3.51f1c1/Editor/Unity.exe')), identity = readEditorIdentity(editor);
 assert.equal(identity.engine, 'unity');
-const run = path.join('F:/AI/AgentMake/temp/GameCowork/tests', 'editor-bridge-assets-packages-' + randomUUID()), project = path.join(run, '工程 Asset Query');
+const run = path.join('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests', 'editor-bridge-assets-packages-' + randomUUID()), project = path.join(run, '工程 Asset Query');
 const bridge = path.resolve(option('--bridge', path.join(repo, 'src/editor-bridge')));
 const bridgeSnapshot = path.join(run, 'bridge-source-snapshot');
 const checks = [], evidence = [], delay = ms => new Promise(resolve => setTimeout(resolve, ms)); let unity, failure, graceful = false;
@@ -103,6 +103,6 @@ finally {
   if (ownAlive()) { fs.writeFileSync(path.join(project, 'Temp/asset-package-exit'), 'Exit own fixture'); const end = Date.now() + 15000; while (ownAlive() && Date.now() < end) await delay(50); graceful = !ownAlive();
     if (!graceful) { const record = await exec('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `(Get-CimInstance Win32_Process -Filter 'ProcessId = ${unity.pid}').CommandLine`], { windowsHide: true }); assert.ok(record.stdout.replaceAll('\\', '/').toLowerCase().includes(run.replaceAll('\\', '/').toLowerCase()), 'Cleanup verifies the exact own run identity'); await exec('taskkill.exe', ['/PID', String(unity.pid), '/T', '/F'], { windowsHide: true }); } }
   fs.writeFileSync(path.join(run, 'summary.json'), JSON.stringify({ passed: !failure, checks, failure, evidence, editor, project, bridgePackage: bridge, bridgeSnapshot,
-    querySourceSha256: { assets: sha(path.join(bridgeSnapshot, 'Editor/EditorAssetQueries.cs')), packages: sha(path.join(bridgeSnapshot, 'Editor/EditorPackageQueries.cs')) },
+    querySourceSha256: { assets: sha(path.join(bridgeSnapshot, 'Editor/Queries/EditorAssetQueries.cs')), packages: sha(path.join(bridgeSnapshot, 'Editor/Queries/EditorPackageQueries.cs')) },
     editorPid: unity?.pid, ownEditorAlive: ownAlive(), gracefulEditorExit: graceful, providerInvoked: false, queryPhaseOnly: true }, null, 2)); console.log('Artifacts: ' + run);
 }

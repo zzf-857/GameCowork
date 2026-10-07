@@ -11,7 +11,7 @@ import { createInsightFixture } from '../fixtures/insight-fixture.mjs';
 const project=fileURLToPath(new URL('../../',import.meta.url));
 const args=process.argv.slice(2),option=(name,fallback)=>args.includes(name)?args[args.indexOf(name)+1]:fallback;
 const packaged=args.includes('--packaged'),app=path.join(project,'app');
-const base=path.resolve(project,'../../temp/GameCowork');
+const base=path.resolve(project,'codelyreversebackup/work');
 const run=path.resolve(option('--output',path.join(base,'insight-e2e-'+randomUUID())));
 assert.ok(run.toLowerCase().startsWith(base.toLowerCase()+path.sep));
 const binary=path.resolve(option('--binary',packaged?path.join(app,'GameCowork.exe'):path.join(project,'src/shell/target/release/GameCowork.exe')));

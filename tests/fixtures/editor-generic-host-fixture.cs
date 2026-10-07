@@ -21,7 +21,7 @@ public static class GameCoworkGenericHostFixture
     public static void Boot()
     {
         root=Path.GetFullPath(Path.Combine(Application.dataPath,"..")).Replace('\\','/');
-        if(!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-generic-",StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Owned project required");
+        if(!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-generic-",StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Owned project required");
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         alpha=new GameObject("Owned Alpha");beta=new GameObject("Owned Beta");
         var asm=typeof(EditorWindow).Assembly;

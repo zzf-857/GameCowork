@@ -9,9 +9,9 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 & node (Join-Path $PSScriptRoot 'check-layout.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'Repository layout checks failed' }
-& node (Join-Path $PSScriptRoot 'import-codely-generator.mjs') --check
+& node (Join-Path $PSScriptRoot 'frontend/import-generator.mjs') --check
 if ($LASTEXITCODE -ne 0) { throw 'Preserved Quick/History source integrity checks failed.' }
-& node (Join-Path $PSScriptRoot 'verify-codely-canvas-source.mjs')
+& node (Join-Path $PSScriptRoot 'frontend/verify-canvas-source.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'Preserved Canvas source integrity checks failed.' }
 $shellRoot = Join-Path $projectRoot 'src\shell'
 $lspSource = Join-Path $projectRoot 'vendor\csharp-lsp'
@@ -21,7 +21,7 @@ $lspResourceContract = Join-Path $projectRoot 'tests\contracts\lsp-resource-cont
 if ($LASTEXITCODE -ne 0) { throw 'Frozen C# LSP source resources failed integrity checks.' }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $projectRoot 'app' }
 $outputRoot = [IO.Path]::GetFullPath($OutputDirectory)
-$taskRoot = Join-Path 'F:\AI\AgentMake\temp\GameCowork\build' ([Guid]::NewGuid().ToString('N'))
+$taskRoot = Join-Path 'F:\AI\AgentMake\CyberSoftwares\GameCowork\codelyreversebackup\work\build' ([Guid]::NewGuid().ToString('N'))
 $stagingRoot = Join-Path $taskRoot 'staging'
 New-Item -ItemType Directory -Path $stagingRoot -Force | Out-Null
 
@@ -87,7 +87,7 @@ if ($cliManifest.testGuardIncluded -isnot [bool] -or $cliManifest.testGuardInclu
 $cliSource = Join-Path $projectRoot 'src\agent\cli-main.beautified.js'
 if ($cliManifest.sourceSha256 -ne (Get-FileHash -LiteralPath $cliSource).Hash) { throw 'Agent package was built from a different source revision.' }
 $expectedEntry = Join-Path $taskRoot 'expected-product-cli.cjs'
-& node (Join-Path $PSScriptRoot 'restore-cli-entry.mjs') --source $cliSource --output $expectedEntry
+& node (Join-Path $PSScriptRoot 'resources/restore-agent-entry.mjs') --source $cliSource --output $expectedEntry
 if ($LASTEXITCODE -ne 0) { throw 'Could not verify the normal Agent entry.' }
 if ($cliManifest.entrySha256 -ne (Get-FileHash -LiteralPath $expectedEntry).Hash) { throw 'Agent entry differs from the normal restored source; guarded or altered entries cannot be assembled.' }
 $cliExecutable = Join-Path $cliRoot 'gamecowork.exe'
@@ -135,6 +135,10 @@ foreach ($relative in @('GameCowork.exe', 'core\index.js', 'cli\gamecowork.exe',
         Copy-Item -LiteralPath $existing -Destination $backup
     }
 }
+# Retire only the explicitly withdrawn optional export resource, and only when
+# the previous package still owns its unchanged bytes. Keep all unknown files.
+$retired = & (Join-Path $PSScriptRoot 'resources/retire-precision-export.ps1') -OutputDirectory $outputRoot -PreparedManifest (Join-Path $stagingRoot 'package-manifest.json') -BackupDirectory $backupRoot
+if ($retired.removed) { Write-Output "Backed up and retired $($retired.path)" }
 # Update only assembled program resources. User state and workspace.txt are preserved.
 Copy-Item -Path (Join-Path $stagingRoot '*') -Destination $outputRoot -Recurse -Force
 foreach ($entry in $runtimeFiles) {

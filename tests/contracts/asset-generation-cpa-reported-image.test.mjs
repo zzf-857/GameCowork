@@ -7,9 +7,9 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { deflateSync } from 'node:zlib';
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/gamecowork-assets.js');
-const { minimalPayload } = require('../../src/core/binary/out/gamecowork-official-model-catalog.js');
-const root = path.resolve('F:/AI/AgentMake/temp/GameCowork/cpa-flexible-20261003/reported-' + randomUUID());
+const require = createRequire(import.meta.url), { createAssetService } = require('../../src/core/binary/out/modules/generation/service.js');
+const { minimalPayload } = require('../../src/core/binary/out/modules/generation/models/official-catalog.js');
+const root = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/cpa-flexible-20261003/reported-' + randomUUID());
 const key = 'owned-reported-key-' + randomUUID(), requests = [], sockets = new Set();
 let service, peer, baseUrl, completed;
 function png(width, height) {

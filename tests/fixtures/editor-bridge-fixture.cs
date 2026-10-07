@@ -29,7 +29,7 @@ public static class GameCoworkBridgeFixture
     static void ResumeAfterReload()
     {
         string candidate = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!candidate.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase)) return;
+        if (!candidate.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase)) return;
         string marker = candidate + "/Temp/fixture-session.json";
         if (!File.Exists(marker)) return;
         var session = JsonUtility.FromJson<FixtureSession>(File.ReadAllText(marker));
@@ -43,7 +43,7 @@ public static class GameCoworkBridgeFixture
     public static void Boot()
     {
         root = Path.GetFullPath(Path.Combine(Application.dataPath, "..")).Replace('\\', '/');
-        if (!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase))
+        if (!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("Fixture only runs in its own temp project");
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

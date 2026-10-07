@@ -4,7 +4,7 @@ const test = require('node:test'), assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const { randomUUID } = require('node:crypto');
 const source = fs.readFileSync(path.join(__dirname, '../../src/agent/cli-main.beautified.js'), 'utf8');
-const base = path.resolve('F:/AI/AgentMake/temp/GameCowork/tests');
+const base = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests');
 const run = path.join(base, 'cli-rewind-preview-' + randomUUID());
 fs.mkdirSync(run, { recursive: true });
 

@@ -16,7 +16,7 @@ const repo = fileURLToPath(new URL('../../', import.meta.url));
 const option = (key, fallback) => process.argv.includes(key) ? process.argv[process.argv.indexOf(key) + 1] : fallback;
 const previous = process.argv.includes('--previous'), packaged = process.argv.includes('--packaged'), inspect = process.argv.includes('--inspect'), cpaOnly = process.argv.includes('--cpa-only'), downloadOnly = process.argv.includes('--download-only');
 assert.ok(!downloadOnly || !inspect && !cpaOnly, '--download-only is an independent full download interaction probe');
-const temp = path.resolve('F:/AI/AgentMake/temp/GameCowork'), run = path.resolve(option('--output', path.join(temp, 'codely-assets-ui-' + randomUUID())));
+const temp = path.resolve('F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work'), run = path.resolve(option('--output', path.join(temp, 'codely-assets-ui-' + randomUUID())));
 assert.ok(run.toLowerCase().startsWith(temp.toLowerCase() + path.sep), 'Owned outputs stay in the unified temp directory');
 const app = path.resolve(option('--app-root', path.join(repo, 'app')));
 const binary = path.resolve(option('--binary', packaged ? path.join(app, 'GameCowork.exe') : path.join(repo, 'src/shell/target/debug/GameCowork.exe')));

@@ -26,7 +26,7 @@ public static class GameCoworkGenericProductFixture
     public static void Boot()
     {
         root=Path.GetFullPath(Path.Combine(Application.dataPath,"..")).Replace('\\','/');
-        if(!root.StartsWith("F:/AI/AgentMake/temp/GameCowork/tests/editor-bridge-generic-product-",StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Owned product fixture required");
+        if(!root.StartsWith("F:/AI/AgentMake/CyberSoftwares/GameCowork/codelyreversebackup/work/tests/editor-bridge-generic-product-",StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Owned product fixture required");
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         alpha=new GameObject("Owned Alpha");beta=new GameObject("Owned Beta");
         bool tuanjie=File.ReadAllText(root+"/ProjectSettings/ProjectVersion.txt").Contains("m_TuanjieEditorVersion:");
